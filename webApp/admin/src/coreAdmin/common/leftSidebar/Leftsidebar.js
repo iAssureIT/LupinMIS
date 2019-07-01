@@ -32,8 +32,8 @@ export default class Leftsidebar extends Component{
           <div className="wrapper">
             <nav id="sidebar">
               <div className="sidebar-header">
-                <h4 className="text-center"><b>Smart HRMS</b></h4>
-                <strong>SEAS</strong>
+                <h4 className="text-center"><b>Lupin MIS</b></h4>
+                <strong>LFMIS</strong>
               </div>
               <ul className="list-unstyled components">
                 <li className="active sidebarMenuText">
@@ -44,102 +44,68 @@ export default class Leftsidebar extends Component{
                 </li>
 
                 <li className="sidebarMenuText">
-                  <a href="#Induction" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-users" />
-                    Employee Induction
-                  </a>
-                  <ul className="collapse list-unstyled" id="Induction">
-                    <li>
-                      <a href="/admin/FormIndex/BasicInfo">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Employee Info Form</span>
-                      </a>
-                    </li> 
-                    <li>
-                      <a href="/admin/ProfilePreview">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Profile Preview</span>
-                      </a>
-                    </li>                   
-                    <li>
-                      <a href="/admin/EmployeeList">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Allocation of Role & Dept.</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/admin/RoleAllocation">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Role Allocation by HR</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/admin/RoleApproval">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">HR Manager Approval</span>
-                      </a>
-                    </li>  
-                  </ul>
-                </li> 
-
-                <li className="sidebarMenuText">
                   <a href="#MasterData" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-database" />
                     Master Data
                   </a>
                   <ul className="collapse list-unstyled" id="MasterData">
-                    <li>
-                      <a href="/admin/ManageLocations">
+                  {/*  <li>
+                      <a href="/centre">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Manage Locations</span>
+                        <span className="sidebarMenuSubText">Centre</span>
                       </a>
-                    </li> 
+                    </li> */}
+                      <li>
+                        <a href="/centreDetail">
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">centreDetail</span>
+                        </a>
+                      </li>
                     <li>
-                      <a href="/admin/Grade">
+                      <a href="beneficiary">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Grade</span>
+                        <span className="sidebarMenuSubText">Beneficiary</span>
                       </a>
                     </li>                   
                     <li>
-                      <a href="/admin/Category">
+                      <a href="/family">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Category</span>
+                        <span className="sidebarMenuSubText">family</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/admin/Designation">
+                      <a href="/sectorandactivity">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Designation</span>
+                        <span className="sidebarMenuSubText">Sector & Activity</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/admin/Department">
+                      <a href="/bulkUpload">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Department</span>
+                        <span className="sidebarMenuSubText">BulkUpload</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/admin/Diseases">
+                      <a href="/SDGReport">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Diseases</span>
+                        <span className="sidebarMenuSubText">SDG Report</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/admin/Languages">
+                      <a href="/empowermentLine">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Languages</span>
+                        <span className="sidebarMenuSubText">Empowerment Line</span>
                       </a>
                     </li>
-                    {/*<li>
-                      <a href="/admin/MaritalStatus">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Marital status</span>
-                      </a>
-                    </li>*/}
                     <li>
-                      <a href="/admin/Religion">
+                      <a href="/annualPlan">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Religion</span>
+                        <span className="sidebarMenuSubText">Annual Plan</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/ADPReport">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">ADP Report</span>
                       </a>
                     </li>
                   </ul>
@@ -148,89 +114,26 @@ export default class Leftsidebar extends Component{
                 <li className="sidebarMenuText">
                   <a href="#Leave" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-calendar" />
-                    Leave Management 
+                    Plan
                   </a>
                   <ul className="collapse list-unstyled" id="Leave">
                       <li>
-                        <a href="/admin/leaveSettings">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Leave Settings</span>
+                        <a href="/annualPlan">
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Annual Plan</span>
                         </a>
                       </li>
                       <li>
-                        <a href="/admin/leavePolicySettings">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Leave Policy Setting</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/admin/LocationWiseHolidays">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Locationwise Holidays Form</span>
+                        <a href="/monthlyPlan">
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">monthlyPlan</span>
                         </a>
                       </li>                    
-                      <li>
-                        <a href="/admin/HolidaysHistory">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Holidays History</span>
-                        </a>
-                      </li>
+                      
                   </ul>
                 </li> 
 
-                <li className="sidebarMenuText">
-                  <a href="#Shift" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-user-circle" />
-                    Shift Management
-                  </a>
-                  <ul className="collapse list-unstyled" id="Shift">
-                    <li>
-                      <a href="/admin/shiftSetting">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Shift Setting Table</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/admin/shiftAllot">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Shift Allocation</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/admin/empInfo">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Employee Induction</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
+               
 
-                <li className="sidebarMenuText">
-                  <a href="#Attendance" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-clock-o" />
-                    Time & Attendance
-                  </a>
-                  <ul className="collapse list-unstyled" id="Attendance">
-                    <li>
-                        <a href="/admin/empGraphicalReport">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Employee Graphical Report</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/admin/empTextReport">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Employee Text Report</span>
-                        </a>
-                      </li>                    
-                      <li>
-                        <a href="/admin/managerTextReport">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Manager Text Report</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/admin/managerGraphicalReport">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Manager Graphical Report</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/admin/DataAbsent">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Absent Report</span>
-                        </a>
-                      </li>   
-                  </ul>
-                </li>
+              
 
                {/* <li>
                   <a href="#User" data-toggle="collapse" aria-expanded="false">

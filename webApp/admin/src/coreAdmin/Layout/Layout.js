@@ -19,15 +19,6 @@ import ViewTemplates                              from '../NotificationManagemen
 import AddModuleFacility                          from '../accessManagement/AddModuleFacility.js';
 import AssignPermissionToModules                  from '../accessManagement/AssignPermissionToModules.js';
 
-import ManageLocation                             from "../../coreAdmin/masterData/manageLocation/ManageLocation.js"
-import Department                                 from '../../coreAdmin/masterData/department/Department.js';
-import Designation                                from '../../coreAdmin/masterData/designation/Designation.js';
-import Diseases                                   from '../../coreAdmin/masterData/diseases/Diseases.js';
-import Grade                                      from '../../coreAdmin/masterData/grade/Grade.js';
-import Languages                                  from '../../coreAdmin/masterData/languages/Languages.js';
-import Category                                   from '../../coreAdmin/masterData/category/Category.js';
-import Religion                                   from '../../coreAdmin/masterData/religion/Addreligion.js';
-
 import Centre                                     from '../../coreAdmin/masterData/centre/Centre.js';
 import Family                                     from '../../coreAdmin/masterData/family/Family.js';
 import Beneficiary                                from '../../coreAdmin/masterData/beneficiary/Beneficiary.js';
@@ -94,35 +85,20 @@ class Layout extends Component{
                   {/*Access Management*/}
                     <Route path="/admin/AddModuleFacility"            exact strict component={ AddModuleFacility } />
                     <Route path="/admin/AssignPermissionToModule"     exact strict component={ AssignPermissionToModules } />
-                  {/*EmpInduction*/} 
-                    {/*<Route path="/admin/FormIndex/BasicInfo"             exact strict component={ FormIndex } />          
-                    <Route path="/admin/ProfilePreview"        exact strict component={ ProfilePreview } />
-                    <Route path="/admin/DocVerification"       exact strict component={ DocVerification } />          
-                    <Route path="/admin/RoleApproval"          exact strict component={ RoleApproval } />          
-                    <Route path="/admin/RoleAllocation"        exact strict component={ RoleAllocation } />          
-                    <Route path="/admin/EmployeeList"          exact strict component={ EmployeeList } />          
-                  */}{/*Master Data*/}
-                    <Route path="/admin/ManageLocations"               exact strict component={ ManageLocation } />
-                    <Route path="/admin/Department"                    exact strict component={ Department } />
-                    <Route path="/admin/Designation"                   exact strict component={ Designation } />
-                    <Route path="/admin/Diseases"                      exact strict component={ Diseases } />
-                    <Route path="/admin/Languages"                     exact strict component={ Languages } />
-                    <Route path="/admin/Grade"                         exact strict component={ Grade } />
-                    <Route path="/admin/category"                      exact strict component={ Category } />
-                    <Route path="/admin/Religion"                      exact strict component={ Religion } />
-                    <Route path="/Centre"                              exact strict component={ Centre } />
-                    <Route path="/Beneficiary"                         exact strict component={ Beneficiary } />
-                    <Route path="/Family"                              exact strict component={ Family } />
+                  {/*Master Data*/}
+                    <Route path="/centre"                              exact strict component={ Centre } />
+                    <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
+                    <Route path="/family"                              exact strict component={ Family } />
                     <Route path="/sectorandactivity"                   exact strict component={ SectorAndActivity } />
                     <Route path="/bulkUpload"                          exact strict component={ bulkUpload } />
                      /*Reports Routes*/
                     <Route path="/SDGReport"                          exact strict component={ SDGReport } />
-                    <Route path="/EmpowermentLine"                    exact strict component={ EmpowermentLine } />
+                    <Route path="/empowermentLine"                    exact strict component={ EmpowermentLine } />
                     <Route path="/ADPReport"                          exact strict component={ ADPReport } />
                     /*Plans Routes*/
-                    <Route path="/AnnualPlan"                         exact strict component={ AnnualPlan } />
+                    <Route path="/annualPlan"                         exact strict component={ AnnualPlan } />
                     <Route path="/centreDetail"                        exact strict component={ centreDetail } />
-                    <Route path="/MonthlyPlan"                        exact strict component={ MonthlyPlan } />
+                    <Route path="/monthlyPlan"                        exact strict component={ MonthlyPlan } />
                   </Switch>        
                 </Router>
               </div>
