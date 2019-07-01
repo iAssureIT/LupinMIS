@@ -1,0 +1,127 @@
+.mt{
+  margin-top: 20px;
+}
+
+.but{
+  margin-top: 120px;
+    margin-left: 605px;
+    height: 41px;
+    width: 112px;
+}
+
+.componentWrapper{
+  border : 1px solid #ddd;
+  border: 1px solid #eee !important;
+  box-shadow: 0 0 10px #eee;
+  padding-bottom : 20px !important;
+  -webkit-box-shadow: 0 0 10px #eee;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+.title{
+  margin-left: 15px;
+}
+
+.shiftSettingForm{
+  margin-top : 20px;  
+  margin-bottom : 20px;  
+}
+.timeSpan{
+  padding-right: 15px;
+}
+
+.valign{
+  vertical-align: middle !important;
+}
+.popover-content {
+    padding: 9px 14px;
+    color: #ff0000;
+}
+.borderHr{
+  border-bottom: 0.5px solid #cccccc;
+  width: 100%;
+}
+
+/***********************As per UI Kit**********************/
+.hrCustom{
+  margin-top: 0px !important;
+  margin-bottom: 20px !important;
+  border-top: 1px solid #333 !important;
+  height: 100%;
+}
+
+.fz14{
+  font-size: 14px;
+}
+
+.customWidth{
+  width: 85% !important;
+}
+/*.offsetLeft{
+  margin-left: 35px;
+}
+.offsetLeft1{
+  margin-left: 15px;
+}*/
+.customH3{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  /*font-family: 'Montserrat', sans-serif !important;*/
+  color :#333333;
+  font-size : 20px;
+  font-weight: 600;
+} 
+/***********************As per UI Kit**********************/
+.arrow{
+  left: 15% !important;
+}
+.popover-title{
+  display: none !important;
+}
+.popover{
+  left: 35px !important;
+}
+.popover-content {
+  color: #039BE5;
+}
+.deleteBtn{
+  color: #ff4444;
+}
+.shiftTime{
+  padding-right: 10px;
+}
+
+/**********************************************************/
+.nameParts{
+ text-transform: capitalize;
+}
+/*********************************/
+.btn_mrg{
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+.btn_mrg1{
+  margin-bottom: 0px;
+}
+.mg_btn{
+  margin-bottom: -60px !important;
+}
+.pghdr{
+    font-family: 'Montserrat',sans-serif;
+    font-size: 14px;
+    color: #333333;
+    font-weight: 575;
+    /* padding-bottom: 20px; */
+  }
+
+.inptbx{
+  width:33%;
+  height: 70px;
+}
+.th_pd{
+
+}
+
+.td_pd{
+text-align: left;
+}

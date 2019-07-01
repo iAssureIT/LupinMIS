@@ -1,6 +1,6 @@
 .App {
-  text-align: center;
-}
+/*  text-align: center;
+*/}
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -18,6 +18,9 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+#sidebar{
+  height: 100vh!important;
+}
 
 .App-link {
   color: #61dafb;
@@ -31,3 +34,556 @@
     transform: rotate(360deg);
   }
 }
+
+/*--------------------------background colors of admin page -----------*/
+
+.headerbackgroundcolor
+{
+    background-color: #fff;
+  }
+
+.headereffect
+{
+    width: 94%!important;
+  }
+
+.dashboardeffect
+{
+    width: 94.2%!important;
+}
+
+.leftsidebarbackgroundcolor{
+  position: fixed!important;
+  left: 15px;
+}
+
+.dasbordbackgroundcolor{
+  background-color: #eee;
+  height:au;
+}
+
+.emptyclass{
+  height: 100px;
+}
+
+/*.....................Main.css........................*/
+body {
+  font-family:'Montserrat',sans-serif;
+  background-color:#eeeeee !important;
+  font-size: 12px !important;
+}
+
+@font-face{
+  font-family:'Montserrat-Regular';
+  src: url("/fonts/Montserrat/Montserrat-Regular.ttf");
+}
+.main-container{
+  width: 100%;
+}
+.formWrapper{
+  background: #ecf0f5;
+  /*margin-left: 22%;*/
+  z-index: 820;
+  /*width: 78%;*/
+  min-height: auto;
+
+}
+.toLower{
+  text-transform: lowercase;
+}
+.titleHeader {
+    height: 62px;
+}
+input::placeholder{
+  color: #cacaca;
+}
+input, select{
+  font-family:'Montserrat',sans-serif !important;
+
+  color: #333 !important;
+}
+.pageHeader{
+  font-family:'Montserrat',sans-serif !important;
+  font-size: 20px !important;
+  color: #333333 !important;
+  font-weight: bold;
+}
+
+.pageSubHeader{
+  font-family:'Montserrat',sans-serif;
+  font-size: 16px;
+  color: #333333;
+  font-weight: bold;
+  padding-bottom: 12px;
+}
+/*Form input lable*/
+.formLable{
+  font-family:'Montserrat',sans-serif;
+  font-size: 12px !important;
+  color: #333333;
+  font-weight: normal;
+  
+
+}
+
+/*add this class next to form-control*/
+.inputBox{
+  font-family:'Montserrat',sans-serif;
+  height: 30px !important;
+  border: none !important;
+  font-size: 12px !important;
+}
+.valid_box{
+  height: 60px;
+}
+
+
+
+.inputBox:hover{
+
+  box-shadow: none !important;
+}
+
+/*Add this class next to input-group*/
+.inputBox-main{
+  border: 1px solid #979797 !important;
+  border-radius: 3px !important;
+  height: 30px !important;
+  font-size: 12px !important;
+}
+.form-line-active input:focus, .form-line-active textarea:focus {
+    border: 1px solid #039BE5 !important; 
+    box-shadow: none !important;
+    
+ }
+
+.inputBox-main:hover{
+  border: 1px solid #039BE5 !important;
+  box-shadow: 0 3px 10px 0 rgba(0,0,0,.15);
+}
+
+/*input icon*/
+.inputIcon{
+  height: 30px !important;
+  font-size: 18px !important;
+  color: #979797 !important;
+  background-color: #ffffff !important;
+  border: none !important;
+}
+.fa-calendar{
+  font-size: 12px;
+}
+.iconSize12{
+  font-size: 14px !important;
+}
+/*Close and clear*/
+.inputBox::placeholder
+{
+  font-family:'Montserrat',sans-serif;
+  font-size: 12px !important;
+  color: #cacaca;
+}
+
+.clear{
+  height: 40px;
+  background: none;
+  border: 1px solid #039BE5 !important;
+  font-family:'Montserrat',sans-serif;
+  font-size: 12px;
+  color: #039BE5;
+}
+.clear:hover{
+  color: #039BE5;
+
+}
+
+/*All submit buttons*/
+.submit{
+  height: 40px;
+  background-color: #039BE5;
+  color: #fff;
+  font-weight: 600 !important;
+  font-family:'Montserrat',sans-serif;
+  font-size: 14px !important;
+  border-radius: 5px;
+  border: none;
+}
+
+.submit:hover{
+  color: #ffffff !important;
+  font-family:'Montserrat',sans-serif;
+}
+
+/*Breadcrumb Start*/
+ .breadcrumbCustom {
+  border-radius: 20px !important;
+  height: 30px;
+  color : #2E3951;
+  font-size: 12px;
+  margin-top: 17px;
+  font-family:'Montserrat',sans-serif;
+  background-color: #F8F8F8 !important;
+  padding: 6px 20px;
+}
+.breadcrumbCustom li a{
+  text-decoration: none;
+  font-family:'Montserrat',sans-serif;
+  font-size: 12px;
+  color: #2E3951;
+}
+.breadcrumbCustom li .active{
+  text-decoration: none;
+  font-family:'Montserrat',sans-serif;
+  font-size: 12px;
+  color: #666666;
+}
+.breadcrumbCustom li{
+  font-family:'Montserrat',sans-serif;
+  font-size: 12px;
+  color: #666666;
+}
+.home-icon{
+  color : #2E3951;
+  font-size: 14px;
+}
+
+/*Breadcrumb End*/
+
+
+/*Table start*/
+.table{
+  font-family:'Montserrat',sans-serif;
+  font-size: 12px;
+  color: #333333;
+  border: 1px solid #eee;
+   
+
+}
+.table thead{
+  background-color: #039BE5;
+  color: #f2f2f2 !important;
+  font-size : 12px !important;
+  height:40px !important;
+  font-family:'Montserrat',sans-serif;
+}
+
+.table td{
+  color: #333333;
+  font-family:'Montserrat',sans-serif;
+  
+}
+
+.table-bordered{
+  margin-top: 0% !important;
+}
+/*Table End*/
+
+/*Search start*/
+.search{
+  border-radius: 20px;
+  height: 30px;
+}
+.search[placeholder]{
+  font-family:'Montserrat',sans-serif;
+  font-size: 12px;
+  color: #cacaca;
+  padding-left: 35px;
+  
+}
+/*Search End*/
+
+/*React table css for all react tables*/
+.ReactTable .rt-thead.-header {
+  font-family:'Montserrat',sans-serif !important;
+  background-color: #039BE5 !important;
+  color      :#f2f2f2 !important;
+  font-size  : 14px !important;
+  text-align : right !important;
+  padding-top:5px;
+  border: 1px solid #eee;
+    text-align:left;
+}
+.ReactTable .rt .td{
+  font-family:'Montserrat',sans-serif;
+  padding: 10px;
+}
+/*React Table End*/
+.ReactTable 
+{
+  text-align : left !important;
+}
+
+
+
+/*Error msg for jquety Validation*/
+.errorMsg{
+  color: #f00;
+  font-size: 11px !important;
+  letter-spacing : 1px;
+}
+.error{
+  font-size: 11px !important;
+  letter-spacing : 1px;
+}
+
+
+/*add it to next to form group*/
+.inputBox-height{
+  height: 85px !important;
+}
+
+
+/*Page header bottom horizontal line*/
+.hr-head{
+  border:0.25px solid #999;
+  width: 100%;
+}
+
+/*Page subheader bottom horizontal line*/
+.hr-subhead{
+  border:0.25px solid #999;
+  width: 97%;
+  color: #333333 !important;
+    font-weight: 500;
+}
+
+
+/*Page content */
+.pageContent{
+  background-color: #ffffff !important;
+  padding-bottom: 15px;
+  margin-bottom :15px;
+  /*min-height: 1120px;*/
+}
+
+.asterix{
+  color: #ff4444;
+}
+
+.br97{
+  border: 1px solid #979797 !important;
+}
+
+.brn{
+  border-right: none !important;
+}
+
+.fz14{
+  font-size: 14px;
+}
+
+.fz16{
+  font-size: 16px !important;
+}
+  
+.fz18{
+  font-size: 18px !important;
+}
+.fz12{
+  font-size: 12px;
+}
+
+.h40{
+  height: 40px !important;
+}
+
+.fontF{
+  font-family:'Montserrat',sans-serif;
+}
+
+.br3{
+  border-radius: 3px;
+}
+
+.loadingImg{
+  margin-left: 600px;
+  margin-top:  180px;
+}
+
+
+/******************************Admin Security common css************************************/
+
+
+.signUpBackground{
+  background-image: url("/images/signupbackground.jpg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+@media only screen and (min-width: 200px) and (max-width: 1200px) {
+  .middlepo{
+    height: 555px;
+    /*overflow-y: scroll;*/
+}
+}
+
+.middleblock{
+  
+  box-shadow: 0 0 10px #aaa;
+  background-color: #fff;
+  /*height: 405px !important;*/
+  padding: 20px;
+}
+  
+.securityNameTitle{
+  font-size: 22px!important;
+}
+.bottomLinksOuter {
+    font-weight: bold;
+    margin-top: 8%;
+    margin-bottom: 6%;
+}
+.bottomLinksOuter a{
+  font-size: 16px !important;
+}
+
+.signInput{
+  border: 1px solid #cacaca !important;
+  height: 38px !important;
+}
+
+.signInput:hover{
+  border: 1px solid #039BE5 !important;
+  box-shadow: 1px 1px 1.5px #039BE5;
+}
+.inputhgt{
+  height: 45px;
+  margin-bottom: 28px;
+  /*margin-left: 6.5px;*/
+}
+
+.showHideSignDiv{
+    top:-30px;
+    float: right;
+    margin-right: 9px;
+    z-index: 999;
+    position: relative;
+}
+.nameParts{
+  text-transform: capitalize;
+
+}
+.toUpper{
+  text-transform: uppercase;
+}
+
+/*Manage Location forms table color*/
+.tbl_color{
+   background-color: #039be5 !important;
+}
+
+.securityWrapper {
+    height: 100%;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+/**********************swal**********************************/
+.msgModalWrapper{
+  margin-top: 15%;
+
+}
+.msgModalContent{
+  /*width: 67%;*/
+  border-radius: 2px !important;
+  width: 482px;
+  /*margin-top: 172px;*/
+   
+
+  /*margin-left: ;*/
+}
+.msgModalHeader{
+    /*border-bottom-color: #f4f4f4;*/
+    background: #039BE5;
+    padding: 30px;
+    border-radius: 2px ;
+}
+.deleteBTNModal{
+  background-color: #ff4444;
+  color:#fff;
+}
+.updateBTNModal{
+  background-color: #039BE5;
+  color: #fff;
+}
+
+.msgModalfooter{
+  padding-bottom: 7px;
+    padding-top: 7px;
+  
+}
+.msgModalbody{
+  padding: 55px;
+  color: #333;
+}
+.mdh{
+background-color: #039be5 !important;
+ /* padding-bottom: 34px !important;*/
+     padding-bottom: 10px !important;
+}
+
+.mb{
+    height: 165px;
+}
+.paracenter{
+  margin-top: 55px;
+}
+
+/*input[type=date]{
+  padding-left: 70px;
+  z-index: -1;
+
+}*/
+
+
+/**********************************************swal**************************/
+
+.swal-title {
+  /*margin: 0px;*/
+  font-size: 16px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+  /*margin-bottom: 28px;*/
+  /*border-bottom: 1px solid #E9EEF1 !important;*/
+  background-color: #039BE5 !important;
+  height: 40px;
+  color:transparent;
+  margin-top: -15px !important;
+  border-top-left-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+  /*border-radius: 50%;*/
+}
+.swal-text {
+    padding: 37px;
+    display: block;
+    text-align: center;
+    color: #666;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 35px;
+    font-family: 'Montserrat-Regular';
+    letter-spacing: 1px;
+}
+.swal-footer {
+  background-color: #fff;
+  margin-top: 32px;
+  border-top: 1px solid #E9EEF1;
+  overflow: hidden;
+  text-align:center;
+  padding: 7px 16px;
+}
+.swal-button {
+  padding: 10px 40px 10px 40px;
+  background-color: #039BE5 !important;
+  font-size: 12px;
+
+  /*text-align-last: center;*/
+  /*border: 1px solid #3e549a;*/
+  /*text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);*/
+}
+.mrAc{
+margin-right: 12px;
+}
+/*================End of Global Css==================*/
+
+
+
