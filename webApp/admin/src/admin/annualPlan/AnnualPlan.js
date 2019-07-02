@@ -2,7 +2,6 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
-
 import 'react-table/react-table.css';
 import "./AnnualPlan.css";
 

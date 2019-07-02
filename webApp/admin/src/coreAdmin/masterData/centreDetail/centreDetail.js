@@ -31,10 +31,13 @@ class centreDetail extends Component{
       "blockCovered"             :"",
       "centreDetailArray"        :[],
       "shown"                    : true,
-            tabtype : "location",
-
-      fields: {},
-      errors: {}
+      tabtype                     : "location",
+      fields                      : {},
+      errors                      : {},
+      listofStates                : [],
+      listofDistrict              : [],
+      listofBlocks                : [],
+      listofVillages              : []
     }
     this.changeTab = this.changeTab.bind(this); 
   }
@@ -62,13 +65,6 @@ class centreDetail extends Component{
     this.setState({
       fields
     });
-  /*  if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }*/
   }
 
   componentWillReceiveProps(nextProps){
@@ -161,9 +157,9 @@ class centreDetail extends Component{
       fields:fields
     });
     axios
-    .post('https://jsonplaceholder.typicode.com/posts',{centreDetail})
+    .post('http://qalmisapi.iassureit.com/api/centers',{centreDetail})
     .then(function(response){
-      console.log(response);
+      console.log('response',response);
     })
     .catch(function(error){
       console.log(error);
@@ -180,14 +176,91 @@ class centreDetail extends Component{
       .post('https://jsonplaceholder.typicode.com/Get')
       .then(function(response){
         console.log(response);
+      });
+
+      // axios({
+      //   method: 'get',
+      //   url: '/api/states',
+      // }).then((response)=> {
+      //   this.setState({
+      //       listofStates : response.data,
+      //   });
+      // }).catch(function (error) {
+      //   console.log('error', error);
+      // });
+
+      var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
+      this.setState({
+        listofStates : listofStates
       })
+
     }
 
     componentWillUnmount(){
         $("script[src='/js/adminLte.js']").remove();
         $("link[href='/css/dashboard.css']").remove();
     }
+    districtCoveredChange(event){
+      event.preventDefault();
+      var districtCovered = event.target.value;
+      console.log('districtCovered', districtCovered);
+      this.setState({
+        districtCovered: districtCovered
+      },()=>{
+        var listofBlocks = ['Ambegaon', 'Baramati', 'Bhor', 'Daund', 'Haveli', 'Indapur', 'Junnar', 'Khed', 'Mawal', 'Mulshi', 'Pune City', 'Purandhar', 'Shirur', 'Velhe'];
+        if(this.state.districtCovered == 'Pune'){          
+          this.setState({
+            listofBlocks : listofBlocks
+          });
+        }else{
+          this.setState({listofBlocks : []});
+        }
+      });
+    }
+    selectState(event){
+      event.preventDefault();
+      var selectedState = event.target.value;
+      // console.log('selectedState ',selectedState);
+      this.setState({
+        state : selectedState
+      },()=>{
+        if(this.state.state == 'Maharastra'){
+          var listofDistrict = ['Pune', 'Mumbai'];
+          this.setState({
+            listofDistrict : listofDistrict
+          });
+        }else{
+          this.setState({listofDistrict:[]});
+        }
+      });
+    }
+    blockCoveredChange(event){
+      event.preventDefault();
+      var blockCovered = event.target.value;
+      console.log('blockCovered',blockCovered);
+      this.setState({
+        blockCovered : blockCovered
+      },()=>{
+        var listofVillages = ['Magarpatta', 'Kharadi', 'Wagholi', 'Manjari'];
+        this.setState({
+          listofVillages : listofVillages
+        })
+      });
+    }
+    selectVillage(event){
+      event.preventDefault();
+      var value = event.target.checked;
+      var id    = event.target.id;
 
+      this.setState({
+        [id+'Header'] : value
+      });
+      // Meteor.call('selectForHeader', id, value, function(error, result){
+      //   if(error){
+      //   }else{
+      //   }
+      // });
+    }
     changeTab = (data)=>{
     this.setState({
       tabtype : data,
@@ -197,86 +270,86 @@ class centreDetail extends Component{
 
     render() {
       const dataM = [{
-      srno: 1,
-      FamilyID: "Maharastra",
-      NameofBeneficiary: "Pune",
-      BeneficiaryID: "Pimpri",
-      }
+          srno: 1,
+          FamilyID: "Maharastra",
+          NameofBeneficiary: "Pune",
+          BeneficiaryID: "Pimpri",
+        }
       ]
       const columnsM = [ 
         {
-        Header: 'Sr No',
-        accessor: 'srno',
+          Header: 'Sr No',
+          accessor: 'srno',
         },
         {
-        Header: 'District',
-        accessor: 'FamilyID', 
+          Header: 'District',
+          accessor: 'FamilyID', 
         }, {
-        Header: 'Block',
-        accessor: 'NameofBeneficiary', 
+          Header: 'Block',
+          accessor: 'NameofBeneficiary', 
         }, {
-        Header: 'Village',
-        accessor: 'BeneficiaryID', 
+          Header: 'Village',
+          accessor: 'BeneficiaryID', 
         },
       ]
       const data = [{
-      srno: 1,
-      FamilyID: "L000001",
-      NameofBeneficiary: "Priyanka Lewade",
-      BeneficiaryID: "PL0001",
-      },{
-      srno: 2,
-      FamilyID: "B000001",
-      NameofBeneficiary: "Priyanka Bhanvase",
-      BeneficiaryID: "PB0001",
-      }
+          srno: 1,
+          FamilyID: "L000001",
+          NameofBeneficiary: "Priyanka Lewade",
+          BeneficiaryID: "PL0001",
+          },{
+          srno: 2,
+          FamilyID: "B000001",
+          NameofBeneficiary: "Priyanka Bhanvase",
+          BeneficiaryID: "PB0001",
+        }
       ]
       const columns = [ 
-      {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
         {
-        Header: 'Sector',
-        accessor: 'NameofBeneficiary', 
-        }, {
-        Header: 'Activity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Sub-Activity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Quantity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Amount',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Beneficiary',
-        accessor: 'noMAp', 
-        },{
-        Header: "Financial Sharing",
-        columns: [
-        {
-          Header: "LHWRF",
-          accessor: "LHWRF"
-        },
-        {
-          Header: "NABARD",
-          accessor: "NABARD"
-        },{
-          Header: "Bank Loan",
-          accessor: "BankLoan"
-        },{
-          Header: "Govt",
-          accessor: "BankLoan"
-        },{
-          Header: "Direct Beneficiary",
-          accessor: "BankLoan"
-        },{
-          Header: "Indirect Beneficiary",
-          accessor: "BankLoan"
-        },
+          Header: 'Sr No',
+          accessor: 'srno',
+          },
+          {
+          Header: 'Sector',
+          accessor: 'NameofBeneficiary', 
+          }, {
+          Header: 'Activity',
+          accessor: 'noMAp', 
+          },{
+          Header: 'Sub-Activity',
+          accessor: 'noMAp', 
+          },{
+          Header: 'Quantity',
+          accessor: 'noMAp', 
+          },{
+          Header: 'Amount',
+          accessor: 'noMAp', 
+          },{
+          Header: 'Beneficiary',
+          accessor: 'noMAp', 
+          },{
+          Header: "Financial Sharing",
+          columns: [
+          {
+            Header: "LHWRF",
+            accessor: "LHWRF"
+          },
+          {
+            Header: "NABARD",
+            accessor: "NABARD"
+          },{
+            Header: "Bank Loan",
+            accessor: "BankLoan"
+          },{
+            Header: "Govt",
+            accessor: "BankLoan"
+          },{
+            Header: "Direct Beneficiary",
+            accessor: "BankLoan"
+          },{
+            Header: "Indirect Beneficiary",
+            accessor: "BankLoan"
+          },
         ]
         },
         {
@@ -309,7 +382,7 @@ class centreDetail extends Component{
                       </div>
                       <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
                         <div className="col-lg-12 ">
-                           <h4 className="pageSubHeader">Centre Details</h4>
+                           <h4 className="pageSubHeader">Center Details</h4>
                         </div>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
@@ -320,10 +393,7 @@ class centreDetail extends Component{
                                   <option  className="hidden" >--select--</option>
                                   <option  className="" >Development Centre</option>
                                   <option  className="" >CSR Centre</option>
-                                 {/* <option>Post-Graduate</option>
-                                  <option>Under Graduate</option>
-                                  <option>10+2</option>
-                                  <option>10th</option>*/}
+                                  <option  className="" >ADP</option>
                                 </select>
                               </div>
                               <div className="errorMsg">{this.state.errors.typeOfCentre}</div>
@@ -331,9 +401,6 @@ class centreDetail extends Component{
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                               <label className="formLable">Name of Centre</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
                                 <input type="text"   className="form-control inputBox nameParts"  value={this.state.nameOfCentre}  name="nameOfCentre" placeholder="" ref="nameOfCentre"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.nameOfCentre}</div>
@@ -345,9 +412,6 @@ class centreDetail extends Component{
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                              <label className="formLable">Address</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
                                 <input type="text"   className="form-control inputBox nameParts"  value={this.state.address}  name="address" placeholder="" ref="address"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.CollegeName}</div>
@@ -355,14 +419,18 @@ class centreDetail extends Component{
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">State</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
-                                <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >--select--</option>
-                                  <option  className="" >Maharastra</option>
-                                  <option  className="" >Utterpradesh</option>
-                                  {/*<option>Post-Graduate</option>
-                                  <option>Under Graduate</option>
-                                  <option>10+2</option>
-                                  <option>10th</option>*/}
+                                <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
+                                  <option  className="hidden" value="">--Select State--</option> 
+                                  {
+                                    this.state.listofStates ?
+                                    this.state.listofStates.map((state, index)=>{
+                                      return(
+                                        <option key={index} value={state}>{state}</option> 
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
                                 </select>
                               </div>
                               <div className="errorMsg">{this.state.errors.state}</div>
@@ -371,10 +439,17 @@ class centreDetail extends Component{
                               <label className="formLable">District</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                 <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district"  onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >--select--</option>
-                                  <option  className="" >Pune</option>
-                                  <option  className="" >Mumbai</option>
-                                  
+                                  <option  className="hidden" >--Select District--</option>
+                                  {
+                                    this.state.listofDistrict ? 
+                                    this.state.listofDistrict.map((district, index)=>{
+                                      return(
+                                        <option key={index} value={district}>{district}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }                                
                                 </select>
                               </div>
                               <div className="errorMsg">{this.state.errors.district}</div>
@@ -382,9 +457,6 @@ class centreDetail extends Component{
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                              <label className="formLable">Pincode</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
                                 <input type="text"   className="form-control inputBox nameParts"  value={this.state.pincode}  name="pincode" placeholder="" ref="pincode"  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.pincode}</div>
@@ -397,9 +469,6 @@ class centreDetail extends Component{
                             <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                               <label className="formLable">Name of Center Incharge</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
                                 <input type="text"   className="form-control inputBox nameParts"  value={this.state.centreInchargeName} name="centreInchargeName" placeholder="" ref="centreInchargeName"    onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.CollegeName}</div>
@@ -472,12 +541,18 @@ class centreDetail extends Component{
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
                               <label className="formLable">District Covered</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtCovered" >
-                                <select className="custom-select form-control inputBox"  value={this.state.districtCovered}  ref="districtCovered" name="districtCovered"  onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >--select--</option>
-                                  <option>Maharastra</option>
-                                  <option>Maharastra</option>
-                                  <option>Maharastra</option>
-                                  
+                                <select className="custom-select form-control inputBox"  value={this.state.districtCovered}  ref="districtCovered" name="districtCovered"  onChange={this.districtCoveredChange.bind(this)} >
+                                  <option  className="hidden" >--Select District--</option>
+                                  {
+                                    this.state.listofDistrict ? 
+                                    this.state.listofDistrict.map((district, index)=>{
+                                      return(
+                                        <option key={index} value={district}>{district}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
                                 </select>
                               </div>
                               <div className="errorMsg">{this.state.errors.districtCovered}</div>
@@ -485,12 +560,18 @@ class centreDetail extends Component{
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
                               <label className="formLable">Block Covered</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockCovered" >
-                                <select className="custom-select form-control inputBox"  value={this.state.blockCovered}  ref="blockCovered" name="blockCovered"  onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >--select--</option>
-                                  <option>Pune</option>
-                                  <option>Pune</option>
-                                  <option>Pune</option>
-                                 
+                                <select className="custom-select form-control inputBox"  value={this.state.blockCovered}  ref="blockCovered" name="blockCovered"  onChange={this.blockCoveredChange.bind(this)} >
+                                  <option  className="hidden" >--Select Block--</option>
+                                  {
+                                    this.state.listofBlocks ? 
+                                    this.state.listofBlocks.map((block, index)=>{
+                                      return(
+                                        <option key={index} value={block}>{block}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
                                 </select>
                               </div>
                               <div className="errorMsg">{this.state.errors.blockCovered}</div>
@@ -499,133 +580,60 @@ class centreDetail extends Component{
                         </div><br/>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight mt ">
-                            <div className=" col-md-3  col-lg-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable faintCoolor">Villages Covered</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 mt">
-                                <div className="row"> 
-                                  <div className="col-lg-12 noPadding">  
-                                   <div className="actionDiv">
-                                      <div className="centreDetailContainer col-lg-1">
-                                        <input type="checkbox" name="check1" id="sameCheck" />
-                                      <span className="centreDetailCheck"></span>
+                          <label className="formLable faintCoolor col-lg-12 col-sm-12 col-xs-12">Villages Covered</label>                           
+                            {
+                              this.state.listofVillages?
+                              this.state.listofVillages.map((village, index)=>{
+                                return(
+                                  <div key={index} className="col-md-3  col-lg-3 col-sm-12 col-xs-12 mt">
+                                    <div className="row"> 
+                                      <div className="col-lg-12 noPadding">  
+                                       <div className="actionDiv">
+                                          <div className="centreDetailContainer col-lg-1">
+                                            <input type="checkbox" id={village} checked={this.state[village]} onChange={this.selectVillage.bind(this)}/>
+                                            <span className="centreDetailCheck"></span>
+                                          </div>
+                                        </div>                            
+                                        <label className="centreDetaillistItem"> {village}</label>
                                       </div>
-                                    </div>                            
-                                    <label className="centreDetaillistItem"> Village 1</label>
+                                    </div>  
                                   </div>
-                                  <div className="col-lg-12 noPadding">  
-                                    <div className="actionDiv">
-                                      <div className="centreDetailContainer col-lg-1">
-                                        <input type="checkbox" name="check1" id="sameCheck" />
-                                      <span className="centreDetailCheck"></span>
-                                      </div>
-                                    </div>                            
-                                    <label className="centreDetaillistItem"> Village 2</label>
-                                  </div>
-                                </div>  
-                              </div>
-                            </div>
-                            <div className=" col-md-3  col-lg-3 col-sm-12 col-xs-12 mt">
-                              <label className="formLable faintCoolor"></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 mt">
-                                <div className="row"> 
-                                  <div className="col-lg-12 noPadding">  
-                                   <div className="actionDiv">
-                                      <div className="centreDetailContainer col-lg-1">
-                                        <input type="checkbox" name="check1" id="sameCheck" />
-                                      <span className="centreDetailCheck"></span>
-                                      </div>
-                                    </div>                            
-                                    <label className="centreDetaillistItem"> Village 1</label>
-                                  </div>
-                                  <div className="col-lg-12 noPadding">  
-                                    <div className="actionDiv">
-                                      <div className="centreDetailContainer col-lg-1">
-                                        <input type="checkbox" name="check1" id="sameCheck" />
-                                      <span className="centreDetailCheck"></span>
-                                      </div>
-                                    </div>                            
-                                    <label className="centreDetaillistItem"> Village 2</label>
-                                  </div>
-                                </div>  
-                              </div>
-                            </div>
-                            <div className=" col-md-3  col-lg-3 col-sm-12 col-xs-12 mt">
-                              <label className="formLable faintCoolor"></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 mt ">
-                                <div className="row"> 
-                                  <div className="col-lg-12 noPadding">  
-                                   <div className="actionDiv">
-                                      <div className="centreDetailContainer col-lg-1">
-                                        <input type="checkbox" name="check1" id="sameCheck" />
-                                      <span className="centreDetailCheck"></span>
-                                      </div>
-                                    </div>                            
-                                    <label className="centreDetaillistItem"> Village 1</label>
-                                  </div>
-                                  <div className="col-lg-12 noPadding">  
-                                    <div className="actionDiv">
-                                      <div className="centreDetailContainer col-lg-1">
-                                        <input type="checkbox" name="check1" id="sameCheck" />
-                                      <span className="centreDetailCheck"></span>
-                                      </div>
-                                    </div>                            
-                                    <label className="centreDetaillistItem"> Village 2</label>
-                                  </div>
-                                </div>  
-                              </div>
-                            </div>
-                            <div className=" col-md-3  col-lg-3 col-sm-12 col-xs-12 mt">
-                              <label className="formLable faintCoolor"></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 mt">
-                                <div className="row"> 
-                                  <div className="col-lg-12 noPadding">  
-                                   <div className="actionDiv">
-                                      <div className="centreDetailContainer col-lg-1">
-                                        <input type="checkbox" name="check1" id="sameCheck" />
-                                      <span className="centreDetailCheck"></span>
-                                      </div>
-                                    </div>                            
-                                    <label className="centreDetaillistItem"> Village 1</label>
-                                  </div>
-                                  <div className="col-lg-12 noPadding">  
-                                    <div className="actionDiv">
-                                      <div className="centreDetailContainer col-lg-1">
-                                        <input type="checkbox" name="check1" id="sameCheck" />
-                                      <span className="centreDetailCheck"></span>
-                                      </div>
-                                    </div>                            
-                                    <label className="centreDetaillistItem"> Village 2</label>
-                                  </div>
-                                </div>  
-                              </div>
-                            </div>
+                                );
+                              })
+                              :
+                              null
+                            }
                           </div>
                         </div><br/>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  ">
                             
                           </div> 
-                        </div><br/>
-                        <div className="col-lg-12">
-                          <br/><button className=" col-lg-2 btn submit pull-right"onClick={this.SubmitAcademics.bind(this)}> Add </button>
-                        </div>                        
-                        <div className="col-lg-12 ">
+                        </div><br/>             
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                            <hr />
                         </div>
-                        <div className="col-lg-12 ">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <h5 className="">List of Villages</h5>
                         </div>                  
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >  
-                          <ReactTable 
-                            data      = {dataM}
-                            columns     = {columnsM}
-                            sortable    = {true}
-                            defaultPageSiz  = {5}
-                            minRows     = {3} 
-                            className       = {"-striped -highlight"}
-                            showPagination  = {true}
-                          />
-                        </div> 
+                        <table className="table">
+                          <thead>
+                            <tr>
+                              <th>State</th>
+                              <th>District</th>
+                              <th>Block</th>
+                              <th>Villages</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Maharastra</td>
+                              <td>Pune</td>
+                              <td>Haveli</td>
+                              <td>Kharadi</td>
+                            </tr>
+                          </tbody>
+                        </table> 
                         <div className="col-lg-12">
                           <br/><button className=" col-lg-2 btn submit mt pull-right"onClick={this.SubmitAcademics.bind(this)}> Submit </button>
                         </div>                          
