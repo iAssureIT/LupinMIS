@@ -5,6 +5,9 @@ import ReactTable         from "react-table";
 import 'react-table/react-table.css';
 import "./Beneficiary.css";
 
+axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 class Beneficiary extends Component{
   
   constructor(props){
@@ -12,8 +15,8 @@ class Beneficiary extends Component{
    
     this.state = {
       "familyID"             :"",
-      "beneficiaryID"        :"",
-      "beneficiaryName"      :"",
+      "beneficariesId"        :"",
+      "nameofbeneficaries"      :"",
       "academicData"          :[],
       "shown"                 : true,
             tabtype : "location",
@@ -29,8 +32,8 @@ class Beneficiary extends Component{
     event.preventDefault();
     this.setState({
       "familyID"             : this.refs.familyID.value,          
-      "beneficiaryID"        : this.refs.beneficiaryID.value,          
-      "beneficiaryName"      : this.refs.beneficiaryName.value,
+      "beneficariesId"        : this.refs.beneficariesId.value,          
+      "nameofbeneficaries"      : this.refs.nameofbeneficaries.value,
       
     });
     let fields = this.state.fields;
@@ -84,37 +87,43 @@ class Beneficiary extends Component{
   }
   SubmitBeneficiary(event){
     event.preventDefault();
-    var academicArray=[];
+    var beneficaryArray=[];
     var id2 = this.state.uID;
 /*    if (this.validateForm()) {
 */    var beneficiaryValue= 
     {
       "familyID"             : this.refs.familyID.value,          
-      "beneficiaryID"        : this.refs.beneficiaryID.value,          
-      "beneficiaryName"      : this.refs.beneficiaryName.value,
+      "beneficariesId"        : this.refs.beneficariesId.value,          
+      "nameofbeneficaries"      : this.refs.nameofbeneficaries.value,
     };
 
     let fields = {};
     fields["familyID"] = "";
-    fields["beneficiaryID"] = "";
-    fields["beneficiaryName"] = "";
+    fields["beneficariesId"] = "";
+    fields["nameofbeneficaries"] = "";
 
     this.setState({
       "familyID"             :"",
-      "beneficiaryID"        :"",
-      "beneficiaryName"      :"",   
+      "beneficariesId"        :"",
+      "nameofbeneficaries"      :"",   
       fields:fields
     });
-    axios
-    .post('https://jsonplaceholder.typicode.com/posts',{beneficiaryValue})
-    .then(function(response){
-      console.log(response);
-    })
-    .catch(function(error){
-      console.log(error);
-    });
-    console.log("academicValues =>",beneficiaryValue);
-    academicArray.push(beneficiaryValue);
+
+    axios.post('/api/beneficiary/', beneficiaryValue)
+      .then( (res)=>{
+        console.log(res);
+        if(res.status == 201){
+          alert("Data inserted Successfully!")
+          this.refs.familyID.value = '';
+          this.refs.beneficariesId.value= ''; 
+          this.refs.nameofbeneficaries.value= ''; 
+        }
+      })
+      .catch((error)=>{
+        console.log("error = ",error);
+        alert("Something went wrong! Please check Get URL.");
+      });
+    beneficaryArray.push(beneficiaryValue);
     console.log("add value",beneficiaryValue);      
     alert("Data inserted Successfully!")
 /*    }
@@ -143,7 +152,7 @@ class Beneficiary extends Component{
       const data = [{
       srno: 1,
       familyID: "PL00001",
-      beneficiaryID: "P11111",
+      beneficariesId: "P11111",
       nameOfbeneficiary: "Priyanka Lewade",
       }
       ]
@@ -158,7 +167,7 @@ class Beneficiary extends Component{
         },
         {
         Header: 'Beneficiary ID',
-        accessor: 'beneficiaryID', 
+        accessor: 'beneficariesId', 
         },
       {
         Header: 'Name of Beneficiary',
@@ -216,23 +225,23 @@ class Beneficiary extends Component{
                         </div>
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Beneficiary ID</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficiaryID" >
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficariesId" >
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts"  placeholder=""value={this.state.beneficiaryID} ref="beneficiaryID" name="beneficiaryID" onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox nameParts"  placeholder=""value={this.state.beneficariesId} ref="beneficariesId" name="beneficariesId" onChange={this.handleChange.bind(this)} />
                           </div>
-                          <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
+                          <div className="errorMsg">{this.state.errors.beneficariesId}</div>
                         </div>
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Name of Beneficiary</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficiaryName" >
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="nameofbeneficaries" >
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts"  placeholder="" value={this.state.beneficiaryName} ref="beneficiaryName" name="beneficiaryName" onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox nameParts"  placeholder="" value={this.state.nameofbeneficaries} ref="nameofbeneficaries" name="nameofbeneficaries" onChange={this.handleChange.bind(this)} />
                           </div>
-                          <div className="errorMsg">{this.state.errors.beneficiaryName}</div>
+                          <div className="errorMsg">{this.state.errors.nameofbeneficaries}</div>
                         </div>
                       </div> 
                     </div><br/>

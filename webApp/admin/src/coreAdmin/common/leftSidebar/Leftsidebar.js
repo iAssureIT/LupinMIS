@@ -57,7 +57,7 @@ export default class Leftsidebar extends Component{
                     </li> */}
                       <li>
                         <a href="/centreDetail">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">centreDetail</span>
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Center Details</span>
                         </a>
                       </li>
                     <li>
@@ -69,7 +69,7 @@ export default class Leftsidebar extends Component{
                     <li>
                       <a href="/family">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">family</span>
+                        <span className="sidebarMenuSubText">Family</span>
                       </a>
                     </li>
                     <li>
@@ -81,7 +81,7 @@ export default class Leftsidebar extends Component{
                     <li>
                       <a href="/bulkUpload">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">BulkUpload</span>
+                        <span className="sidebarMenuSubText">Bulk Upload</span>
                       </a>
                     </li>
                     <li>
@@ -94,12 +94,6 @@ export default class Leftsidebar extends Component{
                       <a href="/empowermentLine">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Empowerment Line</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/annualPlan">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Annual Plan</span>
                       </a>
                     </li>
                     <li>
@@ -124,7 +118,7 @@ export default class Leftsidebar extends Component{
                       </li>
                       <li>
                         <a href="/monthlyPlan">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">monthlyPlan</span>
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Monthly Plan</span>
                         </a>
                       </li>                    
                       

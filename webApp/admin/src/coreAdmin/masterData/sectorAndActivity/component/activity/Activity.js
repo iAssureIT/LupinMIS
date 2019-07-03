@@ -6,6 +6,9 @@ import ReactTable               from "react-table";
 import 'react-table/react-table.css';
 import "./Activity.css";
 
+axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 class Activity extends Component{
   
   constructor(props){
@@ -13,7 +16,7 @@ class Activity extends Component{
    
     this.state = {
       "sector"              :"",
-      "activity"            :"",
+      "activityName"            :"",
       "academicData"        :[],
       "uID"                 :"",
       "shown"                 : true,
@@ -29,7 +32,7 @@ class Activity extends Component{
     event.preventDefault();
     this.setState({
       "sector"   : this.refs.sector.value,  
-      "activity"   : this.refs.activity.value,  
+      "activityName"   : this.refs.activityName.value,  
      
     });
     let fields = this.state.fields;
@@ -46,17 +49,7 @@ class Activity extends Component{
     }*/
   }
 
-  componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps);
-    if(nextProps.BasicInfoId){
-       if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
-        this.setState({
-         academicData:nextProps.BasicInfoId.academicsInfo
-        })
-      }
-    }
-  }
-
+  
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
@@ -89,27 +82,33 @@ class Activity extends Component{
 */    var activityValues= 
     {
       "sector"   : this.refs.sector.value, 
-      "activity"   : this.refs.activity.value,  
+      "activityName"   : this.refs.activityName.value,  
     };
 
     let fields = {};
     fields["sector"] = "";
-    fields["activity"] = "";
+    fields["activityName"] = "";
   
     this.setState({
       "sector"  :"",
-      "activity"      :"",
+      "activityName"      :"",
       fields:fields
     });
-    axios
-    .post('https://jsonplaceholder.typicode.com/posts',{activityValues})
-    .then(function(response){
-      console.log(response);
-    })
-    .catch(function(error){
-      console.log(error);
-    });
-    console.log("academicValues =>",activityValues);
+    axios.post('/api/sectors', activityValues)
+      .then( (res)=>{
+        console.log(res);
+        if(res.status == 201){
+          alert("Data inserted Successfully!")
+          this.refs.sector.value = '';
+          this.refs.activityName.value= ''; 
+        }
+      })
+      .catch((error)=>{
+        console.log("error = ",error);
+        alert("Something went wrong! Please check Get URL.");
+      });
+  
+    console.log("Values =>",activityValues);
     academicArray.push(activityValues);
     console.log("add value",activityValues);      
     alert("Data inserted Successfully!")
@@ -175,7 +174,7 @@ class Activity extends Component{
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
-            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"  id="sector">
+            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt"  id="activity">
               <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
                 <span className="perinfotitle mgtpprsnalinfo"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Activity</span>
               </div>
@@ -194,13 +193,13 @@ class Activity extends Component{
                   </div>
                   <div className=" col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Name of Activity</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activity" >
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activityName" >
                       {/*<div className="input-group-addon inputIcon">
                         <i className="fa fa-graduation-cap fa"></i>
                       </div>*/}
-                      <input type="text" className="form-control inputBox nameParts"  placeholder="" name="activity"  value={this.state.activity} onChange={this.handleChange.bind(this)} ref="activity" />
+                      <input type="text" className="form-control inputBox nameParts"  placeholder="" name="activityName"  value={this.state.activityName} onChange={this.handleChange.bind(this)} ref="activityName" />
                     </div>
-                    <div className="errorMsg">{this.state.errors.activity}</div>
+                    <div className="errorMsg">{this.state.errors.activityName}</div>
                   </div>
                 </div> 
               </div><br/>

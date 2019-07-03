@@ -7,9 +7,9 @@ import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css';
 
 
-import "./bulkUpload.css";
+import "./BulkUpload.css";
 
-class bulkupload extends Component{
+class BulkUpload extends Component{
   
   constructor(props){
     super(props);
@@ -277,5 +277,5 @@ class bulkupload extends Component{
         );
       }
 }
-export default bulkupload
+export default BulkUpload
 

@@ -23,7 +23,7 @@ import Centre                                     from '../../coreAdmin/masterDa
 import Family                                     from '../../coreAdmin/masterData/family/Family.js';
 import Beneficiary                                from '../../coreAdmin/masterData/beneficiary/Beneficiary.js';
 import SectorAndActivity                          from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
-import bulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/bulkUpload/bulkUpload.js';
+import BulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/BulkUpload/BulkUpload.js';
 import centreDetail                               from '../../coreAdmin/masterData/centreDetail/centreDetail.js';
 
 import SDGReport                                  from '../../coreAdmin/masterData/SDGReport/SDGReport.js';
@@ -90,7 +90,7 @@ class Layout extends Component{
                     <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
                     <Route path="/family"                              exact strict component={ Family } />
                     <Route path="/sectorandactivity"                   exact strict component={ SectorAndActivity } />
-                    <Route path="/bulkUpload"                          exact strict component={ bulkUpload } />
+                    <Route path="/bulkUpload"                          exact strict component={ BulkUpload } />
                      /*Reports Routes*/
                     <Route path="/SDGReport"                          exact strict component={ SDGReport } />
                     <Route path="/empowermentLine"                    exact strict component={ EmpowermentLine } />

@@ -4,7 +4,7 @@ import Activity             from "./component/activity/Activity.js";
 import Sector               from "./component/sector/Sector.js";
 import SubActivity          from "./component/subActivity/SubActivity.js";
 
-import bulkUpload           from "./component/bulkUpload/bulkUpload.js";
+import BulkUpload           from "./component/BulkUpload/BulkUpload.js";
 
 import "./SectorAndActivity.css";
 
@@ -130,7 +130,7 @@ class SectorAndActivity extends Component{
                     </div>
                   </div>
                    <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 ht100" style={shown}>
-                    <bulkUpload />
+                    <BulkUpload />
                   </div>
                   </form>
                 </div>

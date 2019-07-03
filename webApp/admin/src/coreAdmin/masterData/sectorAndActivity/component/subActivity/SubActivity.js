@@ -16,13 +16,13 @@ class SubActivity extends Component{
     super(props);
    
     this.state = {
-      "sectorName"         :"",
+      "sector"         :"",
       "activityName"       :"",
       "subActivityName"    :"",
       "unit"               :"Number", //to be Changes
-      "upgradation"        :"No",
+      "familyUpgradation"        :"No",
       "outreach"           :"No",
-      "academicData"        :[],
+     
       "uID"                 :"",
       "shown"               : true,
             "tabtype" : "location",
@@ -35,7 +35,7 @@ class SubActivity extends Component{
   handleChange(event){
     event.preventDefault();
     this.setState({
-      "sectorName"           :this.refs.sectorName.value,
+      "sector"           :this.refs.sector.value,
       "activityName"         :this.refs.activityName.value,
       "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.state.unit,
@@ -55,16 +55,6 @@ class SubActivity extends Component{
     }*/
   }
 
-  componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps);
-    if(nextProps.BasicInfoId){
-       if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
-        this.setState({
-         academicData:nextProps.BasicInfoId.academicsInfo
-        })
-      }
-    }
-  }
 
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -97,21 +87,21 @@ class SubActivity extends Component{
     // if (this.validateForm()) {
     var subActivityValues= 
     {
-      sector               :this.refs.sectorName.value,
+      sector               :this.refs.sector.value,
       activityName         :this.refs.activityName.value,
       subactivityName      :this.refs.subActivityName.value,
       unit                 :this.state.unit,
-      familyUpgradation    :this.state.upgradation,
-      outreach             :this.state.outreach,
+      familyUpgradation    :this.state.familyUpgradation,
+    /*  outreach             :this.state.outreach,*/
     };
     
     let fields = {};
-    fields["sectorName"] = "";
+    fields["sector"] = "";
     fields["activityName"] = "";
     fields["subActivityName"] = "";
     fields["unit"] = "";
     this.setState({
-      "sectorName"         :"",
+      "sector"         :"",
       "activityName"       :"",
       "subActivityName"    :"",
       
@@ -122,7 +112,7 @@ class SubActivity extends Component{
         console.log(res);
         if(res.status == 201){
           alert("Data inserted Successfully!")
-          this.refs.sectorName.value = '';
+          this.refs.sector.value = '';
           this.refs.activityName.value= ''; 
           this.refs.subActivityName.value= ''; 
         }
@@ -141,13 +131,13 @@ class SubActivity extends Component{
     console.log("tabtype",this.state.tabtype);
     }
     getToggleValue(event){
-      if(this.state.upgradation === "No"){
+      if(this.state.familyUpgradation === "No"){
         this.setState({
-          upgradation : "Yes",
+          familyUpgradation : "Yes",
         })
-      }else if(this.state.upgradation === "Yes"){
+      }else if(this.state.familyUpgradation === "Yes"){
         this.setState({
-          upgradation : "No",
+          familyUpgradation : "No",
         })
       }
 
@@ -165,7 +155,7 @@ class SubActivity extends Component{
     }
 
     render() {
-      console.log(this.state.upgradation);
+      console.log(this.state.familyUpgradation);
       const data = [{
       srno: 1,
       centerType: "Natural Resource Manangement",
@@ -226,7 +216,7 @@ class SubActivity extends Component{
       <div className="container-fluid">
        <div className="row">
           <div className="formWrapper">
-                <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
+                <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="subActivityb">
                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
               <span className="perinfotitle mgtpprsnalinfo"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sub-Activity</span>
             </div>
@@ -235,8 +225,8 @@ class SubActivity extends Component{
                   <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
-                        <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.handleChange.bind(this)}>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                        <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)}>
                           <option  className="hidden" >-- Select --</option>
                           <option>Development Centre</option>
                           <option>CSR Centre</option>
@@ -287,7 +277,7 @@ class SubActivity extends Component{
                           </label>
                         </div>
                     </div>
-                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    {/*<div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable"> Outreach</label><span className="asterix">*</span>
                        <div className="can-toggle genderbtn demo-rebrand-2 " onChange={this.getOutreachValue.bind(this)}>
                           <input id="o" type="checkbox"/>
@@ -296,7 +286,7 @@ class SubActivity extends Component{
                             <div className="can-toggle__label-text"></div>
                           </label>
                         </div>
-                    </div>
+                    </div>*/}
                   </div> 
                 </div><br/>
                 <div className="col-lg-12">

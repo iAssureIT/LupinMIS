@@ -6,6 +6,8 @@ import ReactTable                 from "react-table";
 import 'react-table/react-table.css';
 import "./Sector.css";
 
+axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class Sector extends Component{
   
@@ -67,17 +69,6 @@ class Sector extends Component{
     }*/
   }
 
-  componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps);
-    if(nextProps.BasicInfoId){
-       if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
-        this.setState({
-         academicData:nextProps.BasicInfoId.academicsInfo
-        })
-      }
-    }
-  }
-
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
@@ -104,61 +95,38 @@ class Sector extends Component{
   }
   SubmitSector(event){
     event.preventDefault();
-    var academicArray=[];
+    var sectorArray=[];
     var id2 = this.state.uID;
     // if (this.validateForm()) {
     var sectorValues= 
     {
     "sector"   : this.refs.sector.value,  
-      /*"Qualification"        : this.refs.Qualification.value,          
-      "activity"   : this.refs.activity.value,  
-      "Specialization"       : this.refs.Specialization.value,
-      "Mode"                 : this.refs.Mode.value, 
-      "Grade"                : this.refs.Grade.value,
-      "PassoutYear"          : this.refs.PassoutYear.value,
-      "UniversityName"       : this.refs.UniversityName.value,
-      "City"                 : this.refs.City.value,
-      "CollegeName"          : this.refs.CollegeName.value,
-      "State"                : this.refs.State.value,
-      "Country"              : this.refs.Country.value,*/
+    
     };
 
     let fields = {};
     fields["sector"] = "";
-   /* fields["Qualification"] = "";
-    fields["activity"] = "";
-    fields["Mode"] = "";
-    fields["Grade"] = "";
-    fields["PassoutYear"] = "";
-    fields["CollegeName"] = "";
-    fields["UniversityName"] = "";
-    fields["City"] = "";
-    fields["State"] = "";
-    fields["Country"] = "";*/
+ 
     this.setState({
       "sector"  :"",
-      /*"Qualification"       :"",
-      "activity"      :"",
-      "Mode"                :"",
-      "Grade"               :"",
-      "PassoutYear"         :"",
-      "CollegeName"         :"",
-      "UniversityName"      :"",
-      "City"                :"",
-      "State"               :"",
-      "Country"             :"",*/
       fields:fields
     });
-    axios
-    .post('https://jsonplaceholder.typicode.com/posts',{sectorValues})
-    .then(function(response){
-      console.log(response);
-    })
-    .catch(function(error){
-      console.log(error);
-    });
-    console.log("academicValues =>",sectorValues);
-    academicArray.push(sectorValues);
+    axios.post('/api/sectors', sectorValues)
+      .then( (res)=>{
+        console.log(res);
+        if(res.status == 201){
+          alert("Data inserted Successfully!")
+          this.refs.sector.value = '';
+          
+        }
+      })
+      .catch((error)=>{
+        console.log("error = ",error);
+        alert("Something went wrong! Please check Get URL.");
+      });
+  
+    console.log("Values =>",sectorValues);
+    sectorArray.push(sectorValues);
     console.log("add value",sectorValues);      
     alert("Data inserted Successfully!")
    // }
@@ -222,7 +190,7 @@ class Sector extends Component{
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
-            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
+            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="sector">
               <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
                 <span className="perinfotitle mgtpprsnalinfo"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sector</span>
               </div>
