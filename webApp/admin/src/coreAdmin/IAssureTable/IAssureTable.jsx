@@ -3,17 +3,16 @@ import swal                     	from 'sweetalert';
 import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
-import 'jquery-validation';
 import './IAssureTable.css';
 var sum = 0;
 class IAssureTable extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			"editId" 					: props && props.editId ? props.editId : '',
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
 		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
+		    "dataCount" 				: props && props.dataCount ? props.dataCount : 0,
 		    "reA" 						: /[^a-zA-Z]/g,
 		    "reN" 						: /[^0-9]/g,
 		    "sort" 	  					: true,
@@ -21,11 +20,11 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeQueDataCircle',
 		    "paginationArray" 			: [],
 		    "startRange" 				: 0,
-		    "limitRange" 				: 10,
-		    "activeClass" 				: 'activeQueDataCircle', 
-		    "completeDataCount" 		: props && props.completeDataCount ? props.completeDataCount : 0,
+		    "limitRange" 				: 1,
+		    "activeClass" 				: 'activeQueDataCircle', 		    
 		    "normalData" 				: true,
 		}
+		console.log('props.dataCount',props);
 		this.deleteExam = this.deleteExam.bind(this);
 	}
 	componentDidMount() {
@@ -275,8 +274,8 @@ class IAssureTable extends Component {
     	}
     }
    	paginationFunction(event){
-		var dataLen = this.state.completeDataCount > 20 || this.state.completeDataCount == 20 ? 20 : this.state.completeDataCount;
-		var dataLength = this.state.completeDataCount;
+		var dataLen = this.state.dataCount > 20 || this.state.dataCount == 20 ? 20 : this.state.dataCount;
+		var dataLength = this.state.dataCount;
 		this.setState({
 			dataLength : dataLen,
 		},()=>{
@@ -356,9 +355,9 @@ class IAssureTable extends Component {
     }
     showNextPaginationButtons(){
     	var beforeDataLength = this.state.dataLength > 0 ? this.state.dataLength : 20;
-		if(beforeDataLength != this.state.completeDataCount){
+		if(beforeDataLength != this.state.dataCount){
 			this.setState({
-				dataLength : (beforeDataLength+ 20) > this.state.completeDataCount ? this.state.completeDataCount : (beforeDataLength+ 20),
+				dataLength : (beforeDataLength+ 20) > this.state.dataCount ? this.state.dataCount : (beforeDataLength+ 20),
 			},()=>{
 				$('li').removeClass('activeQueDataCircle');
 				$(".queDataCircle:first").addClass('activeQueDataCircle');
@@ -427,7 +426,7 @@ class IAssureTable extends Component {
 		});
     }
     showFirstTweentyButtons(){
-    	var beforeDataLength = this.state.completeDataCount;
+    	var beforeDataLength = this.state.dataCount;
 		
 		this.setState({
 			dataLength : 20,
@@ -466,7 +465,7 @@ class IAssureTable extends Component {
     	var beforeDataLength = this.state.dataLength;
 		
 		this.setState({
-			dataLength : this.state.completeDataCount,
+			dataLength : this.state.dataCount,
 		},()=>{
 			$('li').removeClass('activeQueDataCircle');
 			$(".queDataCircle:first").addClass('activeQueDataCircle');
@@ -477,10 +476,10 @@ class IAssureTable extends Component {
 				var pageCount = Math.ceil(paginationNum);
 				var paginationArray = [];
 
-				for (var i=(this.state.completeDataCount - 20)+1; i<=pageCount;i++){
+				for (var i=(this.state.dataCount - 20)+1; i<=pageCount;i++){
 					var countNum = maxRowsPerPage * i;
 					var startRange = countNum - maxRowsPerPage;
-					if(i == 1 || i == (this.state.completeDataCount - 20)+1){
+					if(i == 1 || i == (this.state.dataCount - 20)+1){
 						var activeClass = 'activeQueDataCircle';
 					}else{
 						activeClass = '';
@@ -499,7 +498,7 @@ class IAssureTable extends Component {
 		});
     }
 	render() {
-		console.log(this.state.limitRange +'>='+  this.state.dataLength);
+		console.log('dataCount in table',this.state.dataCount);
 		// var x = Object.keys(this.state.tableHeading).length ;
 		// var y = 4;
 		// var z = 2;
@@ -632,7 +631,7 @@ class IAssureTable extends Component {
 										}
 									) 	
 									:
-									<tr className="trAdmin"><td colSpan={Object.keys(this.state.tableHeading).length+1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
+									<tr className="trAdmin"><td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+1 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
 								}
 	                    </tbody>
 	                    </table>

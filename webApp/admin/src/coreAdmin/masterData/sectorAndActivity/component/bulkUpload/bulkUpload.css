@@ -238,11 +238,6 @@
 min-height:990px!important;
 background:#ecf0f5;
 }
-.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
-  padding-left:0!important;
-  padding-right:0!important;
-
-}
 .instructionsforaddlocation{
   margin-left: 79px;
 }
@@ -660,11 +655,6 @@ tr.odd {
 .contentheight{
 min-height:990px!important;
 background:#ecf0f5;
-}
-.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
-  padding-left:0!important;
-  padding-right:0!important;
-
 }
 .instructionsforaddlocation{
   margin-left: 79px;

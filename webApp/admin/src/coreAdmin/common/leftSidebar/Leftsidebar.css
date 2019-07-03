@@ -1719,9 +1719,9 @@ a.article, a.article:hover {
     float: right;
   }
   /* Remove margins from progress bars when put in a table */
-  .table tr > td .progress {
+  /*.table tr > td .progress {
     margin: 0;
-  }
+  }*/
   .progress-bar-light-blue,
   .progress-bar-primary {
     background-color: #3c8dbc;
@@ -2827,7 +2827,7 @@ a.article, a.article:hover {
    * Component: Table
    * ----------------
    */
-  .table > thead > tr > th,
+  /*.table > thead > tr > th,
   .table > tbody > tr > th,
   .table > tfoot > tr > th,
   .table > thead > tr > td,
@@ -2861,7 +2861,7 @@ a.article, a.article:hover {
   .table.no-border th {
     border: 0;
   }
-  /* .text-center in tables */
+ 
   table.text-center,
   table.text-center td,
   table.text-center th {
@@ -2872,7 +2872,7 @@ a.article, a.article:hover {
   }
   .table.align td {
     text-align: right;
-  }
+  }*/
   /*
    * Component: Label
    * ----------------
@@ -5155,13 +5155,13 @@ a.article, a.article:hover {
       float: left;
       width: 33.3333333%;
     }
-    .table-responsive {
+   /* .table-responsive {
       overflow: auto;
     }
     .table-responsive > .table tr th,
     .table-responsive > .table tr td {
       white-space: normal !important;
-    }
+    }*/
   }
   /*
    * Skin: Blue

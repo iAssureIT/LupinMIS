@@ -2,11 +2,15 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
-
+import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
+import swal from 'sweetalert';
+import _ from 'underscore';
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css';
 import "./centreDetail.css";
-
+axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
+// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.post['Content-Type'] = 'application/json';
       
 var centreDetailArray  = [];
 class centreDetail extends Component{
@@ -37,7 +41,40 @@ class centreDetail extends Component{
       listofStates                : [],
       listofDistrict              : [],
       listofBlocks                : [],
-      listofVillages              : []
+      listofVillages              : [],
+      selectedVillages            : [],
+      twoLevelHeader              : {
+        apply                     : true,
+        firstHeaderData           : [
+                                      {
+                                          heading : '',
+                                          mergedColoums : 4
+                                      },
+                                      {
+                                          heading : 'Center Incharge',
+                                          mergedColoums : 3
+                                      },
+                                      {
+                                          heading : 'MIS Coordinator',
+                                          mergedColoums : 3
+                                      },
+                                    ]
+      },
+      tableHeading                : {
+        type                      : "Type of Center",
+        centerName                : "Name of Center",
+        address                   : "Address",
+        centreInchargeName        : 'Name',
+        centreInchargeContact     : 'Contact',
+        centreInchargeEmail       : 'Email',
+        MISCoordinatorName        : 'Name',
+        MISCoordinatorContact     : 'Contact',
+        MISCoordinatorEmail       : 'Email',
+        actions                   : 'Action',
+      },
+      startRange : 0,
+      limitRange : 1,
+      // dataCount  : 0,
     }
     this.changeTab = this.changeTab.bind(this); 
   }
@@ -45,20 +82,20 @@ class centreDetail extends Component{
   handleChange(event){
     event.preventDefault();
     this.setState({
-     "typeOfCentre"              :this.refs.typeOfCentre.value,
-      "nameOfCentre"             :this.refs.nameOfCentre.value,
-      "address"                  :this.refs.address.value,
-      "state"                    :this.refs.state.value,
-      "district"                 :this.refs.district.value,
-      "pincode"                  :this.refs.pincode.value,
-      "centreInchargeName"       :this.refs.centreInchargeName.value,
-      "centreInchargeContact"    :this.refs.centreInchargeContact.value,
-      "centreInchargeEmail"      :this.refs.centreInchargeEmail.value,
-      "MISCoordinatorName"       :this.refs.MISCoordinatorName.value,
-      "MISCoordinatorContact"    :this.refs.MISCoordinatorContact.value,
-      "MISCoordinatorEmail"      :this.refs.MISCoordinatorEmail.value,
-      "districtCovered"          :this.refs.districtCovered.value,
-      "blockCovered"             :this.refs.blockCovered.value,
+     "typeOfCentre"              : this.refs.typeOfCentre.value,
+      "nameOfCentre"             : this.refs.nameOfCentre.value,
+      "address"                  : this.refs.address.value,
+      "state"                    : this.refs.state.value,
+      "district"                 : this.refs.district.value,
+      "pincode"                  : this.refs.pincode.value,
+      "centreInchargeName"       : this.refs.centreInchargeName.value,
+      "centreInchargeContact"    : this.refs.centreInchargeContact.value,
+      "centreInchargeEmail"      : this.refs.centreInchargeEmail.value,
+      "MISCoordinatorName"       : this.refs.MISCoordinatorName.value,
+      "MISCoordinatorContact"    : this.refs.MISCoordinatorContact.value,
+      "MISCoordinatorEmail"      : this.refs.MISCoordinatorEmail.value,
+      "districtCovered"          : this.refs.districtCovered.value,
+      "blockCovered"             : this.refs.blockCovered.value,
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -68,7 +105,7 @@ class centreDetail extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps);
+    // console.log('nextProps',nextProps);
     if(nextProps.BasicInfoId){
        if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
         this.setState({
@@ -89,9 +126,8 @@ class centreDetail extends Component{
       return true;
     }
   }
-  isTextKey(evt)
-  {
-   var charCode = (evt.which) ? evt.which : evt.keyCode
+  isTextKey(evt)  {
+   var charCode = (evt.which) ? evt.which : evt.keyCode;
    if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
@@ -100,29 +136,36 @@ class centreDetail extends Component{
     else{
       return true;
     }
- 
   }
   SubmitAcademics(event){
     event.preventDefault();
     var academicArray=[];
+    var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+
+    var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
+    var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
+
     var id2 = this.state.uID;
-/*    if (this.validateForm()) {
-*/    var centreDetail= 
+      /*    if (this.validateForm()) {*/    
+    var centreDetail= 
     {
-     "typeOfCentre"              :this.refs.typeOfCentre.value,
-      "nameOfCentre"             :this.refs.nameOfCentre.value,
-      "address"                  :this.refs.address.value,
-      "state"                    :this.refs.state.value,
-      "district"                 :this.refs.district.value,
-      "pincode"                  :this.refs.pincode.value,
-      "centreInchargeName"       :this.refs.centreInchargeName.value,
-      "centreInchargeContact"    :this.refs.centreInchargeContact.value,
-      "centreInchargeEmail"      :this.refs.centreInchargeEmail.value,
-      "MISCoordinatorName"       :this.refs.MISCoordinatorName.value,
-      "MISCoordinatorContact"    :this.refs.MISCoordinatorContact.value,
-      "MISCoordinatorEmail"      :this.refs.MISCoordinatorEmail.value,
+      "type"                      : this.refs.typeOfCentre.value,
+      "centerName"                : this.refs.nameOfCentre.value,
+      "address"                   : this.refs.address.value,
+      "state"                     : this.refs.state.value,
+      "district"                  : this.refs.district.value,
+      "pincode"                   : this.refs.pincode.value,
+      "districtsCovered"          : districtsCovered,
+      "blocksCovered"             : blocksCovered,
+      "villagesCovered"           : this.state.selectedVillages,
+      "centreInchargeName"        : this.refs.centreInchargeName.value,
+      "centreInchargeContact"     : this.refs.centreInchargeContact.value,
+      "centreInchargeEmail"       : this.refs.centreInchargeEmail.value,
+      "MISCoordinatorName"        : this.refs.MISCoordinatorName.value,
+      "MISCoordinatorContact"     : this.refs.MISCoordinatorContact.value,
+      "MISCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
     };
-    console.log("centreDetail",centreDetail);
+    // console.log("centreDetail",centreDetail);
     let fields = {};
     fields["typeOfCentre"] = "";
     fields["nameOfCentre"] = "";
@@ -139,45 +182,47 @@ class centreDetail extends Component{
     fields["districtCovered"] = "";
     fields["blockCovered"] = "";
 
-    this.setState({
-      "typeOfCentre"             :"",
-      "nameOfCentre"             :"",
-      "address"                  :"",
-      "state"                    :"",
-      "district"                 :"",
-      "pincode"                  :"",
-      "centreInchargeName"       :"",
-      "centreInchargeContact"    :"",
-      "centreInchargeEmail"      :"",
-      "MISCoordinatorName"       :"",
-      "MISCoordinatorContact"    :"",
-      "MISCoordinatorEmail"      :"",
-      "districtCovered"          :"",
-      "blockCovered"             :"",
-      fields:fields
-    });
-    axios
-    .post('http://qalmisapi.iassureit.com/api/centers',{centreDetail})
+    console.log('centreDetail',centreDetail);
+    axios.post('/api/centers',centreDetail)
     .then(function(response){
-      console.log('response',response);
+      swal({
+        title : response.data,
+        text  : response.data
+      });
     })
     .catch(function(error){
-      console.log(error);
+      
     });
-    console.log("academicValues =>",centreDetail);
-    centreDetailArray.push(centreDetail);
-    alert("Data inserted Successfully!")
-/*    }
-*/
+
+    this.setState({
+      "typeOfCentre"              : "",
+      "nameOfCentre"              : "",
+      "address"                   : "",
+      "state"                     : "",
+      "district"                  : "",
+      "pincode"                   : "",
+      "centreInchargeName"        : "",
+      "centreInchargeContact"     : "",
+      "centreInchargeEmail"       : "",
+      "MISCoordinatorName"        : "",
+      "MISCoordinatorContact"     : "",
+      "MISCoordinatorEmail"       : "",
+      "districtCovered"           : "",
+      "blockCovered"              : "",
+      "selectedVillages"          : [],
+      "listofDistrict"            : [],
+      "listofBlocks"              : [],
+      "listofVillages"            : [],
+      "fields"                    : fields
+    });
+    $('input[type=checkbox]').attr('checked', true);
   }
 
-    componentDidMount() {
-       axios
-      .post('https://jsonplaceholder.typicode.com/Get')
-      .then(function(response){
-        console.log(response);
-      });
-
+  componentDidMount() {
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
       // axios({
       //   method: 'get',
       //   url: '/api/states',
@@ -189,122 +234,164 @@ class centreDetail extends Component{
       //   console.log('error', error);
       // });
 
+
+      axios({
+        method: 'get',
+        url: '/api/centers/list',
+      }).then((response)=> {
+        console.log('tableData', response.data);
+        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+          console.log('tableData ======', tableData);
+        this.setState({
+          dataCount : tableData.length,
+          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+        });
+      }).catch(function (error) {
+        console.log('error', error);
+      });
+
       var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
       this.setState({
         listofStates : listofStates
       })
 
-    }
+  }
 
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
-    }
-    districtCoveredChange(event){
-      event.preventDefault();
-      var districtCovered = event.target.value;
-      console.log('districtCovered', districtCovered);
-      this.setState({
-        districtCovered: districtCovered
-      },()=>{
-        var listofBlocks = ['Ambegaon', 'Baramati', 'Bhor', 'Daund', 'Haveli', 'Indapur', 'Junnar', 'Khed', 'Mawal', 'Mulshi', 'Pune City', 'Purandhar', 'Shirur', 'Velhe'];
-        if(this.state.districtCovered == 'Pune'){          
-          this.setState({
-            listofBlocks : listofBlocks
-          });
-        }else{
-          this.setState({listofBlocks : []});
-        }
-      });
-    }
-    selectState(event){
-      event.preventDefault();
-      var selectedState = event.target.value;
-      // console.log('selectedState ',selectedState);
-      this.setState({
-        state : selectedState
-      },()=>{
-        if(this.state.state == 'Maharastra'){
-          var listofDistrict = ['Pune', 'Mumbai'];
-          this.setState({
-            listofDistrict : listofDistrict
-          });
-        }else{
-          this.setState({listofDistrict:[]});
-        }
-      });
-    }
-    blockCoveredChange(event){
-      event.preventDefault();
-      var blockCovered = event.target.value;
-      console.log('blockCovered',blockCovered);
-      this.setState({
-        blockCovered : blockCovered
-      },()=>{
-        var listofVillages = ['Magarpatta', 'Kharadi', 'Wagholi', 'Manjari'];
+  componentWillUnmount(){
+      $("script[src='/js/adminLte.js']").remove();
+      $("link[href='/css/dashboard.css']").remove();
+  }
+  districtCoveredChange(event){
+    event.preventDefault();
+    var districtCovered = event.target.value;
+    // console.log('districtCovered', districtCovered);
+    this.setState({
+      districtCovered: districtCovered
+    },()=>{
+      var listofBlocks = ['Ambegaon', 'Baramati', 'Bhor', 'Daund', 'Haveli', 'Indapur', 'Junnar', 'Khed', 'Mawal', 'Mulshi', 'Pune City', 'Purandhar', 'Shirur', 'Velhe'];
+      if(this.state.districtCovered == 'Pune'){          
+        this.setState({
+          listofBlocks : listofBlocks
+        });
+      }else{
+        this.setState({
+          listofBlocks : [],
+          listofVillages:[]
+        });
+      }
+    });
+  }
+  selectState(event){
+    event.preventDefault();
+    var selectedState = event.target.value;
+    // console.log('selectedState ',selectedState);
+    this.setState({
+      state : selectedState
+    },()=>{
+      if(this.state.state == 'Maharastra'){
+        var listofDistrict = ['Pune', 'Mumbai'];
+        this.setState({
+          listofDistrict : listofDistrict
+        });
+      }else{
+        this.setState({
+          listofDistrict:[],
+          listofVillages:[]
+        });
+      }
+    });
+  }
+  blockCoveredChange(event){
+    event.preventDefault();
+    var blockCovered = event.target.value;
+    this.setState({
+      blockCovered : blockCovered
+    },()=>{
+      var listofVillages = ['Magarpatta', 'Kharadi', 'Wagholi', 'Manjari'];
+      if(this.state.blockCovered == 'Haveli'){
         this.setState({
           listofVillages : listofVillages
         })
-      });
-    }
-    selectVillage(event){
-      event.preventDefault();
-      var value = event.target.checked;
-      var id    = event.target.id;
+      }else{
+        this.setState({
+          listofVillages : []
+        })
+      }        
+    });
+  }
+  selectVillage(event){
+    var selectedVillages = this.state.selectedVillages;
+    var value = event.target.checked;
+    var id    = event.target.id;
 
-      this.setState({
-        [id+'Header'] : value
-      });
-      // Meteor.call('selectForHeader', id, value, function(error, result){
-      //   if(error){
-      //   }else{
-      //   }
-      // });
-    }
-    changeTab = (data)=>{
+    this.setState({
+      [id] : value
+    },()=>{
+      // console.log('village', this.state[id], id);
+      if(this.state[id] == true){
+        selectedVillages.push({
+          district  : this.refs.districtCovered.value,
+          block     : this.refs.blockCovered.value,
+          village   : id
+        });
+        this.setState({
+          selectedVillages : selectedVillages
+        });
+      }else{
+        var index = selectedVillages.findIndex(v => v.village === id);
+        // console.log('index', index);
+        selectedVillages.splice(selectedVillages.findIndex(v => v.village === id), 1);
+        this.setState({
+          selectedVillages : selectedVillages
+        },()=>{
+          console.log('selectedVillages',this.state.selectedVillages);
+        });
+      }
+    });      
+  }
+  changeTab = (data)=>{
     this.setState({
       tabtype : data,
     })
-    console.log("tabtype",this.state.tabtype);
-    }
+  }
 
-    render() {
-      const dataM = [{
-          srno: 1,
-          FamilyID: "Maharastra",
-          NameofBeneficiary: "Pune",
-          BeneficiaryID: "Pimpri",
-        }
-      ]
-      const columnsM = [ 
-        {
-          Header: 'Sr No',
-          accessor: 'srno',
-        },
-        {
-          Header: 'District',
-          accessor: 'FamilyID', 
-        }, {
-          Header: 'Block',
-          accessor: 'NameofBeneficiary', 
-        }, {
-          Header: 'Village',
-          accessor: 'BeneficiaryID', 
-        },
-      ]
-      const data = [{
-          srno: 1,
-          FamilyID: "L000001",
-          NameofBeneficiary: "Priyanka Lewade",
-          BeneficiaryID: "PL0001",
-          },{
-          srno: 2,
-          FamilyID: "B000001",
-          NameofBeneficiary: "Priyanka Bhanvase",
-          BeneficiaryID: "PB0001",
-        }
-      ]
-      const columns = [ 
+  render() {
+    const dataM = [{
+        srno: 1,
+        FamilyID: "Maharastra",
+        NameofBeneficiary: "Pune",
+        BeneficiaryID: "Pimpri",
+      }
+    ]
+    const columnsM = [ 
+      {
+        Header: 'Sr No',
+        accessor: 'srno',
+      },
+      {
+        Header: 'District',
+        accessor: 'FamilyID', 
+      }, {
+        Header: 'Block',
+        accessor: 'NameofBeneficiary', 
+      }, {
+        Header: 'Village',
+        accessor: 'BeneficiaryID', 
+      },
+    ]
+    const data = [{
+        srno: 1,
+        FamilyID: "L000001",
+        NameofBeneficiary: "Priyanka Lewade",
+        BeneficiaryID: "PL0001",
+        },{
+        srno: 2,
+        FamilyID: "B000001",
+        NameofBeneficiary: "Priyanka Bhanvase",
+        BeneficiaryID: "PB0001",
+      }
+    ]
+    const columns = [ 
         {
           Header: 'Sr No',
           accessor: 'srno',
@@ -366,7 +453,7 @@ class centreDetail extends Component{
             )     
           }
         ]
-
+        console.log('dataCount', this.state.dataCount, 'tableData', this.state.tableData);
     return (
       <div className="container-fluid">
         <div className="row">
@@ -387,10 +474,10 @@ class centreDetail extends Component{
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
-                              <label className="formLable">Select Type of Centre</label>
+                              <label className="formLable">Select Type of Center</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
                                 <select className="custom-select form-control inputBox" value={this.state.typeOfCentre} ref="typeOfCentre" name="typeOfCentre" onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >--select--</option>
+                                  <option  className="hidden" >--Select Center--</option>
                                   <option  className="" >Development Centre</option>
                                   <option  className="" >CSR Centre</option>
                                   <option  className="" >ADP</option>
@@ -479,7 +566,7 @@ class centreDetail extends Component{
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts"   value={this.state.centreInchargeContact} name="centreInchargeContact" placeholder="" ref="centreInchargeContact"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox nameParts"   value={this.state.centreInchargeContact} name="centreInchargeContact" placeholder="" ref="centreInchargeContact"  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.centreInchargeContact}</div>
                             </div>
@@ -489,7 +576,7 @@ class centreDetail extends Component{
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-university fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text" className="form-control inputBox nameParts" name="centreInchargeEmail"  value={this.state.centreInchargeEmail} placeholder=""ref="centreInchargeEmail" value={this.state.UniversityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                                <input type="text" className="form-control inputBox nameParts" name="centreInchargeEmail"  value={this.state.centreInchargeEmail} placeholder="" ref="centreInchargeEmail" value={this.state.UniversityName} onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.centreInchargeEmail}</div>
                             </div>
@@ -514,7 +601,7 @@ class centreDetail extends Component{
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.MISCoordinatorContact}  name="MISCoordinatorContact" placeholder="" ref="MISCoordinatorContact"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.MISCoordinatorContact}  name="MISCoordinatorContact" placeholder="" ref="MISCoordinatorContact"  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.MISCoordinatorContact}</div>
                             </div>
@@ -524,7 +611,7 @@ class centreDetail extends Component{
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-university fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text" className="form-control inputBox nameParts"  value={this.state.MISCoordinatorEmail}  name="MISCoordinatorEmail" placeholder=""ref="MISCoordinatorEmail"  onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                                <input type="text" className="form-control inputBox nameParts"  value={this.state.MISCoordinatorEmail}  name="MISCoordinatorEmail" placeholder=""ref="MISCoordinatorEmail"  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.MISCoordinatorEmail}</div>
                             </div>
@@ -534,7 +621,7 @@ class centreDetail extends Component{
                            <hr />
                         </div>
                         <div className="col-lg-12 ">
-                           <h5 className="pageSubHeader">Add Villages</h5>
+                           <h5 className="pageSubHeader">Villages Covered by this Center</h5>
                         </div>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
@@ -614,41 +701,45 @@ class centreDetail extends Component{
                            <hr />
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <h5 className="">List of Villages</h5>
-                        </div>                  
-                        <table className="table">
-                          <thead>
-                            <tr>
-                              <th>State</th>
-                              <th>District</th>
-                              <th>Block</th>
-                              <th>Villages</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Maharastra</td>
-                              <td>Pune</td>
-                              <td>Haveli</td>
-                              <td>Kharadi</td>
-                            </tr>
-                          </tbody>
-                        </table> 
+                          <h5 className="">List of Villages</h5>                                     
+                          <table className="table">
+                            <thead>
+                              <tr>
+                                <th>District</th>
+                                <th>Block</th>
+                                <th>Villages</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {
+                              this.state.selectedVillages && this.state.selectedVillages.length > 0 ? 
+                              this.state.selectedVillages.map((data, index)=>{
+                                return(
+                                  <tr key={index}>
+                                    <td>{data.district}</td>
+                                    <td>{data.block}</td>
+                                    <td>{data.village}</td>
+                                  </tr>
+                                );
+                              })
+                              :
+                              <tr><td className="textAlignCenter" colSpan="3">Nothing to Display</td></tr>
+                            }
+                            </tbody>
+                          </table> 
+                        </div>     
                         <div className="col-lg-12">
                           <br/><button className=" col-lg-2 btn submit mt pull-right"onClick={this.SubmitAcademics.bind(this)}> Submit </button>
                         </div>                          
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >  
-                          <ReactTable 
-                            data      = {data}
-                            columns     = {columns}
-                            sortable    = {true}
-                            defaultPageSiz  = {5}
-                            minRows     = {3} 
-                            className       = {"-striped  mt -highlight"}
-                            showPagination  = {true}
-                          />
-                        </div> 
                       </form>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <IAssureTable 
+                          tableHeading={this.state.tableHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          tableData={this.state.tableData}
+                          dataCount={this.state.dataCount}
+                        />
+                      </div>
                     </div>
                   </div>
                 </section>

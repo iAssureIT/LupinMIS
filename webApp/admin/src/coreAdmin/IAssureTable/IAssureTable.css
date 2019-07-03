@@ -1,11 +1,12 @@
 .iAssureITtable-bordered > thead > tr > th, .iAssureITtable-bordered > tbody > tr > th, .iAssureITtable-bordered > tfoot > tr > th, .iAssureITtable-bordered > thead > tr > td, .iAssureITtable-bordered > tbody > tr > td, .iAssureITtable-bordered > tfoot > tr > td {
-    border: 1px solid #676767;
+    border: 1px solid #fff6;
 }
 .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #fff;
 }
 .iAssureITtable-bordered{
-  background: #7f7f7f !important;
+  background: #039BE5 !important;
+  border: 1px solid #039BE5;
 }
 .paginationAdminWrap{
   text-align: center !important;
