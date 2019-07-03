@@ -4,11 +4,13 @@ import axios                  from 'axios';
 import ReactTable             from "react-table";
 
 import 'bootstrap/js/tab.js';
-import 'react-table/react-table.css';
+import 'react-table/react-table.css'; 
 
 import NewBeneficiary from "../addBeneficiary/NewBeneficiary.js";
 
 import "./Activity.css";
+      var add = 0;
+
 
 class Activity extends Component{
   
@@ -16,21 +18,29 @@ class Activity extends Component{
     super(props);
    
     this.state = {
-      "QualificationLevel"  :"",
-      "Qualification"       :"",
-      "Specialization"      :"",
-      "Mode"                :"",
-      "Grade"               :"",
-      "PassoutYear"         :"",
-      "CollegeName"         :"",
-      "UniversityName"      :"",
-      "City"                :"",
-      "State"               :"",
-      "Country"             :"",
-      academicData          :[],
-      "uID"                 :"",
-      shown                 : true,
-        tabtype : "location",
+
+      // "center_id"         : "",
+      // "centerName"        : "",
+      "dist"              : "",
+      "block"             : "",
+      "village"           : "",
+      "Date"              : "",
+      "sector"            : "",
+      "typeofactivity"    : "",
+      "nameofactivity"    : "",
+      "activity"          : "",
+      "subactivity"       : "",
+      "unit"              : "",
+      "unitCost"          : "",
+      "quantity"          : "",
+      "totalcost"         : "",
+      "bankLoan"            : "",
+      "govtscheme"          : "",
+      "directCC"            : "",
+      "indirectCC"          : "",
+      "other"               : "",
+      "total"               : "",
+      shown               : true,
       fields: {},
       errors: {}
     }
@@ -39,19 +49,33 @@ class Activity extends Component{
  
   handleChange(event){
     event.preventDefault(); 
-   /* this.setState({
-      "QualificationLevel"   : this.refs.QualificationLevel.value,          
-      "Qualification"        : this.refs.Qualification.value,          
-      "Specialization"       : this.refs.Specialization.value,
-      "Mode"                 : this.refs.Mode.value, 
-      "Grade"                : this.refs.Grade.value,
-      "PassoutYear"          : this.refs.PassoutYear.value,
-      "UniversityName"       : this.refs.UniversityName.value,
-      "City"                 : this.refs.City.value,
-      "CollegeName"          : this.refs.CollegeName.value,
-      "State"                : this.refs.State.value,
-      "Country"              : this.refs.Country.value,
-    });*/
+    this.setState({
+      // "centerName"        : this.refs.centerName.value,
+      // "dist"              : this.refs.dist.value,
+      "block"             : this.refs.block.value,
+      "village"           : this.refs.village.value,
+      "Date"              : this.refs.dateOfIntervention.value,
+      "sector"            : this.refs.sector.value,
+      "typeofactivity"    : this.refs.typeofactivity.value,
+      // "nameofactivity"    : this.refs.nameofactivity.value,
+      "activity"          : this.refs.activity.value,
+      "subactivity"       : this.refs.subactivity.value,
+      // "unit"              : this.refs.unit.value,
+      "unitCost"          : this.refs.unitCost.value,
+      "quantity"          : this.refs.quantity.value,
+/*      "totalcost"         : this.state.totalcost,
+*/    "bankLoan"          : this.refs.bankLoan.value,
+      "govtscheme"        : this.refs.govtscheme.value,
+      "directCC"          : this.refs.directCC.value,
+      "indirectCC"        : this.refs.indirectCC.value,
+      "other"             : this.refs.other.value,
+      // "total"             : this.refs.total.value,
+    });
+    var total = parseInt(this.state.unitCost) * parseInt(this.state.quantity)
+    this.setState({
+      "totalcost" : total
+    })
+    console.log(this.state.totalcost);
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
@@ -101,70 +125,105 @@ class Activity extends Component{
     }
  
   }
-  SubmitAcademics(event){
+  SubmitActivity(event){
     event.preventDefault();
     var academicArray=[];
     var id2 = this.state.uID;
-    if (this.validateForm()) {
-    var academicValues= 
+    // if (this.validateForm()) {
+    var activityValues= 
     {
-    "QualificationLevel"   : this.refs.QualificationLevel.value,          
-    "Qualification"        : this.refs.Qualification.value,          
-    "Specialization"       : this.refs.Specialization.value,
-    "Mode"                 : this.refs.Mode.value, 
-    "Grade"                : this.refs.Grade.value,
-    "PassoutYear"          : this.refs.PassoutYear.value,
-    "UniversityName"       : this.refs.UniversityName.value,
-    "City"                 : this.refs.City.value,
-    "CollegeName"          : this.refs.CollegeName.value,
-    "State"                : this.refs.State.value,
-    "Country"              : this.refs.Country.value,
+     // "center_id"         : this.refs.QualificationLevel.value,
+      // "centerName"        : this.refs.centerName.value,
+      "dist"              : this.refs.dist.value,
+      "block"             : this.refs.block.value,
+      "village"           : this.refs.village.value,
+      "Date"              : this.refs.dateOfIntervention.value,
+      "sector"            : this.refs.sector.value,
+      "typeofactivity"    : this.refs.typeofactivity.value,
+      // "nameofactivity"    : this.refs.nameofactivity.value,
+      "activity"          : this.refs.activity.value,
+      "subactivity"       : this.refs.subactivity.value,
+      "unit"              : this.state.unit,
+      "unitCost"          : this.refs.unitCost.value,
+      "quantity"          : this.refs.quantity.value,
+      "totalcost"         : this.state.totalcost,
+      "bankLoan"          : this.refs.bankLoan.value,
+      "govtscheme"        : this.refs.govtscheme.value,
+      "directCC"          : this.refs.directCC.value,
+      "indirectCC"        : this.refs.indirectCC.value,
+      "other"             : this.refs.other.value,
+      "total"             : this.state.total,
     };
 
     let fields = {};
-    fields["QualificationLevel"] = "";
-    fields["Qualification"] = "";
-    fields["Specialization"] = "";
-    fields["Mode"] = "";
-    fields["Grade"] = "";
-    fields["PassoutYear"] = "";
-    fields["CollegeName"] = "";
-    fields["UniversityName"] = "";
-    fields["City"] = "";
-    fields["State"] = "";
-    fields["Country"] = "";
+    fields["centerName"] = "";
+    fields["dist"] = "";
+    fields["block"] = "";
+    fields["village"] = "";
+    fields["Date"] = "";
+    fields["sector"] = "";
+    fields["typeofactivity"] = "";
+    fields["nameofactivity"] = "";
+    fields["activity"] = "";
+    fields["subactivity"] = "";
+    fields["unit"] = "";
+    fields["unitCost"] = "";
+    fields["quantity"] = "";
+    fields["totalcost"] = "";
     this.setState({
-      "QualificationLevel"  :"",
-      "Qualification"       :"",
-      "Specialization"      :"",
-      "Mode"                :"",
-      "Grade"               :"",
-      "PassoutYear"         :"",
-      "CollegeName"         :"",
-      "UniversityName"      :"",
-      "City"                :"",
-      "State"               :"",
-      "Country"             :"",
+      "center_id"         : "",
+      "centerName"        : "",
+      "dist"              : "",
+      "block"             : "",
+      "village"           : "",
+      "Date"              : "",
+      "sector"            : "",
+      "typeofactivity"    : "",
+      "nameofactivity"    : "",
+      "activity"          : "",
+      "subactivity"       : "",
+      "unit"              : "",
+      "unitCost"          : "",
+      "quantity"          : "",
+      "totalcost"         : "",
+      "bankLoan"          : "",
+      "govtscheme"        : "",
+      "directCC"          : "",
+      "indirectCC"        : "",
+      "other"             : "",
+      "total"             : "",
       fields:fields
     });
     axios
-    .post('https://jsonplaceholder.typicode.com/posts',{academicValues})
+    .post('https://jsonplaceholder.typicode.com/posts',{activityValues})
     .then(function(response){
       console.log(response);
     })
     .catch(function(error){
       console.log(error);
     });
-    console.log("academicValues =>",academicValues);
-    academicArray.push(academicValues);
-    console.log("add value",academicValues);      
+    console.log("academicValues =>",activityValues);
+    academicArray.push(activityValues);
+    console.log("add value",activityValues);      
     alert("Data inserted Successfully!")
+    // }
     }
-
-  }
-
-    componentDidMount() {
-     
+    calTotal(event){
+      event.preventDefault();
+      var LHWRF = this.state.LHWRF;
+      var NABARD = this.state.NABARD;
+      var bankLoan = this.state.bankLoan;
+      var govtscheme = this.state.govtscheme;
+      var directCC = this.state.directCC;
+      var indirectCC = this.state.indirectCC;
+       add = LHWRF + NABARD + bankLoan + govtscheme + directCC +indirectCC;
+      console.log("total=",add);
+    }
+    toglehidden()
+    {
+     this.setState({
+       shown: !this.state.shown
+      });
     }
 
     componentWillUnmount(){
@@ -180,6 +239,14 @@ class Activity extends Component{
     }
 
     render() {
+      var shown = {
+        display: this.state.shown ? "block" : "none"
+      };
+      
+      var hidden = {
+        display: this.state.shown ? "none" : "block"
+      }
+    
       const data = [{
       srno: 1,
       FamilyID: "L000001",
@@ -210,18 +277,18 @@ class Activity extends Component{
         Header: 'Sr No',
         accessor: 'srno',
         },
-        
         {
         Header: 'Family ID',
         accessor: 'FamilyID', 
-        }, {
+        }, 
+        {
         Header: 'Name of Beneficiary',
         accessor: 'NameofBeneficiary', 
-        }, {
+        }, 
+        {
         Header: 'Beneficiary ID',
         accessor: 'BeneficiaryID', 
         },
-      
         {
         Header: 'Action',
         accessor: 'Action',
@@ -236,8 +303,6 @@ class Activity extends Component{
             )     
           }
         ]
-
-
     return (
       <div className="container-fluid">
         <div className="row">
@@ -260,52 +325,52 @@ class Activity extends Component{
                             
                             <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">Date of intervention</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="Qualification" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateOfIntervention" >
                                 {/*<div className="input-group-addon inputIcon">
                                   <i className="fa fa-graduation-cap fa"></i>
                                 </div>*/}
-                                <input type="date" className="form-control inputBox toUpper"  placeholder="" name="Qualification" ref="Qualification"  onChange={this.handleChange.bind(this)}/>
+                                <input type="date" className="form-control inputBox toUpper"  placeholder="" name="dateOfIntervention" ref="dateOfIntervention"  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.Qualification}</div>
+                              <div className="errorMsg">{this.state.errors.dateOfIntervention}</div>
                             </div>
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                                 <label className="formLable">District</label>
-                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                  <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="dist" >
+                                  <select className="custom-select form-control inputBox" ref="dist" name="dist" value={this.state.dist} onChange={this.handleChange.bind(this)} >
                                     <option  className="hidden" >--select--</option>
-                                   {/* <option>Post-Graduate</option>
-                                    <option>Under Graduate</option>
-                                    <option>10+2</option>
-                                    <option>10th</option>*/}
+                                    <option>Value 1</option>
+                                    <option>Value 2</option>
+                                    <option>Value 3</option>
+                                    <option>Value 4</option>
                                   </select>
                                 </div>
-                                <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                                <div className="errorMsg">{this.state.errors.dist}</div>
                               </div>
                             <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">Block</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                                <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                  {/*<option>Post-Graduate</option>
-                                  <option>Under Graduate</option>
-                                  <option>10+2</option>
-                                  <option>10th</option>*/}
+                                    <option>Value 1</option>
+                                    <option>Value 2</option>
+                                    <option>Value 3</option>
+                                    <option>Value 4</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                              <div className="errorMsg">{this.state.errors.block}</div>
                             </div>
                            <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                               <label className="formLable">Village</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel"  onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                                <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                  {/*<option>Post-Graduate</option>
-                                  <option>Under Graduate</option>
-                                  <option>10+2</option>
-                                  <option>10th</option>*/}
+                                   <option>Value 1</option>
+                                    <option>Value 2</option>
+                                    <option>Value 3</option>
+                                    <option>Value 4</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                              <div className="errorMsg">{this.state.errors.village}</div>
                             </div>
                           </div> 
                         </div><br/>
@@ -313,55 +378,55 @@ class Activity extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                               <label className="formLable">Sector </label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel"  onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                {/*  <option>Post-Graduate</option>
-                                  <option>Under Graduate</option>
-                                  <option>10+2</option>
-                                  <option>10th</option>*/}
+                                  <option>Value 1</option>
+                                  <option>Value 2</option>
+                                  <option>Value 3</option>
+                                  <option>Value 4</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                              <div className="errorMsg">{this.state.errors.sector}</div>
                             </div>
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">Type of Activity</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel"  onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
+                                <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                  {/*<option>Post-Graduate</option>
-                                  <option>Under Graduate</option>
-                                  <option>10+2</option>
-                                  <option>10th</option>*/}
+                                   <option>Value 1</option>
+                                    <option>Value 2</option>
+                                    <option>Value 3</option>
+                                    <option>Value 4</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                              <div className="errorMsg">{this.state.errors.typeofactivity}</div>
                             </div>
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">Activity</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel"  onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                                <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                  {/*<option>Post-Graduate</option>
-                                  <option>Under Graduate</option>
-                                  <option>10+2</option>
-                                  <option>10th</option>*/}
+                                    <option>Value 1</option>
+                                    <option>Value 2</option>
+                                    <option>Value 3</option>
+                                    <option>Value 4</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                              <div className="errorMsg">{this.state.errors.activity}</div>
                             </div>
                              <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">Sub-Activity</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel"  onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
+                                <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                  {/*<option>Post-Graduate</option>
-                                  <option>Under Graduate</option>
-                                  <option>10+2</option>
-                                  <option>10th</option>*/}
+                                    <option>Value 1</option>
+                                    <option>Value 2</option>
+                                    <option>Value 3</option>
+                                    <option>Value 4</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                              <div className="errorMsg">{this.state.errors.subactivity}</div>
                             </div>
                             
                           </div> 
@@ -372,34 +437,34 @@ class Activity extends Component{
                               <div className="col-lg-12 col-sm-12 col-xs-12 unit" id="" >
                               <label className="formLable">Unit :</label>
                               </div>
-                              <div className="errorMsg">{this.state.errors.PassoutYear}</div>
+                              <div className="errorMsg">{this.state.errors.unit}</div>
                             </div>
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                               <label className="formLable">Unit Cost</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="CollegeName" placeholder="" ref="CollegeName"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox nameParts" name="unitCost" placeholder="" ref="unitCost" value={this.state.unitCost}   onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.CollegeName}</div>
+                              <div className="errorMsg">{this.state.errors.unitCost}</div>
                             </div>
                             <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                               <label className="formLable">Quantity</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-university fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text" className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName" value={this.state.UniversityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                                <input type="text" className="form-control inputBox nameParts" name="quantity" placeholder=""ref="quantity" value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.UniversityName}</div>
+                              <div className="errorMsg">{this.state.errors.quantity}</div>
                             </div>
                              <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                               <div className="col-lg-12 col-sm-12 col-xs-12 unit " id="PassoutYear" >
-                                <label className="formLable">Total Cost of Activity : </label>
+                                <label className="formLable">Total Cost of Activity : {this.state.totalcost}</label>
 
                               </div>
-                              <div className="errorMsg">{this.state.errors.PassoutYear}</div>
+                              <div className="errorMsg">{this.state.errors.totalcost}</div>
                             </div>
                           </div> 
                         </div><br/>
@@ -413,32 +478,26 @@ class Activity extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             <div className=" col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">LHWRF</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="CollegeName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="CollegeName" placeholder="" ref="CollegeName"  value={this.state.CollegeName}  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
+                              
+                                <input type="text"   className="form-control inputBox nameParts" name="LHWRF" placeholder="" ref="LHWRF" onKeyUp={this.calTotal.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.CollegeName}</div>
+                              <div className="errorMsg">{this.state.errors.LHWRF}</div>
                             </div>
                             <div className=" col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">NABARD</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-university fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text" className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName" value={this.state.UniversityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >
+                                
+                                <input type="text" className="form-control inputBox nameParts" name="NABARD" placeholder=""ref="NABARD" onKeyUp={this.calTotal.bind(this)} value={this.state.NABARD}  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.UniversityName}</div>
+                              <div className="errorMsg">{this.state.errors.NABARD}</div>
                             </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Bank Loan</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-university fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text" className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName" value={this.state.UniversityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
+                              
+                                <input type="text" className="form-control inputBox nameParts" name="bankLoan" placeholder=""ref="bankLoan"  onKeyUp={this.calTotal.bind(this)}  value={this.state.bankLoan}  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.UniversityName}</div>
+                              <div className="errorMsg">{this.state.errors.bankLoan}</div>
                             </div>
                             
                           </div> 
@@ -447,32 +506,32 @@ class Activity extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             <div className=" col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Govt. Schemes</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="CollegeName" placeholder="" ref="CollegeName"  value={this.state.CollegeName}  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox nameParts" name="govtscheme" placeholder="" ref="govtscheme"  onKeyUp={this.calTotal.bind(this)}   value={this.state.govtscheme}    onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.CollegeName}</div>
+                              <div className="errorMsg">{this.state.errors.govtscheme}</div>
                             </div>
                             <div className=" col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Direct Beneficiary Contribution</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-university fa iconSize14"></i>
-                                </div>
-                                */}<input type="text" className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName" value={this.state.UniversityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                                </div>directCC
+                                */}<input type="text" className="form-control inputBox nameParts" name="directCC" placeholder=""ref="directCC"  onKeyUp={this.calTotal.bind(this)}  value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.UniversityName}</div>
+                              <div className="errorMsg">{this.state.errors.directCC}</div>
                             </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Indirect Beneficiary Contribution</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-university fa iconSize14"></i>
                                 </div>
-                                */}<input type="text" className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName" value={this.state.UniversityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                                */}<input type="text" className="form-control inputBox nameParts" name="indirectCC" placeholder=""ref="indirectCC" onKeyUp={this.calTotal.bind(this)}  value={this.state.indirectCC}  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.UniversityName}</div>
+                              <div className="errorMsg">{this.state.errors.indirectCC}</div>
                             </div>
                             
                           </div> 
@@ -481,26 +540,24 @@ class Activity extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             <div className=" col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Other</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="CollegeName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="CollegeName" placeholder="" ref="CollegeName"  value={this.state.CollegeName}  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
+                              
+                                <input type="text"   className="form-control inputBox nameParts" name="other" placeholder="" ref="other"  onKeyUp={this.calTotal.bind(this)}   value={this.state.other}  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.CollegeName}</div>
+                              <div className="errorMsg">{this.state.errors.other}</div>
                             </div>
                             <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12 unit" id="UniversityName" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 unit" id="total" >
                                 <label className="formLable">Total :</label>
 
                               </div>
-                              <div className="errorMsg">{this.state.errors.UniversityName}</div>
+                              <div className="errorMsg">{this.state.errors.total}</div>
                             </div>
                             
                           </div> 
                         </div><br/>
                         <div className="col-lg-12">
-                          <br/><button className=" col-lg-2 btn submit pull-right"onClick={this.SubmitAcademics.bind(this)}> Submit</button>
+                          <br/><button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitActivity.bind(this)}> Submit</button>
                         </div>                        
                         <div className="col-lg-12 ">
                            <hr />
@@ -521,28 +578,15 @@ class Activity extends Component{
                                         </div>
                                         <div className="row"> 
                                           <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                                            <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
-                                              <label className="formLable">Centre</label>
-                                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
-                                                  <option  className="hidden" >--select--</option>
-                                                  {/*<option>Post-Graduate</option>
-                                                  <option>Under Graduate</option>
-                                                  <option>10+2</option>
-                                                  <option>10th</option>*/}
-                                                </select>
-                                              </div>
-                                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
-                                            </div>
-                                            <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
+                                            <div className=" col-lg-3  col-lg-offset-1 col-md-4 col-sm-6 col-xs-12 ">
                                               <label className="formLable">District</label>
                                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
                                                 <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
                                                   <option  className="hidden" >--select--</option>
-                                                 {/* <option>Post-Graduate</option>
-                                                  <option>Under Graduate</option>
-                                                  <option>10+2</option>
-                                                  <option>10th</option>*/}
+                                                  <option>Value 1</option>
+                                                  <option>Value 2</option>
+                                                  <option>Value 3</option>
+                                                  <option>Value 4</option>
                                                 </select>
                                               </div>
                                               <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
@@ -552,10 +596,10 @@ class Activity extends Component{
                                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
                                                 <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
                                                   <option  className="hidden" >--select--</option>
-                                                  {/*<option>Post-Graduate</option>
-                                                  <option>Under Graduate</option>
-                                                  <option>10+2</option>
-                                                  <option>10th</option>*/}
+                                                  <option>Value 1</option>
+                                                  <option>Value 2</option>
+                                                  <option>Value 3</option>
+                                                  <option>Value 4</option>
                                                 </select>
                                               </div>
                                               <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
@@ -565,24 +609,29 @@ class Activity extends Component{
                                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
                                                 <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
                                                   <option  className="hidden" >--select--</option>
-                                                  {/*<option>Post-Graduate</option>
-                                                  <option>Under Graduate</option>
-                                                  <option>10+2</option>
-                                                  <option>10th</option>*/}
+                                                  <option>Value 1</option>
+                                                  <option>Value 2</option>
+                                                  <option>Value 3</option>
+                                                  <option>Value 4</option>
                                                 </select>
                                               </div>
                                               <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
                                             </div>
                                           </div>
-                                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                                            <div className=" col-lg-8 col-sm-12 col-xs-12 col-lg-offset-2 formLable boxHeightother ">
+                                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight row">
+                                            <div className=" col-lg-6 col-sm-12 col-xs-12 col-lg-offset-3 formLable boxHeightother ">
                                               <label className="formLable">Search</label>
                                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                                <input type="text"  className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName"  onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                                                <input type="text"  className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
+                                              </div>
+                                            </div>
+                                             <div className=" col-lg-1 col-md-1 col-sm-1 col-xs-1  boxHeightother">
+                                              <div className="col-lg-12 col-sm-12 col-xs-12 mt23" >
+                                                <div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i class="fa fa-plus" aria-hidden="true" id="click"></i></div></div>
                                               </div>
                                             </div>
                                           </div> 
-                                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
+                                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight " style={hidden}>
                                              <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 formLable boxHeightother">
                                               <label className="formLable">Family ID </label>
                                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
@@ -598,31 +647,31 @@ class Activity extends Component{
                                             <div className=" col-lg-4 col-sm-12 col-xs-12 formLable boxHeightother ">
                                               <label className="formLable">Beneficiary Name</label>
                                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                                <input type="text"  className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName"  onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                                                <input type="text"  className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
                                               </div>
                                             </div>
                                             <div className=" col-lg-4 col-sm-12 col-xs-12 formLable boxHeightother ">
                                               <label className="formLable">Beneficiary ID</label>
                                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                                <input type="text"  className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName"  onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                                                <input type="text"  className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
                                               </div>
                                             </div>
                                           </div>
                                           <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeightother ">
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  " >  
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt " >  
                                               <ReactTable 
-                                                data      = {data}
-                                                  columns     = {columns}
-                                                  sortable    = {true}
-                                                  defaultPageSiz  = {5}
-                                                  minRows     = {3} 
-                                                  className       = {"-striped -highlight"}
+                                                data            = {data}
+                                                columns         = {columns}
+                                                sortable        = {true}
+                                                defaultPageSiz  = {5}
+                                                minRows         = {3} 
+                                                className       = {"-striped -highlight"}
                                                 showPagination  = {true}
                                               />
                                               </div> 
                                           </div>
                                           <div className="col-lg-12">
-                                              <br/><button className=" col-lg-2 btn submit pull-right"onClick={this.SubmitAcademics.bind(this)}> Submit</button>
+                                              <br/><button className=" col-lg-2 btn submit pull-right"onClick={this.SubmitActivity.bind(this)}> Submit</button>
                                           </div>
                                         </div>
                                       </form>
@@ -636,7 +685,6 @@ class Activity extends Component{
                         <div className="tableContainrer">
                           <NewBeneficiary />
                         </div>
-                        
                       </form>
                     </div>
                   </div>

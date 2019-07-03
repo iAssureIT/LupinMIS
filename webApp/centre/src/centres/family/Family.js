@@ -236,7 +236,6 @@ class Family extends Component{
           }
         ]
 
-
     return (
       <div className="container-fluid">
         <div className="row">

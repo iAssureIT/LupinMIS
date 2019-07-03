@@ -1,0 +1,35 @@
+.masterStateInput,.masterStateWrapper{
+	padding: 0;
+}
+.stateSubBtn{
+	margin-top: 2em;
+}
+.stateBulkuploadWrapper,.stateBulkupload{
+	padding: 0;
+}
+/*.btn_mrg {
+    margin-top: 0px ;
+    margin-bottom: 40px !important;
+}*/
+
+/*areaStaes {
+    width: 438px;
+}*/
+
+.icn{
+    margin-left: 31px;
+}
+
+.color-edit{
+    color:#039fe5;
+}
+.color-trash{
+    color:#ff0000;
+}
+.bulkUploadForm1{
+ margin-top: 15px;
+}
+.state_btn{
+	margin-top: 15px ;
+  margin-bottom: 15px !important;
+}
