@@ -96,11 +96,19 @@ class centreDetail extends Component{
       "districtCovered"          : this.refs.districtCovered.value,
       "blockCovered"             : this.refs.blockCovered.value,
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
+     let fields = this.state.fields;
+      fields[event.target.name] = event.target.value;
+      this.setState({
+        fields
+      });
+       if (this.validateForm()) {
+        let errors = {};
+        errors[event.target.name] = "";
+        this.setState({
+          errors: errors
+        });
+      }
+
   }
 
   componentWillReceiveProps(nextProps){
@@ -131,6 +139,7 @@ class centreDetail extends Component{
   }
   Submit(event){
     event.preventDefault();
+     if (this.validateForm() && this.validateFormReq()) {
     var academicArray=[];
     var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
 
@@ -211,7 +220,102 @@ class centreDetail extends Component{
     });
     $('input[type=checkbox]').attr('checked', true);
   }
-
+}
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (!fields["typeOfCentre"]) {
+        formIsValid = false;
+        errors["typeOfCentre"] = "This field is required.";
+      }     
+      if (!fields["nameOfCentre"]) {
+        formIsValid = false;
+        errors["nameOfCentre"] = "This field is required.";
+      }
+      if (!fields["address"]) {
+        formIsValid = false;
+        errors["address"] = "This field is required.";
+      }
+     /* if (!fields["state"]) {
+          formIsValid = false;
+          errors["state"] = "This field is required.";
+      }*/
+      if (!fields["district"]) {
+        formIsValid = false;
+        errors["district"] = "This field is required.";
+      }          
+      if (!fields["pincode"]) {
+        formIsValid = false;
+        errors["pincode"] = "This field is required.";
+      }          
+      if (!fields["centreInchargeName"]) {
+        formIsValid = false;
+        errors["centreInchargeName"] = "This field is required.";
+      }          
+      if (!fields["centreInchargeContact"]) {
+        formIsValid = false;
+        errors["centreInchargeContact"] = "This field is required.";
+      }          
+      if (!fields["centreInchargeEmail"]) {
+        formIsValid = false;
+        errors["centreInchargeEmail"] = "This field is required.";
+      }          
+      if (!fields["MISCoordinatorName"]) {
+        formIsValid = false;
+        errors["MISCoordinatorName"] = "This field is required.";
+      }          
+      if (!fields["MISCoordinatorContact"]) {
+        formIsValid = false;
+        errors["MISCoordinatorContact"] = "This field is required.";
+      }          
+      if (!fields["MISCoordinatorEmail"]) {
+        formIsValid = false;
+        errors["MISCoordinatorEmail"] = "This field is required.";
+      }          
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (typeof fields["centreInchargeEmail"] !== "undefined") {
+        //regular expression for email validation
+        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+        if (!pattern.test(fields["centreInchargeEmail"])) {
+          formIsValid = false;
+          errors["centreInchargeEmail"] = "Please enter valid email-ID.";
+        }
+      }
+      if (typeof fields["MISCoordinatorEmail"] !== "undefined") {
+        //regular expression for email validation
+        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+        if (!pattern.test(fields["MISCoordinatorEmail"])) {
+          formIsValid = false;
+          errors["MISCoordinatorEmail"] = "Please enter valid email-ID.";
+        }
+      }
+      if (typeof fields["centreInchargeContact"] !== "undefined") {
+        if (!fields["centreInchargeContact"].match(/^[0-9]{10}$/)) {
+          formIsValid = false;
+          errors["centreInchargeContact"] = "Please enter valid mobile no.";
+        }
+      }
+      if (typeof fields["MISCoordinatorContact"] !== "undefined") {
+        if (!fields["MISCoordinatorContact"].match(/^[0-9]{10}$/)) {
+          formIsValid = false;
+          errors["MISCoordinatorContact"] = "Please enter valid mobile no.";
+        }
+      }
+         
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
   componentDidMount() {
     var editId = this.props.match.params;
     console.log('editId============',editId);
@@ -527,8 +631,8 @@ class centreDetail extends Component{
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
-                              <label className="formLable">Select Type of Center</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
+                              <label className="formLable">Select Type of Center</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeOfCentre" >
                                 <select className="custom-select form-control inputBox" value={this.state.typeOfCentre} ref="typeOfCentre" name="typeOfCentre" onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--Select Center--</option>
                                   <option  className="" >Development Centre</option>
@@ -539,8 +643,8 @@ class centreDetail extends Component{
                               <div className="errorMsg">{this.state.errors.typeOfCentre}</div>
                             </div>
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Name of Centre</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
+                              <label className="formLable">Name of Centre</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="nameOfCentre" >
                                 <input type="text"   className="form-control inputBox nameParts"  value={this.state.nameOfCentre}  name="nameOfCentre" placeholder="" ref="nameOfCentre"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.nameOfCentre}</div>
@@ -550,17 +654,17 @@ class centreDetail extends Component{
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                             <label className="formLable">Address</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.address}  name="address" placeholder="" ref="address"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                             <label className="formLable">Address</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="address" >
+                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.address}  name="address" placeholder="" ref="address" onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.CollegeName}</div>
+                              <div className="errorMsg">{this.state.errors.address}</div>
                             </div>
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                              <label className="formLable">State</label>
+                              <label className="formLable">State</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
                                 <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
-                                  <option  className="hidden" value="">--Select State--</option> 
+                                  <option  className="hidden" value="">--Select--</option> 
                                   {
                                     this.state.listofStates ?
                                     this.state.listofStates.map((state, index)=>{
@@ -576,10 +680,10 @@ class centreDetail extends Component{
                               <div className="errorMsg">{this.state.errors.state}</div>
                             </div>
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                              <label className="formLable">District</label>
+                              <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                 <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district"  onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >--Select District--</option>
+                                  <option  className="hidden" >--Select--</option>
                                   {
                                     this.state.listofDistrict ? 
                                     this.state.listofDistrict.map((district, index)=>{
@@ -595,9 +699,9 @@ class centreDetail extends Component{
                               <div className="errorMsg">{this.state.errors.district}</div>
                             </div>
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                             <label className="formLable">Pincode</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.pincode}  name="pincode" placeholder="" ref="pincode"  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                             <label className="formLable">Pincode</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="pincode" >
+                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.pincode}  name="pincode" placeholder="" ref="pincode" maxLength="6"  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.pincode}</div>
                             </div>
@@ -607,25 +711,25 @@ class centreDetail extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             
                             <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Name of Center Incharge</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.centreInchargeName} name="centreInchargeName" placeholder="" ref="centreInchargeName"    onChange={this.handleChange.bind(this)}/>
+                              <label className="formLable">Name of Center Incharge</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centreInchargeName" >
+                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.centreInchargeName} name="centreInchargeName" placeholder="" ref="centreInchargeName"  onKeyDown={this.isTextKey.bind(this)}   onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.CollegeName}</div>
+                              <div className="errorMsg">{this.state.errors.centreInchargeName}</div>
                             </div>
                              <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Contact No. of Center Incharge</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
+                              <label className="formLable">Contact No. of Center Incharge</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centreInchargeContact" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts"   value={this.state.centreInchargeContact} name="centreInchargeContact" placeholder="" ref="centreInchargeContact"  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox nameParts"   value={this.state.centreInchargeContact} name="centreInchargeContact" placeholder="" ref="centreInchargeContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.centreInchargeContact}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                              <label className="formLable">Email of Center Incharge</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
+                              <label className="formLable">Email of Center Incharge</label><span className="asterix">*</span>
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="centreInchargeEmail" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-university fa iconSize14"></i>
                                 </div>*/}
@@ -639,8 +743,8 @@ class centreDetail extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             
                             <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Name of MIS Coordinator</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
+                              <label className="formLable">Name of MIS Coordinator</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="MISCoordinatorName" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
@@ -649,18 +753,18 @@ class centreDetail extends Component{
                               <div className="errorMsg">{this.state.errors.MISCoordinatorName}</div>
                             </div>
                              <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Contact No. of MIS Coordinator</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
+                              <label className="formLable">Contact No. of MIS Coordinator</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="MISCoordinatorContact" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.MISCoordinatorContact}  name="MISCoordinatorContact" placeholder="" ref="MISCoordinatorContact"  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.MISCoordinatorContact}  name="MISCoordinatorContact" placeholder="" ref="MISCoordinatorContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.MISCoordinatorContact}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                              <label className="formLable">Email of MIS Coordinator</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
+                              <label className="formLable">Email of MIS Coordinator</label><span className="asterix">*</span>
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="MISCoordinatorEmail" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-university fa iconSize14"></i>
                                 </div>*/}

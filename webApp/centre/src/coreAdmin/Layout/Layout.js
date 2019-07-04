@@ -32,8 +32,8 @@ import ADPReport                                  from '../../coreAdmin/masterDa
 
 import AnnualPlan                                 from "../../centres/annualPlan/AnnualPlan.js";
 import MonthlyPlan                                from "../../centres/monthlyPlan/MonthlyPlan.js";
-/*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";
-*/
+/*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";*/
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';

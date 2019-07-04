@@ -85,12 +85,12 @@ export default class Leftsidebar extends Component{
                       </a>
                     </li>
                     <li>
-                      <a href="/SDGReport">
+                      <a href="/sectorMapping">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">SDG Report</span>
+                        <span className="sidebarMenuSubText">Sector Mapping</span>
                       </a>
                     </li>
-                    <li>
+                    {/*<li>
                       <a href="/empowermentLine">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Empowerment Line</span>
@@ -101,7 +101,7 @@ export default class Leftsidebar extends Component{
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">ADP Report</span>
                       </a>
-                    </li>
+                    </li>*/}
                   </ul>
                 </li> 
 

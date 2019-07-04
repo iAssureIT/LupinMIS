@@ -26,12 +26,12 @@ import SectorAndActivity                          from '../../coreAdmin/masterDa
 import BulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/BulkUpload/BulkUpload.js';
 import centreDetail                               from '../../coreAdmin/masterData/centreDetail/centreDetail.js';
 
-import SDGReport                                  from '../../coreAdmin/masterData/SDGReport/SDGReport.js';
+import SectorMapping                                  from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
 import EmpowermentLine                            from '../../coreAdmin/masterData/EmpowermentLine/EmpowermentLine.js';
 import ADPReport                                  from '../../coreAdmin/masterData/ADPReport/ADPReport.js';
 
-import AnnualPlan                                 from "../../admin/annualPlan/AnnualPlan.js";
-import MonthlyPlan                                from "../../admin/monthlyPlan/MonthlyPlan.js";
+import AnnualPlan                                 from '../../admin/annualPlan/AnnualPlan.js';
+import MonthlyPlan                                from '../../admin/monthlyPlan/MonthlyPlan.js';
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";
 */
 
@@ -91,11 +91,11 @@ class Layout extends Component{
                     <Route path="/family"                              exact strict component={ Family } />
                     <Route path="/sectorandactivity"                   exact strict component={ SectorAndActivity } />
                     <Route path="/bulkUpload"                          exact strict component={ BulkUpload } />
-                     /*Reports Routes*/
-                    <Route path="/SDGReport"                          exact strict component={ SDGReport } />
+                    { /*Reports Routes*/}
+                    <Route path="/sectorMapping"                          exact strict component={ SectorMapping } />
                     <Route path="/empowermentLine"                    exact strict component={ EmpowermentLine } />
                     <Route path="/ADPReport"                          exact strict component={ ADPReport } />
-                    /*Plans Routes*/
+                   { /*Plans Routes*/}
                     <Route path="/annualPlan"                         exact strict component={ AnnualPlan } />
                     <Route path="/centreDetail"                        exact strict component={ centreDetail } />
                     <Route path="/centreDetail/:id"                        exact strict component={ centreDetail } />

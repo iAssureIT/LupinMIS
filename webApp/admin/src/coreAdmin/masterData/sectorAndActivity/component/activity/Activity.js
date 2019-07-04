@@ -16,11 +16,11 @@ class Activity extends Component{
    
     this.state = {
       "sector"              :"",
-      "activityName"            :"",
+      "activityName"        :"",
       "academicData"        :[],
       "uID"                 :"",
-      "shown"                 : true,
-            "tabtype" : "location",
+      "shown"               : true,
+      "tabtype" : "location",
 
       fields: {},
       errors: {}
@@ -76,7 +76,7 @@ class Activity extends Component{
   }
   SubmitActivity(event){
     event.preventDefault();
-    var academicArray=[];
+    var activityArray=[];
     var id2 = this.state.uID;
 /*    if (this.validateForm()) {
 */    var activityValues= 
@@ -109,7 +109,7 @@ class Activity extends Component{
       });
   
     console.log("Values =>",activityValues);
-    academicArray.push(activityValues);
+    activityArray.push(activityValues);
     console.log("add value",activityValues);      
     alert("Data inserted Successfully!")
    // }
