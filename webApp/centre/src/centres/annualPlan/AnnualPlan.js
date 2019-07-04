@@ -46,10 +46,8 @@ class AnnualPlan extends Component{
   handleChange(event){
     event.preventDefault();
     this.setState({
-      "year"                : this.refs.year.value,          
+     /* "year"                : this.refs.year.value,          
       "month"                : this.refs.month.value,          
-    /*  "center"              : this.refs.center.value,
-      "sector_id"           : this.refs.sector_id.value,*/
       "sectorName"          : this.refs.sectorName.value,
       "activity"            : this.refs.activity.value,
       "physicalUnit"        : this.refs.physicalUnit.value,
@@ -63,7 +61,9 @@ class AnnualPlan extends Component{
       "directCC"            : this.refs.directCC.value,
       "indirectCC"          : this.refs.indirectCC.value,
       "other"               : this.refs.other.value,
-      "remark"              : this.refs.remark.value,
+      "remark"              : this.refs.remark.value,*/
+    /*  "center"              : this.refs.center.value,
+      "sector_id"           : this.refs.sector_id.value,*/
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -350,7 +350,7 @@ class AnnualPlan extends Component{
                           </div>
                         </div> 
                       </div><br/>                      
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"  style={hidden} id="Academic_details">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"  style={shown} id="Academic_details">
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
@@ -383,167 +383,131 @@ class AnnualPlan extends Component{
                         </div><br/>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Sub-Activity </label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subActivity" >
-                                <select className="custom-select form-control inputBox" ref="subActivity" name="subActivity"  onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >--select--</option>
-                                  <option>Value 1</option>
-                                  <option>Value 2</option>
-                                  <option>Value 3</option>
-                                  <option>Value 4</option>
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                              <label className="formLable head">Sub-Activity Details</label>
                             </div>
-                            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                              <label className="formLable head">Financial Sources</label>
+                            </div> 
+                          </div>
+                        </div><br/>
+                        <div className="">
+                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                            <div className="col-lg-2 col-md-1 col-sm-1 col-xs-1 row pad15 ">
+                              <label className="formLable">Sub-Activity</label>
+                            </div> 
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1  ">
                               <label className="formLable">Unit</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="CollegeName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="unit" placeholder="" ref="unit" onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.unit}</div>
                             </div>
-                            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row ">
                               <label className="formLable">Physical Units</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="physicalUnit" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="physicalUnit" placeholder="" ref="physicalUnit"  value={this.state.physicalUnit} onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.physicalUnit}</div>
-                            </div>
-                          </div> 
-                        </div><br/>
-                        <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
- 
-                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            </div> 
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1  ">
                               <label className="formLable">Unit Cost</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="unitCost" placeholder="" ref="unitCost"  value={this.state.unitCost} onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.unitCost}</div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            </div> 
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row">
                               <label className="formLable">Total Cost</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="totalBudget" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-university fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.totalBudget}</div>
+                            </div> 
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+                              <label className="formLable">No.of Benef.</label>
+                            </div> 
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row ">
+                              <label className="formLable">LHWRF</label>
                             </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                              <label className="formLable">No. of Beneficiaries</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-university fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text" className="form-control inputBox nameParts" name="noOfBeneficiaries" placeholder=""ref="noOfBeneficiaries" value={this.state.noOfBeneficiaries} onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.noOfBeneficiaries}</div>
+                             <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+                              <label className="formLable">NABARD</label>
                             </div>
-                             
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row">
+                              <label className="formLable">Bank Loan</label>
+                            </div>
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+                              <label className="formLable">Govt. Schemes</label>
+                            </div>
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row ">
+                              <label className="formLable">Direct Comm Contri.</label>
+                            </div>
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1  ">
+                              <label className="formLable">Indirect Comm Contri</label>
+                            </div>
+                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row">
+                              <label className="formLable">Other</label>
+                            </div>
                           </div> 
                         </div><br/>
-                        <div className="col-lg-12 ">
-                           <h4 className="pageSubHeader">Financial Sources  </h4>
-                        </div>
-                        <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-md-3 col-sm-6 col-xs-12 ">
-                              <label className="formLable">LHWRF</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="LHWRF" placeholder="" ref="LHWRF"  value={this.state.LHWRF}  onChange={this.handleChange.bind(this)}/>
+                      
+                        <div className="">
+                          <div className=" col-lg-12 col-sm-12 col-xs-12  ht50 ">
+                            <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12 subActDiv " id="LHWRF" >
                               </div>
-                              <div className="errorMsg">{this.state.errors.LHWRF}</div>
                             </div>
-                            <div className=" col-md-3 col-sm-6 col-xs-12 ">
-                              <label className="formLable">NABARD</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-university fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text" className="form-control inputBox nameParts" name="NABARD" placeholder="" ref="NABARD" value={this.state.NABARD} onChange={this.handleChange.bind(this)}/>
+                            <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12 contentDiv input-group inputBox-main " id="NABARD" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.NABARD}</div>
-                            </div><div className=" col-md-3 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Bank Loan</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-university fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text" className="form-control inputBox nameParts" name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan} onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.bankLoan}</div>
                             </div>
-                            <div className=" col-md-3 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Govt. Schemes</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}    onChange={this.handleChange.bind(this)}/>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv  input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.govtscheme}</div>
+                            </div>  
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              </div>
+                            </div>  
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              </div>
+                            </div>  
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>  
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
                             
                           </div> 
                         </div><br/>
                         <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Direct Community Contribution</label>
+                          <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
+                            <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
+                              <label className="formLable"></label>
                               <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-university fa iconSize14"></i>
-                                </div>
-                                */}<input type="text" className="form-control inputBox nameParts" name="directCC" placeholder="" ref="directCC" value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text" className="form-control inputBox nameParts" name="directCC" placeholder="Remark" ref="directCC" value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.directCC}</div>
-                            </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Indirect Community Contribution</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-university fa iconSize14"></i>
-                                </div>
-                                */}<input type="text" className="form-control inputBox nameParts" name="indirectCC" placeholder=""ref="indirectCC" value={this.state.indirectCC}  onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.indirectCC}</div>
-                            </div>
-                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Other</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="other" >
-                                {/*<div className="input-group-addon inputIcon">
-                                 <i className="fa fa-building fa iconSize14"></i>
-                                </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts" name="other" placeholder="" ref="other"  value={this.state.other}    onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.other}</div>
                             </div>
                           </div> 
                         </div><br/>
-                        <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Remark</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
-                            {/*<div className="input-group-addon inputIcon">
-                             <i className="fa fa-building fa iconSize14"></i>
-                            </div>*/}
-                            <input type="text"   className="form-control inputBox nameParts" name="remark" placeholder="" ref="remark"  value={this.state.remark}  onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.remark}</div>
-                        </div>
+                        
                         <div className="col-lg-12">
                          <br/><button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit</button>
                         </div>

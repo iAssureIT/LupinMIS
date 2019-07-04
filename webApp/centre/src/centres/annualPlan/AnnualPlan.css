@@ -115,6 +115,9 @@
 .boxHeight1{
 	height:55px;
 }
+.ht35{
+	height: 35px;
+}
 .boxHeightother{
 	margin-top:10px;
 }
@@ -182,4 +185,25 @@
 .button-clicked{
 	transform: rotate(180deg) !important;
 	transition: 1s all;
+}
+.head{
+/*	text-decoration: underline;
+*/	font-size: 14px !important;	
+}
+.subActDiv{
+	border: 1px solid #999 !important;
+    height: 100px !important;
+}
+.contentDiv{
+	border: 1px solid #999 !important;
+    height: 50px !important;	
+}
+.pad15{
+	padding-left: 15px;
+}
+.ht50{
+	height: 50px;
+}
+.padmi3{
+    padding-left: 3px !important;
 }

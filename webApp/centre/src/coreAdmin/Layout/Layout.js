@@ -30,8 +30,8 @@ import SDGReport                                  from '../../coreAdmin/masterDa
 import EmpowermentLine                            from '../../coreAdmin/masterData/EmpowermentLine/EmpowermentLine.js';
 import ADPReport                                  from '../../coreAdmin/masterData/ADPReport/ADPReport.js';
 
-import AnnualPlan                                 from "../../admin/annualPlan/AnnualPlan.js";
-import MonthlyPlan                                from "../../admin/monthlyPlan/MonthlyPlan.js";
+import AnnualPlan                                 from "../../centres/annualPlan/AnnualPlan.js";
+import MonthlyPlan                                from "../../centres/monthlyPlan/MonthlyPlan.js";
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";
 */
 

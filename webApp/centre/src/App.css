@@ -133,6 +133,14 @@ input, select{
   border: none !important;
   font-size: 12px !important;
 }
+.inputBoxAP{
+  font-family:'Montserrat',sans-serif;
+  height: 50px !important;
+  border: none !important;
+  font-size: 12px !important;
+  padding: 3px 5px !important;
+
+}
 .valid_box{
   height: 60px;
 }
@@ -585,5 +593,12 @@ margin-right: 12px;
 }
 /*================End of Global Css==================*/
 
+.NOpadding{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
 
-
+.smallPadding{
+  margin-left: -20px;
+  margin-right: -20px;
+}
