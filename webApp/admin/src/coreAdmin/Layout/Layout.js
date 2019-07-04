@@ -19,18 +19,18 @@ import ViewTemplates                              from '../NotificationManagemen
 import AddModuleFacility                          from '../accessManagement/AddModuleFacility.js';
 import AssignPermissionToModules                  from '../accessManagement/AssignPermissionToModules.js';
 
-import Centre                                     from '../../coreAdmin/masterData/centre/Centre.js';
-import Family                                     from '../../coreAdmin/masterData/family/Family.js';
+/*import Centre                                     from '../../coreAdmin/masterData/centre/Centre.js';
+*/import Family                                     from '../../coreAdmin/masterData/family/Family.js';
 import Beneficiary                                from '../../coreAdmin/masterData/beneficiary/Beneficiary.js';
 import SectorAndActivity                          from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
 import BulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/BulkUpload/BulkUpload.js';
 import centreDetail                               from '../../coreAdmin/masterData/centreDetail/centreDetail.js';
 
 import SectorMapping                                  from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
-import EmpowermentLine                            from '../../coreAdmin/masterData/EmpowermentLine/EmpowermentLine.js';
+/*import EmpowermentLine                            from '../../coreAdmin/masterData/EmpowermentLine/EmpowermentLine.js';
 import ADPReport                                  from '../../coreAdmin/masterData/ADPReport/ADPReport.js';
 
-import plan                                 from '../../admin/annualPlan/AnnualPlan.js';
+*/import plan                                 from '../../admin/annualPlan/AnnualPlan.js';
 import MonthlyPlan                                from '../../admin/monthlyPlan/MonthlyPlan.js';
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";
 */
@@ -86,15 +86,15 @@ class Layout extends Component{
                     <Route path="/admin/AddModuleFacility"            exact strict component={ AddModuleFacility } />
                     <Route path="/admin/AssignPermissionToModule"     exact strict component={ AssignPermissionToModules } />
                   {/*Master Data*/}
-                    <Route path="/centre"                              exact strict component={ Centre } />
-                    <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
+{/*                    <Route path="/centre"                              exact strict component={ Centre } />
+*/}                    <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
                     <Route path="/family"                              exact strict component={ Family } />
                     <Route path="/sectorandactivity"                   exact strict component={ SectorAndActivity } />
                     <Route path="/bulkUpload"                          exact strict component={ BulkUpload } />
                     { /*Reports Routes*/}
                     <Route path="/sectorMapping"                          exact strict component={ SectorMapping } />
-                    <Route path="/empowermentLine"                    exact strict component={ EmpowermentLine } />
-                    <Route path="/ADPReport"                          exact strict component={ ADPReport } />
+{/*                    <Route path="/empowermentLine"                    exact strict component={ EmpowermentLine } />
+                    <Route path="/ADPReport"                          exact strict component={ ADPReport } />*/}
                    { /*Plans Routes*/}
                     <Route path="/plan"                         exact strict component={ plan } />
                     <Route path="/centreDetail"                        exact strict component={ centreDetail } />

@@ -201,7 +201,7 @@ class SectorMapping extends Component{
                         </div>
                       </div> 
                     </div><br/>
-                    <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above Goal</label></div>
+                    <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above {this.state.goalType}</label></div>
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable htDiv valid_box mt">
                         <div className=" col-md-4  col-lg-4 col-sm-12 col-xs-12 ">

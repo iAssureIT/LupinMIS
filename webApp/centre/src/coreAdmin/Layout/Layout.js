@@ -28,11 +28,10 @@ import AnnualPlan                                 from "../../centres/plan/annua
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";*/
 
 
-import AnnualPlan                                 from "../../centres/annualPlan/AnnualPlan.js";
 
-import MonthlyPlan                                from "../../centres/monthlyPlan/MonthlyPlan.js";
+/*import MonthlyPlan                                from "../../centres/monthlyPlan/MonthlyPlan.js";
 
-import ActivityReportView                                from "../../centres/activityReportView/ActivityReportView.js";
+import ActivityReportView                                from "../../centres/activityReportView/ActivityReportView.js";*/
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";
 */
 
