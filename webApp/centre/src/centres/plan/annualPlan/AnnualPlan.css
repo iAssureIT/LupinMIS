@@ -188,7 +188,8 @@
 }
 .head{
 /*	text-decoration: underline;
-*/	font-size: 14px !important;	
+*/	font-size: 14px !important;
+	font-weight: bold !important;	
 }
 .subActDiv{
 	border: 1px solid #999 !important;
@@ -206,4 +207,11 @@
 }
 .padmi3{
     padding-left: 3px !important;
+}
+.noPadRight{
+	padding-right: 4px !important;
+}
+.finSrc{
+	margin-top: -20px;
+	height: 52px !important;
 }

@@ -16,16 +16,14 @@ class SubActivity extends Component{
     super(props);
    
     this.state = {
-      "sector"         :"",
+      "sector"             :"",
       "activityName"       :"",
       "subActivityName"    :"",
       "unit"               :"Number", //to be Changes
-      "familyUpgradation"        :"No",
-      "outreach"           :"No",
-     
-      "uID"                 :"",
-      "shown"               : true,
-            "tabtype" : "location",
+      "familyUpgradation"  :"No",
+      // "outreach"           :"No",
+      "uID"                :"",
+      "shown"              : true,
       fields: {},
       errors: {}
     }
@@ -39,7 +37,7 @@ class SubActivity extends Component{
       "activityName"         :this.refs.activityName.value,
       "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.state.unit,
-      "outreach"             :this.state.outreach,
+      // "outreach"             :this.state.outreach,
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;

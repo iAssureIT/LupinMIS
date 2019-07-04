@@ -25,6 +25,8 @@ class AnnualPlan extends Component{
       "uID"                 :"",
       "shown"               : true,
       "hide"                : true,
+      "month"               :"",
+      "year"                :"",
       "Months"              :["January","February","March","April","May","June","July","August","September","October","November","December"],
       "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
       shown                 : true,
@@ -38,19 +40,13 @@ class AnnualPlan extends Component{
  
   handleChange(event){
     event.preventDefault();
-   /* this.setState({
-      "QualificationLevel"   : this.refs.QualificationLevel.value,          
-      "Qualification"        : this.refs.Qualification.value,          
-      "Specialization"       : this.refs.Specialization.value,
-      "Mode"                 : this.refs.Mode.value, 
-      "Grade"                : this.refs.Grade.value,
-      "PassoutYear"          : this.refs.PassoutYear.value,
-      "UniversityName"       : this.refs.UniversityName.value,
-      "City"                 : this.refs.City.value,
-      "CollegeName"          : this.refs.CollegeName.value,
-      "State"                : this.refs.State.value,
-      "Country"              : this.refs.Country.value,
-    });*/
+    this.setState({
+      
+      "month"   : this.refs.month.value,
+      "year"    : this.refs.year.value,          
+
+
+    });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
@@ -107,17 +103,10 @@ class AnnualPlan extends Component{
     if (this.validateForm()) {
     var academicValues= 
     {
-    "QualificationLevel"   : this.refs.QualificationLevel.value,          
-    "Qualification"        : this.refs.Qualification.value,          
-    "Specialization"       : this.refs.Specialization.value,
-    "Mode"                 : this.refs.Mode.value, 
-    "Grade"                : this.refs.Grade.value,
-    "PassoutYear"          : this.refs.PassoutYear.value,
-    "UniversityName"       : this.refs.UniversityName.value,
-    "City"                 : this.refs.City.value,
-    "CollegeName"          : this.refs.CollegeName.value,
-    "State"                : this.refs.State.value,
-    "Country"              : this.refs.Country.value,
+      "month"                : this.refs.month.value, 
+      "year"                : this.refs.year.value,          
+
+
     };
 
     let fields = {};
@@ -285,35 +274,62 @@ class AnnualPlan extends Component{
                   <hr className="hr-head container-fluid row"/>
                 </div>
                 <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
-                  <div className="row">
-                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                      <div className=" col-lg-4 col-lg-offset-4 col-md-4 col-sm-6 col-xs-12 ">
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                          <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel"  onChange={this.handleChange.bind(this)} >
-                            <option className="hidden" >-- Select Year --</option>
-                           {this.state.Year.map((data,index) =>
-                            <option key={index}  className="" >{data}</option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                    <div className="row">
+                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
+                           <div className=" col-lg-3 col-lg-offset-2  col-md-4 col-sm-6 col-xs-12 ">
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
+                              <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
+                                <option className="" >Centre</option>
+                            
+                                    
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.month}</div>
+                          </div>
+                           <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
+                              <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
+                                <option className="" >All Months</option>
+                               {this.state.Months.map((data,index) =>
+                                <option key={index}  className="" >{data}</option>
+                                )}
+                                
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.month}</div>
+                          </div>
+                          <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                              <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                                <option className="hidden" >-- Select Year --</option>
+                               {this.state.Year.map((data,index) =>
+                                <option key={index}  className="" >{data}</option>
+                                )}
+                                
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.year}</div>
+                          </div>
+                       
+                        </div> 
+                      </div><br/>     
+                    <div className="AnnualHeadCont">
+                      <div className="annualHead"><h5>{this.state.month !== "All Months" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                       </div>
-                    </div> 
-                    </div><br/>
-                    <div className="col-lg-12 ">
-                      <h4 className="">Annual Plan for 2019</h4>
-                    </div>                  
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >  
-                      <ReactTable 
-                        data      = {data}
-                          columns     = {columns}
-                          sortable    = {true}
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >  
+                        <ReactTable 
+                          data            = {data}
+                          columns         = {columns}
+                          sortable        = {true}
                           defaultPageSiz  = {5}
-                          minRows     = {3} 
+                          minRows         = {3} 
                           className       = {"-striped -highlight"}
-                        showPagination  = {true}
-                      />
-                    </div> 
+                          showPagination  = {true}
+                        />
+                      </div> 
+                    </div>
                   </form>
                 </div>
               </div>

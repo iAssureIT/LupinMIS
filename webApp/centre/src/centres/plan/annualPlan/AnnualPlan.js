@@ -32,6 +32,7 @@ class AnnualPlan extends Component{
       "shown"               : true,
       "uID"                 :"",
       "month"               :"",
+      "heading"             :"Monthly Plan",
       "Months"              :["January","February","March","April","May","June","July","August","September","October","November","December"],
       "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
       shown                 : true,
@@ -46,10 +47,10 @@ class AnnualPlan extends Component{
   handleChange(event){
     event.preventDefault();
     this.setState({
-     /* "year"                : this.refs.year.value,          
       "month"                : this.refs.month.value,          
       "sectorName"          : this.refs.sectorName.value,
-      "activity"            : this.refs.activity.value,
+      "year"                : this.refs.year.value,          
+     /*      "activity"            : this.refs.activity.value,
       "physicalUnit"        : this.refs.physicalUnit.value,
       "unitCost"            : this.refs.unitCost.value,
       "totalBudget"         : this.refs.totalBudget.value,
@@ -350,7 +351,7 @@ class AnnualPlan extends Component{
                           </div>
                         </div> 
                       </div><br/>                      
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"  style={shown} id="Academic_details">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"  style={hidden} id="Academic_details">
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
@@ -383,10 +384,10 @@ class AnnualPlan extends Component{
                         </div><br/>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                            <div className=" col-lg-3 col-lg-offset-2 col-md-6 col-sm-6 col-xs-6 ">
                               <label className="formLable head">Sub-Activity Details</label>
                             </div>
-                            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                            <div className=" col-lg-3 col-lg-offset-3 col-md-6 col-sm-6 col-xs-6 ">
                               <label className="formLable head">Financial Sources</label>
                             </div> 
                           </div>
@@ -441,55 +442,129 @@ class AnnualPlan extends Component{
                               <div className="col-lg-12 col-sm-12 col-xs-12 subActDiv " id="LHWRF" >
                               </div>
                             </div>
-                            <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                            <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
                               <div className="col-lg-12 col-sm-12 col-xs-12 contentDiv input-group inputBox-main " id="NABARD" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row ">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row  noPadRight">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv  input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12  noPadRight">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 ">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row">
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            
+                          </div> 
+                        </div><br/>
+                        <div className="row">
+                          <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
+                            <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
+                              <label className="formLable"></label>
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
+                                <input type="text" className="form-control inputBox nameParts" name="directCC" placeholder="Remark" ref="directCC" value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.directCC}</div>
+                            </div>
+                          </div> 
+                        </div><br/>
+
+                      
+                        <div className="">
+                          <div className=" col-lg-12 col-sm-12 col-xs-12  ht50 ">
+                            <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12 subActDiv " id="LHWRF" >
+                              </div>
+                            </div>
+                            <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12 contentDiv input-group inputBox-main " id="NABARD" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row  noPadRight">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv  input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              </div>
+                            </div>  
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              </div>
+                            </div>  
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              </div>
+                            </div>  
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>  
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12  noPadRight">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                            </div>
+                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
                                 <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
@@ -514,7 +589,7 @@ class AnnualPlan extends Component{
                       </form>
                     </div>
                     <div className="AnnualHeadCont">
-                      <div className="annualHead"><h5>Annual Plan of { this.state.year !=="-- Select Year --" ? this.state.year : null}</h5> 
+                      <div className="annualHead"><h5>{this.state.month !== "All Months" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                       </div>
                     </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >  

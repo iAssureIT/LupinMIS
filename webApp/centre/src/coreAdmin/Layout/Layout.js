@@ -28,6 +28,14 @@ import AnnualPlan                                 from "../../centres/plan/annua
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";*/
 
 
+import AnnualPlan                                 from "../../centres/annualPlan/AnnualPlan.js";
+
+import MonthlyPlan                                from "../../centres/monthlyPlan/MonthlyPlan.js";
+
+import ActivityReportView                                from "../../centres/activityReportView/ActivityReportView.js";
+/*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";
+*/
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
@@ -76,6 +84,7 @@ class Layout extends Component{
                     <Route path="/plan"                         exact strict component={ AnnualPlan } />
                     <Route path="/Activity"                         exact strict component={ Activity } />
                     <Route path="/viewActivity"                         exact strict component={ ViewActivity } />
+
                   </Switch>        
                 </Router>
               </div>

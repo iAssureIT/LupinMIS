@@ -1,0 +1,53 @@
+.header{
+	margin-top: 20px;
+	height: 100px;
+}
+.logoContainer{
+	height: 100px;
+	margin-top:11px;
+	background-image: url("/images/logo.png");
+	background-size: 50% 80%;
+	background-repeat: no-repeat;
+}
+.headContainer{
+	font-family:'Montserrat' !important;
+	text-align: center;
+	color:#FFF !important;
+}
+.operationContainer{
+	margin-top: 40px;
+}
+.operationContainer i{
+	color: #fff;
+	font-size: 25px;
+	margin-left: 100px;
+	cursor: pointer;
+}
+.fa-trash:hover{
+	color:#f00 !important;
+	font-size: 27px !important;
+	transition: 1s all ease;
+}
+.fa-pencil-square-o:hover{
+
+	font-size: 27px !important;
+	transition: 1s all ease;
+}
+.fa-print:hover{
+	font-size: 27px !important;
+	transition: 1s all ease;
+}
+.actDetails h5{
+	font-weight: bold !important;
+	margin-top: 20px;
+	text-decoration: underline;
+	margin-bottom: 20px;	
+}
+.customTable td{
+	text-align: left;
+}
+.customTable th{
+	text-align:center;
+    background-color: #039BE5 !important;
+    color:#fff;
+}
