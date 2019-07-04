@@ -62,8 +62,8 @@ class SectorMapping extends Component{
 /*    if (this.validateForm()) {
 */    var mappingValues= 
     {
-      "goalName"   : this.refs.goalName.value,          
-      "goalType"   : this.refs.goalType.value,          
+      "goal"   : this.refs.goalName.value,          
+      "type"   : this.refs.goalType.value,          
      /* "sector"     : this.refs.sector.value,          
       "activity"   : this.refs.activity.value,       */   
    
@@ -156,12 +156,12 @@ class SectorMapping extends Component{
         }
     ]
     return(
-      <div className="">
+      <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
             <section className="content">
-              <div className="">
-                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
+              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
+                <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
                       Master Data                                        

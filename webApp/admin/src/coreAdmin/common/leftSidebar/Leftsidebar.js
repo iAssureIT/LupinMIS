@@ -42,25 +42,49 @@ export default class Leftsidebar extends Component{
                     Dashboard
                   </a>
                 </li>
-
+                <li className="sidebarMenuText">
+                  <a href="/plan" >
+                    <i className="fa fa-pie-chart" />
+                    Plan Details
+                  </a>
+                </li>
+                <li className="sidebarMenuText">
+                  <a href="/plan" >
+                    <i className="fa fa-book" />
+                    Reports
+                  </a>
+                </li>
+                {/*<li className="sidebarMenuText">
+                  <a href="#Leave" data-toggle="collapse" aria-expanded="false">
+                    <i className="fa fa-calendar" />
+                    Plan Details
+                  </a>
+                  <ul className="collapse list-unstyled" id="Leave">
+                      <li>
+                        <a href="/annualPlan">
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Annual Plan</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/monthlyPlan">
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Monthly Plan</span>
+                        </a>
+                      </li>                    
+                  </ul>
+                </li> */}
                 <li className="sidebarMenuText">
                   <a href="#MasterData" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-database" />
                     Master Data
                   </a>
                   <ul className="collapse list-unstyled" id="MasterData">
-                  {/*  <li>
-                      <a href="/centre">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Centre</span>
-                      </a>
-                    </li> */}
-                      <li>
+                    <li>
                         <a href="/centreDetail">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Center Details</span>
+                          <i className="fa fa-circle-o" /> 
+                          <span className="sidebarMenuSubText">Center</span>
                         </a>
                       </li>
-                    <li>
+                    {/*<li>
                       <a href="beneficiary">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Beneficiary</span>
@@ -71,17 +95,11 @@ export default class Leftsidebar extends Component{
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Family</span>
                       </a>
-                    </li>
+                    </li>*/}
                     <li>
                       <a href="/sectorandactivity">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector & Activity</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/bulkUpload">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Bulk Upload</span>
                       </a>
                     </li>
                     <li>
@@ -104,55 +122,13 @@ export default class Leftsidebar extends Component{
                     </li>*/}
                   </ul>
                 </li> 
-
                 <li className="sidebarMenuText">
-                  <a href="#Leave" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-calendar" />
-                    Plan
+                  <a href="/" >
+                    <i className="fa fa-th" />
+                    Center List
                   </a>
-                  <ul className="collapse list-unstyled" id="Leave">
-                      <li>
-                        <a href="/annualPlan">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Annual Plan</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/monthlyPlan">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Monthly Plan</span>
-                        </a>
-                      </li>                    
-                      
-                  </ul>
-                </li> 
-
-               
-
-              
-
-               {/* <li>
-                  <a href="#User" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-users" />
-                    User Management
-                  </a>
-                  <ul className="collapse list-unstyled" id="User">
-                    <li>
-                      <a href="/admin/createUser">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Add New User</span>
-                      </a>
-                    </li> 
-                    <li>
-                      <a href="/admin/UMRolesList">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Add Role</span>
-                      </a>
-                    </li>                  
-                    <li>
-                      <a href="/admin/UMListOfUsers">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">List Of Users</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>*/}
-
+                </li>
+                
                 <li className="sidebarMenuText">
                   <a href="#Access" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-user-circle" />

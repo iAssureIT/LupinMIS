@@ -258,33 +258,6 @@ input, select{
 /*Breadcrumb End*/
 
 
-/*Table start*/
-.table{
-  font-family:'Montserrat',sans-serif;
-  font-size: 12px;
-  color: #333333;
-  border: 1px solid #eee;
-   
-
-}
-.table thead{
-  background-color: #039BE5;
-  color: #f2f2f2 !important;
-  font-size : 12px !important;
-  height:40px !important;
-  font-family:'Montserrat',sans-serif;
-}
-
-.table td{
-  color: #333333;
-  font-family:'Montserrat',sans-serif;
-  
-}
-
-.table-bordered{
-  margin-top: 0% !important;
-}
-/*Table End*/
 
 /*Search start*/
 .search{
@@ -343,7 +316,7 @@ input, select{
 
 /*Page header bottom horizontal line*/
 .hr-head{
-  border:0.25px solid #999;
+  border:0.5px solid #999;
   width: 100%;
 }
 
@@ -601,4 +574,9 @@ margin-right: 12px;
 .smallPadding{
   margin-left: -20px;
   margin-right: -20px;
+}
+
+.contactdeilsmg{
+  padding-top: 15px;
+  padding-bottom: 15px;
 }

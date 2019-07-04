@@ -42,141 +42,64 @@ export default class Leftsidebar extends Component{
                     Dashboard
                   </a>
                 </li>
-
+                <li className="sidebarMenuText">
+                  <a href="/plan" >
+                    <i className="fa fa-pie-chart" />
+                    Plan Details
+                  </a>
+                </li>
+                <li className="sidebarMenuText">
+                  <a href="#Activity" data-toggle="collapse" aria-expanded="false">
+                    <i className="fa fa-edit" />
+                    Activity
+                  </a>
+                  <ul className="collapse list-unstyled" id="Activity">
+                    <li>
+                      <a href="/Activity">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Submit Activity</span>
+                      </a>
+                    </li>                   
+                    <li>
+                      <a href="/viewActivity">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">View all Activities</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li> 
+                <li className="sidebarMenuText">
+                  <a href="/plan" >
+                    <i className="fa fa-book" />
+                    Reports
+                  </a>
+                </li>
+               <li className="sidebarMenuText">
+                  <a href="/" >
+                    <i className="fa fa-th" />
+                    Center List
+                  </a>
+                </li>
                 <li className="sidebarMenuText">
                   <a href="#MasterData" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-database" />
-                    Master Data
+                    <i className="fa fa-folder" />
+                    Beneficiary Management
                   </a>
                   <ul className="collapse list-unstyled" id="MasterData">
-                  {/*  <li>
-                      <a href="/centre">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Centre</span>
-                      </a>
-                    </li> */}
-                      <li>
-                        <a href="/centreDetail">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">centreDetail</span>
-                        </a>
-                      </li>
                     <li>
                       <a href="beneficiary">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Beneficiary</span>
+                        <span className="sidebarMenuSubText">Create Beneficiary</span>
                       </a>
                     </li>                   
                     <li>
                       <a href="/family">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">family</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/sectorandactivity">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector & Activity</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/bulkUpload">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">BulkUpload</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/SDGReport">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">SDG Report</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/empowermentLine">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Empowerment Line</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/annualPlan">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Annual Plan</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/ADPReport">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">ADP Report</span>
+                        <span className="sidebarMenuSubText">Create Family</span>
                       </a>
                     </li>
                   </ul>
                 </li> 
-
-                <li className="sidebarMenuText">
-                  <a href="#Leave" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-calendar" />
-                    Plan
-                  </a>
-                  <ul className="collapse list-unstyled" id="Leave">
-                      <li>
-                        <a href="/annualPlan">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Annual Plan</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/monthlyPlan">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">monthlyPlan</span>
-                        </a>
-                      </li>                    
-                      
-                  </ul>
-                </li> 
-
-               
-
-              
-
-               {/* <li>
-                  <a href="#User" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-users" />
-                    User Management
-                  </a>
-                  <ul className="collapse list-unstyled" id="User">
-                    <li>
-                      <a href="/admin/createUser">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Add New User</span>
-                      </a>
-                    </li> 
-                    <li>
-                      <a href="/admin/UMRolesList">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Add Role</span>
-                      </a>
-                    </li>                  
-                    <li>
-                      <a href="/admin/UMListOfUsers">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">List Of Users</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>*/}
-
-                <li className="sidebarMenuText">
-                  <a href="#Access" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-user-circle" />
-                    Access Management
-                  </a>
-                  <ul className="collapse list-unstyled" id="Access">
-                    <li>
-                      <a href="/admin/AddModuleFacility">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuText">Add Module Facility</span>
-                      </a>
-                    </li> 
-                    <li>
-                      <a href="/admin/AssignPermissionToModule"> 
-                        <i className="fa fa-circle-o" /><span className="sidebarMenuText">Assign Permissions</span>
-                      </a>
-                    </li>    
-                  </ul>
-                </li>                    
               </ul>
             </nav>
           </div>

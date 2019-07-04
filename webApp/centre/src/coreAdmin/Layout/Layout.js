@@ -9,7 +9,7 @@ import Footer                                     from '../common/footer/Footer.
 import Dashboard                                  from '../dashboard/Dashboard.js'
 import Leftsidebar                                from '../common/leftSidebar/Leftsidebar.js'
 import Rightsidebar                               from '../common/rightSidebar/Rightsidebar.js'
-
+/*
 import UMListOfUsers                              from '../userManagement/UM/UMListOfUsers.js';
 import EditUserProfile                            from '../userManagement/UM/EditUserProfile.js';
 import UMRolesList                                from '../userManagement/Roles/UMRolesList.js';
@@ -18,20 +18,13 @@ import ViewTemplates                              from '../NotificationManagemen
 
 import AddModuleFacility                          from '../accessManagement/AddModuleFacility.js';
 import AssignPermissionToModules                  from '../accessManagement/AssignPermissionToModules.js';
-
-import Centre                                     from '../../coreAdmin/masterData/centre/Centre.js';
+*/
 import Family                                     from '../../coreAdmin/masterData/family/Family.js';
 import Beneficiary                                from '../../coreAdmin/masterData/beneficiary/Beneficiary.js';
-import SectorAndActivity                          from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
-import bulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/bulkUpload/bulkUpload.js';
-import centreDetail                               from '../../coreAdmin/masterData/centreDetail/centreDetail.js';
 
-import SDGReport                                  from '../../coreAdmin/masterData/SDGReport/SDGReport.js';
-import EmpowermentLine                            from '../../coreAdmin/masterData/EmpowermentLine/EmpowermentLine.js';
-import ADPReport                                  from '../../coreAdmin/masterData/ADPReport/ADPReport.js';
-
-import AnnualPlan                                 from "../../centres/annualPlan/AnnualPlan.js";
-import MonthlyPlan                                from "../../centres/monthlyPlan/MonthlyPlan.js";
+import Activity                                   from "../../centres/activity/createActivityReport/Activity.js";
+import ViewActivity                               from "../../centres/activity/viewActivity/ViewActivity.js";
+import AnnualPlan                                 from "../../centres/plan/annualPlan/AnnualPlan.js";
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";*/
 
 
@@ -76,29 +69,13 @@ class Layout extends Component{
                 <Router>
                   <Switch>
                     <Route path="/" component={Dashboard} exact />
-                  {/*Admin Routes*/}
-                    <Route path="/umlistofusers"        component={UMListOfUsers}   exact />
-                    <Route path="/umroleslist"          component={UMRolesList}     exact />
-                    <Route path="/edituserprofile"      component={EditUserProfile} exact />
-                    <Route path="/ViewTemplates"        component={ViewTemplates}   exact />
-                    <Route path="/companysetting"       component={CompanySetting}  exact />
-                  {/*Access Management*/}
-                    <Route path="/admin/AddModuleFacility"            exact strict component={ AddModuleFacility } />
-                    <Route path="/admin/AssignPermissionToModule"     exact strict component={ AssignPermissionToModules } />
                   {/*Master Data*/}
-                    <Route path="/centre"                              exact strict component={ Centre } />
                     <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
                     <Route path="/family"                              exact strict component={ Family } />
-                    <Route path="/sectorandactivity"                   exact strict component={ SectorAndActivity } />
-                    <Route path="/bulkUpload"                          exact strict component={ bulkUpload } />
-                     /*Reports Routes*/
-                    <Route path="/SDGReport"                          exact strict component={ SDGReport } />
-                    <Route path="/empowermentLine"                    exact strict component={ EmpowermentLine } />
-                    <Route path="/ADPReport"                          exact strict component={ ADPReport } />
-                    /*Plans Routes*/
-                    <Route path="/annualPlan"                         exact strict component={ AnnualPlan } />
-                    <Route path="/centreDetail"                        exact strict component={ centreDetail } />
-                    <Route path="/monthlyPlan"                        exact strict component={ MonthlyPlan } />
+                   {/*Plans Routes*/}
+                    <Route path="/plan"                         exact strict component={ AnnualPlan } />
+                    <Route path="/Activity"                         exact strict component={ Activity } />
+                    <Route path="/viewActivity"                         exact strict component={ ViewActivity } />
                   </Switch>        
                 </Router>
               </div>
