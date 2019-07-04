@@ -35,15 +35,15 @@ class centreDetail extends Component{
       "blockCovered"             :"",
       "centreDetailArray"        :[],
       "shown"                    : true,
-      tabtype                     : "location",
-      fields                      : {},
-      errors                      : {},
-      listofStates                : [],
-      listofDistrict              : [],
-      listofBlocks                : [],
-      listofVillages              : [],
-      selectedVillages            : [],
-      twoLevelHeader              : {
+      "tabtype"                     : "location",
+      "fields"                      : {},
+      "errors"                      : {},
+      "listofStates"                : [],
+      "listofDistrict"              : [],
+      "listofBlocks"                : [],
+      "listofVillages"              : [],
+      "selectedVillages"            : [],
+      "twoLevelHeader"              : {
         apply                     : true,
         firstHeaderData           : [
                                       {
@@ -60,21 +60,20 @@ class centreDetail extends Component{
                                       },
                                     ]
       },
-      tableHeading                : {
+      "tableHeading"                : {
         type                      : "Type of Center",
         centerName                : "Name of Center",
         address                   : "Address",
-        centreInchargeName        : 'Name',
-        centreInchargeContact     : 'Contact',
-        centreInchargeEmail       : 'Email',
-        MISCoordinatorName        : 'Name',
-        MISCoordinatorContact     : 'Contact',
-        MISCoordinatorEmail       : 'Email',
+        centerInchargename        : "Name",
+        centerInchargemobile      : "Contact",
+        centerInchargeemail       : "Email",
+        misCoordinatorname        : "Name",
+        misCoordinatormobile      : "Contact",
+        misCoordinatoremail       : "Email",
         actions                   : 'Action',
       },
-      startRange : 0,
-      limitRange : 1,
-      // dataCount  : 0,
+      "startRange"                  : 0,
+      "limitRange"                  : 10,
     }
     this.changeTab = this.changeTab.bind(this); 
   }
@@ -105,14 +104,7 @@ class centreDetail extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    // console.log('nextProps',nextProps);
-    if(nextProps.BasicInfoId){
-       if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
-        this.setState({
-         academicData:nextProps.BasicInfoId.academicsInfo
-        })
-      }
-    }
+    
   }
 
   isNumberKey(evt){
@@ -137,7 +129,7 @@ class centreDetail extends Component{
       return true;
     }
   }
-  SubmitAcademics(event){
+  Submit(event){
     event.preventDefault();
     var academicArray=[];
     var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
@@ -158,12 +150,12 @@ class centreDetail extends Component{
       "districtsCovered"          : districtsCovered,
       "blocksCovered"             : blocksCovered,
       "villagesCovered"           : this.state.selectedVillages,
-      "centreInchargeName"        : this.refs.centreInchargeName.value,
-      "centreInchargeContact"     : this.refs.centreInchargeContact.value,
-      "centreInchargeEmail"       : this.refs.centreInchargeEmail.value,
-      "MISCoordinatorName"        : this.refs.MISCoordinatorName.value,
-      "MISCoordinatorContact"     : this.refs.MISCoordinatorContact.value,
-      "MISCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
+      "centerInchargename"        : this.refs.centreInchargeName.value,
+      "centerInchargemobile"      : this.refs.centreInchargeContact.value,
+      "centerInchargeemail"       : this.refs.centreInchargeEmail.value,
+      "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
+      "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
+      "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
     };
     // console.log("centreDetail",centreDetail);
     let fields = {};
@@ -182,13 +174,15 @@ class centreDetail extends Component{
     fields["districtCovered"] = "";
     fields["blockCovered"] = "";
 
-    console.log('centreDetail',centreDetail);
+    // console.log('centreDetail',centreDetail);
     axios.post('/api/centers',centreDetail)
     .then(function(response){
       swal({
         title : response.data,
         text  : response.data
       });
+      this.getData(this.state.startRange, this.state.limitRange);
+      
     })
     .catch(function(error){
       
@@ -219,6 +213,40 @@ class centreDetail extends Component{
   }
 
   componentDidMount() {
+    var editId = this.props.match.params;
+    console.log('editId============',editId);
+    axios({
+        method: 'get',
+        url: '/api/centers/'+editId.id,
+      }).then((response)=> {
+        
+        var editData = response.data[0];
+        console.log('editData',editData);
+        this.setState({
+          "typeOfCentre"             : editData.type,
+          "nameOfCentre"             : editData.centerName,
+          "address"                  : editData.address,
+          "state"                    : editData.state,
+          "district"                 : editData.district,
+          "pincode"                  : editData.pincode,
+          "centreInchargeName"       : editData.centerInchargename,
+          "centreInchargeContact"    : editData.centerInchargemobile,
+          "centreInchargeEmail"      : editData.centerInchargeemail,
+          "MISCoordinatorName"       : editData.misCoordinatorname,
+          "MISCoordinatorContact"    : editData.misCoordinatormobile,
+          "MISCoordinatorEmail"      : editData.misCoordinatoremail,
+          "districtCovered"          :"",
+          "blockCovered"             :"",
+        },()=>{
+          // console.log('state', this.state);
+        });
+      }).catch(function (error) {
+        // console.log('error', error);
+      });
+
+
+
+
     var data = {
       limitRange : 0,
       startRange : 1,
@@ -239,12 +267,16 @@ class centreDetail extends Component{
         method: 'get',
         url: '/api/centers/list',
       }).then((response)=> {
-        console.log('tableData', response.data);
+        // console.log('tableData', response.data);
         var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-          console.log('tableData ======', tableData);
+          // console.log('tableData ======', tableData);
         this.setState({
           dataCount : tableData.length,
           tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+          editUrl   : this.props.match.params
+          // tableData : [],
+        },()=>{
+          // console.log('editUrl', this.state.editUrl);
         });
       }).catch(function (error) {
         console.log('error', error);
@@ -256,7 +288,25 @@ class centreDetail extends Component{
       })
 
   }
+  getData(startRange, limitRange){
+    axios({
+        method: 'get',
+        url: '/api/centers/list',
+      }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
 
+        this.setState({
+          tableData : tableData.slice(startRange, limitRange),
+        });
+      }).catch(function (error) {
+        console.log('error', error);
+      });
+
+      var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
+      this.setState({
+        listofStates : listofStates
+      })
+  }
   componentWillUnmount(){
       $("script[src='/js/adminLte.js']").remove();
       $("link[href='/css/dashboard.css']").remove();
@@ -344,10 +394,13 @@ class centreDetail extends Component{
         this.setState({
           selectedVillages : selectedVillages
         },()=>{
-          console.log('selectedVillages',this.state.selectedVillages);
+          // console.log('selectedVillages',this.state.selectedVillages);
         });
       }
     });      
+  }
+  edit(id){
+    this.props.history.push('/centreDetail/'+id);
   }
   changeTab = (data)=>{
     this.setState({
@@ -453,7 +506,7 @@ class centreDetail extends Component{
             )     
           }
         ]
-        console.log('dataCount', this.state.dataCount, 'tableData', this.state.tableData);
+        // console.log('dataCount', this.state.dataCount, 'tableData', this.state.tableData);
     return (
       <div className="container-fluid">
         <div className="row">
@@ -576,7 +629,7 @@ class centreDetail extends Component{
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-university fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text" className="form-control inputBox nameParts" name="centreInchargeEmail"  value={this.state.centreInchargeEmail} placeholder="" ref="centreInchargeEmail" value={this.state.UniversityName} onChange={this.handleChange.bind(this)}/>
+                                <input type="text" className="form-control inputBox nameParts" name="centreInchargeEmail"  value={this.state.centreInchargeEmail} placeholder="" ref="centreInchargeEmail" onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.centreInchargeEmail}</div>
                             </div>
@@ -729,15 +782,17 @@ class centreDetail extends Component{
                           </table> 
                         </div>     
                         <div className="col-lg-12">
-                          <br/><button className=" col-lg-2 btn submit mt pull-right"onClick={this.SubmitAcademics.bind(this)}> Submit </button>
+                          <br/><button className=" col-lg-2 btn submit mt pull-right"onClick={this.Submit.bind(this)}> Submit </button>
                         </div>                          
                       </form>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
-                          tableData={this.state.tableData}
                           dataCount={this.state.dataCount}
+                          tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          edit={this.edit.bind(this)}
                         />
                       </div>
                     </div>

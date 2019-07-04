@@ -10,10 +10,7 @@
 }
 .paginationAdminWrap{
   text-align: center !important;
-  /*margin-top: -15px;*/
   width: 100%;
-/*  overflow-x: auto; 
-  white-space: nowrap;*/
 }
 .paginationAdminOES > li > a{
   margin-right: 5px !important;
@@ -23,18 +20,15 @@
     display: inline-block;
     margin-left: 0 !important;
     font-size: 10px;
-    /*background: #333;*/
 }
 .queDataCircle p{
-  /*background: #456;*/
   height: 100%;
   width: 100%;
 }
-.activeQueDataCircle{
+.activeCircle{
   background: #7f7f7f !important;
 }
 .queDataCircle {
-  /* background: #fff; */
   padding-top: 4px;
   font-size: 12px;
   border: 1px solid #e8e6e6 !important;

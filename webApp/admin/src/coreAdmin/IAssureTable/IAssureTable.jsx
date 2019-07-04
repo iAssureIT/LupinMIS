@@ -9,48 +9,56 @@ class IAssureTable extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
+			"dataCount" 				: props && props.dataCount ? props.dataCount : [],
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
-		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
-		    "dataCount" 				: props && props.dataCount ? props.dataCount : 0,
+		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},		    
 		    "reA" 						: /[^a-zA-Z]/g,
 		    "reN" 						: /[^0-9]/g,
 		    "sort" 	  					: true,
 		    "examMasterData2" 			: '',
-		    "activeClass" 				: 'activeQueDataCircle',
+		    "activeClass" 				: 'activeCircle',
 		    "paginationArray" 			: [],
 		    "startRange" 				: 0,
-		    "limitRange" 				: 1,
-		    "activeClass" 				: 'activeQueDataCircle', 		    
+		    "limitRange" 				: 10,
+		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		}
-		console.log('props.dataCount',props);
 		this.deleteExam = this.deleteExam.bind(this);
 	}
 	componentDidMount() {
       $("html,body").scrollTop(0); 
-      this.paginationFunction();
+      
       // this.palindrome('Moam');
       this.setState({
       	tableHeading	: this.props.tableHeading,
-      	tableData 		: this.props.tableData
-      })
+      	tableData 		: this.props.tableData,
+      	dataCount 		: this.props.dataCount,
+      });
+      // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
         this.setState({
             tableData	    : nextProps.tableData,
-            editId 			: nextProps.editId,
+            dataCount 		: nextProps.dataCount,
+        },()=>{
+        	this.paginationFunction();
         })
+        
     }
 	componentWillUnmount(){
     	$("script[src='/js/adminSide.js']").remove();
     	$("link[href='/css/dashboard.css']").remove();
 	}
 
-	edit(e){
-		e.preventDefault();
+	edit(event){
+		event.preventDefault();
 		$("html,body").scrollTop(0);
-		this.setState({'edit': true});
+		// this.setState({'edit': true});
+
+		var id = event.target.id;
+		console.log('id', id);
+		this.props.edit(id);
 	}
     deleteExam(e){
 	  	e.preventDefault();
@@ -279,8 +287,8 @@ class IAssureTable extends Component {
 		this.setState({
 			dataLength : dataLen,
 		},()=>{
-			$('li').removeClass('activeQueDataCircle');
-			$(".queDataCircle:first").addClass('activeQueDataCircle');
+			$('li').removeClass('activeCircle');
+			$(".queDataCircle:first").addClass('activeCircle');
 			const maxRowsPerPage = this.state.limitRange;
 			var paginationNum = dataLength/maxRowsPerPage;
 			var pageCount = Math.ceil(paginationNum) > 20 ? 20 : Math.ceil(paginationNum);
@@ -290,12 +298,12 @@ class IAssureTable extends Component {
 				var countNum = maxRowsPerPage * i;
 				var startRange = countNum - maxRowsPerPage;
 				if(i == 1){
-					var activeClass = 'activeQueDataCircle';
+					var activeClass = 'activeCircle';
 				}else{
 					activeClass = '';
 				}
 				paginationArray.push(
-					<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getQuestionStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+					<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
 				);
 			}
 			if(pageCount>=1){				
@@ -307,7 +315,8 @@ class IAssureTable extends Component {
 			return paginationArray;
 		});
 	}
-	getQuestionStartEndNum(event){		
+	getStartEndNum(event){	
+		console.log('getStartEndNum');	
 		var limitRange = $(event.target).attr('id').split('|')[0];
 		var limitRange2     = parseInt(limitRange);
 		var startRange = parseInt($(event.target).attr('id').split('|')[1]);
@@ -315,10 +324,8 @@ class IAssureTable extends Component {
 		this.setState({
 			startRange:startRange,
 		});
-		$('li').removeClass('activeQueDataCircle');
-		if(limitRange2){
-			 $(event.target).addClass('activeQueDataCircle');
-		}
+		$('li').removeClass('activeCircle');
+		$(event.target).addClass('activeCircle');
 		var counter = $(event.target).text();
 	}
 	setLimit(event){
@@ -359,8 +366,8 @@ class IAssureTable extends Component {
 			this.setState({
 				dataLength : (beforeDataLength+ 20) > this.state.dataCount ? this.state.dataCount : (beforeDataLength+ 20),
 			},()=>{
-				$('li').removeClass('activeQueDataCircle');
-				$(".queDataCircle:first").addClass('activeQueDataCircle');
+				$('li').removeClass('activeCircle');
+				$(".queDataCircle:first").addClass('activeCircle');
 				const maxRowsPerPage = this.state.limitRange;
 				var dataLength = this.state.dataLength;
 				var paginationNum = parseInt(dataLength)/maxRowsPerPage;
@@ -372,12 +379,12 @@ class IAssureTable extends Component {
 					var countNum = maxRowsPerPage * i;
 					var startRange = countNum - maxRowsPerPage;
 					if(i == beforeDataLength+1){
-						var activeClass = 'activeQueDataCircle';
+						var activeClass = 'activeCircle';
 					}else{
 						activeClass = '';
 					}
 					paginationArray.push(
-						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getQuestionStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
 					);
 				}
 				if(pageCount>=1){				
@@ -395,8 +402,8 @@ class IAssureTable extends Component {
 		this.setState({
 			dataLength : beforeDataLength > 20 ? beforeDataLength- this.state.paginationArray.length : 0,
 		},()=>{
-			$('li').removeClass('activeQueDataCircle');
-			$(".queDataCircle:first").addClass('activeQueDataCircle');
+			$('li').removeClass('activeCircle');
+			$(".queDataCircle:first").addClass('activeCircle');
 			const maxRowsPerPage = this.state.limitRange;
 			var dataLength = this.state.dataLength;
 			var paginationNum = parseInt(dataLength)/maxRowsPerPage;
@@ -408,12 +415,12 @@ class IAssureTable extends Component {
 					var countNum = maxRowsPerPage * i;
 					var startRange = countNum - maxRowsPerPage;
 					if(i == beforeDataLength-39 || i == 1){
-						var activeClass = 'activeQueDataCircle';
+						var activeClass = 'activeCircle';
 					}else{
 						activeClass = '';
 					}
 					paginationArray.push(
-						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getQuestionStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
 					);
 				}
 				if(pageCount>=1){				
@@ -431,8 +438,8 @@ class IAssureTable extends Component {
 		this.setState({
 			dataLength : 20,
 		},()=>{
-			$('li').removeClass('activeQueDataCircle');
-			$(".queDataCircle:first").addClass('activeQueDataCircle');
+			$('li').removeClass('activeCircle');
+			$(".queDataCircle:first").addClass('activeCircle');
 			const maxRowsPerPage = this.state.limitRange;
 			var dataLength = this.state.dataLength;
 			var paginationNum = parseInt(dataLength)/maxRowsPerPage;
@@ -444,12 +451,12 @@ class IAssureTable extends Component {
 					var countNum = maxRowsPerPage * i;
 					var startRange = countNum - maxRowsPerPage;
 					if(i == 1){
-						var activeClass = 'activeQueDataCircle';
+						var activeClass = 'activeCircle';
 					}else{
 						activeClass = '';
 					}
 					paginationArray.push(
-						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getQuestionStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
 					);
 				}
 				if(pageCount>=1){				
@@ -467,8 +474,8 @@ class IAssureTable extends Component {
 		this.setState({
 			dataLength : this.state.dataCount,
 		},()=>{
-			$('li').removeClass('activeQueDataCircle');
-			$(".queDataCircle:first").addClass('activeQueDataCircle');
+			$('li').removeClass('activeCircle');
+			$(".queDataCircle:first").addClass('activeCircle');
 			const maxRowsPerPage = this.state.limitRange;
 			var dataLength = this.state.dataLength;
 			var paginationNum = parseInt(dataLength)/maxRowsPerPage;
@@ -480,12 +487,12 @@ class IAssureTable extends Component {
 					var countNum = maxRowsPerPage * i;
 					var startRange = countNum - maxRowsPerPage;
 					if(i == 1 || i == (this.state.dataCount - 20)+1){
-						var activeClass = 'activeQueDataCircle';
+						var activeClass = 'activeCircle';
 					}else{
 						activeClass = '';
 					}
 					paginationArray.push(
-						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getQuestionStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
 					);
 				}
 				if(pageCount>=1){				
@@ -498,7 +505,6 @@ class IAssureTable extends Component {
 		});
     }
 	render() {
-		console.log('dataCount in table',this.state.dataCount);
 		// var x = Object.keys(this.state.tableHeading).length ;
 		// var y = 4;
 		// var z = 2;
@@ -509,7 +515,6 @@ class IAssureTable extends Component {
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 						<select onChange={this.setLimit.bind(this)} value={this.state.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12  noPadding  form-control">
 							<option value="Not Selected" disabled>Select Limit</option>
-							<option value={1}>1</option>
 							<option value={10}>10</option>
 							<option value={25}>25</option>
 							<option value={50}>50</option>
@@ -598,7 +603,7 @@ class IAssureTable extends Component {
 													}
 													<td className="textAlignCenter">
 														<span>
-															<i className="fa fa-pencil" title="Edit" id={value.id} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
+															<i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
 															{this.props.editId && this.props.editId == value.id? null :<i className={"fa fa-trash redFont "+value.id} id={value.id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal"+value.id}></i>}
 														</span>
 														<div className="modal fade col-lg-12 col-md-12 col-sm-12 col-xs-12" id={"showDeleteModal"+value.id} role="dialog">

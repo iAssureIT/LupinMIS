@@ -98,6 +98,7 @@ class Layout extends Component{
                     /*Plans Routes*/
                     <Route path="/annualPlan"                         exact strict component={ AnnualPlan } />
                     <Route path="/centreDetail"                        exact strict component={ centreDetail } />
+                    <Route path="/centreDetail/:id"                        exact strict component={ centreDetail } />
                     <Route path="/monthlyPlan"                        exact strict component={ MonthlyPlan } />
                   </Switch>        
                 </Router>
