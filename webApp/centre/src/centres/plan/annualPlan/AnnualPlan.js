@@ -2,9 +2,16 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import swal                   from 'sweetalert';
+import _                      from 'underscore';
 
 import 'react-table/react-table.css';
 import "./AnnualPlan.css";
+
+axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 
 class AnnualPlan extends Component{
   
@@ -16,6 +23,7 @@ class AnnualPlan extends Component{
       "center"              :"",
       "sector_id"           :"",
       "sectorName"          :"",
+      "subActivity"         :"",
       "activity"            :"",
       "physicalUnit"        :"",
       "unitCost"            :"",
@@ -36,21 +44,61 @@ class AnnualPlan extends Component{
       "Months"              :["January","February","March","April","May","June","July","August","September","October","November","December"],
       "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
       shown                 : true,
-            tabtype : "location",
-
       fields: {},
-      errors: {}
+      errors: {},
+       "twoLevelHeader"              : {
+        apply                     : true,
+        firstHeaderData           : [
+                                      {
+                                          heading : '',
+                                          mergedColoums : 10
+                                      },
+                                      {
+                                          heading : 'Source of Fund',
+                                          mergedColoums : 7
+                                      },
+                                   /*   {
+                                          heading : 'MIS Coordinator',
+                                          mergedColoums : 3
+                                      },*/
+                                    ]
+      },
+      "tableHeading"                : {
+        month                      : "Month",
+        sectorName                 : "Sector",
+        activity                   : "Activity",
+        subActivity                : "Sub-Activity",
+        unit                       : "Unit",
+        physicalUnit               : "Physical Unit",
+        unitCost                   : "Unit Cost",
+        totalBudget                : "Total Cost",
+        noOfBeneficiaries          : "No. Of Beneficiaries",
+        LHWRF                      : "LHWRF",
+        NABARD                     : "NABARD",
+        bankLoan                   : "Bank Loan",
+        govtscheme                 : "Govt. Scheme",
+        directCC                   : "Direct Community Contribution",
+        indirectCC                 : "Indirect Community Contribution",
+        other                      : "Other",
+        actions                     : 'Action',
+      },
+       "tableObjects"              : {
+        apiLink                   : '/api/annualPlans/'
+      },
+      "startRange"                  : 0,
+      "limitRange"                  : 10,
+      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
     }
-    this.changeTab = this.changeTab.bind(this); 
+      
   }
  
   handleChange(event){
     event.preventDefault();
     this.setState({
-      "month"                : this.refs.month.value,          
+      "month"               : this.refs.month.value,          
       "sectorName"          : this.refs.sectorName.value,
       "year"                : this.refs.year.value,          
-     /*      "activity"            : this.refs.activity.value,
+      "activity"            : this.refs.activity.value,
       "physicalUnit"        : this.refs.physicalUnit.value,
       "unitCost"            : this.refs.unitCost.value,
       "totalBudget"         : this.refs.totalBudget.value,
@@ -62,7 +110,7 @@ class AnnualPlan extends Component{
       "directCC"            : this.refs.directCC.value,
       "indirectCC"          : this.refs.indirectCC.value,
       "other"               : this.refs.other.value,
-      "remark"              : this.refs.remark.value,*/
+      "remark"              : this.refs.remark.value,
     /*  "center"              : this.refs.center.value,
       "sector_id"           : this.refs.sector_id.value,*/
     });
@@ -79,47 +127,20 @@ class AnnualPlan extends Component{
       });
     }*/
   }
-
   componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps);
-    if(nextProps.BasicInfoId){
-       if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
-        this.setState({
-         academicData:nextProps.BasicInfoId.academicsInfo
-        })
-      }
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      // this.edit(editId);
     }
   }
 
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-  isTextKey(evt)
-  {
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
- 
-  }
   SubmitAnnualPlan(event){
     event.preventDefault();
-    var academicArray=[];
     var id2 = this.state.uID;
-    // if (this.validateForm()) {
+    if (this.validateFormReq()) {
     var annualPlanValues= 
     {
       "year"                : this.refs.year.value,          
@@ -143,24 +164,23 @@ class AnnualPlan extends Component{
     };
 
     let fields = {};
-    fields["year"] = "";
-    fields["month"] = "";
-    // fields["center"] = "";
-    // fields["sector_id"] = "";
-    fields["sectorName"] = "";
-    fields["activity"] = "";
-    fields["physicalUnit"] = "";
-    fields["unitCost"] = "";
-    fields["totalBudget"] = "";
+    fields["year"]              = "";
+    fields["month"]             = "";
+    fields["sectorName"]        = "";
+    fields["activity"]          = "";
+    fields["physicalUnit"]      = "";
+    fields["unitCost"]          = "";
+    fields["totalBudget"]       = "";
     fields["noOfBeneficiaries"] = "";
-    fields["LHWRF"] = "";
-    fields["NABARD"] = "";
-    fields["bankLoan"] = "";
-    fields["govtscheme"] = "";
-    fields["directCC"] = "";
-    fields["indirectCC"] = "";
-    fields["other"] = "";
-    fields["remark"] = "";
+    fields["LHWRF"]             = "";
+    fields["NABARD"]            = "";
+    fields["bankLoan"]          = "";
+    fields["govtscheme"]        = "";
+    fields["directCC"]          = "";
+    fields["indirectCC"]        = "";
+    fields["other"]             = "";
+    fields["remark"]            = "";
+   
     this.setState({
       "year"                :"",
       "month"                :"",
@@ -182,23 +202,172 @@ class AnnualPlan extends Component{
       "remark"              :"",
       "fields":fields
     });
-      axios
-      .post('https://jsonplaceholder.typicode.com/posts',{annualPlanValues})
+    console.log("annualPlanValues",annualPlanValues);
+     axios.post('/api/annualPlans/',annualPlanValues)
+    .then(function(response){
+      swal({
+        title : response.data,
+        text  : response.data
+      });
+            console.log("response"+response.data);
+
+      this.getData(this.state.startRange, this.state.limitRange);
+      
+    })
+    .catch(function(error){
+                  console.log("error"+error);
+
+        });
+      }
+  }
+  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/annualPlans/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+
+      this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+   Update(event){
+    event.preventDefault();
+    if (this.validateForm() && this.validateFormReq()) {
+     /* var academicArray=[];
+      var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+
+      var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
+      var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});*/
+
+      var id2 = this.state.uID;
+        /*    if (this.validateForm()) {*/    
+       var annualPlanValues= 
+    {
+      "year"                : this.refs.year.value,          
+      "month"               : this.refs.month.value,          
+      // "center"              : this.refs.center.value,
+      // "sector_id"           : this.refs.sector_id.value,
+      "sectorName"          : this.refs.sectorName.value,
+      "activity"            : this.refs.activity.value,
+      "physicalUnit"        : this.refs.physicalUnit.value,
+      "unitCost"            : this.refs.unitCost.value,
+      "totalBudget"         : this.refs.totalBudget.value,
+      "noOfBeneficiaries"   : this.refs.noOfBeneficiaries.value,
+      "LHWRF"               : this.refs.LHWRF.value,
+      "NABARD"              : this.refs.NABARD.value,
+      "bankLoan"            : this.refs.bankLoan.value,
+      "govtscheme"          : this.refs.govtscheme.value,
+      "directCC"            : this.refs.directCC.value,
+      "indirectCC"          : this.refs.indirectCC.value,
+      "other"               : this.refs.other.value,
+      "remark"              : this.refs.remark.value,
+    };
+
+    let fields = {};
+    fields["year"]              = "";
+    fields["month"]             = "";
+    fields["sectorName"]        = "";
+    fields["activity"]          = "";
+    fields["physicalUnit"]      = "";
+    fields["unitCost"]          = "";
+    fields["totalBudget"]       = "";
+    fields["noOfBeneficiaries"] = "";
+    fields["LHWRF"]             = "";
+    fields["NABARD"]            = "";
+    fields["bankLoan"]          = "";
+    fields["govtscheme"]        = "";
+    fields["directCC"]          = "";
+    fields["indirectCC"]        = "";
+    fields["other"]             = "";
+    fields["remark"]            = "";
+   
+  
+      // console.log('centreDetail',centreDetail);
+      axios.post('/api/annualPlans',annualPlanValues)
       .then(function(response){
-        console.log(response);
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+        this.getData(this.state.startRange, this.state.limitRange);
+        
       })
       .catch(function(error){
-        console.log(error);
+        
       });
-      console.log("annualPlanValues =>",annualPlanValues);
-      academicArray.push(annualPlanValues);
-      console.log("add value",annualPlanValues);      
-      alert("Data inserted Successfully!")
-      // }
+     this.setState({
+        "year"                :"",
+        "month"                :"",
+        "center"              :"",
+        "sector_id"           :"",
+        "sectorName"          :"",
+        "activity"            :"",
+        "physicalUnit"        :"",
+        "unitCost"            :"",
+        "totalBudget"         :"",
+        "noOfBeneficiaries"   :"",
+        "LHWRF"               :"",
+        "NABARD"              :"",
+        "bankLoan"            :"",
+        "govtscheme"          :"",
+        "directCC"            :"",
+        "indirectCC"          :"",
+        "other"               :"",
+        "remark"              :"",
+        "fields":fields
+      });
     }
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
+  }
+
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+    if (!fields["sectorName"]) {
+      formIsValid = false;
+      errors["sectorName"] = "This field is required.";
+    }     
+     if (!fields["activity"]) {
+      formIsValid = false;
+      errors["activity"] = "This field is required.";
+    }     
+      
+    this.setState({
+      errors: errors
+    });
+    return formIsValid;
+  }
+
+  componentDidMount() {
+    console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+  
+      axios({
+        method: 'get',
+        url: '/api/annualPlans/list',
+      }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+        this.setState({
+          dataCount : tableData.length,
+          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+          editUrl   : this.props.match.params
+        },()=>{
+          
+        });
+      }).catch(function (error) {
+        console.log('error', error);
+      });
     }
     toglehidden()
     {
@@ -206,102 +375,43 @@ class AnnualPlan extends Component{
          shown: !this.state.shown
         });
     }
-
-    changeTab = (data)=>{
-      this.setState({
-        tabtype : data,
-      })
-      console.log("tabtype",this.state.tabtype);
-    }
-
-
-    render() {
-      var shown = {
-        display: this.state.shown ? "block" : "none"
-      };
-      
-      var hidden = {
-        display: this.state.shown ? "none" : "block"
-      }
+    edit(id){
+      axios({
+        method: 'get',
+        url: '/api/annualPlans/'+id,
+        }).then((response)=> {
+        var editData = response.data[0];
+        console.log('editData',editData);
+        this.setState({
+          "typeOfCentre"             : editData.type,
+          "nameOfCentre"             : editData.centerName,
+          "address"                  : editData.address,
+          "state"                    : editData.state,
+          "district"                 : editData.district,
+          "pincode"                  : editData.pincode,
+          "centreInchargeName"       : editData.centerInchargename,
+          "centreInchargeContact"    : editData.centerInchargemobile,
+          "centreInchargeEmail"      : editData.centerInchargeemail,
+          "MISCoordinatorName"       : editData.misCoordinatorname,
+          "MISCoordinatorContact"    : editData.misCoordinatormobile,
+          "MISCoordinatorEmail"      : editData.misCoordinatoremail,
+          "selectedVillages"         : editData.villagesCovered,
+          "districtCovered"          :"",
+          "blockCovered"             :"",
+          "villagesCovered"          : editData.villagesCovered,
+        });
+      }).catch(function (error) {
+    });
+  }
+  render() {
+    var shown = {
+      display: this.state.shown ? "block" : "none"
+    };
     
-      const data = [{
-      srno: 1,
-      FamilyID: "L000001",
-      NameofBeneficiary: "Priyanka Lewade",
-      BeneficiaryID: "PL0001",
-      },{
-      srno: 2,
-      FamilyID: "B000001",
-      NameofBeneficiary: "Priyanka Bhanvase",
-      BeneficiaryID: "PB0001",
-      }
-      ]
-      const columns = [ 
-      {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        {
-        Header: 'SDG Goal',
-        accessor: 'FamilyID', 
-        }, {
-        Header: 'Sector',
-        accessor: 'NameofBeneficiary', 
-        }, {
-        Header: 'Activity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Sub-Activity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Quantity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Amount',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Beneficiary',
-        accessor: 'noMAp', 
-        },{
-        Header: "Financial Sharing",
-        columns: [
-        {
-          Header: "LHWRF",
-          accessor: "LHWRF"
-        },
-        {
-          Header: "NABARD",
-          accessor: "NABARD"
-        },{
-          Header: "Bank Loan",
-          accessor: "BankLoan"
-        },{
-          Header: "Govt",
-          accessor: "BankLoan"
-        },{
-          Header: "Direct Beneficiary",
-          accessor: "BankLoan"
-        },{
-          Header: "Indirect Beneficiary",
-          accessor: "BankLoan"
-        },
-        ]
-        },
-      
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-3">
-              <div className="col-lg-6" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-             
-            </div>
-            )     
-          }
-        ]
+    var hidden = {
+      display: this.state.shown ? "none" : "block"
+    }
+  
     return (
       <div className="container-fluid">
         <div className="row">
@@ -346,7 +456,7 @@ class AnnualPlan extends Component{
                           </div>
                           <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 " >
-                              <div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i class="fa fa-plus" aria-hidden="true" id="click"></i></div></div>
+                              <div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i className="fa fa-plus" aria-hidden="true" id="click"></i></div></div>
                             </div>
                           </div>
                         </div> 
@@ -443,74 +553,74 @@ class AnnualPlan extends Component{
                               </div>
                             </div>
                             <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12 contentDiv input-group inputBox-main " id="NABARD" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 contentDiv input-group inputBox-main " id="unit" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="unit" placeholder=""ref="unit" value={this.state.unit} onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row  noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv  input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv  input-group inputBox-main" id="physicalUnit" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="physicalUnit" placeholder=""ref="physicalUnit" value={this.state.physicalUnit} onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>  
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="unitCost" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="unitCost" placeholder=""ref="unitCost" value={this.state.unitCost} onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>  
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="totalBudget" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>  
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="noOfBeneficiaries" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="noOfBeneficiaries" placeholder=""ref="noOfBeneficiaries" value={this.state.noOfBeneficiaries} onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>  
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="LHWRF" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="LHWRF" placeholder=""ref="LHWRF" value={this.state.LHWRF} onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12  noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="NABARD" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="NABARD" placeholder=""ref="NABARD" value={this.state.NABARD} onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
                               <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                                <input type="text" className="form-control inputBoxAP nameParts" name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan} onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="govtscheme" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="govtscheme" placeholder=""ref="govtscheme" value={this.state.govtscheme} onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="directCC" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="directCC" placeholder=""ref="directCC" value={this.state.directCC} onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="indirectCC" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" value={this.state.indirectCC} onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
                             <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="other" >
+                                <input type="text" className="form-control inputBoxAP nameParts" name="other" placeholder=""ref="other" value={this.state.other} onChange={this.handleChange.bind(this)}/>                              </div>
                             </div>
-                            
+                              <div className="errorMsg">{this.state.errors.other}</div>
                           </div> 
                         </div><br/>
                         <div className="row">
                           <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
                             <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
                               <label className="formLable"></label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                                <input type="text" className="form-control inputBox nameParts" name="directCC" placeholder="Remark" ref="directCC" value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="remark" >
+                                <input type="text" className="form-control inputBox nameParts" name="remark" placeholder="Remark" ref="remark" value={this.state.remark}  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.directCC}</div>
+                              <div className="errorMsg">{this.state.errors.remark}</div>
                             </div>
                           </div> 
                         </div><br/>
 
                       
-                        <div className="">
+                      {/*  <div className="">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  ht50 ">
                             <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 row">
                               <div className="col-lg-12 col-sm-12 col-xs-12 subActDiv " id="LHWRF" >
@@ -581,10 +691,15 @@ class AnnualPlan extends Component{
                               <div className="errorMsg">{this.state.errors.directCC}</div>
                             </div>
                           </div> 
-                        </div><br/>
+                        </div><br/>*/}
                         
                         <div className="col-lg-12">
-                         <br/><button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit</button>
+                         <br/>{
+                          this.state.editId ? 
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
+                          :
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
+                        }
                         </div>
                       </form>
                     </div>
@@ -592,16 +707,18 @@ class AnnualPlan extends Component{
                       <div className="annualHead"><h5>{this.state.month !== "All Months" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                       </div>
                     </div>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >  
-                      <ReactTable 
-                        data            = {data}
-                        columns         = {columns}
-                        sortable        = {true}
-                        defaultPageSiz  = {5}
-                        minRows         = {3} 
-                        className       = {"-striped -highlight"}
-                        showPagination  = {true}
-                      />
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
+                      <div className="row">  
+                       <IAssureTable 
+                          tableHeading={this.state.tableHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          dataCount={this.state.dataCount}
+                          tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          tableObjects={this.state.tableObjects}
+
+                        />
+                      </div>
                     </div> 
                   </div>
               </div>

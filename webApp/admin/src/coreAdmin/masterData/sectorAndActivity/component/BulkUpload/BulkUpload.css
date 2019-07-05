@@ -369,10 +369,6 @@ label {
 }
 
 
-.csvUpld{
-  margin-top: -120px;
-  margin-left: 99px;
-}
 .uploadQuesinst{
   font-family:'Montserrat' !important;
   letter-spacing: .5px;
@@ -382,14 +378,14 @@ label {
   list-style: none;
 }
 
-.csvDLWrap {
-  padding: 0px;
+.csvDLWrapBulk {
+    padding: 0px;
     /* margin-top: 15px; */
     padding-top: 2px;
     padding-bottom: -4px;
     /* margin-bottom: 12px; */
     background-color: #fff;
-    height: 19em;
+    height: 19.5em;
     margin-bottom: 20px;
     box-shadow: 0px 3px 8px 1px #DDD;
 }
@@ -481,7 +477,7 @@ tr.odd {
    content: "";
 }
 .masterDataTab::after {
-   width: 0;
+   width: 0;  
    height: 0;
    border-top: 20px inset transparent;
    border-bottom: 20px inset transparent;
@@ -493,10 +489,8 @@ tr.odd {
    content: "";
    z-index: 1;
 }*/
-.csvimg {
-    width: 73px;
-    margin-left: -20px;
-    margin-top: 21px;
+.csvimgBulk{
+    width: 80%;
 }
 
 .notClickable{

@@ -2,9 +2,16 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import swal                   from 'sweetalert';
+import _                      from 'underscore';
 
 import 'react-table/react-table.css';
 import "./NewBeneficiary.css";
+
+axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 
 class NewBeneficiary extends Component{
   
@@ -12,33 +19,45 @@ class NewBeneficiary extends Component{
     super(props);
    
     this.state = {
-      "QualificationLevel"  :"",
-      "Qualification"       :"",
-      "Specialization"      :"",
-      "Mode"                :"",
-      "Grade"               :"",
-      "PassoutYear"         :"",
-      "CollegeName"         :"",
-      "UniversityName"      :"",
-      "City"                :"",
-      "State"               :"",
-      "Country"             :"",
-      "academicData"          :[],
+      
       "uID"                 :"",
       "shown"                 : true,
-            "tabtype" : "location",
-
       fields: {},
-      errors: {}
+      errors: {},
+     "twoLevelHeader"              : {
+        apply                     : false,
+        firstHeaderData           : [
+                                      {
+                                          heading : '',
+                                          mergedColoums : 10
+                                      },
+                                      {
+                                          heading : 'Source of Fund',
+                                          mergedColoums : 7
+                                      },
+                                   /*   {
+                                          heading : 'MIS Coordinator',
+                                          mergedColoums : 3
+                                      },*/
+                                    ]
+      },
+      "tableHeading"                : {
+        familyID                    : "Family ID",
+        beneficariesId              : "Beneficiary ID",
+        nameofbeneficaries          : "Name of Beneficiary",
+        actions                     : 'Action',
+      },
+      "startRange"                  : 0,
+      "limitRange"                  : 10,
+      "editId"                      : "",/*this.props.match.params ? this.props.match.params.id : ''*/
     }
-        this.changeTab = this.changeTab.bind(this); 
-
+      
   }
  
   handleChange(event){
     event.preventDefault();
     this.setState({
-      "QualificationLevel"   : this.refs.QualificationLevel.value,          
+     /* "QualificationLevel"   : this.refs.QualificationLevel.value,          
       "Qualification"        : this.refs.Qualification.value,          
       "Specialization"       : this.refs.Specialization.value,
       "Mode"                 : this.refs.Mode.value, 
@@ -48,7 +67,7 @@ class NewBeneficiary extends Component{
       "City"                 : this.refs.City.value,
       "CollegeName"          : this.refs.CollegeName.value,
       "State"                : this.refs.State.value,
-      "Country"              : this.refs.Country.value,
+      "Country"              : this.refs.Country.value,*/
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -63,16 +82,14 @@ class NewBeneficiary extends Component{
       });
     }*/
   }
-
-  componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps);
-    if(nextProps.BasicInfoId){
-       if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
-        this.setState({
-         academicData:nextProps.BasicInfoId.academicsInfo
-        })
-      }
-    }
+ componentWillReceiveProps(nextProps){
+    /*var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
+    }*/
   }
 
   isNumberKey(evt){
@@ -99,6 +116,7 @@ class NewBeneficiary extends Component{
     }
  
   }
+
   SubmitAcademics(event){
     event.preventDefault();
     var academicArray=[];
@@ -159,24 +177,56 @@ class NewBeneficiary extends Component{
       alert("Data inserted Successfully!")
       }
 
+  }
+  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+
+      this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  
+  componentDidMount() {
+    if(this.state.editId){      
+      this.edit(this.state.editId);
     }
-    componentDidMount() {
-     
+
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+  
+      axios({
+        method: 'get',
+        url: '/api/centers/list',
+      }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+        this.setState({
+          dataCount : tableData.length,
+          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+          editUrl   : this.props.match.params
+        },()=>{
+          
+        });
+      }).catch(function (error) {
+        console.log('error', error);
+      });
     }
     componentWillUnmount(){
         $("script[src='/js/adminLte.js']").remove();
         $("link[href='/css/dashboard.css']").remove();
     }
 
-    changeTab = (data)=>{
-    this.setState({
-      tabtype : data,
-    })
-    console.log("tabtype",this.state.tabtype);
-    }
 
     render() {
-      const data = [{
+      /*const data = [{
       srno: 1,
       FamilyID: "L000001",
       NameofBeneficiary: "Priyanka Lewade",
@@ -213,20 +263,22 @@ class NewBeneficiary extends Component{
             </div>
             )     
           }
-        ]
+        ]*/
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">    
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt " >  
-              <ReactTable 
-                data      = {data}
-                columns     = {columns}
-                sortable    = {true}
-                minRows     = {3} 
-                className       = {"-striped -highlight"}
-                showPagination  = {true}
-              />
+           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
+              <div className="row">  
+               <IAssureTable 
+                  tableHeading={this.state.tableHeading}
+                  twoLevelHeader={this.state.twoLevelHeader} 
+                  dataCount={this.state.dataCount}
+                  tableData={this.state.tableData}
+                  getData={this.getData.bind(this)}
+                  
+                />
+              </div>
             </div> 
           </div>              
         </div>

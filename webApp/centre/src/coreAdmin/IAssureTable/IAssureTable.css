@@ -1,18 +1,16 @@
 .iAssureITtable-bordered > thead > tr > th, .iAssureITtable-bordered > tbody > tr > th, .iAssureITtable-bordered > tfoot > tr > th, .iAssureITtable-bordered > thead > tr > td, .iAssureITtable-bordered > tbody > tr > td, .iAssureITtable-bordered > tfoot > tr > td {
-    border: 1px solid #676767;
+    border: 1px solid #fff6;
 }
 .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #fff;
 }
 .iAssureITtable-bordered{
-  background: #7f7f7f !important;
+  background: #039BE5 !important;
+  border: 1px solid #039BE5;
 }
 .paginationAdminWrap{
   text-align: center !important;
-  /*margin-top: -15px;*/
   width: 100%;
-/*  overflow-x: auto; 
-  white-space: nowrap;*/
 }
 .paginationAdminOES > li > a{
   margin-right: 5px !important;
@@ -22,18 +20,15 @@
     display: inline-block;
     margin-left: 0 !important;
     font-size: 10px;
-    /*background: #333;*/
 }
 .queDataCircle p{
-  /*background: #456;*/
   height: 100%;
   width: 100%;
 }
-.activeQueDataCircle{
+.activeCircle{
   background: #7f7f7f !important;
 }
 .queDataCircle {
-  /* background: #fff; */
   padding-top: 4px;
   font-size: 12px;
   border: 1px solid #e8e6e6 !important;
@@ -44,5 +39,11 @@
   text-align: center;
 }
 .marginTop17{
-	margin-top: 17px;
+  margin-top: 17px;
+}
+.textAlignCenter{
+  text-align: center !important;
+}
+.tempTableHeader{
+  color: #fff;
 }

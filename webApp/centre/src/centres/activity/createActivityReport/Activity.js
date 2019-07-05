@@ -2,7 +2,11 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
-import swal   from 'sweetalert';
+
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import swal                   from 'sweetalert';
+import _                      from 'underscore';
+
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 
@@ -43,10 +47,54 @@ class Activity extends Component{
       "total"               : "",
       shown               : true,
       fields: {},
-      errors: {}
+      errors: {},
+       "twoLevelHeader"              : {
+        apply                     : false,
+        firstHeaderData           : [
+                                      {
+                                          heading : '',
+                                          mergedColoums : 10
+                                      },
+                                      {
+                                          heading : 'Source of  Fund',
+                                          mergedColoums : 7
+                                      },
+                                      {
+                                          heading : 'MIS Coordinator',
+                                          mergedColoums : 3
+                                      },
+                                    ]
+      },
+      "tableHeading"                : {
+        familyID                    : "Family ID",
+        beneficariesId              : "Beneficiary ID",
+        nameofbeneficaries          : "Name of Beneficiary",
+        actions                     : 'Action',
+      },
+      "tableObjects"              : {
+        apiLink                   : '/api/activity/'
+      },
+      "startRange"                  : 0,
+      "limitRange"                  : 10,
+      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
+    
     }
   }
- 
+/*  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/a/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+
+      this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+ */
   handleChange(event){
     event.preventDefault(); 
     this.setState({
@@ -60,7 +108,7 @@ class Activity extends Component{
       "typeofactivity"    : this.refs.typeofactivity.value,
       "activity"          : this.refs.activity.value,
       "subactivity"       : this.refs.subactivity.value,
-      "unit"              : this.refs.unit.value,
+      // "unit"              : this.refs.unit.value,
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
@@ -69,7 +117,6 @@ class Activity extends Component{
       "directCC"          : this.refs.directCC.value,
       "indirectCC"        : this.refs.indirectCC.value,
       "other"             : this.refs.other.value,
-      "total"             : this.refs.total.value,
     });
     var total = parseInt(this.state.unitCost) * parseInt(this.state.quantity)
     this.setState({
@@ -124,7 +171,7 @@ class Activity extends Component{
       "typeofactivity"    : this.refs.typeofactivity.value,
       "activity"          : this.refs.activity.value,
       "subactivity"       : this.refs.subactivity.value,
-      "unit"              : this.state.unit,
+      // "unit"              : this.state.unit,
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
@@ -291,10 +338,62 @@ class Activity extends Component{
      shown: !this.state.shown
     });
   }
-
-  componentWillUnmount(){
-      $("script[src='/js/adminLte.js']").remove();
-      $("link[href='/css/dashboard.css']").remove();
+  componentDidMount() {
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+    var id = this.state.editId;
+    axios({
+      method: 'get',
+      url: '/api/activityReport/'+id,
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+      this.setState({
+        dataCount : tableData.length,
+        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+        editUrl   : this.props.match.params
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  edit(id){
+    axios({
+      method: 'get',
+      url: '/api/activityReport/'+id,
+    }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      this.setState({
+        "dist"              : editData.dist,
+        "block"             : editData.block,
+        "village"           : editData.village,
+        "Date"              : editData.Date,
+        "sector"            : editData.sector,
+        "typeofactivity"    : editData.typeofactivity,
+        "activity"          : editData.activity,
+        "subactivity"       : editData.subactivity,
+        // "unit"              : editData.dist,
+        "unitCost"          : editData.unitCost,
+        "quantity"          : editData.quantity,
+        "totalcost"         : editData.totalcost,
+        "LHWRF"             : editData.LHWRF,
+        "NABARD"            : editData.NABARD,
+        "bankLoan"          : editData.bankLoan,
+        "govtscheme"        : editData.govtscheme,
+        "directCC"          : editData.directCC,
+        "indirectCC"        : editData.indirectCC,
+        "other"             : editData.other,
+        "total"             : editData.total,
+      });
+    }).catch(function (error) {
+    });
   }
 
   render() {
@@ -306,62 +405,7 @@ class Activity extends Component{
       display: this.state.shown ? "none" : "block"
     }
   
-    const data = [{
-    srno: 1,
-    FamilyID: "L000001",
-    NameofBeneficiary: "Priyanka Lewade",
-    BeneficiaryID: "PL0001",
-    },{
-    srno: 2,
-    FamilyID: "B000001",
-    NameofBeneficiary: "Priyanka Bhanvase",
-    BeneficiaryID: "PB0001",
-    }
-    ]
-    const columns = [ 
-    {
-      Header: ' ',
-      accessor: 'Action',
-      Cell: row => 
-        (
-        <div className="actionDiv col-lg-offset-3">
-            <div className=" col-lg-offset-1 checkActivityContainer">
-              <input type="checkbox" name="check1" id="sameCheck" />
-            <span className="Activitycheckmark"></span>
-            </div>
-          </div>
-          )     
-        },
-      {
-      Header: 'Sr No',
-      accessor: 'srno',
-      },
-      {
-      Header: 'Family ID',
-      accessor: 'FamilyID', 
-      }, 
-      {
-      Header: 'Name of Beneficiary',
-      accessor: 'NameofBeneficiary', 
-      }, 
-      {
-      Header: 'Beneficiary ID',
-      accessor: 'BeneficiaryID', 
-      },
-      {
-      Header: 'Action',
-      accessor: 'Action',
-      Cell: row => 
-        (
-        <div className="actionDiv col-lg-offset-3">
-            <div className="col-lg-6" onClick={() => this.deleteData(row.original)}>
-          <i className="fa fa-trash"> </i>
-            </div>
-           
-          </div>
-          )     
-        }
-      ]
+  
     return (
       <div className="container-fluid">
         <div className="row">
@@ -714,22 +758,20 @@ class Activity extends Component{
                                           </div>
                                         </div>
                                       </div>
-                                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeightother ">
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt " >  
-                                          <ReactTable 
-                                            data            = {data}
-                                            columns         = {columns}
-                                            sortable        = {true}
-                                            defaultPageSiz  = {5}
-                                            minRows         = {3} 
-                                            className       = {"-striped -highlight"}
-                                            showPagination  = {true}
+                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
+                                        <div className="">  
+                                         <IAssureTable 
+                                            tableHeading={this.state.tableHeading}
+                                            twoLevelHeader={this.state.twoLevelHeader} 
+                                            dataCount={this.state.dataCount}
+                                            tableData={this.state.tableData}
+                                            tableObjects={this.state.tableObjects}
                                           />
-                                          </div> 
-                                      </div>
-                                      <div className="col-lg-12">
-                                          <br/><button className=" col-lg-2 btn submit pull-right" > Add</button>
-                                      </div>
+                                          </div>
+                                        </div> 
+                                    </div>
+                                    <div className="col-lg-12">
+                                        <br/><button className=" col-lg-2 btn submit pull-right" > Add</button>
                                     </div>
                                   </form>
                                 </div>
@@ -743,7 +785,13 @@ class Activity extends Component{
                       <NewBeneficiary />
                     </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <br/><button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitActivity.bind(this)}> Submit</button>
+                      <br/>
+                      {
+                        this.state.editId ? 
+                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitActivity.bind(this)}> Update </button>
+                        :
+                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
+                      }
                     </div> 
                   </form>
                 </div>

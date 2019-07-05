@@ -28,10 +28,10 @@ import AnnualPlan                                 from "../../centres/plan/annua
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";*/
 
 
+import ActivityReportView                         from "../../centres/activityReportView/ActivityReportView.js";
 
 /*import MonthlyPlan                                from "../../centres/monthlyPlan/MonthlyPlan.js";
 
-import ActivityReportView                                from "../../centres/activityReportView/ActivityReportView.js";*/
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";
 */
 
@@ -83,6 +83,7 @@ class Layout extends Component{
                     <Route path="/plan"                         exact strict component={ AnnualPlan } />
                     <Route path="/Activity"                         exact strict component={ Activity } />
                     <Route path="/viewActivity"                         exact strict component={ ViewActivity } />
+                    <Route path="/activityReportView"                         exact strict component={ ActivityReportView } />
 
                   </Switch>        
                 </Router>

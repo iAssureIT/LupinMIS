@@ -2,7 +2,10 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
-import swal   from 'sweetalert';
+import swal                   from 'sweetalert';
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import _                      from 'underscore';
+
 
 import 'react-table/react-table.css';
 import "./Family.css";
@@ -27,7 +30,45 @@ class Family extends Component{
       "block"                :"",
       "village"              :"",
       fields: {},
-      errors: {}
+      errors: {},
+      "twoLevelHeader"              : {
+        apply                     : false,
+        firstHeaderData           : [
+                                      {
+                                          heading : '',
+                                          mergedColoums : 10
+                                      },
+                                      {
+                                          heading : 'Source of  Fund',
+                                          mergedColoums : 7
+                                      },
+                                      {
+                                          heading : 'MIS Coordinator',
+                                          mergedColoums : 3
+                                      },
+                                    ]
+      },
+      "tableHeading"                : {
+        familyID                    : "Family ID",
+        beneficariesId              : "Beneficiary ID",
+        familyHead                  : "Name of Family Head",
+        uidNumber                   : "UID Number",
+        caste                       : "Caste",
+        familyCategory              : "familyCategory",
+        center                      : "LHWRFCentre",
+        state                       : "State",
+        district                    : "District",
+        block                       : "Block",
+        village                     : "Village",
+        actions                     : 'Action',
+      },  
+      "tableObjects"              : {
+        apiLink                   : '/api/family/'
+      },
+      "startRange"                  : 0,
+      "limitRange"                  : 10,
+      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
+    
     }
   }
  
@@ -192,96 +233,59 @@ class Family extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-     
-
 
       this.setState({
         errors: errors
       });
       return formIsValid;
   }
-
-    componentDidMount() {
+   edit(id){
+    axios({
+      method: 'get',
+      url: '/api/family/'+id,
+    }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
      
-    }
+      this.setState({
+      "familyID"             : editData.familyID,
+      "familyHead"           : editData.familyHead, 
+      "uidNumber"            : editData.uidNumber,
+      "caste"                : editData.caste,
+      "familyCategory"       : editData.familyCategory, 
+      "center"               : editData.center, 
+      "state"                : editData.state, 
+      "dist"                 : editData.dist, 
+      "block"                : editData.block, 
+      "village"              : editData.village, 
+      });
 
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
-    }
+    }).catch(function (error) {
+    });
+  }
+    
+  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
 
-    changeTab = (data)=>{
+      this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+
+    var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
     this.setState({
-      tabtype : data,
+      listofStates : listofStates
     })
-    console.log("tabtype",this.state.tabtype);
   }
 
-
-
-    render() {
-      const data = [{
-      srno: 1,
-      familyID: "PL00001",
-      nameOfFamilyHead: "Shyam Patil",
-      UID: "29999 99999 99999",
-      caste: "Hindu",
-      familyCategory: "BPL",
-      LHWRF : "Nanded",
-      state: "Maharastra",
-      district: "Nanded",
-      block: "Kowtha",
-      }
-      ]
-      const columns = [ 
-        {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        {
-        Header: 'Family ID',
-        accessor: 'familyID',
-        },
-        {
-        Header: 'Name Of Family Head',
-        accessor: 'nameOfFamilyHead', 
-        },
-        {
-        Header: 'UID No (Aadhar Card No)',
-        accessor: 'UID', 
-        },
-      
-        {
-        Header: 'Caste',
-        accessor: 'caste',
-        },
-        {
-        Header: 'District',
-        accessor: 'district',
-        },
-        {
-        Header: 'Block',
-        accessor: 'Block', 
-        },
-      
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-2">
-              <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-              <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
-            <i className="fa fa-pencil"> </i>
-              </div>
-            </div>
-            )     
-          }
-        ]
-
-
+  render() {
+     
     return (
       <div className="container-fluid">
         <div className="row">
@@ -437,21 +441,19 @@ class Family extends Component{
                       <br/><button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitFamily.bind(this)}> Submit</button>
                     </div>
                   </form>
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt " >  
-                      <ReactTable 
-                        data      = {data}
-                        columns     = {columns}
-                        sortable    = {true}
-                        defaultPageSiz  = {5}
-                        minRows     = {3} 
-                        className       = {"-striped -highlight"}
-                        showPagination  = {true}
-                      />
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                       <IAssureTable 
+                          tableHeading={this.state.tableHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          dataCount={this.state.dataCount}
+                          tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          tableObjects={this.state.tableObjects}
+                          
+                        />
                     </div> 
                   </div>              
                 </div>
-              </div>
             </section>
           </div>
         </div>

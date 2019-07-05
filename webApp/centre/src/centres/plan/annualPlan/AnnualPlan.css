@@ -151,16 +151,6 @@
 	font-family:'Montserrat' !important;
 }
 
-.ReactTable .rt-tbody .rt-td {
-  padding: 10px;
-}
-/*.ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td{
-	 font-family:'Montserrat',sans-serif !important;
-  background-color: #039BE5 !important;
-  color      :#f2f2f2 !important;
-  font-size  : 14px !important;
-  height     : 40px !important;
-}*/
 .addContainerAct{
 	height: 30px;
 	width:30px;

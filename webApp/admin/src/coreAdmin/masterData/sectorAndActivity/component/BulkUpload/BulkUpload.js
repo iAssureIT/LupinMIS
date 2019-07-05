@@ -243,32 +243,29 @@ class BulkUpload extends Component{
               
                       <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
                         <div className="col-lg-12 col-sm-12 col-xs-12 col-md-12">
-                          <div className="csvDLWrap">
+                          <div className="csvDLWrapBulk">
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkUploadForm">
-                              <div className="col-lg-1 col-md-1 col-sm-12 col-xs-12 bulkImage">
-                                <div className="">
+                              <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 bulkImage">
                                   <a >
-                                    <img src="/images/upload.png"  className="csvimg" title="Click to download file"/>
+                                    <img src="/images/download.png"  className="csvimgBulk" title="Click to download file"/>
                                   </a>
-                                </div>
                               </div>
-                              <div className="csvUpld col-lg-11 col-md-12 col-sm-12 col-xs-12">
+                              <div className="csvUpld col-lg-10 col-md-10 col-sm-10 col-xs-10">
                                 <h4><b>Instructions</b></h4>
                                 <ul className="uploadQuesinst col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                                  <li><b>1)</b>&nbsp;&nbsp;Please use attached file format to bulkupload <b>Country Data</b> into this system.</li>
+                                  <li><b>1)</b>&nbsp;&nbsp;Please use attached file format to bulkupload <b>Sector and Activity</b> into this system.</li>
                                   <li><b>2)</b>  File Format must be *.CSV.</li>
                                   <li><b>3)</b>  Following is the format of .CSV file.</li>
                                 </ul>
-                              </div>
-                              <div className="col-lg-11 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12"><span className="control-label statelabel"><b>Upload Countries</b></span></div>
-                              <div className="col-lg-11 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 inputBulk">
+                              <div className="col-lg-11 col-md-12 col-sm-12 col-xs-12 row"><span className="control-label statelabel"><b>Upload Sector and Activities</b></span></div>
                                 <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 inputFieldBulk">
                                   <input type="file"  name="uploadCSV" ref="uploadCSV"  accept=".csv" className="form-control col-lg-6 col-md-12 col-sm-12 col-xs-12 uploadFileInput nameParts" required/>
                                 </div>
                               </div>
+                              
+                              </div>
                             </div>
                           </div>
-                        </div>    
                       </form>
                    
               </div>

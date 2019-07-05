@@ -66,6 +66,12 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">View all Activities</span>
                       </a>
                     </li>
+                    <li>
+                      <a href="/activityReportView">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Activity Report View</span>
+                      </a>
+                    </li>
                   </ul>
                 </li> 
                 <li className="sidebarMenuText">

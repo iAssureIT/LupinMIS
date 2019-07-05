@@ -2,9 +2,18 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
+import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import swal                   from 'sweetalert';
+import _                      from 'underscore';
+
+import NewBeneficiary from "../activity/addBeneficiary/NewBeneficiary.js";
+
 
 import 'react-table/react-table.css';
 import "./ActivityReportView.css";
+
+xios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class ActivityReportView extends Component{
   
@@ -12,7 +21,32 @@ class ActivityReportView extends Component{
     super(props); 
    
     this.state = {
-    
+       "twoLevelHeader"  : {
+          apply                     : false,
+          firstHeaderData           : [
+                                        {
+                                            heading : '',
+                                            mergedColoums : 10
+                                        },
+                                        {
+                                            heading : 'Source of Fund',
+                                            mergedColoums : 7
+                                        },
+                                     /*   {
+                                            heading : 'MIS Coordinator',
+                                            mergedColoums : 3
+                                        },*/
+                                      ]
+      },
+      "tableHeading"                : {
+        familyID                    : "Family ID",
+        beneficariesId              : "Beneficiary ID",
+        nameofbeneficaries          : "Name of Beneficiary",
+        actions                     : 'Action',
+      },
+      "startRange"                  : 0,
+      "limitRange"                  : 10,
+      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
     }
   }
  
@@ -20,6 +54,41 @@ class ActivityReportView extends Component{
     event.preventDefault();
  
   }
+  componentDidMount() {
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+    var id = this.state.editId;
+    axios({
+      method: 'get',
+      url: '/api/activityReport/'+id,
+      }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+        this.setState({
+          dataCount : tableData.length,
+          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+          editUrl   : this.props.match.params
+        },()=>{
+          
+        });
+      }).catch(function (error) {
+        console.log('error', error);
+    });
+  }
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
+    }
+  }
+
   SubmitAnnualPlan(event){
     event.preventDefault();
     var academicArray=[];
@@ -53,16 +122,54 @@ class ActivityReportView extends Component{
       alert("Data inserted Successfully!")
       // }
     }
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
-    }
-    toglehidden()
-    {
-     this.setState({
-         shown: !this.state.shown
-        });
-    }
+  edit(id){
+    axios({
+      method: 'get',
+      url: '/api/centers/'+id,
+    }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      editData.villagesCovered.map((data, i)=>{
+        this.setState({
+          [data.village] : true
+        })
+      })
+      this.setState({
+        "typeOfCentre"             : editData.type,
+        "nameOfCentre"             : editData.centerName,
+        "address"                  : editData.address,
+        "state"                    : editData.state,
+        "district"                 : editData.district,
+        "pincode"                  : editData.pincode,
+        "centreInchargeName"       : editData.centerInchargename,
+        "centreInchargeContact"    : editData.centerInchargemobile,
+        "centreInchargeEmail"      : editData.centerInchargeemail,
+        "MISCoordinatorName"       : editData.misCoordinatorname,
+        "MISCoordinatorContact"    : editData.misCoordinatormobile,
+        "MISCoordinatorEmail"      : editData.misCoordinatoremail,
+        "selectedVillages"         : editData.villagesCovered,
+        "districtCovered"          :"",
+        "blockCovered"             :"",
+        "villagesCovered"          : editData.villagesCovered,
+
+      });
+    }).catch(function (error) {
+    });
+  }
+    getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+
+      this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
 
     render() {
       
@@ -150,76 +257,25 @@ class ActivityReportView extends Component{
                         <h5>Sources of Fund</h5>
                       </div>
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
-                        <table id="table-to-xls" className="table customTable table-bordered table-hover table-responsive table-striped valign">
-                          <thead>
-                            <tr> 
-                              <th className="text-center"> LHWRF </th> 
-                              <th className="text-center"> NABARD </th> 
-                              <th className="text-center"> Bank Loan </th>
-                              <th className="text-center"> Govt. Scheme </th>
-                              <th className="text-center"> Direct Community Contribution </th>
-                              <th className="text-center"> Indirect Community Contribution </th>
-                              <th className="text-center"> Other </th>
-                              <th className="text-center"> Total </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>2,00,000</td>
-                              <td>1,00,000</td>
-                              <td>1,00,000</td>
-                              <td>1,00,000</td>
-                              <td>50,0000</td>
-                              <td>1,00,000</td>
-                              <td>25,00,000</td>
-                              <td>25,00,000</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
+                        <IAssureTable 
+                          tableHeading={this.state.tableHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          dataCount={this.state.dataCount}
+                          tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          
+                        />
+                      </div>
+                      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
                         <h5>List of Beneficieries</h5>
                       </div>
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
-                        <table id="table-to-xls" className="table customTable table-bordered table-hover table-responsive table-striped valign">
-                          <thead>
-                            <tr> 
-                              <th className="text-center"> Sr No. </th> 
-                              <th className="text-center"> Family ID</th> 
-                              <th className="text-center"> Name of Beneficieries </th>
-                              <th className="text-center"> Beneficiery ID </th>
-                             
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>L000001</td>
-                              <td>Priyanka Lewade</td>
-                              <td>PL001</td>
-                           
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>B000001</td>
-                              <td>Priyanka Bhanvase</td>
-                              <td>PB001</td>
-                           
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>G000001</td>
-                              <td>Manali Gujarathi</td>
-                              <td>MG001</td>
-                           
-                            </tr>
-                          </tbody>
-                        </table>
-                        </div>
+                        <NewBeneficiary />
                       </div>
                     </div>
-                    </div>
                   </div>
+                </div>
+              </div>
             </section>
           </div>
         </div>

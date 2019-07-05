@@ -2,6 +2,9 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import swal                   from 'sweetalert';
+import _                      from 'underscore';
 
 import 'react-table/react-table.css';
 import "./ViewActivity.css";
@@ -32,9 +35,89 @@ class ViewActivity extends Component{
             tabtype : "location",
 
       fields: {},
-      errors: {}
+      errors: {},
+       "twoLevelHeader"              : {
+        apply                     : true,
+        firstHeaderData           : [
+                                      {
+                                          heading : '',
+                                          mergedColoums : 10
+                                      },
+                                      {
+                                          heading : 'Source of Fund',
+                                          mergedColoums : 7
+                                      },
+                                   /*   {
+                                          heading : 'MIS Coordinator',
+                                          mergedColoums : 3
+                                      },*/
+                                    ]
+      },
+      "tableHeading"                : {
+        month                      : "Month",
+        sectorName                 : "Sector",
+        activity                   : "Activity",
+        subActivity                : "Sub-Activity",
+        unit                       : "Unit",
+        physicalUnit               : "Physical Unit",
+        unitCost                   : "Unit Cost",
+        totalBudget                : "Total Cost",
+        noOfBeneficiaries          : "No. Of Beneficiaries",
+        LHWRF                      : "LHWRF",
+        NABARD                     : "NABARD",
+        bankLoan                   : "Bank Loan",
+        govtscheme                 : "Govt. Scheme",
+        directCC                   : "Direct Community Contribution",
+        indirectCC                 : "Indirect Community Contribution",
+        other                      : "Other",
+/*        actions                     : 'Action',
+*/      },
+      "startRange"                  : 0,
+      "limitRange"                  : 10,
+      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
     }
-    this.changeTab = this.changeTab.bind(this); 
+    
+  }
+   componentDidMount() {
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+  
+      axios({
+        method: 'get',
+        url: '/api/centers/list',
+      }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+        this.setState({
+          dataCount : tableData.length,
+          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+          editUrl   : this.props.match.params
+        },()=>{
+          
+        });
+      }).catch(function (error) {
+        console.log('error', error);
+      });
+    }
+
+  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+
+      this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
   }
  
   handleChange(event){
@@ -281,15 +364,14 @@ class ViewActivity extends Component{
                   <h4>View of All Activity</h4>
                 </div>
                 <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
-                  <div className=""> 
-                    <ReactTable 
-                      data      = {data}
-                        columns     = {columns}
-                        sortable    = {true}
-                        defaultPageSiz  = {5}
-                        minRows     = {3} 
-                        className       = {"-striped -highlight"}
-                      showPagination  = {true}
+                  <div className="row">  
+                   <IAssureTable 
+                      tableHeading={this.state.tableHeading}
+                      twoLevelHeader={this.state.twoLevelHeader} 
+                      dataCount={this.state.dataCount}
+                      tableData={this.state.tableData}
+                      getData={this.getData.bind(this)}
+                      
                     />
                   </div>
                 </form>
