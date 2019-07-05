@@ -1,9 +1,9 @@
 import React, { Component }       from 'react';
 import $                          from 'jquery';
 import axios                      from 'axios';
-import ReactTable                 from "react-table";
+import swal   from 'sweetalert';
 
-import 'react-table/react-table.css';
+import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./Sector.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
@@ -15,71 +15,58 @@ class Sector extends Component{
     super(props);
    
     this.state = {
-      "sector"  :"",
-      /*"Qualification"       :"",
-      "activity":"",
-      "Specialization"      :"",
-      "Mode"                :"",
-      "Grade"               :"",
-      "PassoutYear"         :"",
-      "CollegeName"         :"",
-      "UniversityName"      :"",
-      "City"                :"",
-      "State"               :"",
-      "Country"             :"",*/
-      "academicData"          :[],
+      "sector"              :"",
       "uID"                 :"",
-      "shown"                 : true,
-            "tabtype" : "location",
-
-      fields: {},
-      errors: {}
-    }
-    this.changeTab = this.changeTab.bind(this); 
-  }
+      fields                : {},
+      errors                : {},
+      "twoLevelHeader"      : {
+        apply               : true,
+        firstHeaderData     : [
+                              {
+                                  heading : '',
+                                  mergedColoums : 4
+                              },
+                              {
+                                  heading : 'Center Incharge',
+                                  mergedColoums : 3
+                              },
+                              {
+                                  heading : 'MIS Coordinator',
+                                  mergedColoums : 3
+                              },
+                            ]
+      },
+      "tableHeading"        : {
+        type                      : "Type of Center",
+        centerName                : "Name of Center",
+        address                   : "Address",
+        centerInchargename        : "Name",
+        centerInchargemobile      : "Contact",
+        centerInchargeemail       : "Email",
+        misCoordinatorname        : "Name",
+        misCoordinatormobile      : "Contact",
+        misCoordinatoremail       : "Email",
+        actions                   : 'Action',
+      },
+      "startRange"          : 0,
+      "limitRange"          : 10,
+/*      "editId"              : this.props.match.params ? this.props.match.params.id : ''
+*/    }
+/*    console.log('params', this.props.match.params);
+*/  }
  
   handleChange(event){
     event.preventDefault();
     this.setState({
      "sector"   : this.refs.sector.value,  
-      /*"Qualification"        : this.refs.Qualification.value,          
-      "activity"   : this.refs.activity.value,  
-
-      "Specialization"       : this.refs.Specialization.value,
-      "Mode"                 : this.refs.Mode.value, 
-      "Grade"                : this.refs.Grade.value,
-      "PassoutYear"          : this.refs.PassoutYear.value,
-      "UniversityName"       : this.refs.UniversityName.value,
-      "City"                 : this.refs.City.value,
-      "CollegeName"          : this.refs.CollegeName.value,
-      "State"                : this.refs.State.value,
-      "Country"              : this.refs.Country.value,*/
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
       fields
     });
-  /*  if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }*/
   }
 
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
   isTextKey(evt)
   {
    var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -93,15 +80,15 @@ class Sector extends Component{
     }
  
   }
+
   SubmitSector(event){
     event.preventDefault();
     var sectorArray=[];
     var id2 = this.state.uID;
-    // if (this.validateForm()) {
+    if (this.validateFormReq()) {
     var sectorValues= 
     {
     "sector"   : this.refs.sector.value,  
-    
     };
 
     let fields = {};
@@ -111,86 +98,48 @@ class Sector extends Component{
       "sector"  :"",
       fields:fields
     });
-    axios.post('/api/sectors', sectorValues)
-      .then( (res)=>{
-        console.log(res);
-        if(res.status == 201){
-          alert("Data inserted Successfully!")
-          this.refs.sector.value = '';
-          
-        }
-      })
-      .catch((error)=>{
+    axios.post('/api/sectors',sectorValues)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+/*        this.getData(this.state.startRange, this.state.limitRange);
+*/      })
+      .catch(function(error){
         console.log("error = ",error);
-        alert("Something went wrong! Please check Get URL.");
       });
-  
-    console.log("Values =>",sectorValues);
-    sectorArray.push(sectorValues);
-    console.log("add value",sectorValues);      
-    alert("Data inserted Successfully!")
-   // }
+    } 
+  }
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (!fields["sector"]) {
+        formIsValid = false;
+        errors["sector"] = "This field is required.";
+      }     
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
 
-  
-    }
+  componentDidMount() {
+   
+  }
 
-    componentDidMount() {
-     
-    }
+  componentWillUnmount(){
+      $("script[src='/js/adminLte.js']").remove();
+      $("link[href='/css/dashboard.css']").remove();
+  }
 
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
-    }
-
-    changeTab = (data)=>{
-    this.setState({
-      tabtype : data,
-    })
-    console.log("tabtype",this.state.tabtype);
-    }
-
-
-
-    render() {
-      const data = [{
-      srno: 1,
-      NameofSector: "Natural Resource Management",
-      }
-      ]
-      const columns = [ 
-        {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        
-        {
-        Header: 'Name of Sector',
-        accessor: 'NameofSector', 
-        },
-      
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-2">
-              <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-              <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
-            <i className="fa fa-pencil"> </i>
-              </div>
-            </div>
-            )     
-          }
-        ]
-
+  render() {
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
-            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="sector">
+            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="sectorDetails">
               <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
                 <span className="perinfotitle mgtpprsnalinfo"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sector</span>
               </div>
@@ -199,11 +148,11 @@ class Sector extends Component{
                 <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Name of Sector</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="Qualification" >
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sector" >
                       {/*<div className="input-group-addon inputIcon">
                         <i className="fa fa-graduation-cap fa"></i>
                       </div>*/}
-                      <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)} />
+                      <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="sector" name="sector" value={this.state.sector} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
                     <div className="errorMsg">{this.state.errors.sector}</div>
                   </div>
@@ -214,17 +163,14 @@ class Sector extends Component{
               </div><br/>
             </form>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt " >  
-                <ReactTable 
-                  data      = {data}
-                  columns     = {columns}
-                  sortable    = {true}
-                  defaultPageSiz  = {5}
-                  minRows     = {3} 
-                  className       = {"-striped -highlight"}
-                  showPagination  = {true}
-                />
-              </div> 
+               {/*<IAssureTable 
+                tableHeading={this.state.tableHeading}
+                twoLevelHeader={this.state.twoLevelHeader} 
+                dataCount={this.state.dataCount}
+                tableData={this.state.tableData}
+                getData={this.getData.bind(this)}
+                
+              />*/}
             </div>              
           </div>
         </div>

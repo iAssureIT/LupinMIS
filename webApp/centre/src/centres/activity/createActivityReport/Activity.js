@@ -2,6 +2,7 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
+import swal   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 
@@ -57,19 +58,18 @@ class Activity extends Component{
       "Date"              : this.refs.dateOfIntervention.value,
       "sector"            : this.refs.sector.value,
       "typeofactivity"    : this.refs.typeofactivity.value,
-      // "nameofactivity"    : this.refs.nameofactivity.value,
       "activity"          : this.refs.activity.value,
       "subactivity"       : this.refs.subactivity.value,
-      // "unit"              : this.refs.unit.value,
+      "unit"              : this.refs.unit.value,
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
-/*      "totalcost"         : this.state.totalcost,
-*/    "bankLoan"          : this.refs.bankLoan.value,
+      "totalcost"         : this.state.totalcost,
+      "bankLoan"          : this.refs.bankLoan.value,
       "govtscheme"        : this.refs.govtscheme.value,
       "directCC"          : this.refs.directCC.value,
       "indirectCC"        : this.refs.indirectCC.value,
       "other"             : this.refs.other.value,
-      // "total"             : this.refs.total.value,
+      "total"             : this.refs.total.value,
     });
     var total = parseInt(this.state.unitCost) * parseInt(this.state.quantity)
     this.setState({
@@ -81,13 +81,7 @@ class Activity extends Component{
     this.setState({
       fields
     });
-  /*  if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }*/
+ 
   }
 
   isNumberKey(evt){
@@ -116,12 +110,11 @@ class Activity extends Component{
   }
   SubmitActivity(event){
     event.preventDefault();
-    var academicArray=[];
+    if (this.validateFormReq()) {
     var id2 = this.state.uID;
-    // if (this.validateForm()) {
     var activityValues= 
     {
-     // "center_id"         : this.refs.QualificationLevel.value,
+      // "center_id"         : this.refs.QualificationLevel.value,
       // "centerName"        : this.refs.centerName.value,
       "dist"              : this.refs.dist.value,
       "block"             : this.refs.block.value,
@@ -135,6 +128,8 @@ class Activity extends Component{
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
+      "LHWRF"             : this.refs.quantity.value,
+      "NABARD"            : this.state.totalcost,
       "bankLoan"          : this.refs.bankLoan.value,
       "govtscheme"        : this.refs.govtscheme.value,
       "directCC"          : this.refs.directCC.value,
@@ -143,28 +138,32 @@ class Activity extends Component{
       "total"             : this.state.total,
     };
 
-    let fields = {};
-    fields["centerName"] = "";
-    fields["dist"] = "";
-    fields["block"] = "";
-    fields["village"] = "";
-    fields["Date"] = "";
-    fields["sector"] = "";
-    fields["typeofactivity"] = "";
-    fields["nameofactivity"] = "";
-    fields["activity"] = "";
-    fields["subactivity"] = "";
-    fields["unit"] = "";
-    fields["unitCost"] = "";
-    fields["quantity"] = "";
-    fields["totalcost"] = "";
+    let fields                  = {};
+    fields["dist"]              = "";
+    fields["block"]             = "";
+    fields["village"]           = "";
+    fields["dateOfIntervention"]= "";
+    fields["sector"]            = "";
+    fields["typeofactivity"]    = "";
+    fields["nameofactivity"]    = "";
+    fields["activity"]          = "";
+    fields["subactivity"]       = "";
+    fields["unit"]              = "";
+    fields["unitCost"]          = "";
+    fields["quantity"]          = "";
+    fields["totalcost"]         = "";
+    fields["LHWRF"]             = "";
+    fields["NABARD"]            = "";
+    fields["bankLoan"]          = "";
+    fields["govtscheme"]        = "";
+    fields["directCC"]          = "";
+    fields["indirectCC"]        = "";
+    fields["other"]             = "";
     this.setState({
-      "center_id"         : "",
-      "centerName"        : "",
       "dist"              : "",
       "block"             : "",
       "village"           : "",
-      "Date"              : "",
+      "dateOfIntervention": "",
       "sector"            : "",
       "typeofactivity"    : "",
       "nameofactivity"    : "",
@@ -174,6 +173,8 @@ class Activity extends Component{
       "unitCost"          : "",
       "quantity"          : "",
       "totalcost"         : "",
+      "LHWRF"             : "",
+      "NABARD"            : "",
       "bankLoan"          : "",
       "govtscheme"        : "",
       "directCC"          : "",
@@ -182,132 +183,185 @@ class Activity extends Component{
       "total"             : "",
       fields:fields
     });
-    
-    axios.post('/api/activityReport/', activityValues)
-      .then( (res)=>{
-        console.log(res);
-        if(res.status == 201){
-          alert("Data inserted Successfully!")
-            this.refs.dist.value = '';
-            this.refs.block.value = '';
-            this.refs.village.value = '';
-            this.refs.dateOfIntervention.value = '';
-            this.refs.sector.value = '';
-            this.refs.typeofactivity.value = '';
-            this.refs.activity.value = '';
-            this.refs.subactivity.value = '';
-            this.state.unit = '';
-            this.refs.unitCost.value = '';
-            this.refs.quantity.value = '';
-            this.state.totalcost = '';
-            this.refs.bankLoan.value = '';
-            this.refs.govtscheme.value = '';
-            this.refs.directCC.value = '';
-            this.refs.indirectCC.value = '';
-            this.refs.other.value = '';
-            this.state.total = '';
-        }
+    axios.post('/api/activityReport',activityValues)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+/*      this.getData(this.state.startRange, this.state.limitRange);*/      
       })
-      .catch((error)=>{
-        console.log("error = ",error);
-        alert("Something went wrong! Please check Get URL.");
-      });
-      console.log("academicValues =>",activityValues);
-      academicArray.push(activityValues);
-      console.log("add value",activityValues);      
-      alert("Data inserted Successfully!")
-      // }
-    }
-
-    calTotal(event){
-      event.preventDefault();
-      var LHWRF = this.state.LHWRF;
-      var NABARD = this.state.NABARD;
-      var bankLoan = this.state.bankLoan;
-      var govtscheme = this.state.govtscheme;
-      var directCC = this.state.directCC;
-      var indirectCC = this.state.indirectCC;
-       add = LHWRF + NABARD + bankLoan + govtscheme + directCC +indirectCC;
-      console.log("total=",add);
-    }
-
-    toglehidden()
-    {
-     this.setState({
-       shown: !this.state.shown
+      .catch(function(error){
+        
       });
     }
-
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
-    }
-
-    render() {
-      var shown = {
-        display: this.state.shown ? "block" : "none"
-      };
-      
-      var hidden = {
-        display: this.state.shown ? "none" : "block"
+  }
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (!fields["dist"]) {
+        formIsValid = false;
+        errors["dist"] = "This field is required.";
+      }     
+       if (!fields["block"]) {
+        formIsValid = false;
+        errors["block"] = "This field is required.";
+      }     
+      if (!fields["village"]) {
+        formIsValid = false;
+        errors["village"] = "This field is required.";
       }
+      if (!fields["dateOfIntervention"]) {
+        formIsValid = false;
+        errors["dateOfIntervention"] = "This field is required.";
+      }
+      if (!fields["sector"]) {
+        formIsValid = false;
+        errors["sector"] = "This field is required.";
+      }          
+      if (!fields["typeofactivity"]) {
+        formIsValid = false;
+        errors["typeofactivity"] = "This field is required.";
+      }          
+      if (!fields["activity"]) {
+        formIsValid = false;
+        errors["activity"] = "This field is required.";
+      }          
+      if (!fields["subactivity"]) {
+        formIsValid = false;
+        errors["subactivity"] = "This field is required.";
+      }          
+      if (!fields["unitCost"]) {
+        formIsValid = false;
+        errors["unitCost"] = "This field is required.";
+      }          
+      if (!fields["quantity"]) {
+        formIsValid = false;
+        errors["quantity"] = "This field is required.";
+      }          
+      if (!fields["bankLoan"]) {
+        formIsValid = false;
+        errors["bankLoan"] = "This field is required.";
+      }          
+      if (!fields["govtscheme"]) {
+        formIsValid = false;
+        errors["govtscheme"] = "This field is required.";
+      }
+      if (!fields["NABARD"]) {
+        formIsValid = false;
+        errors["NABARD"] = "This field is required.";
+      }          
+      if (!fields["LHWRF"]) {
+        formIsValid = false;
+        errors["LHWRF"] = "This field is required.";
+      }          
+      if (!fields["directCC"]) {
+        formIsValid = false;
+        errors["directCC"] = "This field is required.";
+      }          
+      if (!fields["indirectCC"]) {
+        formIsValid = false;
+        errors["indirectCC"] = "This field is required.";
+      }          
+      if (!fields["other"]) {
+        formIsValid = false;
+        errors["other"] = "This field is required.";
+      }          
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+  calTotal(event){
+    event.preventDefault();
+    var LHWRF = this.state.LHWRF;
+    var NABARD = this.state.NABARD;
+    var bankLoan = this.state.bankLoan;
+    var govtscheme = this.state.govtscheme;
+    var directCC = this.state.directCC;
+    var indirectCC = this.state.indirectCC;
+     add = LHWRF + NABARD + bankLoan + govtscheme + directCC +indirectCC;
+    console.log("total=",add);
+  }
+
+  toglehidden()
+  {
+   this.setState({
+     shown: !this.state.shown
+    });
+  }
+
+  componentWillUnmount(){
+      $("script[src='/js/adminLte.js']").remove();
+      $("link[href='/css/dashboard.css']").remove();
+  }
+
+  render() {
+    var shown = {
+      display: this.state.shown ? "block" : "none"
+    };
     
-      const data = [{
-      srno: 1,
-      FamilyID: "L000001",
-      NameofBeneficiary: "Priyanka Lewade",
-      BeneficiaryID: "PL0001",
-      },{
-      srno: 2,
-      FamilyID: "B000001",
-      NameofBeneficiary: "Priyanka Bhanvase",
-      BeneficiaryID: "PB0001",
-      }
-      ]
-      const columns = [ 
+    var hidden = {
+      display: this.state.shown ? "none" : "block"
+    }
+  
+    const data = [{
+    srno: 1,
+    FamilyID: "L000001",
+    NameofBeneficiary: "Priyanka Lewade",
+    BeneficiaryID: "PL0001",
+    },{
+    srno: 2,
+    FamilyID: "B000001",
+    NameofBeneficiary: "Priyanka Bhanvase",
+    BeneficiaryID: "PB0001",
+    }
+    ]
+    const columns = [ 
+    {
+      Header: ' ',
+      accessor: 'Action',
+      Cell: row => 
+        (
+        <div className="actionDiv col-lg-offset-3">
+            <div className=" col-lg-offset-1 checkActivityContainer">
+              <input type="checkbox" name="check1" id="sameCheck" />
+            <span className="Activitycheckmark"></span>
+            </div>
+          </div>
+          )     
+        },
       {
-        Header: ' ',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-3">
-              <div className=" col-lg-offset-1 checkActivityContainer">
-                <input type="checkbox" name="check1" id="sameCheck" />
-              <span className="Activitycheckmark"></span>
-              </div>
+      Header: 'Sr No',
+      accessor: 'srno',
+      },
+      {
+      Header: 'Family ID',
+      accessor: 'FamilyID', 
+      }, 
+      {
+      Header: 'Name of Beneficiary',
+      accessor: 'NameofBeneficiary', 
+      }, 
+      {
+      Header: 'Beneficiary ID',
+      accessor: 'BeneficiaryID', 
+      },
+      {
+      Header: 'Action',
+      accessor: 'Action',
+      Cell: row => 
+        (
+        <div className="actionDiv col-lg-offset-3">
+            <div className="col-lg-6" onClick={() => this.deleteData(row.original)}>
+          <i className="fa fa-trash"> </i>
             </div>
-            )     
-          },
-        {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        {
-        Header: 'Family ID',
-        accessor: 'FamilyID', 
-        }, 
-        {
-        Header: 'Name of Beneficiary',
-        accessor: 'NameofBeneficiary', 
-        }, 
-        {
-        Header: 'Beneficiary ID',
-        accessor: 'BeneficiaryID', 
-        },
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-3">
-              <div className="col-lg-6" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-             
-            </div>
-            )     
-          }
-        ]
+           
+          </div>
+          )     
+        }
+      ]
     return (
       <div className="container-fluid">
         <div className="row">

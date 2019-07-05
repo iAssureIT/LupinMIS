@@ -3,6 +3,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import ReactTable         from "react-table";
 import 'react-table/react-table.css';
+import swal   from 'sweetalert';
 import "./Beneficiary.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
@@ -18,14 +19,9 @@ class Beneficiary extends Component{
       "beneficariesId"        :"",
       "nameofbeneficaries"      :"",
       "academicData"          :[],
-      "shown"                 : true,
-            tabtype : "location",
-
       "fields": {},
       "errors": {}
     }
-        this.changeTab = this.changeTab.bind(this); 
-
   }
  
   handleChange(event){
@@ -41,26 +37,8 @@ class Beneficiary extends Component{
     this.setState({
       fields
     });
-  /*  if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }*/
   }
 
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
   isTextKey(evt)
   {
    var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -78,8 +56,8 @@ class Beneficiary extends Component{
     event.preventDefault();
     var beneficaryArray=[];
     var id2 = this.state.uID;
-/*    if (this.validateForm()) {
-*/    var beneficiaryValue= 
+    if (this.validateFormReq()) {
+    var beneficiaryValue= 
     {
       "familyID"             : this.refs.familyID.value,          
       "beneficariesId"        : this.refs.beneficariesId.value,          
@@ -97,88 +75,86 @@ class Beneficiary extends Component{
       "nameofbeneficaries"      :"",   
       fields:fields
     });
-
-    axios.post('/api/beneficiaries', beneficiaryValue)
-      .then( (res)=>{
-        console.log(res);
-        if(res.status == 201){
-          alert("Data inserted Successfully!")
-          this.refs.familyID.value = '';
-          this.refs.beneficariesId.value= ''; 
-          this.refs.nameofbeneficaries.value= ''; 
-        }
-      })
-      .catch((error)=>{
+    axios.post('/api/beneficiaries',beneficiaryValue)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+/*        this.getData(this.state.startRange, this.state.limitRange);
+*/      })
+      .catch(function(error){
         console.log("error = ",error);
-        alert("Something went wrong! Please check Get URL.");
       });
-    beneficaryArray.push(beneficiaryValue);
-    console.log("add value",beneficiaryValue);      
-    alert("Data inserted Successfully!")
-/*    }
-*/
-  }
-
-    componentDidMount() {
-     
     }
-
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
-    }
-
-    changeTab = (data)=>{
-    this.setState({
-      tabtype : data,
-    })
-    console.log("tabtype",this.state.tabtype);
   }
-
-
-
-    render() {
-      const data = [{
-      srno: 1,
-      familyID: "PL00001",
-      beneficariesId: "P11111",
-      nameOfbeneficiary: "Priyanka Lewade",
-      }
-      ]
-      const columns = [ 
-        {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        {
-        Header: 'Family ID',
-        accessor: 'familyID',
-        },
-        {
-        Header: 'Beneficiary ID',
-        accessor: 'beneficariesId', 
-        },
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (!fields["familyID"]) {
+        formIsValid = false;
+        errors["familyID"] = "This field is required.";
+      }     
+       if (!fields["beneficariesId"]) {
+        formIsValid = false;
+        errors["beneficariesId"] = "This field is required.";
+      }     
+       if (!fields["nameofbeneficaries"]) {
+        formIsValid = false;
+        errors["nameofbeneficaries"] = "This field is required.";
+      }     
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+  componentWillUnmount(){
+      $("script[src='/js/adminLte.js']").remove();
+      $("link[href='/css/dashboard.css']").remove();
+  }
+  render() {
+    const data = [{
+    srno: 1,
+    familyID: "PL00001",
+    beneficariesId: "P11111",
+    nameOfbeneficiary: "Priyanka Lewade",
+    }
+    ]
+    const columns = [ 
       {
-        Header: 'Name of Beneficiary',
-        accessor: 'nameOfbeneficiary', 
-        },
-      
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-2">
-              <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-              <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
-            <i className="fa fa-pencil"> </i>
-              </div>
+      Header: 'Sr No',
+      accessor: 'srno',
+      },
+      {
+      Header: 'Family ID',
+      accessor: 'familyID',
+      },
+      {
+      Header: 'Beneficiary ID',
+      accessor: 'beneficariesId', 
+      },
+    {
+      Header: 'Name of Beneficiary',
+      accessor: 'nameOfbeneficiary', 
+      },
+    
+      {
+      Header: 'Action',
+      accessor: 'Action',
+      Cell: row => 
+        (
+        <div className="actionDiv col-lg-offset-2">
+            <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
+          <i className="fa fa-trash"> </i>
             </div>
-            )     
-          }
-        ]
+            <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
+          <i className="fa fa-pencil"> </i>
+            </div>
+          </div>
+          )     
+        }
+      ]
 
 
     return (

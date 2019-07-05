@@ -2,6 +2,7 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
+import swal   from 'sweetalert';
 
 import 'react-table/react-table.css';
 import "./Family.css";
@@ -25,15 +26,9 @@ class Family extends Component{
       "district"             :"",
       "block"                :"",
       "village"              :"",
-      academicData           :[],
-      shown                  : true,
-            tabtype : "location",
-
       fields: {},
       errors: {}
     }
-        this.changeTab = this.changeTab.bind(this); 
-
   }
  
   handleChange(event){
@@ -55,23 +50,12 @@ class Family extends Component{
     this.setState({
       fields
     });
-  /*  if (this.validateForm()) {
+    if (this.validateForm()) {
       let errors = {};
       errors[event.target.name] = "";
       this.setState({
         errors: errors
       });
-    }*/
-  }
-
-  componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps);
-    if(nextProps.BasicInfoId){
-       if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
-        this.setState({
-         academicData:nextProps.BasicInfoId.academicsInfo
-        })
-      }
     }
   }
 
@@ -99,106 +83,123 @@ class Family extends Component{
     }
  
   }
-  // SubmitFamily(event){
-  //   event.preventDefault();
-  //   var academicArray=[];
-  //   var id2 = this.state.uID;
-  //   // if (this.validateForm()) {
-  //   var familyValues= 
-  //   {
-  //     "familyID"              :this.refs.familyID.value, 
-  //     "nameOfFamilyHead"     :this.refs.nameOfFamilyHead.value, 
-  //     "uID"                  :this.refs.uID.value, 
-  //     "caste"                :this.refs.caste.value, 
-  //     "category"             :this.refs.category.value, 
-  //     "LHWRFCentre"          :this.refs.LHWRFCentre.value, 
-  //     "state"                :this.refs.state.value, 
-  //     "district"             :this.refs.district.value, 
-  //     "block"                :this.refs.block.value, 
-  //     "village"              :this.refs.village.value, 
-  //   };
-
-  //   let fields = {};
-  //   fields["QualificationLevel"] = "";
-  //   fields["Qualification"] = "";
-  //   fields["Specialization"] = "";
-  //   fields["Mode"] = "";
-  //   fields["Grade"] = "";
-  //   fields["PassoutYear"] = "";
-  //   fields["CollegeName"] = "";
-  //   fields["UniversityName"] = "";
-  //   fields["City"] = "";
-  //   fields["State"] = "";
-  //   fields["Country"] = "";
-  //   this.setState({
-  //     "familyID"             :"",
-  //     "nameOfFamilyHead"     :"",
-  //     "uID"                  :"",
-  //     "caste"                :"",
-  //     "category"             :"",
-  //     "LHWRFCentre"          :"",
-  //     "state"                :"",
-  //     "district"             :"",
-  //     "block"                :"",
-  //     "village"              :"",
-  //     fields:fields
-  //   });
-  //   axios
-  //   .post('qalmisapi.iassureit.com/api/beneficiaryFamilies',{familyValues})
-  //   .then(function(response){
-  //     console.log(response);
-  //   })
-  //   .catch(function(error){
-  //     console.log(error);
-  //   });
-  //   console.log("academicValues =>",familyValues);
-  //   academicArray.push(familyValues);
-  //   console.log("add value",familyValues);      
-  //   alert("Data inserted Successfully!")
-  //   // }
-
-  // }
 
   SubmitFamily(event){
     event.preventDefault();
-  var familyValues= 
-    {
-      familyID             :this.refs.familyID.value, 
-      familyHead           :this.refs.nameOfFamilyHead.value, 
-      uidNumber                  :this.refs.uID.value, 
-      caste                :this.refs.caste.value, 
-      familyCategory             :this.refs.category.value, 
-      center          :this.refs.LHWRFCentre.value, 
-      state                :this.refs.state.value, 
-      dist            :this.refs.district.value, 
-      block                :this.refs.block.value, 
-      village              :this.refs.village.value, 
-    };
+    if (this.validateForm() && this.validateFormReq()) {
+    var familyValues= 
+      {
+        familyID             :this.refs.familyID.value, 
+        familyHead           :this.refs.nameOfFamilyHead.value, 
+        uidNumber            :this.refs.uID.value, 
+        caste                :this.refs.caste.value, 
+        familyCategory       :this.refs.category.value, 
+        center               :this.refs.LHWRFCentre.value, 
+        state                :this.refs.state.value, 
+        dist                 :this.refs.district.value, 
+        block                :this.refs.block.value, 
+        village              :this.refs.village.value, 
+      };
 
-    axios.post('/api/beneficiaryFamilies', familyValues)
-      .then( (res)=>{
-        console.log(res);
-        if(res.status == 201){
-          alert("Data inserted Successfully!")
-          this.refs.familyID.value = '';
-          this.refs.nameOfFamilyHead.value= ''; 
-          this.refs.uID.value= ''; 
-          this.refs.caste.value= ''; 
-          this.refs.category.value= ''; 
-          this.refs.LHWRFCentre.value= ''; 
-          this.refs.state.value= ''; 
-          this.refs.district.value= ''; 
-          this.refs.block.value= ''; 
-          this.refs.village.value= ''; 
-        }
-      })
-      .catch((error)=>{
-        console.log("error = ",error);
-        alert("Something went wrong! Please check Get URL.");
+      let fields = {};
+      fields["familyID"] = "";
+      fields["nameOfFamilyHead"] = "";
+      fields["uID"] = "";
+      fields["caste"] = "";
+      fields["category"] = "";
+      fields["LHWRFCentre"] = "";
+      fields["state"] = "";
+      fields["district"] = "";
+      fields["block"] = "";
+      fields["village"] = "";
+
+      axios.post('/api/beneficiaryFamilies',familyValues)
+        .then(function(response){
+          swal({
+            title : response.data,
+            text  : response.data
+          });
+  /*        this.getData(this.state.startRange, this.state.limitRange);
+  */      })
+        .catch(function(error){
+          console.log("error = ",error);
+        });
+      this.setState({
+        "familyID"             :"",
+        "nameOfFamilyHead"     :"",
+        "uID"                  :"",
+        "caste"                :"",
+        "category"             :"",
+        "LHWRFCentre"          :"",
+        "state"                :"",
+        "district"             :"",
+        "block"                :"",
+        "village"              :"",
+        fields:fields
       });
-  
+    }    
+  }
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (!fields["familyID"]) {
+        formIsValid = false;
+        errors["familyID"] = "This field is required.";
+      }     
+      if (!fields["nameOfFamilyHead"]) {
+        formIsValid = false;
+        errors["nameOfFamilyHead"] = "This field is required.";
+      }
+      if (!fields["uID"]) {
+        formIsValid = false;
+        errors["uID"] = "This field is required.";
+      }
+      if (!fields["caste"]) {
+        formIsValid = false;
+        errors["caste"] = "This field is required.";
+      }          
+      if (!fields["category"]) {
+        formIsValid = false;
+        errors["category"] = "This field is required.";
+      }          
+      if (!fields["LHWRFCentre"]) {
+        formIsValid = false;
+        errors["LHWRFCentre"] = "This field is required.";
+      }          
+      if (!fields["state"]) {
+        formIsValid = false;
+        errors["state"] = "This field is required.";
+      }          
+      if (!fields["district"]) {
+        formIsValid = false;
+        errors["district"] = "This field is required.";
+      }          
+      if (!fields["block"]) {
+        formIsValid = false;
+        errors["block"] = "This field is required.";
+      }          
+      if (!fields["village"]) {
+        formIsValid = false;
+        errors["village"] = "This field is required.";
+      }          
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+     
 
-    }
+
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
 
     componentDidMount() {
      

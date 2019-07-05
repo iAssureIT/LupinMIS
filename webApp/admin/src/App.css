@@ -131,11 +131,8 @@ input, select{
   font-size: 12px !important;
 }
 .valid_box{
-  height: 60px;
+  height: 70px;
 }
-
-
-
 .inputBox:hover{
 
   box-shadow: none !important;

@@ -2,8 +2,9 @@ import React, { Component }     from 'react';
 import $                        from 'jquery';
 import axios                    from 'axios';
 import ReactTable               from "react-table";
-
+import swal   from 'sweetalert';
 import 'react-table/react-table.css';
+
 import "./Activity.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
@@ -25,7 +26,6 @@ class Activity extends Component{
       fields: {},
       errors: {}
     }
-    this.changeTab = this.changeTab.bind(this); 
   }
  
   handleChange(event){
@@ -33,34 +33,14 @@ class Activity extends Component{
     this.setState({
       "sector"   : this.refs.sector.value,  
       "activityName"   : this.refs.activityName.value,  
-     
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
       fields
     });
-  /*  if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }*/
   }
 
-  
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
   isTextKey(evt)
   {
    var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -74,12 +54,13 @@ class Activity extends Component{
     }
  
   }
+
   SubmitActivity(event){
     event.preventDefault();
     var activityArray=[];
     var id2 = this.state.uID;
-/*    if (this.validateForm()) {
-*/    var activityValues= 
+    if (this.validateFormReq()) {
+    var activityValues= 
     {
       "sector"   : this.refs.sector.value, 
       "activityName"   : this.refs.activityName.value,  
@@ -94,81 +75,81 @@ class Activity extends Component{
       "activityName"      :"",
       fields:fields
     });
-    axios.post('/api/sectors', activityValues)
-      .then( (res)=>{
-        console.log(res);
-        if(res.status == 201){
-          alert("Data inserted Successfully!")
-          this.refs.sector.value = '';
-          this.refs.activityName.value= ''; 
-        }
-      })
-      .catch((error)=>{
+    axios.post('/api/sectors',activityValues)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+/*        this.getData(this.state.startRange, this.state.limitRange);
+*/      })
+      .catch(function(error){
         console.log("error = ",error);
-        alert("Something went wrong! Please check Get URL.");
       });
-  
-    console.log("Values =>",activityValues);
-    activityArray.push(activityValues);
-    console.log("add value",activityValues);      
-    alert("Data inserted Successfully!")
-   // }
-
+    }
   }
-    componentDidMount() {
-     
-    }
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (!fields["sector"]) {
+        formIsValid = false;
+        errors["sector"] = "This field is required.";
+      }     
+      if (!fields["activityName"]) {
+        formIsValid = false;
+        errors["activityName"] = "This field is required.";
+      }
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+  componentDidMount() {
+   
+  }
 
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
-    }
-
-    changeTab = (data)=>{
-    this.setState({
-      tabtype : data,
-    })
-    console.log("tabtype",this.state.tabtype);
-    }
-
-    render() {
-      const data = [{
+  componentWillUnmount(){
+      $("script[src='/js/adminLte.js']").remove();
+      $("link[href='/css/dashboard.css']").remove();
+  }
+  render() {
+    const data = [{
       srno: 1,
       centerType: "Natural Resource Manangement",
       NameofCenter: "Water Resource Development",
       }
-      ]
-      const columns = [ 
-        
-        {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        {
-        Header: 'Name of Sector',
-        accessor: 'centerType',
-        },
-        {
-        Header: 'Name of Activity',
-        accessor: 'NameofCenter', 
-        },
-      
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-2">
-              <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-              <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
-            <i className="fa fa-pencil"> </i>
-              </div>
+    ]
+    const columns = [ 
+      {
+      Header: 'Sr No',
+      accessor: 'srno',
+      },
+      {
+      Header: 'Name of Sector',
+      accessor: 'centerType',
+      },
+      {
+      Header: 'Name of Activity',
+      accessor: 'NameofCenter', 
+      },
+    
+      {
+      Header: 'Action',
+      accessor: 'Action',
+      Cell: row => 
+        (
+        <div className="actionDiv col-lg-offset-2">
+            <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
+          <i className="fa fa-trash"> </i>
             </div>
-            )     
-          }
-        ]
+            <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
+          <i className="fa fa-pencil"> </i>
+            </div>
+          </div>
+          )     
+        }
+      ]
 
     return (
       <div className="container-fluid">
@@ -190,6 +171,7 @@ class Activity extends Component{
                         <option>CSR Centre</option>
                       </select>
                     </div>
+                    <div className="errorMsg">{this.state.errors.sector}</div>
                   </div>
                   <div className=" col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Name of Activity</label><span className="asterix">*</span>
@@ -197,7 +179,7 @@ class Activity extends Component{
                       {/*<div className="input-group-addon inputIcon">
                         <i className="fa fa-graduation-cap fa"></i>
                       </div>*/}
-                      <input type="text" className="form-control inputBox nameParts"  placeholder="" name="activityName"  value={this.state.activityName} onChange={this.handleChange.bind(this)} ref="activityName" />
+                      <input type="text" className="form-control inputBox nameParts"  placeholder="" name="activityName"  value={this.state.activityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activityName" />
                     </div>
                     <div className="errorMsg">{this.state.errors.activityName}</div>
                   </div>

@@ -98,7 +98,7 @@ class centreDetail extends Component{
       "districtCovered"          : this.refs.districtCovered.value,
       "blockCovered"             : this.refs.blockCovered.value,
     });
-     let fields = this.state.fields;
+    let fields = this.state.fields;
       fields[event.target.name] = event.target.value;
       this.setState({
         fields
@@ -147,7 +147,7 @@ class centreDetail extends Component{
   }
   Submit(event){
     event.preventDefault();
-     if (this.validateForm() && this.validateFormReq()) {
+    if (this.validateForm() && this.validateFormReq()) {
     var academicArray=[];
     var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
 
@@ -759,7 +759,7 @@ class centreDetail extends Component{
                             <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                               <label className="formLable">Name of Center Incharge</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centreInchargeName" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.centreInchargeName} name="centreInchargeName" placeholder="" ref="centreInchargeName"  onKeyDown={this.isTextKey.bind(this)}   onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.centreInchargeName} name="centreInchargeName" placeholder="" ref="centreInchargeName" onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.centreInchargeName}</div>
                             </div>

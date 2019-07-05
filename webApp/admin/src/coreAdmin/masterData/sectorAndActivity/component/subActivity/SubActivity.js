@@ -2,7 +2,7 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
-
+import swal   from 'sweetalert';
 import 'react-table/react-table.css';
 import "./SubActivity.css";
 
@@ -27,7 +27,6 @@ class SubActivity extends Component{
       fields: {},
       errors: {}
     }
-  this.changeTab = this.changeTab.bind(this); 
   }
  
   handleChange(event){
@@ -44,19 +43,10 @@ class SubActivity extends Component{
     this.setState({
       fields
     });
-  /*  if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }*/
   }
-
-
-  isNumberKey(evt){
+  isTextKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
+    if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
     {
     evt.preventDefault();
       return false;
@@ -65,24 +55,11 @@ class SubActivity extends Component{
       return true;
     }
   }
-  isTextKey(evt)
-  {
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
- 
-  }
   SubmitSubActivity(event){
     event.preventDefault();
     var academicArray=[];
     var id2 = this.state.uID;
-    // if (this.validateForm()) {
+    if (this.validateFormReq()) {
     var subActivityValues= 
     {
       sector               :this.refs.sector.value,
@@ -101,115 +78,114 @@ class SubActivity extends Component{
     this.setState({
       "sector"         :"",
       "activityName"       :"",
-      "subActivityName"    :"",
-      
+      "subActivityName"    :"",      
       fields:fields
     });
-      axios.post('/api/sectors', subActivityValues)
-      .then( (res)=>{
-        console.log(res);
-        if(res.status == 201){
-          alert("Data inserted Successfully!")
-          this.refs.sector.value = '';
-          this.refs.activityName.value= ''; 
-          this.refs.subActivityName.value= ''; 
-        }
-      })
-      .catch((error)=>{
+    axios.post('/api/sectors',subActivityValues)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+/*        this.getData(this.state.startRange, this.state.limitRange);
+*/      })
+      .catch(function(error){
         console.log("error = ",error);
-        alert("Something went wrong! Please check Get URL.");
       });
+    }   
+  }
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (!fields["sector"]) {
+        formIsValid = false;
+        errors["sector"] = "This field is required.";
+      }     
+      if (!fields["activityName"]) {
+        formIsValid = false;
+        errors["activityName"] = "This field is required.";
+      }
+      if (!fields["subActivityName"]) {
+        formIsValid = false;
+        errors["subActivityName"] = "This field is required.";
+      }
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+  getToggleValue(event){
+    if(this.state.familyUpgradation === "No"){
+      this.setState({
+        familyUpgradation : "Yes",
+      })
+    }else if(this.state.familyUpgradation === "Yes"){
+      this.setState({
+        familyUpgradation : "No",
+      })
+    }
+
   }
 
-
-    changeTab = (data)=>{
-    this.setState({
-      tabtype : data,
-    })
-    console.log("tabtype",this.state.tabtype);
+  render() {
+    console.log(this.state.familyUpgradation);
+    const data = [{
+    srno: 1,
+    centerType: "Natural Resource Manangement",
+    NameofCenter: "Water Resource Development",
+    Activity: "Pune",
+    subActivity: "Check Dam Construction",
+    Unit: "Number",
+    Upgradation: "YES",
+    Outreach: "YES",
     }
-    getToggleValue(event){
-      if(this.state.familyUpgradation === "No"){
-        this.setState({
-          familyUpgradation : "Yes",
-        })
-      }else if(this.state.familyUpgradation === "Yes"){
-        this.setState({
-          familyUpgradation : "No",
-        })
-      }
-
-    }
-    getOutreachValue(event){
-       if(this.state.outreach === "No"){
-        this.setState({
-          outreach : "Yes",
-        })
-      }else if(this.state.outreach === "Yes"){
-        this.setState({
-          outreach : "No",
-        })
-      }
-    }
-
-    render() {
-      console.log(this.state.familyUpgradation);
-      const data = [{
-      srno: 1,
-      centerType: "Natural Resource Manangement",
-      NameofCenter: "Water Resource Development",
-      Activity: "Pune",
-      subActivity: "Check Dam Construction",
-      Unit: "Number",
-      Upgradation: "YES",
-      Outreach: "YES",
-      }
-      ]
-      const columns = [ 
-        {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        {
-        Header: 'Name of Sector',
-        accessor: 'centerType',
-        },
-        {
-        Header: 'Name of Activity',
-        accessor: 'Activity', 
-        },
-        {
-        Header: 'Name of Sub-Activity',
-        accessor: 'subActivity', 
-        },
-        {
-        Header: 'Unit',
-        accessor: 'Unit', 
-        },
-        {
-        Header: 'Family Upgradation',
-        accessor: 'Upgradation', 
-        },
-        { 
-        Header: 'Outreach',
-        accessor: 'Outreach', 
-        },
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-2">
-              <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-              <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
-            <i className="fa fa-pencil"> </i>
-              </div>
+    ]
+    const columns = [ 
+      {
+      Header: 'Sr No',
+      accessor: 'srno',
+      },
+      {
+      Header: 'Name of Sector',
+      accessor: 'centerType',
+      },
+      {
+      Header: 'Name of Activity',
+      accessor: 'Activity', 
+      },
+      {
+      Header: 'Name of Sub-Activity',
+      accessor: 'subActivity', 
+      },
+      {
+      Header: 'Unit',
+      accessor: 'Unit', 
+      },
+      {
+      Header: 'Family Upgradation',
+      accessor: 'Upgradation', 
+      },
+      { 
+      Header: 'Outreach',
+      accessor: 'Outreach', 
+      },
+      {
+      Header: 'Action',
+      accessor: 'Action',
+      Cell: row => 
+        (
+        <div className="actionDiv col-lg-offset-2">
+            <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
+          <i className="fa fa-trash"> </i>
             </div>
-            )     
-          }
-        ]
+            <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
+          <i className="fa fa-pencil"> </i>
+            </div>
+          </div>
+          )     
+        }
+      ]
     return (
       <div className="container-fluid">
        <div className="row">
@@ -230,10 +206,11 @@ class SubActivity extends Component{
                           <option>CSR Centre</option>
                         </select>
                       </div>
+                      <div className="errorMsg">{this.state.errors.sector}</div>
                     </div>
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Select Activity Name</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
                         <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.handleChange.bind(this)} >
                           <option  className="hidden" >-- Select --</option>
                           <option>Water Resource Development</option>
@@ -241,15 +218,16 @@ class SubActivity extends Component{
                           <option>Capacity Building</option>
                         </select>
                       </div>
+                      <div className="errorMsg">{this.state.errors.activityName}</div>
                     </div>
 
                     <div className=" col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Name of Sub-Activity</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="subActivity" >
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="subActivityName" >
                         {/*<div className="input-group-addon inputIcon">
                           <i className="fa fa-graduation-cap fa"></i>
                         </div>*/}
-                        <input type="text" className="form-control inputBox nameParts" ref="subActivityName" name="subActivity" value={this.state.subActivityName} onChange={this.handleChange.bind(this)} />
+                        <input type="text" className="form-control inputBox nameParts" ref="subActivityName" name="subActivityNamesubActivityName" value={this.state.subActivityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                       </div>
                       <div className="errorMsg">{this.state.errors.subActivityName}</div>
                     </div>
@@ -263,7 +241,6 @@ class SubActivity extends Component{
                         <label className="formLable">Unit :</label> <label className="formLable">{this.state.unit}</label>
 
                       </div>
-                      <div className="errorMsg">{this.state.errors.Qualification}</div>
                     </div>
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
                       <label className="formLable">Family Upgradation</label><span className="asterix">*</span>

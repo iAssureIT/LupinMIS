@@ -2,6 +2,7 @@ import React, { Component }     from 'react';
 import $                        from 'jquery';
 import axios                    from 'axios';
 import ReactTable               from "react-table";
+import swal   from 'sweetalert';
 
 import 'react-table/react-table.css';
 import "./SectorMapping.css";
@@ -59,22 +60,19 @@ class SectorMapping extends Component{
     event.preventDefault();
     var sectorMappingArray=[];
     var id2 = this.state.uID;
-/*    if (this.validateForm()) {
-*/    var mappingValues= 
+    if (this.validateFormReq()) {
+    var mappingValues= 
     {
       "goal"   : this.refs.goalName.value,          
       "type"   : this.refs.goalType.value,          
      /* "sector"     : this.refs.sector.value,          
       "activity"   : this.refs.activity.value,       */   
-   
     };
-
     let fields = {};
     fields["goalName"] = "";
     fields["goalType"] = "";
     fields["sector"] = "";
     fields["activity"] = "";
-    
     this.setState({
       "goalName"  :"",
       "goalType"  :"",
@@ -82,29 +80,35 @@ class SectorMapping extends Component{
       "activity"  :"",
       fields:fields
     });
-    
-    axios.post('/api/sectorMappings', mappingValues)
-      .then( (res)=>{
-        console.log(res);
-        if(res.status == 201){
-          alert("Data inserted Successfully!")
-          this.refs.goalName.value = '';
-          this.refs.goalType.value= ''; 
-         /* this.refs.sector.value= ''; 
-          this.refs.activity.value= ''; */
-        }
-      })
-      .catch((error)=>{
+    axios.post('/api/sectorMappings',mappingValues)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+/*        this.getData(this.state.startRange, this.state.limitRange);
+*/      })
+      .catch(function(error){
         console.log("error = ",error);
-        alert("Something went wrong! Please check Get URL.");
       });
-  
-    console.log("Values =>",mappingValues);
-    sectorMappingArray.push(mappingValues);
-    console.log("add value",mappingValues);      
-    alert("Data inserted Successfully!")
-    /*}
-*/
+    }  
+  }
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (!fields["goalName"]) {
+        formIsValid = false;
+        errors["goalName"] = "This field is required.";
+      }     
+      if (!fields["goalType"]) {
+        formIsValid = false;
+        errors["goalType"] = "This field is required.";
+      }
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
   }
 
   componentDidMount() {
@@ -185,6 +189,7 @@ class SectorMapping extends Component{
                               <option>Project Name</option>
                             </select>
                           </div>
+                          <div className="errorMsg">{this.state.errors.goalType}</div>
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                           <label className="formLable">Enter Goal / Project Name</label><span className="asterix">*</span>
@@ -203,7 +208,7 @@ class SectorMapping extends Component{
                     </div><br/>
                     <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above {this.state.goalType}</label></div>
                     <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable htDiv valid_box mt">
+                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable htDiv  mt">
                         <div className=" col-md-4  col-lg-4 col-sm-12 col-xs-12 ">
                           <label className="formLable faintCoolor">Natural Resource Management</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 mt">
@@ -363,7 +368,7 @@ class SectorMapping extends Component{
                       </div> 
                     </div><br/>
                     <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable htDiv valid_box ">
+                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable htDiv  ">
                         <div className=" col-md-4  col-lg-4 col-sm-6 col-xs-12 ">
                           <label className="formLable faintCoolor">Natural Resource Management</label>
                          <div className="col-lg-12 col-sm-12 col-xs-12 mt">
