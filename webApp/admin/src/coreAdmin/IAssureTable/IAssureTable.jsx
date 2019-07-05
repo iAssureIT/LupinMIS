@@ -15,7 +15,8 @@ class IAssureTable extends Component {
 			"dataCount" 				: props && props.dataCount ? props.dataCount : [],
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
-		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},		    
+		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
+		    "tableObjects" 				: props && props.tableObjects ? props.tableObjects : {},		    
 		    "reA" 						: /[^a-zA-Z]/g,
 		    "reN" 						: /[^0-9]/g,
 		    "sort" 	  					: true,
@@ -27,7 +28,8 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		}
-		this.deleteExam = this.deleteExam.bind(this);
+		console.log('tableObjects', this.props.tableObjects);
+		this.delete = this.delete.bind(this);
 	}
 	componentDidMount() {
       $("html,body").scrollTop(0); 
@@ -53,7 +55,6 @@ class IAssureTable extends Component {
     	$("script[src='/js/adminSide.js']").remove();
     	$("link[href='/css/dashboard.css']").remove();
 	}
-
 	edit(event){
 		event.preventDefault();
 		$("html,body").scrollTop(0);
@@ -64,12 +65,14 @@ class IAssureTable extends Component {
 		// console.log('id', id);
 		// this.props.edit(id);
 	}
-    deleteExam(e){
+    delete(e){
 	  	e.preventDefault();
+	  	var tableObjects =  this.props.tableObjects;
 		let id = e.target.id;
+		console.log('tableObjects.apiLink+id', tableObjects.apiLink+id);
 		axios({
 	        method: 'delete',
-	        url: '/api/centers/'+id,
+	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
 	        swal({
 	        	text : response.data,
@@ -355,8 +358,7 @@ class IAssureTable extends Component {
 			});	    	
 	    }else{
 			this.props.getData(this.state.startRange, this.state.limitRange);
-	    }
-    	 
+	    }    	 
     }
     showNextPaginationButtons(){
     	var beforeDataLength = this.state.dataLength > 0 ? this.state.dataLength : 20;
@@ -605,7 +607,7 @@ class IAssureTable extends Component {
 															{this.props.editId && this.props.editId == value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id}></i>}
 														</span>
 														<div className="modal fade" id={"showDeleteModal-"+value._id} role="dialog">
-	                                                        <div className=" modal-dialog adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                                                        <div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	                                                          <div className="modal-content adminModal-content col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
 	                                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	                                                            <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
@@ -622,7 +624,7 @@ class IAssureTable extends Component {
 	                                                                <button type="button" className="btn adminCancel-btn col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
 	                                                              </div>
 	                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-	                                                                <button onClick={this.deleteExam.bind(this)} id={value._id} type="button" className="btn examDelete-btn col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
+	                                                                <button onClick={this.delete.bind(this)} id={value._id} type="button" className="btn examDelete-btn col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
 	                                                              </div>
 	                                                            </div>
 	                                                          </div>

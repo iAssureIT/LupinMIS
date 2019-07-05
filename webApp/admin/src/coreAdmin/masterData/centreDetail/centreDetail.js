@@ -3,13 +3,12 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
-import swal from 'sweetalert';
-import _ from 'underscore';
+import swal                   from 'sweetalert';
+import _                      from 'underscore';
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css';
 import "./centreDetail.css";
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
       
 var centreDetailArray  = [];
@@ -72,11 +71,28 @@ class centreDetail extends Component{
         misCoordinatoremail       : "Email",
         actions                   : 'Action',
       },
+      "tableObjects"              : {
+        apiLink                   : '/api/centers/'
+      },
+      tableData                   :[{
+        "_id"                     : "vhvch",
+        "type"                    : "String",
+        "centerName"              : "String",
+        "address"                 : "String",
+        "state"                   : "String",
+        "district"                : "String",
+        "pincode"                 : "String",        
+        centerInchargename        : "Name",
+        centerInchargemobile      : "Contact",
+        centerInchargeemail       : "Email",
+        misCoordinatorname        : "Name",
+        misCoordinatormobile      : "Contact",
+        misCoordinatoremail       : "Email",
+      }],
       "startRange"                  : 0,
       "limitRange"                  : 10,
       "editId"                      : this.props.match.params ? this.props.match.params.id : ''
     }
-    console.log('params', this.props.match.params);
     this.changeTab = this.changeTab.bind(this); 
   }
  
@@ -99,18 +115,17 @@ class centreDetail extends Component{
       "blockCovered"             : this.refs.blockCovered.value,
     });
     let fields = this.state.fields;
-      fields[event.target.name] = event.target.value;
+    fields[event.target.name] = event.target.value;
+    this.setState({
+      fields
+    });
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
       this.setState({
-        fields
+        errors: errors
       });
-       if (this.validateForm()) {
-        let errors = {};
-        errors[event.target.name] = "";
-        this.setState({
-          errors: errors
-        });
-      }
-
+    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -148,87 +163,173 @@ class centreDetail extends Component{
   Submit(event){
     event.preventDefault();
     if (this.validateForm() && this.validateFormReq()) {
-    var academicArray=[];
-    var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+      var academicArray=[];
+      var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
 
-    var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
-    var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
+      var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
+      var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
 
-    var id2 = this.state.uID;
-      /*    if (this.validateForm()) {*/    
-    var centreDetail= 
-    {
-      "type"                      : this.refs.typeOfCentre.value,
-      "centerName"                : this.refs.nameOfCentre.value,
-      "address"                   : this.refs.address.value,
-      "state"                     : this.refs.state.value,
-      "district"                  : this.refs.district.value,
-      "pincode"                   : this.refs.pincode.value,
-      "districtsCovered"          : districtsCovered,
-      "blocksCovered"             : blocksCovered,
-      "villagesCovered"           : this.state.selectedVillages,
-      "centerInchargename"        : this.refs.centreInchargeName.value,
-      "centerInchargemobile"      : this.refs.centreInchargeContact.value,
-      "centerInchargeemail"       : this.refs.centreInchargeEmail.value,
-      "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
-      "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
-      "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
-    };
-    // console.log("centreDetail",centreDetail);
-    let fields = {};
-    fields["typeOfCentre"] = "";
-    fields["nameOfCentre"] = "";
-    fields["address"] = "";
-    fields["state"] = "";
-    fields["district"] = "";
-    fields["pincode"] = "";
-    fields["centreInchargeName"] = "";
-    fields["centreInchargeContact"] = "";
-    fields["centreInchargeEmail"] = "";
-    fields["MISCoordinatorName"] = "";
-    fields["MISCoordinatorContact"] = "";
-    fields["MISCoordinatorEmail"] = "";
-    fields["districtCovered"] = "";
-    fields["blockCovered"] = "";
+      var id2 = this.state.uID;
+        /*    if (this.validateForm()) {*/    
+      var centreDetail= 
+      {
+        "type"                      : this.refs.typeOfCentre.value,
+        "centerName"                : this.refs.nameOfCentre.value,
+        "address"                   : this.refs.address.value,
+        "state"                     : this.refs.state.value,
+        "district"                  : this.refs.district.value,
+        "pincode"                   : this.refs.pincode.value,
+        "districtsCovered"          : districtsCovered,
+        "blocksCovered"             : blocksCovered,
+        "villagesCovered"           : this.state.selectedVillages,
+        "centerInchargename"        : this.refs.centreInchargeName.value,
+        "centerInchargemobile"      : this.refs.centreInchargeContact.value,
+        "centerInchargeemail"       : this.refs.centreInchargeEmail.value,
+        "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
+        "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
+        "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
+      };
+      // console.log("centreDetail",centreDetail);
+      let fields = {};
+      fields["typeOfCentre"] = "";
+      fields["nameOfCentre"] = "";
+      fields["address"] = "";
+      fields["state"] = "";
+      fields["district"] = "";
+      fields["pincode"] = "";
+      fields["centreInchargeName"] = "";
+      fields["centreInchargeContact"] = "";
+      fields["centreInchargeEmail"] = "";
+      fields["MISCoordinatorName"] = "";
+      fields["MISCoordinatorContact"] = "";
+      fields["MISCoordinatorEmail"] = "";
+      fields["districtCovered"] = "";
+      fields["blockCovered"] = "";
 
-    // console.log('centreDetail',centreDetail);
-    axios.post('/api/centers',centreDetail)
-    .then(function(response){
-      swal({
-        title : response.data,
-        text  : response.data
+      // console.log('centreDetail',centreDetail);
+      axios.post('/api/centers',centreDetail)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+        this.getData(this.state.startRange, this.state.limitRange);
+        
+      })
+      .catch(function(error){
+        
       });
-      this.getData(this.state.startRange, this.state.limitRange);
-      
-    })
-    .catch(function(error){
-      
-    });
 
-    this.setState({
-      "typeOfCentre"              : "",
-      "nameOfCentre"              : "",
-      "address"                   : "",
-      "state"                     : "",
-      "district"                  : "",
-      "pincode"                   : "",
-      "centreInchargeName"        : "",
-      "centreInchargeContact"     : "",
-      "centreInchargeEmail"       : "",
-      "MISCoordinatorName"        : "",
-      "MISCoordinatorContact"     : "",
-      "MISCoordinatorEmail"       : "",
-      "districtCovered"           : "",
-      "blockCovered"              : "",
-      "selectedVillages"          : [],
-      "listofDistrict"            : [],
-      "listofBlocks"              : [],
-      "listofVillages"            : [],
-      "fields"                    : fields
-    });
-    $('input[type=checkbox]').attr('checked', true);
+      this.setState({
+        "typeOfCentre"              : "",
+        "nameOfCentre"              : "",
+        "address"                   : "",
+        "state"                     : "",
+        "district"                  : "",
+        "pincode"                   : "",
+        "centreInchargeName"        : "",
+        "centreInchargeContact"     : "",
+        "centreInchargeEmail"       : "",
+        "MISCoordinatorName"        : "",
+        "MISCoordinatorContact"     : "",
+        "MISCoordinatorEmail"       : "",
+        "districtCovered"           : "",
+        "blockCovered"              : "",
+        "selectedVillages"          : [],
+        "listofDistrict"            : [],
+        "listofBlocks"              : [],
+        "listofVillages"            : [],
+        "fields"                    : fields
+      });
+      $('input[type=checkbox]').attr('checked', true);
+    }
   }
-}
+
+  Update(event){
+    event.preventDefault();
+    if (this.validateForm() && this.validateFormReq()) {
+      var academicArray=[];
+      var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+
+      var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
+      var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
+
+      var id2 = this.state.uID;
+        /*    if (this.validateForm()) {*/    
+      var centreDetail = {
+        "type"                      : this.refs.typeOfCentre.value,
+        "centerName"                : this.refs.nameOfCentre.value,
+        "address"                   : this.refs.address.value,
+        "state"                     : this.refs.state.value,
+        "district"                  : this.refs.district.value,
+        "pincode"                   : this.refs.pincode.value,
+        "districtsCovered"          : districtsCovered,
+        "blocksCovered"             : blocksCovered,
+        "villagesCovered"           : this.state.selectedVillages,
+        "centerInchargename"        : this.refs.centreInchargeName.value,
+        "centerInchargemobile"      : this.refs.centreInchargeContact.value,
+        "centerInchargeemail"       : this.refs.centreInchargeEmail.value,
+        "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
+        "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
+        "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
+      };
+      
+      let fields = {};
+      fields["typeOfCentre"] = "";
+      fields["nameOfCentre"] = "";
+      fields["address"] = "";
+      fields["state"] = "";
+      fields["district"] = "";
+      fields["pincode"] = "";
+      fields["centreInchargeName"] = "";
+      fields["centreInchargeContact"] = "";
+      fields["centreInchargeEmail"] = "";
+      fields["MISCoordinatorName"] = "";
+      fields["MISCoordinatorContact"] = "";
+      fields["MISCoordinatorEmail"] = "";
+      fields["districtCovered"] = "";
+      fields["blockCovered"] = "";
+
+      // console.log('centreDetail',centreDetail);
+      axios.post('/api/centers',centreDetail)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+        this.getData(this.state.startRange, this.state.limitRange);
+        
+      })
+      .catch(function(error){
+        
+      });
+
+      this.setState({
+        "typeOfCentre"              : "",
+        "nameOfCentre"              : "",
+        "address"                   : "",
+        "state"                     : "",
+        "district"                  : "",
+        "pincode"                   : "",
+        "centreInchargeName"        : "",
+        "centreInchargeContact"     : "",
+        "centreInchargeEmail"       : "",
+        "MISCoordinatorName"        : "",
+        "MISCoordinatorContact"     : "",
+        "MISCoordinatorEmail"       : "",
+        "districtCovered"           : "",
+        "blockCovered"              : "",
+        "selectedVillages"          : [],
+        "listofDistrict"            : [],
+        "listofBlocks"              : [],
+        "listofVillages"            : [],
+        "fields"                    : fields
+      });
+      $('input[type=checkbox]').attr('checked', true);
+    }
+  }
+
+
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
@@ -334,33 +435,22 @@ class centreDetail extends Component{
       limitRange : 0,
       startRange : 1,
     }
-      // axios({
-      //   method: 'get',
-      //   url: '/api/states',
-      // }).then((response)=> {
-      //   this.setState({
-      //       listofStates : response.data,
-      //   });
-      // }).catch(function (error) {
-      //   console.log('error', error);
-      // });
 
-
-    axios({
-      method: 'get',
-      url: '/api/centers/list',
-    }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-      this.setState({
-        dataCount : tableData.length,
-        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-        editUrl   : this.props.match.params
-      },()=>{
+    // axios({
+    //   method: 'get',
+    //   url: '/api/centers/list',
+    // }).then((response)=> {
+    //   var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+    //   this.setState({
+    //     dataCount : tableData.length,
+    //     tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+    //     editUrl   : this.props.match.params
+    //   },()=>{
         
-      });
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    //   });
+    // }).catch(function (error) {
+    //   console.log('error', error);
+    // });
 
     var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
     this.setState({
@@ -398,7 +488,7 @@ class centreDetail extends Component{
         "blockCovered"             :"",
         "villagesCovered"          : editData.villagesCovered,
       },()=>{
-        console.log('selectedVillages', this.state.selectedVillages);
+        
         if(this.state.state == 'Maharastra'){
           var listofDistrict = ['Pune', 'Mumbai'];
           this.setState({
@@ -411,7 +501,6 @@ class centreDetail extends Component{
             listofBlocks : listofBlocks
           });
         }
-
       });
     }).catch(function (error) {
     });
@@ -759,7 +848,7 @@ class centreDetail extends Component{
                             <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                               <label className="formLable">Name of Center Incharge</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centreInchargeName" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.centreInchargeName} name="centreInchargeName" placeholder="" ref="centreInchargeName" onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.centreInchargeName} name="centreInchargeName" placeholder="" ref="centreInchargeName"  onKeyDown={this.isTextKey.bind(this)}   onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.centreInchargeName}</div>
                             </div>
@@ -905,8 +994,8 @@ class centreDetail extends Component{
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <h5 className="">List of Villages</h5>                                     
-                          <table className="table">
-                            <thead>
+                          <table className="table iAssureITtable-bordered table-striped table-hover">
+                            <thead className="tempTableHeader">
                               <tr>
                                 <th>District</th>
                                 <th>Block</th>
@@ -939,7 +1028,7 @@ class centreDetail extends Component{
                         <div className="col-lg-12">
                         {
                           this.state.editId ? 
-                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Update </button>
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
                           :
                           <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Submit </button>
                         }
@@ -952,7 +1041,7 @@ class centreDetail extends Component{
                           dataCount={this.state.dataCount}
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
-                          
+                          tableObjects={this.state.tableObjects}
                         />
                       </div>
                     </div>

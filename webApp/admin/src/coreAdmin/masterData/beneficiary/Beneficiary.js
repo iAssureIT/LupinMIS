@@ -4,7 +4,6 @@ import axios from 'axios';
 import ReactTable         from "react-table";
 import 'react-table/react-table.css';
 import "./Beneficiary.css";
-
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
