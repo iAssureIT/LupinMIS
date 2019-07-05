@@ -1,9 +1,12 @@
 import React, { Component }       	from 'react';
+import {Route, withRouter} 			from 'react-router-dom';
 import swal                     	from 'sweetalert';
 import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import './IAssureTable.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/js/modal.js';
 var sum = 0;
 class IAssureTable extends Component {
 	constructor(props){
@@ -55,31 +58,26 @@ class IAssureTable extends Component {
 		event.preventDefault();
 		$("html,body").scrollTop(0);
 		// this.setState({'edit': true});
-
 		var id = event.target.id;
-		console.log('id', id);
-		this.props.edit(id);
+		this.props.history.push('/centreDetail/'+id);
+		// var id = event.target.id;
+		// console.log('id', id);
+		// this.props.edit(id);
 	}
     deleteExam(e){
 	  	e.preventDefault();
-		let id = e.target.getAttribute('id');
-		// Meteor.call(this.state.tableObjects.deleteMethod ,id,(error,result)=>{
-		// 	if(error){
-		// 	}else{
-		// 		swal({
-		// 			title: 'abc',
-		// 			text:result,
-		// 			type:'success',
-		// 			showCancelbutton: false,
-		// 			confirmButtonColor: '#666',
-		// 			confirmButtonText: 'Ok',
-		// 			timer: 4000
-		// 		});
-		// 		this.props.compareLength();
-		// 		this.props.getData();
-				
-		// 	}
-	 //    });
+		let id = e.target.id;
+		axios({
+	        method: 'delete',
+	        url: '/api/centers/'+id,
+	    }).then((response)=> {
+	        swal({
+	        	text : response.data,
+	        	title : response.data
+	        });
+	    }).catch(function (error) {
+	        console.log('error', error);
+	    });
     } 
     sort(event){
     	event.preventDefault();
@@ -604,14 +602,14 @@ class IAssureTable extends Component {
 													<td className="textAlignCenter">
 														<span>
 															<i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
-															{this.props.editId && this.props.editId == value.id? null :<i className={"fa fa-trash redFont "+value.id} id={value.id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal"+value.id}></i>}
+															{this.props.editId && this.props.editId == value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id}></i>}
 														</span>
-														<div className="modal fade col-lg-12 col-md-12 col-sm-12 col-xs-12" id={"showDeleteModal"+value.id} role="dialog">
+														<div className="modal fade" id={"showDeleteModal-"+value._id} role="dialog">
 	                                                        <div className=" modal-dialog adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	                                                          <div className="modal-content adminModal-content col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
 	                                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	                                                            <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
-	                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal"+value.id}>&times;</button>
+	                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-"+value._id}>&times;</button>
 	                                                            </div>
 	                                                           
 	                                                            </div>
@@ -624,7 +622,7 @@ class IAssureTable extends Component {
 	                                                                <button type="button" className="btn adminCancel-btn col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
 	                                                              </div>
 	                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-	                                                                <button onClick={this.deleteExam.bind(this)} id={value.id} type="button" className="btn examDelete-btn col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
+	                                                                <button onClick={this.deleteExam.bind(this)} id={value._id} type="button" className="btn examDelete-btn col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
 	                                                              </div>
 	                                                            </div>
 	                                                          </div>
@@ -691,4 +689,4 @@ class IAssureTable extends Component {
 
 }
 
-export default IAssureTable;
+export default withRouter(IAssureTable);

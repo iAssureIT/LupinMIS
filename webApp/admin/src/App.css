@@ -556,4 +556,7 @@ margin-right: 12px;
 .mt{
   margin-top: 20px;
 }
+.fa{
+  cursor: pointer;
 
+}

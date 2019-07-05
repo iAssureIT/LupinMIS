@@ -27,10 +27,8 @@ import BulkUpload                                 from '../../coreAdmin/masterDa
 import centreDetail                               from '../../coreAdmin/masterData/centreDetail/centreDetail.js';
 
 import SectorMapping                                  from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
-/*import EmpowermentLine                            from '../../coreAdmin/masterData/EmpowermentLine/EmpowermentLine.js';
-import ADPReport                                  from '../../coreAdmin/masterData/ADPReport/ADPReport.js';
 
-*/import plan                                 from '../../admin/annualPlan/AnnualPlan.js';
+import plan                                 from '../../admin/annualPlan/AnnualPlan.js';
 import MonthlyPlan                                from '../../admin/monthlyPlan/MonthlyPlan.js';
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";
 */

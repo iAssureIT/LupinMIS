@@ -74,7 +74,9 @@ class centreDetail extends Component{
       },
       "startRange"                  : 0,
       "limitRange"                  : 10,
+      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
     }
+    console.log('params', this.props.match.params);
     this.changeTab = this.changeTab.bind(this); 
   }
  
@@ -112,7 +114,13 @@ class centreDetail extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
+    }
   }
 
   isNumberKey(evt){
@@ -317,39 +325,10 @@ class centreDetail extends Component{
       return formIsValid;
   }
   componentDidMount() {
-    var editId = this.props.match.params;
-    console.log('editId============',editId);
-    axios({
-        method: 'get',
-        url: '/api/centers/'+editId.id,
-      }).then((response)=> {
-        
-        var editData = response.data[0];
-        console.log('editData',editData);
-        this.setState({
-          "typeOfCentre"             : editData.type,
-          "nameOfCentre"             : editData.centerName,
-          "address"                  : editData.address,
-          "state"                    : editData.state,
-          "district"                 : editData.district,
-          "pincode"                  : editData.pincode,
-          "centreInchargeName"       : editData.centerInchargename,
-          "centreInchargeContact"    : editData.centerInchargemobile,
-          "centreInchargeEmail"      : editData.centerInchargeemail,
-          "MISCoordinatorName"       : editData.misCoordinatorname,
-          "MISCoordinatorContact"    : editData.misCoordinatormobile,
-          "MISCoordinatorEmail"      : editData.misCoordinatoremail,
-          "districtCovered"          :"",
-          "blockCovered"             :"",
-        },()=>{
-          // console.log('state', this.state);
-        });
-      }).catch(function (error) {
-        // console.log('error', error);
-      });
-
-
-
+    console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
 
     var data = {
       limitRange : 0,
@@ -367,33 +346,78 @@ class centreDetail extends Component{
       // });
 
 
-      axios({
-        method: 'get',
-        url: '/api/centers/list',
-      }).then((response)=> {
-        // console.log('tableData', response.data);
-        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-          // console.log('tableData ======', tableData);
-        this.setState({
-          dataCount : tableData.length,
-          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-          editUrl   : this.props.match.params
-          // tableData : [],
-        },()=>{
-          // console.log('editUrl', this.state.editUrl);
-        });
-      }).catch(function (error) {
-        console.log('error', error);
-      });
-
-      var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
       this.setState({
-        listofStates : listofStates
-      })
+        dataCount : tableData.length,
+        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+        editUrl   : this.props.match.params
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
 
+    var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
+    this.setState({
+      listofStates : listofStates
+    })
+  }
+  edit(id){
+    $('input:checkbox').attr('checked','unchecked');
+    axios({
+      method: 'get',
+      url: '/api/centers/'+id,
+    }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      editData.villagesCovered.map((data, i)=>{
+        this.setState({
+          [data.village] : true
+        })
+      })
+      this.setState({
+        "typeOfCentre"             : editData.type,
+        "nameOfCentre"             : editData.centerName,
+        "address"                  : editData.address,
+        "state"                    : editData.state,
+        "district"                 : editData.district,
+        "pincode"                  : editData.pincode,
+        "centreInchargeName"       : editData.centerInchargename,
+        "centreInchargeContact"    : editData.centerInchargemobile,
+        "centreInchargeEmail"      : editData.centerInchargeemail,
+        "MISCoordinatorName"       : editData.misCoordinatorname,
+        "MISCoordinatorContact"    : editData.misCoordinatormobile,
+        "MISCoordinatorEmail"      : editData.misCoordinatoremail,
+        "selectedVillages"         : editData.villagesCovered,
+        "districtCovered"          :"",
+        "blockCovered"             :"",
+        "villagesCovered"          : editData.villagesCovered,
+      },()=>{
+        console.log('selectedVillages', this.state.selectedVillages);
+        if(this.state.state == 'Maharastra'){
+          var listofDistrict = ['Pune', 'Mumbai'];
+          this.setState({
+            listofDistrict : listofDistrict
+          });
+        }
+        if(this.state.district == 'Pune'){
+          var listofBlocks = ['Ambegaon', 'Baramati', 'Bhor', 'Daund', 'Haveli', 'Indapur', 'Junnar', 'Khed', 'Mawal', 'Mulshi', 'Pune City', 'Purandhar', 'Shirur', 'Velhe'];
+          this.setState({
+            listofBlocks : listofBlocks
+          });
+        }
+
+      });
+    }).catch(function (error) {
+    });
   }
   getData(startRange, limitRange){
-    axios({
+      axios({
         method: 'get',
         url: '/api/centers/list',
       }).then((response)=> {
@@ -475,6 +499,7 @@ class centreDetail extends Component{
   }
   selectVillage(event){
     var selectedVillages = this.state.selectedVillages;
+
     var value = event.target.checked;
     var id    = event.target.id;
 
@@ -491,6 +516,7 @@ class centreDetail extends Component{
         this.setState({
           selectedVillages : selectedVillages
         });
+        console.log('selectedVillages', selectedVillages);
       }else{
         var index = selectedVillages.findIndex(v => v.village === id);
         // console.log('index', index);
@@ -503,8 +529,28 @@ class centreDetail extends Component{
       }
     });      
   }
-  edit(id){
-    this.props.history.push('/centreDetail/'+id);
+  editVillage(event){
+    event.preventDefault();
+    var id = event.target.id;
+    console.log('id',id);
+
+    var selectedVillages = this.state.selectedVillages[id];
+    console.log('selectedVillages', selectedVillages);
+
+
+  }
+  deleteVillage(event){
+    event.preventDefault();
+    var id = event.target.id;
+    console.log('id',id);
+    var selectedVillages = this.state.selectedVillages;
+    // console.log('index', index);
+    selectedVillages.splice(id, 1);
+    this.setState({
+      selectedVillages : selectedVillages
+    },()=>{
+      // console.log('selectedVillages',this.state.selectedVillages);
+    });
   }
   changeTab = (data)=>{
     this.setState({
@@ -616,8 +662,8 @@ class centreDetail extends Component{
         <div className="row">
           <div className="formWrapper">
               <section className="content">
-                <div className="">
-                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
+                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
+                  <div className="row">
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
                             Master Data                                     
@@ -865,6 +911,7 @@ class centreDetail extends Component{
                                 <th>District</th>
                                 <th>Block</th>
                                 <th>Villages</th>
+                                {/*<th>Actions</th>*/}
                               </tr>
                             </thead>
                             <tbody>
@@ -876,17 +923,26 @@ class centreDetail extends Component{
                                     <td>{data.district}</td>
                                     <td>{data.block}</td>
                                     <td>{data.village}</td>
+                                    {/*<td>
+                                      <i className="fa fa-pencil" id={index} onClick={this.editVillage.bind(this)}></i> &nbsp; &nbsp; 
+                                      <i className="fa fa-trash redFont" id={index} onClick={this.deleteVillage.bind(this)}></i>
+                                    </td>*/}
                                   </tr>
                                 );
                               })
                               :
-                              <tr><td className="textAlignCenter" colSpan="3">Nothing to Display</td></tr>
+                              <tr><td className="textAlignCenter" colSpan="4">Nothing to Display</td></tr>
                             }
                             </tbody>
                           </table> 
                         </div>     
                         <div className="col-lg-12">
-                          <br/><button className=" col-lg-2 btn submit mt pull-right"onClick={this.Submit.bind(this)}> Submit </button>
+                        {
+                          this.state.editId ? 
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Update </button>
+                          :
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Submit </button>
+                        }
                         </div>                          
                       </form>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -896,7 +952,7 @@ class centreDetail extends Component{
                           dataCount={this.state.dataCount}
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
-                          edit={this.edit.bind(this)}
+                          
                         />
                       </div>
                     </div>
