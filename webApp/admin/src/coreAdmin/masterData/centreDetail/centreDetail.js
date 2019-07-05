@@ -16,7 +16,6 @@ class centreDetail extends Component{
   
   constructor(props){
     super(props);
-   
     this.state = {
       "typeOfCentre"             :"",
       "nameOfCentre"             :"",
@@ -74,28 +73,12 @@ class centreDetail extends Component{
       "tableObjects"              : {
         apiLink                   : '/api/centers/'
       },
-      tableData                   :[{
-        "_id"                     : "vhvch",
-        "type"                    : "String",
-        "centerName"              : "String",
-        "address"                 : "String",
-        "state"                   : "String",
-        "district"                : "String",
-        "pincode"                 : "String",        
-        centerInchargename        : "Name",
-        centerInchargemobile      : "Contact",
-        centerInchargeemail       : "Email",
-        misCoordinatorname        : "Name",
-        misCoordinatormobile      : "Contact",
-        misCoordinatoremail       : "Email",
-      }],
       "startRange"                  : 0,
       "limitRange"                  : 10,
       "editId"                      : this.props.match.params ? this.props.match.params.id : ''
     }
     this.changeTab = this.changeTab.bind(this); 
   }
- 
   handleChange(event){
     event.preventDefault();
     this.setState({
@@ -127,7 +110,6 @@ class centreDetail extends Component{
       });
     }
   }
-
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
     if(nextProps.match.params.id){
@@ -137,7 +119,6 @@ class centreDetail extends Component{
       this.edit(editId);
     }
   }
-
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
@@ -244,10 +225,9 @@ class centreDetail extends Component{
       $('input[type=checkbox]').attr('checked', true);
     }
   }
-
   Update(event){
     event.preventDefault();
-    if (this.validateForm() && this.validateFormReq()) {
+    if (this.validateForm() && this.validateFormReq()){
       var academicArray=[];
       var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
 
@@ -255,7 +235,6 @@ class centreDetail extends Component{
       var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
 
       var id2 = this.state.uID;
-        /*    if (this.validateForm()) {*/    
       var centreDetail = {
         "type"                      : this.refs.typeOfCentre.value,
         "centerName"                : this.refs.nameOfCentre.value,
@@ -290,15 +269,13 @@ class centreDetail extends Component{
       fields["districtCovered"] = "";
       fields["blockCovered"] = "";
 
-      // console.log('centreDetail',centreDetail);
-      axios.post('/api/centers',centreDetail)
+      axios.put('/api/centers',centreDetail, this.state.editId)
       .then(function(response){
         swal({
           title : response.data,
           text  : response.data
         });
         this.getData(this.state.startRange, this.state.limitRange);
-        
       })
       .catch(function(error){
         
@@ -328,8 +305,6 @@ class centreDetail extends Component{
       $('input[type=checkbox]').attr('checked', true);
     }
   }
-
-
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
@@ -346,10 +321,10 @@ class centreDetail extends Component{
         formIsValid = false;
         errors["address"] = "This field is required.";
       }
-     /* if (!fields["state"]) {
+      if (!fields["state"]) {
           formIsValid = false;
           errors["state"] = "This field is required.";
-      }*/
+      }
       if (!fields["district"]) {
         formIsValid = false;
         errors["district"] = "This field is required.";
@@ -430,27 +405,25 @@ class centreDetail extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-
     var data = {
       limitRange : 0,
       startRange : 1,
     }
-
-    // axios({
-    //   method: 'get',
-    //   url: '/api/centers/list',
-    // }).then((response)=> {
-    //   var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-    //   this.setState({
-    //     dataCount : tableData.length,
-    //     tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-    //     editUrl   : this.props.match.params
-    //   },()=>{
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+      this.setState({
+        dataCount : tableData.length,
+        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+        editUrl   : this.props.match.params
+      },()=>{
         
-    //   });
-    // }).catch(function (error) {
-    //   console.log('error', error);
-    // });
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
 
     var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
     this.setState({
@@ -551,7 +524,6 @@ class centreDetail extends Component{
   selectState(event){
     event.preventDefault();
     var selectedState = event.target.value;
-    // console.log('selectedState ',selectedState);
     this.setState({
       state : selectedState
     },()=>{
@@ -567,6 +539,7 @@ class centreDetail extends Component{
         });
       }
     });
+    this.handleChange(event);
   }
   blockCoveredChange(event){
     event.preventDefault();
@@ -625,8 +598,6 @@ class centreDetail extends Component{
 
     var selectedVillages = this.state.selectedVillages[id];
     console.log('selectedVillages', selectedVillages);
-
-
   }
   deleteVillage(event){
     event.preventDefault();
@@ -646,7 +617,6 @@ class centreDetail extends Component{
       tabtype : data,
     })
   }
-
   render() {
     const dataM = [{
         srno: 1,
