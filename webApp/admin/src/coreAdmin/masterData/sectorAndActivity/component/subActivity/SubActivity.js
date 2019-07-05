@@ -1,14 +1,14 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-import ReactTable             from "react-table";
-import swal   from 'sweetalert';
-import 'react-table/react-table.css';
+import swal                   from 'sweetalert';
+import _                      from 'underscore';
+
+import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./SubActivity.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 
 class SubActivity extends Component{
   
@@ -16,27 +16,41 @@ class SubActivity extends Component{
     super(props);
    
     this.state = {
-      "sector"             :"",
-      "activityName"       :"",
-      "subActivityName"    :"",
-      "unit"               :"Number", //to be Changes
-      "familyUpgradation"  :"No",
+      "sector"              :"",
+      "activityName"        :"",
+      "subActivityName"     :"",
+      "unit"                :"Number", //to be Changes
+      "familyUpgradation"   :"No",
       // "outreach"           :"No",
-      "uID"                :"",
-      "shown"              : true,
-      fields: {},
-      errors: {}
-    }
+      "uID"                 :"",
+      "shown"               : true,
+      fields                : {},
+      errors                : {},
+      "tableHeading"        : {
+        sector              : "Name of Sector",
+        activityName        : "Name of Activity",
+        subActivityName     : "Name of Sub-Activity",
+        unit                : "Unit", //to be Changes
+        familyUpgradation   : "Family Upgradation",
+        actions             : 'Action',
+      },
+      "tableObjects"              : {
+        apiLink                   : '/api/sectors/'
+      },
+      "startRange"          : 0,
+      "limitRange"          : 10,
+/*      "editId"              : this.props.match.params ? this.props.match.params.id : ''
+*/    }
+/*    console.log('params', this.props.match.params);*/ 
   }
- 
+
   handleChange(event){
     event.preventDefault();
     this.setState({
-      "sector"           :this.refs.sector.value,
+      "sector"               :this.refs.sector.value,
       "activityName"         :this.refs.activityName.value,
       "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.state.unit,
-      // "outreach"             :this.state.outreach,
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -70,16 +84,16 @@ class SubActivity extends Component{
     /*  outreach             :this.state.outreach,*/
     };
     
-    let fields = {};
-    fields["sector"] = "";
-    fields["activityName"] = "";
+    let fields                = {};
+    fields["sector"]          = "";
+    fields["activityName"]    = "";
     fields["subActivityName"] = "";
-    fields["unit"] = "";
+    fields["unit"]            = "";
     this.setState({
-      "sector"         :"",
-      "activityName"       :"",
-      "subActivityName"    :"",      
-      fields:fields
+      "sector"                :"",
+      "activityName"          :"",
+      "subActivityName"       :"",      
+      fields                  :fields
     });
     axios.post('/api/sectors',subActivityValues)
       .then(function(response){
@@ -115,6 +129,79 @@ class SubActivity extends Component{
       });
       return formIsValid;
   }
+  
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
+    }
+  }
+
+  componentDidMount() {
+    console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return});
+      this.setState({
+        dataCount : tableData.length,
+        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+        editUrl   : this.props.match.params
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+
+  edit(id){
+    $('input:checkbox').attr('checked','unchecked');
+    axios({
+      method: 'get',
+      url: '/api/sectors'+id,
+    }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      
+      this.setState({
+        "sector"                :editData.sector,
+        "activityName"          :editData.activityName,
+        "subActivityName"       :editData.subActivityName,   
+        "unit"                  :editData.unit,
+        "familyUpgradation"     :editData.familyUpgradation,    
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+    });
+  }
+  
+  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return});
+        this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+        console.log('error', error);
+    });
+  }
+
   getToggleValue(event){
     if(this.state.familyUpgradation === "No"){
       this.setState({
@@ -129,72 +216,15 @@ class SubActivity extends Component{
   }
 
   render() {
-    console.log(this.state.familyUpgradation);
-    const data = [{
-    srno: 1,
-    centerType: "Natural Resource Manangement",
-    NameofCenter: "Water Resource Development",
-    Activity: "Pune",
-    subActivity: "Check Dam Construction",
-    Unit: "Number",
-    Upgradation: "YES",
-    Outreach: "YES",
-    }
-    ]
-    const columns = [ 
-      {
-      Header: 'Sr No',
-      accessor: 'srno',
-      },
-      {
-      Header: 'Name of Sector',
-      accessor: 'centerType',
-      },
-      {
-      Header: 'Name of Activity',
-      accessor: 'Activity', 
-      },
-      {
-      Header: 'Name of Sub-Activity',
-      accessor: 'subActivity', 
-      },
-      {
-      Header: 'Unit',
-      accessor: 'Unit', 
-      },
-      {
-      Header: 'Family Upgradation',
-      accessor: 'Upgradation', 
-      },
-      { 
-      Header: 'Outreach',
-      accessor: 'Outreach', 
-      },
-      {
-      Header: 'Action',
-      accessor: 'Action',
-      Cell: row => 
-        (
-        <div className="actionDiv col-lg-offset-2">
-            <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
-          <i className="fa fa-trash"> </i>
-            </div>
-            <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
-          <i className="fa fa-pencil"> </i>
-            </div>
-          </div>
-          )     
-        }
-      ]
     return (
       <div className="container-fluid">
-       <div className="row">
+        <div className="row">
           <div className="formWrapper">
-                <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="subActivityb">
+              <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="subActivityb">
                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
-              <span className="perinfotitle mgtpprsnalinfo"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sub-Activity</span>
-            </div>
-            <div className="marginBottom col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+                  <span className="perinfotitle mgtpprsnalinfo"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sub-Activity</span>
+                </div>
+                <div className="marginBottom col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
                 <div className="row">
                   <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
@@ -239,7 +269,6 @@ class SubActivity extends Component{
                      <div className=" col-md-4 col-sm-6 col-xs-12 ">
                       <div className="col-lg-12 col-sm-12 col-xs-12 unit" id="unit" >
                         <label className="formLable">Unit :</label> <label className="formLable">{this.state.unit}</label>
-
                       </div>
                     </div>
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
@@ -252,40 +281,29 @@ class SubActivity extends Component{
                           </label>
                         </div>
                     </div>
-                    {/*<div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
-                      <label className="formLable"> Outreach</label><span className="asterix">*</span>
-                       <div className="can-toggle genderbtn demo-rebrand-2 " onChange={this.getOutreachValue.bind(this)}>
-                          <input id="o" type="checkbox"/>
-                          <label className="formLable" htmlFor="o">
-                          <div className="can-toggle__switch" data-checked="Yes"  data-unchecked="No" ></div>
-                            <div className="can-toggle__label-text"></div>
-                          </label>
-                        </div>
-                    </div>*/}
                   </div> 
                 </div><br/>
-                <div className="col-lg-12">
-                  <br/><button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitSubActivity.bind(this)}> Submit</button>
-                </div>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                  {
+                    this.state.editId ? 
+                    <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitSubActivity.bind(this)}> Update </button>
+                    :
+                    <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitSubActivity.bind(this)}> Submit </button>
+                  }
+                </div> 
               </form>
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt " >  
-                  <ReactTable 
-                    data            = {data}
-                    columns         = {columns}
-                    sortable        = {true}
-                    defaultPageSiz  = {5}
-                    minRows         = {3} 
-                    className       = {"-striped -highlight"}
-                    showPagination  = {true}
-                  />
-                  </div> 
-                </div>              
-
-
-                        </div>
-                      </div>
-        
+                <IAssureTable 
+                  tableHeading={this.state.tableHeading}
+                  twoLevelHeader={this.state.twoLevelHeader} 
+                  dataCount={this.state.dataCount}
+                  tableData={this.state.tableData}
+                  getData={this.getData.bind(this)}
+                  tableObjects={this.state.tableObjects}
+                />
+              </div>              
+            </div>
+          </div>
       </div>
     );
 

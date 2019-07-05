@@ -89,7 +89,7 @@ class NewBeneficiary extends Component{
   isTextKey(evt)
   {
    var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;

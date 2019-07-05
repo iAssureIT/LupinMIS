@@ -316,7 +316,7 @@ class Family extends Component{
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts" ref="nameOfFamilyHead" name="nameOfFamilyHead" value={this.state.nameOfFamilyHead} onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox nameParts" ref="nameOfFamilyHead" name="nameOfFamilyHead" value={this.state.nameOfFamilyHead} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.nameOfFamilyHead}</div>
                         </div>

@@ -1,7 +1,7 @@
-import React, { Component }       from 'react';
-import $                          from 'jquery';
-import axios                      from 'axios';
-import swal   from 'sweetalert';
+import React, { Component }   from 'react';
+import $                      from 'jquery';
+import axios                  from 'axios';
+import swal                   from 'sweetalert';
 
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./Sector.css";
@@ -19,34 +19,12 @@ class Sector extends Component{
       "uID"                 :"",
       fields                : {},
       errors                : {},
-      "twoLevelHeader"      : {
-        apply               : true,
-        firstHeaderData     : [
-                              {
-                                  heading : '',
-                                  mergedColoums : 4
-                              },
-                              {
-                                  heading : 'Center Incharge',
-                                  mergedColoums : 3
-                              },
-                              {
-                                  heading : 'MIS Coordinator',
-                                  mergedColoums : 3
-                              },
-                            ]
-      },
       "tableHeading"        : {
-        type                      : "Type of Center",
-        centerName                : "Name of Center",
-        address                   : "Address",
-        centerInchargename        : "Name",
-        centerInchargemobile      : "Contact",
-        centerInchargeemail       : "Email",
-        misCoordinatorname        : "Name",
-        misCoordinatormobile      : "Contact",
-        misCoordinatoremail       : "Email",
-        actions                   : 'Action',
+        sector              : "Name of Sector",
+        actions             : 'Action',
+      },
+      "tableObjects"        : {
+        apiLink             : '/api/sectors/'
       },
       "startRange"          : 0,
       "limitRange"          : 10,
@@ -125,8 +103,72 @@ class Sector extends Component{
       return formIsValid;
   }
 
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
+    }
+  }
+
   componentDidMount() {
-   
+    console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return});
+      this.setState({
+        dataCount : tableData.length,
+        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+        editUrl   : this.props.match.params
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+
+  edit(id){
+    $('input:checkbox').attr('checked','unchecked');
+    axios({
+      method: 'get',
+      url: '/api/sectors'+id,
+    }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      
+      this.setState({
+        "sector"                :editData.sector,
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+    });
+  }
+  
+  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return});
+        this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+        console.log('error', error);
+    });
   }
 
   componentWillUnmount(){
@@ -156,21 +198,26 @@ class Sector extends Component{
                     </div>
                     <div className="errorMsg">{this.state.errors.sector}</div>
                   </div>
-                  <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                    <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitSector.bind(this)}> Submit</button>
-                  </div>
+                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    {
+                      this.state.editId ? 
+                      <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitSector.bind(this)}> Update</button>
+                      :
+                      <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitSector.bind(this)}> Submit</button>
+                    }
+                  </div> 
                 </div> 
               </div><br/>
             </form>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-               {/*<IAssureTable 
+              <IAssureTable 
                 tableHeading={this.state.tableHeading}
                 twoLevelHeader={this.state.twoLevelHeader} 
                 dataCount={this.state.dataCount}
                 tableData={this.state.tableData}
                 getData={this.getData.bind(this)}
-                
-              />*/}
+                tableObjects={this.state.tableObjects}
+              />
             </div>              
           </div>
         </div>

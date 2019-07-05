@@ -2,9 +2,9 @@ import React, { Component }     from 'react';
 import $                        from 'jquery';
 import axios                    from 'axios';
 import ReactTable               from "react-table";
-import swal   from 'sweetalert';
-import 'react-table/react-table.css';
+import swal                     from 'sweetalert';
 
+import IAssureTable             from "../../../../IAssureTable/IAssureTable.jsx";
 import "./Activity.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
@@ -21,12 +21,24 @@ class Activity extends Component{
       "academicData"        :[],
       "uID"                 :"",
       "shown"               : true,
-      "tabtype" : "location",
-
-      fields: {},
-      errors: {}
+      "tabtype"             : "location",
+      fields                : {},
+      errors                : {},
+      "tableHeading"        : {
+        sector              : "Name of Sector",
+        activityName        : "Name of Activity",
+        actions             : 'Action',
+      },
+      "tableObjects"        : {
+        apiLink             : '/api/sectors/'
+      },
+      "startRange"          : 0,
+      "limitRange"          : 10,
+/*      "editId"              : this.props.match.params ? this.props.match.params.id : ''*/  
     }
+/*    console.log('params', this.props.match.params);*/  
   }
+ 
  
   handleChange(event){
     event.preventDefault();
@@ -62,18 +74,18 @@ class Activity extends Component{
     if (this.validateFormReq()) {
     var activityValues= 
     {
-      "sector"   : this.refs.sector.value, 
+      "sector"         : this.refs.sector.value, 
       "activityName"   : this.refs.activityName.value,  
     };
 
-    let fields = {};
-    fields["sector"] = "";
-    fields["activityName"] = "";
+    let fields                = {};
+    fields["sector"]          = "";
+    fields["activityName"]    = "";
   
     this.setState({
-      "sector"  :"",
-      "activityName"      :"",
-      fields:fields
+      "sector"        :"",
+      "activityName"  :"",
+      fields          :fields
     });
     axios.post('/api/sectors',activityValues)
       .then(function(response){
@@ -105,52 +117,82 @@ class Activity extends Component{
       });
       return formIsValid;
   }
-  componentDidMount() {
-   
+
+
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
+    }
   }
 
+  componentDidMount() {
+    console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return});
+      this.setState({
+        dataCount : tableData.length,
+        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+        editUrl   : this.props.match.params
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+
+  edit(id){
+    $('input:checkbox').attr('checked','unchecked');
+    axios({
+      method: 'get',
+      url: '/api/sectors'+id,
+    }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      
+      this.setState({
+        "sector"                :editData.sector,
+        "activityName"          :editData.activityName,
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+    });
+  }
+  
+  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return});
+        this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+        console.log('error', error);
+    });
+  }
   componentWillUnmount(){
       $("script[src='/js/adminLte.js']").remove();
       $("link[href='/css/dashboard.css']").remove();
   }
   render() {
-    const data = [{
-      srno: 1,
-      centerType: "Natural Resource Manangement",
-      NameofCenter: "Water Resource Development",
-      }
-    ]
-    const columns = [ 
-      {
-      Header: 'Sr No',
-      accessor: 'srno',
-      },
-      {
-      Header: 'Name of Sector',
-      accessor: 'centerType',
-      },
-      {
-      Header: 'Name of Activity',
-      accessor: 'NameofCenter', 
-      },
-    
-      {
-      Header: 'Action',
-      accessor: 'Action',
-      Cell: row => 
-        (
-        <div className="actionDiv col-lg-offset-2">
-            <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
-          <i className="fa fa-trash"> </i>
-            </div>
-            <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
-          <i className="fa fa-pencil"> </i>
-            </div>
-          </div>
-          )     
-        }
-      ]
-
+   
     return (
       <div className="container-fluid">
         <div className="row">
@@ -185,20 +227,24 @@ class Activity extends Component{
                   </div>
                 </div> 
               </div><br/>
-              <div className="col-lg-12">
-                <br/><button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitActivity.bind(this)}> Submit</button>
-              </div>
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                {
+                  this.state.editId ? 
+                  <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitActivity.bind(this)}> Update </button>
+                  :
+                  <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
+                }
+              </div> 
             </form>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt " >  
-                <ReactTable 
-                  data      = {data}
-                  columns     = {columns}
-                  sortable    = {true}
-                  defaultPageSiz  = {5}
-                  minRows     = {3} 
-                  className       = {"-striped -highlight"}
-                  showPagination  = {true}
+                <IAssureTable 
+                  tableHeading={this.state.tableHeading}
+                  twoLevelHeader={this.state.twoLevelHeader} 
+                  dataCount={this.state.dataCount}
+                  tableData={this.state.tableData}
+                  getData={this.getData.bind(this)}
+                  tableObjects={this.state.tableObjects}
                 />
               </div> 
             </div>              

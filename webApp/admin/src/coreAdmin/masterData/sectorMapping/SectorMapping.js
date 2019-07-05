@@ -1,10 +1,10 @@
-import React, { Component }     from 'react';
-import $                        from 'jquery';
-import axios                    from 'axios';
-import ReactTable               from "react-table";
-import swal   from 'sweetalert';
+import React, { Component }   from 'react';
+import $                      from 'jquery';
+import axios                  from 'axios';
+import swal                   from 'sweetalert';
+import _                      from 'underscore';
 
-import 'react-table/react-table.css';
+import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./SectorMapping.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
@@ -16,16 +16,30 @@ class SectorMapping extends Component{
     super(props);
    
     this.state = {
-      "goalName"  :"",
-      "goalType"  :"",
-      "sector"    :"",
-      "activity"  :"",
-      "uID"       :"",
-      
-      fields: {},
-      errors: {}
-    }
+      "goalName"      :"",
+      "goalType"      :"",
+      "sector"        :"",
+      "activity"      :"",
+      "uID"           :"",
+      fields          : {},
+      errors          : {},
+      "tableHeading"  : {
+        type                : "Type of Goal/Project",
+        goal                : "Goal /Project Name",
+        sector              : "Sector",
+        activity            : "Activity", //to be Changes
+        actions             : 'Action',
+      },
+      "tableObjects"              : {
+        apiLink                   : '/api/sectorMappings/'
+      },
+      "startRange"    : 0,
+      "limitRange"    : 10,
+/*      "editId"              : this.props.match.params ? this.props.match.params.id : ''
+*/    }
+/*    console.log('params', this.props.match.params);*/ 
   }
+
  
   handleChange(event){
     event.preventDefault();
@@ -56,7 +70,7 @@ class SectorMapping extends Component{
     }
  
   }
-  SubmitgoalName(event){
+  Submit(event){
     event.preventDefault();
     var sectorMappingArray=[];
     var id2 = this.state.uID;
@@ -69,17 +83,11 @@ class SectorMapping extends Component{
       "activity"   : this.refs.activity.value,       */   
     };
     let fields = {};
-    fields["goalName"] = "";
-    fields["goalType"] = "";
-    fields["sector"] = "";
-    fields["activity"] = "";
-    this.setState({
-      "goalName"  :"",
-      "goalType"  :"",
-      "sector"    :"",
-      "activity"  :"",
-      fields:fields
-    });
+    fields["goalName"]  = "";
+    fields["goalType"]  = "";
+    fields["sector"]    = "";
+    fields["activity"]  = "";
+    
     axios.post('/api/sectorMappings',mappingValues)
       .then(function(response){
         swal({
@@ -91,6 +99,14 @@ class SectorMapping extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
+      this.setState({
+        "goalName"  :"",
+        "goalType"  :"",
+        "sector"    :"",
+        "activity"  :"",
+        fields      :fields
+      });
+      $('input[type=checkbox]').attr('checked', true);
     }  
   }
   validateFormReq() {
@@ -111,8 +127,75 @@ class SectorMapping extends Component{
       return formIsValid;
   }
 
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
+    }
+  }
+
   componentDidMount() {
-   
+    console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+    axios({
+      method: 'get',
+      url: '/api/sectorMappings/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return});
+      this.setState({
+        dataCount : tableData.length,
+        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+        editUrl   : this.props.match.params
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+
+  edit(id){
+    $('input:checkbox').attr('checked','unchecked');
+    axios({
+      method: 'get',
+      url: '/api/sectorMappings'+id,
+    }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      
+      this.setState({
+        "goalName"    :editData.goal,        
+        "goalType"    :editData.type,      
+        "sector"      :editData.sector, 
+        "activity"    :editData.activity,
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+    });
+  }
+  
+  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/sectorMappings/list',
+    }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return});
+        this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+        console.log('error', error);
+    });
   }
 
   componentWillUnmount(){
@@ -123,42 +206,6 @@ class SectorMapping extends Component{
 
 
   render() {
-    const data = [{
-    srno: 1,
-    centerType: "Development Centre",
-    NameofCenter: "Pune",
-    }
-    ]
-    const columns = [ 
-      {
-      Header: 'Sr No',
-      accessor: 'srno',
-      },
-      {
-      Header: 'Type of Centre',
-      accessor: 'centerType',
-      },
-      {
-      Header: 'Name of Centre',
-      accessor: 'NameofCenter', 
-      },
-    
-      {
-      Header: 'Action',
-      accessor: 'Action',
-      Cell: row => 
-        (
-        <div className="actionDiv col-lg-offset-2">
-            <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
-          <i className="fa fa-trash"> </i>
-            </div>
-            <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
-          <i className="fa fa-pencil"> </i>
-            </div>
-          </div>
-          )     
-        }
-    ]
     return(
       <div className="container-fluid">
         <div className="row">
@@ -197,7 +244,7 @@ class SectorMapping extends Component{
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts" value={this.state.goalName} onChange={this.handleChange.bind(this)} placeholder="" name="goalName" ref="goalName" />
+                            <input type="text" className="form-control inputBox nameParts" value={this.state.goalName} onChange={this.handleChange.bind(this)} onKeyDown={this.isTextKey.bind(this)}  placeholder="" name="goalName" ref="goalName" />
                           </div>
                           <div className="errorMsg">{this.state.errors.goalName}</div>
                         </div>
@@ -528,9 +575,24 @@ class SectorMapping extends Component{
                       </div> 
                     </div><br/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitgoalName.bind(this)}> Submit</button>
-                    </div>
+                      {
+                        this.state.editId ? 
+                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Update </button>
+                        :
+                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Submit </button>
+                      }
+                    </div> 
                   </form>
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <IAssureTable 
+                      tableHeading={this.state.tableHeading}
+                      twoLevelHeader={this.state.twoLevelHeader} 
+                      dataCount={this.state.dataCount}
+                      tableData={this.state.tableData}
+                      getData={this.getData.bind(this)}
+                      tableObjects={this.state.tableObjects}
+                    />
+                  </div>
                 </div>
               </div>
             </section>

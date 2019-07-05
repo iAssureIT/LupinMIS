@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import $ from 'jquery';
-import axios from 'axios';
-import ReactTable         from "react-table";
-import 'react-table/react-table.css';
-import swal   from 'sweetalert';
+import React, { Component }   from 'react';
+import $                      from 'jquery';
+import axios                  from 'axios';
+import swal                   from 'sweetalert';
+
+import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./Beneficiary.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
@@ -15,21 +15,33 @@ class Beneficiary extends Component{
     super(props);
    
     this.state = {
-      "familyID"             :"",
-      "beneficariesId"        :"",
-      "nameofbeneficaries"      :"",
-      "academicData"          :[],
-      "fields": {},
-      "errors": {}
-    }
+      "familyID"            :"",
+      "beneficariesId"      :"",
+      "nameofbeneficaries"  :"",
+      "fields"              : {},
+      "errors"              : {},
+      "tableHeading"        : {
+        familyID            : "Family ID",
+        beneficariesId      : "Beneficiary ID",
+        nameofbeneficaries  : "Name of Beneficiary",
+        actions             : 'Action',
+      },
+      "tableObjects"              : {
+        apiLink                   : '/api/beneficiaries/'
+      },
+      "startRange"          : 0,
+      "limitRange"          : 10,
+/*      "editId"              : this.props.match.params ? this.props.match.params.id : ''
+*/    }
+/*    console.log('params', this.props.match.params);*/ 
   }
- 
+
   handleChange(event){
     event.preventDefault();
     this.setState({
       "familyID"             : this.refs.familyID.value,          
-      "beneficariesId"        : this.refs.beneficariesId.value,          
-      "nameofbeneficaries"      : this.refs.nameofbeneficaries.value,
+      "beneficariesId"       : this.refs.beneficariesId.value,          
+      "nameofbeneficaries"   : this.refs.nameofbeneficaries.value,
       
     });
     let fields = this.state.fields;
@@ -42,7 +54,7 @@ class Beneficiary extends Component{
   isTextKey(evt)
   {
    var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -60,18 +72,18 @@ class Beneficiary extends Component{
     var beneficiaryValue= 
     {
       "familyID"             : this.refs.familyID.value,          
-      "beneficariesId"        : this.refs.beneficariesId.value,          
-      "nameofbeneficaries"      : this.refs.nameofbeneficaries.value,
+      "beneficariesId"       : this.refs.beneficariesId.value,          
+      "nameofbeneficaries"   : this.refs.nameofbeneficaries.value,
     };
 
     let fields = {};
-    fields["familyID"] = "";
-    fields["beneficariesId"] = "";
+    fields["familyID"]           = "";
+    fields["beneficariesId"]     = "";
     fields["nameofbeneficaries"] = "";
 
     this.setState({
-      "familyID"             :"",
-      "beneficariesId"        :"",
+      "familyID"                :"",
+      "beneficariesId"          :"",
       "nameofbeneficaries"      :"",   
       fields:fields
     });
@@ -109,54 +121,82 @@ class Beneficiary extends Component{
       });
       return formIsValid;
   }
-  componentWillUnmount(){
-      $("script[src='/js/adminLte.js']").remove();
-      $("link[href='/css/dashboard.css']").remove();
-  }
-  render() {
-    const data = [{
-    srno: 1,
-    familyID: "PL00001",
-    beneficariesId: "P11111",
-    nameOfbeneficiary: "Priyanka Lewade",
+
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
     }
-    ]
-    const columns = [ 
-      {
-      Header: 'Sr No',
-      accessor: 'srno',
-      },
-      {
-      Header: 'Family ID',
-      accessor: 'familyID',
-      },
-      {
-      Header: 'Beneficiary ID',
-      accessor: 'beneficariesId', 
-      },
-    {
-      Header: 'Name of Beneficiary',
-      accessor: 'nameOfbeneficiary', 
-      },
-    
-      {
-      Header: 'Action',
-      accessor: 'Action',
-      Cell: row => 
-        (
-        <div className="actionDiv col-lg-offset-2">
-            <div className="col-lg-4" onClick={() => this.deleteData(row.original)}>
-          <i className="fa fa-trash"> </i>
-            </div>
-            <div className="col-lg-4" onClick={() => this.updateData(row.original)}>
-          <i className="fa fa-pencil"> </i>
-            </div>
-          </div>
-          )     
-        }
-      ]
+  }
 
+  componentDidMount() {
+    console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
+    axios({
+      method: 'get',
+      url: '/api/beneficiaries/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return});
+      this.setState({
+        dataCount : tableData.length,
+        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+        editUrl   : this.props.match.params
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
 
+  edit(id){
+    axios({
+      method: 'get',
+      url: '/api/beneficiaries'+id,
+    }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      
+      this.setState({
+        "familyID"             : editData.familyID,          
+        "beneficariesId"       : editData.beneficariesId,          
+        "nameofbeneficaries"   : editData.nameofbeneficaries,
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+    });
+  }
+  
+  getData(startRange, limitRange){
+    axios({
+      method: 'get',
+      url: '/api/beneficiaries/list',
+    }).then((response)=> {
+        var tableData = response.data.map((a, index)=>{return});
+        this.setState({
+        tableData : tableData.slice(startRange, limitRange),
+      });
+    }).catch(function (error) {
+        console.log('error', error);
+    });
+  }
+
+  componentWillUnmount(){
+    $("script[src='/js/adminLte.js']").remove();
+    $("link[href='/css/dashboard.css']").remove();
+  }
+
+  render() {
     return (
       <div className="container-fluid">
         <div className="row">
@@ -204,32 +244,34 @@ class Beneficiary extends Component{
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts"  placeholder="" value={this.state.nameofbeneficaries} ref="nameofbeneficaries" name="nameofbeneficaries" onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox nameParts"  placeholder="" value={this.state.nameofbeneficaries} ref="nameofbeneficaries" name="nameofbeneficaries" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.nameofbeneficaries}</div>
                         </div>
                       </div> 
                     </div><br/>
-                    <div className="col-lg-12">
-                      <br/><button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit</button>
-                    </div>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      {
+                        this.state.editId ? 
+                        <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Update </button>
+                        :
+                        <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
+                      }
+                    </div> 
                   </form>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt " >  
-                        <ReactTable 
-                          data      = {data}
-                          columns     = {columns}
-                          sortable    = {true}
-                          defaultPageSiz  = {5}
-                          minRows     = {3} 
-                          className       = {"-striped -highlight"}
-                          showPagination  = {true}
-                        />
-                      </div> 
-                    </div>              
-                  </div>
+                    <IAssureTable 
+                      tableHeading={this.state.tableHeading}
+                      twoLevelHeader={this.state.twoLevelHeader} 
+                      dataCount={this.state.dataCount}
+                      tableData={this.state.tableData}
+                      getData={this.getData.bind(this)}
+                      tableObjects={this.state.tableObjects}
+                    />
+                  </div>              
                 </div>
-              </section>
+              </div>
+            </section>
           </div>
         </div>
       </div>
