@@ -85,15 +85,15 @@ class Layout extends Component{
                   {/*Master Data*/}
                     <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
                     <Route path="/family"                              exact strict component={ Family } />
-                    <Route path="/sectorandactivity"                   exact strict component={ SectorAndActivity } />
-                    <Route path="/bulkUpload"                          exact strict component={ BulkUpload } />
+                    <Route path="/sector-and-activity"                   exact strict component={ SectorAndActivity } />
+                    <Route path="/bulk-upload"                          exact strict component={ BulkUpload } />
                     { /*Reports Routes*/}
-                    <Route path="/sectorMapping"                          exact strict component={ SectorMapping } />
+                    <Route path="/sector-mapping"                          exact strict component={ SectorMapping } />
                     { /*Plans Routes*/}
                     <Route path="/plan"                         exact strict component={ plan } />
-                    <Route path="/centreDetail"                        exact strict component={ centreDetail } />
-                    <Route path="/centreDetail/:id"                        exact strict component={ centreDetail } />
-                    <Route path="/monthlyPlan"                        exact strict component={ MonthlyPlan } />
+                    <Route path="/centre-detail"                        exact strict component={ centreDetail } />
+                    <Route path="/centre-detail/:id"                        exact strict component={ centreDetail } />
+                    <Route path="/monthly-plan"                        exact strict component={ MonthlyPlan } />
                   </Switch>        
                 </Router>
               </div>

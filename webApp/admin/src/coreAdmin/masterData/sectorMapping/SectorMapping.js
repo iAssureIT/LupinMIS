@@ -584,14 +584,14 @@ class SectorMapping extends Component{
                     </div> 
                   </form>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    <IAssureTable 
+                    {/*<IAssureTable 
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.dataCount}
                       tableData={this.state.tableData}
                       getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects}
-                    />
+                    />*/}
                   </div>
                 </div>
               </div>

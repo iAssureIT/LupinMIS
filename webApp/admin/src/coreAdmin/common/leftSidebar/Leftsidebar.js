@@ -79,31 +79,19 @@ export default class Leftsidebar extends Component{
                   </a>
                   <ul className="collapse list-unstyled" id="MasterData">
                     <li>
-                        <a href="/centreDetail">
-                          <i className="fa fa-circle-o" /> 
-                          <span className="sidebarMenuSubText">Center</span>
-                        </a>
-                      </li>
-                    {/*<li>
-                      <a href="beneficiary">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Beneficiary</span>
+                      <a href="/centre-detail">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Center Details</span>
                       </a>
-                    </li>                   
+                    </li>
                     <li>
-                      <a href="/family">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Family</span>
-                      </a>
-                    </li>*/}
-                    <li>
-                      <a href="/sectorandactivity">
+                      <a href="/sector-and-activity">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector & Activity</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/sectorMapping">
+                      <a href="/sector-mapping">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector Mapping</span>
                       </a>
