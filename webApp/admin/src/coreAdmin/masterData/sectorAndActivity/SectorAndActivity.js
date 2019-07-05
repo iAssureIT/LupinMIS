@@ -17,7 +17,7 @@ class SectorAndActivity extends Component{
     }
     this.changeTab = this.changeTab.bind(this); 
 
-    }
+  }
 
 
     componentWillUnmount(){
