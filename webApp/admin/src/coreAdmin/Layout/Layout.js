@@ -80,20 +80,23 @@ class Layout extends Component{
                     <Route path="/ViewTemplates"        component={ViewTemplates}   exact />
                     <Route path="/companysetting"       component={CompanySetting}  exact />
                   {/*Access Management*/}
-                    <Route path="/admin/AddModuleFacility"            exact strict component={ AddModuleFacility } />
-                    <Route path="/admin/AssignPermissionToModule"     exact strict component={ AssignPermissionToModules } />
+                    <Route path="/admin/AddModuleFacility"                                      exact strict component={ AddModuleFacility } />
+                    <Route path="/admin/AssignPermissionToModule"                               exact strict component={ AssignPermissionToModules } />
                   {/*Master Data*/}
-                    <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
-                    <Route path="/family"                              exact strict component={ Family } />
-                    <Route path="/sector-and-activity"                   exact strict component={ SectorAndActivity } />
-                    <Route path="/bulk-upload"                          exact strict component={ BulkUpload } />
+                    <Route path="/beneficiary"                                                  exact strict component={ Beneficiary } />
+                    <Route path="/family"                                                       exact strict component={ Family } />
+                    <Route path="/sector-and-activity"                                          exact strict component={ SectorAndActivity } />
+                    <Route path="/sector-and-activity/:sectorId"                                      exact strict component={ SectorAndActivity } />
+                    <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
+                    <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
+                    <Route path="/bulk-upload"                                                  exact strict component={ BulkUpload } />
                     { /*Reports Routes*/}
-                    <Route path="/sector-mapping"                          exact strict component={ SectorMapping } />
+                    <Route path="/sector-mapping"                                               exact strict component={ SectorMapping } />
                     { /*Plans Routes*/}
-                    <Route path="/plan"                         exact strict component={ plan } />
-                    <Route path="/centre-detail"                        exact strict component={ centreDetail } />
-                    <Route path="/centre-detail/:id"                        exact strict component={ centreDetail } />
-                    <Route path="/monthly-plan"                        exact strict component={ MonthlyPlan } />
+                    <Route path="/plan"                                                         exact strict component={ plan } />
+                    <Route path="/centre-detail"                                                exact strict component={ centreDetail } />
+                    <Route path="/centre-detail/:id"                                            exact strict component={ centreDetail } />
+                    <Route path="/monthly-plan"                                                 exact strict component={ MonthlyPlan } />
                   </Switch>        
                 </Router>
               </div>

@@ -58,8 +58,9 @@ class IAssureTable extends Component {
 	edit(event){
 		event.preventDefault();
 		$("html,body").scrollTop(0);
+		var tableObjects =  this.props.tableObjects;
 		var id = event.target.id;
-		this.props.history.push('/centreDetail/'+id);
+		this.props.history.push(tableObjects.editUrl+id);
 	}
     delete(e){
 	  	e.preventDefault();
@@ -77,205 +78,175 @@ class IAssureTable extends Component {
 	        console.log('error', error);
 	    });
     } 
+    sortNumber(key, tableData){
+    	var nameA = '';
+    	var nameB = '';
+    	var reA = /[^a-zA-Z]/g;
+		var reN = /[^0-9]/g;
+		var aN = 0;
+		var bN = 0;
+		var sortedData = tableData.sort((a, b)=> {
+    		Object.entries(a).map( 
+				([key1, value1], i)=> {
+					if(key == key1){
+						nameA = value1.replace(reA, "");				
+					}
+				}
+			);
+			Object.entries(b).map( 
+				([key2, value2], i)=> {
+					if(key == key2){
+						nameB = value2.replace(reA, "");
+					}
+				}
+			);
+			if(this.state.sort == true){
+				this.setState({
+					sort 	  : false
+				})
+				if (nameA === nameB) {
+					Object.entries(a).map( 
+						([key1, value1], i)=> {
+							if(key == key1){
+								aN = parseInt(value1.replace(reN, ""), 10);				
+							}
+						}
+					);
+					
+					Object.entries(b).map( 
+						([key1, value1], i)=> {
+							if(key == key1){
+								bN = parseInt(value1.replace(reN, ""), 10);					
+							}
+						}
+					);
+
+					if (aN < bN) {
+						return -1;
+					}
+					if (aN > bN) {
+						return 1;
+					}
+					return 0;
+
+				} else {
+
+					if (nameA < nameB) {
+						return -1;
+					}
+					if (nameA > nameB) {
+						return 1;
+					}
+					return 0;
+				}
+			}else if(this.state.sort == false){
+				this.setState({
+					sort 	  : true
+				})
+				if (nameA === nameB) {
+					Object.entries(a).map( 
+						([key1, value1], i)=> {
+							if(key == key1){
+								aN = parseInt(value1.replace(reN, ""), 10);			
+							}
+						}
+					);
+					
+					Object.entries(b).map( 
+						([key1, value1], i)=> {
+							if(key == key1){
+								bN = parseInt(value1.replace(reN, ""), 10);					
+							}
+						}
+					);
+
+					if (aN > bN) {
+						return -1;
+					}
+					if (aN < bN) {
+						return 1;
+					}
+					return 0;
+
+				} else {
+
+					if (nameA > nameB) {
+						return -1;
+					}
+					if (nameA < nameB) {
+						return 1;
+					}
+					return 0;
+				}
+			}				
+		});
+		this.setState({
+			tableData : sortedData,
+		});
+    }
+    sortString(key, tableData){
+    	var nameA = '';
+    	var nameB = '';
+    	var sortedData = tableData.sort((a, b)=> {
+		Object.entries(a).map( 
+			([key1, value1], i)=> {
+				if(key == key1){
+					if(jQuery.type( value1 ) == 'string'){
+						nameA = value1.toUpperCase();
+					}else{
+						nameA = value1;
+					}						
+				}
+			}
+		);
+		Object.entries(b).map( 
+			([key2, value2], i)=> {
+				if(key == key2){
+					if(jQuery.type( value2 ) == 'string'){
+						nameB = value2.toUpperCase();
+					}else{
+						nameB = value2;
+					}	
+				}
+			}
+		);
+			if(this.state.sort == true){	
+				this.setState({
+					sort 	  : false
+				})		
+				if (nameA < nameB) {
+					return -1;
+				}
+				if (nameA > nameB) {
+					return 1;
+				}
+				return 0;
+			}else if(this.state.sort == false){
+				this.setState({
+					sort 	  : true
+				})	
+				if (nameA > nameB) {
+					return -1;
+				}
+				if (nameA < nameB) {
+					return 1;
+				}
+				return 0;
+			}
+		});
+		this.setState({
+			tableData : sortedData,
+		});
+    }
     sort(event){
     	event.preventDefault();
     	var key = event.target.getAttribute('id');
-    	var nameA = '';
-    	var nameB = '';
     	var tableData = this.state.tableData;
-    	if(this.state.sort == true){
-    		if(key == 'number'){
-				var reA = /[^a-zA-Z]/g;
-				var reN = /[^0-9]/g;
-				var aN = 0;
-				var bN = 0;
-    			var sortedData = tableData.sort((a, b)=> {
-		    		Object.entries(a).map( 
-						([key1, value1], i)=> {
-							if(key == key1){
-								nameA = value1.replace(reA, "");				
-							}
-						}
-					);
-					Object.entries(b).map( 
-						([key2, value2], i)=> {
-							if(key == key2){
-								nameB = value2.replace(reA, "");
-							}
-						}
-					);
-
-					if (nameA === nameB) {
-						Object.entries(a).map( 
-							([key1, value1], i)=> {
-								if(key == key1){
-									aN = parseInt(value1.replace(reN, ""), 10);				
-								}
-							}
-						);
-						
-						Object.entries(b).map( 
-							([key1, value1], i)=> {
-								if(key == key1){
-									bN = parseInt(value1.replace(reN, ""), 10);					
-								}
-							}
-						);
-
-						if (aN < bN) {
-							return -1;
-						}
-						if (aN > bN) {
-							return 1;
-						}
-						return 0;
-
-					} else {
-
-						if (nameA < nameB) {
-							return -1;
-						}
-						if (nameA > nameB) {
-							return 1;
-						}
-						return 0;
-					}
-				});
-    		}else{
-    			var sortedData = tableData.sort((a, b)=> {
-	    		Object.entries(a).map( 
-					([key1, value1], i)=> {
-						if(key == key1){
-							if(jQuery.type( value1 ) == 'string'){
-								nameA = value1.toUpperCase();
-							}else{
-								nameA = value1;
-							}						
-						}
-					}
-				);
-				Object.entries(b).map( 
-					([key2, value2], i)=> {
-						if(key == key2){
-							if(jQuery.type( value2 ) == 'string'){
-								nameB = value2.toUpperCase();
-							}else{
-								nameB = value2;
-							}	
-						}
-					}
-				);
-
-					if (nameA < nameB) {
-						return -1;
-					}
-					if (nameA > nameB) {
-						return 1;
-					}
-					return 0;
-				});
-    		}	
-			this.setState({
-				tableData : sortedData,
-				sort 	  : false
-			});
-    	}else if(this.state.sort == false){
-    		if(key == 'number'){
-				var reA = /[^a-zA-Z]/g;
-				var reN = /[^0-9]/g;
-				var aN = 0;
-				var bN = 0;
-    			var sortedData = tableData.sort((a, b)=> {
-		    		Object.entries(a).map( 
-						([key1, value1], i)=> {
-							if(key == key1){
-								nameA = value1.replace(reA, "");				
-							}
-						}
-					);
-					Object.entries(b).map( 
-						([key2, value2], i)=> {
-							if(key == key2){
-								nameB = value2.replace(reA, "");
-							}
-						}
-					);
-
-					if (nameA === nameB) {
-						Object.entries(a).map( 
-							([key1, value1], i)=> {
-								if(key == key1){
-									aN = parseInt(value1.replace(reN, ""), 10);			
-								}
-							}
-						);
-						
-						Object.entries(b).map( 
-							([key1, value1], i)=> {
-								if(key == key1){
-									bN = parseInt(value1.replace(reN, ""), 10);					
-								}
-							}
-						);
-
-						if (aN > bN) {
-							return -1;
-						}
-						if (aN < bN) {
-							return 1;
-						}
-						return 0;
-
-					} else {
-
-						if (nameA > nameB) {
-							return -1;
-						}
-						if (nameA < nameB) {
-							return 1;
-						}
-						return 0;
-					}
-				});
-    		}else {
-    			var sortedData = tableData.sort((a, b)=> {
-	    		Object.entries(a).map( 
-					([key1, value1], i)=> {
-						if(key == key1){
-							if(jQuery.type( value1 ) == 'string'){
-								nameA = value1.toUpperCase();
-							}else{
-								nameA = value1;
-							}						
-						}
-					}
-				);
-				Object.entries(b).map( 
-					([key2, value2], i)=> {
-						if(key == key2){
-							if(jQuery.type( value2 ) == 'string'){
-								nameB = value2.toUpperCase();
-							}else{
-								nameB = value2;
-							}	
-						}
-					}
-				);
-
-					if (nameA > nameB) {
-						return -1;
-					}
-					if (nameA < nameB) {
-						return 1;
-					}
-					return 0;
-				});
-    		}    		
-    		this.setState({
-				tableData : sortedData,
-				sort 	  : true
-			});
-    	}
+		if(key == 'number'){
+			this.sortNumber(key, tableData);
+		}else{
+			this.sortString(key, tableData);
+		}
     }
    	paginationFunction(event){
 		var dataLen = this.state.dataCount > 20 || this.state.dataCount == 20 ? 20 : this.state.dataCount;
@@ -572,19 +543,23 @@ class IAssureTable extends Component {
 													{
 														Object.entries(value).map( 
 															([key, value1], i)=> {
-																var regex = new RegExp(/(<([^>]+)>)/ig);
-																var value2 = value1 ? value1.replace(regex,'') : '';
-																var aN = value2.replace(this.state.reA, "");
-																if(aN && $.type( aN ) == 'string'){
-																	var textAlign = 'textAlignLeft';
-																}else{
-																	var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
-																	if(bN){
-																		var textAlign = 'textAlignRight';
-																	}else{
+																if($.type(value1) == 'string'){
+																	var regex = new RegExp(/(<([^>]+)>)/ig);
+																	var value2 = value1 ? value1.replace(regex,'') : '';
+																	var aN = value2.replace(this.state.reA, "");
+																	if(aN && $.type( aN ) == 'string'){
 																		var textAlign = 'textAlignLeft';
+																	}else{
+																		var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
+																		if(bN){
+																			var textAlign = 'textAlignRight';
+																		}else{
+																			var textAlign = 'textAlignLeft';
+																		}
 																	}
-																}
+																}else{
+																	var textAlign = 'textAlignRight';
+																}	
 																var found = Object.keys(this.state.tableHeading).filter((k)=> {
 																  return k == key;
 																});
@@ -592,7 +567,8 @@ class IAssureTable extends Component {
 																	if(key != 'id'){
 																		return(<td className={textAlign} key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
 																	}
-																}																
+																}
+
 															}
 														)
 													}

@@ -2,7 +2,8 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
-
+import {Route, withRouter}    from 'react-router-dom';
+import _                      from 'underscore';
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./Sector.css";
 
@@ -24,14 +25,14 @@ class Sector extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        apiLink             : '/api/sectors/'
+        apiLink             : '/api/sectors/',
+        editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
       "limitRange"          : 10,
-/*      "editId"              : this.props.match.params ? this.props.match.params.id : ''
-*/    }
-/*    console.log('params', this.props.match.params);
-*/  }
+      "editId"              : props.match.params ? props.match.params.sectorId : ''
+    }
+  }
  
   handleChange(event){
     event.preventDefault();
@@ -64,30 +65,65 @@ class Sector extends Component{
     var sectorArray=[];
     var id2 = this.state.uID;
     if (this.validateFormReq()) {
-    var sectorValues= 
-    {
+    var sectorValues= {
     "sector"   : this.refs.sector.value,  
     };
 
-    let fields = {};
-    fields["sector"] = "";
- 
-    this.setState({
-      "sector"  :"",
-      fields:fields
-    });
+    
     axios.post('/api/sectors',sectorValues)
       .then(function(response){
         swal({
           title : response.data,
           text  : response.data
         });
-/*        this.getData(this.state.startRange, this.state.limitRange);
-*/      })
+        this.getData(this.state.startRange, this.state.limitRange);
+      })
       .catch(function(error){
         console.log("error = ",error);
       });
+      let fields = {};
+      fields["sector"] = "";
+   
+      this.setState({
+        "sector"  :"",
+        fields:fields
+      });
     } 
+  }
+  updateSector(event){
+    event.preventDefault();
+    var sectorArray=[];
+    var id2 = this.state.uID;
+    
+    if (this.validateFormReq()) {
+    var sectorValues= {
+      "sector"   : this.refs.sector.value,  
+    };
+
+    
+    axios.post('/api/sectors',sectorValues, this.state.editId)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+        this.getData(this.state.startRange, this.state.limitRange);
+        this.setState({
+          editId : ''
+        })
+        this.props.history.push('/sector-and-activity');
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+      let fields = {};
+      fields["sector"] = "";
+   
+      this.setState({
+        "sector"  :"",
+        fields:fields
+      });
+    }     
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -104,19 +140,20 @@ class Sector extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    var editId = nextProps.match.params.id;
-    if(nextProps.match.params.id){
+    var editId = nextProps.match.params.sectorId;
+    if(nextProps.match.params.sectorId){
       this.setState({
         editId : editId
+      },()=>{
+        this.edit(this.state.editId);
       })
-      this.edit(editId);
     }
   }
 
   componentDidMount() {
-    console.log('editId componentDidMount', this.state.editId);
-    if(this.state.editId){      
-      this.edit(this.state.editId);
+    var editId = this.props.match.params.sectorId;
+    if(editId){      
+      this.edit(editId);
     }
     var data = {
       limitRange : 0,
@@ -126,13 +163,12 @@ class Sector extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return});
+      var tableData = response.data.map((a, index)=>{return _.omit(a, 'activity')});
       this.setState({
         dataCount : tableData.length,
         tableData : tableData.slice(this.state.startRange, this.state.limitRange),
         editUrl   : this.props.match.params
       },()=>{
-        
       });
     }).catch(function (error) {
       console.log('error', error);
@@ -140,14 +176,11 @@ class Sector extends Component{
   }
 
   edit(id){
-    $('input:checkbox').attr('checked','unchecked');
     axios({
       method: 'get',
-      url: '/api/sectors'+id,
+      url: '/api/sectors/'+id,
     }).then((response)=> {
-      var editData = response.data[0];
-      console.log('editData',editData);
-      
+      var editData = response.data[0];      
       this.setState({
         "sector"                :editData.sector,
       },()=>{
@@ -170,10 +203,16 @@ class Sector extends Component{
         console.log('error', error);
     });
   }
-
-  componentWillUnmount(){
-      $("script[src='/js/adminLte.js']").remove();
-      $("link[href='/css/dashboard.css']").remove();
+  getSearchText(searchText, startRange, limitRange){
+      this.setState({
+          tableData : []
+      });
+  }
+   componentWillUnmount(){
+    this.setState({
+      "sector"              :"",
+      "editId" : ""
+    })
   }
 
   render() {
@@ -201,7 +240,7 @@ class Sector extends Component{
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     {
                       this.state.editId ? 
-                      <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitSector.bind(this)}> Update</button>
+                      <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.updateSector.bind(this)}> Update</button>
                       :
                       <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitSector.bind(this)}> Submit</button>
                     }
@@ -212,11 +251,11 @@ class Sector extends Component{
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
               <IAssureTable 
                 tableHeading={this.state.tableHeading}
-                twoLevelHeader={this.state.twoLevelHeader} 
                 dataCount={this.state.dataCount}
                 tableData={this.state.tableData}
                 getData={this.getData.bind(this)}
                 tableObjects={this.state.tableObjects}
+                getSearchText={this.getSearchText.bind(this)}
               />
             </div>              
           </div>
@@ -227,4 +266,4 @@ class Sector extends Component{
   }
 
 }
-export default Sector
+export default withRouter(Sector);

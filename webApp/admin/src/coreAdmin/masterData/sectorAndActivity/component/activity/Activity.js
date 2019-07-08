@@ -3,7 +3,8 @@ import $                        from 'jquery';
 import axios                    from 'axios';
 import ReactTable               from "react-table";
 import swal                     from 'sweetalert';
-
+import {Route, withRouter}      from 'react-router-dom';
+import _                        from 'underscore';
 import IAssureTable             from "../../../../IAssureTable/IAssureTable.jsx";
 import "./Activity.css";
 
@@ -22,21 +23,22 @@ class Activity extends Component{
       "uID"                 :"",
       "shown"               : true,
       "tabtype"             : "location",
+      "availableSectors"    : [],
       fields                : {},
       errors                : {},
       "tableHeading"        : {
         sector              : "Name of Sector",
-        activityName        : "Name of Activity",
+        activity            : "Name of Activity",
         actions             : 'Action',
       },
       "tableObjects"        : {
-        apiLink             : '/api/sectors/'
+        apiLink             : '/api/sectors/',
+        editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
       "limitRange"          : 10,
-/*      "editId"              : this.props.match.params ? this.props.match.params.id : ''*/  
+      "editId"              : props.match.params ? props.match.params.sectorId : ''
     }
-/*    console.log('params', this.props.match.params);*/  
   }
  
  
@@ -53,8 +55,7 @@ class Activity extends Component{
     });
   }
 
-  isTextKey(evt)
-  {
+  isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
    if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
@@ -72,12 +73,11 @@ class Activity extends Component{
     var activityArray=[];
     var id2 = this.state.uID;
     if (this.validateFormReq()) {
-    var activityValues= 
-    {
-      "sector"         : this.refs.sector.value, 
+    var activityValues = {
+      "sectorId"       : this.refs.sector.value.split('|')[1],
+      "sector"         : this.refs.sector.value.split('|')[0], 
       "activityName"   : this.refs.activityName.value,  
     };
-
     let fields                = {};
     fields["sector"]          = "";
     fields["activityName"]    = "";
@@ -87,14 +87,13 @@ class Activity extends Component{
       "activityName"  :"",
       fields          :fields
     });
-    axios.post('/api/sectors',activityValues)
+    axios.put('/api/sectors/:id',activityValues)
       .then(function(response){
         swal({
           title : response.data,
           text  : response.data
         });
-/*        this.getData(this.state.startRange, this.state.limitRange);
-*/      })
+      })
       .catch(function(error){
         console.log("error = ",error);
       });
@@ -120,20 +119,23 @@ class Activity extends Component{
 
 
   componentWillReceiveProps(nextProps){
-    var editId = nextProps.match.params.id;
-    if(nextProps.match.params.id){
+    var editId = nextProps.match.params.sectorId;
+    if(nextProps.match.params.sectorId){
       this.setState({
         editId : editId
+      },()=>{
+        this.edit(this.state.editId);
       })
-      this.edit(editId);
+      
     }
   }
 
   componentDidMount() {
-    console.log('editId componentDidMount', this.state.editId);
+    this.getAvailableSectors();
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
+    
     var data = {
       limitRange : 0,
       startRange : 1,
@@ -142,7 +144,16 @@ class Activity extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return});
+      var tableData = _.flatten(response.data.map((a, index)=>{
+        return a.activity.map((b, i)=>{
+          return {
+            _id     : a._id+'/'+b._id,
+            sector  : a.sector,
+            activity: b.activityName 
+          }
+        })
+      }))
+
       this.setState({
         dataCount : tableData.length,
         tableData : tableData.slice(this.state.startRange, this.state.limitRange),
@@ -150,46 +161,128 @@ class Activity extends Component{
       },()=>{
         
       });
+      
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+
+    // var tableDatas = [{
+    //       "_id" : "sectorId",
+    //       "sector": "Development Centre",
+    //       "activity": [
+    //           {
+    //               "subactivity": [
+    //                   {
+    //                     "_id" : "SubactivityId1",
+    //                     "subactivityName" : "Subactivity 1",
+    //                     "unit" : 1,
+    //                     "familyUpgradation" : 'Yes'
+    //                   },
+    //                   {
+    //                     "_id" : "SubactivityId2",
+    //                     "subactivityName" : "Subactivity 2",
+    //                     "unit" : 2,
+    //                     "familyUpgradation" : 'No'
+    //                   }
+    //               ],
+    //               "activityName": "Rural Area Development",
+    //               "_id" : "activityid1"
+    //           },
+    //           {
+    //               "subactivity": [
+    //                   {
+    //                     "_id" : "SubactivityId31",
+    //                     "subactivityName" : "Subactivity 31",
+    //                     "unit" : 13,
+    //                     "familyUpgradation" : 'Yes'
+    //                   },
+    //                   {
+    //                     "_id" : "SubactivityId14",
+    //                     "subactivityName" : "Subactivity 14",
+    //                     "unit" : 41,
+    //                     "familyUpgradation" : 'No'
+    //                   }
+    //               ],
+    //               "activityName": "Urban Area Development",
+    //               "_id" : "activityid2"
+    //           },
+    //           {
+    //               "subactivity": [
+    //                   {
+    //                     "_id" : "SubactivityId5",
+    //                     "subactivityName" : "Subactivity 5",
+    //                     "unit" : 5,
+    //                     "familyUpgradation" : 'Yes'
+    //                   },
+    //                   {
+    //                     "_id" : "SubactivityId6",
+    //                     "subactivityName" : "Subactivity 6",
+    //                     "unit" : 6,
+    //                     "familyUpgradation" : 'No'
+    //                   }
+    //               ],
+    //               "activityName": "Farmer Development",
+    //               "_id" : "activityid3"
+    //           }
+    //       ],
+    //   }];
+      
+  }
+  getAvailableSectors(){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        
+        this.setState({
+          availableSectors : response.data
+        })
     }).catch(function (error) {
       console.log('error', error);
     });
   }
-
   edit(id){
-    $('input:checkbox').attr('checked','unchecked');
+    var activityId = this.props.match.params.activityId;
     axios({
       method: 'get',
-      url: '/api/sectors'+id,
+      url: '/api/sectors/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log('editData',editData);
       
       this.setState({
-        "sector"                :editData.sector,
-        "activityName"          :editData.activityName,
+        "sector"                : editData.sector+'|'+editData._id,
+        "activityName"          :_.first(editData.activity.map((a, i)=>{return a._id == activityId ? a.activityName : ''})),
       },()=>{
-        
       });
     }).catch(function (error) {
     });
   }
   
   getData(startRange, limitRange){
-    axios({
-      method: 'get',
-      url: '/api/sectors/list',
-    }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return});
-        this.setState({
-        tableData : tableData.slice(startRange, limitRange),
+    // axios({
+    //   method: 'get',
+    //   url: '/api/sectors/list',
+    // }).then((response)=> {
+    //     var tableData = response.data.map((a, index)=>{return});
+    //     this.setState({
+    //     tableData : tableData.slice(startRange, limitRange),
+    //   });
+    // }).catch(function (error) {
+    //     console.log('error', error);
+    // });
+  }
+  getSearchText(searchText, startRange, limitRange){
+      // console.log(searchText, startRange, limitRange);
+      this.setState({
+          tableData : []
       });
-    }).catch(function (error) {
-        console.log('error', error);
-    });
   }
   componentWillUnmount(){
-      $("script[src='/js/adminLte.js']").remove();
-      $("link[href='/css/dashboard.css']").remove();
+    this.setState({
+      "sector"              :"",
+      "activityName"        :"",
+      "editId" : ""
+    })
   }
   render() {
    
@@ -208,9 +301,18 @@ class Activity extends Component{
                     <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                       <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)}>
-                        <option  className="hidden" >-- Select --</option>
-                        <option>Development Centre</option>
-                        <option>CSR Centre</option>
+                        <option  className="hidden" >-- Select Sector--</option>
+                        {
+                          this.state.availableSectors && this.state.availableSectors.length >0 ?
+                          this.state.availableSectors.map((data, index)=>{
+                            return(
+                              <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                            );
+                          })
+                          :
+                          null
+                        }
+                        
                       </select>
                     </div>
                     <div className="errorMsg">{this.state.errors.sector}</div>
@@ -245,6 +347,7 @@ class Activity extends Component{
                   tableData={this.state.tableData}
                   getData={this.getData.bind(this)}
                   tableObjects={this.state.tableObjects}
+                  getSearchText={this.getSearchText.bind(this)}
                 />
               </div> 
             </div>              
@@ -254,4 +357,4 @@ class Activity extends Component{
     );
   }
 }
-export default Activity
+export default withRouter(Activity);

@@ -3,7 +3,7 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
-
+import {Route, withRouter}    from 'react-router-dom';
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./SubActivity.css";
 
@@ -19,29 +19,28 @@ class SubActivity extends Component{
       "sector"              :"",
       "activityName"        :"",
       "subActivityName"     :"",
-      "unit"                :"Number", //to be Changes
+      "unit"                : 0, //to be Changes
       "familyUpgradation"   :"No",
-      // "outreach"           :"No",
       "uID"                 :"",
       "shown"               : true,
       fields                : {},
       errors                : {},
       "tableHeading"        : {
         sector              : "Name of Sector",
-        activityName        : "Name of Activity",
-        subActivityName     : "Name of Sub-Activity",
+        activity            : "Name of Activity",
+        number              : "Name of Sub-Activity",
         unit                : "Unit", //to be Changes
         familyUpgradation   : "Family Upgradation",
         actions             : 'Action',
       },
-      "tableObjects"              : {
-        apiLink                   : '/api/sectors/'
+      "tableObjects"        : {
+        apiLink             : '/api/sectors/',
+        editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
       "limitRange"          : 10,
-/*      "editId"              : this.props.match.params ? this.props.match.params.id : ''
-*/    }
-/*    console.log('params', this.props.match.params);*/ 
+      "editId"              : props.match.params ? props.match.params.sectorId : ''
+    }
   }
 
   handleChange(event){
@@ -50,7 +49,7 @@ class SubActivity extends Component{
       "sector"               :this.refs.sector.value,
       "activityName"         :this.refs.activityName.value,
       "subActivityName"      :this.refs.subActivityName.value,
-      "unit"                 :this.state.unit,
+      "unit"                 :this.refs.unit.value,
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -69,21 +68,31 @@ class SubActivity extends Component{
       return true;
     }
   }
+  isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
+    {
+    evt.preventDefault();
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
   SubmitSubActivity(event){
     event.preventDefault();
     var academicArray=[];
     var id2 = this.state.uID;
     if (this.validateFormReq()) {
-    var subActivityValues= 
-    {
-      sector               :this.refs.sector.value,
-      activityName         :this.refs.activityName.value,
+    var subActivityValues = {
+      sectorId             :this.refs.sector.value.split('|')[1],
+      sector               :this.refs.sector.value.split('|')[0],
+      activityId           :this.refs.activityName.value.split('|')[1],
+      activityName         :this.refs.activityName.value.split('|')[0],
       subactivityName      :this.refs.subActivityName.value,
       unit                 :this.state.unit,
       familyUpgradation    :this.state.familyUpgradation,
-    /*  outreach             :this.state.outreach,*/
     };
-    
     let fields                = {};
     fields["sector"]          = "";
     fields["activityName"]    = "";
@@ -93,9 +102,10 @@ class SubActivity extends Component{
       "sector"                :"",
       "activityName"          :"",
       "subActivityName"       :"",      
+      "unit"                  :"",
       fields                  :fields
     });
-    axios.post('/api/sectors',subActivityValues)
+    axios.put('/api/sectors',subActivityValues)
       .then(function(response){
         swal({
           title : response.data,
@@ -131,17 +141,22 @@ class SubActivity extends Component{
   }
   
   componentWillReceiveProps(nextProps){
-    var editId = nextProps.match.params.id;
-    if(nextProps.match.params.id){
+    this.getAvailableSectors();
+    var editId = nextProps.match.params.sectorId;
+    // console.log('editId',editId);
+    if(nextProps.match.params.sectorId){
       this.setState({
         editId : editId
+      },()=>{
+        this.edit(this.state.editId);
+        this.getAvailableActivity(this.state.editId);
       })
-      this.edit(editId);
+      
     }
   }
 
   componentDidMount() {
-    console.log('editId componentDidMount', this.state.editId);
+    this.getAvailableSectors();
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
@@ -149,59 +164,169 @@ class SubActivity extends Component{
       limitRange : 0,
       startRange : 1,
     }
+    // var tableDatas = [{
+    //       "_id" : "sectorId",
+    //       "sector": "Development Centre",
+    //       "activity": [
+    //           {
+    //               "subactivity": [
+    //                   {
+    //                     "_id" : "SubactivityId1",
+    //                     "subactivityName" : "Subactivity 1",
+    //                     "unit" : 1,
+    //                     "familyUpgradation" : 'Yes'
+    //                   },
+    //                   {
+    //                     "_id" : "SubactivityId2",
+    //                     "subactivityName" : "Subactivity 2",
+    //                     "unit" : 2,
+    //                     "familyUpgradation" : 'No'
+    //                   }
+    //               ],
+    //               "activityName": "Rural Area Development",
+    //               "_id" : "activityid1"
+    //           },
+    //           {
+    //               "subactivity": [
+    //                   {
+    //                     "_id" : "SubactivityId31",
+    //                     "subactivityName" : "Subactivity 31",
+    //                     "unit" : 13,
+    //                     "familyUpgradation" : 'Yes'
+    //                   },
+    //                   {
+    //                     "_id" : "SubactivityId14",
+    //                     "subactivityName" : "Subactivity 14",
+    //                     "unit" : 41,
+    //                     "familyUpgradation" : 'No'
+    //                   }
+    //               ],
+    //               "activityName": "Urban Area Development",
+    //               "_id" : "activityid2"
+    //           },
+    //           {
+    //               "subactivity": [
+    //                   {
+    //                     "_id" : "SubactivityId5",
+    //                     "subactivityName" : "Subactivity 5",
+    //                     "unit" : 5,
+    //                     "familyUpgradation" : 'Yes'
+    //                   },
+    //                   {
+    //                     "_id" : "SubactivityId6",
+    //                     "subactivityName" : "Subactivity 6",
+    //                     "unit" : 6,
+    //                     "familyUpgradation" : 'No'
+    //                   }
+    //               ],
+    //               "activityName": "Farmer Development",
+    //               "_id" : "activityid3"
+    //           }
+    //       ],
+    //   }];
+      
     axios({
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return});
+      var tableData = _.flatten(response.data.map((a, index)=>{
+        return a.activity.map((b, i)=>{
+          return b.subactivity.map((c, i)=>{
+            return {
+              _id               : a._id+'/'+b._id+'/'+c._id,
+              sector            : a.sector,
+              activity          : b.activityName, 
+              number            : c.subactivityName,
+              unit              : c.unit,
+              familyUpgradation : c.familyUpgradation
+            }
+          })
+        })
+      }))
       this.setState({
         dataCount : tableData.length,
         tableData : tableData.slice(this.state.startRange, this.state.limitRange),
         editUrl   : this.props.match.params
       },()=>{
-        
       });
+      
     }).catch(function (error) {
       console.log('error', error);
     });
   }
-
-  edit(id){
-    $('input:checkbox').attr('checked','unchecked');
-    axios({
-      method: 'get',
-      url: '/api/sectors'+id,
-    }).then((response)=> {
-      var editData = response.data[0];
-      console.log('editData',editData);
-      
-      this.setState({
-        "sector"                :editData.sector,
-        "activityName"          :editData.activityName,
-        "subActivityName"       :editData.subActivityName,   
-        "unit"                  :editData.unit,
-        "familyUpgradation"     :editData.familyUpgradation,    
-      },()=>{
-        
-      });
-    }).catch(function (error) {
-    });
-  }
-  
-  getData(startRange, limitRange){
+  getAvailableSectors(){
     axios({
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return});
+        
         this.setState({
-        tableData : tableData.slice(startRange, limitRange),
-      });
+          availableSectors : response.data
+        })
     }).catch(function (error) {
-        console.log('error', error);
+      console.log('error', error);
     });
   }
+  selectSector(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    var sectorId = event.target.value.split('|')[1];
+    this.handleChange(event);
+    this.getAvailableActivity(sectorId);
+  }
+  getAvailableActivity(sectorId){
+    axios({
+      method: 'get',
+      url: '/api/sectors/'+sectorId,
+    }).then((response)=> {
+        this.setState({
+          availableActivity : response.data[0].activity
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  edit(id){
+    // console.log('id', id);
+    var activityId = this.props.match.params.activityId;
+    var subactivityId = this.props.match.params.subactivityId;
+    
+      axios({
+        method: 'get',
+        url: '/api/sectors/'+id,
+      }).then((response)=> {
+        var editData = response.data[0];
+        // console.log('editData', editData);
+        // console.log('subActivityName', _.first(editData.activity.map((a, i)=>{return a._id == activityId ? (a.subactivity).map((b, j)=>{return b.subactivityName ? b.subactivityName : "a"}) : ''})));
+        this.setState({
+          "sector"                : editData.sector+'|'+editData._id,
+          "activityName"          :_.first(editData.activity.map((a, i)=>{return a._id == activityId ? a.activityName : ''}))+'|'+activityId,
+          "subActivityName"       : _.flatten(editData.activity.map((a, i)=>{return a._id == activityId ? (a.subactivity).map((b, j)=>{return b.subactivityName ? b.subactivityName : "a"}) : ''}))
+        },()=>{
 
+        });
+      }).catch(function (error) {
+    });
+  }
+  
+  getData(startRange, limitRange){
+    // axios({
+    //   method: 'get',
+    //   url: '/api/sectors/list',
+    // }).then((response)=> {
+    //     var tableData = response.data.map((a, index)=>{return});
+    //     this.setState({
+    //     tableData : tableData.slice(startRange, limitRange),
+    //   });
+    // }).catch(function (error) {
+    //     console.log('error', error);
+    // });
+  }
+  getSearchText(searchText, startRange, limitRange){
+      this.setState({
+          tableData : []
+      });
+  }
   getToggleValue(event){
     if(this.state.familyUpgradation === "No"){
       this.setState({
@@ -214,7 +339,16 @@ class SubActivity extends Component{
     }
 
   }
-
+  componentWillUnmount(){
+    this.setState({
+      "sector"              :"",
+      "activityName"        :"",
+      "subActivityName"     :"",
+      "unit"                : 0, 
+      "familyUpgradation"   :"No",
+      "editId" : ""
+    })
+  }
   render() {
     return (
       <div className="container-fluid">
@@ -230,10 +364,18 @@ class SubActivity extends Component{
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                        <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)}>
-                          <option  className="hidden" >-- Select --</option>
-                          <option>Development Centre</option>
-                          <option>CSR Centre</option>
+                        <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                          <option  className="hidden" >--Select Sector--</option>
+                          {
+                          this.state.availableSectors && this.state.availableSectors.length >0 ?
+                          this.state.availableSectors.map((data, index)=>{
+                            return(
+                              <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                            );
+                          })
+                          :
+                          null
+                        }
                         </select>
                       </div>
                       <div className="errorMsg">{this.state.errors.sector}</div>
@@ -242,10 +384,19 @@ class SubActivity extends Component{
                       <label className="formLable">Select Activity Name</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
                         <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.handleChange.bind(this)} >
-                          <option  className="hidden" >-- Select --</option>
-                          <option>Water Resource Development</option>
-                          <option>Solar Light</option>
-                          <option>Capacity Building</option>
+                          <option  className="hidden" >-- Select Activity--</option>
+                          {
+                          this.state.availableActivity && this.state.availableActivity.length >0 ?
+                          this.state.availableActivity.map((data, index)=>{
+                            if(data.activityName ){
+                              return(
+                                <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                              );
+                            }
+                          })
+                          :
+                          null
+                        }
                         </select>
                       </div>
                       <div className="errorMsg">{this.state.errors.activityName}</div>
@@ -257,7 +408,7 @@ class SubActivity extends Component{
                         {/*<div className="input-group-addon inputIcon">
                           <i className="fa fa-graduation-cap fa"></i>
                         </div>*/}
-                        <input type="text" className="form-control inputBox nameParts" ref="subActivityName" name="subActivityNamesubActivityName" value={this.state.subActivityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <input type="text" className="form-control inputBox nameParts" ref="subActivityName" name="subActivityName" value={this.state.subActivityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                       </div>
                       <div className="errorMsg">{this.state.errors.subActivityName}</div>
                     </div>
@@ -267,9 +418,11 @@ class SubActivity extends Component{
                   </div> 
                   <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                      <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                      <div className="col-lg-12 col-sm-12 col-xs-12 unit" id="unit" >
-                        <label className="formLable">Unit :</label> <label className="formLable">{this.state.unit}</label>
+                      <label className="formLable">Unit</label><span className="asterix">*</span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unit" >
+                        <input type="number" className="form-control inputBox nameParts" ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} />
                       </div>
+                      <div className="errorMsg">{this.state.errors.subActivityName}</div>
                     </div>
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
                       <label className="formLable">Family Upgradation</label><span className="asterix">*</span>
@@ -300,6 +453,7 @@ class SubActivity extends Component{
                   tableData={this.state.tableData}
                   getData={this.getData.bind(this)}
                   tableObjects={this.state.tableObjects}
+                  getSearchText={this.getSearchText.bind(this)}
                 />
               </div>              
             </div>
@@ -310,4 +464,4 @@ class SubActivity extends Component{
   }
 
 }
-export default SubActivity
+export default withRouter(SubActivity);
