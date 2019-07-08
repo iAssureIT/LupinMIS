@@ -147,9 +147,7 @@ class Beneficiary extends Component{
     }).then((response)=> {
       var tableData = response.data.map((a, index)=>{return});
       this.setState({
-        dataCount : tableData.length,
-        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-        editUrl   : this.props.match.params
+        tableData : response.data,
       },()=>{
         
       });
@@ -182,19 +180,15 @@ class Beneficiary extends Component{
       method: 'get',
       url: '/api/beneficiaries/list',
     }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return});
         this.setState({
-        tableData : tableData.slice(startRange, limitRange),
+        tableData : response.data,
       });
     }).catch(function (error) {
         console.log('error', error);
     });
   }
 
-  componentWillUnmount(){
-    $("script[src='/js/adminLte.js']").remove();
-    $("link[href='/css/dashboard.css']").remove();
-  }
+ 
 
   render() {
     return (

@@ -172,6 +172,9 @@
 .annualHead{
 	margin-left: 15px;
 }
+.annualHead h5{
+	font-weight: bold;
+}
 .button-clicked{
 	transform: rotate(180deg) !important;
 	transition: 1s all;
@@ -182,12 +185,12 @@
 	font-weight: bold !important;	
 }
 .subActDiv{
-	border: 1px solid #999 !important;
     height: 100px !important;
+    padding-top: 20px;
 }
 .contentDiv{
 	border: 1px solid #999 !important;
-    height: 50px !important;	
+    height: 30px !important;	
 }
 .pad15{
 	padding-left: 15px;

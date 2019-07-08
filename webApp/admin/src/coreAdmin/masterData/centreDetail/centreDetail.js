@@ -71,8 +71,7 @@ class centreDetail extends Component{
         actions                   : 'Action',
       },
       "tableObjects"              : {
-        apiLink                   : '/api/centers/',
-        editUrl                   : '/centre-detail/'
+        apiLink                   : '/api/centers/'
       },
       "startRange"                  : 0,
       "limitRange"                  : 10,
@@ -361,7 +360,6 @@ class centreDetail extends Component{
       this.setState({
         errors: errors
       });
-      console.log('formIsValid', formIsValid);
       return formIsValid;
   }
   validateForm() {
@@ -498,12 +496,6 @@ class centreDetail extends Component{
       this.setState({
         listofStates : listofStates
       })
-  }
-  getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
-      this.setState({
-          tableData : []
-      });
   }
   componentWillUnmount(){
       $("script[src='/js/adminLte.js']").remove();
@@ -1020,7 +1012,6 @@ class centreDetail extends Component{
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
-                          getSearchText={this.getSearchText.bind(this)}
                         />
                       </div>
                     </div>

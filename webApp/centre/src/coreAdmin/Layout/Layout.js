@@ -79,11 +79,12 @@ class Layout extends Component{
                   {/*Master Data*/}
                     <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
                     <Route path="/family"                              exact strict component={ Family } />
+                    <Route path="/family/:id"                          exact strict component={ Family } />
                    {/*Plans Routes*/}
-                    <Route path="/plan"                         exact strict component={ AnnualPlan } />
-                    <Route path="/Activity"                         exact strict component={ Activity } />
-                    <Route path="/viewActivity"                         exact strict component={ ViewActivity } />
-                    <Route path="/activityReportView"                         exact strict component={ ActivityReportView } />
+                    <Route path="/plan"                               exact strict component={ AnnualPlan } />
+                    <Route path="/Activity"                           exact strict component={ Activity } />
+                    <Route path="/viewActivity"                       exact strict component={ ViewActivity } />
+                    <Route path="/activityReportView"                 exact strict component={ ActivityReportView } />
 
                   </Switch>        
                 </Router>

@@ -36,15 +36,17 @@ class Activity extends Component{
       "activity"          : "",
       "subactivity"       : "",
       "unit"              : "",
-      "unitCost"          : "",
-      "quantity"          : "",
-      "totalcost"         : "",
-      "bankLoan"            : "",
-      "govtscheme"          : "",
-      "directCC"            : "",
-      "indirectCC"          : "",
-      "other"               : "",
-      "total"               : "",
+      "unitCost"          : 0,
+      "quantity"          : 0,
+      "totalcost"         : 0,
+      "NABARD"            : 0,
+      "LHWRF"             : 0,
+      "bankLoan"            : 0,
+      "govtscheme"          : 0,
+      "directCC"            : 0,
+      "indirectCC"          : 0,
+      "other"               : 0,
+      "total"               : 0,
       shown               : true,
       fields: {},
       errors: {},
@@ -112,17 +114,16 @@ class Activity extends Component{
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
+       "LHWRF"             : this.refs.LHWRF.value,
+      "NABARD"            : this.refs.NABARD.value,
       "bankLoan"          : this.refs.bankLoan.value,
       "govtscheme"        : this.refs.govtscheme.value,
       "directCC"          : this.refs.directCC.value,
       "indirectCC"        : this.refs.indirectCC.value,
       "other"             : this.refs.other.value,
+
     });
-    var total = parseInt(this.state.unitCost) * parseInt(this.state.quantity)
-    this.setState({
-      "totalcost" : total
-    })
-    console.log(this.state.totalcost);
+ 
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
@@ -175,8 +176,8 @@ class Activity extends Component{
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
-      "LHWRF"             : this.refs.quantity.value,
-      "NABARD"            : this.state.totalcost,
+      "LHWRF"             : this.refs.LHWRF.value,
+      "NABARD"            : this.refs.NABARD.value,
       "bankLoan"          : this.refs.bankLoan.value,
       "govtscheme"        : this.refs.govtscheme.value,
       "directCC"          : this.refs.directCC.value,
@@ -322,14 +323,26 @@ class Activity extends Component{
   }
   calTotal(event){
     event.preventDefault();
-    var LHWRF = this.state.LHWRF;
-    var NABARD = this.state.NABARD;
-    var bankLoan = this.state.bankLoan;
-    var govtscheme = this.state.govtscheme;
-    var directCC = this.state.directCC;
-    var indirectCC = this.state.indirectCC;
-     add = LHWRF + NABARD + bankLoan + govtscheme + directCC +indirectCC;
+    var LHWRF       = this.state.LHWRF;
+    var NABARD      = this.state.NABARD;
+    var bankLoan    = this.state.bankLoan;
+    var govtscheme  = this.state.govtscheme;
+    var directCC    = this.state.directCC;
+    var indirectCC  = this.state.indirectCC;
+    var other       = this.state.other;
+
+     add = parseInt(LHWRF) + parseInt(NABARD) + parseInt(bankLoan) + parseInt(govtscheme) + parseInt(directCC) + parseInt(indirectCC) + parseInt(other);
     console.log("total=",add);
+    this.setState({
+      total : add,
+    })
+      var unitCost = this.state.unitCost;
+    var quantity = this.state.quantity;
+    var total = parseInt(unitCost) * parseInt(quantity)
+    this.setState({
+      "totalcost" : total
+    })
+    console.log(this.state.totalcost);
   }
 
   toglehidden()
@@ -548,7 +561,7 @@ class Activity extends Component{
                             {/*<div className="input-group-addon inputIcon">
                              <i className="fa fa-building fa iconSize14"></i>
                             </div>*/}
-                            <input type="text"   className="form-control inputBox nameParts" name="unitCost" placeholder="" ref="unitCost" value={this.state.unitCost}   onChange={this.handleChange.bind(this)}/>
+                            <input type="text"   className="form-control inputBox nameParts" name="unitCost" placeholder=""onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost}   onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.unitCost}</div>
                         </div>
@@ -558,13 +571,13 @@ class Activity extends Component{
                             {/*<div className="input-group-addon inputIcon">
                              <i className="fa fa-university fa iconSize14"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts" name="quantity" placeholder=""ref="quantity" value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
+                            <input type="text" className="form-control inputBox nameParts" name="quantity" placeholder=""ref="quantity" onKeyUp={this.calTotal.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.quantity}</div>
                         </div>
                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                           <div className="unit " id="PassoutYear" >
-                            <label className="formLable">Total Cost of Activity : {this.state.totalcost}</label>
+                            <label className="formLable">Total Cost of Activity : &nbsp; {this.state.totalcost ?  this.state.totalcost : null}</label>
 
                           </div>
                           <div className="errorMsg">{this.state.errors.totalcost}</div>
@@ -645,13 +658,13 @@ class Activity extends Component{
                           <label className="formLable">Other</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
                           
-                            <input type="text"   className="form-control inputBox nameParts" name="other" placeholder="" ref="other"  onKeyUp={this.calTotal.bind(this)}   value={this.state.other}  onChange={this.handleChange.bind(this)}/>
+                            <input type="text"   className="form-control inputBox nameParts" name="other" placeholder="" ref="other"  onKeyUp={this.calTotal.bind(this)}   value={this.state.other !== 0 ? this.state.other : null}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.other}</div>
                         </div>
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <div className="unit" id="total" >
-                            <label className="formLable">Total :</label>
+                            <label className="formLable">Total :  </label>&nbsp;{this.state.total ?  this.state.total : " 0"}
 
                           </div>
                           <div className="errorMsg">{this.state.errors.total}</div>

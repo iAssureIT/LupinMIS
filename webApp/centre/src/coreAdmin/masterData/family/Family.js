@@ -25,10 +25,11 @@ class Family extends Component{
       "caste"                :"",
       "category"             :"",
       "LHWRFCentre"          :"",
-      "state"                :"",
+      "state"                :"Maharastra",
       "district"             :"",
       "block"                :"",
       "village"              :"",
+      "contact"              :"",
       fields: {},
       errors: {},
       "twoLevelHeader"              : {
@@ -48,19 +49,36 @@ class Family extends Component{
                                       },
                                     ]
       },
+        "tableObjects"              : {
+        apiLink                   : '/api/families/',
+        editUrl                   : '/family/'
+      },
       "tableHeading"                : {
         familyID                    : "Family ID",
-        beneficariesId              : "Beneficiary ID",
+        // beneficariesId              : "Beneficiary ID",
         familyHead                  : "Name of Family Head",
+        contactNumber               : "Contact Number",
         uidNumber                   : "UID Number",
-        caste                       : "Caste",
+        // caste                       : "Caste",
         familyCategory              : "familyCategory",
         center                      : "LHWRFCentre",
         state                       : "State",
-        district                    : "District",
+        dist                        : "District",
         block                       : "Block",
         village                     : "Village",
         actions                     : 'Action',
+
+
+        // block: "Pimpari"
+        // center: "Pune"
+        // createdAt: "2019-07-08T05:19:36.442Z"
+        // dist: "Pune"
+        // familyCategory: "Open"
+        // familyHead: "Motiram Lewade"
+        // familyID: "L0001"
+        // state: "Maharastra"
+        // uidNumber: "989000109909"
+        // village: "Shivne"
       },  
       "tableObjects"              : {
         apiLink                   : '/api/family/'
@@ -81,10 +99,11 @@ class Family extends Component{
       "caste"                :this.refs.caste.value, 
       "category"             :this.refs.category.value, 
       "LHWRFCentre"          :this.refs.LHWRFCentre.value, 
-      "state"                :this.refs.state.value, 
+      // "state"                :this.refs.state.value, 
       "district"             :this.refs.district.value, 
       "block"                :this.refs.block.value, 
       "village"              :this.refs.village.value, 
+      "contact"              :this.refs.contact.value,
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -132,29 +151,30 @@ class Family extends Component{
       {
         familyID             :this.refs.familyID.value, 
         familyHead           :this.refs.nameOfFamilyHead.value, 
+        contactNumber        :this.refs.contact.value, 
         uidNumber            :this.refs.uID.value, 
-        caste                :this.refs.caste.value, 
+        Caste                :this.refs.caste.value, 
         familyCategory       :this.refs.category.value, 
         center               :this.refs.LHWRFCentre.value, 
-        state                :this.refs.state.value, 
+        state                :this.state.state, 
         dist                 :this.refs.district.value, 
         block                :this.refs.block.value, 
         village              :this.refs.village.value, 
       };
 
       let fields = {};
-      fields["familyID"] = "";
-      fields["nameOfFamilyHead"] = "";
-      fields["uID"] = "";
-      fields["caste"] = "";
-      fields["category"] = "";
-      fields["LHWRFCentre"] = "";
-      fields["state"] = "";
-      fields["district"] = "";
-      fields["block"] = "";
-      fields["village"] = "";
+      fields["familyID"]          = "";
+      fields["nameOfFamilyHead"]  = "";
+      fields["uID"]               = "";
+      fields["caste"]             = "";
+      fields["category"]          = "";
+      fields["LHWRFCentre"]       = "";
+      fields["state"]             = "";
+      fields["district"]          = "";
+      fields["block"]             = "";
+      fields["village"]           = "";
 
-      axios.post('/api/beneficiaryFamilies',familyValues)
+      axios.post('/api/families',familyValues)
         .then(function(response){
           swal({
             title : response.data,
@@ -176,6 +196,7 @@ class Family extends Component{
         "district"             :"",
         "block"                :"",
         "village"              :"",
+        "contact"              :"",
         fields:fields
       });
     }    
@@ -208,10 +229,10 @@ class Family extends Component{
         formIsValid = false;
         errors["LHWRFCentre"] = "This field is required.";
       }          
-      if (!fields["state"]) {
+     /* if (!fields["state"]) {
         formIsValid = false;
         errors["state"] = "This field is required.";
-      }          
+      }    */      
       if (!fields["district"]) {
         formIsValid = false;
         errors["district"] = "This field is required.";
@@ -242,7 +263,7 @@ class Family extends Component{
    edit(id){
     axios({
       method: 'get',
-      url: '/api/family/'+id,
+      url: '/api/families/'+id,
     }).then((response)=> {
       var editData = response.data[0];
       console.log('editData',editData);
@@ -263,27 +284,109 @@ class Family extends Component{
     }).catch(function (error) {
     });
   }
+  Update(event){
+    event.preventDefault();
+    if (this.validateForm() && this.validateFormReq()) {
+     /* var academicArray=[];
+      var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+
+      var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
+      var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});*/
+
+      var id2 = this.state.uID;
+        /*    if (this.validateForm()) {*/    
+    var familyValues= 
+    {
+      familyID             :this.refs.familyID.value, 
+      familyHead           :this.refs.nameOfFamilyHead.value, 
+      uidNumber            :this.refs.uID.value, 
+      Caste                :this.refs.caste.value, 
+      familyCategory       :this.refs.category.value, 
+      center               :this.refs.LHWRFCentre.value, 
+      // state                :this.refs.state.value, 
+      dist                 :this.refs.district.value, 
+      block                :this.refs.block.value, 
+      village              :this.refs.village.value, 
+    };
+
+    let fields = {};
+    fields["year"]              = "";
+    fields["month"]             = "";
+    fields["sectorName"]        = "";
+    fields["activity"]          = "";
+    fields["physicalUnit"]      = "";
+    fields["unitCost"]          = "";
+    fields["totalBudget"]       = "";
+    fields["noOfBeneficiaries"] = "";
+    fields["LHWRF"]             = "";
+    fields["NABARD"]            = "";
+    fields["bankLoan"]          = "";
+    fields["govtscheme"]        = "";
+    fields["directCC"]          = "";
+    fields["indirectCC"]        = "";
+    fields["other"]             = "";
+    fields["remark"]            = "";
+   
+  
+      // console.log('centreDetail',centreDetail);
+      axios.post('/api/families',familyValues)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+        this.getData(this.state.startRange, this.state.limitRange);
+        
+      })
+      .catch(function(error){
+        
+      });
+   this.setState({
+        "familyID"             :"",
+        "nameOfFamilyHead"     :"",
+        "uID"                  :"",
+        "caste"                :"",
+        "category"             :"",
+        "LHWRFCentre"          :"",
+        "state"                :"",
+        "district"             :"",
+        "block"                :"",
+        "village"              :"",
+        "contact"              :"",
+        fields:fields
+      });
+    }
+  }
     
   getData(startRange, limitRange){
     axios({
       method: 'get',
-      url: '/api/centers/list',
+      url: '/api/families/list',
     }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-
+      console.log('response======================', response.data)
       this.setState({
-        tableData : tableData.slice(startRange, limitRange),
-      });
+        tableData : response.data
+      })
+     
     }).catch(function (error) {
       console.log('error', error);
     });
 
-    var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
-    this.setState({
-      listofStates : listofStates
-    })
+    
   }
-
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      console.log(this.state.editId);
+      this.edit(editId);
+    }
+  }
+  componentDidMount(){
+    this.getData(this.state.startRange, this.state.limitRange)
+  }
   render() {
      
     return (
@@ -304,7 +407,7 @@ class Family extends Component{
                     </div>
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                           <label className="formLable">Family ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="familyID" >
                             {/*<div className="input-group-addon inputIcon">
@@ -314,8 +417,8 @@ class Family extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.familyID}</div>
                         </div>
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Name of family head </label><span className="asterix">*</span>
+                        <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
+                          <label className="formLable">Name of Family Head </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="nameOfFamilyHead" >
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
@@ -324,13 +427,23 @@ class Family extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.nameOfFamilyHead}</div>
                         </div>
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                        <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                           <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uID" >
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
                             <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="uID" name="uID" value={this.state.uID} onChange={this.handleChange.bind(this)} />
+                          </div>
+                          <div className="errorMsg">{this.state.errors.uID}</div>
+                        </div>
+                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
+                          <label className="formLable">Contact Number </label><span className="asterix">*</span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contact" >
+                            {/*<div className="input-group-addon inputIcon">
+                              <i className="fa fa-graduation-cap fa"></i>
+                            </div>*/}
+                            <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="contact" name="contact" value={this.state.contact} onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.uID}</div>
                         </div>
@@ -343,7 +456,8 @@ class Family extends Component{
                             <select className="custom-select form-control inputBox" ref="caste" name="caste" value={this.state.caste} onChange={this.handleChange.bind(this)}>
                               <option  className="hidden" >-- Select --</option>
                               <option>Maratha</option>
-                              <option>Maratha</option>
+                              <option>Pasrsi</option>
+                              <option>Muslim</option>
                               
                             </select>
                           </div>
@@ -355,10 +469,14 @@ class Family extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="category" >
                             <select className="custom-select form-control inputBox"ref="category" name="category" value={this.state.category} onChange={this.handleChange.bind(this)}  >
                               <option  className="hidden" >-- Select --</option>
-                              <option>Open</option>
-                              <option>Open</option>
-                              <option>Open</option>
-                              
+                              <option>Landless</option>
+                              <option>BPL</option>
+                              <option>Widow Headed</option>
+                              <option>Marginal Farmer</option>
+                              <option>Small Farmer</option>
+                              <option>Big Farmer</option>
+                              <option>Handicapped</option>
+
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.category}</div>
@@ -381,15 +499,8 @@ class Family extends Component{
                       </div>
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                         <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">State</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
-                            <select className="custom-select form-control inputBox" ref="state" name="state" value={this.state.state} onChange={this.handleChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option>Maharastra</option>
-                              <option>Maharastra</option>
-                              <option>Maharastra</option>
-                              
-                            </select>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group unit" id="state" >
+                            <label className="formLable">State :</label>
                           </div>
                           <div className="errorMsg">{this.state.errors.state}</div>
                         </div>
@@ -405,8 +516,8 @@ class Family extends Component{
                               
                             </select>
                           </div>
-                          <div className="errorMsg">{this.state.errors.district}</div>
-                        </div>
+{/*                          <div className="errorMsg">{this.state.errors.district}</div>
+*/}                        </div>
                         <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Block</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
@@ -438,7 +549,13 @@ class Family extends Component{
                       </div> 
                     </div><br/>
                     <div className="col-lg-12">
-                      <br/><button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitFamily.bind(this)}> Submit</button>
+                      <br/>
+                      {
+                          this.state.editId ? 
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
+                          :
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitFamily.bind(this)}> Submit </button>
+                        }
                     </div>
                   </form>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">

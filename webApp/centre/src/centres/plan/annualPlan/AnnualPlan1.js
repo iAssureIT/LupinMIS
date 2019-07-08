@@ -19,6 +19,7 @@ class AnnualPlan extends Component{
     super(props); 
    
     this.state = {
+      "year"                :"",
       "center"              :"",
       "sector_id"           :"",
       "sectorName"          :"",
@@ -42,8 +43,6 @@ class AnnualPlan extends Component{
       "heading"             :"Monthly Plan",
       "Months"              :["April","May","June","--Quarter 1--","July","August","September","--Quarter 2--","October","November","December","--Quarter 3--","January","February","March","--Quarter 4--",],
       "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-      "YearPair"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
-
       shown                 : true,
       fields: {},
       errors: {},
@@ -95,8 +94,6 @@ class AnnualPlan extends Component{
  
   handleChange(event){
     event.preventDefault();
-
-
     this.setState({
       "month"               : this.refs.month.value,          
       "sectorName"          : this.refs.sectorName.value,
@@ -224,20 +221,20 @@ class AnnualPlan extends Component{
       }
   }
   getData(startRange, limitRange){
-    axios({
+   axios({
       method: 'get',
       url: '/api/annualPlans/list',
     }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-
+      console.log('response======================', response.data)
       this.setState({
-        tableData : tableData.slice(startRange, limitRange),
-      });
+        tableData : response.data
+      })
+     
     }).catch(function (error) {
       console.log('error', error);
     });
   }
-   Update(event){
+  Update(event){
     event.preventDefault();
     if (this.validateForm() && this.validateFormReq()) {
      /* var academicArray=[];
@@ -346,66 +343,41 @@ class AnnualPlan extends Component{
   }
 
   componentDidMount() {
-    console.log('editId componentDidMount', this.state.editId);
-    if(this.state.editId){      
-      this.edit(this.state.editId);
-    }
-  
-
-    var data = {
-      limitRange : 0,
-      startRange : 1,
-    }
-  
-      axios({
-        method: 'get',
-        url: '/api/annualPlans/list',
-      }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-        this.setState({
-          dataCount : tableData.length,
-          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-          editUrl   : this.props.match.params
-        },()=>{
-          
-        });
-      }).catch(function (error) {
-        console.log('error', error);
+    this.getData(this.state.startRange, this.state.limitRange)
+  }
+  toglehidden()
+  {
+   this.setState({
+       shown: !this.state.shown
       });
-    }
-    toglehidden()
-    {
-     this.setState({
-         shown: !this.state.shown
-        });
-    }
-    edit(id){
-      axios({
-        method: 'get',
-        url: '/api/annualPlans/'+id,
-        }).then((response)=> {
-        var editData = response.data[0];
-        console.log('editData',editData);
-        this.setState({
-          "typeOfCentre"             : editData.type,
-          "nameOfCentre"             : editData.centerName,
-          "address"                  : editData.address,
-          "state"                    : editData.state,
-          "district"                 : editData.district,
-          "pincode"                  : editData.pincode,
-          "centreInchargeName"       : editData.centerInchargename,
-          "centreInchargeContact"    : editData.centerInchargemobile,
-          "centreInchargeEmail"      : editData.centerInchargeemail,
-          "MISCoordinatorName"       : editData.misCoordinatorname,
-          "MISCoordinatorContact"    : editData.misCoordinatormobile,
-          "MISCoordinatorEmail"      : editData.misCoordinatoremail,
-          "selectedVillages"         : editData.villagesCovered,
-          "districtCovered"          :"",
-          "blockCovered"             :"",
-          "villagesCovered"          : editData.villagesCovered,
-        });
-      }).catch(function (error) {
-    });
+  }
+  edit(id){
+    axios({
+      method: 'get',
+      url: '/api/annualPlans/'+id,
+      }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      this.setState({
+        "typeOfCentre"             : editData.type,
+        "nameOfCentre"             : editData.centerName,
+        "address"                  : editData.address,
+        "state"                    : editData.state,
+        "district"                 : editData.district,
+        "pincode"                  : editData.pincode,
+        "centreInchargeName"       : editData.centerInchargename,
+        "centreInchargeContact"    : editData.centerInchargemobile,
+        "centreInchargeEmail"      : editData.centerInchargeemail,
+        "MISCoordinatorName"       : editData.misCoordinatorname,
+        "MISCoordinatorContact"    : editData.misCoordinatormobile,
+        "MISCoordinatorEmail"      : editData.misCoordinatoremail,
+        "selectedVillages"         : editData.villagesCovered,
+        "districtCovered"          :"",
+        "blockCovered"             :"",
+        "villagesCovered"          : editData.villagesCovered,
+      });
+    }).catch(function (error) {
+  });
   }
   render() {
     var shown = {
@@ -437,7 +409,7 @@ class AnnualPlan extends Component{
                            <div className=" col-lg-3  col-lg-offset-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
-                                <option className="" >Annually</option>
+                                <option className="" >All Months</option>
                                {this.state.Months.map((data,index) =>
                                 <option key={index}  className="" >{data}</option>
                                 )}
@@ -448,19 +420,12 @@ class AnnualPlan extends Component{
                           </div>
                           <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                              <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
+                              <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
                                 <option className="hidden" >-- Select Year --</option>
-                               {this.state.month  ? (this.state.month !== "Annually" ?
-                                  this.state.Year.map((data,index) =>
-                                  <option key={index}  className="" >{data}</option>
-                                  ):
-                                  this.state.YearPair.map((data,index) =>
-                                  <option key={index}  className="" >{data}</option>
-                                  ) ) : 
-                                  this.state.YearPair.map((data,index) =>
-                                  <option key={index}  className="" >{data}</option>
-                                  )
-                                }
+                               {this.state.Year.map((data,index) =>
+                                <option key={index}  className="" >{data}</option>
+                                )}
+                                
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.year}</div>
@@ -516,6 +481,7 @@ class AnnualPlan extends Component{
                         <div className="">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             <div className="col-lg-2 col-md-1 col-sm-1 col-xs-1 row pad15 ">
+                              <label className="formLable">Sub-Activity</label>
                             </div> 
                             <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1  ">
                               <label className="formLable">Unit</label>
@@ -560,8 +526,6 @@ class AnnualPlan extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12  ht50 ">
                             <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 row">
                               <div className="col-lg-12 col-sm-12 col-xs-12 subActDiv " id="LHWRF" >
-                                  <label className="formLable">Sub-Activity</label>
-
                               </div>
                             </div>
                             <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
@@ -632,78 +596,7 @@ class AnnualPlan extends Component{
                         </div><br/>
 
                       
-                      {/*  <div className="">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  ht50 ">
-                            <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12 subActDiv " id="LHWRF" >
-                              </div>
-                            </div>
-                            <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12 contentDiv input-group inputBox-main " id="NABARD" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row  noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv  input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12  noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            
-                          </div> 
-                        </div><br/>
-                        <div className="row">
-                          <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
-                            <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
-                              <label className="formLable"></label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                                <input type="text" className="form-control inputBox nameParts" name="directCC" placeholder="Remark" ref="directCC" value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.directCC}</div>
-                            </div>
-                          </div> 
-                        </div><br/>*/}
+                      
                         
                         <div className="col-lg-12">
                          <br/>{
@@ -716,14 +609,7 @@ class AnnualPlan extends Component{
                       </form>
                     </div>
                     <div className="AnnualHeadCont">
-                      <div className="annualHead">
-                      {
-                        this.state.month=="--Quarter 1--"
-                          ?
-                            <h5>Quarterly Plan for April May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
-                          :
-                            <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
-                        }
+                      <div className="annualHead"><h5>{this.state.month !== "All Months" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                       </div>
                     </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
@@ -748,4 +634,4 @@ class AnnualPlan extends Component{
     );
   }
 }
-export default AnnualPlan
+export default annualPlans
