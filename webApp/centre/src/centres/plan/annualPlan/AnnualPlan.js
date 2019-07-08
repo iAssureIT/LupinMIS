@@ -183,7 +183,7 @@ class AnnualPlan extends Component{
    
     this.setState({
       "year"                :"",
-      "month"                :"",
+      "month"               :"",
       "center"              :"",
       "sector_id"           :"",
       "sectorName"          :"",
