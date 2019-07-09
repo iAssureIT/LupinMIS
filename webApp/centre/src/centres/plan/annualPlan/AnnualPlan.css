@@ -185,12 +185,19 @@
 	font-weight: bold !important;	
 }
 .subActDiv{
-    height: 100px !important;
-    padding-top: 20px;
+	border-top: 1px solid #dcd9d9 !important;
+	border-bottom: 1px solid #dcd9d9 !important;
+    height: 260px !important;
+    padding-top: 7px;
 }
 .contentDiv{
-	border: 1px solid #999 !important;
-    height: 30px !important;	
+	/*border: 1px solid #999 !important;*/
+    height: auto !important;
+    padding-top: 25px;
+    padding-left: 20px;
+    line-height: 15px;
+    font-size: 14px !important;
+    font-weight: 500;
 }
 .pad15{
 	padding-left: 15px;
@@ -207,4 +214,13 @@
 .finSrc{
 	margin-top: -20px;
 	height: 52px !important;
+}
+.planfields{
+	margin-top: 5px;
+	padding-left:  0px
+}
+.Activityfields{
+	margin-top: 5px;
+	padding-left:  0px;
+	padding-right:  0px !important
 }

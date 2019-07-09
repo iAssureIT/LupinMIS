@@ -78,6 +78,7 @@ class Layout extends Component{
                     <Route path="/" component={Dashboard} exact />
                   {/*Master Data*/}
                     <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
+                    <Route path="/beneficiary/:id"                         exact strict component={ Beneficiary } />
                     <Route path="/family"                              exact strict component={ Family } />
                     <Route path="/family/:id"                          exact strict component={ Family } />
                    {/*Plans Routes*/}

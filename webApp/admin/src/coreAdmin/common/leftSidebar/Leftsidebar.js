@@ -84,13 +84,7 @@ export default class Leftsidebar extends Component{
                           <span className="sidebarMenuSubText">Center Details</span>
                         </a>
                       </li>
-                    {/*<li>
-                      <a href="beneficiary">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Beneficiary</span>
 
-                      </a>
-                    </li>
                     <li>
                       <a href="/sector-and-activity">
                         <i className="fa fa-circle-o" />
@@ -103,18 +97,6 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Sector Mapping</span>
                       </a>
                     </li>
-                    {/*<li>
-                      <a href="/empowermentLine">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Empowerment Line</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/ADPReport">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">ADP Report</span>
-                      </a>
-                    </li>*/}
                   </ul>
                 </li> 
                 <li className="sidebarMenuText">

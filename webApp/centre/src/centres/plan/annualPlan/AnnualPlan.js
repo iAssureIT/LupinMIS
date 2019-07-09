@@ -224,20 +224,20 @@ class AnnualPlan extends Component{
       }
   }
   getData(startRange, limitRange){
-    axios({
+   axios({
       method: 'get',
       url: '/api/annualPlans/list',
     }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-
+      console.log('response======================', response.data)
       this.setState({
-        tableData : tableData.slice(startRange, limitRange),
-      });
+        tableData : response.data
+      })
+     
     }).catch(function (error) {
       console.log('error', error);
     });
   }
-   Update(event){
+  Update(event){
     event.preventDefault();
     if (this.validateForm() && this.validateFormReq()) {
      /* var academicArray=[];
@@ -346,66 +346,41 @@ class AnnualPlan extends Component{
   }
 
   componentDidMount() {
-    console.log('editId componentDidMount', this.state.editId);
-    if(this.state.editId){      
-      this.edit(this.state.editId);
-    }
-  
-
-    var data = {
-      limitRange : 0,
-      startRange : 1,
-    }
-  
-      axios({
-        method: 'get',
-        url: '/api/annualPlans/list',
-      }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-        this.setState({
-          dataCount : tableData.length,
-          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-          editUrl   : this.props.match.params
-        },()=>{
-          
-        });
-      }).catch(function (error) {
-        console.log('error', error);
+    this.getData(this.state.startRange, this.state.limitRange)
+  }
+  toglehidden()
+  {
+   this.setState({
+       shown: !this.state.shown
       });
-    }
-    toglehidden()
-    {
-     this.setState({
-         shown: !this.state.shown
-        });
-    }
-    edit(id){
-      axios({
-        method: 'get',
-        url: '/api/annualPlans/'+id,
-        }).then((response)=> {
-        var editData = response.data[0];
-        console.log('editData',editData);
-        this.setState({
-          "typeOfCentre"             : editData.type,
-          "nameOfCentre"             : editData.centerName,
-          "address"                  : editData.address,
-          "state"                    : editData.state,
-          "district"                 : editData.district,
-          "pincode"                  : editData.pincode,
-          "centreInchargeName"       : editData.centerInchargename,
-          "centreInchargeContact"    : editData.centerInchargemobile,
-          "centreInchargeEmail"      : editData.centerInchargeemail,
-          "MISCoordinatorName"       : editData.misCoordinatorname,
-          "MISCoordinatorContact"    : editData.misCoordinatormobile,
-          "MISCoordinatorEmail"      : editData.misCoordinatoremail,
-          "selectedVillages"         : editData.villagesCovered,
-          "districtCovered"          :"",
-          "blockCovered"             :"",
-          "villagesCovered"          : editData.villagesCovered,
-        });
-      }).catch(function (error) {
-    });
+  }
+  edit(id){
+    axios({
+      method: 'get',
+      url: '/api/annualPlans/'+id,
+      }).then((response)=> {
+      var editData = response.data[0];
+      console.log('editData',editData);
+      this.setState({
+        "typeOfCentre"             : editData.type,
+        "nameOfCentre"             : editData.centerName,
+        "address"                  : editData.address,
+        "state"                    : editData.state,
+        "district"                 : editData.district,
+        "pincode"                  : editData.pincode,
+        "centreInchargeName"       : editData.centerInchargename,
+        "centreInchargeContact"    : editData.centerInchargemobile,
+        "centreInchargeEmail"      : editData.centerInchargeemail,
+        "MISCoordinatorName"       : editData.misCoordinatorname,
+        "MISCoordinatorContact"    : editData.misCoordinatormobile,
+        "MISCoordinatorEmail"      : editData.misCoordinatoremail,
+        "selectedVillages"         : editData.villagesCovered,
+        "districtCovered"          :"",
+        "blockCovered"             :"",
+        "villagesCovered"          : editData.villagesCovered,
+      });
+    }).catch(function (error) {
+  });
   }
   render() {
     var shown = {
@@ -473,6 +448,7 @@ class AnnualPlan extends Component{
                         </div> 
                       </div><br/>                      
                       <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"  style={hidden} id="Academic_details">
+                        
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                             <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
@@ -503,207 +479,241 @@ class AnnualPlan extends Component{
                             </div>
                           </div> 
                         </div><br/>
-                        <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-lg-3 col-lg-offset-2 col-md-6 col-sm-6 col-xs-6 ">
-                              <label className="formLable head">Sub-Activity Details</label>
-                            </div>
-                            <div className=" col-lg-3 col-lg-offset-3 col-md-6 col-sm-6 col-xs-6 ">
-                              <label className="formLable head">Financial Sources</label>
-                            </div> 
-                          </div>
-                        </div><br/>
+                       
                         <div className="">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className="col-lg-2 col-md-1 col-sm-1 col-xs-1 row pad15 ">
-                            </div> 
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1  ">
-                              <label className="formLable">Unit</label>
+                          <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  boxHeight ">
+                            <div className="row">
+                              <div className="col-lg-12 col-sm-12 col-xs-12  ">
+                                <div className="col-lg-3 col-md-1 col-sm-1 col-xs-1 ">
+                                </div> 
+                                <div className="col-lg-3 col-md-1 col-sm-1 col-xs-1 row ">
+                                </div> 
+                                <div className="col-lg-3 col-md-1 col-sm-1 col-xs-1 row ">
+                                </div> 
+                                <div className="col-lg-3 col-md-1 col-sm-1 col-xs-1 row ">
+                                </div> 
+                              </div>
                             </div>
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row ">
-                              <label className="formLable">Physical Units</label>
-                            </div> 
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1  ">
-                              <label className="formLable">Unit Cost</label>
-                            </div> 
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row">
-                              <label className="formLable">Total Cost</label>
-                            </div> 
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
-                              <label className="formLable">No.of Benef.</label>
-                            </div> 
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row ">
-                              <label className="formLable">LHWRF</label>
+                          </div> 
+                        </div><br/>
+                      
+                        <div className=" subActDiv ">
+                          <div className=" ">
+                            <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 contentDiv  ">
+                                <label className="">Sub-Activity 1</label><br/>
+                                <label className="formLable">Unit :</label>
                             </div>
-                             <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
-                              <label className="formLable">NABARD</label>
-                            </div>
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row">
-                              <label className="formLable">Bank Loan</label>
-                            </div>
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
-                              <label className="formLable">Govt. Schemes</label>
-                            </div>
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row ">
-                              <label className="formLable">Direct Comm Contri.</label>
-                            </div>
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1  ">
-                              <label className="formLable">Indirect Comm Contri</label>
-                            </div>
-                            <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 row">
+                            <div className="col-lg-10 col-sm-10 col-xs-10 ">
+                              <div className="row">
+                                <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
+                                  <label className="formLable head">Sub-Activity Details</label>
+                                </div>
+                              </div>
+                              <div className=" row">
+                                <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                  <label className="formLable">Physical Units</label>
+                                  <div className=" input-group inputBox-main " id="unit" >
+                                    <input type="text" className="form-control inputBox nameParts" name="unit" placeholder=""ref="unit" value={this.state.unit} onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                  <label className="formLable">Unit Cost</label>
+                                  <div className=" input-group inputBox-main" id="physicalUnit" >
+                                    <input type="text" className="form-control inputBox nameParts" name="physicalUnit" placeholder=""ref="physicalUnit" value={this.state.physicalUnit} onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>  
+                                <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                  <label className="formLable">Total Cost</label>
+                                  <div className="input-group inputBox-main" id="unitCost" >
+                                    <input type="text" className="form-control inputBox nameParts" name="unitCost" placeholder=""ref="unitCost" value={this.state.unitCost} onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>  
+                                <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                  <label className="formLable">No.of Benef.</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
+                                  <label className="formLable head">Financial Sources</label>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">LHWRF</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">NABARD</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">Bank Loan</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">Govt. Schemes</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">Direct Comm. Contri.</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">Indirect Comm. Contri.</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className=" row">
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                               <label className="formLable">Other</label>
-                            </div>
-                          </div> 
-                        </div><br/>
-                      
-                        <div className="">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  ht50 ">
-                            <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12 subActDiv " id="LHWRF" >
-                                  <label className="formLable">Sub-Activity</label>
-
+                              <div className=" input-group inputBox-main" id="totalBudget" >
+                                <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>
-                            <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12 contentDiv input-group inputBox-main " id="unit" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="unit" placeholder=""ref="unit" value={this.state.unit} onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row  noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv  input-group inputBox-main" id="physicalUnit" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="physicalUnit" placeholder=""ref="physicalUnit" value={this.state.physicalUnit} onChange={this.handleChange.bind(this)}/>
-                              </div>
+                                <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
+                                  <label className="formLable">Remark</label>
+                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="remark" >
+                                    <input type="text" className="form-control inputBox nameParts" name="remark" placeholder="Remark" ref="remark" value={this.state.remark}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                              </div>  
                             </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="unitCost" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="unitCost" placeholder=""ref="unitCost" value={this.state.unitCost} onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="totalBudget" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="noOfBeneficiaries" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="noOfBeneficiaries" placeholder=""ref="noOfBeneficiaries" value={this.state.noOfBeneficiaries} onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="LHWRF" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="LHWRF" placeholder=""ref="LHWRF" value={this.state.LHWRF} onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12  noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="NABARD" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="NABARD" placeholder=""ref="NABARD" value={this.state.NABARD} onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan} onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="govtscheme" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="govtscheme" placeholder=""ref="govtscheme" value={this.state.govtscheme} onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="directCC" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="directCC" placeholder=""ref="directCC" value={this.state.directCC} onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="indirectCC" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" value={this.state.indirectCC} onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="other" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="other" placeholder=""ref="other" value={this.state.other} onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                              <div className="errorMsg">{this.state.errors.other}</div>
-                          </div> 
-                        </div><br/>
-                        <div className="row">
-                          <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
-                            <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
-                              <label className="formLable"></label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="remark" >
-                                <input type="text" className="form-control inputBox nameParts" name="remark" placeholder="Remark" ref="remark" value={this.state.remark}  onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.remark}</div>
-                            </div>
-                          </div> 
-                        </div><br/>
-
-                      
-                      {/*  <div className="">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  ht50 ">
-                            <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12 subActDiv " id="LHWRF" >
-                              </div>
-                            </div>
-                            <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12 contentDiv input-group inputBox-main " id="NABARD" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row  noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv  input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>  
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12  noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 row noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight ">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
-                            <div className=" col-lg-1 col-md-1 col-sm-6 col-xs-12 noPadRight row">
-                              <div className="col-lg-12 col-sm-12 col-xs-12  contentDiv input-group inputBox-main" id="bankLoan" >
-                                <input type="text" className="form-control inputBoxAP nameParts" name="indirectCC" placeholder=""ref="indirectCC" onChange={this.handleChange.bind(this)}/>                              </div>
-                            </div>
+                          </div><br/>
+                          <div className="row">
                             
-                          </div> 
-                        </div><br/>
-                        <div className="row">
-                          <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
-                            <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
-                              <label className="formLable"></label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                                <input type="text" className="form-control inputBox nameParts" name="directCC" placeholder="Remark" ref="directCC" value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
+                            <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
+                              <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
+                                <label className="formLable"></label>
+                                <div className="errorMsg">{this.state.errors.remark}</div>
                               </div>
-                              <div className="errorMsg">{this.state.errors.directCC}</div>
+                            </div> 
+                          </div><br/>
+                        </div>
+                        <div className=" subActDiv ">
+                          <div className=" ">
+                            <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 contentDiv  ">
+                                <label className="">Sub-Activity 1</label><br/>
+                                <label className="formLable">Unit :</label>
                             </div>
-                          </div> 
-                        </div><br/>*/}
+                            <div className="col-lg-10 col-sm-10 col-xs-10 ">
+                              <div className="row">
+                                <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
+                                  <label className="formLable head">Sub-Activity Details</label>
+                                </div>
+                              </div>
+                              <div className=" row">
+                                <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                  <label className="formLable">Physical Units</label>
+                                  <div className=" input-group inputBox-main " id="unit" >
+                                    <input type="text" className="form-control inputBox nameParts" name="unit" placeholder=""ref="unit" value={this.state.unit} onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                  <label className="formLable">Unit Cost</label>
+                                  <div className=" input-group inputBox-main" id="physicalUnit" >
+                                    <input type="text" className="form-control inputBox nameParts" name="physicalUnit" placeholder=""ref="physicalUnit" value={this.state.physicalUnit} onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>  
+                                <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                  <label className="formLable">Total Cost</label>
+                                  <div className="input-group inputBox-main" id="unitCost" >
+                                    <input type="text" className="form-control inputBox nameParts" name="unitCost" placeholder=""ref="unitCost" value={this.state.unitCost} onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>  
+                                <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                  <label className="formLable">No.of Benef.</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
+                                  <label className="formLable head">Financial Sources</label>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">LHWRF</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">NABARD</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">Bank Loan</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">Govt. Schemes</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">Direct Comm. Contri.</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                  <label className="formLable">Indirect Comm. Contri.</label>
+                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                    <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className=" row">
+                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                              <label className="formLable">Other</label>
+                              <div className=" input-group inputBox-main" id="totalBudget" >
+                                <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                              </div>
+                            </div>
+                                <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
+                                  <label className="formLable">Remark</label>
+                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="remark" >
+                                    <input type="text" className="form-control inputBox nameParts" name="remark" placeholder="Remark" ref="remark" value={this.state.remark}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
+                              </div>  
+                            </div>  
+                          </div><br/>
+                          <div className="row">
+                            
+                            <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
+                              <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
+                                <label className="formLable"></label>
+                                <div className="errorMsg">{this.state.errors.remark}</div>
+                              </div>
+                            </div> 
+                          </div><br/>
+                        </div>
+
+                      
+                      
                         
                         <div className="col-lg-12">
                          <br/>{
@@ -713,6 +723,7 @@ class AnnualPlan extends Component{
                           <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
                         }
                         </div>
+                      
                       </form>
                     </div>
                     <div className="AnnualHeadCont">

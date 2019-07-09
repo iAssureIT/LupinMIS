@@ -27,13 +27,14 @@ class Beneficiary extends Component{
         actions             : 'Action',
       },
       "tableObjects"              : {
-        apiLink                   : '/api/beneficiaries/'
+        apiLink                   : '/api/beneficiaries/',
+        editUrl                   : '/beneficiaries/'
       },
       "startRange"          : 0,
       "limitRange"          : 10,
-/*      "editId"              : this.props.match.params ? this.props.match.params.id : ''
-*/    }
-/*    console.log('params', this.props.match.params);*/ 
+      "editId"              : this.props.match.params ? this.props.match.params.id : ''
+    }
+    console.log('params', this.props.match.params);
   }
 
   handleChange(event){
@@ -93,8 +94,8 @@ class Beneficiary extends Component{
           title : response.data,
           text  : response.data
         });
-/*        this.getData(this.state.startRange, this.state.limitRange);
-*/      })
+        this.getData(this.state.startRange, this.state.limitRange);
+      })
       .catch(function(error){
         console.log("error = ",error);
       });
@@ -148,6 +149,7 @@ class Beneficiary extends Component{
       var tableData = response.data.map((a, index)=>{return});
       this.setState({
         tableData : response.data,
+        editUrl   : this.props.match.params
       },()=>{
         
       });

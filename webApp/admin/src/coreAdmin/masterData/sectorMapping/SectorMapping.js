@@ -106,7 +106,6 @@ class SectorMapping extends Component{
         "activity"  :"",
         fields      :fields
       });
-      $('input[type=checkbox]').attr('checked', true);
     }  
   }
   validateFormReq() {
@@ -149,12 +148,10 @@ class SectorMapping extends Component{
     axios({
       method: 'get',
       url: '/api/sectorMappings/list',
-    }).then((response)=> {
+      }).then((response)=> {
       var tableData = response.data.map((a, index)=>{return});
       this.setState({
-        dataCount : tableData.length,
-        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-        editUrl   : this.props.match.params
+        tableData : response.data,
       },()=>{
         
       });
@@ -164,7 +161,6 @@ class SectorMapping extends Component{
   }
 
   edit(id){
-    $('input:checkbox').attr('checked','unchecked');
     axios({
       method: 'get',
       url: '/api/sectorMappings'+id,
@@ -189,9 +185,8 @@ class SectorMapping extends Component{
       method: 'get',
       url: '/api/sectorMappings/list',
     }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return});
         this.setState({
-        tableData : tableData.slice(startRange, limitRange),
+        tableData : response.data,
       });
     }).catch(function (error) {
         console.log('error', error);
@@ -470,7 +465,7 @@ class SectorMapping extends Component{
                         </div>
                          <div className=" col-md-4  col-lg-4 col-sm-12 col-xs-12 ">
                           <label className="formLable faintCoolor">Agriculture Development</label>
-                         <div className="col-lg-12 col-sm-12 col-xs-12 mt">
+                          <div className="col-lg-12 col-sm-12 col-xs-12 mt">
                              <div className="row"> 
                               <div className="col-lg-12 noPadding">  
                                <div className="actionDiv">
@@ -584,14 +579,14 @@ class SectorMapping extends Component{
                     </div> 
                   </form>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    {/*<IAssureTable 
+                    <IAssureTable 
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.dataCount}
                       tableData={this.state.tableData}
                       getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects}
-                    />*/}
+                    />
                   </div>
                 </div>
               </div>
