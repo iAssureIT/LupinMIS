@@ -156,10 +156,12 @@ class centreDetail extends Component{
       {
         "type"                      : this.refs.typeOfCentre.value,
         "centerName"                : this.refs.nameOfCentre.value,
-        "address"                   : this.refs.address.value,
-        "state"                     : this.refs.state.value,
-        "district"                  : this.refs.district.value,
-        "pincode"                   : this.refs.pincode.value,
+        "address"                   : {
+            "addressLine"           : this.refs.address.value,
+            "state"                 : this.refs.state.value,
+            "district"              : this.refs.district.value,
+            "pincode"               : this.refs.pincode.value,
+        },
         "districtsCovered"          : districtsCovered,
         "blocksCovered"             : blocksCovered,
         "villagesCovered"           : this.state.selectedVillages,
@@ -413,7 +415,20 @@ class centreDetail extends Component{
       method: 'get',
       url: '/api/centers/list',
     }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+      var tableDatas = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+      var tableData = tableDatas.map((a, index)=>{
+        return {
+          "type": a.type,
+          "centerName": a.centerName,
+          "address" : a.address.state,
+          "centerInchargename": a.centerInchargename,
+          "centerInchargemobile": a.centerInchargemobile,
+          "centerInchargeemail": a.centerInchargeemail,
+          "misCoordinatorname": a.misCoordinatorname,
+          "misCoordinatormobile": a.misCoordinatormobile,
+          "misCoordinatoremail": a.misCoordinatoremail
+        }
+      })
       this.setState({
         dataCount : tableData.length,
         tableData : tableData.slice(this.state.startRange, this.state.limitRange),
@@ -425,7 +440,7 @@ class centreDetail extends Component{
       console.log('error', error);
     });
 
-    var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
+    var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];
     this.setState({
       listofStates : listofStates
     })
@@ -446,10 +461,10 @@ class centreDetail extends Component{
       this.setState({
         "typeOfCentre"             : editData.type,
         "nameOfCentre"             : editData.centerName,
-        "address"                  : editData.address,
-        "state"                    : editData.state,
-        "district"                 : editData.district,
-        "pincode"                  : editData.pincode,
+        "address"                  : editData.address.addressLine,
+        "state"                    : editData.address.state,
+        "district"                 : editData.address.district,
+        "pincode"                  : editData.address.pincode,
         "centreInchargeName"       : editData.centerInchargename,
         "centreInchargeContact"    : editData.centerInchargemobile,
         "centreInchargeEmail"      : editData.centerInchargeemail,
@@ -462,7 +477,7 @@ class centreDetail extends Component{
         "villagesCovered"          : editData.villagesCovered,
       },()=>{
         
-        if(this.state.state == 'Maharastra'){
+        if(this.state.state == 'Maharashtra'){
           var listofDistrict = ['Pune', 'Mumbai'];
           this.setState({
             listofDistrict : listofDistrict
@@ -492,7 +507,7 @@ class centreDetail extends Component{
         console.log('error', error);
       });
 
-      var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharastra'];
+      var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];
       this.setState({
         listofStates : listofStates
       })
@@ -527,7 +542,7 @@ class centreDetail extends Component{
     this.setState({
       state : selectedState
     },()=>{
-      if(this.state.state == 'Maharastra'){
+      if(this.state.state == 'Maharashtra'){
         var listofDistrict = ['Pune', 'Mumbai'];
         this.setState({
           listofDistrict : listofDistrict
@@ -620,7 +635,7 @@ class centreDetail extends Component{
   render() {
     const dataM = [{
         srno: 1,
-        FamilyID: "Maharastra",
+        FamilyID: "Maharashtra",
         NameofBeneficiary: "Pune",
         BeneficiaryID: "Pimpri",
       }

@@ -739,7 +739,7 @@ class AnnualPlan extends Component{
                     </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
                       <div className="row">  
-                       <IAssureTable 
+                       {/*<IAssureTable 
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}
@@ -747,7 +747,7 @@ class AnnualPlan extends Component{
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
 
-                        />
+                        />*/}
                       </div>
                     </div> 
                   </div>

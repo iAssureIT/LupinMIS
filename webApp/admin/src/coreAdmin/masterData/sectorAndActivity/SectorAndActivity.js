@@ -34,8 +34,8 @@ class SectorAndActivity extends Component{
   }
   toglehidden(){
    this.setState({
-       shown: !this.state.shown
-      });
+     shown: !this.state.shown
+    });
   }
   changeTab = (data)=>{
     this.setState({
