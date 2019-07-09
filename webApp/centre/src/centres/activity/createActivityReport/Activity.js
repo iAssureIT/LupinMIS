@@ -32,7 +32,7 @@ class Activity extends Component{
       "block"             : "",
       "dateOfIntervention": "",
       "village"           : "",
-      "Date"              : "",
+      "date"              : "",
       "sector"            : "",
       "typeofactivity"    : "",
       "nameofactivity"    : "",
@@ -109,7 +109,7 @@ class Activity extends Component{
       "dist"              : this.refs.dist.value,
       "block"             : this.refs.block.value,
       "village"           : this.refs.village.value,
-      "Date"              : this.refs.dateOfIntervention.value,
+      "date"              : this.refs.date.value,
       "sector"            : this.refs.sector.value,
       "typeofactivity"    : this.refs.typeofactivity.value,
       "activity"          : this.refs.activity.value,
@@ -450,29 +450,30 @@ class Activity extends Component{
     }
     var dateObj = new Date();
     var momentObj = moment(dateObj);
-    var momentString = momentObj.format('DD/MM/YYYY');
+    console.log('momentObj', momentObj);
+    var momentString = momentObj.format('YYYY-MM-DD');
     console.log("maxDatefrm",momentString);  
 
     this.setState({
-      Date :momentString,
-    },()=>console.log("--",this.state.Date))
+      date :momentString,
+    },()=>{console.log("date",this.state.date)})
     
     var id = this.state.editId;
-    axios({
-      method: 'get',
-      url: '/api/activityReport/'+id,
-    }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-      this.setState({
-        dataCount : tableData.length,
-        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-        editUrl   : this.props.match.params
-      },()=>{
+    // axios({
+    //   method: 'get',
+    //   url: '/api/activityReport/'+id,
+    // }).then((response)=> {
+    //   var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+    //   this.setState({
+    //     dataCount : tableData.length,
+    //     tableData : tableData.slice(this.state.startRange, this.state.limitRange),
+    //     editUrl   : this.props.match.params
+    //   },()=>{
         
-      });
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    //   });
+    // }).catch(function (error) {
+    //   console.log('error', error);
+    // });
   }
   edit(id){
     axios({
@@ -543,7 +544,7 @@ class Activity extends Component{
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
-                            <input type="date" className="form-control inputBox toUpper"  placeholder="" name="dateOfIntervention" ref="dateOfIntervention" value={this.state.Date} onChange={this.handleChange.bind(this)}/>
+                            <input type="date" className="form-control inputBox toUpper" name="date" ref="date" value={this.state.date} onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.Date}</div>
                         </div>

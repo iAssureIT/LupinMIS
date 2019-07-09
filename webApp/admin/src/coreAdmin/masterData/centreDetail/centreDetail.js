@@ -232,10 +232,13 @@ class centreDetail extends Component{
   }
   Update(event){
   event.preventDefault();
-   if(this.state.typeOfCentre == "" || this.state.nameOfCentre == "" ||  this.state.state == "" || this.state.district == "" ||this.state.pincode == ""||this.state.centreInchargeName == ""||this.state.centreInchargeContact == ""||this.state.centreInchargeEmail == "" ||this.state.MISCoordinatorContact == ""||this.state.MISCoordinatorEmail == ""||this.state.MISCoordinatorName == ""  )
-    {
+   if(this.refs.address.value == ""){
+      console.log('state validation');
       if (this.validateForm() && this.validateFormReq()){
-        var academicArray=[];
+        console.log('abc');
+      }
+    }else{
+      var academicArray=[];
         var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
 
         var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
@@ -276,7 +279,7 @@ class centreDetail extends Component{
         fields["districtCovered"] = "";
         fields["blockCovered"] = "";
 
-        axios.put('/api/centers',centreDetail, this.state.editId)
+        axios.patch('/api/centers',centreDetail, this.state.editId)
         .then(function(response){
           swal({
             title : response.data,
@@ -310,66 +313,66 @@ class centreDetail extends Component{
           "fields"                    : fields
         });
         $('input[type=checkbox]').attr('checked', false);
-      }
-    }else{
-       var academicArray=[];
-        var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+    }
+    // else{
+       // var academicArray=[];
+       //  var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
 
-        var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
-        var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
+       //  var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
+       //  var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
 
-        var id2 = this.state.uID;
-        var centreDetail = {
-          "type"                      : this.refs.typeOfCentre.value,
-          "centerName"                : this.refs.nameOfCentre.value,
-          "address"                   : this.refs.address.value,
-          "state"                     : this.refs.state.value,
-          "district"                  : this.refs.district.value,
-          "pincode"                   : this.refs.pincode.value,
-          "districtsCovered"          : districtsCovered,
-          "blocksCovered"             : blocksCovered,
-          "villagesCovered"           : this.state.selectedVillages,
-          "centerInchargename"        : this.refs.centreInchargeName.value,
-          "centerInchargemobile"      : this.refs.centreInchargeContact.value,
-          "centerInchargeemail"       : this.refs.centreInchargeEmail.value,
-          "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
-          "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
-          "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
-        };
+       //  var id2 = this.state.uID;
+       //  var centreDetail = {
+       //    "type"                      : this.refs.typeOfCentre.value,
+       //    "centerName"                : this.refs.nameOfCentre.value,
+       //    "address"                   : this.refs.address.value,
+       //    "state"                     : this.refs.state.value,
+       //    "district"                  : this.refs.district.value,
+       //    "pincode"                   : this.refs.pincode.value,
+       //    "districtsCovered"          : districtsCovered,
+       //    "blocksCovered"             : blocksCovered,
+       //    "villagesCovered"           : this.state.selectedVillages,
+       //    "centerInchargename"        : this.refs.centreInchargeName.value,
+       //    "centerInchargemobile"      : this.refs.centreInchargeContact.value,
+       //    "centerInchargeemail"       : this.refs.centreInchargeEmail.value,
+       //    "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
+       //    "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
+       //    "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
+       //  };
         
        
-        axios.put('/api/centers',centreDetail, this.state.editId)
-        .then(function(response){
-          swal({
-            title : response.data,
-            text  : response.data
-          });
-          this.getData(this.state.startRange, this.state.limitRange);
-        })
-        .catch(function(error){
+       //  axios.put('/api/centers',centreDetail, this.state.editId)
+       //  .then(function(response){
+       //    swal({
+       //      title : response.data,
+       //      text  : response.data
+       //    });
+       //    this.getData(this.state.startRange, this.state.limitRange);
+       //  })
+       //  .catch(function(error){
           
-        });
+       //  });
 
-        this.setState({
-          "typeOfCentre"              : "",
-          "nameOfCentre"              : "",
-          "address"                   : "",
-          "state"                     : "",
-          "district"                  : "",
-          "pincode"                   : "",
-          "centreInchargeName"        : "",
-          "centreInchargeContact"     : "",
-          "centreInchargeEmail"       : "",
-          "MISCoordinatorName"        : "",
-          "MISCoordinatorContact"     : "",
-          "MISCoordinatorEmail"       : "",
-          "districtCovered"           : "",
-          "blockCovered"              : "",
-          "selectedVillages"          : [],
-          "listofDistrict"            : [],
-          "listofBlocks"              : [],
-          "listofVillages"            : [],
-        });
+       //  this.setState({
+       //    "typeOfCentre"              : "",
+       //    "nameOfCentre"              : "",
+       //    "address"                   : "",
+       //    "state"                     : "",
+       //    "district"                  : "",
+       //    "pincode"                   : "",
+       //    "centreInchargeName"        : "",
+       //    "centreInchargeContact"     : "",
+       //    "centreInchargeEmail"       : "",
+       //    "MISCoordinatorName"        : "",
+       //    "MISCoordinatorContact"     : "",
+       //    "MISCoordinatorEmail"       : "",
+       //    "districtCovered"           : "",
+       //    "blockCovered"              : "",
+       //    "selectedVillages"          : [],
+       //    "listofDistrict"            : [],
+       //    "listofBlocks"              : [],
+       //    "listofVillages"            : [],
+       //  });
        $('input[type=checkbox]').attr('checked', false);
 
       /*  for(var i=0;i<this.state.array.length;i++)
@@ -379,7 +382,8 @@ class centreDetail extends Component{
         }
       */
 
-    }
+    // }
+    // this.props.history.push('/center-details');
   }
   validateFormReq() {
     let fields = this.state.fields;
