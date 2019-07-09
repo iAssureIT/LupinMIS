@@ -2,8 +2,8 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import _                      from 'underscore';
 
 import 'react-table/react-table.css';
@@ -83,8 +83,9 @@ class AnnualPlan extends Component{
         other                      : "Other",
         actions                     : 'Action',
       },
-       "tableObjects"              : {
-        apiLink                   : '/api/annualPlans/'
+      " tableObjects"        : {
+        apiLink             : '/api/annualPlans/',
+        editUrl             : '/annualPlans/',
       },
       "startRange"                  : 0,
       "limitRange"                  : 10,
@@ -733,13 +734,13 @@ class AnnualPlan extends Component{
                           ?
                             <h5>Quarterly Plan for April May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-                            <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
+                            <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+(this.state.year ? this.state.year :"" ) : null}</h5> 
                         }
                       </div>
                     </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
                       <div className="row">  
-                       {/*<IAssureTable 
+                       <IAssureTable 
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}
@@ -747,7 +748,7 @@ class AnnualPlan extends Component{
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
 
-                        />*/}
+                        />
                       </div>
                     </div> 
                   </div>

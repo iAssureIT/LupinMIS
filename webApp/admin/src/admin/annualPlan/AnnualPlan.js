@@ -2,6 +2,11 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
+import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import _                      from 'underscore';
+import swal                   from 'sweetalert';
+
+
 import 'react-table/react-table.css';
 import "./AnnualPlan.css";
 
@@ -27,15 +32,59 @@ class AnnualPlan extends Component{
       "hide"                : true,
       "month"               :"",
       "year"                :"",
-      "Months"              :["January","February","March","April","May","June","July","August","September","October","November","December"],
+      "Months"              :["April","May","June","--Quarter 1--","July","August","September","--Quarter 2--","October","November","December","--Quarter 3--","January","February","March","--Quarter 4--",],
       "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+      "YearPair"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       shown                 : true,
             tabtype : "location",
 
       fields: {},
-      errors: {}
+      errors: {},
+         "twoLevelHeader"              : {
+        apply                     : true,
+        firstHeaderData           : [
+                                      {
+                                          heading : '',
+                                          mergedColoums : 10
+                                      },
+                                      {
+                                          heading : 'Source of Fund',
+                                          mergedColoums : 7
+                                      },
+                                   /*   {
+                                          heading : 'MIS Coordinator',
+                                          mergedColoums : 3
+                                      },*/
+                                    ]
+      },
+      "tableHeading"                : {
+        month                      : "Month",
+        sectorName                 : "Sector",
+        activity                   : "Activity",
+        subActivity                : "Sub-Activity",
+        unit                       : "Unit",
+        physicalUnit               : "Physical Unit",
+        unitCost                   : "Unit Cost",
+        totalBudget                : "Total Cost",
+        noOfBeneficiaries          : "No. Of Beneficiaries",
+        LHWRF                      : "LHWRF",
+        NABARD                     : "NABARD",
+        bankLoan                   : "Bank Loan",
+        govtscheme                 : "Govt. Scheme",
+        directCC                   : "Direct Community Contribution",
+        indirectCC                 : "Indirect Community Contribution",
+        other                      : "Other",
+        actions                     : 'Action',
+      },
+      " tableObjects"        : {
+        apiLink             : '/api/annualPlans/',
+        editUrl             : '/annualPlans/',
+      },
+      "startRange"                  : 0,
+      "limitRange"                  : 10,
+      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
     }
-    this.changeTab = this.changeTab.bind(this); 
+    
   }
  
   handleChange(event){
@@ -136,7 +185,7 @@ class AnnualPlan extends Component{
       fields:fields
     });
       axios
-      .post('https://jsonplaceholder.typicode.com/posts',{academicValues})
+      .post('/api/annualPlans/',{academicValues})
       .then(function(response){
         console.log(response);
       })
@@ -149,6 +198,109 @@ class AnnualPlan extends Component{
       alert("Data inserted Successfully!")
       }
     }
+   
+  getData(startRange, limitRange){
+   axios({
+      method: 'get',
+      url: '/api/annualPlans/list',
+    }).then((response)=> {
+      console.log('response======================', response.data)
+      this.setState({
+        tableData : response.data
+      })
+     
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  Update(event){
+    event.preventDefault();
+    if (this.validateForm() && this.validateFormReq()) {
+     /* var academicArray=[];
+      var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+
+      var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
+      var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});*/
+
+      var id2 = this.state.uID;
+        /*    if (this.validateForm()) {*/    
+       var annualPlanValues= 
+    {
+      "year"                : this.refs.year.value,          
+      "month"               : this.refs.month.value,          
+      // "center"              : this.refs.center.value,
+      // "sector_id"           : this.refs.sector_id.value,
+      "sectorName"          : this.refs.sectorName.value,
+      "activity"            : this.refs.activity.value,
+      "physicalUnit"        : this.refs.physicalUnit.value,
+      "unitCost"            : this.refs.unitCost.value,
+      "totalBudget"         : this.refs.totalBudget.value,
+      "noOfBeneficiaries"   : this.refs.noOfBeneficiaries.value,
+      "LHWRF"               : this.refs.LHWRF.value,
+      "NABARD"              : this.refs.NABARD.value,
+      "bankLoan"            : this.refs.bankLoan.value,
+      "govtscheme"          : this.refs.govtscheme.value,
+      "directCC"            : this.refs.directCC.value,
+      "indirectCC"          : this.refs.indirectCC.value,
+      "other"               : this.refs.other.value,
+      "remark"              : this.refs.remark.value,
+    };
+
+    let fields = {};
+    fields["year"]              = "";
+    fields["month"]             = "";
+    fields["sectorName"]        = "";
+    fields["activity"]          = "";
+    fields["physicalUnit"]      = "";
+    fields["unitCost"]          = "";
+    fields["totalBudget"]       = "";
+    fields["noOfBeneficiaries"] = "";
+    fields["LHWRF"]             = "";
+    fields["NABARD"]            = "";
+    fields["bankLoan"]          = "";
+    fields["govtscheme"]        = "";
+    fields["directCC"]          = "";
+    fields["indirectCC"]        = "";
+    fields["other"]             = "";
+    fields["remark"]            = "";
+   
+  
+      // console.log('centreDetail',centreDetail);
+      axios.post('/api/annualPlans',annualPlanValues)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+        this.getData(this.state.startRange, this.state.limitRange);
+        
+      })
+      .catch(function(error){
+        
+      });
+     this.setState({
+        "year"                :"",
+        "month"                :"",
+        "center"              :"",
+        "sector_id"           :"",
+        "sectorName"          :"",
+        "activity"            :"",
+        "physicalUnit"        :"",
+        "unitCost"            :"",
+        "totalBudget"         :"",
+        "noOfBeneficiaries"   :"",
+        "LHWRF"               :"",
+        "NABARD"              :"",
+        "bankLoan"            :"",
+        "govtscheme"          :"",
+        "directCC"            :"",
+        "indirectCC"          :"",
+        "other"               :"",
+        "remark"              :"",
+        "fields":fields
+      });
+    }
+  }
 
     getValue(event){
        const datatype = event.target.getAttribute('value');
@@ -289,7 +441,7 @@ class AnnualPlan extends Component{
                            <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
-                                <option className="" >All Months</option>
+                                <option className="" >Annually</option>
                                {this.state.Months.map((data,index) =>
                                 <option key={index}  className="" >{data}</option>
                                 )}
@@ -300,12 +452,19 @@ class AnnualPlan extends Component{
                           </div>
                           <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                              <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                               <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
                                 <option className="hidden" >-- Select Year --</option>
-                               {this.state.Year.map((data,index) =>
-                                <option key={index}  className="" >{data}</option>
-                                )}
-                                
+                               {this.state.month  ? (this.state.month !== "Annually" ?
+                                  this.state.Year.map((data,index) =>
+                                  <option key={index}  className="" >{data}</option>
+                                  ):
+                                  this.state.YearPair.map((data,index) =>
+                                  <option key={index}  className="" >{data}</option>
+                                  ) ) : 
+                                  this.state.YearPair.map((data,index) =>
+                                  <option key={index}  className="" >{data}</option>
+                                  )
+                                }
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.year}</div>
@@ -313,23 +472,30 @@ class AnnualPlan extends Component{
                        
                         </div> 
                       </div><br/>     
-                    <div className="AnnualHeadCont">
-                      <div className="annualHead"><h5>{this.state.month !== "All Months" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
+                     <div className="AnnualHeadCont">
+                      <div className="annualHead">
+                      {
+                        this.state.month=="--Quarter 1--"
+                          ?
+                            <h5>Quarterly Plan for April May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
+                          :
+                            <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+(this.state.year ? this.state.year :"" ) : null}</h5> 
+                        }
                       </div>
                     </div>
-                    <div className="row">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >  
-                        <ReactTable 
-                          data            = {data}
-                          columns         = {columns}
-                          sortable        = {true}
-                          defaultPageSiz  = {5}
-                          minRows         = {3} 
-                          className       = {"-striped -highlight"}
-                          showPagination  = {true}
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
+                      <div className="row">  
+                       <IAssureTable 
+                          tableHeading={this.state.tableHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          dataCount={this.state.dataCount}
+                          // tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          tableObjects={this.state.tableObjects}
+
                         />
-                      </div> 
-                    </div>
+                      </div>
+                    </div> 
                   </form>
                 </div>
               </div>

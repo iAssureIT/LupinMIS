@@ -7,6 +7,12 @@
 	padding-top: 5px;
 
 }
+.annualHead{
+	margin-left: 15px;
+}
+.annualHead h5{
+	font-weight: bold;
+}
 .form_heading4{
 	padding-left: 10px;
 	font-size: 10px;

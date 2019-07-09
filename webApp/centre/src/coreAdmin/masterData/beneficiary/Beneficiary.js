@@ -26,9 +26,11 @@ class Beneficiary extends Component{
         nameofbeneficaries  : "Name of Beneficiary",
         actions             : 'Action',
       },
-      "tableObjects"              : {
-        apiLink                   : '/api/beneficiaries/',
-        editUrl                   : '/beneficiaries/'
+
+      
+      " tableObjects"        : {
+        apiLink             : '/api/beneficiaries/',
+        editUrl             : '/beneficiary/',
       },
       "startRange"          : 0,
       "limitRange"          : 10,
@@ -96,6 +98,42 @@ class Beneficiary extends Component{
         });
         this.getData(this.state.startRange, this.state.limitRange);
       })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+    }
+  }
+  Update(event){
+    event.preventDefault();
+    var beneficaryArray=[];
+    var id2 = this.state.uID;
+    if (this.validateFormReq()) {
+    var beneficiaryValue= 
+    {
+      "familyID"             : this.refs.familyID.value,          
+      "beneficariesId"       : this.refs.beneficariesId.value,          
+      "nameofbeneficaries"   : this.refs.nameofbeneficaries.value,
+    };
+
+    let fields = {};
+    fields["familyID"]           = "";
+    fields["beneficariesId"]     = "";
+    fields["nameofbeneficaries"] = "";
+
+    this.setState({
+      "familyID"                :"",
+      "beneficariesId"          :"",
+      "nameofbeneficaries"      :"",   
+      fields:fields
+    });
+    axios.patch('/api/beneficiaries',beneficiaryValue)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+/*        this.getData(this.state.startRange, this.state.limitRange);
+*/      })
       .catch(function(error){
         console.log("error = ",error);
       });
@@ -189,9 +227,7 @@ class Beneficiary extends Component{
         console.log('error', error);
     });
   }
-
- 
-
+  
   render() {
     return (
       <div className="container-fluid">
@@ -249,7 +285,7 @@ class Beneficiary extends Component{
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       {
                         this.state.editId ? 
-                        <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Update </button>
+                        <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
                         :
                         <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
                       }

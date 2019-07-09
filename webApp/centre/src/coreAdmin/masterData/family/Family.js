@@ -25,6 +25,7 @@ class Family extends Component{
       "caste"                :"",
       "category"             :"",
       "LHWRFCentre"          :"",
+      "centerArray"          : [],
       "state"                :"Maharastra",
       "district"             :"",
       "block"                :"",
@@ -60,28 +61,19 @@ class Family extends Component{
         contactNumber               : "Contact Number",
         uidNumber                   : "UID Number",
         // caste                       : "Caste",
-        familyCategory              : "familyCategory",
-        center                      : "LHWRFCentre",
+        familyCategory              : "Family Category",
+        center                      : "LHWRF Centre",
         state                       : "State",
         dist                        : "District",
         block                       : "Block",
         village                     : "Village",
         actions                     : 'Action',
 
-
-        // block: "Pimpari"
-        // center: "Pune"
-        // createdAt: "2019-07-08T05:19:36.442Z"
-        // dist: "Pune"
-        // familyCategory: "Open"
-        // familyHead: "Motiram Lewade"
-        // familyID: "L0001"
-        // state: "Maharastra"
-        // uidNumber: "989000109909"
-        // village: "Shivne"
       },  
-      "tableObjects"              : {
-        apiLink                   : '/api/family/'
+     
+      " tableObjects"        : {
+        apiLink             : '/api/family/',
+        editUrl             : '/family/',
       },
       "startRange"                  : 0,
       "limitRange"                  : 10,
@@ -329,7 +321,7 @@ class Family extends Component{
    
   
       // console.log('centreDetail',centreDetail);
-      axios.post('/api/families',familyValues)
+      axios.patch('/api/families',familyValues)
       .then(function(response){
         swal({
           title : response.data,
@@ -385,6 +377,25 @@ class Family extends Component{
     }
   }
   componentDidMount(){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      var centerArray = [];
+      for(var i=0;i<response.data.length;i++)
+      {
+       centerArray .push(response.data[i].centerName);
+      }
+      console.log("centerArray",centerArray);
+      this.setState({
+        "centerArray" : centerArray,
+      },()=>{
+        
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+
     this.getData(this.state.startRange, this.state.limitRange)
   }
   render() {
@@ -455,9 +466,10 @@ class Family extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="caste" >
                             <select className="custom-select form-control inputBox" ref="caste" name="caste" value={this.state.caste} onChange={this.handleChange.bind(this)}>
                               <option  className="hidden" >-- Select --</option>
-                              <option>Maratha</option>
-                              <option>Pasrsi</option>
-                              <option>Muslim</option>
+                              <option>SC</option>
+                              <option>NT</option>
+                              <option>Open</option>
+                              <option>Other</option>
                               
                             </select>
                           </div>
@@ -486,9 +498,9 @@ class Family extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRFCentre" >
                             <select className="custom-select form-control inputBox"ref="LHWRFCentre" name="LHWRFCentre" value={this.state.LHWRFCentre} onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >-- Select --</option>
-                              <option>Pune</option>
-                              <option>Pune</option>
-                              
+                                 {this.state.centerArray.map((data,index) =>
+                                <option key={index}  className="" >{data}</option>
+                                )}
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.LHWRFCentre}</div>
