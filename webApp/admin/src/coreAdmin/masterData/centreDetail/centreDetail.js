@@ -20,7 +20,7 @@ class centreDetail extends Component{
     this.state = {
       "typeOfCentre"             :"",
       "nameOfCentre"             :"",
-      "address"                  :"",
+      "address"                  :"Pimpri Chichwad",
       "state"                    :"",
       "district"                 :"",
       "pincode"                  :"",
@@ -232,7 +232,7 @@ class centreDetail extends Component{
   }
   Update(event){
   event.preventDefault();
-   if(this.refs.address.value == ""){
+   if(this.refs.address.value == "" || this.refs.typeOfCentre.value == "" || this.refs.nameOfCentre.value == "" || this.refs.state.value == "" || this.refs.district.value == "" || this.refs.pincode.value == "" || this.refs.centreInchargeName.value == "" || this.refs.centreInchargeEmail.value == "" || this.refs.centreInchargeContact.value == "" || this.refs.MISCoordinatorName.value == "" || this.refs.MISCoordinatorContact.value == "" || this.refs.MISCoordinatorEmail == ""){
       console.log('state validation');
       if (this.validateForm() && this.validateFormReq()){
         console.log('abc');
@@ -383,7 +383,12 @@ class centreDetail extends Component{
       */
 
     // }
-    // this.props.history.push('/center-details');
+    this.props.history.push('/centre-detail');
+    this.setState({
+      editId :"",
+    })
+    window.location.reload(true);
+
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -712,6 +717,7 @@ class centreDetail extends Component{
     })
   }
   render() {
+    console.log("editID",this.state.editId);
     const dataM = [{
         srno: 1,
         FamilyID: "Maharashtra",
