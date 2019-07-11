@@ -84,11 +84,15 @@ class SectorMapping extends Component{
     var id2 = this.state.uID;
     if (this.validateFormReq() && this.validateForm()) {
     var mappingValues= 
-    {
+    {     
       "goal"   : this.refs.goalName.value,          
       "type"   : this.refs.goalType.value,          
-     /* "sector"     : this.refs.sector.value,          
-      "activity"   : this.refs.activity.value,       */   
+      "sector" : [{
+            "sector_id"            :this.refs.sector.value.split('|')[1],
+            "sectorName"           :this.refs.sectorName.value.split('|')[0],
+            "activity_id"          :this.refs.activity.value.split('|')[1],
+            "ActivityName"         :this.refs.ActivityName.value.split('|')[0],
+          }],                   
     };
     let fields = {};
     fields["goalName"]  = "";
@@ -102,8 +106,8 @@ class SectorMapping extends Component{
           title : response.data,
           text  : response.data
         });
-/*        this.getData(this.state.startRange, this.state.limitRange);
-*/      })
+        this.getData(this.state.startRange, this.state.limitRange);
+      })
       .catch(function(error){
         console.log("error = ",error);
       });
@@ -125,11 +129,16 @@ class SectorMapping extends Component{
     }else{
     var id2 = this.state.uID;
     var mappingValues= 
-    {
-      "goal"   : this.refs.goalName.value,          
-      "type"   : this.refs.goalType.value,          
-     /* "sector"     : this.refs.sector.value,          
-      "activity"   : this.refs.activity.value,       */   
+    {     
+      "sectorMapping_ID"    :this.refs.goalName.value.split('|')[1],
+      "goal"                :this.refs.goalName.value.split('|')[0],
+      "type"                : this.refs.goalType.value,          
+      "sector" : [{
+            "sector_id"            :this.refs.sector.value.split('|')[1],
+            "sectorName"           :this.refs.sectorName.value.split('|')[0],
+            "activity_id"          :this.refs.activity.value.split('|')[1],
+            "ActivityName"         :this.refs.ActivityName.value.split('|')[0],
+          }],                   
     };
     let fields = {};
     fields["goalName"]  = "";
@@ -137,14 +146,14 @@ class SectorMapping extends Component{
     fields["sector"]    = "";
     fields["activity"]  = "";
     
-    axios.patch('/api/sectorMappings',mappingValues)
+    axios.patch('/api/sectorMappings/update',mappingValues)
       .then(function(response){
         swal({
           title : response.data,
           text  : response.data
         });
-/*        this.getData(this.state.startRange, this.state.limitRange);
-*/      })
+        this.getData(this.state.startRange, this.state.limitRange);
+      })
       .catch(function(error){
         console.log("error = ",error);
       });
@@ -257,6 +266,38 @@ class SectorMapping extends Component{
   componentWillUnmount(){
     $("script[src='/js/adminLte.js']").remove();
     $("link[href='/css/dashboard.css']").remove();
+  }
+  selectActivity(event){
+    var selectedActivity = this.state.selectedActivity;
+
+    var value = event.target.checked;
+    var id    = event.target.id;
+
+    this.setState({
+      [id] : value
+    },()=>{
+      // console.log('village', this.state[id], id);
+      if(this.state[id] == true){
+        selectedActivity.push({
+          district  : this.refs.districtCovered.value,
+          block     : this.refs.blockCovered.value,
+          village   : id
+        });
+        this.setState({
+          selectedActivity : selectedActivity
+        });
+        console.log('selectedActivity', selectedActivity);
+      }else{
+        var index = selectedActivity.findIndex(v => v.village === id);
+        // console.log('index', index);
+        selectedActivity.splice(selectedActivity.findIndex(v => v.village === id), 1);
+        this.setState({
+          selectedActivity : selectedActivity
+        },()=>{
+          // console.log('selectedActivity',this.state.selectedActivity);
+        });
+      }
+    });      
   }
 
 

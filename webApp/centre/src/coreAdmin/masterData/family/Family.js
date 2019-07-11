@@ -202,7 +202,8 @@ class Family extends Component{
       event.preventDefault();
       var familyValues= 
       {
-          familyID             :this.refs.familyID.value, 
+          families_ID          :this.refs.familyID.value.split('|')[1], 
+          familyID             :this.refs.familyID.value.split('|')[0],
           familyHead           :this.refs.nameOfFamilyHead.value, 
           contactNumber        :this.refs.contact.value, 
           uidNumber            :this.refs.uID.value, 
@@ -226,7 +227,7 @@ class Family extends Component{
       fields["block"]             = "";
       fields["village"]           = "";
 
-      axios.post('/api/families',familyValues)
+      axios.patch('/api/families/update',familyValues)
         .then(function(response){
           swal({
             title : response.data,

@@ -110,6 +110,7 @@ class Beneficiary extends Component{
     if (this.validateFormReq()) {
     var beneficiaryValue= 
     {
+      "beneficiary_ID"       : this.state.editId,          
       "familyID"             : this.refs.familyID.value,          
       "beneficariesId"       : this.refs.beneficariesId.value,          
       "nameofbeneficaries"   : this.refs.nameofbeneficaries.value,
@@ -126,7 +127,7 @@ class Beneficiary extends Component{
       "nameofbeneficaries"      :"",   
       fields:fields
     });
-    axios.patch('/api/beneficiaries',beneficiaryValue)
+    axios.patch('/api/beneficiaries/update',beneficiaryValue)
       .then(function(response){
         swal({
           title : response.data,
@@ -253,8 +254,11 @@ class Beneficiary extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
                             <select className="custom-select form-control inputBox" value={this.state.familyID} ref="familyID" name="familyID" onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >-- Select --</option>
-                              <option>PL00001</option>
-                              <option>PB09892</option>
+                              <option value={"PL00001"+"|"+"id"}>PL00001</option>
+                              <option value={"PL00002"+"|"+"id"}>PL00002</option>
+                              <option value={"PL00003"+"|"+"id"}>PL00003</option>
+                              <option value={"PL00004"+"|"+"id"}>PL00004</option>
+                              <option value={"PL00005"+"|"+"id"}>PL00005</option>
                               
                             </select>
                           </div>

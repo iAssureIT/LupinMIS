@@ -64,12 +64,13 @@ class centerDetail extends Component{
         type                      : "Type of Center",
         centerName                : "Name of Center",
         address                   : "Address",
-        centerInchargename        : "Name",
-        centerInchargemobile      : "Contact",
-        centerInchargeemail       : "Email",
-        misCoordinatorname        : "Name",
-        misCoordinatormobile      : "Contact",
-        misCoordinatoremail       : "Email",
+        centerInchargeName        : "Name",
+        centerInchargeMobile      : "Contact",
+        centerInchargeEmail       : "Email",
+        misCoordinatorName        : "Name",
+        misCoordinatorMobile      : "Contact",
+        misCoordinatorEmail       : "Email",
+        // noOfVillages              : "No of Villages",
         actions                   : 'Action',
       },
       "tableObjects"              : {
@@ -84,6 +85,7 @@ class centerDetail extends Component{
     }
     this.changeTab = this.changeTab.bind(this); 
   }
+
   handleChange(event){
     event.preventDefault();
     this.setState({
@@ -169,13 +171,14 @@ class centerDetail extends Component{
         "districtsCovered"          : districtsCovered,
         "blocksCovered"             : blocksCovered,
         "villagesCovered"           : this.state.selectedVillages,
-        "centerInchargename"        : this.refs.centerInchargeName.value,
-        "centerInchargemobile"      : this.refs.centerInchargeContact.value,
-        "centerInchargeemail"       : this.refs.centerInchargeEmail.value,
-        "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
-        "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
-        "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
+        "centerInchargeName"        : this.refs.centerInchargeName.value,
+        "centerInchargeMobile"      : this.refs.centerInchargeContact.value,
+        "centerInchargeEmail"       : this.refs.centerInchargeEmail.value,
+        "misCoordinatorName"        : this.refs.MISCoordinatorName.value,
+        "misCoordinatorMobile"      : this.refs.MISCoordinatorContact.value,
+        "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
       };
+      
       // console.log("centerDetail",centerDetail);
       let fields = {};
       fields["typeOfCenter"] = "";
@@ -250,25 +253,26 @@ class centerDetail extends Component{
 
         var id2 = this.state.uID;
         var centerDetail = {
-          "type"                      : this.refs.typeOfCenter.value,
+          "center_Id"                 : this.state.editId,
           "centerName"                : this.refs.nameOfCenter.value,
+          "type"                      : this.refs.typeOfCenter.value,
           "address"                   : {
-            "addressLine"             : this.refs.address.value,
-            "state"                   : this.refs.state.value,
-            "district"                : this.refs.district.value,
-            "pincode"                 : this.refs.pincode.value,
+              "addressLine"           : this.refs.address.value,
+              "state"                 : this.refs.state.value,
+              "district"              : this.refs.district.value,
+              "pincode"               : this.refs.pincode.value,
           },
           "districtsCovered"          : districtsCovered,
           "blocksCovered"             : blocksCovered,
           "villagesCovered"           : this.state.selectedVillages,
-          "centerInchargename"        : this.refs.centerInchargeName.value,
-          "centerInchargemobile"      : this.refs.centerInchargeContact.value,
-          "centerInchargeemail"       : this.refs.centerInchargeEmail.value,
-          "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
-          "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
-          "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
+          "centerInchargeName"        : this.refs.centerInchargeName.value,
+          "centerInchargeMobile"      : this.refs.centerInchargeContact.value,
+          "centerInchargeEmail"       : this.refs.centerInchargeEmail.value,
+          "misCoordinatorName"        : this.refs.MISCoordinatorName.value,
+          "misCoordinatorMobile"      : this.refs.MISCoordinatorContact.value,
+          "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
         };
-        
+      
         let fields = {};
         fields["typeOfCenter"] = "";
         fields["nameOfCenter"] = "";
@@ -444,12 +448,12 @@ class centerDetail extends Component{
           "type": a.type,
           "centerName": a.centerName,
           "address" : a.address.state,
-          "centerInchargename": a.centerInchargename,
-          "centerInchargemobile": a.centerInchargemobile,
-          "centerInchargeemail": a.centerInchargeemail,
-          "misCoordinatorname": a.misCoordinatorname,
-          "misCoordinatormobile": a.misCoordinatormobile,
-          "misCoordinatoremail": a.misCoordinatoremail
+          "centerInchargeName": a.centerInchargeName,
+          "centerInchargeMobile": a.centerInchargeMobile,
+          "centerInchargeEmail": a.centerInchargeEmail,
+          "misCoordinatorName": a.misCoordinatorName,
+          "misCoordinatorMobile": a.misCoordinatorMobile,
+          "misCoordinatorEmail": a.misCoordinatorEmail
         }
       })
       this.setState({
@@ -488,12 +492,12 @@ class centerDetail extends Component{
         "state"                    : editData.address.state,
         "district"                 : editData.address.district,
         "pincode"                  : editData.address.pincode,
-        "centerInchargeName"       : editData.centerInchargename,
-        "centerInchargeContact"    : editData.centerInchargemobile,
-        "centerInchargeEmail"      : editData.centerInchargeemail,
-        "MISCoordinatorName"       : editData.misCoordinatorname,
-        "MISCoordinatorContact"    : editData.misCoordinatormobile,
-        "MISCoordinatorEmail"      : editData.misCoordinatoremail,
+        "centerInchargeName"       : editData.centerInchargeName,
+        "centerInchargeContact"    : editData.centerInchargeMobile,
+        "centerInchargeEmail"      : editData.centerInchargeEmail,
+        "MISCoordinatorName"       : editData.misCoordinatorName,
+        "MISCoordinatorContact"    : editData.misCoordinatorMobile,
+        "MISCoordinatorEmail"      : editData.misCoordinatorEmail,
         "selectedVillages"         : editData.villagesCovered,
         "districtCovered"          :"",
         "blockCovered"             :"",

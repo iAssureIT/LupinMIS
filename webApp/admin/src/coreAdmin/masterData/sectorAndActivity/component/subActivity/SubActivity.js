@@ -17,7 +17,7 @@ class SubActivity extends Component{
    
     this.state = {
       "sector"              :"",
-      "activity"            :"",
+      "activityName"            :"",
       "subActivityName"         :"",
       "unit"                :"",
       "familyUpgradation"   :"No",
@@ -27,7 +27,7 @@ class SubActivity extends Component{
       errors                : {},
       "tableHeading"        : {
         sector              : "Name of Sector",
-        activity            : "Name of Activity",
+        activityName            : "Name of Activity",
         number              : "Name of Sub-Activity",
         unit                : "Unit", //to be Changes
         familyUpgradation   : "Family Upgradation",
@@ -47,7 +47,7 @@ class SubActivity extends Component{
     event.preventDefault();
     this.setState({
       "sector"               :this.refs.sector.value,
-      "activity"         :this.refs.activity.value,
+      "activityName"         :this.refs.activityName.value,
       "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.refs.unit.value,
     });
@@ -92,21 +92,21 @@ class SubActivity extends Component{
     var subActivityValues = {
       "sector_id"            :this.refs.sector.value.split('|')[1],
       "sector"               :this.refs.sector.value.split('|')[0],
-      "activity_id"          :this.refs.activity.value.split('|')[1],
-      "activity"             :this.refs.activity.value.split('|')[0],
-      "subActivityName"          :this.refs.subActivityName.value,
+      "activity_id"          :this.refs.activityName.value.split('|')[1],
+      "activityName"         :this.refs.activityName.value.split('|')[0],
+      "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.state.unit,
       "familyUpgradation"    :this.state.familyUpgradation,
       "user_id"              :this.state.user_id,
     };
     let fields                = {};
     fields["sector"]          = "";
-    fields["activity"]    = "";
+    fields["activityName"]    = "";
     fields["subActivityName"] = "";
     fields["unit"]            = "";
     this.setState({
       "sector"                :"",
-      "activity"          :"",
+      "activityName"          :"",
       "subActivityName"       :"",      
       "unit"                  :"",
       fields                  :fields
@@ -126,7 +126,7 @@ class SubActivity extends Component{
   }
   updateSubActivity(event){
     event.preventDefault();
-    if(this.refs.sector.value =="" || this.refs.activity.value=="" || this.refs.subActivityName.value =="" || this.state.unit =="")
+    if(this.refs.sector.value =="" || this.refs.activityName.value=="" || this.refs.subActivityName.value =="" || this.state.unit =="")
     {
       console.log('state validation');
       if (this.validateFormReq() && this.validateForm()) {
@@ -135,8 +135,8 @@ class SubActivity extends Component{
     var subActivityValues = {
       "sector_id"            :this.refs.sector.value.split('|')[1],
       "sector"               :this.refs.sector.value.split('|')[0],
-      "activity_id"          :this.refs.activity.value.split('|')[1],
-      "activity"             :this.refs.activity.value.split('|')[0],
+      "activity_id"          :this.refs.activityName.value.split('|')[1],
+      "activityName"             :this.refs.activityName.value.split('|')[0],
       "subactivity_id"       :this.refs.subActivityName.value.split('|')[1],
       "subActivityName"      :this.refs.subActivityName.value.split('|')[0],
       "unit"                 :this.state.unit,
@@ -145,12 +145,12 @@ class SubActivity extends Component{
     };
     let fields                = {};
     fields["sector"]          = "";
-    fields["activity"]    = "";
+    fields["activityName"]    = "";
     fields["subActivityName"] = "";
     fields["unit"]            = "";
     this.setState({
       "sector"                :"",
-      "activity"          :"",
+      "activityName"          :"",
       "subActivityName"       :"",      
       "unit"                  :"",
       fields                  :fields
@@ -181,9 +181,9 @@ class SubActivity extends Component{
         formIsValid = false;
         errors["sector"] = "This field is required.";
       }     
-      if (!fields["activity"]) {
+      if (!fields["activityName"]) {
         formIsValid = false;
-        errors["activity"] = "This field is required.";
+        errors["activityName"] = "This field is required.";
       }
       if (!fields["subActivityName"]) {
         formIsValid = false;
@@ -234,12 +234,12 @@ class SubActivity extends Component{
       url: '/api/sectors/list',
     }).then((response)=> {
       var tableData = _.flatten(response.data.map((a, index)=>{
-        return a.activity.map((b, i)=>{
+        return a.activityName.map((b, i)=>{
           return b.subActivityName.map((c, i)=>{
             return {
               _id               : a._id+'/'+b._id+'/'+c._id,
               sector            : a.sector,
-              activity          : b.activity, 
+              activityName          : b.activityName, 
               number            : c.subActivityName,
               unit              : c.unit,
               familyUpgradation : c.familyUpgradation
@@ -284,7 +284,7 @@ class SubActivity extends Component{
       url: '/api/sectors/'+sector_id,
     }).then((response)=> {
         this.setState({
-          availableActivity : response.data[0].activity
+          availableActivity : response.data[0].activityName
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -301,11 +301,11 @@ class SubActivity extends Component{
       }).then((response)=> {
         var editData = response.data[0];
         // console.log('editData', editData);
-        // console.log('subActivityName', _.first(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''})));
+        // console.log('subActivityName', _.first(editData.activityName.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''})));
         this.setState({
           "sector"                : editData.sector+'|'+editData._id,
-          "activity"          :_.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activity : ''}))+'|'+activity_id,
-          "subActivityName"       : _.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''}))
+          "activityName"          :_.first(editData.activityName.map((a, i)=>{return a._id == activity_id ? a.activityName : ''}))+'|'+activity_id,
+          "subActivityName"       : _.flatten(editData.activityName.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''}))
         },()=>{
 
         });
@@ -346,7 +346,7 @@ class SubActivity extends Component{
   componentWillUnmount(){
     this.setState({
       "sector"              :"",
-      "activity"        :"",
+      "activityName"        :"",
       "subActivityName"     :"",
       "unit"                : 0, 
       "familyUpgradation"   :"No",
@@ -386,15 +386,15 @@ class SubActivity extends Component{
                     </div>
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Select Activity Name</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
-                        <select className="custom-select form-control inputBox"ref="activity" name="activity" value={this.state.activity} onChange={this.handleChange.bind(this)} >
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
+                        <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.handleChange.bind(this)} >
                           <option  className="hidden" >-- Select Activity--</option>
                           {
                           this.state.availableActivity && this.state.availableActivity.length >0 ?
                           this.state.availableActivity.map((data, index)=>{
-                            if(data.activity ){
+                            if(data.activityName ){
                               return(
-                                <option key={data._id} value={data.activity+'|'+data._id}>{data.activity}</option>
+                                <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
                               );
                             }
                           })
@@ -403,7 +403,7 @@ class SubActivity extends Component{
                         }
                         </select>
                       </div>
-                      <div className="errorMsg">{this.state.errors.activity}</div>
+                      <div className="errorMsg">{this.state.errors.activityName}</div>
                     </div>
 
                     <div className=" col-md-4 col-sm-6 col-xs-12 ">

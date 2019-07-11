@@ -80,7 +80,7 @@ export default class Leftsidebar extends Component{
                   </a>
                   <ul className="collapse list-unstyled" id="MasterData">
                     <li>
-                        <a href="/centre-detail">
+                        <a href="/center-detail">
                           <i className="fa fa-circle-o" /> 
                           <span className="sidebarMenuSubText">Center Details</span>
                         </a>
