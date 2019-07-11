@@ -28,7 +28,6 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		}
-		console.log('tableObjects', this.props.tableObjects);
 		this.delete = this.delete.bind(this);
 	}
 	componentDidMount() {
@@ -476,26 +475,37 @@ class IAssureTable extends Component {
 		// var z = 2;
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
-	       		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding">
-					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding">Data Per Page</label>
-					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-						<select onChange={this.setLimit.bind(this)} value={this.state.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12  noPadding  form-control">
-							<option value="Not Selected" disabled>Select Limit</option>
-							<option value={10}>10</option>
-							<option value={25}>25</option>
-							<option value={50}>50</option>
-							<option value={100}>100</option>
-							<option value={500}>500</option>
-						</select>
+	       	{
+	       		this.state.tableObjects.paginationApply == true ?
+		       		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding">
+						<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding">Data Per Page</label>
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+							<select onChange={this.setLimit.bind(this)} value={this.state.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12  noPadding  form-control">
+								<option value="Not Selected" disabled>Select Limit</option>
+								<option value={10}>10</option>
+								<option value={25}>25</option>
+								<option value={50}>50</option>
+								<option value={100}>100</option>
+								<option value={500}>500</option>
+							</select>
+						</div>
 					</div>
-				</div>           
-				<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding">
-	        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search</label>
-	        		<div className="input-group">
-				        <input type="text" onChange={this.tableSearch.bind(this)} className="NOpadding-right form-control" ref="tableSearch" id="tableSearch" name="tableSearch"/>
-				    	<span className="input-group-addon"><i className="fa fa-search"></i></span>
-				    </div>
-	        	</div>		
+				:
+				null        
+	       	}
+	       	{
+	       		this.state.tableObjects.searchApply == true ? 
+		       		<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding pull-right">
+		        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search</label>
+		        		<div className="input-group">
+					        <input type="text" onChange={this.tableSearch.bind(this)} className="NOpadding-right form-control" ref="tableSearch" id="tableSearch" name="tableSearch"/>
+					    	<span className="input-group-addon"><i className="fa fa-search"></i></span>
+					    </div>
+		        	</div>	
+	        	:
+	        	null
+	       	}
+					
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop17">			            	        
 	                <div className="table-responsive">
 						<table className="table iAssureITtable-bordered table-striped table-hover">
@@ -611,44 +621,48 @@ class IAssureTable extends Component {
 								}
 	                    </tbody>
 	                    </table>
-	                    {this.state.tableData && this.state.tableData.length > 0 ?
-	                    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paginationAdminWrap">
-		                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-			                    	{ 
-				                    		this.state.limitRange >=  this.state.dataLength?		                    		
+	                    {
+	                    	this.state.tableObjects.paginationApply == true ?
+		                    	this.state.tableData && this.state.tableData.length > 0 ?
+		                    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paginationAdminWrap">
+			                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+				                    	{ 
+					                    		this.state.limitRange >=  this.state.dataLength?		                    		
+						                    	null
+						                    	:
+				                    			<div className="btn btn-primary" onClick={this.showFirstTweentyButtons.bind(this)} title="Fast Backward"><i className="fa fa-fast-backward"></i></div>
+				                    	}
+			                    	</div>
+			                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+				                    	{ 
+				                    		this.state.limitRange >=  this.state.dataLength?                  		
 					                    	null
 					                    	:
-			                    			<div className="btn btn-primary" onClick={this.showFirstTweentyButtons.bind(this)} title="Fast Backward"><i className="fa fa-fast-backward"></i></div>
-			                    	}
-		                    	</div>
-		                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-			                    	{ 
-			                    		this.state.limitRange >=  this.state.dataLength?                  		
-				                    	null
-				                    	:
-				                    	<div className="btn btn-primary" onClick={this.showPreviousPaginationButtons.bind(this)} title="Previous"><i className="fa fa-caret-left"></i></div>
-				                    }
-			                    </div>
-								<ol className="questionNumDiv paginationAdminOES col-lg-8 col-md-8 col-sm-8 col-xs-8 mainExamMinDeviceNoPad">										 
-									{this.state.paginationArray}
-								</ol>
-								<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-									{
-										this.state.paginationArray.length < 20 ?
-										null
-										:
-										<div className="btn btn-primary" onClick={this.showNextPaginationButtons.bind(this)} title="Next"><i className="fa fa-caret-right"></i></div>
-									}
+					                    	<div className="btn btn-primary" onClick={this.showPreviousPaginationButtons.bind(this)} title="Previous"><i className="fa fa-caret-left"></i></div>
+					                    }
+				                    </div>
+									<ol className="questionNumDiv paginationAdminOES col-lg-8 col-md-8 col-sm-8 col-xs-8 mainExamMinDeviceNoPad">										 
+										{this.state.paginationArray}
+									</ol>
+									<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+										{
+											this.state.paginationArray.length < 20 ?
+											null
+											:
+											<div className="btn btn-primary" onClick={this.showNextPaginationButtons.bind(this)} title="Next"><i className="fa fa-caret-right"></i></div>
+										}
+									</div>
+									<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+										{
+											this.state.paginationArray.length < 20 ?
+											null
+											:
+											<div className="btn btn-primary" onClick={this.showLastTweentyButtons.bind(this)} title="Fast Forward"><i className="fa fa-fast-forward"></i></div>
+										}
+									</div>							
 								</div>
-								<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-									{
-										this.state.paginationArray.length < 20 ?
-										null
-										:
-										<div className="btn btn-primary" onClick={this.showLastTweentyButtons.bind(this)} title="Fast Forward"><i className="fa fa-fast-forward"></i></div>
-									}
-								</div>							
-							</div>
+								:
+								null
 							:
 							null
 	                    }
