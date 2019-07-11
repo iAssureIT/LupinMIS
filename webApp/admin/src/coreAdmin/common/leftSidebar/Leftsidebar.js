@@ -48,30 +48,31 @@ export default class Leftsidebar extends Component{
                     Plan Details
                   </a>
                 </li>
-                <li className="sidebarMenuText">
+                {/*<li className="sidebarMenuText">
                   <a href="/plan" >
                     <i className="fa fa-book" />
                     Reports
                   </a>
-                </li>
-                {/*<li className="sidebarMenuText">
-                  <a href="#Leave" data-toggle="collapse" aria-expanded="false">
+                </li>*/}
+                <li className="sidebarMenuText">
+                  <a href="#Plan" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-calendar" />
-                    Plan Details
+                    Reports
                   </a>
-                  <ul className="collapse list-unstyled" id="Leave">
+                  <ul className="collapse list-unstyled" id="Plan">
                       <li>
-                        <a href="/annualPlan">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Annual Plan</span>
+                        <a href="/report1">
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Activity wise Annual Completion Report</span>
                         </a>
                       </li>
                       <li>
-                        <a href="/monthlyPlan">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Monthly Plan</span>
+                        <a href="/report2">
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Sector wise Annual Completion Report Summary</span>
                         </a>
-                      </li>                    
+                      </li>
+                                 
                   </ul>
-                </li> */}
+                </li>
                 <li className="sidebarMenuText">
                   <a href="#MasterData" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-database" />
@@ -101,12 +102,24 @@ export default class Leftsidebar extends Component{
                 </li> 
                 <li className="sidebarMenuText">
                   <a href="/" >
-                    <i className="fa fa-th" />
-                    Center List
+                    <i className="fa fa-list" />
+                    Case Studies
+                  </a>
+                </li>
+                <li className="sidebarMenuText">
+                  <a href="/" >
+                    <i className="fa fa-hand-o-right " />
+                    Highlights
+                  </a>
+                </li>
+                <li className="sidebarMenuText">
+                  <a href="/" >
+                    <i className="fa fa-map-marker" />
+                    Training Center
                   </a>
                 </li>
                 
-                <li className="sidebarMenuText">
+               {/* <li className="sidebarMenuText">
                   <a href="#Access" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-user-circle" />
                     Access Management
@@ -123,7 +136,7 @@ export default class Leftsidebar extends Component{
                       </a>
                     </li>    
                   </ul>
-                </li>                    
+                </li>  */}                  
               </ul>
             </nav>
           </div>

@@ -24,14 +24,15 @@ class SectorMapping extends Component{
       fields          : {},
       errors          : {},
       "tableHeading"  : {
-        type                : "Type of Goal/Project",
-        goal                : "Goal /Project Name",
-        sector              : "Sector",
-        activity            : "Activity", //to be Changes
-        actions             : 'Action',
+        type          : "Type of Goal/Project",
+        goal          : "Goal /Project Name",
+        sector        : "Sector",
+        activity      : "Activity", //to be Changes
+        actions       : 'Action',
       },
-      "tableObjects"              : {
-        apiLink                   : '/api/sectorMappings/'
+      "tableObjects"  : {
+        apiLink       : '/api/sectorMappings/',
+        editUrl       : '/sector-mapping/'
       },
      
       "startRange"    : 0,
@@ -55,7 +56,13 @@ class SectorMapping extends Component{
     this.setState({
       fields
     });
- 
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
   }
 
   isTextKey(evt)
@@ -75,7 +82,7 @@ class SectorMapping extends Component{
     event.preventDefault();
     var sectorMappingArray=[];
     var id2 = this.state.uID;
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()) {
     var mappingValues= 
     {
       "goal"   : this.refs.goalName.value,          
@@ -90,6 +97,47 @@ class SectorMapping extends Component{
     fields["activity"]  = "";
     
     axios.post('/api/sectorMappings',mappingValues)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+/*        this.getData(this.state.startRange, this.state.limitRange);
+*/      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+      this.setState({
+        "goalName"  :"",
+        "goalType"  :"",
+        "sector"    :"",
+        "activity"  :"",
+        fields      :fields
+      });
+    }  
+  }
+  Update(event){
+    event.preventDefault();
+    if(this.refs.goalName.value == "" || this.refs.goalType.value =="")
+   {
+      if (this.validateFormReq() && this.validateForm()){
+      }
+    }else{
+    var id2 = this.state.uID;
+    var mappingValues= 
+    {
+      "goal"   : this.refs.goalName.value,          
+      "type"   : this.refs.goalType.value,          
+     /* "sector"     : this.refs.sector.value,          
+      "activity"   : this.refs.activity.value,       */   
+    };
+    let fields = {};
+    fields["goalName"]  = "";
+    fields["goalType"]  = "";
+    fields["sector"]    = "";
+    fields["activity"]  = "";
+    
+    axios.patch('/api/sectorMappings',mappingValues)
       .then(function(response){
         swal({
           title : response.data,
@@ -126,6 +174,17 @@ class SectorMapping extends Component{
       });
       return formIsValid;
   }
+  
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
 
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
@@ -153,6 +212,7 @@ class SectorMapping extends Component{
       var tableData = response.data.map((a, index)=>{return});
       this.setState({
         tableData : response.data,
+        editUrl   : this.props.match.params
       },()=>{
         
       });
@@ -573,7 +633,7 @@ class SectorMapping extends Component{
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       {
                         this.state.editId ? 
-                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Update </button>
+                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
                         :
                         <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Submit </button>
                       }

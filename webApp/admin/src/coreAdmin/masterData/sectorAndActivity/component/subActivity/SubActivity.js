@@ -17,11 +17,11 @@ class SubActivity extends Component{
    
     this.state = {
       "sector"              :"",
-      "activityName"        :"",
-      "subActivityName"     :"",
-      "unit"                : 0, //to be Changes
+      "activity"            :"",
+      "subActivityName"         :"",
+      "unit"                :"",
       "familyUpgradation"   :"No",
-      "uID"                 :"",
+      "user_id"             :"",
       "shown"               : true,
       fields                : {},
       errors                : {},
@@ -34,12 +34,12 @@ class SubActivity extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        apiLink             : '/api/sectors/',
+        apiLink             : '/api/sectors/subactivity/delete',
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
       "limitRange"          : 10,
-      "editId"              : props.match.params ? props.match.params.sectorId : ''
+      "editId"              : props.match.params ? props.match.params.sector_id : ''
     }
   }
 
@@ -47,7 +47,7 @@ class SubActivity extends Component{
     event.preventDefault();
     this.setState({
       "sector"               :this.refs.sector.value,
-      "activityName"         :this.refs.activityName.value,
+      "activity"         :this.refs.activity.value,
       "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.refs.unit.value,
     });
@@ -56,6 +56,13 @@ class SubActivity extends Component{
     this.setState({
       fields
     });
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
   }
   isTextKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -79,44 +86,92 @@ class SubActivity extends Component{
       return true;
     }
   }
-  SubmitSubActivity(event){
+  submitSubActivity(event){
     event.preventDefault();
-    var academicArray=[];
-    var id2 = this.state.uID;
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()) {
     var subActivityValues = {
-      sectorId             :this.refs.sector.value.split('|')[1],
-      sector               :this.refs.sector.value.split('|')[0],
-      activityId           :this.refs.activityName.value.split('|')[1],
-      activityName         :this.refs.activityName.value.split('|')[0],
-      subactivityName      :this.refs.subActivityName.value,
-      unit                 :this.state.unit,
-      familyUpgradation    :this.state.familyUpgradation,
+      "sector_id"            :this.refs.sector.value.split('|')[1],
+      "sector"               :this.refs.sector.value.split('|')[0],
+      "activity_id"          :this.refs.activity.value.split('|')[1],
+      "activity"             :this.refs.activity.value.split('|')[0],
+      "subActivityName"          :this.refs.subActivityName.value,
+      "unit"                 :this.state.unit,
+      "familyUpgradation"    :this.state.familyUpgradation,
+      "user_id"              :this.state.user_id,
     };
     let fields                = {};
     fields["sector"]          = "";
-    fields["activityName"]    = "";
+    fields["activity"]    = "";
     fields["subActivityName"] = "";
     fields["unit"]            = "";
     this.setState({
       "sector"                :"",
-      "activityName"          :"",
+      "activity"          :"",
       "subActivityName"       :"",      
       "unit"                  :"",
       fields                  :fields
     });
-    axios.put('/api/sectors',subActivityValues)
+    axios.patch('/api/sectors/subactivity',subActivityValues)
       .then(function(response){
         swal({
           title : response.data,
           text  : response.data
         });
-/*        this.getData(this.state.startRange, this.state.limitRange);
-*/      })
+        this.getData(this.state.startRange, this.state.limitRange);
+      })
       .catch(function(error){
         console.log("error = ",error);
       });
     }   
+  }
+  updateSubActivity(event){
+    event.preventDefault();
+    if(this.refs.sector.value =="" || this.refs.activity.value=="" || this.refs.subActivityName.value =="" || this.state.unit =="")
+    {
+      console.log('state validation');
+      if (this.validateFormReq() && this.validateForm()) {
+      }
+    }else{
+    var subActivityValues = {
+      "sector_id"            :this.refs.sector.value.split('|')[1],
+      "sector"               :this.refs.sector.value.split('|')[0],
+      "activity_id"          :this.refs.activity.value.split('|')[1],
+      "activity"             :this.refs.activity.value.split('|')[0],
+      "subactivity_id"       :this.refs.subActivityName.value.split('|')[1],
+      "subActivityName"      :this.refs.subActivityName.value.split('|')[0],
+      "unit"                 :this.state.unit,
+      "familyUpgradation"    :this.state.familyUpgradation,
+      "user_id"              :this.state.user_id,
+    };
+    let fields                = {};
+    fields["sector"]          = "";
+    fields["activity"]    = "";
+    fields["subActivityName"] = "";
+    fields["unit"]            = "";
+    this.setState({
+      "sector"                :"",
+      "activity"          :"",
+      "subActivityName"       :"",      
+      "unit"                  :"",
+      fields                  :fields
+    });
+    axios.patch('/api/sectors',subActivityValues, this.state.editId)
+        .then(function(response){
+          swal({
+            title : response.data,
+            text  : response.data
+          });
+          this.getData(this.state.startRange, this.state.limitRange);
+          this.setState({
+            editId : ''
+          })
+          this.props.history.push('/sector-and-activity');
+        })
+        .catch(function(error){
+          console.log("error = ",error);
+        });
+    }     
+    window.location.reload(true);
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -126,9 +181,9 @@ class SubActivity extends Component{
         formIsValid = false;
         errors["sector"] = "This field is required.";
       }     
-      if (!fields["activityName"]) {
+      if (!fields["activity"]) {
         formIsValid = false;
-        errors["activityName"] = "This field is required.";
+        errors["activity"] = "This field is required.";
       }
       if (!fields["subActivityName"]) {
         formIsValid = false;
@@ -139,12 +194,21 @@ class SubActivity extends Component{
       });
       return formIsValid;
   }
-  
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
   componentWillReceiveProps(nextProps){
     this.getAvailableSectors();
-    var editId = nextProps.match.params.sectorId;
+    var editId = nextProps.match.params.sector_id;
     // console.log('editId',editId);
-    if(nextProps.match.params.sectorId){
+    if(nextProps.match.params.sector_id){
       this.setState({
         editId : editId
       },()=>{
@@ -164,66 +228,6 @@ class SubActivity extends Component{
       limitRange : 0,
       startRange : 1,
     }
-    // var tableDatas = [{
-    //       "_id" : "sectorId",
-    //       "sector": "Development Centre",
-    //       "activity": [
-    //           {
-    //               "subactivity": [
-    //                   {
-    //                     "_id" : "SubactivityId1",
-    //                     "subactivityName" : "Subactivity 1",
-    //                     "unit" : 1,
-    //                     "familyUpgradation" : 'Yes'
-    //                   },
-    //                   {
-    //                     "_id" : "SubactivityId2",
-    //                     "subactivityName" : "Subactivity 2",
-    //                     "unit" : 2,
-    //                     "familyUpgradation" : 'No'
-    //                   }
-    //               ],
-    //               "activityName": "Rural Area Development",
-    //               "_id" : "activityid1"
-    //           },
-    //           {
-    //               "subactivity": [
-    //                   {
-    //                     "_id" : "SubactivityId31",
-    //                     "subactivityName" : "Subactivity 31",
-    //                     "unit" : 13,
-    //                     "familyUpgradation" : 'Yes'
-    //                   },
-    //                   {
-    //                     "_id" : "SubactivityId14",
-    //                     "subactivityName" : "Subactivity 14",
-    //                     "unit" : 41,
-    //                     "familyUpgradation" : 'No'
-    //                   }
-    //               ],
-    //               "activityName": "Urban Area Development",
-    //               "_id" : "activityid2"
-    //           },
-    //           {
-    //               "subactivity": [
-    //                   {
-    //                     "_id" : "SubactivityId5",
-    //                     "subactivityName" : "Subactivity 5",
-    //                     "unit" : 5,
-    //                     "familyUpgradation" : 'Yes'
-    //                   },
-    //                   {
-    //                     "_id" : "SubactivityId6",
-    //                     "subactivityName" : "Subactivity 6",
-    //                     "unit" : 6,
-    //                     "familyUpgradation" : 'No'
-    //                   }
-    //               ],
-    //               "activityName": "Farmer Development",
-    //               "_id" : "activityid3"
-    //           }
-    //       ],
-    //   }];
       
     axios({
       method: 'get',
@@ -231,12 +235,12 @@ class SubActivity extends Component{
     }).then((response)=> {
       var tableData = _.flatten(response.data.map((a, index)=>{
         return a.activity.map((b, i)=>{
-          return b.subactivity.map((c, i)=>{
+          return b.subActivityName.map((c, i)=>{
             return {
               _id               : a._id+'/'+b._id+'/'+c._id,
               sector            : a.sector,
-              activity          : b.activityName, 
-              number            : c.subactivityName,
+              activity          : b.activity, 
+              number            : c.subActivityName,
               unit              : c.unit,
               familyUpgradation : c.familyUpgradation
             }
@@ -270,14 +274,14 @@ class SubActivity extends Component{
   selectSector(event){
     event.preventDefault();
     this.setState({[event.target.name]:event.target.value});
-    var sectorId = event.target.value.split('|')[1];
+    var sector_id = event.target.value.split('|')[1];
     this.handleChange(event);
-    this.getAvailableActivity(sectorId);
+    this.getAvailableActivity(sector_id);
   }
-  getAvailableActivity(sectorId){
+  getAvailableActivity(sector_id){
     axios({
       method: 'get',
-      url: '/api/sectors/'+sectorId,
+      url: '/api/sectors/'+sector_id,
     }).then((response)=> {
         this.setState({
           availableActivity : response.data[0].activity
@@ -288,8 +292,8 @@ class SubActivity extends Component{
   }
   edit(id){
     // console.log('id', id);
-    var activityId = this.props.match.params.activityId;
-    var subactivityId = this.props.match.params.subactivityId;
+    var activity_id = this.props.match.params.activity_id;
+    var subactivity_id = this.props.match.params.subactivity_id;
     
       axios({
         method: 'get',
@@ -297,11 +301,11 @@ class SubActivity extends Component{
       }).then((response)=> {
         var editData = response.data[0];
         // console.log('editData', editData);
-        // console.log('subActivityName', _.first(editData.activity.map((a, i)=>{return a._id == activityId ? (a.subactivity).map((b, j)=>{return b.subactivityName ? b.subactivityName : "a"}) : ''})));
+        // console.log('subActivityName', _.first(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''})));
         this.setState({
           "sector"                : editData.sector+'|'+editData._id,
-          "activityName"          :_.first(editData.activity.map((a, i)=>{return a._id == activityId ? a.activityName : ''}))+'|'+activityId,
-          "subActivityName"       : _.flatten(editData.activity.map((a, i)=>{return a._id == activityId ? (a.subactivity).map((b, j)=>{return b.subactivityName ? b.subactivityName : "a"}) : ''}))
+          "activity"          :_.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activity : ''}))+'|'+activity_id,
+          "subActivityName"       : _.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''}))
         },()=>{
 
         });
@@ -342,7 +346,7 @@ class SubActivity extends Component{
   componentWillUnmount(){
     this.setState({
       "sector"              :"",
-      "activityName"        :"",
+      "activity"        :"",
       "subActivityName"     :"",
       "unit"                : 0, 
       "familyUpgradation"   :"No",
@@ -382,15 +386,15 @@ class SubActivity extends Component{
                     </div>
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Select Activity Name</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
-                        <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.handleChange.bind(this)} >
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                        <select className="custom-select form-control inputBox"ref="activity" name="activity" value={this.state.activity} onChange={this.handleChange.bind(this)} >
                           <option  className="hidden" >-- Select Activity--</option>
                           {
                           this.state.availableActivity && this.state.availableActivity.length >0 ?
                           this.state.availableActivity.map((data, index)=>{
-                            if(data.activityName ){
+                            if(data.activity ){
                               return(
-                                <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                <option key={data._id} value={data.activity+'|'+data._id}>{data.activity}</option>
                               );
                             }
                           })
@@ -399,7 +403,7 @@ class SubActivity extends Component{
                         }
                         </select>
                       </div>
-                      <div className="errorMsg">{this.state.errors.activityName}</div>
+                      <div className="errorMsg">{this.state.errors.activity}</div>
                     </div>
 
                     <div className=" col-md-4 col-sm-6 col-xs-12 ">
@@ -420,7 +424,7 @@ class SubActivity extends Component{
                      <div className=" col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Unit</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unit" >
-                        <input type="number" className="form-control inputBox nameParts" ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <input type="text" className="form-control inputBox nameParts" ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                       </div>
                       <div className="errorMsg">{this.state.errors.subActivityName}</div>
                     </div>
@@ -439,9 +443,9 @@ class SubActivity extends Component{
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                   {
                     this.state.editId ? 
-                    <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitSubActivity.bind(this)}> Update </button>
+                    <button className=" col-lg-2 btn submit pull-right" onClick={this.updateSubActivity.bind(this)}> Update </button>
                     :
-                    <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitSubActivity.bind(this)}> Submit </button>
+                    <button className=" col-lg-2 btn submit pull-right" onClick={this.submitSubActivity.bind(this)}> Submit </button>
                   }
                 </div> 
               </form>

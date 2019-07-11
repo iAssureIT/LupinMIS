@@ -18,9 +18,9 @@ class Activity extends Component{
    
     this.state = {
       "sector"              :"",
-      "activityName"        :"",
+      "activity"        :"",
       "academicData"        :[],
-      "uID"                 :"",
+      "user_id"                 :"",
       "shown"               : true,
       "tabtype"             : "location",
       "availableSectors"    : [],
@@ -32,12 +32,12 @@ class Activity extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        apiLink             : '/api/sectors/',
+        apiLink             : '/api/sectors/activity/delete',
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
       "limitRange"          : 10,
-      "editId"              : props.match.params ? props.match.params.sectorId : ''
+      "editId"              : props.match.params ? props.match.params.sector_id : ''
     }
   }
  
@@ -46,13 +46,20 @@ class Activity extends Component{
     event.preventDefault();
     this.setState({
       "sector"   : this.refs.sector.value,  
-      "activityName"   : this.refs.activityName.value,  
+      "activity"   : this.refs.activity.value,  
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
       fields
     });
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
   }
 
   isTextKey(evt){
@@ -68,36 +75,80 @@ class Activity extends Component{
  
   }
 
-  SubmitActivity(event){
+  submitActivity(event){
     event.preventDefault();
-    var activityArray=[];
-    var id2 = this.state.uID;
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()) {
     var activityValues = {
-      "sectorId"       : this.refs.sector.value.split('|')[1],
-      "sector"         : this.refs.sector.value.split('|')[0], 
-      "activityName"   : this.refs.activityName.value,  
+      "sector_id"            :this.refs.sector.value.split('|')[1],
+      "sector"               :this.refs.sector.value.split('|')[0],
+      "activity"             :this.refs.activity.value,
+      "user_id"              : this.state.user_id,
     };
-    let fields                = {};
-    fields["sector"]          = "";
-    fields["activityName"]    = "";
+    let fields            = {};
+    fields["sector"]      = "";
+    fields["activity"]    = "";
   
     this.setState({
       "sector"        :"",
-      "activityName"  :"",
+      "activity"      :"",
       fields          :fields
     });
-    axios.put('/api/sectors/:id',activityValues)
+    axios.patch('/api/sectors/activity',activityValues)
       .then(function(response){
         swal({
           title : response.data,
           text  : response.data
         });
+        this.getData(this.state.startRange, this.state.limitRange);
       })
       .catch(function(error){
         console.log("error = ",error);
       });
     }
+  }
+
+  updateActivity(event){
+    event.preventDefault();
+    if(this.refs.sector.value =="" || this.refs.activity.value=="" )
+    {
+      console.log('state validation');
+      if (this.validateFormReq() && this.validateForm()) {
+      }
+    }else{
+      var activityValues = {
+      "sector_id"            :this.refs.sector.value.split('|')[1],
+      "sector"               :this.refs.sector.value.split('|')[0],
+      "activity_id"          :this.refs.activity.value.split('|')[1],
+      "activity"             :this.refs.activity.value.split('|')[0],
+      "user_id"              : this.state.user_id,
+      };
+      
+      axios.patch('/api/sectors/activity/update',activityValues, this.state.editId)
+        .then(function(response){
+          swal({
+            title : response.data,
+            text  : response.data
+          });
+          this.getData(this.state.startRange, this.state.limitRange);
+          this.setState({
+            editId : ''
+          })
+          this.props.history.push('/sector-and-activity');
+        })
+        .catch(function(error){
+          console.log("error = ",error);
+        });
+      let fields             = {};
+      fields["sector"]       = "";
+      fields["activity"]     = "";
+    
+      this.setState({
+        "sector"        :"",
+        "activity"      :"",
+        fields          :fields
+      });
+    }
+    window.location.reload(true);
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -107,20 +158,29 @@ class Activity extends Component{
         formIsValid = false;
         errors["sector"] = "This field is required.";
       }     
-      if (!fields["activityName"]) {
+      if (!fields["activity"]) {
         formIsValid = false;
-        errors["activityName"] = "This field is required.";
+        errors["activity"] = "This field is required.";
       }
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }   
+  
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
       this.setState({
         errors: errors
       });
       return formIsValid;
   }
 
-
   componentWillReceiveProps(nextProps){
-    var editId = nextProps.match.params.sectorId;
-    if(nextProps.match.params.sectorId){
+    var editId = nextProps.match.params.sector_id;
+    if(nextProps.match.params.sector_id){
       this.setState({
         editId : editId
       },()=>{
@@ -149,7 +209,7 @@ class Activity extends Component{
           return {
             _id     : a._id+'/'+b._id,
             sector  : a.sector,
-            activity: b.activityName 
+            activity: b.activity 
           }
         })
       }))
@@ -167,61 +227,61 @@ class Activity extends Component{
     });
 
     // var tableDatas = [{
-    //       "_id" : "sectorId",
+    //       "_id" : "sector_id",
     //       "sector": "Development Centre",
     //       "activity": [
     //           {
     //               "subactivity": [
     //                   {
     //                     "_id" : "SubactivityId1",
-    //                     "subactivityName" : "Subactivity 1",
+    //                     "subactivity" : "Subactivity 1",
     //                     "unit" : 1,
     //                     "familyUpgradation" : 'Yes'
     //                   },
     //                   {
     //                     "_id" : "SubactivityId2",
-    //                     "subactivityName" : "Subactivity 2",
+    //                     "subactivity" : "Subactivity 2",
     //                     "unit" : 2,
     //                     "familyUpgradation" : 'No'
     //                   }
     //               ],
-    //               "activityName": "Rural Area Development",
+    //               "activity": "Rural Area Development",
     //               "_id" : "activityid1"
     //           },
     //           {
     //               "subactivity": [
     //                   {
     //                     "_id" : "SubactivityId31",
-    //                     "subactivityName" : "Subactivity 31",
+    //                     "subactivity" : "Subactivity 31",
     //                     "unit" : 13,
     //                     "familyUpgradation" : 'Yes'
     //                   },
     //                   {
     //                     "_id" : "SubactivityId14",
-    //                     "subactivityName" : "Subactivity 14",
+    //                     "subactivity" : "Subactivity 14",
     //                     "unit" : 41,
     //                     "familyUpgradation" : 'No'
     //                   }
     //               ],
-    //               "activityName": "Urban Area Development",
+    //               "activity": "Urban Area Development",
     //               "_id" : "activityid2"
     //           },
     //           {
     //               "subactivity": [
     //                   {
     //                     "_id" : "SubactivityId5",
-    //                     "subactivityName" : "Subactivity 5",
+    //                     "subactivity" : "Subactivity 5",
     //                     "unit" : 5,
     //                     "familyUpgradation" : 'Yes'
     //                   },
     //                   {
     //                     "_id" : "SubactivityId6",
-    //                     "subactivityName" : "Subactivity 6",
+    //                     "subactivity" : "Subactivity 6",
     //                     "unit" : 6,
     //                     "familyUpgradation" : 'No'
     //                   }
     //               ],
-    //               "activityName": "Farmer Development",
+    //               "activity": "Farmer Development",
     //               "_id" : "activityid3"
     //           }
     //       ],
@@ -251,7 +311,7 @@ class Activity extends Component{
       
       this.setState({
         "sector"                : editData.sector+'|'+editData._id,
-        "activityName"          :_.first(editData.activity.map((a, i)=>{return a._id == activityId ? a.activityName : ''})),
+        "activity"          :_.first(editData.activity.map((a, i)=>{return a._id == activityId ? a.activity : ''})),
       },()=>{
       });
     }).catch(function (error) {
@@ -280,7 +340,7 @@ class Activity extends Component{
   componentWillUnmount(){
     this.setState({
       "sector"              :"",
-      "activityName"        :"",
+      "activity"        :"",
       "editId" : ""
     })
   }
@@ -290,7 +350,7 @@ class Activity extends Component{
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
-            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt"  id="activity">
+            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt"  id="Activity">
               <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
                 <span className="perinfotitle mgtpprsnalinfo"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Activity</span>
               </div>
@@ -319,22 +379,22 @@ class Activity extends Component{
                   </div>
                   <div className=" col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Name of Activity</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activityName" >
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activity" >
                       {/*<div className="input-group-addon inputIcon">
                         <i className="fa fa-graduation-cap fa"></i>
                       </div>*/}
-                      <input type="text" className="form-control inputBox nameParts"  placeholder="" name="activityName"  value={this.state.activityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activityName" />
+                      <input type="text" className="form-control inputBox nameParts"  placeholder="" name="activity"  value={this.state.activity} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activity" />
                     </div>
-                    <div className="errorMsg">{this.state.errors.activityName}</div>
+                    <div className="errorMsg">{this.state.errors.activity}</div>
                   </div>
                 </div> 
               </div><br/>
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                 {
                   this.state.editId ? 
-                  <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitActivity.bind(this)}> Update </button>
+                  <button className=" col-lg-2 btn submit pull-right" onClick={this.updateActivity.bind(this)}> Update </button>
                   :
-                  <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
+                  <button className=" col-lg-2 btn submit pull-right" onClick={this.submitActivity.bind(this)}> Submit </button>
                 }
               </div> 
             </form>

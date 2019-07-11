@@ -17,7 +17,8 @@ class Sector extends Component{
    
     this.state = {
       "sector"              :"",
-      "uID"                 :"",
+      "user_id"             :"",
+      "sector_id"           :"",
       fields                : {},
       errors                : {},
       "tableHeading"        : {
@@ -25,7 +26,7 @@ class Sector extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        apiLink             : '/api/sectors/',
+        apiLink             : '/api/sectors/delete/',
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
@@ -44,6 +45,13 @@ class Sector extends Component{
     this.setState({
       fields
     });
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
   }
 
   isTextKey(evt)
@@ -62,11 +70,10 @@ class Sector extends Component{
 
   SubmitSector(event){
     event.preventDefault();
-    var sectorArray=[];
-    var id2 = this.state.uID;
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()) {
     var sectorValues= {
-    "sector"   : this.refs.sector.value,  
+    "sector"      :this.refs.sector.value,
+    "user_id"     : this.state.user_id,
     };
 
     
@@ -81,41 +88,47 @@ class Sector extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
-      let fields = {};
+      let fields       = {};
       fields["sector"] = "";
    
       this.setState({
         "sector"  :"",
-        fields:fields
+        fields    :fields
       });
     } 
   }
+
+
   updateSector(event){
     event.preventDefault();
-    var sectorArray=[];
-    var id2 = this.state.uID;
-    
-    if (this.validateFormReq()) {
-    var sectorValues= {
-      "sector"   : this.refs.sector.value,  
-    };
+    if(this.refs.sector.value =="")
+    {
+      console.log('state validation');
+      if (this.validateFormReq() && this.validateForm()) {
+      }
+    }else{
+      var sectorValues= {
+        "sector_id"   :this.refs.sector.value.split('|')[1],
+        "sector"      :this.refs.sector.value.split('|')[0],
+        "user_id"     : this.state.user_id,
+      };
 
-    
-    axios.post('/api/sectors',sectorValues, this.state.editId)
-      .then(function(response){
-        swal({
-          title : response.data,
-          text  : response.data
-        });
-        this.getData(this.state.startRange, this.state.limitRange);
-        this.setState({
-          editId : ''
+      
+      axios.patch('/api/sectors/update',sectorValues, this.state.editId)
+        .then(function(response){
+          swal({
+            title : response.data,
+            text  : response.data
+          });
+          this.getData(this.state.startRange, this.state.limitRange);
+          this.setState({
+            editId : ''
+          })
+          this.props.history.push('/sector-and-activity');
         })
-        this.props.history.push('/sector-and-activity');
-      })
-      .catch(function(error){
-        console.log("error = ",error);
-      });
+        .catch(function(error){
+          console.log("error = ",error);
+        });
       let fields = {};
       fields["sector"] = "";
    
@@ -124,6 +137,7 @@ class Sector extends Component{
         fields:fields
       });
     }     
+    window.location.reload(true);
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -133,6 +147,16 @@ class Sector extends Component{
         formIsValid = false;
         errors["sector"] = "This field is required.";
       }     
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
       this.setState({
         errors: errors
       });

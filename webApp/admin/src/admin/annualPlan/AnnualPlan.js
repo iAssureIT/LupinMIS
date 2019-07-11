@@ -30,7 +30,7 @@ class AnnualPlan extends Component{
       "uID"                 :"",
       "shown"               : true,
       "hide"                : true,
-      "month"               :"",
+      "month"               :"Annually",
       "year"                :"",
       "Months"              :["April","May","June","--Quarter 1--","July","August","September","--Quarter 2--","October","November","December","--Quarter 3--","January","February","March","--Quarter 4--",],
       "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
@@ -198,21 +198,21 @@ class AnnualPlan extends Component{
       alert("Data inserted Successfully!")
       }
     }
-   
   getData(startRange, limitRange){
    axios({
       method: 'get',
       url: '/api/annualPlans/list',
-    }).then((response)=> {
-      console.log('response======================', response.data)
+    }).then(function(response){
+      console.log('response======================', response.data);
       this.setState({
         tableData : response.data
-      })
+      });
      
     }).catch(function (error) {
       console.log('error', error);
     });
   }
+
   Update(event){
     event.preventDefault();
     if (this.validateForm() && this.validateFormReq()) {
@@ -338,80 +338,8 @@ class AnnualPlan extends Component{
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
-     const data = [{
-      srno: 1,
-      FamilyID: "L000001",
-      NameofBeneficiary: "Priyanka Lewade",
-      BeneficiaryID: "PL0001",
-      },{
-      srno: 2,
-      FamilyID: "B000001",
-      NameofBeneficiary: "Priyanka Bhanvase",
-      BeneficiaryID: "PB0001",
-      }
-      ]
-      const columns = [ 
-      {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        {
-        Header: 'Sector',
-        accessor: 'NameofBeneficiary', 
-        }, {
-        Header: 'Activity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Sub-Activity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Quantity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Amount',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Beneficiary',
-        accessor: 'noMAp', 
-        },{
-        Header: "Financial Sharing",
-        columns: [
-        {
-          Header: "LHWRF",
-          accessor: "LHWRF"
-        },
-        {
-          Header: "NABARD",
-          accessor: "NABARD"
-        },{
-          Header: "Bank Loan",
-          accessor: "BankLoan"
-        },{
-          Header: "Govt",
-          accessor: "BankLoan"
-        },{
-          Header: "Direct Beneficiary",
-          accessor: "BankLoan"
-        },{
-          Header: "Indirect Beneficiary",
-          accessor: "BankLoan"
-        },
-        ]
-        },
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-3">
-              <div className="col-lg-6" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-             
-            </div>
-            )     
-          }
-        ]
+    
+    
     return (
       <div className="container-fluid">
        <div className="row">
@@ -421,7 +349,7 @@ class AnnualPlan extends Component{
               <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                    Annual Plan                                      
+                    Plan Details                                      
                   </div>
                   <hr className="hr-head container-fluid row"/>
                 </div>
@@ -479,7 +407,7 @@ class AnnualPlan extends Component{
                           ?
                             <h5>Quarterly Plan for April May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-                            <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+(this.state.year ? this.state.year :"" ) : null}</h5> 
+                            <h5>{this.state.month !== "Annually" ? "Monthly Plan "+  this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+(this.state.year ? this.state.year :"" ) : null}</h5> 
                         }
                       </div>
                     </div>
@@ -489,7 +417,7 @@ class AnnualPlan extends Component{
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}
-                          // tableData={this.state.tableData}
+                          tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
 

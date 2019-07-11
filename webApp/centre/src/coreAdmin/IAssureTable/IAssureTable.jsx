@@ -80,8 +80,8 @@ class IAssureTable extends Component {
     	var nameA = '';
     	var nameB = '';
     	var tableData = this.state.tableData;
-    	if(this.state.sort == true){
-    		if(key == 'number'){
+    	if(this.state.sort === true){
+    		if(key === 'number'){
 				var reA = /[^a-zA-Z]/g;
 				var reN = /[^0-9]/g;
 				var aN = 0;
@@ -89,14 +89,14 @@ class IAssureTable extends Component {
     			var sortedData = tableData.sort((a, b)=> {
 		    		Object.entries(a).map( 
 						([key1, value1], i)=> {
-							if(key == key1){
+							if(key === key1){
 								nameA = value1.replace(reA, "");				
 							}
 						}
 					);
 					Object.entries(b).map( 
 						([key2, value2], i)=> {
-							if(key == key2){
+							if(key === key2){
 								nameB = value2.replace(reA, "");
 							}
 						}
@@ -105,7 +105,7 @@ class IAssureTable extends Component {
 					if (nameA === nameB) {
 						Object.entries(a).map( 
 							([key1, value1], i)=> {
-								if(key == key1){
+								if(key === key1){
 									aN = parseInt(value1.replace(reN, ""), 10);				
 								}
 							}
@@ -113,7 +113,7 @@ class IAssureTable extends Component {
 						
 						Object.entries(b).map( 
 							([key1, value1], i)=> {
-								if(key == key1){
+								if(key === key1){
 									bN = parseInt(value1.replace(reN, ""), 10);					
 								}
 							}
@@ -142,8 +142,8 @@ class IAssureTable extends Component {
     			var sortedData = tableData.sort((a, b)=> {
 	    		Object.entries(a).map( 
 					([key1, value1], i)=> {
-						if(key == key1){
-							if(jQuery.type( value1 ) == 'string'){
+						if(key === key1){
+							if(jQuery.type( value1 ) === 'string'){
 								nameA = value1.toUpperCase();
 							}else{
 								nameA = value1;
@@ -153,8 +153,8 @@ class IAssureTable extends Component {
 				);
 				Object.entries(b).map( 
 					([key2, value2], i)=> {
-						if(key == key2){
-							if(jQuery.type( value2 ) == 'string'){
+						if(key === key2){
+							if(jQuery.type( value2 ) === 'string'){
 								nameB = value2.toUpperCase();
 							}else{
 								nameB = value2;
@@ -176,8 +176,8 @@ class IAssureTable extends Component {
 				tableData : sortedData,
 				sort 	  : false
 			});
-    	}else if(this.state.sort == false){
-    		if(key == 'number'){
+    	}else if(this.state.sort === false){
+    		if(key === 'number'){
 				var reA = /[^a-zA-Z]/g;
 				var reN = /[^0-9]/g;
 				var aN = 0;
@@ -185,14 +185,14 @@ class IAssureTable extends Component {
     			var sortedData = tableData.sort((a, b)=> {
 		    		Object.entries(a).map( 
 						([key1, value1], i)=> {
-							if(key == key1){
+							if(key === key1){
 								nameA = value1.replace(reA, "");				
 							}
 						}
 					);
 					Object.entries(b).map( 
 						([key2, value2], i)=> {
-							if(key == key2){
+							if(key === key2){
 								nameB = value2.replace(reA, "");
 							}
 						}
@@ -201,7 +201,7 @@ class IAssureTable extends Component {
 					if (nameA === nameB) {
 						Object.entries(a).map( 
 							([key1, value1], i)=> {
-								if(key == key1){
+								if(key === key1){
 									aN = parseInt(value1.replace(reN, ""), 10);			
 								}
 							}
@@ -209,7 +209,7 @@ class IAssureTable extends Component {
 						
 						Object.entries(b).map( 
 							([key1, value1], i)=> {
-								if(key == key1){
+								if(key === key1){
 									bN = parseInt(value1.replace(reN, ""), 10);					
 								}
 							}
@@ -238,8 +238,8 @@ class IAssureTable extends Component {
     			var sortedData = tableData.sort((a, b)=> {
 	    		Object.entries(a).map( 
 					([key1, value1], i)=> {
-						if(key == key1){
-							if(jQuery.type( value1 ) == 'string'){
+						if(key === key1){
+							if(jQuery.type( value1 ) === 'string'){
 								nameA = value1.toUpperCase();
 							}else{
 								nameA = value1;
@@ -249,8 +249,8 @@ class IAssureTable extends Component {
 				);
 				Object.entries(b).map( 
 					([key2, value2], i)=> {
-						if(key == key2){
-							if(jQuery.type( value2 ) == 'string'){
+						if(key === key2){
+							if(jQuery.type( value2 ) === 'string'){
 								nameB = value2.toUpperCase();
 							}else{
 								nameB = value2;
@@ -275,7 +275,7 @@ class IAssureTable extends Component {
     	}
     }
    	paginationFunction(event){
-		var dataLen = this.state.completeDataCount > 20 || this.state.completeDataCount == 20 ? 20 : this.state.completeDataCount;
+		var dataLen = this.state.completeDataCount > 20 || this.state.completeDataCount === 20 ? 20 : this.state.completeDataCount;
 		var dataLength = this.state.completeDataCount;
 		this.setState({
 			dataLength : dataLen,
@@ -290,7 +290,7 @@ class IAssureTable extends Component {
 			for (var i=1; i<=pageCount;i++){
 				var countNum = maxRowsPerPage * i;
 				var startRange = countNum - maxRowsPerPage;
-				if(i == 1){
+				if(i === 1){
 					var activeClass = 'activeQueDataCircle';
 				}else{
 					activeClass = '';
@@ -332,17 +332,17 @@ class IAssureTable extends Component {
 
 		},()=>{
 			this.paginationFunction();
-			if(this.state.normalData == true){
+			if(this.state.normalData === true){
 				this.props.getData(startRange, this.state.limitRange);
 			}	
-			if(this.state.searchData == true){
+			if(this.state.searchData === true){
 				this.tableSearch();
 			}
 		});	
 	}
 	tableSearch(){
     	var searchText = this.refs.tableSearch.value;
-		if(searchText && searchText.length != 0) {
+		if(searchText && searchText.length !== 0) {
 			this.setState({
 				"normalData"  : false,
 				"searchData"  : true,
@@ -356,7 +356,7 @@ class IAssureTable extends Component {
     }
     showNextPaginationButtons(){
     	var beforeDataLength = this.state.dataLength > 0 ? this.state.dataLength : 20;
-		if(beforeDataLength != this.state.completeDataCount){
+		if(beforeDataLength !== this.state.completeDataCount){
 			this.setState({
 				dataLength : (beforeDataLength+ 20) > this.state.completeDataCount ? this.state.completeDataCount : (beforeDataLength+ 20),
 			},()=>{
@@ -372,7 +372,7 @@ class IAssureTable extends Component {
 				for (var i=beforeDataLength+1; i<=pageCount;i++){
 					var countNum = maxRowsPerPage * i;
 					var startRange = countNum - maxRowsPerPage;
-					if(i == beforeDataLength+1){
+					if(i === beforeDataLength+1){
 						var activeClass = 'activeQueDataCircle';
 					}else{
 						activeClass = '';
@@ -401,14 +401,14 @@ class IAssureTable extends Component {
 			const maxRowsPerPage = this.state.limitRange;
 			var dataLength = this.state.dataLength;
 			var paginationNum = parseInt(dataLength)/maxRowsPerPage;
-			if(dataLength != 0 && paginationNum!= 0){
+			if(dataLength !== 0 && paginationNum!== 0){
 				var pageCount = Math.ceil(paginationNum);
 				var paginationArray = [];
 				var forLoop = (beforeDataLength-this.state.paginationArray.length) < 0 ?  1: beforeDataLength-this.state.paginationArray.length;
 				for (var i=forLoop-19; i<=pageCount;i++){
 					var countNum = maxRowsPerPage * i;
 					var startRange = countNum - maxRowsPerPage;
-					if(i == beforeDataLength-39 || i == 1){
+					if(i === beforeDataLength-39 || i === 1){
 						var activeClass = 'activeQueDataCircle';
 					}else{
 						activeClass = '';
@@ -437,14 +437,14 @@ class IAssureTable extends Component {
 			const maxRowsPerPage = this.state.limitRange;
 			var dataLength = this.state.dataLength;
 			var paginationNum = parseInt(dataLength)/maxRowsPerPage;
-			if(dataLength != 0 && paginationNum!= 0){
+			if(dataLength !== 0 && paginationNum!== 0){
 				var pageCount = Math.ceil(paginationNum);
 				var paginationArray = [];
 
 				for (var i=1; i<=pageCount;i++){
 					var countNum = maxRowsPerPage * i;
 					var startRange = countNum - maxRowsPerPage;
-					if(i == 1){
+					if(i === 1){
 						var activeClass = 'activeQueDataCircle';
 					}else{
 						activeClass = '';
@@ -473,14 +473,14 @@ class IAssureTable extends Component {
 			const maxRowsPerPage = this.state.limitRange;
 			var dataLength = this.state.dataLength;
 			var paginationNum = parseInt(dataLength)/maxRowsPerPage;
-			if(dataLength != 0 && paginationNum!= 0){
+			if(dataLength !== 0 && paginationNum!== 0){
 				var pageCount = Math.ceil(paginationNum);
 				var paginationArray = [];
 
 				for (var i=(this.state.completeDataCount - 20)+1; i<=pageCount;i++){
 					var countNum = maxRowsPerPage * i;
 					var startRange = countNum - maxRowsPerPage;
-					if(i == 1 || i == (this.state.completeDataCount - 20)+1){
+					if(i === 1 || i === (this.state.completeDataCount - 20)+1){
 						var activeClass = 'activeQueDataCircle';
 					}else{
 						activeClass = '';
@@ -531,7 +531,7 @@ class IAssureTable extends Component {
 						<table className="table iAssureITtable-bordered table-striped table-hover">
 	                        <thead className="tempTableHeader">	     
 		                        <tr className="">
-		                            { this.state.twoLevelHeader.apply == true ?
+		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
 												<th key={index} colSpan={data.mergedColoums} className="umDynamicHeader srpadd textAlignCenter">{data.heading}</th>			
@@ -546,7 +546,7 @@ class IAssureTable extends Component {
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
-													if(key == 'actions'){
+													if(key === 'actions'){
 														return(
 															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value}</th>
 														);	
@@ -576,7 +576,7 @@ class IAssureTable extends Component {
 																var regex = new RegExp(/(<([^>]+)>)/ig);
 																var value2 = value1 ? value1.replace(regex,'') : '';
 																var aN = value2.replace(this.state.reA, "");
-																if(aN && $.type( aN ) == 'string'){
+																if(aN && $.type( aN ) === 'string'){
 																	var textAlign = 'textAlignLeft';
 																}else{
 																	var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
@@ -587,10 +587,10 @@ class IAssureTable extends Component {
 																	}
 																}
 																var found = Object.keys(this.state.tableHeading).filter((k)=> {
-																  return k == key;
+																  return k === key;
 																});
 																if(found.length > 0){
-																	if(key != 'id'){
+																	if(key !== 'id'){
 																		return(<td className={textAlign} key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
 																	}
 																}																
@@ -600,7 +600,7 @@ class IAssureTable extends Component {
 													<td className="textAlignCenter">
 														<span>
 															<i className="fa fa-pencil" title="Edit" id={value.id} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
-															{this.props.editId && this.props.editId == value.id? null :<i className={"fa fa-trash redFont "+value.id} id={value.id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal"+value.id}></i>}
+															{this.props.editId && this.props.editId === value.id? null :<i className={"fa fa-trash redFont "+value.id} id={value.id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal"+value.id}></i>}
 														</span>
 														<div className="modal fade col-lg-12 col-md-12 col-sm-12 col-xs-12" id={"showDeleteModal"+value.id} role="dialog">
 	                                                        <div className=" modal-dialog adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">

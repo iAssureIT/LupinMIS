@@ -1,10 +1,7 @@
 import React, { Component }   from 'react';
-import $                      from 'jquery';
 import axios                  from 'axios';
-import ReactTable             from "react-table";
 import swal                   from 'sweetalert';
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
-import _                      from 'underscore';
 
 
 import 'react-table/react-table.css';
@@ -33,51 +30,51 @@ class Family extends Component{
       "contact"              :"",
       fields: {},
       errors: {},
-      "twoLevelHeader"              : {
-        apply                     : false,
-        firstHeaderData           : [
-                                      {
-                                          heading : '',
-                                          mergedColoums : 10
-                                      },
-                                      {
-                                          heading : 'Source of  Fund',
-                                          mergedColoums : 7
-                                      },
-                                      {
-                                          heading : 'MIS Coordinator',
-                                          mergedColoums : 3
-                                      },
-                                    ]
+      "twoLevelHeader"       : {
+        apply                : false,
+        firstHeaderData      : [
+                                {
+                                    heading : '',
+                                    mergedColoums : 10
+                                },
+                                {
+                                    heading : 'Source of  Fund',
+                                    mergedColoums : 7
+                                },
+                                {
+                                    heading : 'MIS Coordinator',
+                                    mergedColoums : 3
+                                },
+                              ]
       },
-        "tableObjects"              : {
-        apiLink                   : '/api/families/',
-        editUrl                   : '/family/'
+        "tableObjects"        : {
+        apiLink               : '/api/families/',
+        editUrl               : '/family/'
       },
-      "tableHeading"                : {
-        familyID                    : "Family ID",
-        // beneficariesId              : "Beneficiary ID",
-        familyHead                  : "Name of Family Head",
-        contactNumber               : "Contact Number",
-        uidNumber                   : "UID Number",
-        // caste                       : "Caste",
-        familyCategory              : "Family Category",
-        center                      : "LHWRF Centre",
-        state                       : "State",
-        dist                        : "District",
-        block                       : "Block",
-        village                     : "Village",
-        actions                     : 'Action',
+      "tableHeading"          : {
+        familyID              : "Family ID",
+        // beneficariesId     : "Beneficiary ID",
+        familyHead            : "Name of Family Head",
+        contactNumber         : "Contact Number",
+        uidNumber             : "UID Number",
+        // caste              : "Caste",
+        familyCategory        : "Family Category",
+        center                : "LHWRF Centre",
+        state                 : "State",
+        dist                  : "District",
+        block                 : "Block",
+        village               : "Village",
+        actions               : 'Action',
 
       },  
      
-      " tableObjects"        : {
-        apiLink             : '/api/family/',
-        editUrl             : '/family/',
+      " tableObjects"         : {
+        apiLink               : '/api/family/',
+        editUrl               : '/family/',
       },
-      "startRange"                  : 0,
-      "limitRange"                  : 10,
-      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
+      "startRange"            : 0,
+      "limitRange"            : 10,
+      "editId"                : this.props.match.params ? this.props.match.params.id : ''
     
     }
   }
@@ -122,18 +119,16 @@ class Family extends Component{
       return true;
     }
   }
-  isTextKey(evt)
-  {
+  isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
     }
     else{
       return true;
-    }
- 
+    } 
   }
 
   SubmitFamily(event){
@@ -172,8 +167,73 @@ class Family extends Component{
             title : response.data,
             text  : response.data
           });
-  /*        this.getData(this.state.startRange, this.state.limitRange);
-  */      })
+          this.getData(this.state.startRange, this.state.limitRange);
+        })
+        .catch(function(error){
+          console.log("error = ",error);
+        });
+      this.setState({
+        "familyID"             :"",
+        "nameOfFamilyHead"     :"",
+        "uID"                  :"",
+        "caste"                :"",
+        "category"             :"",
+        "LHWRFCentre"          :"",
+        "state"                :"",
+        "district"             :"",
+        "block"                :"",
+        "village"              :"",
+        "contact"              :"",
+        fields:fields
+      });
+    }    
+  }
+
+  UpdateFamily(event){
+    event.preventDefault();
+    if(this.refs.familyID.value == "" || this.refs.nameOfFamilyHead.value =="" || this.refs.contact.value==""
+     || this.refs.uID.value=="" || this.refs.caste.value=="" || this.refs.familyCategory.value=="" 
+     || this.refs.center.value=="" || this.refs.this.state.value=="" 
+     || this.refs.dist.value=="" || this.refs.block.value=="" || this.refs.village.value=="" )
+    {
+      if (this.validateFormReq() && this.validateForm()){
+      }
+    }else{
+      event.preventDefault();
+      var familyValues= 
+      {
+          familyID             :this.refs.familyID.value, 
+          familyHead           :this.refs.nameOfFamilyHead.value, 
+          contactNumber        :this.refs.contact.value, 
+          uidNumber            :this.refs.uID.value, 
+          Caste                :this.refs.caste.value, 
+          familyCategory       :this.refs.category.value, 
+          center               :this.refs.LHWRFCentre.value, 
+          state                :this.state.state, 
+          dist                 :this.refs.district.value, 
+          block                :this.refs.block.value, 
+          village              :this.refs.village.value, 
+      };
+      let fields = {};
+      fields["familyID"]          = "";
+      fields["nameOfFamilyHead"]  = "";
+      fields["uID"]               = "";
+      fields["caste"]             = "";
+      fields["category"]          = "";
+      fields["LHWRFCentre"]       = "";
+      fields["state"]             = "";
+      fields["district"]          = "";
+      fields["block"]             = "";
+      fields["village"]           = "";
+
+      axios.post('/api/families',familyValues)
+        .then(function(response){
+          swal({
+            title : response.data,
+            text  : response.data
+          });
+          this.getData(this.state.startRange, this.state.limitRange);
+        })
         .catch(function(error){
           console.log("error = ",error);
         });
@@ -252,7 +312,8 @@ class Family extends Component{
       });
       return formIsValid;
   }
-   edit(id){
+
+  edit(id){
     axios({
       method: 'get',
       url: '/api/families/'+id,
@@ -276,96 +337,22 @@ class Family extends Component{
     }).catch(function (error) {
     });
   }
-  Update(event){
-    event.preventDefault();
-    if (this.validateForm() && this.validateFormReq()) {
-     /* var academicArray=[];
-      var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
-
-      var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
-      var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});*/
-
-      var id2 = this.state.uID;
-        /*    if (this.validateForm()) {*/    
-    var familyValues= 
-    {
-      familyID             :this.refs.familyID.value, 
-      familyHead           :this.refs.nameOfFamilyHead.value, 
-      uidNumber            :this.refs.uID.value, 
-      Caste                :this.refs.caste.value, 
-      familyCategory       :this.refs.category.value, 
-      center               :this.refs.LHWRFCentre.value, 
-      // state                :this.refs.state.value, 
-      dist                 :this.refs.district.value, 
-      block                :this.refs.block.value, 
-      village              :this.refs.village.value, 
-    };
-
-    let fields = {};
-    fields["year"]              = "";
-    fields["month"]             = "";
-    fields["sectorName"]        = "";
-    fields["activity"]          = "";
-    fields["physicalUnit"]      = "";
-    fields["unitCost"]          = "";
-    fields["totalBudget"]       = "";
-    fields["noOfBeneficiaries"] = "";
-    fields["LHWRF"]             = "";
-    fields["NABARD"]            = "";
-    fields["bankLoan"]          = "";
-    fields["govtscheme"]        = "";
-    fields["directCC"]          = "";
-    fields["indirectCC"]        = "";
-    fields["other"]             = "";
-    fields["remark"]            = "";
-   
-  
-      // console.log('centreDetail',centreDetail);
-      axios.patch('/api/families',familyValues)
-      .then(function(response){
-        swal({
-          title : response.data,
-          text  : response.data
-        });
-        this.getData(this.state.startRange, this.state.limitRange);
-        
-      })
-      .catch(function(error){
-        
-      });
-   this.setState({
-        "familyID"             :"",
-        "nameOfFamilyHead"     :"",
-        "uID"                  :"",
-        "caste"                :"",
-        "category"             :"",
-        "LHWRFCentre"          :"",
-        "state"                :"",
-        "district"             :"",
-        "block"                :"",
-        "village"              :"",
-        "contact"              :"",
-        fields:fields
-      });
-    }
-  }
-    
+ 
   getData(startRange, limitRange){
-    axios({
+   axios({
       method: 'get',
       url: '/api/families/list',
-    }).then((response)=> {
-      console.log('response======================', response.data)
+    }).then(function(response){
+      console.log('response======================', response.data);
       this.setState({
         tableData : response.data
-      })
+      });
      
     }).catch(function (error) {
       console.log('error', error);
     });
-
-    
   }
+
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
     if(nextProps.match.params.id){
@@ -376,28 +363,32 @@ class Family extends Component{
       this.edit(editId);
     }
   }
-  componentDidMount(){
+  
+  componentDidMount() {
+    console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    var data = {
+      limitRange : 0,
+      startRange : 1,
+    }
     axios({
       method: 'get',
-      url: '/api/centers/list',
-    }).then((response)=> {
-      var centerArray = [];
-      for(var i=0;i<response.data.length;i++)
-      {
-       centerArray .push(response.data[i].centerName);
-      }
-      console.log("centerArray",centerArray);
+      url: '/api/families/list',
+      }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return});
       this.setState({
-        "centerArray" : centerArray,
+        tableData : response.data,
+        editUrl   : this.props.match.params
       },()=>{
         
       });
     }).catch(function (error) {
       console.log('error', error);
     });
-
-    this.getData(this.state.startRange, this.state.limitRange)
   }
+ 
   render() {
      
     return (

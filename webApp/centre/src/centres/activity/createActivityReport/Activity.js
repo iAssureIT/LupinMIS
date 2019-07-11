@@ -133,7 +133,13 @@ class Activity extends Component{
     this.setState({
       fields
     });
- 
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    } 
   }
 
   isNumberKey(evt){
@@ -147,8 +153,7 @@ class Activity extends Component{
       return true;
     }
   }
-  isTextKey(evt)
-  {
+  isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
    if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
@@ -162,7 +167,7 @@ class Activity extends Component{
   }
   SubmitActivity(event){
     event.preventDefault();
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()) {
     var id2 = this.state.uID;
     var activityValues= 
     {
@@ -241,7 +246,7 @@ class Activity extends Component{
           title : response.data,
           text  : response.data
         });
-/*      this.getData(this.state.startRange, this.state.limitRange);*/      
+      this.getData(this.state.startRange, this.state.limitRange);      
       })
       .catch(function(error){
         
@@ -251,7 +256,7 @@ class Activity extends Component{
   Update(event)
   {
     event.preventDefault();
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()) {
     var id2 = this.state.uID;
     var activityValues= 
     {
@@ -330,7 +335,7 @@ class Activity extends Component{
           title : response.data,
           text  : response.data
         });
-/*      this.getData(this.state.startRange, this.state.limitRange);*/      
+      this.getData(this.state.startRange, this.state.limitRange);      
       })
       .catch(function(error){
         
@@ -414,6 +419,17 @@ class Activity extends Component{
       });
       return formIsValid;
   }
+
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+
   calTotal(event){
     event.preventDefault();
     var LHWRF       = this.state.LHWRF;
@@ -609,8 +625,8 @@ class Activity extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                             <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                              <option>Comman Level</option>
-                               <option>Family Level</option>
+                              <option>Common Level Activity</option>
+                               <option>Family Level Activity</option>
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.typeofactivity}</div>

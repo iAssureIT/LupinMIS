@@ -4,7 +4,6 @@ import axios                  from 'axios';
 import ReactTable             from "react-table";
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
-import _                      from 'underscore';
 
 import 'react-table/react-table.css';
 import "./NewBeneficiary.css";
@@ -183,7 +182,7 @@ class NewBeneficiary extends Component{
       method: 'get',
       url: '/api/centers/list',
     }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+      var tableData = response.data.map((a, index)=>{return});
 
       this.setState({
         tableData : tableData.slice(startRange, limitRange),
@@ -207,7 +206,7 @@ class NewBeneficiary extends Component{
         method: 'get',
         url: '/api/centers/list',
       }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+        var tableData = response.data.map((a, index)=>{return});
         this.setState({
           dataCount : tableData.length,
           tableData : tableData.slice(this.state.startRange, this.state.limitRange),

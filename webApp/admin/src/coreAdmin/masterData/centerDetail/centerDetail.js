@@ -7,32 +7,32 @@ import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css';
-import "./centreDetail.css";
+import "./centerDetail.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
       
-var centreDetailArray  = [];
-class centreDetail extends Component{
+var centerDetailArray  = [];
+class centerDetail extends Component{
   
   constructor(props){
     super(props);
     this.state = {
-      "typeOfCentre"             :"",
-      "nameOfCentre"             :"",
-      "address"                  :"Pimpri Chichwad",
+      "typeOfCenter"             :"",
+      "nameOfCenter"             :"",
+      "address"                  :"Hadapsar",
       "state"                    :"",
       "district"                 :"",
       "pincode"                  :"",
-      "centreInchargeName"       :"",
-      "centreInchargeContact"    :"",
-      "centreInchargeEmail"      :"",
+      "centerInchargeName"       :"",
+      "centerInchargeContact"    :"",
+      "centerInchargeEmail"      :"",
       "MISCoordinatorName"       :"",
       "MISCoordinatorContact"    :"",
       "MISCoordinatorEmail"      :"",
       "districtCovered"          :"",
       "blockCovered"             :"",
-      "centreDetailArray"        :[],
+      "centerDetailArray"        :[],
       "array"                    :[],
       "shown"                    : true,
       "tabtype"                     : "location",
@@ -74,7 +74,9 @@ class centreDetail extends Component{
       },
       "tableObjects"              : {
         apiLink                   : '/api/centers/',
-        editUrl                   : '/centre-detail/'
+        paginationApply           : true,
+        searchApply               : true,
+        editUrl                   : '/center-detail/'
       },
       "startRange"                  : 0,
       "limitRange"                  : 10,
@@ -85,15 +87,15 @@ class centreDetail extends Component{
   handleChange(event){
     event.preventDefault();
     this.setState({
-     "typeOfCentre"              : this.refs.typeOfCentre.value,
-      "nameOfCentre"             : this.refs.nameOfCentre.value,
+     "typeOfCenter"              : this.refs.typeOfCenter.value,
+      "nameOfCenter"             : this.refs.nameOfCenter.value,
       "address"                  : this.refs.address.value,
       "state"                    : this.refs.state.value,
       "district"                 : this.refs.district.value,
       "pincode"                  : this.refs.pincode.value,
-      "centreInchargeName"       : this.refs.centreInchargeName.value,
-      "centreInchargeContact"    : this.refs.centreInchargeContact.value,
-      "centreInchargeEmail"      : this.refs.centreInchargeEmail.value,
+      "centerInchargeName"       : this.refs.centerInchargeName.value,
+      "centerInchargeContact"    : this.refs.centerInchargeContact.value,
+      "centerInchargeEmail"      : this.refs.centerInchargeEmail.value,
       "MISCoordinatorName"       : this.refs.MISCoordinatorName.value,
       "MISCoordinatorContact"    : this.refs.MISCoordinatorContact.value,
       "MISCoordinatorEmail"      : this.refs.MISCoordinatorEmail.value,
@@ -147,7 +149,6 @@ class centreDetail extends Component{
   Submit(event){
     event.preventDefault();
     if (this.validateForm() && this.validateFormReq()) {
-      var academicArray=[];
       var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
 
       var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
@@ -155,10 +156,10 @@ class centreDetail extends Component{
 
       var id2 = this.state.uID;
         /*    if (this.validateForm()) {*/    
-      var centreDetail= 
+      var centerDetail= 
       {
-        "type"                      : this.refs.typeOfCentre.value,
-        "centerName"                : this.refs.nameOfCentre.value,
+        "type"                      : this.refs.typeOfCenter.value,
+        "centerName"                : this.refs.nameOfCenter.value,
         "address"                   : {
             "addressLine"           : this.refs.address.value,
             "state"                 : this.refs.state.value,
@@ -168,32 +169,32 @@ class centreDetail extends Component{
         "districtsCovered"          : districtsCovered,
         "blocksCovered"             : blocksCovered,
         "villagesCovered"           : this.state.selectedVillages,
-        "centerInchargename"        : this.refs.centreInchargeName.value,
-        "centerInchargemobile"      : this.refs.centreInchargeContact.value,
-        "centerInchargeemail"       : this.refs.centreInchargeEmail.value,
+        "centerInchargename"        : this.refs.centerInchargeName.value,
+        "centerInchargemobile"      : this.refs.centerInchargeContact.value,
+        "centerInchargeemail"       : this.refs.centerInchargeEmail.value,
         "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
         "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
         "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
       };
-      // console.log("centreDetail",centreDetail);
+      // console.log("centerDetail",centerDetail);
       let fields = {};
-      fields["typeOfCentre"] = "";
-      fields["nameOfCentre"] = "";
+      fields["typeOfCenter"] = "";
+      fields["nameOfCenter"] = "";
       fields["address"] = "";
       fields["state"] = "";
       fields["district"] = "";
       fields["pincode"] = "";
-      fields["centreInchargeName"] = "";
-      fields["centreInchargeContact"] = "";
-      fields["centreInchargeEmail"] = "";
+      fields["centerInchargeName"] = "";
+      fields["centerInchargeContact"] = "";
+      fields["centerInchargeEmail"] = "";
       fields["MISCoordinatorName"] = "";
       fields["MISCoordinatorContact"] = "";
       fields["MISCoordinatorEmail"] = "";
       fields["districtCovered"] = "";
       fields["blockCovered"] = "";
 
-      // console.log('centreDetail',centreDetail);
-      axios.post('/api/centers',centreDetail)
+      // console.log('centerDetail',centerDetail);
+      axios.post('/api/centers',centerDetail)
       .then(function(response){
         swal({
           title : response.data,
@@ -207,15 +208,15 @@ class centreDetail extends Component{
       });
 
       this.setState({
-        "typeOfCentre"              : "",
-        "nameOfCentre"              : "",
+        "typeOfCenter"              : "",
+        "nameOfCenter"              : "",
         "address"                   : "",
         "state"                     : "",
         "district"                  : "",
         "pincode"                   : "",
-        "centreInchargeName"        : "",
-        "centreInchargeContact"     : "",
-        "centreInchargeEmail"       : "",
+        "centerInchargeName"        : "",
+        "centerInchargeContact"     : "",
+        "centerInchargeEmail"       : "",
         "MISCoordinatorName"        : "",
         "MISCoordinatorContact"     : "",
         "MISCoordinatorEmail"       : "",
@@ -232,54 +233,59 @@ class centreDetail extends Component{
   }
   Update(event){
   event.preventDefault();
-   if(this.refs.address.value == "" || this.refs.typeOfCentre.value == "" || this.refs.nameOfCentre.value == "" || this.refs.state.value == "" || this.refs.district.value == "" || this.refs.pincode.value == "" || this.refs.centreInchargeName.value == "" || this.refs.centreInchargeEmail.value == "" || this.refs.centreInchargeContact.value == "" || this.refs.MISCoordinatorName.value == "" || this.refs.MISCoordinatorContact.value == "" || this.refs.MISCoordinatorEmail == ""){
+  if(this.refs.address.value == "" || this.refs.typeOfCenter.value =="" || this.refs.nameOfCenter.value=="" || this.refs.state.value=="" 
+    || this.refs.district.value=="" || this.refs.pincode.value=="" || this.refs.selectedVillages.value=="" || this.refs.centerInchargeName.value=="" 
+    || this.refs.centerInchargeContact.value=="" || this.refs.centerInchargeEmail.value=="" || this.refs.MISCoordinatorName.value=="" 
+    || this.refs.MISCoordinatorContact.value=="" || this.refs.MISCoordinatorEmail.value=="")
+   {
       console.log('state validation');
       if (this.validateForm() && this.validateFormReq()){
         console.log('abc');
       }
     }else{
-      var academicArray=[];
         var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
 
         var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
         var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
 
         var id2 = this.state.uID;
-        var centreDetail = {
-          "type"                      : this.refs.typeOfCentre.value,
-          "centerName"                : this.refs.nameOfCentre.value,
-          "address"                   : this.refs.address.value,
-          "state"                     : this.refs.state.value,
-          "district"                  : this.refs.district.value,
-          "pincode"                   : this.refs.pincode.value,
+        var centerDetail = {
+          "type"                      : this.refs.typeOfCenter.value,
+          "centerName"                : this.refs.nameOfCenter.value,
+          "address"                   : {
+            "addressLine"             : this.refs.address.value,
+            "state"                   : this.refs.state.value,
+            "district"                : this.refs.district.value,
+            "pincode"                 : this.refs.pincode.value,
+          },
           "districtsCovered"          : districtsCovered,
           "blocksCovered"             : blocksCovered,
           "villagesCovered"           : this.state.selectedVillages,
-          "centerInchargename"        : this.refs.centreInchargeName.value,
-          "centerInchargemobile"      : this.refs.centreInchargeContact.value,
-          "centerInchargeemail"       : this.refs.centreInchargeEmail.value,
+          "centerInchargename"        : this.refs.centerInchargeName.value,
+          "centerInchargemobile"      : this.refs.centerInchargeContact.value,
+          "centerInchargeemail"       : this.refs.centerInchargeEmail.value,
           "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
           "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
           "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
         };
         
         let fields = {};
-        fields["typeOfCentre"] = "";
-        fields["nameOfCentre"] = "";
+        fields["typeOfCenter"] = "";
+        fields["nameOfCenter"] = "";
         fields["address"] = "";
         fields["state"] = "";
         fields["district"] = "";
         fields["pincode"] = "";
-        fields["centreInchargeName"] = "";
-        fields["centreInchargeContact"] = "";
-        fields["centreInchargeEmail"] = "";
+        fields["centerInchargeName"] = "";
+        fields["centerInchargeContact"] = "";
+        fields["centerInchargeEmail"] = "";
         fields["MISCoordinatorName"] = "";
         fields["MISCoordinatorContact"] = "";
         fields["MISCoordinatorEmail"] = "";
         fields["districtCovered"] = "";
         fields["blockCovered"] = "";
 
-        axios.patch('/api/centers',centreDetail, this.state.editId)
+        axios.patch('/api/centers',centerDetail, this.state.editId)
         .then(function(response){
           swal({
             title : response.data,
@@ -292,15 +298,15 @@ class centreDetail extends Component{
         });
 
         this.setState({
-          "typeOfCentre"              : "",
-          "nameOfCentre"              : "",
+          "typeOfCenter"              : "",
+          "nameOfCenter"              : "",
           "address"                   : "",
           "state"                     : "",
           "district"                  : "",
           "pincode"                   : "",
-          "centreInchargeName"        : "",
-          "centreInchargeContact"     : "",
-          "centreInchargeEmail"       : "",
+          "centerInchargeName"        : "",
+          "centerInchargeContact"     : "",
+          "centerInchargeEmail"       : "",
           "MISCoordinatorName"        : "",
           "MISCoordinatorContact"     : "",
           "MISCoordinatorEmail"       : "",
@@ -314,93 +320,25 @@ class centreDetail extends Component{
         });
         $('input[type=checkbox]').attr('checked', false);
     }
-    // else{
-       // var academicArray=[];
-       //  var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
-
-       //  var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
-       //  var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
-
-       //  var id2 = this.state.uID;
-       //  var centreDetail = {
-       //    "type"                      : this.refs.typeOfCentre.value,
-       //    "centerName"                : this.refs.nameOfCentre.value,
-       //    "address"                   : this.refs.address.value,
-       //    "state"                     : this.refs.state.value,
-       //    "district"                  : this.refs.district.value,
-       //    "pincode"                   : this.refs.pincode.value,
-       //    "districtsCovered"          : districtsCovered,
-       //    "blocksCovered"             : blocksCovered,
-       //    "villagesCovered"           : this.state.selectedVillages,
-       //    "centerInchargename"        : this.refs.centreInchargeName.value,
-       //    "centerInchargemobile"      : this.refs.centreInchargeContact.value,
-       //    "centerInchargeemail"       : this.refs.centreInchargeEmail.value,
-       //    "misCoordinatorname"        : this.refs.MISCoordinatorName.value,
-       //    "misCoordinatormobile"      : this.refs.MISCoordinatorContact.value,
-       //    "misCoordinatoremail"       : this.refs.MISCoordinatorEmail.value,
-       //  };
-        
-       
-       //  axios.put('/api/centers',centreDetail, this.state.editId)
-       //  .then(function(response){
-       //    swal({
-       //      title : response.data,
-       //      text  : response.data
-       //    });
-       //    this.getData(this.state.startRange, this.state.limitRange);
-       //  })
-       //  .catch(function(error){
-          
-       //  });
-
-       //  this.setState({
-       //    "typeOfCentre"              : "",
-       //    "nameOfCentre"              : "",
-       //    "address"                   : "",
-       //    "state"                     : "",
-       //    "district"                  : "",
-       //    "pincode"                   : "",
-       //    "centreInchargeName"        : "",
-       //    "centreInchargeContact"     : "",
-       //    "centreInchargeEmail"       : "",
-       //    "MISCoordinatorName"        : "",
-       //    "MISCoordinatorContact"     : "",
-       //    "MISCoordinatorEmail"       : "",
-       //    "districtCovered"           : "",
-       //    "blockCovered"              : "",
-       //    "selectedVillages"          : [],
-       //    "listofDistrict"            : [],
-       //    "listofBlocks"              : [],
-       //    "listofVillages"            : [],
-       //  });
-       $('input[type=checkbox]').attr('checked', false);
-
-      /*  for(var i=0;i<this.state.array.length;i++)
-        {
-        $( this.state.array ).prop( "checked", false );
-
-        }
-      */
-
-    // }
-    this.props.history.push('/centre-detail');
-    this.setState({
-      editId :"",
-    })
-    window.location.reload(true);
-
+   
+      $('input[type=checkbox]').attr('checked', false);
+      this.props.history.push('/center-detail');
+      this.setState({
+        "editId"              : "",
+      });
+      window.location.reload(true);
   }
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-      if (!fields["typeOfCentre"]) {
+      if (!fields["typeOfCenter"]) {
         formIsValid = false;
-        errors["typeOfCentre"] = "This field is required.";
+        errors["typeOfCenter"] = "This field is required.";
       }     
-      if (!fields["nameOfCentre"]) {
+      if (!fields["nameOfCenter"]) {
         formIsValid = false;
-        errors["nameOfCentre"] = "This field is required.";
+        errors["nameOfCenter"] = "This field is required.";
       }
       if (!fields["address"]) {
         formIsValid = false;
@@ -418,17 +356,17 @@ class centreDetail extends Component{
         formIsValid = false;
         errors["pincode"] = "This field is required.";
       }          
-      if (!fields["centreInchargeName"]) {
+      if (!fields["centerInchargeName"]) {
         formIsValid = false;
-        errors["centreInchargeName"] = "This field is required.";
+        errors["centerInchargeName"] = "This field is required.";
       }          
-      if (!fields["centreInchargeContact"]) {
+      if (!fields["centerInchargeContact"]) {
         formIsValid = false;
-        errors["centreInchargeContact"] = "This field is required.";
+        errors["centerInchargeContact"] = "This field is required.";
       }          
-      if (!fields["centreInchargeEmail"]) {
+      if (!fields["centerInchargeEmail"]) {
         formIsValid = false;
-        errors["centreInchargeEmail"] = "This field is required.";
+        errors["centerInchargeEmail"] = "This field is required.";
       }          
       if (!fields["MISCoordinatorName"]) {
         formIsValid = false;
@@ -451,12 +389,12 @@ class centreDetail extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-      if (typeof fields["centreInchargeEmail"] !== "undefined") {
+      if (typeof fields["centerInchargeEmail"] !== "undefined") {
         //regular expression for email validation
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-        if (!pattern.test(fields["centreInchargeEmail"])) {
+        if (!pattern.test(fields["centerInchargeEmail"])) {
           formIsValid = false;
-          errors["centreInchargeEmail"] = "Please enter valid email-ID.";
+          errors["centerInchargeEmail"] = "Please enter valid email-ID.";
         }
       }
       if (typeof fields["MISCoordinatorEmail"] !== "undefined") {
@@ -467,10 +405,10 @@ class centreDetail extends Component{
           errors["MISCoordinatorEmail"] = "Please enter valid email-ID.";
         }
       }
-      if (typeof fields["centreInchargeContact"] !== "undefined") {
-        if (!fields["centreInchargeContact"].match(/^[0-9]{10}$/)) {
+      if (typeof fields["centerInchargeContact"] !== "undefined") {
+        if (!fields["centerInchargeContact"].match(/^[0-9]{10}$/)) {
           formIsValid = false;
-          errors["centreInchargeContact"] = "Please enter valid mobile no.";
+          errors["centerInchargeContact"] = "Please enter valid mobile no.";
         }
       }
       if (typeof fields["MISCoordinatorContact"] !== "undefined") {
@@ -486,6 +424,7 @@ class centreDetail extends Component{
       return formIsValid;
   }
   componentDidMount() {
+
     console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
@@ -543,15 +482,15 @@ class centreDetail extends Component{
         })
       })
       this.setState({
-        "typeOfCentre"             : editData.type,
-        "nameOfCentre"             : editData.centerName,
+        "typeOfCenter"             : editData.type,
+        "nameOfCenter"             : editData.centerName,
         "address"                  : editData.address.addressLine,
         "state"                    : editData.address.state,
         "district"                 : editData.address.district,
         "pincode"                  : editData.address.pincode,
-        "centreInchargeName"       : editData.centerInchargename,
-        "centreInchargeContact"    : editData.centerInchargemobile,
-        "centreInchargeEmail"      : editData.centerInchargeemail,
+        "centerInchargeName"       : editData.centerInchargename,
+        "centerInchargeContact"    : editData.centerInchargemobile,
+        "centerInchargeEmail"      : editData.centerInchargeemail,
         "MISCoordinatorName"       : editData.misCoordinatorname,
         "MISCoordinatorContact"    : editData.misCoordinatormobile,
         "MISCoordinatorEmail"      : editData.misCoordinatoremail,
@@ -596,10 +535,10 @@ class centreDetail extends Component{
         listofStates : listofStates
       })
   }
-  componentWillUnmount(){
-      $("script[src='/js/adminLte.js']").remove();
-      $("link[href='/css/dashboard.css']").remove();
-  }
+  componentWillMount(){
+        // window.location.reload(true);
+
+     }
   districtCoveredChange(event){
     event.preventDefault();
     var districtCovered = event.target.value;
@@ -717,7 +656,7 @@ class centreDetail extends Component{
     })
   }
   render() {
-    console.log("editID",this.state.editId);
+
     const dataM = [{
         srno: 1,
         FamilyID: "Maharashtra",
@@ -837,22 +776,22 @@ class centreDetail extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
                               <label className="formLable">Select Type of Center</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeOfCentre" >
-                                <select className="custom-select form-control inputBox" value={this.state.typeOfCentre} ref="typeOfCentre" name="typeOfCentre" onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeOfCenter" >
+                                <select className="custom-select form-control inputBox" value={this.state.typeOfCenter} ref="typeOfCenter" name="typeOfCenter" onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--Select Center--</option>
-                                  <option  className="" >Development Centre</option>
-                                  <option  className="" >CSR Centre</option>
+                                  <option  className="" >Development Center</option>
+                                  <option  className="" >CSR Center</option>
                                   <option  className="" >ADP</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.typeOfCentre}</div>
+                              <div className="errorMsg">{this.state.errors.typeOfCenter}</div>
                             </div>
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Name of Centre</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="nameOfCentre" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.nameOfCentre}  name="nameOfCentre" placeholder="" ref="nameOfCentre"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                              <label className="formLable">Name of Center</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="nameOfCenter" >
+                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.nameOfCenter}  name="nameOfCenter" placeholder="" ref="nameOfCenter"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.nameOfCentre}</div>
+                              <div className="errorMsg">{this.state.errors.nameOfCenter}</div>
                             </div>
                           </div> 
                         </div><br/>
@@ -917,30 +856,30 @@ class centreDetail extends Component{
                             
                             <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                               <label className="formLable">Name of Center Incharge</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centreInchargeName" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.centreInchargeName} name="centreInchargeName" placeholder="" ref="centreInchargeName"  onKeyDown={this.isTextKey.bind(this)}   onChange={this.handleChange.bind(this)}/>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centerInchargeName" >
+                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.centerInchargeName} name="centerInchargeName" placeholder="" ref="centerInchargeName"  onKeyDown={this.isTextKey.bind(this)}   onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.centreInchargeName}</div>
+                              <div className="errorMsg">{this.state.errors.centerInchargeName}</div>
                             </div>
                              <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                               <label className="formLable">Contact No. of Center Incharge</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centreInchargeContact" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centerInchargeContact" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts"   value={this.state.centreInchargeContact} name="centreInchargeContact" placeholder="" ref="centreInchargeContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox nameParts"   value={this.state.centerInchargeContact} name="centerInchargeContact" placeholder="" ref="centerInchargeContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.centreInchargeContact}</div>
+                              <div className="errorMsg">{this.state.errors.centerInchargeContact}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                               <label className="formLable">Email of Center Incharge</label><span className="asterix">*</span>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="centreInchargeEmail" >
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="centerInchargeEmail" >
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-university fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text" className="form-control inputBox " name="centreInchargeEmail"  value={this.state.centreInchargeEmail} placeholder="" ref="centreInchargeEmail" onChange={this.handleChange.bind(this)}/>
+                                <input type="text" className="form-control inputBox " name="centerInchargeEmail"  value={this.state.centerInchargeEmail} placeholder="" ref="centerInchargeEmail" onChange={this.handleChange.bind(this)}/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.centreInchargeEmail}</div>
+                              <div className="errorMsg">{this.state.errors.centerInchargeEmail}</div>
                             </div>
                           </div> 
                         </div><br/>
@@ -1041,12 +980,12 @@ class centreDetail extends Component{
                                     <div className="row"> 
                                       <div className="col-lg-12 noPadding">  
                                        <div className="actionDiv">
-                                          <div className="centreDetailContainer col-lg-1">
+                                          <div className="centerDetailContainer col-lg-1">
                                             <input type="checkbox" id={village}  checked={this.state[village]?true:false} onChange={this.selectVillage.bind(this)}/>
-                                            <span className="centreDetailCheck"></span>
+                                            <span className="centerDetailCheck"></span>
                                           </div>
                                         </div>                            
-                                        <label className="centreDetaillistItem"> {village}</label>
+                                        <label className="centerDetaillistItem"> {village}</label>
                                       </div>
                                     </div>  
                                   </div>
@@ -1126,4 +1065,4 @@ class centreDetail extends Component{
         );
       }
 }
-export default centreDetail
+export default centerDetail
