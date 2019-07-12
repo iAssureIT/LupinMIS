@@ -17,7 +17,7 @@ class Sector extends Component{
    
     this.state = {
       "sector"              :"",
-      "user_id"             :"",
+      "user_ID"             :"",
       "sector_id"           :"",
       fields                : {},
       errors                : {},
@@ -73,7 +73,7 @@ class Sector extends Component{
     if (this.validateFormReq() && this.validateForm()) {
     var sectorValues= {
     "sector"      :this.refs.sector.value,
-    "user_id"     : this.state.user_id,
+    "user_ID"     : this.state.user_ID,
     };
 
     
@@ -108,9 +108,9 @@ class Sector extends Component{
       }
     }else{
       var sectorValues= {
-        "sector_id"   :this.refs.sector.value.split('|')[1],
-        "sector"      :this.refs.sector.value.split('|')[0],
-        "user_id"     : this.state.user_id,
+        "sector_ID"   :this.refs.editId.value,
+        "sector"      :this.refs.sector.value,
+        "user_ID"     : this.state.user_ID,
       };
 
       

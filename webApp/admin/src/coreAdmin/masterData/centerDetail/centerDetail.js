@@ -35,17 +35,17 @@ class centerDetail extends Component{
       "centerDetailArray"        :[],
       "array"                    :[],
       "shown"                    : true,
-      "tabtype"                     : "location",
-      "fields"                      : {},
-      "errors"                      : {},
-      "listofStates"                : [],
-      "listofDistrict"              : [],
-      "listofBlocks"                : [],
-      "listofVillages"              : [],
-      "selectedVillages"            : [],
-      "twoLevelHeader"              : {
-        apply                     : true,
-        firstHeaderData           : [
+      "tabtype"                  : "location",
+      "fields"                   : {},
+      "errors"                   : {},
+      "listofStates"             : [],
+      "listofDistrict"           : [],
+      "listofBlocks"             : [],
+      "listofVillages"           : [],
+      "selectedVillages"         : [],
+      "twoLevelHeader"           : {
+        apply                    : true,
+        firstHeaderData          : [
                                       {
                                           heading : '',
                                           mergedColoums : 4
@@ -79,9 +79,9 @@ class centerDetail extends Component{
         searchApply               : true,
         editUrl                   : '/center-detail/'
       },
-      "startRange"                  : 0,
-      "limitRange"                  : 10,
-      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
+      "startRange"                : 0,
+      "limitRange"                : 10,
+      "editId"                    : this.props.match.params ? this.props.match.params.id : ''
     }
     this.changeTab = this.changeTab.bind(this); 
   }
@@ -200,8 +200,8 @@ class centerDetail extends Component{
       axios.post('/api/centers',centerDetail)
       .then(function(response){
         swal({
-          title : response.data,
-          text  : response.data
+          title : response.data.message,
+          text  : response.data.message
         });
         this.getData(this.state.startRange, this.state.limitRange);
         
@@ -253,7 +253,7 @@ class centerDetail extends Component{
 
         var id2 = this.state.uID;
         var centerDetail = {
-          "center_Id"                 : this.state.editId,
+          "center_ID  "               : this.state.editId,
           "centerName"                : this.refs.nameOfCenter.value,
           "type"                      : this.refs.typeOfCenter.value,
           "address"                   : {
@@ -292,8 +292,8 @@ class centerDetail extends Component{
         axios.patch('/api/centers',centerDetail, this.state.editId)
         .then(function(response){
           swal({
-            title : response.data,
-            text  : response.data
+            title : response.data.message,
+            text  : response.data.message
           });
           this.getData(this.state.startRange, this.state.limitRange);
         })
@@ -441,7 +441,7 @@ class centerDetail extends Component{
       method: 'get',
       url: '/api/centers/list',
     }).then((response)=> {
-      var tableDatas = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+      var tableDatas = response.data.message.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
       var tableData = tableDatas.map((a, index)=>{
         return {
           "_id" : a._id,
@@ -478,7 +478,7 @@ class centerDetail extends Component{
       method: 'get',
       url: '/api/centers/'+id,
     }).then((response)=> {
-      var editData = response.data[0];
+      var editData = response.data.message[0];
       console.log('editData',editData);
       editData.villagesCovered.map((data, i)=>{
         this.setState({
@@ -525,7 +525,7 @@ class centerDetail extends Component{
         method: 'get',
         url: '/api/centers/list',
       }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+        var tableData = response.data.message.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
 
         this.setState({
           tableData : tableData.slice(startRange, limitRange),

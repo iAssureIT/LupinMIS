@@ -3,7 +3,6 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 
-
 import 'react-table/react-table.css';
 import "./Family.css";
 
@@ -202,8 +201,8 @@ class Family extends Component{
       event.preventDefault();
       var familyValues= 
       {
-          families_ID          :this.refs.familyID.value.split('|')[1], 
-          familyID             :this.refs.familyID.value.split('|')[0],
+          families_ID          :this.refs.editId.value, 
+          familyID             :this.refs.familyID.value,
           familyHead           :this.refs.nameOfFamilyHead.value, 
           contactNumber        :this.refs.contact.value, 
           uidNumber            :this.refs.uID.value, 

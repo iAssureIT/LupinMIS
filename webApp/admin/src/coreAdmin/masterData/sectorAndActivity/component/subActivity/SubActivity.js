@@ -1,8 +1,8 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-import swal                   from 'sweetalert';
-import _                      from 'underscore';
+/*import swal                   from 'sweetalert';
+*/import _                      from 'underscore';
 import {Route, withRouter}    from 'react-router-dom';
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./SubActivity.css";
@@ -17,19 +17,19 @@ class SubActivity extends Component{
    
     this.state = {
       "sector"              :"",
-      "activityName"            :"",
-      "subActivityName"         :"",
+      "activityName"        :"",
+      "subActivityName"     :"",
       "unit"                :"",
       "familyUpgradation"   :"No",
-      "user_id"             :"",
+      "user_ID"             :"",
       "shown"               : true,
       fields                : {},
       errors                : {},
       "tableHeading"        : {
         sector              : "Name of Sector",
-        activityName            : "Name of Activity",
+        activityName        : "Name of Activity",
         number              : "Name of Sub-Activity",
-        unit                : "Unit", //to be Changes
+        unit                : "Unit",
         familyUpgradation   : "Family Upgradation",
         actions             : 'Action',
       },
@@ -39,8 +39,9 @@ class SubActivity extends Component{
       },
       "startRange"          : 0,
       "limitRange"          : 10,
-      "editId"              : props.match.params ? props.match.params.sector_id : ''
+      "editId"              : props.match.params ? props.match.params.subactivityId : ''
     }
+    console.log("editId",this.state.editId);
   }
 
   handleChange(event){
@@ -90,14 +91,14 @@ class SubActivity extends Component{
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
     var subActivityValues = {
-      "sector_id"            :this.refs.sector.value.split('|')[1],
+      "sector_ID"            :this.refs.sector.value.split('|')[1],
       "sector"               :this.refs.sector.value.split('|')[0],
-      "activity_id"          :this.refs.activityName.value.split('|')[1],
+      "activity_ID"          :this.refs.activityName.value.split('|')[1],
       "activityName"         :this.refs.activityName.value.split('|')[0],
       "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.state.unit,
       "familyUpgradation"    :this.state.familyUpgradation,
-      "user_id"              :this.state.user_id,
+      "user_ID"              :this.state.user_ID,
     };
     let fields                = {};
     fields["sector"]          = "";
@@ -113,10 +114,10 @@ class SubActivity extends Component{
     });
     axios.patch('/api/sectors/subactivity',subActivityValues)
       .then(function(response){
-        swal({
+        /*swal({
           title : response.data,
           text  : response.data
-        });
+        });*/
         this.getData(this.state.startRange, this.state.limitRange);
       })
       .catch(function(error){
@@ -133,15 +134,15 @@ class SubActivity extends Component{
       }
     }else{
     var subActivityValues = {
-      "sector_id"            :this.refs.sector.value.split('|')[1],
+      "sector_ID"            :this.refs.sector.value.split('|')[1],
       "sector"               :this.refs.sector.value.split('|')[0],
-      "activity_id"          :this.refs.activityName.value.split('|')[1],
-      "activityName"             :this.refs.activityName.value.split('|')[0],
-      "subactivity_id"       :this.refs.subActivityName.value.split('|')[1],
+      "activity_ID"          :this.refs.activityName.value.split('|')[1],
+      "activityName"         :this.refs.activityName.value.split('|')[0],
+      "subactivity_ID"       :this.state.editId,
       "subActivityName"      :this.refs.subActivityName.value.split('|')[0],
       "unit"                 :this.state.unit,
       "familyUpgradation"    :this.state.familyUpgradation,
-      "user_id"              :this.state.user_id,
+      "user_ID"              :this.state.user_ID,
     };
     let fields                = {};
     fields["sector"]          = "";
@@ -157,10 +158,10 @@ class SubActivity extends Component{
     });
     axios.patch('/api/sectors',subActivityValues, this.state.editId)
         .then(function(response){
-          swal({
+          /*swal({
             title : response.data,
             text  : response.data
-          });
+          });*/
           this.getData(this.state.startRange, this.state.limitRange);
           this.setState({
             editId : ''
@@ -239,7 +240,7 @@ class SubActivity extends Component{
             return {
               _id               : a._id+'/'+b._id+'/'+c._id,
               sector            : a.sector,
-              activityName          : b.activityName, 
+              activityName      : b.activityName, 
               number            : c.subActivityName,
               unit              : c.unit,
               familyUpgradation : c.familyUpgradation

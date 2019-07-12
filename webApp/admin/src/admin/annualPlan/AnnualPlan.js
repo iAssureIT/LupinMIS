@@ -6,7 +6,6 @@ import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.js
 import _                      from 'underscore';
 import swal                   from 'sweetalert';
 
-
 import 'react-table/react-table.css';
 import "./AnnualPlan.css";
 
@@ -145,6 +144,7 @@ class AnnualPlan extends Component{
     }
  
   }
+
   SubmitAcademics(event){
     event.preventDefault();
     var academicArray=[];
@@ -154,8 +154,6 @@ class AnnualPlan extends Component{
     {
       "month"                : this.refs.month.value, 
       "year"                : this.refs.year.value,          
-
-
     };
 
     let fields = {};
@@ -269,8 +267,8 @@ class AnnualPlan extends Component{
       axios.post('/api/annualPlans',annualPlanValues)
       .then(function(response){
         swal({
-          title : response.data,
-          text  : response.data
+          title : response.data.message,
+          text  : response.data.message
         });
         this.getData(this.state.startRange, this.state.limitRange);
         
@@ -357,9 +355,9 @@ class AnnualPlan extends Component{
                     <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                            <div className=" col-lg-3 col-lg-offset-2  col-md-4 col-sm-6 col-xs-12 ">
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
-                              <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
-                                <option className="" >Centre</option>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                              <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center}  onChange={this.handleChange.bind(this)} >
+                                <option className="" >Center</option>
                             
                                     
                               </select>

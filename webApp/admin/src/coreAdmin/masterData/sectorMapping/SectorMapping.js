@@ -88,9 +88,9 @@ class SectorMapping extends Component{
       "goal"   : this.refs.goalName.value,          
       "type"   : this.refs.goalType.value,          
       "sector" : [{
-            "sector_id"            :this.refs.sector.value.split('|')[1],
+            "sector_ID"            :this.refs.sector.value.split('|')[1],
             "sectorName"           :this.refs.sectorName.value.split('|')[0],
-            "activity_id"          :this.refs.activity.value.split('|')[1],
+            "activity_ID"          :this.refs.activity.value.split('|')[1],
             "ActivityName"         :this.refs.ActivityName.value.split('|')[0],
           }],                   
     };
@@ -130,13 +130,13 @@ class SectorMapping extends Component{
     var id2 = this.state.uID;
     var mappingValues= 
     {     
-      "sectorMapping_ID"    :this.refs.goalName.value.split('|')[1],
-      "goal"                :this.refs.goalName.value.split('|')[0],
+      "sectorMapping_ID"    :this.refs.editId.value,
+      "goal"                :this.refs.goalName.value,
       "type"                : this.refs.goalType.value,          
       "sector" : [{
-            "sector_id"            :this.refs.sector.value.split('|')[1],
+            "sector_ID"            :this.refs.sector.value.split('|')[1],
             "sectorName"           :this.refs.sectorName.value.split('|')[0],
-            "activity_id"          :this.refs.activity.value.split('|')[1],
+            "activity_ID"          :this.refs.activity.value.split('|')[1],
             "ActivityName"         :this.refs.ActivityName.value.split('|')[0],
           }],                   
     };
@@ -154,6 +154,47 @@ class SectorMapping extends Component{
         });
         this.getData(this.state.startRange, this.state.limitRange);
       })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+      this.setState({
+        "goalName"  :"",
+        "goalType"  :"",
+        "sector"    :"",
+        "activity"  :"",
+        fields      :fields
+      });
+    }  
+  }
+  Update(event){
+    event.preventDefault();
+    if(this.refs.goalName.value == "" || this.refs.goalType.value =="")
+   {
+      if (this.validateFormReq() && this.validateForm()){
+      }
+    }else{
+    var id2 = this.state.uID;
+    var mappingValues= 
+    {
+      "goal"   : this.refs.goalName.value,          
+      "type"   : this.refs.goalType.value,          
+     /* "sector"     : this.refs.sector.value,          
+      "activity"   : this.refs.activity.value,       */   
+    };
+    let fields = {};
+    fields["goalName"]  = "";
+    fields["goalType"]  = "";
+    fields["sector"]    = "";
+    fields["activity"]  = "";
+    
+    axios.patch('/api/sectorMappings',mappingValues)
+      .then(function(response){
+        swal({
+          title : response.data,
+          text  : response.data
+        });
+/*        this.getData(this.state.startRange, this.state.limitRange);
+*/      })
       .catch(function(error){
         console.log("error = ",error);
       });

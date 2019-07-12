@@ -20,7 +20,7 @@ class AnnualPlan extends Component{
       "sectorName"          :"",
       "subActivity"         :"",
       "activity"            :"",
-      "physicalUnit"        :"",
+      "physicalUnits"        :"",
       "unitCost"            :"",
       "totalBudget"         :"",
       "noOfBeneficiaries"   :"",
@@ -45,7 +45,7 @@ class AnnualPlan extends Component{
         apply               : true,
         firstHeaderData     : [
                                 {
-                                    heading : '',
+                                    heading : 'Activity Details',
                                     mergedColoums : 10
                                 },
                                 {
@@ -64,7 +64,7 @@ class AnnualPlan extends Component{
         activity            : "Activity",
         subActivity         : "Sub-Activity",
         unit                : "Unit",
-        physicalUnit        : "Physical Unit",
+        physicalUnits        : "Physical Unit",
         unitCost            : "Unit Cost",
         totalBudget         : "Total Cost",
         noOfBeneficiaries   : "No. Of Beneficiaries",
@@ -96,7 +96,7 @@ class AnnualPlan extends Component{
       "sectorName"          : this.refs.sectorName.value,
       "year"                : this.refs.year.value,          
       "activity"            : this.refs.activity.value,
-      "physicalUnit"        : this.refs.physicalUnit.value,
+      "physicalUnits"        : this.refs.physicalUnits.value,
       "unitCost"            : this.refs.unitCost.value,
       "totalBudget"         : this.refs.totalBudget.value,
       "noOfBeneficiaries"   : this.refs.noOfBeneficiaries.value,
@@ -108,8 +108,6 @@ class AnnualPlan extends Component{
       "indirectCC"          : this.refs.indirectCC.value,
       "other"               : this.refs.other.value,
       "remark"              : this.refs.remark.value,
-    /*  "center"              : this.refs.center.value,
-      "sector_id"           : this.refs.sector_id.value,*/
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -131,13 +129,17 @@ class AnnualPlan extends Component{
     if (this.validateFormReq() &&this.validateForm()) {
     var annualPlanValues= 
     {
-      "year"                : this.refs.year.value,          
       "month"               : this.refs.month.value,          
-      // "center"              : this.refs.center.value,
-      // "sector_id"           : this.refs.sector_id.value,
-      "sectorName"          : this.refs.sectorName.value,
-      "activity"            : this.refs.activity.value,
-      "physicalUnit"        : this.refs.physicalUnit.value,
+      "year"                : this.refs.year.value,          
+      "center"              : this.state.center.value,
+      "sector_ID"           : this.refs.sectorName.value.split('|')[1],
+      "sectorName"          : this.refs.sectorName.value.split('|')[0],
+      "activity_ID"         : this.refs.activity.value.split('|')[1],
+      "activity"            : this.refs.activity.value.split('|')[0],
+      "subactivity_ID"      : this.refs.subactivity.value.split('|')[1],
+      "subactivity"         : this.refs.subactivity.value.split('|')[0],
+      "unit"                : this.refs.unit.value,
+      "physicalUnits"        : this.refs.physicalUnits.value,
       "unitCost"            : this.refs.unitCost.value,
       "totalBudget"         : this.refs.totalBudget.value,
       "noOfBeneficiaries"   : this.refs.noOfBeneficiaries.value,
@@ -150,13 +152,14 @@ class AnnualPlan extends Component{
       "other"               : this.refs.other.value,
       "remark"              : this.refs.remark.value,
     };
+ 
 
     let fields = {};
     fields["year"]              = "";
     fields["month"]             = "";
     fields["sectorName"]        = "";
     fields["activity"]          = "";
-    fields["physicalUnit"]      = "";
+    fields["physicalUnits"]      = "";
     fields["unitCost"]          = "";
     fields["totalBudget"]       = "";
     fields["noOfBeneficiaries"] = "";
@@ -175,8 +178,8 @@ class AnnualPlan extends Component{
     axios.post('/api/annualPlans/',annualPlanValues)
     .then(function(response){
       swal({
-        title : response.data,
-        text  : response.data
+        title : response.data.message,
+        text  : response.data.message
       });
       console.log("response"+response.data);
       this.getData(this.state.startRange, this.state.limitRange);
@@ -188,10 +191,9 @@ class AnnualPlan extends Component{
         "year"                :"",
         "month"               :"",
         "center"              :"",
-        "sector_id"           :"",
         "sectorName"          :"",
         "activity"            :"",
-        "physicalUnit"        :"",
+        "physicalUnits"        :"",
         "unitCost"            :"",
         "totalBudget"         :"",
         "noOfBeneficiaries"   :"",
@@ -226,7 +228,7 @@ class AnnualPlan extends Component{
   Update(event){    
     event.preventDefault();
     if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activity.value=="" 
-      || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
+      || this.refs.physicalUnits.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
       || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
       || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
       {
@@ -235,13 +237,17 @@ class AnnualPlan extends Component{
       }else{
         var annualPlanValues= 
         {
-          "year"                : this.refs.year.value,          
           "month"               : this.refs.month.value,          
-          // "center"              : this.refs.center.value,
-          // "sector_id"           : this.refs.sector_id.value,
-          "sectorName"          : this.refs.sectorName.value,
-          "activity"            : this.refs.activity.value,
-          "physicalUnit"        : this.refs.physicalUnit.value,
+          "year"                : this.refs.year.value,          
+          "center"              : this.state.center.value,
+          "sector_ID"           : this.refs.sectorName.value.split('|')[1],
+          "sectorName"          : this.refs.sectorName.value.split('|')[0],
+          "activity_ID"         : this.refs.activity.value.split('|')[1],
+          "activity"            : this.refs.activity.value.split('|')[0],
+          "subactivity_ID"      : this.refs.subactivity.value.split('|')[1],
+          "subactivity"         : this.refs.subactivity.value.split('|')[0],
+          "unit"                : this.refs.unit.value,
+          "physicalUnits"        : this.refs.physicalUnits.value,
           "unitCost"            : this.refs.unitCost.value,
           "totalBudget"         : this.refs.totalBudget.value,
           "noOfBeneficiaries"   : this.refs.noOfBeneficiaries.value,
@@ -254,13 +260,12 @@ class AnnualPlan extends Component{
           "other"               : this.refs.other.value,
           "remark"              : this.refs.remark.value,
         };
-
       let fields = {};
       fields["year"]              = "";
       fields["month"]             = "";
       fields["sectorName"]        = "";
       fields["activity"]          = "";
-      fields["physicalUnit"]      = "";
+      fields["physicalUnits"]      = "";
       fields["unitCost"]          = "";
       fields["totalBudget"]       = "";
       fields["noOfBeneficiaries"] = "";
@@ -290,7 +295,7 @@ class AnnualPlan extends Component{
         "sector_id"           :"",
         "sectorName"          :"",
         "activity"            :"",
-        "physicalUnit"        :"",
+        "physicalUnits"        :"",
         "unitCost"            :"",
         "totalBudget"         :"",
         "noOfBeneficiaries"   :"",
@@ -383,7 +388,7 @@ class AnnualPlan extends Component{
         "center"              : editData.center,
         "sectorName"          : editData.sectorName,
         "activity"            : editData.activity,
-        "physicalUnit"        : editData.physicalUnit,
+        "physicalUnits"        : editData.physicalUnits,
         "unitCost"            : editData.unitCost,
         "totalBudget"         : editData.totalBudget,
         "noOfBeneficiaries"   : editData.noOfBeneficiaries,
@@ -523,25 +528,25 @@ class AnnualPlan extends Component{
                               <div className=" row">
                                 <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                   <label className="formLable">Physical Units</label>
-                                  <div className=" input-group inputBox-main " id="unit" >
-                                    <input type="text" className="form-control inputBoxAP nameParts" name="physicalUnit" placeholder=""ref="physicalUnit" value={this.state.physicalUnit} onChange={this.handleChange.bind(this)}/>
+                                  <div className=" input-group inputBox-main " id="physicalUnits" >
+                                    <input type="text" className="form-control inputBoxAP nameParts" name="physicalUnits" placeholder=""ref="physicalUnits" value={this.state.physicalUnits} onChange={this.handleChange.bind(this)}/>
                                   </div>
                                 </div>
                                 <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                   <label className="formLable">Unit Cost</label>
-                                  <div className=" input-group inputBox-main" id="physicalUnit" >
+                                  <div className=" input-group inputBox-main" id="unitCost" >
                                     <input type="text" className="form-control inputBoxAP nameParts" name="unitCost" placeholder=""ref="unitCost" value={this.state.unitCost} onChange={this.handleChange.bind(this)}/>
                                   </div>
                                 </div>  
                                 <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                   <label className="formLable">Total Cost</label>
-                                  <div className="input-group inputBox-main" id="unitCost" >
+                                  <div className="input-group inputBox-main" id="totalBudget" >
                                     <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
                                   </div>
                                 </div>  
                                 <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                   <label className="formLable">No.of Benef.</label>
-                                  <div className=" input-group inputBox-main" id="totalBudget" >
+                                  <div className=" input-group inputBox-main" id="noOfBeneficiaries" >
                                     <input type="text" className="form-control inputBoxAP nameParts" name="noOfBeneficiaries" placeholder=""ref="noOfBeneficiaries" value={this.state.noOfBeneficiaries} onChange={this.handleChange.bind(this)}/>                              
                                   </div>
                                 </div>
@@ -591,11 +596,11 @@ class AnnualPlan extends Component{
                               </div>
                               <div className=" row">
                                 <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                              <label className="formLable">Other</label>
-                              <div className=" input-group inputBox-main" id="other" >
-                                <input type="text" className="form-control inputBox nameParts" name="other" placeholder=""ref="other" value={this.state.other}  onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>
+                                  <label className="formLable">Other</label>
+                                  <div className=" input-group inputBox-main" id="other" >
+                                    <input type="text" className="form-control inputBox nameParts" name="other" placeholder=""ref="other" value={this.state.other}  onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                </div>
                                 <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
                                   <label className="formLable">Remark</label>
                                   <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="remark" >

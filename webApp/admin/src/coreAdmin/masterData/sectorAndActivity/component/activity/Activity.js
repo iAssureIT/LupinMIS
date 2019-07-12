@@ -18,9 +18,9 @@ class Activity extends Component{
    
     this.state = {
       "sector"              :"",
-      "activity"        :"",
+      "activity"            :"",
       "academicData"        :[],
-      "user_id"                 :"",
+      "user_ID"             :"",
       "shown"               : true,
       "tabtype"             : "location",
       "availableSectors"    : [],
@@ -45,7 +45,7 @@ class Activity extends Component{
   handleChange(event){
     event.preventDefault();
     this.setState({
-      "sector"   : this.refs.sector.value,  
+      "sector"     : this.refs.sector.value,  
       "activity"   : this.refs.activity.value,  
     });
     let fields = this.state.fields;
@@ -79,10 +79,10 @@ class Activity extends Component{
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
     var activityValues = {
-      "sector_id"            :this.refs.sector.value.split('|')[1],
+      "sector_ID"            :this.refs.sector.value.split('|')[1],
       "sector"               :this.refs.sector.value.split('|')[0],
       "activity"             :this.refs.activity.value,
-      "user_id"              : this.state.user_id,
+      "user_ID"              : this.state.user_ID,
     };
     let fields            = {};
     fields["sector"]      = "";
@@ -116,11 +116,11 @@ class Activity extends Component{
       }
     }else{
       var activityValues = {
-      "sector_id"            :this.refs.sector.value.split('|')[1],
+      "sector_ID"            :this.refs.sector.value.split('|')[1],
       "sector"               :this.refs.sector.value.split('|')[0],
-      "activity_id"          :this.refs.activity.value.split('|')[1],
+      "activity_ID"          :this.state.editId,
       "activity"             :this.refs.activity.value.split('|')[0],
-      "user_id"              : this.state.user_id,
+      "user_ID"              : this.state.user_ID,
       };
       
       axios.patch('/api/sectors/activity/update',activityValues, this.state.editId)
