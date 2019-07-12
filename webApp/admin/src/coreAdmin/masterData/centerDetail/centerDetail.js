@@ -247,11 +247,9 @@ class centerDetail extends Component{
       }
     }else{
         var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
-
         var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
         var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
 
-        var id2 = this.state.uID;
         var centerDetail = {
           "center_ID  "               : this.state.editId,
           "centerName"                : this.refs.nameOfCenter.value,
@@ -289,8 +287,8 @@ class centerDetail extends Component{
         fields["districtCovered"] = "";
         fields["blockCovered"] = "";
 
-        axios.patch('/api/centers',centerDetail, this.state.editId)
-        .then(function(response){
+        axios.patch('/api/centers',centerDetail)
+        .then((response)=>{
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -441,7 +439,7 @@ class centerDetail extends Component{
       method: 'get',
       url: '/api/centers/list',
     }).then((response)=> {
-      var tableDatas = response.data.message.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+      var tableDatas = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
       var tableData = tableDatas.map((a, index)=>{
         return {
           "_id" : a._id,
@@ -473,12 +471,12 @@ class centerDetail extends Component{
     })
   }
   edit(id){
-    $('input:checkbox').attr('checked','unchecked');
+    // $('input:checkbox').attr('checked','unchecked');
     axios({
       method: 'get',
       url: '/api/centers/'+id,
     }).then((response)=> {
-      var editData = response.data.message[0];
+      var editData = response.data[0];
       console.log('editData',editData);
       editData.villagesCovered.map((data, i)=>{
         this.setState({
@@ -525,7 +523,7 @@ class centerDetail extends Component{
         method: 'get',
         url: '/api/centers/list',
       }).then((response)=> {
-        var tableData = response.data.message.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
+        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
 
         this.setState({
           tableData : tableData.slice(startRange, limitRange),

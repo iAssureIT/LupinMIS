@@ -231,7 +231,7 @@
 }
 
 /* Create a custom checkbox */
-.centreDetailContainer{
+.centerDetailContainer{
   position: relative;
 /*  padding-left: 3px;
  margin-bottom: 12px;
@@ -244,7 +244,7 @@
   left:3px;
 }
 /* Hide the browser's default checkbox */
-.centreDetailContainer input {
+.centerDetailContainer input {
      position: relative;
     opacity: 0;
     z-index: 1;
@@ -255,10 +255,9 @@
     margin-top: 2px;
 
 }
-.centreDetailCheck {
+.centerDetailCheck {
   position: absolute;
   top: 2px;
-  left: 52px;
   vertical-align: center !important;
   align-content: center;
   height: 17px;
@@ -266,30 +265,29 @@
   background-color: #ffffff;
   border-radius: 3px;
   border: 2px solid #ddd;
-  margin-left: -37px;
   z-index: 0;
 }
 /* On mouse-over, add a grey background color */
-.centreDetailContainer:hover input ~ .centreDetailCheck{
+.centerDetailContainer:hover input ~ .centerDetailCheck{
   background-color: #eee;
 }
 /* When the checkbox is checked, add a blue background */
-.centreDetailContainer input:checked ~ .centreDetailCheck {
+.centerDetailContainer input:checked ~ .centerDetailCheck {
   background-color: #2196F3;
   border:2px solid #2196F3;
 }
 /* Create the checkmark/indicator (hidden when not checked) */
-.centreDetailCheck:after {
+.centerDetailCheck:after {
   content: "";
   position: absolute;
   display: none;
 }
 /* Show the checkmark when checked */
-.centreDetailContainer input:checked ~ .centreDetailCheck:after {
+.centerDetailContainer input:checked ~ .centerDetailCheck:after {
   display: block;
 }
 /* Style the checkmark/indicator */
-.centreDetailContainer .centreDetailCheck:after {
+.centerDetailContainer .centerDetailCheck:after {
   left: 4px;
   top: 0px;
   width: 6px;
@@ -299,9 +297,10 @@
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }
-.centreDetaillistItem{
+.centerDetaillistItem{
   font-family: 'Montserrat',sans-serif !important;
   padding-left: 14px;
-  padding-top: 5px;
+  padding-top: 3px;
   font-size: 12px !important;
+  cursor: pointer;
 }

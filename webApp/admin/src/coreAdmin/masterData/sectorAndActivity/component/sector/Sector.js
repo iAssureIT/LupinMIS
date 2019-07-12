@@ -80,8 +80,8 @@ class Sector extends Component{
     axios.post('/api/sectors',sectorValues)
       .then(function(response){
         swal({
-          title : response.data,
-          text  : response.data
+          title : response.data.message,
+          text  : response.data.message
         });
         this.getData(this.state.startRange, this.state.limitRange);
       })
@@ -108,7 +108,7 @@ class Sector extends Component{
       }
     }else{
       var sectorValues= {
-        "sector_ID"   :this.refs.editId.value,
+        "sector_ID"   :this.state.editId,
         "sector"      :this.refs.sector.value,
         "user_ID"     : this.state.user_ID,
       };
@@ -117,8 +117,8 @@ class Sector extends Component{
       axios.patch('/api/sectors/update',sectorValues, this.state.editId)
         .then(function(response){
           swal({
-            title : response.data,
-            text  : response.data
+            title : response.data.message,
+            text  : response.data.message
           });
           this.getData(this.state.startRange, this.state.limitRange);
           this.setState({
@@ -164,6 +164,7 @@ class Sector extends Component{
   }
 
   componentWillReceiveProps(nextProps){
+    console.log("editId",editId);
     var editId = nextProps.match.params.sectorId;
     if(nextProps.match.params.sectorId){
       this.setState({
@@ -175,6 +176,7 @@ class Sector extends Component{
   }
 
   componentDidMount() {
+    console.log("editId",editId);
     var editId = this.props.match.params.sectorId;
     if(editId){      
       this.edit(editId);
@@ -234,7 +236,7 @@ class Sector extends Component{
   }
    componentWillUnmount(){
     this.setState({
-      "sector"              :"",
+      "sector" :"",
       "editId" : ""
     })
   }

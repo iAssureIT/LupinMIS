@@ -28,7 +28,7 @@ class Activity extends Component{
       errors                : {},
       "tableHeading"        : {
         sector              : "Name of Sector",
-        activity            : "Name of Activity",
+        activityName        : "Name of Activity",
         actions             : 'Action',
       },
       "tableObjects"        : {
@@ -37,7 +37,8 @@ class Activity extends Component{
       },
       "startRange"          : 0,
       "limitRange"          : 10,
-      "editId"              : props.match.params ? props.match.params.sector_id : ''
+      "editId"              : props.match.params ? props.match.params.activityId : '',
+      "editSectorId"        : props.match.params ? props.match.params.sectorId : '',
     }
   }
  
@@ -79,9 +80,9 @@ class Activity extends Component{
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
     var activityValues = {
-      "sector_ID"            :this.refs.sector.value.split('|')[1],
-      "sector"               :this.refs.sector.value.split('|')[0],
-      "activity"             :this.refs.activity.value,
+      "sector_ID"            :this.state.editId,
+      "sector"               :this.refs.sector.value,
+      "activityName"         :this.refs.activity.value,
       "user_ID"              : this.state.user_ID,
     };
     let fields            = {};
@@ -96,8 +97,8 @@ class Activity extends Component{
     axios.patch('/api/sectors/activity',activityValues)
       .then(function(response){
         swal({
-          title : response.data,
-          text  : response.data
+          title : response.data.message,
+          text  : response.data.message
         });
         this.getData(this.state.startRange, this.state.limitRange);
       })
@@ -116,18 +117,18 @@ class Activity extends Component{
       }
     }else{
       var activityValues = {
-      "sector_ID"            :this.refs.sector.value.split('|')[1],
-      "sector"               :this.refs.sector.value.split('|')[0],
-      "activity_ID"          :this.state.editId,
-      "activity"             :this.refs.activity.value.split('|')[0],
-      "user_ID"              : this.state.user_ID,
+      "sector_ID"            :this.state.editId,
+      "sector"               :this.refs.sector.value,
+      "activity_ID"          :this.refs.activity.value.split('|')[1],
+      "activityName"         :this.refs.activity.value.split('|')[0],
+      "user_ID"              :this.state.user_ID,
       };
       
       axios.patch('/api/sectors/activity/update',activityValues, this.state.editId)
         .then(function(response){
           swal({
-            title : response.data,
-            text  : response.data
+            title : response.data.message,
+            text  : response.data.message
           });
           this.getData(this.state.startRange, this.state.limitRange);
           this.setState({
@@ -179,12 +180,16 @@ class Activity extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    var editId = nextProps.match.params.sector_id;
-    if(nextProps.match.params.sector_id){
+    this.getAvailableSectors();
+    var editId = nextProps.match.params.activityId;
+    if(nextProps.match.params.activityId){
       this.setState({
-        editId : editId
+        editId : editId,
+        editSectorId : nextProps.match.params.sectorId
       },()=>{
-        this.edit(this.state.editId);
+        // this.getAvailableActivity(this.state.editSectorId);
+        this.edit(this.state.editSectorId);
+        console.log("editId",this.state.editId);    
       })
       
     }
@@ -193,6 +198,7 @@ class Activity extends Component{
   componentDidMount() {
     this.getAvailableSectors();
     if(this.state.editId){      
+      // this.getAvailableActivity(this.state.editSectorId);
       this.edit(this.state.editId);
     }
     
@@ -209,7 +215,7 @@ class Activity extends Component{
           return {
             _id     : a._id+'/'+b._id,
             sector  : a.sector,
-            activity: b.activity 
+            activityName: b.activityName 
           }
         })
       }))
@@ -225,68 +231,6 @@ class Activity extends Component{
     }).catch(function (error) {
       console.log('error', error);
     });
-
-    // var tableDatas = [{
-    //       "_id" : "sector_id",
-    //       "sector": "Development Centre",
-    //       "activity": [
-    //           {
-    //               "subactivity": [
-    //                   {
-    //                     "_id" : "SubactivityId1",
-    //                     "subactivity" : "Subactivity 1",
-    //                     "unit" : 1,
-    //                     "familyUpgradation" : 'Yes'
-    //                   },
-    //                   {
-    //                     "_id" : "SubactivityId2",
-    //                     "subactivity" : "Subactivity 2",
-    //                     "unit" : 2,
-    //                     "familyUpgradation" : 'No'
-    //                   }
-    //               ],
-    //               "activity": "Rural Area Development",
-    //               "_id" : "activityid1"
-    //           },
-    //           {
-    //               "subactivity": [
-    //                   {
-    //                     "_id" : "SubactivityId31",
-    //                     "subactivity" : "Subactivity 31",
-    //                     "unit" : 13,
-    //                     "familyUpgradation" : 'Yes'
-    //                   },
-    //                   {
-    //                     "_id" : "SubactivityId14",
-    //                     "subactivity" : "Subactivity 14",
-    //                     "unit" : 41,
-    //                     "familyUpgradation" : 'No'
-    //                   }
-    //               ],
-    //               "activity": "Urban Area Development",
-    //               "_id" : "activityid2"
-    //           },
-    //           {
-    //               "subactivity": [
-    //                   {
-    //                     "_id" : "SubactivityId5",
-    //                     "subactivity" : "Subactivity 5",
-    //                     "unit" : 5,
-    //                     "familyUpgradation" : 'Yes'
-    //                   },
-    //                   {
-    //                     "_id" : "SubactivityId6",
-    //                     "subactivity" : "Subactivity 6",
-    //                     "unit" : 6,
-    //                     "familyUpgradation" : 'No'
-    //                   }
-    //               ],
-    //               "activity": "Farmer Development",
-    //               "_id" : "activityid3"
-    //           }
-    //       ],
-    //   }];
-      
   }
   getAvailableSectors(){
     axios({
@@ -302,17 +246,20 @@ class Activity extends Component{
     });
   }
   edit(id){
-    var activityId = this.props.match.params.activityId;
+    var activity_id = this.props.match.params.activityId;
+
     axios({
       method: 'get',
       url: '/api/sectors/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      
+      console.log("editData",editData)
       this.setState({
-        "sector"                : editData.sector+'|'+editData._id,
-        "activity"          :_.first(editData.activity.map((a, i)=>{return a._id == activityId ? a.activity : ''})),
+        "sector"            : editData.sector+'|'+editData._id,
+        "activity"      :_.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activityName : ''})),
+        // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
       },()=>{
+        console.log('this.state', this.state)
       });
     }).catch(function (error) {
     });

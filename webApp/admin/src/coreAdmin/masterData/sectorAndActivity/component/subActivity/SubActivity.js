@@ -1,8 +1,8 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-/*import swal                   from 'sweetalert';
-*/import _                      from 'underscore';
+import swal                   from 'sweetalert';
+import _                      from 'underscore';
 import {Route, withRouter}    from 'react-router-dom';
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./SubActivity.css";
@@ -28,7 +28,7 @@ class SubActivity extends Component{
       "tableHeading"        : {
         sector              : "Name of Sector",
         activityName        : "Name of Activity",
-        number              : "Name of Sub-Activity",
+        subActivityName     : "Name of Sub-Activity",
         unit                : "Unit",
         familyUpgradation   : "Family Upgradation",
         actions             : 'Action',
@@ -39,7 +39,8 @@ class SubActivity extends Component{
       },
       "startRange"          : 0,
       "limitRange"          : 10,
-      "editId"              : props.match.params ? props.match.params.subactivityId : ''
+      "editId"              : props.match.params ? props.match.params.subactivityId : '',
+      "editSectorId"        : props.match.params ? props.match.params.sectorId : '',
     }
     console.log("editId",this.state.editId);
   }
@@ -114,10 +115,10 @@ class SubActivity extends Component{
     });
     axios.patch('/api/sectors/subactivity',subActivityValues)
       .then(function(response){
-        /*swal({
-          title : response.data,
-          text  : response.data
-        });*/
+        swal({
+          title : response.data.message,
+          text  : response.data.message
+        });
         this.getData(this.state.startRange, this.state.limitRange);
       })
       .catch(function(error){
@@ -156,12 +157,12 @@ class SubActivity extends Component{
       "unit"                  :"",
       fields                  :fields
     });
-    axios.patch('/api/sectors',subActivityValues, this.state.editId)
+    axios.patch('/api/sectors/subactivity/update',subActivityValues, this.state.editId)
         .then(function(response){
-          /*swal({
-            title : response.data,
-            text  : response.data
-          });*/
+          swal({
+            title : response.data.message,
+            text  : response.data.message
+          });
           this.getData(this.state.startRange, this.state.limitRange);
           this.setState({
             editId : ''
@@ -207,41 +208,41 @@ class SubActivity extends Component{
   }
   componentWillReceiveProps(nextProps){
     this.getAvailableSectors();
-    var editId = nextProps.match.params.sector_id;
+    var editId = nextProps.match.params.subactivityId;
     // console.log('editId',editId);
-    if(nextProps.match.params.sector_id){
+    if(nextProps.match.params.subactivityId){
       this.setState({
-        editId : editId
+        editId : editId,
+        editSectorId : nextProps.match.params.sectorId
       },()=>{
-        this.edit(this.state.editId);
-        this.getAvailableActivity(this.state.editId);
-      })
-      
+        this.getAvailableActivity(this.state.editSectorId);
+        this.edit(this.state.editSectorId);
+      })    
     }
   }
 
   componentDidMount() {
     this.getAvailableSectors();
     if(this.state.editId){      
+      this.getAvailableActivity(this.state.editSectorId);
       this.edit(this.state.editId);
     }
     var data = {
       limitRange : 0,
       startRange : 1,
-    }
-      
+    }      
     axios({
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
       var tableData = _.flatten(response.data.map((a, index)=>{
-        return a.activityName.map((b, i)=>{
-          return b.subActivityName.map((c, i)=>{
+        return a.activity.map((b, i)=>{
+          return b.subActivity.map((c, i)=>{
             return {
               _id               : a._id+'/'+b._id+'/'+c._id,
               sector            : a.sector,
               activityName      : b.activityName, 
-              number            : c.subActivityName,
+              subActivityName   : c.subActivityName,
               unit              : c.unit,
               familyUpgradation : c.familyUpgradation
             }
@@ -284,29 +285,32 @@ class SubActivity extends Component{
       method: 'get',
       url: '/api/sectors/'+sector_id,
     }).then((response)=> {
+      console.log('response', response.data[0].activity)
         this.setState({
-          availableActivity : response.data[0].activityName
-        })
+          availableActivity : response.data[0].activity
+        },()=>{console.log("availableActivity",this.state.availableActivity)})
     }).catch(function (error) {
       console.log('error', error);
     });
   }
   edit(id){
     // console.log('id', id);
-    var activity_id = this.props.match.params.activity_id;
-    var subactivity_id = this.props.match.params.subactivity_id;
+    var activity_id = this.props.match.params.activityId;
+    var subactivity_id = this.props.match.params.subactivityId;
     
       axios({
         method: 'get',
         url: '/api/sectors/'+id,
       }).then((response)=> {
         var editData = response.data[0];
-        // console.log('editData', editData);
+        console.log('editData', editData);
         // console.log('subActivityName', _.first(editData.activityName.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''})));
         this.setState({
           "sector"                : editData.sector+'|'+editData._id,
-          "activityName"          :_.first(editData.activityName.map((a, i)=>{return a._id == activity_id ? a.activityName : ''}))+'|'+activity_id,
-          "subActivityName"       : _.flatten(editData.activityName.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''}))
+          "activityName"          : _.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activityName : ''}))+'|'+activity_id,
+          "subActivityName"       : _.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivity).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''})),
+          "unit"                  : _.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivity).map((b, j)=>{return b.unit ? b.unit : "a"}) : ''})),
+          "familyUpgradation"     : _.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivity).map((b, j)=>{return b.familyUpgradation ? b.familyUpgradation : "a"}) : ''})),
         },()=>{
 
         });
@@ -427,7 +431,7 @@ class SubActivity extends Component{
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unit" >
                         <input type="text" className="form-control inputBox nameParts" ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                       </div>
-                      <div className="errorMsg">{this.state.errors.subActivityName}</div>
+                      <div className="errorMsg">{this.state.errors.unit}</div>
                     </div>
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
                       <label className="formLable">Family Upgradation</label><span className="asterix">*</span>

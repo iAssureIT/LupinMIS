@@ -66,7 +66,7 @@ class BulkUpload extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps);
+    // console.log('nextProps',nextProps);
     if(nextProps.BasicInfoId){
        if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
         this.setState({

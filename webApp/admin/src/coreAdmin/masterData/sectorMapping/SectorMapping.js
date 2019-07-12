@@ -87,12 +87,12 @@ class SectorMapping extends Component{
     {     
       "goal"   : this.refs.goalName.value,          
       "type"   : this.refs.goalType.value,          
-      "sector" : [{
+     /* "sector" : [{
             "sector_ID"            :this.refs.sector.value.split('|')[1],
             "sectorName"           :this.refs.sectorName.value.split('|')[0],
             "activity_ID"          :this.refs.activity.value.split('|')[1],
             "ActivityName"         :this.refs.ActivityName.value.split('|')[0],
-          }],                   
+          }],                   */
     };
     let fields = {};
     fields["goalName"]  = "";
@@ -103,8 +103,8 @@ class SectorMapping extends Component{
     axios.post('/api/sectorMappings',mappingValues)
       .then(function(response){
         swal({
-          title : response.data,
-          text  : response.data
+          title : response.data.message,
+          text  : response.data.message
         });
         this.getData(this.state.startRange, this.state.limitRange);
       })
@@ -133,12 +133,12 @@ class SectorMapping extends Component{
       "sectorMapping_ID"    :this.refs.editId.value,
       "goal"                :this.refs.goalName.value,
       "type"                : this.refs.goalType.value,          
-      "sector" : [{
+      /*"sector" : [{
             "sector_ID"            :this.refs.sector.value.split('|')[1],
             "sectorName"           :this.refs.sectorName.value.split('|')[0],
             "activity_ID"          :this.refs.activity.value.split('|')[1],
             "ActivityName"         :this.refs.ActivityName.value.split('|')[0],
-          }],                   
+          }],                   */
     };
     let fields = {};
     fields["goalName"]  = "";
@@ -149,52 +149,11 @@ class SectorMapping extends Component{
     axios.patch('/api/sectorMappings/update',mappingValues)
       .then(function(response){
         swal({
-          title : response.data,
-          text  : response.data
+          title : response.data.message,
+          text  : response.data.message
         });
         this.getData(this.state.startRange, this.state.limitRange);
       })
-      .catch(function(error){
-        console.log("error = ",error);
-      });
-      this.setState({
-        "goalName"  :"",
-        "goalType"  :"",
-        "sector"    :"",
-        "activity"  :"",
-        fields      :fields
-      });
-    }  
-  }
-  Update(event){
-    event.preventDefault();
-    if(this.refs.goalName.value == "" || this.refs.goalType.value =="")
-   {
-      if (this.validateFormReq() && this.validateForm()){
-      }
-    }else{
-    var id2 = this.state.uID;
-    var mappingValues= 
-    {
-      "goal"   : this.refs.goalName.value,          
-      "type"   : this.refs.goalType.value,          
-     /* "sector"     : this.refs.sector.value,          
-      "activity"   : this.refs.activity.value,       */   
-    };
-    let fields = {};
-    fields["goalName"]  = "";
-    fields["goalType"]  = "";
-    fields["sector"]    = "";
-    fields["activity"]  = "";
-    
-    axios.patch('/api/sectorMappings',mappingValues)
-      .then(function(response){
-        swal({
-          title : response.data,
-          text  : response.data
-        });
-/*        this.getData(this.state.startRange, this.state.limitRange);
-*/      })
       .catch(function(error){
         console.log("error = ",error);
       });

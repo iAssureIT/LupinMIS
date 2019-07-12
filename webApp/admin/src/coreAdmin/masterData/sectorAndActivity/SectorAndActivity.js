@@ -21,7 +21,7 @@ class SectorAndActivity extends Component{
   }
   componentDidMount(){
     var editId = this.props.match.params;
-    console.log('editId', editId);
+    // console.log('editId', editId);
     // this.setState({
     //   tabtype : editId.subactivityId ? 'subactivity' : (editId.activityId ? "activity" : "sector" )
     // },()=>{
