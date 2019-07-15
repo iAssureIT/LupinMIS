@@ -471,9 +471,9 @@ class AnnualPlan extends Component{
                           </div>
                           <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 " >
-                              <div className="addContainerAct " id="click_advance"  onClick={this.toglehidden.bind(this)}>
-                                <div className="display_advance" id="display_advance">Add Center
-                                  {/*<i className="fa fa-plus" aria-hidden="true" id="click"></i>*/}
+                              <div className="addform " id="click_advance"  onClick={this.toglehidden.bind(this)}>
+                                <div className="display_advance addContainerAct"  id="display_advance">
+                                  <i className="fa fa-plus" aria-hidden="true" id="click"></i>
                                 </div>
                               </div>
                             </div>
@@ -545,7 +545,7 @@ class AnnualPlan extends Component{
                                   </div>
                                 </div>  
                                 <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
-                                  <label className="formLable">No.of Benef.</label>
+                                  <label className="formLable">No.of Beneficiaries</label>
                                   <div className=" input-group inputBox-main" id="noOfBeneficiaries" >
                                     <input type="text" className="form-control inputBoxAP nameParts" name="noOfBeneficiaries" placeholder=""ref="noOfBeneficiaries" value={this.state.noOfBeneficiaries} onChange={this.handleChange.bind(this)}/>                              
                                   </div>

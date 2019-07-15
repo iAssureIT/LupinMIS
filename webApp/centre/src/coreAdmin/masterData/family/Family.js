@@ -21,7 +21,7 @@ class Family extends Component{
       "caste"                :"",
       "category"             :"",
       "LHWRFCentre"          :"",
-      "centerArray"          : [],
+      "centerArray"          : ["Pune", "Bharatpur"],
       "state"                :"Maharastra",
       "district"             :"",
       "block"                :"",
@@ -29,24 +29,7 @@ class Family extends Component{
       "contact"              :"",
       fields: {},
       errors: {},
-      "twoLevelHeader"       : {
-        apply                : false,
-        firstHeaderData      : [
-                                {
-                                    heading : '',
-                                    mergedColoums : 10
-                                },
-                                {
-                                    heading : 'Source of  Fund',
-                                    mergedColoums : 7
-                                },
-                                {
-                                    heading : 'MIS Coordinator',
-                                    mergedColoums : 3
-                                },
-                              ]
-      },
-        "tableObjects"        : {
+      "tableObjects"        : {
         apiLink               : '/api/families/',
         editUrl               : '/family/'
       },
@@ -54,9 +37,9 @@ class Family extends Component{
         familyID              : "Family ID",
         // beneficariesId     : "Beneficiary ID",
         familyHead            : "Name of Family Head",
-        contactNumber         : "Contact Number",
         uidNumber             : "UID Number",
-        // caste              : "Caste",
+        contactNumber         : "Contact Number",
+        caste                 : "Caste",
         familyCategory        : "Family Category",
         center                : "LHWRF Centre",
         state                 : "State",
@@ -66,11 +49,7 @@ class Family extends Component{
         actions               : 'Action',
 
       },  
-     
-      " tableObjects"         : {
-        apiLink               : '/api/family/',
-        editUrl               : '/family/',
-      },
+          
       "startRange"            : 0,
       "limitRange"            : 10,
       "editId"                : this.props.match.params ? this.props.match.params.id : ''
@@ -139,7 +118,7 @@ class Family extends Component{
         familyHead           :this.refs.nameOfFamilyHead.value, 
         contactNumber        :this.refs.contact.value, 
         uidNumber            :this.refs.uID.value, 
-        Caste                :this.refs.caste.value, 
+        caste                :this.refs.caste.value, 
         familyCategory       :this.refs.category.value, 
         center               :this.refs.LHWRFCentre.value, 
         state                :this.state.state, 
@@ -161,12 +140,12 @@ class Family extends Component{
       fields["village"]           = "";
 
       axios.post('/api/families',familyValues)
-        .then(function(response){
-          swal({
-            title : response.data,
-            text  : response.data
-          });
+        .then((response)=>{
           this.getData(this.state.startRange, this.state.limitRange);
+          swal({
+            title : response.data.message,
+            text  : response.data.message
+          });
         })
         .catch(function(error){
           console.log("error = ",error);
@@ -190,23 +169,22 @@ class Family extends Component{
 
   UpdateFamily(event){
     event.preventDefault();
-    if(this.refs.familyID.value == "" || this.refs.nameOfFamilyHead.value =="" || this.refs.contact.value==""
-     || this.refs.uID.value=="" || this.refs.caste.value=="" || this.refs.familyCategory.value=="" 
-     || this.refs.center.value=="" || this.refs.this.state.value=="" 
-     || this.refs.dist.value=="" || this.refs.block.value=="" || this.refs.village.value=="" )
-    {
-      if (this.validateFormReq() && this.validateForm()){
-      }
-    }else{
-      event.preventDefault();
+    /*if(this.refs.familyID.value == "" || this.refs.nameOfFamilyHead.value =="" || this.refs.contact.value==""
+     || this.refs.uID.value=="" || this.refs.caste.value=="" || this.refs.category.value=="" 
+     || this.refs.center.value=="" || this.refs.state.value=="" 
+     || this.refs.district.value=="" || this.refs.block.value=="" || this.refs.village.value=="" )
+    {*/
+    // if (this.validateFormReq() && this.validateForm()){
+   /*   }
+    }else{*/
       var familyValues= 
       {
-          families_ID          :this.refs.editId.value, 
+          families_ID          :this.state.editId, 
           familyID             :this.refs.familyID.value,
           familyHead           :this.refs.nameOfFamilyHead.value, 
           contactNumber        :this.refs.contact.value, 
           uidNumber            :this.refs.uID.value, 
-          Caste                :this.refs.caste.value, 
+          caste                :this.refs.caste.value, 
           familyCategory       :this.refs.category.value, 
           center               :this.refs.LHWRFCentre.value, 
           state                :this.state.state, 
@@ -227,12 +205,12 @@ class Family extends Component{
       fields["village"]           = "";
 
       axios.patch('/api/families/update',familyValues)
-        .then(function(response){
-          swal({
-            title : response.data,
-            text  : response.data
-          });
+        .then((response)=>{
           this.getData(this.state.startRange, this.state.limitRange);
+          swal({
+            title : response.data.message,
+            text  : response.data.message
+          });
         })
         .catch(function(error){
           console.log("error = ",error);
@@ -251,7 +229,11 @@ class Family extends Component{
         "contact"              :"",
         fields:fields
       });
-    }    
+      this.props.history.push('/family');
+      this.setState({
+        "editId"              : "",
+      });
+    // }    
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -319,37 +301,39 @@ class Family extends Component{
       url: '/api/families/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log('editData',editData);
      
       this.setState({
-      "familyID"             : editData.familyID,
-      "familyHead"           : editData.familyHead, 
-      "uidNumber"            : editData.uidNumber,
-      "caste"                : editData.caste,
-      "familyCategory"       : editData.familyCategory, 
-      "center"               : editData.center, 
-      "state"                : editData.state, 
-      "dist"                 : editData.dist, 
-      "block"                : editData.block, 
-      "village"              : editData.village, 
+      "familyID"              : editData.familyID,
+      "nameOfFamilyHead"      : editData.familyHead, 
+      "contact"               : editData.contactNumber,
+      "uID"                   : editData.uidNumber,
+      "caste"                 : editData.caste,
+      "category"              : editData.familyCategory, 
+      "LHWRFCentre"           : editData.center, 
+      "state"                 : editData.state, 
+      "district"              : editData.dist, 
+      "block"                 : editData.block, 
+      "village"               : editData.village, 
       });
-
-    }).catch(function (error) {
+    })
+    .catch(function(error){
+      
     });
   }
- 
-  getData(startRange, limitRange){
-   axios({
-      method: 'get',
-      url: '/api/families/list',
-    }).then(function(response){
-      console.log('response======================', response.data);
+  getData(startRange, limitRange){ 
+   var data = {
+      limitRange : limitRange,
+      startRange : startRange,
+    }
+    axios.get('/api/families/list',data)
+    .then((response)=>{
+      console.log('response', response.data);
       this.setState({
         tableData : response.data
-      });
-     
-    }).catch(function (error) {
-      console.log('error', error);
+      })
+    })
+    .catch(function(error){
+      
     });
   }
 
@@ -359,8 +343,8 @@ class Family extends Component{
       this.setState({
         editId : editId
       })
-      console.log(this.state.editId);
       this.edit(editId);
+      this.getData(this.state.startRange, this.state.limitRange);
     }
   }
   
@@ -369,24 +353,7 @@ class Family extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-    var data = {
-      limitRange : 0,
-      startRange : 1,
-    }
-    axios({
-      method: 'get',
-      url: '/api/families/list',
-      }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return});
-      this.setState({
-        tableData : response.data,
-        editUrl   : this.props.match.params
-      },()=>{
-        
-      });
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    this.getData(this.state.startRange, this.state.limitRange);
   }
  
   render() {
@@ -503,7 +470,7 @@ class Family extends Component{
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                         <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group unit" id="state" >
-                            <label className="formLable">State :</label>
+                            <label className="formLable">State : </label>  <label className="formLable">{this.state.state}</label> 
                           </div>
                           <div className="errorMsg">{this.state.errors.state}</div>
                         </div>
@@ -555,9 +522,9 @@ class Family extends Component{
                       <br/>
                       {
                           this.state.editId ? 
-                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
+                          <button className=" col-lg-2 btn submit  pull-right" onClick={this.UpdateFamily.bind(this)}> Update </button>
                           :
-                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitFamily.bind(this)}> Submit </button>
+                          <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitFamily.bind(this)}> Submit </button>
                         }
                     </div>
                   </form>

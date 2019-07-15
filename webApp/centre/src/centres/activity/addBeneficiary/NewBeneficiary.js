@@ -165,7 +165,10 @@ class NewBeneficiary extends Component{
       axios
       .post('https://jsonplaceholder.typicode.com/posts',{academicValues})
       .then(function(response){
-        console.log(response);
+        swal({
+          title : response.data.message,
+          text  : response.data.message,
+        });
       })
       .catch(function(error){
         console.log(error);

@@ -26,9 +26,7 @@ class Beneficiary extends Component{
         nameofbeneficaries  : "Name of Beneficiary",
         actions             : 'Action',
       },
-
-      
-      " tableObjects"        : {
+      "tableObjects"        : {
         apiLink             : '/api/beneficiaries/',
         editUrl             : '/beneficiary/',
       },
@@ -52,6 +50,13 @@ class Beneficiary extends Component{
     this.setState({
       fields
     });
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
   }
 
   isTextKey(evt)
@@ -71,10 +76,10 @@ class Beneficiary extends Component{
     event.preventDefault();
     var beneficaryArray=[];
     var id2 = this.state.uID;
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()){
     var beneficiaryValue= 
     {
-      "familyID"             : this.refs.familyID.value,          
+      "familyID"             : this.refs.familyID.value.split('|')[0],          
       "beneficariesId"       : this.refs.beneficariesId.value,          
       "nameofbeneficaries"   : this.refs.nameofbeneficaries.value,
     };
@@ -91,12 +96,12 @@ class Beneficiary extends Component{
       fields:fields
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
-      .then(function(response){
-        swal({
-          title : response.data,
-          text  : response.data
-        });
+      .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
+        swal({
+          title : response.data.message,
+          text  : response.data.message,
+        });
       })
       .catch(function(error){
         console.log("error = ",error);
@@ -104,40 +109,48 @@ class Beneficiary extends Component{
     }
   }
   Update(event){
-    event.preventDefault();
-    var beneficaryArray=[];
-    var id2 = this.state.uID;
-    if (this.validateFormReq()) {
-    var beneficiaryValue= 
-    {
-      "beneficiary_ID"       : this.state.editId,          
-      "familyID"             : this.refs.familyID.value,          
-      "beneficariesId"       : this.refs.beneficariesId.value,          
-      "nameofbeneficaries"   : this.refs.nameofbeneficaries.value,
-    };
+     event.preventDefault();
+      if(this.refs.familyID.value == "" || this.refs.beneficariesId.value =="" || this.refs.nameofbeneficaries.value=="")
+      {
+        if (this.validateFormReq() && this.validateForm()){
+        }
+      }else{
+      var beneficaryArray=[];
+      var id2 = this.state.uID;
+      var beneficiaryValue= 
+      {
+        "beneficiary_ID"       : this.state.editId,          
+        "familyID"             : this.refs.familyID.value.split('|')[0],          
+        "beneficariesId"       : this.refs.beneficariesId.value,          
+        "nameofbeneficaries"   : this.refs.nameofbeneficaries.value,
+      };
 
-    let fields = {};
-    fields["familyID"]           = "";
-    fields["beneficariesId"]     = "";
-    fields["nameofbeneficaries"] = "";
+      let fields = {};
+      fields["familyID"]           = "";
+      fields["beneficariesId"]     = "";
+      fields["nameofbeneficaries"] = "";
 
-    this.setState({
-      "familyID"                :"",
-      "beneficariesId"          :"",
-      "nameofbeneficaries"      :"",   
-      fields:fields
-    });
-    axios.patch('/api/beneficiaries/update',beneficiaryValue)
-      .then(function(response){
-        swal({
-          title : response.data,
-          text  : response.data
-        });
-/*        this.getData(this.state.startRange, this.state.limitRange);
-*/      })
-      .catch(function(error){
-        console.log("error = ",error);
+      this.setState({
+        "familyID"                :"",
+        "beneficariesId"          :"",
+        "nameofbeneficaries"      :"",   
+        fields:fields
       });
+      axios.patch('/api/beneficiaries/update',beneficiaryValue)
+        .then((response)=>{
+          this.getData(this.state.startRange, this.state.limitRange);
+          swal({
+            title : response.data.message,
+            text  : response.data.message,
+          });
+          this.props.history.push('/beneficiary');
+          this.setState({
+            "editId"              : "",
+          });
+        })
+        .catch(function(error){
+          console.log("error = ",error);
+        });
     }
   }
   validateFormReq() {
@@ -162,6 +175,17 @@ class Beneficiary extends Component{
       return formIsValid;
   }
 
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
     if(nextProps.match.params.id){
@@ -173,40 +197,23 @@ class Beneficiary extends Component{
   }
 
   componentDidMount() {
-    console.log('editId componentDidMount', this.state.editId);
+    // console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-    var data = {
-      limitRange : 0,
-      startRange : 1,
-    }
-    axios({
-      method: 'get',
-      url: '/api/beneficiaries/list',
-    }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return});
-      this.setState({
-        tableData : response.data,
-        editUrl   : this.props.match.params
-      },()=>{
-        
-      });
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    this.getData(this.state.startRange, this.state.limitRange);
   }
 
   edit(id){
     axios({
       method: 'get',
-      url: '/api/beneficiaries'+id,
+      url: '/api/beneficiaries/'+id,
     }).then((response)=> {
       var editData = response.data[0];
       console.log('editData',editData);
       
       this.setState({
-        "familyID"             : editData.familyID,          
+        "familyID"             : editData.familyID+"|"+"id",          
         "beneficariesId"       : editData.beneficariesId,          
         "nameofbeneficaries"   : editData.nameofbeneficaries,
       },()=>{
@@ -217,15 +224,19 @@ class Beneficiary extends Component{
   }
   
   getData(startRange, limitRange){
-    axios({
-      method: 'get',
-      url: '/api/beneficiaries/list',
-    }).then((response)=> {
-        this.setState({
-        tableData : response.data,
-      });
-    }).catch(function (error) {
-        console.log('error', error);
+    var data = {
+      limitRange : limitRange,
+      startRange : startRange,
+    }
+    axios.post('/api/beneficiaries/list',data)
+    .then((response)=>{
+    console.log('response', response.data);
+    this.setState({
+      tableData : response.data
+    })
+    })
+    .catch(function(error){
+
     });
   }
   
@@ -270,7 +281,7 @@ class Beneficiary extends Component{
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts"  placeholder=""value={this.state.beneficariesId} ref="beneficariesId" name="beneficariesId" onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox"  placeholder=""value={this.state.beneficariesId} ref="beneficariesId" name="beneficariesId" onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.beneficariesId}</div>
                         </div>
@@ -280,7 +291,7 @@ class Beneficiary extends Component{
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts"  placeholder="" value={this.state.nameofbeneficaries} ref="nameofbeneficaries" name="nameofbeneficaries" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox"  placeholder="" value={this.state.nameofbeneficaries} ref="nameofbeneficaries" name="nameofbeneficaries" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.nameofbeneficaries}</div>
                         </div>

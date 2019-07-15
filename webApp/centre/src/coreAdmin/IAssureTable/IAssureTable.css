@@ -47,3 +47,9 @@
 .tempTableHeader{
   color: #fff;
 }
+
+.adminModal-dialog{
+  position: relative;
+  transform: translate(0,0);
+  margin: 30px auto;
+}

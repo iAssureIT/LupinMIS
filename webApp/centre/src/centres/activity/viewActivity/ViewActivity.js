@@ -15,20 +15,7 @@ class ViewActivity extends Component{
     super(props); 
    
     this.state = {
-      "QualificationLevel"  :"",
-      "Qualification"       :"",
-      "Specialization"      :"",
-      "Mode"                :"",
-      "Grade"               :"",
-      "PassoutYear"         :"",
-      "CollegeName"         :"",
-      "UniversityName"      :"",
-      "City"                :"",
-      "State"               :"",
-      "Country"             :"",
-      academicData          :[],
-      "shown"               : true,
-      "uID"                 :"",
+      
       "Months"              :["January","February","March","April","May","June","July","August","September","October","November","December"],
       "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
       shown                 : true,
@@ -40,12 +27,12 @@ class ViewActivity extends Component{
         apply                     : true,
         firstHeaderData           : [
                                       {
-                                          heading : '',
-                                          mergedColoums : 10
+                                          heading : 'Activity Details',
+                                          mergedColoums : 14
                                       },
                                       {
                                           heading : 'Source of Fund',
-                                          mergedColoums : 7
+                                          mergedColoums : 8
                                       },
                                    /*   {
                                           heading : 'MIS Coordinator',
@@ -54,14 +41,18 @@ class ViewActivity extends Component{
                                     ]
       },
       "tableHeading"                : {
-        month                      : "Month",
-        sectorName                 : "Sector",
+        Date                       : "Date of intervention",
+        dist                       : "District",
+        block                      : "Block",
+        village                    : "Village",
+        sector                 : "Sector",
+        typeofactivity                   : "Type of Activity",
         activity                   : "Activity",
         subActivity                : "Sub-Activity",
         unit                       : "Unit",
-        physicalUnit               : "Physical Unit",
         unitCost                   : "Unit Cost",
-        totalBudget                : "Total Cost",
+        quantity               : "Quantity",
+        totalcost                : "Total Cost",
         noOfBeneficiaries          : "No. Of Beneficiaries",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
@@ -70,41 +61,43 @@ class ViewActivity extends Component{
         directCC                   : "Direct Community Contribution",
         indirectCC                 : "Indirect Community Contribution",
         other                      : "Other",
-/*        actions                     : 'Action',
-*/      },
+        total                      : "Total",
+        actions                     : 'Action',
+      },
       "startRange"                  : 0,
       "limitRange"                  : 10,
       "editId"                      : this.props.match.params ? this.props.match.params.id : ''
     }
     
   }
+   
+    
    componentDidMount() {
+ /*    console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-
     var data = {
       limitRange : 0,
       startRange : 1,
     }
-  
-      axios({
-        method: 'get',
-        url: '/api/centers/list',
-      }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-        this.setState({
-          dataCount : tableData.length,
-          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-          editUrl   : this.props.match.params
-        },()=>{
-          
-        });
-      }).catch(function (error) {
-        console.log('error', error);
+    axios({
+      method: 'get',
+      url: '/api/activityReport/list',
+    }).then((response)=> {
+      var tableData = response.data.map((a, index)=>{return});
+      this.setState({
+        tableData : response.data,
+        editUrl   : this.props.match.params
+      },()=>{
+        
       });
-    }
+    }).catch(function (error) {
+      console.log('error', error);
+    });*/
+  }
 
+   
   getData(startRange, limitRange){
     axios({
       method: 'get',
@@ -361,7 +354,7 @@ class ViewActivity extends Component{
                   <hr className="hr-head container-fluid "/>
                 </div>
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                  <h4>View of All Activity</h4>
+                  <div className="pageSubHeader">View of All Activities</div>
                 </div>
                 <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
                   <div className="row">  

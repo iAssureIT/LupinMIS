@@ -243,8 +243,8 @@ class Activity extends Component{
     axios.post('/api/activityReport',activityValues)
       .then(function(response){
         swal({
-          title : response.data,
-          text  : response.data
+          title : response.data.message,
+          text  : response.data.message,
         });
       this.getData(this.state.startRange, this.state.limitRange);      
       })
@@ -332,8 +332,8 @@ class Activity extends Component{
     axios.patch('/api/activityReport',activityValues)
       .then(function(response){
         swal({
-          title : response.data,
-          text  : response.data
+          title : response.data.message,
+          text  : response.data.message,
         });
       this.getData(this.state.startRange, this.state.limitRange);      
       })
@@ -569,10 +569,8 @@ class Activity extends Component{
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="dist" >
                               <select className="custom-select form-control inputBox" ref="dist" name="dist" value={this.state.dist} onChange={this.handleChange.bind(this)} >
                                 <option  className="hidden" >--select--</option>
-                                <option>Value 1</option>
-                                <option>Value 2</option>
-                                <option>Value 3</option>
-                                <option>Value 4</option>
+                                <option>Pune</option>
+                                <option>Thane</option>
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.dist}</div>
@@ -582,10 +580,8 @@ class Activity extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                             <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                                <option>Value 1</option>
-                                <option>Value 2</option>
-                                <option>Value 3</option>
-                                <option>Value 4</option>
+                                <option>Pimpari</option>
+                                <option>Haveli</option>
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.block}</div>
@@ -595,10 +591,8 @@ class Activity extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                             <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                               <option>Value 1</option>
-                                <option>Value 2</option>
-                                <option>Value 3</option>
-                                <option>Value 4</option>
+                               <option>Hadapsar</option>
+                                <option>Manjari</option>
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.village}</div>
@@ -612,11 +606,9 @@ class Activity extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                             <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                              <option>Value 1</option>
-                              <option>Value 2</option>
-                              <option>Value 3</option>
-                              <option>Value 4</option>
-                            </select>
+                              <option>Agriculture Development</option>
+{/*                              <option>Womern Empowerment</option>
+*/}                            </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.sector}</div>
                         </div>
@@ -636,10 +628,9 @@ class Activity extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                             <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                                <option>Value 1</option>
-                                <option>Value 2</option>
-                                <option>Value 3</option>
-                                <option>Value 4</option>
+                                <option>Yield Enhancement</option>
+                                <option>Farm equipment promotion</option>
+                                <option>Cultivation of Tusar Crop</option>
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.activity}</div>
@@ -649,10 +640,9 @@ class Activity extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                             <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                                <option>Value 1</option>
-                                <option>Value 2</option>
-                                <option>Value 3</option>
-                                <option>Value 4</option>
+                                <option>Crop demonstrations</option>
+                                <option>Promotion of improved farm equipment</option>
+                                <option>Cultivation of Tusar Crop</option>
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.subactivity}</div>
@@ -674,7 +664,7 @@ class Activity extends Component{
                             {/*<div className="input-group-addon inputIcon">
                              <i className="fa fa-building fa iconSize14"></i>
                             </div>*/}
-                            <input type="text"   className="form-control inputBox nameParts" name="unitCost" placeholder=""onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost}   onChange={this.handleChange.bind(this)}/>
+                            <input type="text"   className="form-control inputBox" name="unitCost" placeholder=""onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost}   onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.unitCost}</div>
                         </div>
@@ -684,7 +674,7 @@ class Activity extends Component{
                             {/*<div className="input-group-addon inputIcon">
                              <i className="fa fa-university fa iconSize14"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts" name="quantity" placeholder=""ref="quantity" onKeyUp={this.calTotal.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
+                            <input type="text" className="form-control inputBox" name="quantity" placeholder=""ref="quantity" onKeyUp={this.calTotal.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.quantity}</div>
                         </div>
@@ -749,7 +739,7 @@ class Activity extends Component{
                             {/*<div className="input-group-addon inputIcon">
                              <i className="fa fa-university fa iconSize14"></i>
                             </div>directCC
-                            */}<input type="text" className="form-control inputBox nameParts" name="directCC" placeholder=""ref="directCC"  onKeyUp={this.calTotal.bind(this)}  value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
+                            */}<input type="text" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  onKeyUp={this.calTotal.bind(this)}  value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.directCC}</div>
                         </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
@@ -771,7 +761,7 @@ class Activity extends Component{
                           <label className="formLable">Other</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
                           
-                            <input type="text"   className="form-control inputBox nameParts" name="other" placeholder="" ref="other"  onKeyUp={this.calTotal.bind(this)}   value={this.state.other}  onChange={this.handleChange.bind(this)}/>
+                            <input type="text"   className="form-control inputBox" name="other" placeholder="" ref="other"  onKeyUp={this.calTotal.bind(this)}   value={this.state.other}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.other}</div>
                         </div>
@@ -810,10 +800,8 @@ class Activity extends Component{
                                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
                                             <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
                                               <option  className="hidden" >--select--</option>
-                                              <option>Value 1</option>
-                                              <option>Value 2</option>
-                                              <option>Value 3</option>
-                                              <option>Value 4</option>
+                                              <option>Pune</option>
+                                              <option>Thane</option>
                                             </select>
                                           </div>
                                           <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
@@ -823,10 +811,9 @@ class Activity extends Component{
                                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
                                             <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
                                               <option  className="hidden" >--select--</option>
-                                              <option>Value 1</option>
-                                              <option>Value 2</option>
-                                              <option>Value 3</option>
-                                              <option>Value 4</option>
+                                              <option>Pimpari</option>
+                                              <option>Haveli</option>
+                                              <option>Chinchwad</option>
                                             </select>
                                           </div>
                                           <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
@@ -836,10 +823,9 @@ class Activity extends Component{
                                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
                                             <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
                                               <option  className="hidden" >--select--</option>
-                                              <option>Value 1</option>
-                                              <option>Value 2</option>
-                                              <option>Value 3</option>
-                                              <option>Value 4</option>
+                                              <option>Shivne</option>
+                                              <option>Hadapsar</option>
+                                              <option>Manjari</option>
                                             </select>
                                           </div>
                                           <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
@@ -849,7 +835,7 @@ class Activity extends Component{
                                         <div className=" col-lg-6 col-sm-12 col-xs-12 col-lg-offset-3 formLable boxHeightother ">
                                           <label className="formLable">Search</label>
                                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                            <input type="text"  className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
+                                            <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
                                           </div>
                                         </div>
                                          <div className=" col-lg-1 col-md-1 col-sm-1 col-xs-1  boxHeightother">
@@ -874,13 +860,13 @@ class Activity extends Component{
                                         <div className=" col-lg-4 col-sm-12 col-xs-12 formLable boxHeightother ">
                                           <label className="formLable">Beneficiary Name</label>
                                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                            <input type="text"  className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
+                                            <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-4 col-sm-12 col-xs-12 formLable boxHeightother ">
                                           <label className="formLable">Beneficiary ID</label>
                                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                            <input type="text"  className="form-control inputBox nameParts" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
+                                            <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
                                           </div>
                                         </div>
                                       </div>
