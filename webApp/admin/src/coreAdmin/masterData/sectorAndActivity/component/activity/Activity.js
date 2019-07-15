@@ -32,7 +32,7 @@ class Activity extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        apiLink             : '/api/sectors/activity/delete',
+        apiLink             : '/api/sectors/activity/delete/',
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
@@ -80,9 +80,9 @@ class Activity extends Component{
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
     var activityValues = {
-      "sector_ID"            :this.state.editId,
-      "sector"               :this.refs.sector.value,
-      "activityName"         :this.refs.activity.value,
+      "sector_ID"            : this.state.editId,
+      "sector"               : this.refs.sector.value,
+      "activityName"         : this.refs.activity.value,
       "user_ID"              : this.state.user_ID,
     };
     let fields            = {};
@@ -94,16 +94,16 @@ class Activity extends Component{
       "activity"      :"",
       fields          :fields
     });
-    axios.patch('/api/sectors/activity',activityValues)
+    axios.patch('/api/sectors/activity', activityValues)
       .then(function(response){
-        swal({
+       console.log('response', response.data);
+         swal({
           title : response.data.message,
           text  : response.data.message
         });
-        this.getData(this.state.startRange, this.state.limitRange);
       })
       .catch(function(error){
-        console.log("error = ",error);
+        console.log("error ============== ",error);
       });
     }
   }
@@ -124,7 +124,7 @@ class Activity extends Component{
       "user_ID"              :this.state.user_ID,
       };
       
-      axios.patch('/api/sectors/activity/update',activityValues, this.state.editId)
+      axios.patch('/api/sectors/activity/update',activityValues)
         .then(function(response){
           swal({
             title : response.data.message,
@@ -266,17 +266,20 @@ class Activity extends Component{
   }
   
   getData(startRange, limitRange){
-    // axios({
-    //   method: 'get',
-    //   url: '/api/sectors/list',
-    // }).then((response)=> {
-    //     var tableData = response.data.map((a, index)=>{return});
-    //     this.setState({
-    //     tableData : tableData.slice(startRange, limitRange),
-    //   });
-    // }).catch(function (error) {
-    //     console.log('error', error);
-    // });
+    var data = {
+      startRange : startRange,
+      limitRange : limitRange
+    }
+   axios.post('/api/sectors/list', data)
+    .then((response)=>{
+      console.log("response",response.data);
+      this.setState({
+        tableData : response.data
+      });
+    })
+    .catch(function(error){
+      console.log("error = ",error);
+    });
   }
   getSearchText(searchText, startRange, limitRange){
       // console.log(searchText, startRange, limitRange);
@@ -286,9 +289,9 @@ class Activity extends Component{
   }
   componentWillUnmount(){
     this.setState({
-      "sector"              :"",
-      "activity"        :"",
-      "editId" : ""
+      "sector"   :"",
+      "activity" :"",
+      "editId"   : ""
     })
   }
   render() {
@@ -346,7 +349,7 @@ class Activity extends Component{
               </div> 
             </form>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt " >  
+              <div className="mt " >  
                 <IAssureTable 
                   tableHeading={this.state.tableHeading}
                   twoLevelHeader={this.state.twoLevelHeader} 

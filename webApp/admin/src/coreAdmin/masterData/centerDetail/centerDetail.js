@@ -20,7 +20,7 @@ class centerDetail extends Component{
     this.state = {
       "typeOfCenter"             :"",
       "nameOfCenter"             :"",
-      "address"                  :"Hadapsar",
+      "address"                  :"",
       "state"                    :"",
       "district"                 :"",
       "pincode"                  :"",
@@ -44,7 +44,7 @@ class centerDetail extends Component{
       "listofVillages"           : [],
       "selectedVillages"         : [],
       "twoLevelHeader"           : {
-        apply                    : true,
+        apply                    : false,
         firstHeaderData          : [
                                       {
                                           heading : '',
@@ -63,14 +63,10 @@ class centerDetail extends Component{
       "tableHeading"                : {
         type                      : "Type of Center",
         centerName                : "Name of Center",
-        address                   : "Address",
-        centerInchargeName        : "Name",
-        centerInchargeMobile      : "Contact",
-        centerInchargeEmail       : "Email",
-        misCoordinatorName        : "Name",
-        misCoordinatorMobile      : "Contact",
-        misCoordinatorEmail       : "Email",
-        // noOfVillages              : "No of Villages",
+        // address                   : "Address",
+        centerInchargeDetail      : "Center Incharge Detail",
+        misCoordinatorDetail      : "MIS Coordinator Detail",
+        numberofVillage           : "No of Villages",
         actions                   : 'Action',
       },
       "tableObjects"              : {
@@ -198,13 +194,12 @@ class centerDetail extends Component{
 
       // console.log('centerDetail',centerDetail);
       axios.post('/api/centers',centerDetail)
-      .then(function(response){
+      .then((response)=>{
+        this.getData(this.state.startRange, this.state.limitRange);
         swal({
           title : response.data.message,
           text  : response.data.message
         });
-        this.getData(this.state.startRange, this.state.limitRange);
-        
       })
       .catch(function(error){
         
@@ -236,8 +231,8 @@ class centerDetail extends Component{
   }
   Update(event){
   event.preventDefault();
-  if(this.refs.address.value == "" || this.refs.typeOfCenter.value =="" || this.refs.nameOfCenter.value=="" || this.refs.state.value=="" 
-    || this.refs.district.value=="" || this.refs.pincode.value=="" || this.refs.selectedVillages.value=="" || this.refs.centerInchargeName.value=="" 
+  if(this.refs.address.value == "" || this.refs.typeOfCenter.value =="" || this.refs.nameOfCenter.value=="" 
+    || this.refs.district.value=="" || this.refs.pincode.value=="" || this.refs.centerInchargeName.value=="" 
     || this.refs.centerInchargeContact.value=="" || this.refs.centerInchargeEmail.value=="" || this.refs.MISCoordinatorName.value=="" 
     || this.refs.MISCoordinatorContact.value=="" || this.refs.MISCoordinatorEmail.value=="")
    {
@@ -246,12 +241,13 @@ class centerDetail extends Component{
         console.log('abc');
       }
     }else{
+
         var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
         var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
         var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
 
         var centerDetail = {
-          "center_ID  "               : this.state.editId,
+          "center_ID"               : this.state.editId,
           "centerName"                : this.refs.nameOfCenter.value,
           "type"                      : this.refs.typeOfCenter.value,
           "address"                   : {
@@ -286,14 +282,14 @@ class centerDetail extends Component{
         fields["MISCoordinatorEmail"] = "";
         fields["districtCovered"] = "";
         fields["blockCovered"] = "";
-
+        // console.log('centerDetail', centerDetail);
         axios.patch('/api/centers',centerDetail)
         .then((response)=>{
+          this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
             text  : response.data.message
           });
-          this.getData(this.state.startRange, this.state.limitRange);
         })
         .catch(function(error){
           
@@ -328,7 +324,7 @@ class centerDetail extends Component{
       this.setState({
         "editId"              : "",
       });
-      window.location.reload(true);
+      // window.location.reload(true);
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -426,44 +422,10 @@ class centerDetail extends Component{
       return formIsValid;
   }
   componentDidMount() {
-
-    console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-    var data = {
-      limitRange : 0,
-      startRange : 1,
-    }
-    axios({
-      method: 'get',
-      url: '/api/centers/list',
-    }).then((response)=> {
-      var tableDatas = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-      var tableData = tableDatas.map((a, index)=>{
-        return {
-          "_id" : a._id,
-          "type": a.type,
-          "centerName": a.centerName,
-          "address" : a.address.state,
-          "centerInchargeName": a.centerInchargeName,
-          "centerInchargeMobile": a.centerInchargeMobile,
-          "centerInchargeEmail": a.centerInchargeEmail,
-          "misCoordinatorName": a.misCoordinatorName,
-          "misCoordinatorMobile": a.misCoordinatorMobile,
-          "misCoordinatorEmail": a.misCoordinatorEmail
-        }
-      })
-      this.setState({
-        dataCount : tableData.length,
-        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-        editUrl   : this.props.match.params
-      },()=>{
-        
-      });
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    this.getData(this.state.startRange, this.state.limitRange);
 
     var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];
     this.setState({
@@ -519,17 +481,19 @@ class centerDetail extends Component{
     });
   }
   getData(startRange, limitRange){
-      axios({
-        method: 'get',
-        url: '/api/centers/list',
-      }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-
+    var data = {
+      limitRange : limitRange,
+      startRange : startRange,
+    }
+       axios.post('/api/centers/list',data)
+      .then((response)=>{
+        console.log('response', response.data);
         this.setState({
-          tableData : tableData.slice(startRange, limitRange),
-        });
-      }).catch(function (error) {
-        console.log('error', error);
+          tableData : response.data
+        })
+      })
+      .catch(function(error){
+        
       });
 
       var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];

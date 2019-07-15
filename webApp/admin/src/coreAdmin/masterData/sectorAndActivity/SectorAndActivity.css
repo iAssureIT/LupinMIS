@@ -437,7 +437,7 @@ tr.odd {
 .locNavTab li a:focus,
 .locNavTab li.active a{
   background: transparent;
-  border: 1px solid #039BE5;
+  border: 1px solid #039BE5 !important;
   color: #fff !important ;
 }
 

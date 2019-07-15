@@ -60,7 +60,7 @@ export default class Leftsidebar extends Component{
                     Reports
                   </a>
                   <ul className="collapse list-unstyled" id="Plan">
-                      <li>
+                     {/* <li>
                         <a href="/report1">
                           <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Activity wise Annual Completion Report</span>
                         </a>
@@ -70,7 +70,7 @@ export default class Leftsidebar extends Component{
                           <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Sector wise Annual Completion Report Summary</span>
                         </a>
                       </li>
-                                 
+                             */}    
                   </ul>
                 </li>
                 <li className="sidebarMenuText">

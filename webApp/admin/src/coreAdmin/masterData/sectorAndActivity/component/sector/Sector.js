@@ -26,7 +26,7 @@ class Sector extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        apiLink             : '/api/sectors/delete/',
+        apiLink             : '/api/sectors/',
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
@@ -78,12 +78,13 @@ class Sector extends Component{
 
     
     axios.post('/api/sectors',sectorValues)
-      .then(function(response){
+      .then((response)=>{
+        this.getData(this.state.startRange, this.state.limitRange);
         swal({
           title : response.data.message,
           text  : response.data.message
         });
-        this.getData(this.state.startRange, this.state.limitRange);
+        
       })
       .catch(function(error){
         console.log("error = ",error);
@@ -115,12 +116,12 @@ class Sector extends Component{
 
       
       axios.patch('/api/sectors/update',sectorValues, this.state.editId)
-        .then(function(response){
+        .then((response)=>{
+          this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
             text  : response.data.message
           });
-          this.getData(this.state.startRange, this.state.limitRange);
           this.setState({
             editId : ''
           })
@@ -181,24 +182,7 @@ class Sector extends Component{
     if(editId){      
       this.edit(editId);
     }
-    var data = {
-      limitRange : 0,
-      startRange : 1,
-    }
-    axios({
-      method: 'get',
-      url: '/api/sectors/list',
-    }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'activity')});
-      this.setState({
-        dataCount : tableData.length,
-        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-        editUrl   : this.props.match.params
-      },()=>{
-      });
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    this.getData(this.state.startRange, this.state.limitRange);
   }
 
   edit(id){
@@ -217,16 +201,19 @@ class Sector extends Component{
   }
   
   getData(startRange, limitRange){
-    axios({
-      method: 'get',
-      url: '/api/sectors/list',
-    }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return});
-        this.setState({
-        tableData : tableData.slice(startRange, limitRange),
-      });
-    }).catch(function (error) {
-        console.log('error', error);
+    var data = {
+      limitRange : limitRange,
+      startRange : startRange,
+    }
+     axios.post('/api/sectors/list',data)
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        tableData : response.data
+      })
+    })
+    .catch(function(error){
+      
     });
   }
   getSearchText(searchText, startRange, limitRange){

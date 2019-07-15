@@ -34,7 +34,7 @@ class SubActivity extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        apiLink             : '/api/sectors/subactivity/delete',
+        apiLink             : '/api/sectors/subactivity/delete/',
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
@@ -319,18 +319,22 @@ class SubActivity extends Component{
   }
   
   getData(startRange, limitRange){
-    // axios({
-    //   method: 'get',
-    //   url: '/api/sectors/list',
-    // }).then((response)=> {
-    //     var tableData = response.data.map((a, index)=>{return});
-    //     this.setState({
-    //     tableData : tableData.slice(startRange, limitRange),
-    //   });
-    // }).catch(function (error) {
-    //     console.log('error', error);
-    // });
+      var data = {
+      startRange : startRange,
+      limitRange : limitRange
+    }
+   axios.post('/api/sectors/list', data)
+    .then((response)=>{
+      console.log("response",response.data);
+      this.setState({
+        tableData : response.data
+      });
+    })
+    .catch(function(error){
+      console.log("error = ",error);
+    });
   }
+  
   getSearchText(searchText, startRange, limitRange){
       this.setState({
           tableData : []
@@ -454,7 +458,7 @@ class SubActivity extends Component{
                   }
                 </div> 
               </form>
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                 <IAssureTable 
                   tableHeading={this.state.tableHeading}
                   twoLevelHeader={this.state.twoLevelHeader} 

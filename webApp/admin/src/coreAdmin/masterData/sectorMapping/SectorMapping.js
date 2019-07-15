@@ -341,7 +341,7 @@ class SectorMapping extends Component{
                             {/*<div className="input-group-addon inputIcon">
                               <i className="fa fa-graduation-cap fa"></i>
                             </div>*/}
-                            <input type="text" className="form-control inputBox nameParts" value={this.state.goalName} onChange={this.handleChange.bind(this)} onKeyDown={this.isTextKey.bind(this)}  placeholder="" name="goalName" ref="goalName" />
+                            <input type="text" className="form-control inputBox" value={this.state.goalName} onChange={this.handleChange.bind(this)} onKeyDown={this.isTextKey.bind(this)}  placeholder="" name="goalName" ref="goalName" />
                           </div>
                           <div className="errorMsg">{this.state.errors.goalName}</div>
                         </div>
@@ -680,7 +680,7 @@ class SectorMapping extends Component{
                       }
                     </div> 
                   </form>
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 

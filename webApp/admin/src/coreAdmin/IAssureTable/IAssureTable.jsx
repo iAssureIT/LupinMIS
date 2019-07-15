@@ -69,9 +69,10 @@ class IAssureTable extends Component {
 	        method: 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
+	    	this.props.getData(this.state.startRange, this.state.limitRange);
 	        swal({
-	        	text : response.data,
-	        	title : response.data
+	        	text : response.data.message,
+	        	title : response.data.message
 	        });
 	    }).catch(function (error) {
 	        console.log('error', error);
