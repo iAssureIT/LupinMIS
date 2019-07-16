@@ -24,6 +24,7 @@ import Beneficiary                                from '../../coreAdmin/masterDa
 
 import Activity                                   from "../../centres/activity/createActivityReport/Activity.js";
 import ViewActivity                               from "../../centres/activity/viewActivity/ViewActivity.js";
+import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import AnnualPlan                                 from "../../centres/plan/annualPlan/AnnualPlan.js";
 /*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";*/
 
@@ -83,7 +84,9 @@ class Layout extends Component{
                     <Route path="/family/:id"                          exact strict component={ Family } />
                    {/*Plans Routes*/}
                     <Route path="/plan"                               exact strict component={ AnnualPlan } />
+                    <Route path="/table"                               exact strict component={ table } />
                     <Route path="/Activity"                           exact strict component={ Activity } />
+                    <Route path="/Activity/:id"                           exact strict component={ Activity } />
                     <Route path="/viewActivity"                       exact strict component={ ViewActivity } />
                     <Route path="/activityReportView"                 exact strict component={ ActivityReportView } />
 

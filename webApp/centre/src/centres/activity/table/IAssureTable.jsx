@@ -470,6 +470,15 @@ class IAssureTable extends Component {
 			}			
 		});
     }
+    selectAllCheckBoxes(event){
+		var shiftCheck = event.target.getAttribute('data-index');		
+		console.log("className of sel cb=",this.state.checkedIndex);
+		if(event.target.checked){
+			$("."+shiftCheck).prop("checked",true);
+		}else{
+			$("."+shiftCheck).prop("checked",false);
+		}
+	}
 	render() {
 		// var x = Object.keys(this.state.tableHeading).length ;
 		// var y = 4;
@@ -523,6 +532,12 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                            <tr className="">
+	                            <th className="umDynamicHeader srpadd textAlignLeft">
+	                                <td className="checkboxContainer bgGrey">
+										<input type="checkbox"  onChange={this.selectAllCheckBoxes.bind(this)} />
+										<span className="checkmark text-center"></span> 
+									</td>
+	                            </th>
 	                            <th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
@@ -550,6 +565,10 @@ class IAssureTable extends Component {
 										(value, i)=> {													
 											return(
 												<tr key={i} className="">
+													<td className="checkboxContainer bgGrey">
+														<input type="checkbox" className="" onChange={this.selectAllCheckBoxes.bind(this)} />
+														<span className="checkboxMark text-center"></span> 
+													</td>
 													<td className="textAlignCenter">{this.state.startRange+1+i}</td>
 													{
 														Object.entries(value).map( 

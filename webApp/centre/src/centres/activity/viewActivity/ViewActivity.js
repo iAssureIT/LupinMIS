@@ -23,37 +23,32 @@ class ViewActivity extends Component{
 
       fields: {},
       errors: {},
-       "twoLevelHeader"              : {
+      "twoLevelHeader"           : {
         apply                     : true,
         firstHeaderData           : [
-                                      {
-                                          heading : 'Activity Details',
-                                          mergedColoums : 14
-                                      },
-                                      {
-                                          heading : 'Source of Fund',
-                                          mergedColoums : 8
-                                      },
-                                   /*   {
-                                          heading : 'MIS Coordinator',
-                                          mergedColoums : 3
-                                      },*/
-                                    ]
+                                {
+                                  heading : 'Activity Details',
+                                  mergedColoums : 14
+                                },
+                                {
+                                  heading : 'Source of Fund',
+                                  mergedColoums : 8
+                                },]
       },
-      "tableHeading"                : {
-        Date                       : "Date of intervention",
-        dist                       : "District",
+      "tableHeading" : {
+        date                       : "Date of intervention",
+        district                       : "District",
         block                      : "Block",
         village                    : "Village",
-        sector                 : "Sector",
-        typeofactivity                   : "Type of Activity",
-        activity                   : "Activity",
-        subActivity                : "Sub-Activity",
+        sectorName                     : "Sector",
+        typeofactivity             : "Type of Activity",
+        activityName                   : "Activity",
+        subActivityName                : "Sub-Activity",
         unit                       : "Unit",
         unitCost                   : "Unit Cost",
-        quantity               : "Quantity",
-        totalcost                : "Total Cost",
-        noOfBeneficiaries          : "No. Of Beneficiaries",
+        quantity                   : "Quantity",
+        totalcost                  : "Total Cost",
+        numofBeneficiaries          : "No. Of Beneficiaries",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
         bankLoan                   : "Bank Loan",
@@ -62,15 +57,14 @@ class ViewActivity extends Component{
         indirectCC                 : "Indirect Community Contribution",
         other                      : "Other",
         total                      : "Total",
-        actions                     : 'Action',
+        remark                      : "Remark",
+        actions                    : 'Action',
       },
-      "startRange"                  : 0,
-      "limitRange"                  : 10,
-      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
-    }
-    
-  }
-   
+      "startRange"                 : 0,
+      "limitRange"                 : 10,
+      "editId"                     : this.props.match.params ? this.props.match.params.id : ''
+    }    
+  }  
     
    componentDidMount() {
  /*    console.log('editId componentDidMount', this.state.editId);
@@ -98,249 +92,24 @@ class ViewActivity extends Component{
   }
 
    
-  getData(startRange, limitRange){
-    axios({
-      method: 'get',
-      url: '/api/centers/list',
-    }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-
+   getData(startRange, limitRange){ 
+   var data = {
+      limitRange : limitRange,
+      startRange : startRange,
+    }
+    axios.get('/api/activityReport/list',data)
+    .then((response)=>{
+      console.log('response', response.data);
       this.setState({
-        tableData : tableData.slice(startRange, limitRange),
-      });
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
- 
-  handleChange(event){
-    event.preventDefault();
-   /* this.setState({
-      "QualificationLevel"   : this.refs.QualificationLevel.value,          
-      "Qualification"        : this.refs.Qualification.value,          
-      "Specialization"       : this.refs.Specialization.value,
-      "Mode"                 : this.refs.Mode.value, 
-      "Grade"                : this.refs.Grade.value,
-      "PassoutYear"          : this.refs.PassoutYear.value,
-      "UniversityName"       : this.refs.UniversityName.value,
-      "City"                 : this.refs.City.value,
-      "CollegeName"          : this.refs.CollegeName.value,
-      "State"                : this.refs.State.value,
-      "Country"              : this.refs.Country.value,
-    });*/
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-  /*  if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }*/
-  }
-
-  componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps);
-    if(nextProps.BasicInfoId){
-       if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
-        this.setState({
-         academicData:nextProps.BasicInfoId.academicsInfo
-        })
-      }
-    }
-  }
-
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-  isTextKey(evt)
-  {
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
- 
-  }
-  SubmitAcademics(event){
-    event.preventDefault();
-    var academicArray=[];
-    var id2 = this.state.uID;
-    if (this.validateForm()) {
-    var academicValues= 
-    {
-    "QualificationLevel"   : this.refs.QualificationLevel.value,          
-    "Qualification"        : this.refs.Qualification.value,          
-    "Specialization"       : this.refs.Specialization.value,
-    "Mode"                 : this.refs.Mode.value, 
-    "Grade"                : this.refs.Grade.value,
-    "PassoutYear"          : this.refs.PassoutYear.value,
-    "UniversityName"       : this.refs.UniversityName.value,
-    "City"                 : this.refs.City.value,
-    "CollegeName"          : this.refs.CollegeName.value,
-    "State"                : this.refs.State.value,
-    "Country"              : this.refs.Country.value,
-    };
-
-    let fields = {};
-    fields["QualificationLevel"] = "";
-    fields["Qualification"] = "";
-    fields["Specialization"] = "";
-    fields["Mode"] = "";
-    fields["Grade"] = "";
-    fields["PassoutYear"] = "";
-    fields["CollegeName"] = "";
-    fields["UniversityName"] = "";
-    fields["City"] = "";
-    fields["State"] = "";
-    fields["Country"] = "";
-    this.setState({
-      "QualificationLevel"  :"",
-      "Qualification"       :"",
-      "Specialization"      :"",
-      "Mode"                :"",
-      "Grade"               :"",
-      "PassoutYear"         :"",
-      "CollegeName"         :"",
-      "UniversityName"      :"",
-      "City"                :"",
-      "State"               :"",
-      "Country"             :"",
-      fields:fields
-    });
-      axios
-      .post('https://jsonplaceholder.typicode.com/posts',{academicValues})
-      .then(function(response){
-        console.log(response);
+        tableData : response.data
       })
-      .catch(function(error){
-        console.log(error);
-      });
-      console.log("academicValues =>",academicValues);
-      academicArray.push(academicValues);
-      console.log("add value",academicValues);      
-      alert("Data inserted Successfully!")
-      }
-    }
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
-    }
-    toglehidden()
-    {
-     this.setState({
-         shown: !this.state.shown
-        });
-    }
+    })
+    .catch(function(error){      
+    });
+  }
 
-    changeTab = (data)=>{
-      this.setState({
-        tabtype : data,
-      })
-      console.log("tabtype",this.state.tabtype);
-    }
-
-
-    render() {
-      var shown = {
-        display: this.state.shown ? "block" : "none"
-      };
-      
-      var hidden = {
-        display: this.state.shown ? "none" : "block"
-      }
-      const data = [{
-      srno: 1,
-      FamilyID: "L000001",
-      NameofBeneficiary: "Priyanka Lewade",
-      BeneficiaryID: "PL0001",
-      },{
-      srno: 2,
-      FamilyID: "B000001",
-      NameofBeneficiary: "Priyanka Bhanvase",
-      BeneficiaryID: "PB0001",
-      }
-      ]
-      const columns = [ 
-      {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        {
-        Header: 'SDG Goal',
-        accessor: 'FamilyID', 
-        }, {
-        Header: 'Sector',
-        accessor: 'NameofBeneficiary', 
-        }, {
-        Header: 'Activity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Sub-Activity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Quantity',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Amount',
-        accessor: 'noMAp', 
-        },{
-        Header: 'Beneficiary',
-        accessor: 'noMAp', 
-        },{
-        Header: "Financial Sharing",
-        columns: [
-        {
-          Header: "LHWRF",
-          accessor: "LHWRF"
-        },
-        {
-          Header: "NABARD",
-          accessor: "NABARD"
-        },{
-          Header: "Bank Loan",
-          accessor: "BankLoan"
-        },{
-          Header: "Govt",
-          accessor: "BankLoan"
-        },{
-          Header: "Direct Beneficiary",
-          accessor: "BankLoan"
-        },{
-          Header: "Indirect Beneficiary",
-          accessor: "BankLoan"
-        },
-        ]
-        },
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-3">
-              <div className="col-lg-6" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-             
-            </div>
-            )     
-          }
-        ]
+ 
+  render() {
     return (
        <div className="container-fluid">
         <div className="row">

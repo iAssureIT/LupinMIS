@@ -1,11 +1,8 @@
 import React, { Component }   from 'react';
-import $                      from 'jquery';
 import axios                  from 'axios';
-import ReactTable             from "react-table";
 
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
-import _                      from 'underscore';
 import moment                 from "moment";
 
 
@@ -13,7 +10,7 @@ import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 
 import "./Activity.css";
-import NewBeneficiary from "../addBeneficiary/NewBeneficiary.js";
+import ListOfBeneficiaries from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -44,63 +41,61 @@ class Activity extends Component{
       "totalcost"         : 0,
       "NABARD"            : 0,
       "LHWRF"             : 0,
-      "bankLoan"            : 0,
-      "govtscheme"          : 0,
-      "directCC"            : 0,
-      "indirectCC"          : 0,
-      "other"               : 0,
-      "total"               : 0,
+      "bankLoan"          : 0,
+      "govtscheme"        : 0,
+      "directCC"          : 0,
+      "indirectCC"        : 0,
+      "other"             : 0,
+      "total"             : 0,
       shown               : true,
-      fields: {},
-      errors: {},
-       "twoLevelHeader"              : {
-        apply                     : false,
-        firstHeaderData           : [
-                                      {
-                                          heading : '',
-                                          mergedColoums : 10
-                                      },
-                                      {
-                                          heading : 'Source of  Fund',
-                                          mergedColoums : 7
-                                      },
-                                      {
-                                          heading : 'MIS Coordinator',
-                                          mergedColoums : 3
-                                      },
-                                    ]
+      fields              : {},
+      errors              : {},
+       "twoLevelHeader"   : {
+        apply             : true,
+        firstHeaderData   : [
+                            {
+                              heading : 'Activity Details',
+                              mergedColoums : 14
+                            },
+                            {
+                              heading : 'Source of Fund',
+                              mergedColoums : 8
+                            },]
       },
-      "tableHeading"                : {
-        familyID                    : "Family ID",
-        beneficariesId              : "Beneficiary ID",
-        nameofbeneficaries          : "Name of Beneficiary",
-        actions                     : 'Action',
+      "tableHeading"      : {
+        date                       : "Date of intervention",
+        place                      : "Place",
+        sectorName                 : "Sector",
+        typeofactivity             : "Type of Activity",
+        activityName               : "Activity",
+        subactivityName            : "Sub-Activity",
+        unit                       : "Unit",
+        unitCost                   : "Unit Cost",
+        quantity                   : "Quantity",
+        totalcost                  : "Total Cost",
+        numofBeneficiaries         : "No. Of Beneficiaries",
+        LHWRF                      : "LHWRF",
+        NABARD                     : "NABARD",
+        bankLoan                   : "Bank Loan",
+        govtscheme                 : "Govt. Scheme",
+        directCC                   : "Direct Community Contribution",
+        indirectCC                 : "Indirect Community Contribution",
+        other                      : "Other",
+        total                      : "Total",
+        remark                     : "Remark",
+        actions                    : 'Action',
       },
-      " tableObjects"        : {
-        apiLink             : '/api/activityReport/',
-        editUrl             : '/activity/'
+      "tableObjects"               : {
+        apiLink                    : '/api/activityReport/',
+        editUrl                    : '/activity/'
       },
-      "startRange"                  : 0,
-      "limitRange"                  : 10,
-      "editId"                      : this.props.match.params ? this.props.match.params.id : ''
+      "startRange"                 : 0,
+      "limitRange"                 : 10,
+      "editId"                     : this.props.match.params ? this.props.match.params.id : ''
     
     }
   }
-/*  getData(startRange, limitRange){
-    axios({
-      method: 'get',
-      url: '/api/a/list',
-    }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
 
-      this.setState({
-        tableData : tableData.slice(startRange, limitRange),
-      });
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
- */
   handleChange(event){
     event.preventDefault(); 
     this.setState({
@@ -114,17 +109,18 @@ class Activity extends Component{
       "typeofactivity"    : this.refs.typeofactivity.value,
       "activity"          : this.refs.activity.value,
       "subactivity"       : this.refs.subactivity.value,
-      // "unit"              : this.refs.unit.value,
+      // "unit"              : this.state.unit.value,
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
-       "LHWRF"             : this.refs.LHWRF.value,
+      "LHWRF"             : this.refs.LHWRF.value,
       "NABARD"            : this.refs.NABARD.value,
       "bankLoan"          : this.refs.bankLoan.value,
       "govtscheme"        : this.refs.govtscheme.value,
       "directCC"          : this.refs.directCC.value,
       "indirectCC"        : this.refs.indirectCC.value,
       "other"             : this.refs.other.value,
+      "remark"            : this.refs.remark.value,
 
     });
  
@@ -163,24 +159,125 @@ class Activity extends Component{
     else{
       return true;
     }
- 
   }
   SubmitActivity(event){
+    console.log('SubmitActivity');
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
     var id2 = this.state.uID;
     var activityValues= 
     {
-      // "center_id"         : this.refs.QualificationLevel.value,
-      // "centerName"        : this.refs.centerName.value,
-      "dist"              : this.refs.dist.value,
+      "center_ID"         : "123",
+      "centerName"        : "Pune",
+      "district"          : this.refs.dist.value,
       "block"             : this.refs.block.value,
       "village"           : this.refs.village.value,
-      "Date"              : this.refs.dateOfIntervention.value,
-      "sector"            : this.refs.sector.value,
+      "date"              : this.refs.dateOfIntervention.value,
+      "sector_ID"         : this.refs.sector.value.split('|')[1],
+      "sectorName"        : this.refs.sector.value.split('|')[0],
       "typeofactivity"    : this.refs.typeofactivity.value,
-      "activity"          : this.refs.activity.value,
-      "subactivity"       : this.refs.subactivity.value,
+      "activity_ID"       : this.refs.activity.value.split('|')[1],
+      "activityName"      : this.refs.activity.value.split('|')[0],
+      "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
+      "subactivityName"   : this.refs.subactivity.value.split('|')[0],
+      "unitCost"          : this.refs.unitCost.value,
+      "quantity"          : this.refs.quantity.value,
+      "totalcost"         : this.state.totalcost,
+      "LHWRF"             : this.refs.LHWRF.value,
+      "NABARD"            : this.refs.NABARD.value,
+      "bankLoan"          : this.refs.bankLoan.value,
+      "govtscheme"        : this.refs.govtscheme.value,
+      "directCC"          : this.refs.directCC.value,
+      "indirectCC"        : this.refs.indirectCC.value,
+      "other"             : this.refs.other.value,
+      "total"             : this.state.total.value,
+      "remark"            : this.refs.remark.value,
+      "listofBeneficiaries": []
+    };
+    console.log('activityValues',activityValues);
+    let fields                  = {};
+    fields["dist"]              = "";
+    fields["block"]             = "";
+    fields["village"]           = "";
+    fields["dateOfIntervention"]= "";
+    fields["sector"]            = "";
+    fields["typeofactivity"]    = "";
+    fields["nameofactivity"]    = "";
+    fields["activity"]          = "";
+    fields["subactivity"]       = "";
+    fields["unit"]              = "";
+    fields["unitCost"]          = "";
+    fields["quantity"]          = "";
+    fields["totalcost"]         = "";
+    fields["LHWRF"]             = "";
+    fields["NABARD"]            = "";
+    fields["bankLoan"]          = "";
+    fields["govtscheme"]        = "";
+    fields["directCC"]          = "";
+    fields["indirectCC"]        = "";
+    fields["other"]             = "";
+    this.setState({
+      "dist"              : "",
+      "block"             : "",
+      "village"           : "",
+      "dateOfIntervention": "",
+      "sector"            : "",
+      "typeofactivity"    : "",
+      "nameofactivity"    : "",
+      "activity"          : "",
+      "subactivity"       : "",
+      "unit"              : "",
+      "unitCost"          : "",
+      "quantity"          : "",
+      "totalcost"         : "",
+      "LHWRF"             : "",
+      "NABARD"            : "",
+      "bankLoan"          : "",
+      "govtscheme"        : "",
+      "directCC"          : "",
+      "indirectCC"        : "",
+      "other"             : "",
+      "total"             : "",
+      "remark"            : "",
+      fields:fields
+    });
+    axios.post('/api/activityReport',activityValues)
+      .then((response)=>{
+    console.log('activityValues',activityValues);
+
+        swal({
+          title : response.data.message,
+          text  : response.data.message,
+        });
+      this.getData(this.state.startRange, this.state.limitRange);      
+      })
+      .catch(function(error){       
+    console.log('error',error);
+
+      });
+    }
+  }
+  Update(event)
+  {
+    event.preventDefault();
+    if (this.validateFormReq() && this.validateForm()) {
+    var id2 = this.state.uID;
+    var activityValues= 
+    {
+      "activityReport_ID" : this.state.editId,
+      "center_ID"         : "123",
+      "centerName"        : "Pune",
+      "district"          : this.refs.dist.value,
+      "block"             : this.refs.block.value,
+      "village"           : this.refs.village.value,
+      "date"              : this.refs.dateOfIntervention.value,
+      "sector_ID"         : this.refs.sector.value.split('|')[1],
+      "sectorName"        : this.refs.sector.value.split('|')[0],
+      "typeofactivity"    : this.refs.typeofactivity.value,
+      "activity_ID"       : this.refs.activity.value.split('|')[1],
+      "activityName"      : this.refs.activity.value.split('|')[0],
+      "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
+      "subactivityName"   : this.refs.subactivity.value.split('|')[0],
       // "unit"              : this.state.unit,
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
@@ -192,9 +289,10 @@ class Activity extends Component{
       "directCC"          : this.refs.directCC.value,
       "indirectCC"        : this.refs.indirectCC.value,
       "other"             : this.refs.other.value,
-      "total"             : this.state.total,
+      "total"             : this.state.total.value,
+      "remark"            : this.state.remark.value,
+      // "listofBeneficiaries": this.state.listofBeneficiaries
     };
-
     let fields                  = {};
     fields["dist"]              = "";
     fields["block"]             = "";
@@ -216,6 +314,7 @@ class Activity extends Component{
     fields["directCC"]          = "";
     fields["indirectCC"]        = "";
     fields["other"]             = "";
+    fields["remark"]             = "";
     this.setState({
       "dist"              : "",
       "block"             : "",
@@ -238,95 +337,7 @@ class Activity extends Component{
       "indirectCC"        : "",
       "other"             : "",
       "total"             : "",
-      fields:fields
-    });
-    axios.post('/api/activityReport',activityValues)
-      .then(function(response){
-        swal({
-          title : response.data.message,
-          text  : response.data.message,
-        });
-      this.getData(this.state.startRange, this.state.limitRange);      
-      })
-      .catch(function(error){
-        
-      });
-    }
-  }
-  Update(event)
-  {
-    event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
-    var id2 = this.state.uID;
-    var activityValues= 
-    {
-      // "center_id"         : this.refs.QualificationLevel.value,
-      // "centerName"        : this.refs.centerName.value,
-      "dist"              : this.refs.dist.value,
-      "block"             : this.refs.block.value,
-      "village"           : this.refs.village.value,
-      "Date"              : this.refs.dateOfIntervention.value,
-      "sector"            : this.refs.sector.value,
-      "typeofactivity"    : this.refs.typeofactivity.value,
-      "activity"          : this.refs.activity.value,
-      "subactivity"       : this.refs.subactivity.value,
-      // "unit"              : this.state.unit,
-      "unitCost"          : this.refs.unitCost.value,
-      "quantity"          : this.refs.quantity.value, 
-      "totalcost"         : this.state.totalcost,
-      "LHWRF"             : this.refs.LHWRF.value,
-      "NABARD"            : this.refs.NABARD.value,
-      "bankLoan"          : this.refs.bankLoan.value,
-      "govtscheme"        : this.refs.govtscheme.value,
-      "directCC"          : this.refs.directCC.value,
-      "indirectCC"        : this.refs.indirectCC.value,
-      "other"             : this.refs.other.value,
-      "total"             : this.state.total,
-    };
-
-    let fields                  = {};
-    fields["dist"]              = "";
-    fields["block"]             = "";
-    fields["village"]           = "";
-    fields["dateOfIntervention"]= "";
-    fields["sector"]            = "";
-    fields["typeofactivity"]    = "";
-    fields["nameofactivity"]    = "";
-    fields["activity"]          = "";
-    fields["subactivity"]       = "";
-    fields["unit"]              = "";
-    fields["unitCost"]          = "";
-    fields["quantity"]          = "";
-    fields["totalcost"]         = "";
-    fields["LHWRF"]             = "";
-    fields["NABARD"]            = "";
-    fields["bankLoan"]          = "";
-    fields["govtscheme"]        = "";
-    fields["directCC"]          = "";
-    fields["indirectCC"]        = "";
-    fields["other"]             = "";
-    this.setState({
-      "dist"              : "",
-      "block"             : "",
-      "village"           : "",
-      "dateOfIntervention": "",
-      "sector"            : "",
-      "typeofactivity"    : "",
-      "nameofactivity"    : "",
-      "activity"          : "",
-      "subactivity"       : "",
-      "unit"              : "",
-      "unitCost"          : "",
-      "quantity"          : "",
-      "totalcost"         : "",
-      "LHWRF"             : "",
-      "NABARD"            : "",
-      "bankLoan"          : "",
-      "govtscheme"        : "",
-      "directCC"          : "",
-      "indirectCC"        : "",
-      "other"             : "",
-      "total"             : "",
+      "remark"            : "",
       fields:fields
     });
     axios.patch('/api/activityReport',activityValues)
@@ -337,8 +348,7 @@ class Activity extends Component{
         });
       this.getData(this.state.startRange, this.state.limitRange);      
       })
-      .catch(function(error){
-        
+      .catch(function(error){        
       });
     }
   }
@@ -424,10 +434,10 @@ class Activity extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
+    this.setState({
+      errors: errors
+    });
+    return formIsValid;
   }
 
   calTotal(event){
@@ -439,7 +449,6 @@ class Activity extends Component{
     var directCC    = this.state.directCC;
     var indirectCC  = this.state.indirectCC;
     var other       = this.state.other;
-
      add = parseInt(LHWRF) + parseInt(NABARD) + parseInt(bankLoan) + parseInt(govtscheme) + parseInt(directCC) + parseInt(indirectCC) + parseInt(other);
     console.log("total=",add);
     this.setState({
@@ -454,12 +463,12 @@ class Activity extends Component{
     console.log(this.state.totalcost);
   }
 
-  toglehidden()
-  {
+  toglehidden(){
    this.setState({
      shown: !this.state.shown
     });
   }
+
   componentDidMount() {
     if(this.state.editId){      
       this.edit(this.state.editId);
@@ -475,22 +484,13 @@ class Activity extends Component{
     },()=>{console.log("date",this.state.date)})
     
     var id = this.state.editId;
-    // axios({
-    //   method: 'get',
-    //   url: '/api/activityReport/'+id,
-    // }).then((response)=> {
-    //   var tableData = response.data.map((a, index)=>{return _.omit(a, 'blocksCovered', 'villagesCovered', 'districtsCovered')});
-    //   this.setState({
-    //     dataCount : tableData.length,
-    //     tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-    //     editUrl   : this.props.match.params
-    //   },()=>{
-        
-    //   });
-    // }).catch(function (error) {
-    //   console.log('error', error);
-    // });
+      console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    this.getData(this.state.startRange, this.state.limitRange);
   }
+
   edit(id){
     axios({
       method: 'get',
@@ -499,15 +499,15 @@ class Activity extends Component{
       var editData = response.data[0];
       console.log('editData',editData);
       this.setState({
-        "dist"              : editData.dist,
+        "dist"              : editData.district,
         "block"             : editData.block,
         "village"           : editData.village,
-        "Date"              : editData.Date,
-        "sector"            : editData.sector,
+        "date"              : editData.date,
+        "sector"            : editData.sectorName,
         "typeofactivity"    : editData.typeofactivity,
-        "activity"          : editData.activity,
-        "subactivity"       : editData.subactivity,
-        // "unit"              : editData.dist,
+        "activity"          : editData.activityName,
+        "subactivity"       : editData.subactivityName,
+        // "unit"              : editData.unit,
         "unitCost"          : editData.unitCost,
         "quantity"          : editData.quantity,
         "totalcost"         : editData.totalcost,
@@ -519,8 +519,74 @@ class Activity extends Component{
         "indirectCC"        : editData.indirectCC,
         "other"             : editData.other,
         "total"             : editData.total,
+        "remark"            : editData.remark,
       });
     }).catch(function (error) {
+    });
+  }
+
+  getData(startRange, limitRange){ 
+   var data = {
+      limitRange : limitRange,
+      startRange : startRange,
+    }
+    axios.post('/api/activityReport/list', data)
+    .then((response)=>{
+      console.log('response', response.data);
+      var tableData = response.data.map((a, i)=>{
+        return {
+          date                       : a.date,
+          place                      : a.place,
+          sectorName                 : a.sectorName,
+          typeofactivity             : a.typeofactivity,
+          activityName               : a.activityName,
+          subactivityName            : a.subactivityName,
+          unit                       : a.unit,
+          unitCost                   : a.unitcost,
+          quantity                   : a.quantity,
+          totalcost                  : a.totalcost,
+          numofBeneficiaries         : a.numofBeneficiaries,
+          LHWRF                      : a.LHWRF,
+          NABARD                     : a.NABARD,
+          bankLoan                   : a.bankLoan,
+          govtscheme                 : a.govtscheme,
+          directCC                   : a.directCC,
+          indirectCC                 : a.indirectCC,
+          other                      : a.other,
+          total                      : a.total,
+          remark                     : a.remark,
+        }
+      })
+      this.setState({
+        tableData : tableData
+      })
+    })
+    .catch(function(error){      
+    });
+  }
+
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
+      this.getData(this.state.startRange, this.state.limitRange);
+    }
+  }
+  getAvailableSectors(){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        
+        this.setState({
+          availableSectors : response.data
+        })
+      console.log('availableSectors',this.state.availableSectors);
+    }).catch(function (error) {
+      console.log('error', error);
     });
   }
 
@@ -532,7 +598,7 @@ class Activity extends Component{
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
-    console.log("",this.state.Date)
+    // console.log("",this.state.date)
      
     return (
       <div className="container-fluid">
@@ -557,9 +623,6 @@ class Activity extends Component{
                         <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                           <label className="formLable">Date of intervention</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateOfIntervention" >
-                            {/*<div className="input-group-addon inputIcon">
-                              <i className="fa fa-graduation-cap fa"></i>
-                            </div>*/}
                             <input type="date" className="form-control inputBox toUpper" name="date" ref="date" value={this.state.date} onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.Date}</div>
@@ -606,9 +669,19 @@ class Activity extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                             <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >--select--</option>
+                          {   /* {
+                                this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                this.state.availableSectors.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }*/}
+
                               <option>Agriculture Development</option>
-{/*                              <option>Womern Empowerment</option>
-*/}                            </select>
+                            </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.sector}</div>
                         </div>
@@ -646,24 +719,21 @@ class Activity extends Component{
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.subactivity}</div>
-                        </div>
-                        
+                        </div>                        
                       </div> 
                     </div><br/>
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                           <div className="unit" id="" >
-                          <label className="formLable">Unit :</label>
+                          <label className="formLable">Unit :</label><br/>
+                          <label className="formLable"> </label>
                           </div>
                           <div className="errorMsg">{this.state.errors.unit}</div>
                         </div>
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                           <label className="formLable">Unit Cost</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
-                            {/*<div className="input-group-addon inputIcon">
-                             <i className="fa fa-building fa iconSize14"></i>
-                            </div>*/}
                             <input type="text"   className="form-control inputBox" name="unitCost" placeholder=""onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost}   onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.unitCost}</div>
@@ -671,34 +741,36 @@ class Activity extends Component{
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                           <label className="formLable">Quantity</label>
                           <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
-                            {/*<div className="input-group-addon inputIcon">
-                             <i className="fa fa-university fa iconSize14"></i>
-                            </div>*/}
                             <input type="text" className="form-control inputBox" name="quantity" placeholder=""ref="quantity" onKeyUp={this.calTotal.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.quantity}</div>
                         </div>
                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                           <div className="unit " id="PassoutYear" >
-                            <label className="formLable">Total Cost of Activity : &nbsp; {this.state.totalcost ?  this.state.totalcost : null}</label>
-
+                            <label className="formLable">Total Cost of Activity :</label><br/><label> {this.state.totalcost ?  this.state.totalcost : null}</label>
                           </div>
                           <div className="errorMsg">{this.state.errors.totalcost}</div>
                         </div>
                       </div> 
-                    </div><br/>
+                    </div>
+                    <div className="col-lg-12 ">
+                      <label className="formLable">Remark</label>
+                          <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
+                            <input type="text"   className="form-control inputBox" name="remark" placeholder=""onKeyUp={this.calTotal.bind(this)} ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
+                          </div>
+                          <div className="errorMsg">{this.state.errors.remark}</div>
+                    </div>
                     <div className="col-lg-12 ">
                        <hr className="hr-head"/>
                     </div>
                     <div className="col-lg-12 ">
-                       <h4 className="pageSubHeader">Sources of Fund</h4>
+                       <div className="pageSubHeader">Sources of Fund</div>
                     </div>
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">LHWRF</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                          
                             <input type="text"   className="form-control inputBox " name="LHWRF" placeholder="" ref="LHWRF" onKeyUp={this.calTotal.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.LHWRF}</div>
@@ -713,12 +785,10 @@ class Activity extends Component{
                         </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Bank Loan</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                          
                             <input type="text" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyUp={this.calTotal.bind(this)}  value={this.state.bankLoan}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.bankLoan}</div>
                         </div>
-                        
                       </div> 
                     </div><br/>
                     <div className="row">
@@ -726,9 +796,6 @@ class Activity extends Component{
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Govt. Schemes</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                            {/*<div className="input-group-addon inputIcon">
-                             <i className="fa fa-building fa iconSize14"></i>
-                            </div>*/}
                             <input type="text"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  onKeyUp={this.calTotal.bind(this)}   value={this.state.govtscheme}    onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.govtscheme}</div>
@@ -736,23 +803,17 @@ class Activity extends Component{
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Direct Beneficiary Contribution</label>
                           <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                            {/*<div className="input-group-addon inputIcon">
-                             <i className="fa fa-university fa iconSize14"></i>
-                            </div>directCC
-                            */}<input type="text" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  onKeyUp={this.calTotal.bind(this)}  value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
+                            <input type="text" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  onKeyUp={this.calTotal.bind(this)}  value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.directCC}</div>
-                        </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
+                        </div>
+                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Indirect Beneficiary Contribution</label>
                           <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                            {/*<div className="input-group-addon inputIcon">
-                             <i className="fa fa-university fa iconSize14"></i>
-                            </div>
-                            */}<input type="text" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC" onKeyUp={this.calTotal.bind(this)}  value={this.state.indirectCC}  onChange={this.handleChange.bind(this)}/>
+                            <input type="text" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC" onKeyUp={this.calTotal.bind(this)}  value={this.state.indirectCC}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.indirectCC}</div>
                         </div>
-                        
                       </div> 
                     </div><br/>
                     <div className="row">
@@ -760,26 +821,24 @@ class Activity extends Component{
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Other</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
-                          
                             <input type="text"   className="form-control inputBox" name="other" placeholder="" ref="other"  onKeyUp={this.calTotal.bind(this)}   value={this.state.other}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.other}</div>
                         </div>
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
                           <div className="unit" id="total" >
-                            <label className="formLable">Total :  </label>&nbsp;{this.state.total ?  this.state.total : " 0"}
-
+                            <label className="formLable">Total :</label>
+                            <br/>
+                            <label>&nbsp;{this.state.total ?  this.state.total : " 0"}</label>
                           </div>
                           <div className="errorMsg">{this.state.errors.total}</div>
                         </div>
-                        
                       </div> 
                     </div><br/>
-                                           
                     <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
                        <hr className="hr-head"/>
                     </div>
-                    <div className="col-lg-12 col-sm-12 col-xs-12" >
+                  {/*  <div className="col-lg-12 col-sm-12 col-xs-12" >
                       <div className="row">
                         <h4 className="pageSubHeader col-lg-6 col-sm-6 col-xs-6 ">List of Beneficiaries</h4>
                         <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#myModal"> <i class="fa fa-plus" aria-hidden="true"></i></div>
@@ -852,7 +911,6 @@ class Activity extends Component{
                                               <option  className="hidden" >--select--</option>
                                               <option>L000001</option>
                                               <option>B000001</option>
-                                              
                                             </select>
                                           </div>
                                           <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
@@ -872,15 +930,15 @@ class Activity extends Component{
                                       </div>
                                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
                                         <div className="">  
-                                         <IAssureTable 
+                                          <IAssureTable 
                                             tableHeading={this.state.tableHeading}
                                             twoLevelHeader={this.state.twoLevelHeader} 
                                             dataCount={this.state.dataCount}
                                             tableData={this.state.tableData}
                                             tableObjects={this.state.tableObjects}
                                           />
-                                          </div>
-                                        </div> 
+                                        </div>
+                                      </div> 
                                     </div>
                                     <div className="col-lg-12">
                                         <br/><button className=" col-lg-2 btn submit pull-right" > Add</button>
@@ -893,8 +951,9 @@ class Activity extends Component{
                         </div>
                       </div>
                     </div>
+                  */}
                     <div className="tableContainrer">
-                      <NewBeneficiary />
+                      <ListOfBeneficiaries />
                     </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       <br/>
@@ -906,6 +965,16 @@ class Activity extends Component{
                       }
                     </div> 
                   </form>
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                    <IAssureTable 
+                      tableHeading={this.state.tableHeading}
+                      twoLevelHeader={this.state.twoLevelHeader} 
+                      dataCount={this.state.dataCount}
+                      tableData={this.state.tableData}
+                      getData={this.getData.bind(this)}
+                      tableObjects={this.state.tableObjects}
+                    />
+                  </div> 
                 </div>
               </div>
             </section>

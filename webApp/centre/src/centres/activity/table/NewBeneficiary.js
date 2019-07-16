@@ -3,7 +3,7 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import IAssureTable           from "./IAssureTable.jsx";
 // import "./Activity.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
@@ -91,7 +91,6 @@ class NewBeneficiary extends Component{
     this.getData(this.state.startRange, this.state.limitRange);
   }
 
-/*
 
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -115,11 +114,7 @@ class NewBeneficiary extends Component{
       return true;
     }
   }
-  toglehidden(){
-   this.setState({
-     shown: !this.state.shown
-    });
-  }
+/*
 
   SubmitActivity(event){
     event.preventDefault();
@@ -471,10 +466,10 @@ class NewBeneficiary extends Component{
         <div className="col-lg-12 col-sm-12 col-xs-12" >
           <div className="row">
             <h4 className="pageSubHeader col-lg-6 col-sm-6 col-xs-6 ">List of Beneficiaries</h4>
-            <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#myModal"> <i className="fa fa-plus" aria-hidden="true"></i></div>
+           {/* <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#myModal"> <i className="fa fa-plus" aria-hidden="true"></i></div>
              <div className="modal fade in " id="myModal" role="dialog">
               <div className="modal-dialog modal-lg " >
-                <div className="modal-content ">
+                <div className="modal-content ">*/}
                   <div className=" ">
                     <div className="col-lg-12  col-md-10 pageContent margTop">
                       <button type="button" className="close" data-dismiss="modal"> <i className="fa fa-times"></i></button>
@@ -576,9 +571,9 @@ class NewBeneficiary extends Component{
                   </div>
                 </div>
               </div>
-            </div>
+           /* </div>
           </div>
-        </div>
+        </div>*/
     );
   }
 }

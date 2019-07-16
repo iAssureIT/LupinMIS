@@ -1,0 +1,129 @@
+.iAssureITtable-bordered > thead > tr > th, .iAssureITtable-bordered > tbody > tr > th, .iAssureITtable-bordered > tfoot > tr > th, .iAssureITtable-bordered > thead > tr > td, .iAssureITtable-bordered > tbody > tr > td, .iAssureITtable-bordered > tfoot > tr > td {
+    border: 1px solid #fff6;
+}
+.table-striped>tbody>tr:nth-of-type(even) {
+    background-color: #fff;
+}
+.iAssureITtable-bordered{
+  background: #039BE5 !important;
+  border: 1px solid #039BE5;
+}
+.paginationAdminWrap{
+  text-align: center !important;
+  width: 100%;
+}
+.paginationAdminOES > li > a{
+  margin-right: 5px !important;
+  margin-bottom: 5px !important;
+}
+.paginationAdminOES > li{
+    display: inline-block;
+    margin-left: 0 !important;
+    font-size: 10px;
+}
+.queDataCircle p{
+  height: 100%;
+  width: 100%;
+}
+.activeCircle{
+  background: #7f7f7f !important;
+}
+.queDataCircle {
+  padding-top: 4px;
+  font-size: 12px;
+  border: 1px solid #e8e6e6 !important;
+  height: 24px !important;
+  width: 24px !important;
+  border-radius: 100% !important;
+  box-shadow: 3px 4px 7px -3px #aeabab !important;
+  text-align: center;
+}
+.marginTop17{
+  margin-top: 17px;
+}
+.textAlignCenter{
+  text-align: center !important;
+}
+.tempTableHeader{
+  color: #fff;
+}
+
+.adminModal-dialog{
+  position: relative;
+  transform: translate(0,0);
+  margin: 30px auto;
+}
+.checkboxContainer{
+  position: relative;
+  padding-left: 15px;
+  align-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  padding-top: 8px;
+
+  /*position: relative;
+  padding-left: 3px;
+  align-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  user-select: none;
+  text-align: center;*/
+}
+/* Hide the browser's default checkbox */
+.checkboxContainer input {
+  position: relative;
+  /*opacity: 0;*/
+  z-index: 1;
+  cursor: pointer;
+  height: 17px;
+  width: 17px;
+  /*right: 10px;*/
+}
+/* Create a custom checkbox */
+.checkboxMark {
+  position: absolute;
+  top: 21%;
+  /*right: 92%;*/
+  vertical-align: center !important;
+  align-content: center;
+  height: 17px;
+  width: 17px;
+  background-color: #ffffff;
+  border-radius: 3px;
+  border: 2px solid #ddd;
+}
+
+
+/* On mouse-over, add a grey background color */
+.checkboxContainer:hover input ~ .checkboxMark{
+  background-color: #eee;
+}
+/* When the checkbox is checked, add a blue background */
+.checkboxContainer input:checked ~ .checkboxMark {
+  background-color: #2196F3;
+  border:2px solid #2196F3;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkboxMark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+/* Show the checkmark when checked */
+.checkboxContainer input:checked ~ .checkboxMark:after {
+  display: block;
+}
+/* Style the checkmark/indicator */
+.checkboxContainer .checkboxMark:after {
+  left: 4px;
+  top: 0px;
+  width: 6px;
+  height: 10px;
+  align-content: center;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
