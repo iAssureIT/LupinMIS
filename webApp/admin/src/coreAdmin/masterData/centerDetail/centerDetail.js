@@ -70,6 +70,7 @@ class centerDetail extends Component{
         actions                   : 'Action',
       },
       "tableObjects"              : {
+        deleteMethod              : 'delete',
         apiLink                   : '/api/centers/',
         paginationApply           : true,
         searchApply               : true,

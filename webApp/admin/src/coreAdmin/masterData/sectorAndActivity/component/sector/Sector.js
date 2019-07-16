@@ -26,7 +26,8 @@ class Sector extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        apiLink             : '/api/sectors/',
+        deleteMethod        : 'delete',
+        apiLink             : '/api/sectors/delete/',
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
@@ -130,15 +131,14 @@ class Sector extends Component{
         .catch(function(error){
           console.log("error = ",error);
         });
-      let fields = {};
-      fields["sector"] = "";
+        let fields = {};
+        fields["sector"] = "";
    
       this.setState({
         "sector"  :"",
         fields:fields
       });
     }     
-    window.location.reload(true);
   }
   validateFormReq() {
     let fields = this.state.fields;

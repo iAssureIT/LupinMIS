@@ -32,6 +32,7 @@ class Activity extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
+        deleteMethod        : 'patch',
         apiLink             : '/api/sectors/activity/delete/',
         editUrl             : '/sector-and-activity/'
       },
@@ -45,9 +46,12 @@ class Activity extends Component{
  
   handleChange(event){
     event.preventDefault();
+    // this.setState({
+    //   "sector"     : this.refs.sector.value,  
+    //   "activity"   : this.refs.activity.value,  
+    // });
     this.setState({
-      "sector"     : this.refs.sector.value,  
-      "activity"   : this.refs.activity.value,  
+      [event.target.name] : event.target.value
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -79,9 +83,10 @@ class Activity extends Component{
   submitActivity(event){
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
+      
     var activityValues = {
-      "sector_ID"            : this.state.editId,
-      "sector"               : this.refs.sector.value,
+      "sector_ID"            : this.refs.sector.value.split('|')[1],
+      "sector"               : this.refs.sector.value.split('|')[0],
       "activityName"         : this.refs.activity.value,
       "user_ID"              : this.state.user_ID,
     };
@@ -89,21 +94,19 @@ class Activity extends Component{
     fields["sector"]      = "";
     fields["activity"]    = "";
   
-    this.setState({
-      "sector"        :"",
-      "activity"      :"",
-      fields          :fields
-    });
     axios.patch('/api/sectors/activity', activityValues)
-      .then(function(response){
-       console.log('response', response.data);
-         swal({
+      .then((response)=>{
+       // console.log('response', response.data);
+       this.getData(this.state.startRange, this.state.limitRange);
+        swal({
           title : response.data.message,
           text  : response.data.message
         });
+        this.refs.sector.value   = "";
+        this.refs.activity.value = "";
       })
       .catch(function(error){
-        console.log("error ============== ",error);
+        // console.log("error ============== ",error);
       });
     }
   }
@@ -112,32 +115,33 @@ class Activity extends Component{
     event.preventDefault();
     if(this.refs.sector.value =="" || this.refs.activity.value=="" )
     {
-      console.log('state validation');
+      // console.log('state validation');
       if (this.validateFormReq() && this.validateForm()) {
       }
     }else{
       var activityValues = {
-      "sector_ID"            :this.state.editId,
-      "sector"               :this.refs.sector.value,
-      "activity_ID"          :this.refs.activity.value.split('|')[1],
-      "activityName"         :this.refs.activity.value.split('|')[0],
-      "user_ID"              :this.state.user_ID,
+        "sector_ID"            : this.refs.sector.value.split('|')[1],
+        "sector"               : this.refs.sector.value.split('|')[0],
+        "activity_ID"          : this.state.editId,
+        "activityName"         : this.refs.activity.value,
+        "user_ID"              : this.state.user_ID,
       };
-      
       axios.patch('/api/sectors/activity/update',activityValues)
-        .then(function(response){
+        .then((response)=>{
+          this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
             text  : response.data.message
           });
-          this.getData(this.state.startRange, this.state.limitRange);
+          this.refs.sector.value   = "";
+          this.refs.activity.value = "";
           this.setState({
             editId : ''
           })
           this.props.history.push('/sector-and-activity');
         })
         .catch(function(error){
-          console.log("error = ",error);
+          // console.log("error = ",error);
         });
       let fields             = {};
       fields["sector"]       = "";
@@ -149,7 +153,6 @@ class Activity extends Component{
         fields          :fields
       });
     }
-    window.location.reload(true);
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -189,7 +192,7 @@ class Activity extends Component{
       },()=>{
         // this.getAvailableActivity(this.state.editSectorId);
         this.edit(this.state.editSectorId);
-        console.log("editId",this.state.editId);    
+        // console.log("editId",this.state.editId);    
       })
       
     }
@@ -199,38 +202,10 @@ class Activity extends Component{
     this.getAvailableSectors();
     if(this.state.editId){      
       // this.getAvailableActivity(this.state.editSectorId);
-      this.edit(this.state.editId);
+      this.edit(this.state.editSectorId);
     }
     
-    var data = {
-      limitRange : 0,
-      startRange : 1,
-    }
-    axios({
-      method: 'get',
-      url: '/api/sectors/list',
-    }).then((response)=> {
-      var tableData = _.flatten(response.data.map((a, index)=>{
-        return a.activity.map((b, i)=>{
-          return {
-            _id     : a._id+'/'+b._id,
-            sector  : a.sector,
-            activityName: b.activityName 
-          }
-        })
-      }))
-
-      this.setState({
-        dataCount : tableData.length,
-        tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-        editUrl   : this.props.match.params
-      },()=>{
-        
-      });
-      
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    this.getData(this.state.startRange, this.state.limitRange);
   }
   getAvailableSectors(){
     axios({
@@ -242,24 +217,24 @@ class Activity extends Component{
           availableSectors : response.data
         })
     }).catch(function (error) {
-      console.log('error', error);
+      // console.log('error', error);
     });
   }
   edit(id){
     var activity_id = this.props.match.params.activityId;
-
+    // console.log('activity_id',activity_id);
     axios({
       method: 'get',
       url: '/api/sectors/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log("editData",editData)
+      // console.log("editData",editData)
       this.setState({
-        "sector"            : editData.sector+'|'+editData._id,
-        "activity"      :_.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activityName : ''})),
+        "sector"        : editData.sector+'|'+editData._id,
+        "activity"      : _.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activityName : ''})),
         // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
       },()=>{
-        console.log('this.state', this.state)
+        // console.log('this.state', this.state)
       });
     }).catch(function (error) {
     });
@@ -270,15 +245,15 @@ class Activity extends Component{
       startRange : startRange,
       limitRange : limitRange
     }
-   axios.post('/api/sectors/list', data)
+    axios.post('/api/sectors/activity/list', data)
     .then((response)=>{
-      console.log("response",response.data);
+      // console.log("response", response.data);
       this.setState({
         tableData : response.data
       });
     })
     .catch(function(error){
-      console.log("error = ",error);
+      // console.log("error = ",error);
     });
   }
   getSearchText(searchText, startRange, limitRange){
@@ -330,9 +305,7 @@ class Activity extends Component{
                   <div className=" col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Name of Activity</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activity" >
-                      {/*<div className="input-group-addon inputIcon">
-                        <i className="fa fa-graduation-cap fa"></i>
-                      </div>*/}
+                      
                       <input type="text" className="form-control inputBox nameParts"  placeholder="" name="activity"  value={this.state.activity} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activity" />
                     </div>
                     <div className="errorMsg">{this.state.errors.activity}</div>
