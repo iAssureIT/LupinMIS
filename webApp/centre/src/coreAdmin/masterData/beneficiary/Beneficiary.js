@@ -27,7 +27,6 @@ class Beneficiary extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        deleteMethod          : 'delete',
         apiLink             : '/api/beneficiaries/',
         editUrl             : '/beneficiary/',
       },

@@ -514,8 +514,7 @@ class IAssureTable extends Component {
 		        	</div>	
 	        	:
 	        	null
-	       	}
-					
+	       	}					
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop17">			            	        
 	                <div className="table-responsive">
 						<table className="table iAssureITtable-bordered table-striped table-hover">

@@ -144,6 +144,7 @@ class Sector extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
       if (!fields["sector"]) {
         formIsValid = false;
         errors["sector"] = "This field is required.";
@@ -158,6 +159,7 @@ class Sector extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
       this.setState({
         errors: errors
       });
@@ -207,7 +209,7 @@ class Sector extends Component{
     }
      axios.post('/api/sectors/list',data)
     .then((response)=>{
-      // console.log('response', response.data);
+      console.log('response', response.data);
       this.setState({
         tableData : response.data
       })

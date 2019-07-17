@@ -2,11 +2,11 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
-import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import 'bootstrap/js/tab.js';
-import 'react-table/react-table.css';
+
+import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./centerDetail.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
@@ -175,7 +175,7 @@ class centerDetail extends Component{
         "misCoordinatorMobile"      : this.refs.MISCoordinatorContact.value,
         "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
       };
-      
+
       // console.log("centerDetail",centerDetail);
       let fields = {};
       fields["typeOfCenter"] = "";
@@ -318,19 +318,19 @@ class centerDetail extends Component{
           "fields"                    : fields
         });
         $('input[type=checkbox]').attr('checked', false);
-    }
-   
-      $('input[type=checkbox]').attr('checked', false);
-      this.props.history.push('/center-detail');
-      this.setState({
-        "editId"              : "",
-      });
-      // window.location.reload(true);
+    } 
+    $('input[type=checkbox]').attr('checked', false);
+    this.props.history.push('/center-detail');
+    this.setState({
+      "editId"              : "",
+    });
   }
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
+
       if (!fields["typeOfCenter"]) {
         formIsValid = false;
         errors["typeOfCenter"] = "This field is required.";
@@ -388,6 +388,8 @@ class centerDetail extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
+    
       if (typeof fields["centerInchargeEmail"] !== "undefined") {
         //regular expression for email validation
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
@@ -623,104 +625,6 @@ class centerDetail extends Component{
     })
   }
   render() {
-
-    const dataM = [{
-        srno: 1,
-        FamilyID: "Maharashtra",
-        NameofBeneficiary: "Pune",
-        BeneficiaryID: "Pimpri",
-      }
-    ]
-    const columnsM = [ 
-      {
-        Header: 'Sr No',
-        accessor: 'srno',
-      },
-      {
-        Header: 'District',
-        accessor: 'FamilyID', 
-      }, {
-        Header: 'Block',
-        accessor: 'NameofBeneficiary', 
-      }, {
-        Header: 'Village',
-        accessor: 'BeneficiaryID', 
-      },
-    ]
-    const data = [{
-        srno: 1,
-        FamilyID: "L000001",
-        NameofBeneficiary: "Priyanka Lewade",
-        BeneficiaryID: "PL0001",
-        },{
-        srno: 2,
-        FamilyID: "B000001",
-        NameofBeneficiary: "Priyanka Bhanvase",
-        BeneficiaryID: "PB0001",
-      }
-    ]
-    const columns = [ 
-        {
-          Header: 'Sr No',
-          accessor: 'srno',
-          },
-          {
-          Header: 'Sector',
-          accessor: 'NameofBeneficiary', 
-          }, {
-          Header: 'Activity',
-          accessor: 'noMAp', 
-          },{
-          Header: 'Sub-Activity',
-          accessor: 'noMAp', 
-          },{
-          Header: 'Quantity',
-          accessor: 'noMAp', 
-          },{
-          Header: 'Amount',
-          accessor: 'noMAp', 
-          },{
-          Header: 'Beneficiary',
-          accessor: 'noMAp', 
-          },{
-          Header: "Financial Sharing",
-          columns: [
-          {
-            Header: "LHWRF",
-            accessor: "LHWRF"
-          },
-          {
-            Header: "NABARD",
-            accessor: "NABARD"
-          },{
-            Header: "Bank Loan",
-            accessor: "BankLoan"
-          },{
-            Header: "Govt",
-            accessor: "BankLoan"
-          },{
-            Header: "Direct Beneficiary",
-            accessor: "BankLoan"
-          },{
-            Header: "Indirect Beneficiary",
-            accessor: "BankLoan"
-          },
-        ]
-        },
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-3">
-              <div className="col-lg-6" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-             
-            </div>
-            )     
-          }
-        ]
         // console.log('dataCount', this.state.dataCount, 'tableData', this.state.tableData);
     return (
       <div className="container-fluid">

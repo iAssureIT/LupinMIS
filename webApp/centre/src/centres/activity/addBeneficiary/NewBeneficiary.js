@@ -396,8 +396,9 @@ class NewBeneficiary extends Component{
       method: 'get',
       url: '/api/activityReport/'+id,
     }).then((response)=> {
-      var editData = response.data[0];
-      console.log('editData',editData);
+    
+      var tableData = response.data.map((a, index)=>{return});
+
       this.setState({
         "dist"              : editData.dist,
         "block"             : editData.block,
@@ -451,8 +452,7 @@ class NewBeneficiary extends Component{
   //   }
   // }
   
-
-
+  
   toglehidden(){
    this.setState({
      shown: !this.state.shown

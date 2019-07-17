@@ -58,7 +58,7 @@ class IAssureTable extends Component {
 		event.preventDefault();
 		$("html,body").scrollTop(0);
 		var tableObjects =  this.props.tableObjects;
-		var id = event.target.id;
+		var id = (event.target.id).replace(/-/g, '/');
 		this.props.history.push(tableObjects.editUrl+id);
 	}
     delete(e){

@@ -159,9 +159,11 @@
   height     : 40px !important;
 }
 
-.faintCoolor{
-	color: #666 !important;
+.faintColor{
+	color: #444 !important;
 	font-weight: bold !important;
+	margin-bottom: 10px;
+	margin-top: 10px
 }
 .fbold{
 	font-family:'Montserrat',sans-serif !important;
@@ -171,20 +173,18 @@
 .listItem{
 	font-family:'Montserrat',sans-serif !important;
 	padding-left:6px;
+  padding-top: 3px;
 	font-size:11px !important;
 }
 .noPadding{
 	padding: 0px !important;
 }
-.htDiv{
+/*.htDiv{
 	height: 180px;
-}
+}*/
 /*checkbox*/
 .SDGContainer{
   position: relative;
-/*  padding-left: 3px;
- margin-bottom: 12px;
-*/  
   align-content: center;
   cursor: pointer;
   font-size: 10px;
@@ -194,22 +194,19 @@
 }
 /* Hide the browser's default checkbox */
 .SDGContainer input {
-     position: relative;
-    opacity: 0;
-    z-index: 1;
-    cursor: pointer;
-    height: 17px;
-    width: 17px;
-    margin-left: -19px;
-    /* right: 10px; */
-    margin-top: 2px;
-
+  position: relative;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+  height: 18px;
+  width: 18px;
+  right: 12px; 
 }
 /* Create a custom checkbox */
 .SDGCheck {
   position: absolute;
   top: 2px;
-  left: 34px;
+  left: 0px;
   vertical-align: center !important;
   align-content: center;
   height: 17px;
@@ -217,7 +214,6 @@
   background-color: #ffffff;
   border-radius: 3px;
   border: 2px solid #ddd;
-  margin-left: -37px;
   z-index: 0;
 }
 /* On mouse-over, add a grey background color */

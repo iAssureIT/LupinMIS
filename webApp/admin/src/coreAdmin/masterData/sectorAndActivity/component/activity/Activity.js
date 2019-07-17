@@ -34,6 +34,8 @@ class Activity extends Component{
       "tableObjects"        : {
         deleteMethod        : 'patch',
         apiLink             : '/api/sectors/activity/delete/',
+        paginationApply     : true,
+        searchApply         : true,
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
@@ -102,8 +104,10 @@ class Activity extends Component{
           title : response.data.message,
           text  : response.data.message
         });
-        this.refs.sector.value   = "";
-        this.refs.activity.value = "";
+        this.setState({
+          activity : '',
+          sector   : ''
+        })
       })
       .catch(function(error){
         // console.log("error ============== ",error);
@@ -133,10 +137,11 @@ class Activity extends Component{
             title : response.data.message,
             text  : response.data.message
           });
-          this.refs.sector.value   = "";
-          this.refs.activity.value = "";
+          
           this.setState({
-            editId : ''
+            editId   : '',
+            activity : '',
+            sector   : ''
           })
           this.props.history.push('/sector-and-activity');
         })
@@ -158,6 +163,8 @@ class Activity extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
+
       if (!fields["sector"]) {
         formIsValid = false;
         errors["sector"] = "This field is required.";
@@ -176,6 +183,8 @@ class Activity extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
+    
       this.setState({
         errors: errors
       });
@@ -190,7 +199,6 @@ class Activity extends Component{
         editId : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
-        // this.getAvailableActivity(this.state.editSectorId);
         this.edit(this.state.editSectorId);
         // console.log("editId",this.state.editId);    
       })
@@ -201,7 +209,6 @@ class Activity extends Component{
   componentDidMount() {
     this.getAvailableSectors();
     if(this.state.editId){      
-      // this.getAvailableActivity(this.state.editSectorId);
       this.edit(this.state.editSectorId);
     }
     
@@ -247,7 +254,7 @@ class Activity extends Component{
     }
     axios.post('/api/sectors/activity/list', data)
     .then((response)=>{
-      // console.log("response", response.data);
+      console.log("response", response.data);
       this.setState({
         tableData : response.data
       });

@@ -1,3 +1,5 @@
+
+  
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
@@ -180,6 +182,7 @@ class SubActivity extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
       if (!fields["sector"]) {
         formIsValid = false;
         errors["sector"] = "This field is required.";
@@ -201,6 +204,7 @@ class SubActivity extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
 
       this.setState({
         errors: errors
