@@ -178,20 +178,20 @@ class centerDetail extends Component{
 
       // console.log("centerDetail",centerDetail);
       let fields = {};
-      fields["typeOfCenter"] = "";
-      fields["nameOfCenter"] = "";
-      fields["address"] = "";
-      fields["state"] = "";
-      fields["district"] = "";
-      fields["pincode"] = "";
-      fields["centerInchargeName"] = "";
-      fields["centerInchargeContact"] = "";
-      fields["centerInchargeEmail"] = "";
-      fields["MISCoordinatorName"] = "";
-      fields["MISCoordinatorContact"] = "";
-      fields["MISCoordinatorEmail"] = "";
-      fields["districtCovered"] = "";
-      fields["blockCovered"] = "";
+      fields["typeOfCenter"]           = "";
+      fields["nameOfCenter"]           = "";
+      fields["address"]                = "";
+      fields["state"]                  = "";
+      fields["district"]               = "";
+      fields["pincode"]                = "";
+      fields["centerInchargeName"]     = "";
+      fields["centerInchargeContact"]  = "";
+      fields["centerInchargeEmail"]    = "";
+      fields["MISCoordinatorName"]     = "";
+      fields["MISCoordinatorContact"]  = "";
+      fields["MISCoordinatorEmail"]    = "";
+      fields["districtCovered"]        = "";
+      fields["blockCovered"]           = "";
 
       // console.log('centerDetail',centerDetail);
       axios.post('/api/centers',centerDetail)
@@ -395,7 +395,7 @@ class centerDetail extends Component{
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         if (!pattern.test(fields["centerInchargeEmail"])) {
           formIsValid = false;
-          errors["centerInchargeEmail"] = "Please enter valid email-ID.";
+          errors["centerInchargeEmail"] = "Please enter valid email.";
         }
       }
       if (typeof fields["MISCoordinatorEmail"] !== "undefined") {
@@ -403,7 +403,7 @@ class centerDetail extends Component{
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         if (!pattern.test(fields["MISCoordinatorEmail"])) {
           formIsValid = false;
-          errors["MISCoordinatorEmail"] = "Please enter valid email-ID.";
+          errors["MISCoordinatorEmail"] = "Please enter valid email.";
         }
       }
       if (typeof fields["centerInchargeContact"] !== "undefined") {
@@ -416,6 +416,12 @@ class centerDetail extends Component{
         if (!fields["MISCoordinatorContact"].match(/^[0-9]{10}$/)) {
           formIsValid = false;
           errors["MISCoordinatorContact"] = "Please enter valid mobile no.";
+        }
+      }
+      if (typeof fields["pincode"] !== "undefined") {
+        if (!fields["pincode"].match(/^[0-9]{6}$/)) {
+          formIsValid = false;
+          errors["pincode"] = "Please enter valid mobile no.";
         }
       }
          
@@ -793,7 +799,7 @@ class centerDetail extends Component{
                            <hr />
                         </div>
                         <div className="col-lg-12 ">
-                           <h5 className="pageSubHeader">Villages Covered by this Center</h5>
+                           <h5 className="pageSubHeader">Villages Covered</h5>
                         </div>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
@@ -839,7 +845,9 @@ class centerDetail extends Component{
                         </div><br/>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight mt ">
-                          <label className="formLable faintCoolor col-lg-12 col-sm-12 col-xs-12">Villages Covered</label>                           
+                            {
+                              this.state.blockCovered?
+                              <h5 className="col-lg-12 col-sm-12 col-xs-12">Villages Covered</h5> : ""}                          
                             {
                               this.state.listofVillages?
                               this.state.listofVillages.map((village, index)=>{
@@ -876,7 +884,7 @@ class centerDetail extends Component{
                            <hr />
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <h5 className="">List of Villages</h5>                                     
+                          <h5 className="">Villages Covered</h5>                                     
                           <table className="table iAssureITtable-bordered table-striped table-hover">
                             <thead className="tempTableHeader">
                               <tr>

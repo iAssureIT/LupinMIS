@@ -203,19 +203,19 @@
 }
 .head{
 /*	text-decoration: underline;
-*/	font-size: 14px !important;
+*/	font-size: 13px !important;
 	font-weight: bold !important;	
 }
 .subActDiv{
-	border-top: 1px solid #dcd9d9 !important;
+	/*border-top: 1px solid #dcd9d9 !important;*/
 	border-bottom: 1px solid #dcd9d9 !important;
-    height: 260px !important;
+    height: 270px !important;
     padding-top: 7px;
 }
 .contentDiv{
 	/*border: 1px solid #999 !important;*/
     height: auto !important;
-    padding-top: 25px;
+    padding-top: 5px;
     padding-left: 20px;
     line-height: 15px;
     font-size: 14px !important;
@@ -245,4 +245,8 @@
 	margin-top: 5px;
 	padding-left:  0px;
 	padding-right:  0px !important
+}
+
+.validbox{
+	height: 50px;
 }

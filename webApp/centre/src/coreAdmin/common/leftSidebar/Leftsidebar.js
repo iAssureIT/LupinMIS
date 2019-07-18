@@ -43,7 +43,7 @@ export default class Leftsidebar extends Component{
                   </a>
                 </li>
                 <li className="sidebarMenuText">
-                  <a href="/plan" >
+                  <a href="/planDetails" >
                     <i className="fa fa-pie-chart" />
                     Plan Details
                   </a>
@@ -75,7 +75,7 @@ export default class Leftsidebar extends Component{
                   </ul>
                 </li> 
                 <li className="sidebarMenuText">
-                  <a href="/plan" >
+                  <a href="/planDetails" >
                     <i className="fa fa-book" />
                     Reports
                   </a>

@@ -1,12 +1,10 @@
 import React, { Component }   from 'react';
-import $                      from 'jquery';
 import axios                  from 'axios';
-import ReactTable             from "react-table";
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
+/*import $                      from 'jquery';
 import _                      from 'underscore';
-
-import 'react-table/react-table.css';
+*/
 import "./ViewActivity.css";
 
 class ViewActivity extends Component{

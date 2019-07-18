@@ -16,7 +16,7 @@ class Beneficiary extends Component{
    
     this.state = {
       "familyID"            :"",
-      "beneficiaryID"     :"",
+      "beneficiaryID"       :"",
       "nameofbeneficiaries" :"",
       "fields"              : {},
       "errors"              : {},
@@ -101,7 +101,7 @@ class Beneficiary extends Component{
           text  : response.data.message,
         });
       })
-      .catch(function(error){
+      .catch((error)=>{
         console.log("error = ",error);
       });
     }
@@ -136,6 +136,7 @@ class Beneficiary extends Component{
         "nameofbeneficiaries"      :"",   
         fields:fields
       });
+      console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
           this.getData(this.state.startRange, this.state.limitRange);
@@ -148,7 +149,7 @@ class Beneficiary extends Component{
             "editId"              : "",
           });
         })
-        .catch(function(error){
+        .catch((error)=>{
           console.log("error = ",error);
         });
     }
@@ -157,6 +158,7 @@ class Beneficiary extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
       if (!fields["familyID"]) {
         formIsValid = false;
         errors["familyID"] = "This field is required.";
@@ -179,6 +181,14 @@ class Beneficiary extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
+    /*if (typeof fields["beneficiaryID"] !== "undefined") {
+      if (!fields["beneficiaryID"].match()) {
+        formIsValid = false;
+        errors["beneficiaryID"] = "Please enter valid mobile no.";
+      }
+    }*/
+
       this.setState({
         errors: errors
       });
@@ -263,7 +273,7 @@ class Beneficiary extends Component{
                           <label className="formLable">Family ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
                             <select className="custom-select form-control inputBox" value={this.state.familyID} ref="familyID" name="familyID" onChange={this.handleChange.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
+                              <option value="" className="hidden" >-- Select --</option>
                               <option value={"PL00001"+"|"+"id"}>PL00001</option>
                               <option value={"PL00002"+"|"+"id"}>PL00002</option>
                               <option value={"PL00003"+"|"+"id"}>PL00003</option>

@@ -83,7 +83,7 @@ class Layout extends Component{
                     <Route path="/family"                              exact strict component={ Family } />
                     <Route path="/family/:id"                          exact strict component={ Family } />
                    {/*Plans Routes*/}
-                    <Route path="/plan"                               exact strict component={ AnnualPlan } />
+                    <Route path="/planDetails"                               exact strict component={ AnnualPlan } />
                     <Route path="/table"                               exact strict component={ table } />
                     <Route path="/Activity"                           exact strict component={ Activity } />
                     <Route path="/Activity/:id"                           exact strict component={ Activity } />

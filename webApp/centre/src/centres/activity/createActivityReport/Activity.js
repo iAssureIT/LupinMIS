@@ -1,5 +1,7 @@
 import React, { Component }   from 'react';
 import axios                  from 'axios';
+import _                      from 'underscore';
+
 
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
@@ -469,28 +471,6 @@ class Activity extends Component{
     });
   }
 
-  componentDidMount() {
-    if(this.state.editId){      
-      this.edit(this.state.editId);
-    }
-    var dateObj = new Date();
-    var momentObj = moment(dateObj);
-    console.log('momentObj', momentObj);
-    var momentString = momentObj.format('YYYY-MM-DD');
-    console.log("maxDatefrm",momentString);  
-
-    this.setState({
-      date :momentString,
-    },()=>{console.log("date",this.state.date)})
-    
-    var id = this.state.editId;
-      console.log('editId componentDidMount', this.state.editId);
-    if(this.state.editId){      
-      this.edit(this.state.editId);
-    }
-    this.getData(this.state.startRange, this.state.limitRange);
-  }
-
   edit(id){
     axios({
       method: 'get',
@@ -565,16 +545,46 @@ class Activity extends Component{
     });
   }
 
+  componentDidMount() {
+    this.getAvailableSectors();
+    if(this.state.editId){      
+      this.getAvailableActivity(this.state.editSectorId);
+      this.edit(this.state.editId);
+    }
+    var dateObj = new Date();
+    var momentObj = moment(dateObj);
+    console.log('momentObj', momentObj);
+    var momentString = momentObj.format('YYYY-MM-DD');
+    console.log("maxDatefrm",momentString);  
+
+    this.setState({
+      date :momentString,
+    },()=>{console.log("date",this.state.date)})
+    
+    var id = this.state.editId;
+      console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    this.getData(this.state.startRange, this.state.limitRange);
+  }
+
   componentWillReceiveProps(nextProps){
+    this.getAvailableSectors();
     var editId = nextProps.match.params.id;
+    console.log('editId',editId);
     if(nextProps.match.params.id){
       this.setState({
-        editId : editId
-      })
-      this.edit(editId);
-      this.getData(this.state.startRange, this.state.limitRange);
+        editId : editId,
+        editSectorId : nextProps.match.params.sectorId
+      },()=>{
+        this.getAvailableActivity(this.state.editSectorId);
+        this.getAvailableSubActivity(this.state.editSectorId);
+        this.edit(this.state.editId);
+      })    
     }
   }
+   
   getAvailableSectors(){
     axios({
       method: 'get',
@@ -584,10 +594,73 @@ class Activity extends Component{
         this.setState({
           availableSectors : response.data
         })
-      console.log('availableSectors',this.state.availableSectors);
     }).catch(function (error) {
       console.log('error', error);
     });
+  }
+  selectSector(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    var sector_ID = event.target.value.split('|')[1];
+    this.setState({
+      sector_ID : sector_ID
+    })
+    this.handleChange(event);
+    this.getAvailableActivity(sector_ID);
+  }
+
+ 
+  getAvailableActivity(sector_ID){
+    axios({
+      method: 'get',
+      url: '/api/sectors/'+sector_ID,
+    }).then((response)=> {
+      console.log('response', response.data, response.data[0].activity);
+        this.setState({
+          availableActivity : response.data[0].activity
+        },()=>{
+          console.log("availableActivity",this.state.availableActivity)
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectActivity(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    var activity_ID = event.target.value.split('|')[1];
+    this.handleChange(event);
+    this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
+  }
+/*  getAvailableSubActivity(sector_ID, activity_ID){
+    axios({
+      method: 'get',
+      url: '/api/sectors/'+sector_ID,
+    }).then((response)=> {
+      console.log('sub', response.data, activity_ID);
+      var availableSubActivity = _.flatten(response.data.map((a, i)=>{
+          console.log('a',a);
+          return a.activity.map((b, j)=>{
+            return b._id ==  activity_ID ? b.subActivity.map((c, k)=>
+              {return c._id == subActivity_ID ? c.subActivityName : ""})
+            })
+          });
+        }))
+      console.log('availableSubActivity', availableSubActivity);
+      this.setState({
+        availableSubActivity : availableSubActivity
+      },()=>{
+        console.log('availableSubActivity', this.state.availableSubActivity);
+      });
+    }).catch(function (error) {
+      console.log('error', error);
+    });    
+  }*/
+  selectSubActivity(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    var subActivity_ID = event.target.value.split('|')[1];
+    this.handleChange(event);
   }
 
   render() {
@@ -667,9 +740,9 @@ class Activity extends Component{
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                           <label className="formLable">Sector </label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)} >
+                            <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                          {   /* {
+                              {
                                 this.state.availableSectors && this.state.availableSectors.length >0 ?
                                 this.state.availableSectors.map((data, index)=>{
                                   return(
@@ -678,9 +751,7 @@ class Activity extends Component{
                                 })
                                 :
                                 null
-                              }*/}
-
-                              <option>Agriculture Development</option>
+                              }
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.sector}</div>
@@ -699,11 +770,20 @@ class Activity extends Component{
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                           <label className="formLable">Activity</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
-                            <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.handleChange.bind(this)} >
+                            <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                                <option>Yield Enhancement</option>
-                                <option>Farm equipment promotion</option>
-                                <option>Cultivation of Tusar Crop</option>
+                              {
+                                this.state.availableActivity && this.state.availableActivity.length >0 ?
+                                this.state.availableActivity.map((data, index)=>{
+                                  if(data.activityName ){
+                                    return(
+                                      <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                    );
+                                  }
+                                })
+                                :
+                                null
+                              }
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.activity}</div>
@@ -711,11 +791,21 @@ class Activity extends Component{
                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                           <label className="formLable">Sub-Activity</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
-                            <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.handleChange.bind(this)} >
+                            <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                                <option>Crop demonstrations</option>
-                                <option>Promotion of improved farm equipment</option>
-                                <option>Cultivation of Tusar Crop</option>
+                                {
+                                  this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                                  this.state.availableSubActivity.map((data, index)=>{
+                                    if(data.subActivityName ){
+                                      return(
+                                        <option className="" key={data._id} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                      );
+                                    }
+                                  })
+                                  :
+                                  null
+                                }
+                                
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.subactivity}</div>

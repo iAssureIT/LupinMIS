@@ -1,5 +1,3 @@
-
-  
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
@@ -194,6 +192,10 @@ class SubActivity extends Component{
       if (!fields["subActivityName"]) {
         formIsValid = false;
         errors["subActivityName"] = "This field is required.";
+      }
+      if (!fields["unit"]) {
+        formIsValid = false;
+        errors["unit"] = "This field is required.";
       }
       this.setState({
         errors: errors
@@ -395,7 +397,7 @@ class SubActivity extends Component{
                         {/*<div className="input-group-addon inputIcon">
                           <i className="fa fa-graduation-cap fa"></i>
                         </div>*/}
-                        <input type="text" className="form-control inputBox nameParts" ref="subActivityName" name="subActivityName" value={this.state.subActivityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <input type="text" className="form-control inputBox " ref="subActivityName" name="subActivityName" value={this.state.subActivityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                       </div>
                       <div className="errorMsg">{this.state.errors.subActivityName}</div>
                     </div>
@@ -407,7 +409,7 @@ class SubActivity extends Component{
                      <div className=" col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Unit</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unit" >
-                        <input type="text" className="form-control inputBox nameParts" ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <input type="text" className="form-control inputBox " ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                       </div>
                       <div className="errorMsg">{this.state.errors.unit}</div>
                     </div>

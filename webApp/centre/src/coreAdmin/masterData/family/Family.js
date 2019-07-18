@@ -1,4 +1,5 @@
 import React, { Component }   from 'react';
+import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
@@ -30,7 +31,7 @@ class Family extends Component{
       fields: {},
       errors: {},
       "tableObjects"         : {
-        deleteMethod          : 'delete',
+     
         apiLink               : '/api/families/',
         editUrl               : '/family/'
       },
@@ -40,9 +41,7 @@ class Family extends Component{
         uidNumber             : "UID Number",
         contactNumber         : "Contact Number",
         caste                 : "Caste",
-        familyCategory        : "Family Category",
-        center                : "LHWRF Centre",
-        state                 : "State",
+        familyCategory        : "Family Category",        
         dist                  : "District",
         block                 : "Block",
         village               : "Village",
@@ -52,6 +51,28 @@ class Family extends Component{
       "limitRange"            : 10,
       "editId"                : this.props.match.params ? this.props.match.params.id : ''    
     }
+    console.log('editId' , this.state.editId);
+  }
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    console.log('editId' , editId);
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      },()=>{
+        this.edit(this.state.editId);
+      })
+      
+      this.getData(this.state.startRange, this.state.limitRange);
+    }
+  }
+  
+  componentDidMount() {
+    console.log('editId componentDidMount', this.state.editId);
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
+    this.getData(this.state.startRange, this.state.limitRange);
   }
  
   handleChange(event){
@@ -111,26 +132,25 @@ class Family extends Component{
     if (this.validateForm() && this.validateFormReq()) {
     var familyValues= 
       {
-        familyID             :this.refs.familyID.value, 
-        familyHead           :this.refs.nameOfFamilyHead.value, 
-        contactNumber        :this.refs.contact.value, 
-        uidNumber            :this.refs.uID.value, 
-        caste                :this.refs.caste.value, 
-        familyCategory       :this.refs.category.value, 
-        // center               :this.refs.LHWRFCentre.value, 
-        // state                :this.state.state, 
-        dist                 :this.refs.district.value, 
-        block                :this.refs.block.value, 
-        village              :this.refs.village.value, 
+        "familyID"             :this.refs.familyID.value, 
+        "familyHead"           :this.refs.nameOfFamilyHead.value, 
+        "contactNumber"        :this.refs.contact.value, 
+        "uidNumber"            :this.refs.uID.value, 
+        "caste"                :this.refs.caste.value, 
+        "familyCategory"       :this.refs.category.value, 
+        // "center"               :this.refs.LHWRFCentre.value, 
+        // "state"                :this.state.state, 
+        "dist"                 :this.refs.district.value, 
+        "block"                :this.refs.block.value, 
+        "village"              :this.refs.village.value, 
       };
       let fields = {};
       fields["familyID"]          = "";
       fields["nameOfFamilyHead"]  = "";
       fields["uID"]               = "";
+      fields["contact"]           = "";
       fields["caste"]             = "";
       fields["category"]          = "";
-      fields["LHWRFCentre"]       = "";
-      fields["state"]             = "";
       fields["district"]          = "";
       fields["block"]             = "";
       fields["village"]           = "";
@@ -164,42 +184,39 @@ class Family extends Component{
 
   UpdateFamily(event){
     event.preventDefault();
-    /*if(this.refs.familyID.value == "" || this.refs.nameOfFamilyHead.value =="" || this.refs.contact.value==""
-     || this.refs.uID.value=="" || this.refs.caste.value=="" || this.refs.category.value=="" 
-     || this.refs.center.value=="" || this.refs.state.value=="" 
-     || this.refs.district.value=="" || this.refs.block.value=="" || this.refs.village.value=="" )
-    {*/
-    // if (this.validateFormReq() && this.validateForm()){
-   /*   }
-    }else{*/
-      var familyValues= 
-      {
-        families_ID          :this.state.editId, 
-        familyID             :this.refs.familyID.value,
-        familyHead           :this.refs.nameOfFamilyHead.value, 
-        contactNumber        :this.refs.contact.value, 
-        uidNumber            :this.refs.uID.value, 
-        caste                :this.refs.caste.value, 
-        familyCategory       :this.refs.category.value, 
-        // center               :this.refs.LHWRFCentre.value, 
-        // state                :this.state.state, 
-        dist                 :this.refs.district.value, 
-        block                :this.refs.block.value, 
-        village              :this.refs.village.value, 
+    if(this.refs.familyID.value === "" || this.refs.nameOfFamilyHead.value ==="" || this.refs.contact.value===""
+     || this.refs.uID.value==="" || this.refs.caste.value==="" || this.refs.category.value==="" 
+     || this.refs.district.value==="" || this.refs.block.value==="" || this.refs.village.value==="" )
+    {
+    if (this.validateFormReq() && this.validateForm()){
+     }
+    }else{
+      var familyValues = {
+        "family_ID"            :this.state.editId, 
+        "familyID"             :this.refs.familyID.value,
+        "familyHead"           :this.refs.nameOfFamilyHead.value, 
+        "contactNumber"        :this.refs.contact.value, 
+        "uidNumber"            :this.refs.uID.value, 
+        "caste"                :this.refs.caste.value, 
+        "familyCategory"       :this.refs.category.value, 
+        "dist"                 :this.refs.district.value, 
+        "block"                :this.refs.block.value, 
+        "village"              :this.refs.village.value, 
       };
       let fields = {};
       fields["familyID"]          = "";
       fields["nameOfFamilyHead"]  = "";
       fields["uID"]               = "";
+      fields["contact"]           = "";
       fields["caste"]             = "";
       fields["category"]          = "";
-      fields["LHWRFCentre"]       = "";
-      fields["state"]             = "";
       fields["district"]          = "";
       fields["block"]             = "";
       fields["village"]           = "";
 
-      axios.patch('/api/families/update',familyValues)
+      console.log('familyValues', familyValues);
+
+      axios.patch('/api/families/update', familyValues)
         .then((response)=>{
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
@@ -228,12 +245,13 @@ class Family extends Component{
       this.setState({
         "editId"               : "",
       });
-    // }    
+    }    
   }
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
     if (!fields["familyID"]) {
       formIsValid = false;
       errors["familyID"] = "This field is required.";
@@ -254,9 +272,9 @@ class Family extends Component{
       formIsValid = false;
       errors["category"] = "This field is required.";
     }          
-    if (!fields["LHWRFCentre"]) {
+    if (!fields["contact"]) {
       formIsValid = false;
-      errors["LHWRFCentre"] = "This field is required.";
+      errors["contact"] = "This field is required.";
     }          
    /* if (!fields["state"]) {
       formIsValid = false;
@@ -283,6 +301,14 @@ class Family extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
+
+    if (typeof fields["contact"] !== "undefined") {
+      if (!fields["contact"].match(/^[0-9]{10}$/)) {
+        formIsValid = false;
+        errors["contact"] = "Please enter valid mobile no.";
+      }
+    }
     this.setState({
       errors: errors
     });
@@ -329,25 +355,7 @@ class Family extends Component{
     });
   }
 
-  componentWillReceiveProps(nextProps){
-    var editId = nextProps.match.params.id;
-    if(nextProps.match.params.id){
-      this.setState({
-        editId : editId
-      })
-      this.edit(editId);
-      this.getData(this.state.startRange, this.state.limitRange);
-    }
-  }
   
-  componentDidMount() {
-    console.log('editId componentDidMount', this.state.editId);
-    if(this.state.editId){      
-      this.edit(this.state.editId);
-    }
-    this.getData(this.state.startRange, this.state.limitRange);
-  }
- 
   render() {     
     return (
       <div className="container-fluid">
@@ -394,9 +402,9 @@ class Family extends Component{
                         <div className=" col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
                           <label className="formLable">Contact Number </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contact" >
-                            <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="contact" name="contact" value={this.state.contact} onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="contact" name="contact" value={this.state.contact} onKeyDown={this.isNumberKey.bind(this)} maxLength="10" onChange={this.handleChange.bind(this)} />
                           </div>
-                          <div className="errorMsg">{this.state.errors.uID}</div>
+                          <div className="errorMsg">{this.state.errors.contact}</div>
                         </div>  
                         <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Caste</label><span className="asterix">*</span>

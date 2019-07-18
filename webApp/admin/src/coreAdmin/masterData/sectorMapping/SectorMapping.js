@@ -50,8 +50,8 @@ class SectorMapping extends Component{
   handleChange(event){
     event.preventDefault();
     this.setState({
-      "goalName"   : this.refs.goalName.value,          
-      "goalType"   : this.refs.goalType.value,          
+      "goalName"               : this.refs.goalName.value,          
+      "goalType"               : this.refs.goalType.value,          
       "selectedActivities"     : this.state.selectedActivities,          
     });
     let fields = this.state.fields;
