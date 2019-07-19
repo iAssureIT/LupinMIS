@@ -36,6 +36,8 @@ class SubActivity extends Component{
       "tableObjects"        : {
         deleteMethod        : 'patch',
         apiLink             : '/api/sectors/subactivity/delete/',
+        paginationApply     : true,
+        searchApply         : true,
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,

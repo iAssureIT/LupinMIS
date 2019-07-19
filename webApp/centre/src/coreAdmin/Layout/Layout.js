@@ -25,16 +25,12 @@ import Beneficiary                                from '../../coreAdmin/masterDa
 import Activity                                   from "../../centres/activity/createActivityReport/Activity.js";
 import ViewActivity                               from "../../centres/activity/viewActivity/ViewActivity.js";
 import table                                      from "../../centres/activity/table/NewBeneficiary.js";
-import AnnualPlan                                 from "../../centres/plan/annualPlan/AnnualPlan.js";
-/*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";*/
+import Plan                                       from "../../centres/plan/PlanDetails.js";
+import CenterList                                 from "../../centres/centerList/centerList.js";
 
 
 import ActivityReportView                         from "../../centres/activityReportView/ActivityReportView.js";
 
-/*import MonthlyPlan                                from "../../centres/monthlyPlan/MonthlyPlan.js";
-
-/*import MonthlyPlanView                          from "../../centres/monthlyPlanView/MonthlyPlanView.js";
-*/
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -79,16 +75,17 @@ class Layout extends Component{
                     <Route path="/" component={Dashboard} exact />
                   {/*Master Data*/}
                     <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
-                    <Route path="/beneficiary/:id"                         exact strict component={ Beneficiary } />
+                    <Route path="/beneficiary/:id"                     exact strict component={ Beneficiary } />
                     <Route path="/family"                              exact strict component={ Family } />
                     <Route path="/family/:id"                          exact strict component={ Family } />
                    {/*Plans Routes*/}
-                    <Route path="/planDetails"                               exact strict component={ AnnualPlan } />
+                    <Route path="/planDetails"                         exact strict component={ Plan } />
                     <Route path="/table"                               exact strict component={ table } />
-                    <Route path="/Activity"                           exact strict component={ Activity } />
-                    <Route path="/Activity/:id"                           exact strict component={ Activity } />
-                    <Route path="/viewActivity"                       exact strict component={ ViewActivity } />
-                    <Route path="/activityReportView"                 exact strict component={ ActivityReportView } />
+                    <Route path="/activity"                            exact strict component={ Activity } />
+                    <Route path="/activity/:id"                        exact strict component={ Activity } />
+                    <Route path="/viewActivity"                        exact strict component={ ViewActivity } />
+                    <Route path="/activityReportView"                  exact strict component={ ActivityReportView } />
+                    <Route path="/centerList"                          exact strict component={ CenterList } />
 
                   </Switch>        
                 </Router>

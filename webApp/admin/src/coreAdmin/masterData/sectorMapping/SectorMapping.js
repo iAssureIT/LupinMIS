@@ -109,13 +109,13 @@ class SectorMapping extends Component{
           .catch(function(error){
             console.log("error = ",error);
           });
+        $('input[type=checkbox]').attr('checked', false);
         this.setState({
           "goalName"           :"",
           "goalType"           :"",
           "selectedActivities" :[],
           fields               :fields
         });
-        $('input[type=checkbox]').attr('checked', false);
       }
     }  
   }

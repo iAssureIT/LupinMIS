@@ -497,6 +497,17 @@ class centerDetail extends Component{
        axios.post('/api/centers/list',data)
       .then((response)=>{
         console.log('response', response.data);
+        /*var tableData = response.data.map((a, i)=>{
+        return {
+          _id                       : a._id,
+          type                      : a.type,
+          centerName                : a.centerName,
+          address                   : a.address,
+          centerInchargeDetail      : a.centerInchargeDetail,
+          misCoordinatorDetail      : a.misCoordinatorDetail,
+          numberofVillage           : a.numberofVillage,
+        }
+      })*/
         this.setState({
           tableData : response.data
         })

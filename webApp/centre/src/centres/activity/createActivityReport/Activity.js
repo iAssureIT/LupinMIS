@@ -57,18 +57,21 @@ class Activity extends Component{
         firstHeaderData   : [
                             {
                               heading : 'Activity Details',
-                              mergedColoums : 14
+                              mergedColoums : 11
                             },
                             {
                               heading : 'Source of Fund',
                               mergedColoums : 8
+                            },
+                            {
+                              heading : '',
+                              mergedColoums : 1
                             },]
       },
       "tableHeading"      : {
-        date                       : "Date of intervention",
+        date                       : "Date",
         place                      : "Place",
         sectorName                 : "Sector",
-        typeofactivity             : "Type of Activity",
         activityName               : "Activity",
         subactivityName            : "Sub-Activity",
         unit                       : "Unit",
@@ -89,6 +92,8 @@ class Activity extends Component{
       },
       "tableObjects"               : {
         apiLink                    : '/api/activityReport/',
+        paginationApply            : true,
+        searchApply                : true,
         editUrl                    : '/activity/'
       },
       "startRange"                 : 0,
@@ -153,7 +158,7 @@ class Activity extends Component{
   }
   isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -166,7 +171,6 @@ class Activity extends Component{
     console.log('SubmitActivity');
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
-    var id2 = this.state.uID;
     var activityValues= 
     {
       "center_ID"         : "123",
@@ -182,6 +186,7 @@ class Activity extends Component{
       "activityName"      : this.refs.activity.value.split('|')[0],
       "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
       "subactivityName"   : this.refs.subactivity.value.split('|')[0],
+      "unit"              : this.state.unit,
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
@@ -263,7 +268,6 @@ class Activity extends Component{
   {
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
-    var id2 = this.state.uID;
     var activityValues= 
     {
       "activityReport_ID" : this.state.editId,
@@ -280,7 +284,7 @@ class Activity extends Component{
       "activityName"      : this.refs.activity.value.split('|')[0],
       "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
       "subactivityName"   : this.refs.subactivity.value.split('|')[0],
-      // "unit"              : this.state.unit,
+      "unit"              : this.state.unit,
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
@@ -503,6 +507,11 @@ class Activity extends Component{
       });
     }).catch(function (error) {
     });
+        this.props.history.push('/sector-mapping');
+    this.setState({
+      "editId"              : "",
+    });
+
   }
 
   getData(startRange, limitRange){ 
@@ -603,13 +612,13 @@ class Activity extends Component{
     this.setState({[event.target.name]:event.target.value});
     var sector_ID = event.target.value.split('|')[1];
     this.setState({
-      sector_ID : sector_ID
+      sector_ID          : sector_ID,
+      subActivityDetails : ""
     })
     this.handleChange(event);
     this.getAvailableActivity(sector_ID);
   }
 
- 
   getAvailableActivity(sector_ID){
     axios({
       method: 'get',
@@ -625,14 +634,19 @@ class Activity extends Component{
       console.log('error', error);
     });
   }
+
   selectActivity(event){
     event.preventDefault();
     this.setState({[event.target.name]:event.target.value});
     var activity_ID = event.target.value.split('|')[1];
+    this.setState({
+      subActivityDetails : ""
+    });
     this.handleChange(event);
     this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
   }
-/*  getAvailableSubActivity(sector_ID, activity_ID){
+
+  getAvailableSubActivity(sector_ID, activity_ID){
     axios({
       method: 'get',
       url: '/api/sectors/'+sector_ID,
@@ -640,11 +654,7 @@ class Activity extends Component{
       console.log('sub', response.data, activity_ID);
       var availableSubActivity = _.flatten(response.data.map((a, i)=>{
           console.log('a',a);
-          return a.activity.map((b, j)=>{
-            return b._id ==  activity_ID ? b.subActivity.map((c, k)=>
-              {return c._id == subActivity_ID ? c.subActivityName : ""})
-            })
-          });
+          return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
         }))
       console.log('availableSubActivity', availableSubActivity);
       this.setState({
@@ -655,19 +665,26 @@ class Activity extends Component{
     }).catch(function (error) {
       console.log('error', error);
     });    
-  }*/
+  }
   selectSubActivity(event){
     event.preventDefault();
     this.setState({[event.target.name]:event.target.value});
     var subActivity_ID = event.target.value.split('|')[1];
+    console.log("subActivity_ID",subActivity_ID);
+
+    var subActivityDetails = _.flatten(this.state.availableSubActivity.map((a, i)=>{ return a._id === subActivity_ID ? a.unit : ""}))
+    console.log('subActivityDetails', subActivityDetails);
+    this.setState({
+      subActivityDetails : subActivityDetails
+    })
     this.handleChange(event);
+
   }
 
   render() {
     var shown = {
       display: this.state.shown ? "block" : "none"
-    };
-    
+    };    
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
@@ -816,8 +833,14 @@ class Activity extends Component{
                       <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                           <div className="unit" id="" >
-                          <label className="formLable">Unit :</label><br/>
-                          <label className="formLable"> </label>
+                            <label className="formLable">Unit :</label><br/>
+                              {this.state.subActivityDetails ? 
+                                <div >
+                                  <label className="formLable">{this.state.subActivityDetails}</label>
+                                </div>
+                                :
+                                null
+                              }
                           </div>
                           <div className="errorMsg">{this.state.errors.unit}</div>
                         </div>
@@ -928,120 +951,7 @@ class Activity extends Component{
                     <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
                        <hr className="hr-head"/>
                     </div>
-                  {/*  <div className="col-lg-12 col-sm-12 col-xs-12" >
-                      <div className="row">
-                        <h4 className="pageSubHeader col-lg-6 col-sm-6 col-xs-6 ">List of Beneficiaries</h4>
-                        <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#myModal"> <i class="fa fa-plus" aria-hidden="true"></i></div>
-                         <div className="modal fade in " id="myModal" role="dialog">
-                          <div className="modal-dialog modal-lg " >
-                            <div class="modal-content ">
-                              <div class=" ">
-                                <div className="col-lg-12  col-md-10 pageContent margTop">
-                                  <button type="button" class="close" data-dismiss="modal"> <i class="fa fa-times"></i></button>
-                                  <form id="form">
-                                    <div className="col-lg-12 ">
-                                      <h4 className="pageSubHeader">Add Beneficiary</h4>
-                                    </div>
-                                    <div className="row"> 
-                                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                                        <div className=" col-lg-3  col-lg-offset-1 col-md-4 col-sm-6 col-xs-12 ">
-                                          <label className="formLable">District</label>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                            <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
-                                              <option  className="hidden" >--select--</option>
-                                              <option>Pune</option>
-                                              <option>Thane</option>
-                                            </select>
-                                          </div>
-                                          <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
-                                        </div>
-                                        <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
-                                          <label className="formLable">Block</label>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                            <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
-                                              <option  className="hidden" >--select--</option>
-                                              <option>Pimpari</option>
-                                              <option>Haveli</option>
-                                              <option>Chinchwad</option>
-                                            </select>
-                                          </div>
-                                          <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
-                                        </div>
-                                        <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
-                                          <label className="formLable">Village</label>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                            <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
-                                              <option  className="hidden" >--select--</option>
-                                              <option>Shivne</option>
-                                              <option>Hadapsar</option>
-                                              <option>Manjari</option>
-                                            </select>
-                                          </div>
-                                          <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
-                                        </div>
-                                      </div>
-                                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight row">
-                                        <div className=" col-lg-6 col-sm-12 col-xs-12 col-lg-offset-3 formLable boxHeightother ">
-                                          <label className="formLable">Search</label>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                            <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
-                                          </div>
-                                        </div>
-                                         <div className=" col-lg-1 col-md-1 col-sm-1 col-xs-1  boxHeightother">
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 mt23" >
-                                            <div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i class="fa fa-plus" aria-hidden="true" id="click"></i></div></div>
-                                          </div>
-                                        </div>
-                                      </div> 
-                                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight " style={hidden}>
-                                         <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 formLable boxHeightother">
-                                          <label className="formLable">Family ID </label>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                            <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel"  onChange={this.handleChange.bind(this)} >
-                                              <option  className="hidden" >--select--</option>
-                                              <option>L000001</option>
-                                              <option>B000001</option>
-                                            </select>
-                                          </div>
-                                          <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
-                                        </div>
-                                        <div className=" col-lg-4 col-sm-12 col-xs-12 formLable boxHeightother ">
-                                          <label className="formLable">Beneficiary Name</label>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                            <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-4 col-sm-12 col-xs-12 formLable boxHeightother ">
-                                          <label className="formLable">Beneficiary ID</label>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                            <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
-                                        <div className="">  
-                                          <IAssureTable 
-                                            tableHeading={this.state.tableHeading}
-                                            twoLevelHeader={this.state.twoLevelHeader} 
-                                            dataCount={this.state.dataCount}
-                                            tableData={this.state.tableData}
-                                            tableObjects={this.state.tableObjects}
-                                          />
-                                        </div>
-                                      </div> 
-                                    </div>
-                                    <div className="col-lg-12">
-                                        <br/><button className=" col-lg-2 btn submit pull-right" > Add</button>
-                                    </div>
-                                  </form>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  */}
+                
                     <div className="tableContainrer">
                       <ListOfBeneficiaries />
                     </div>

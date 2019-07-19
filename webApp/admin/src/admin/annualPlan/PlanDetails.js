@@ -3,14 +3,14 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
-import "./AnnualPlan.css";
+import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import "./PlanDetails.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 
-class AnnualPlan extends Component{
+class PlanDetails extends Component{
   
   constructor(props){
     super(props); 
@@ -20,8 +20,8 @@ class AnnualPlan extends Component{
       "sector_id"           :"",
       "sectorName"          :"",
       "subActivity"         :"",
-      "activityName"            :"",
-      "physicalUnits"        :"",
+      "activityName"        :"",
+      "physicalUnits"       :"",
       "unitCost"            :"",
       "totalBudget"         :"",
       "noOfBeneficiaries"   :"",
@@ -51,12 +51,12 @@ class AnnualPlan extends Component{
                                 },
                                 {
                                     heading : 'Source of Fund',
-                                    mergedColoums : 7
+                                    mergedColoums : 8
                                 },
-                             /*   {
-                                    heading : 'MIS Coordinator',
-                                    mergedColoums : 3
-                                },*/
+                                {
+                                    heading : '',
+                                    mergedColoums : 1
+                                },
                               ]
       },
       "tableHeading"        : {
@@ -76,10 +76,13 @@ class AnnualPlan extends Component{
         directCC            : "Direct Community Contribution",
         indirectCC          : "Indirect Community Contribution",
         other               : "Other",
+        remark              : "Remark",
         actions             : 'Action',
       },
       "tableObjects"       : {
         apiLink             : '/api/annualPlans/',
+        paginationApply     : true,
+        searchApply         : true,
         editUrl             : '/planDetails/',
       },   
       "startRange"          : 0,
@@ -95,8 +98,8 @@ class AnnualPlan extends Component{
     event.preventDefault();
     this.setState({
       "month"               : this.refs.month.value,          
-      "sectorName"          : this.state.sector,
       "year"                : this.refs.year.value,          
+      "sectorName"          : this.state.sector,
       "activityName"        : this.refs.activityName.value,
      /* "physicalUnits"       : this.refs.physicalUnits.value,
       "unitCost"            : this.refs.unitCost.value,
@@ -124,6 +127,36 @@ class AnnualPlan extends Component{
       });
     }
   }
+
+  handleDataChange(event){
+    event.preventDefault();
+    this.setState({
+      "physicalUnits"       : this.refs.physicalUnits.value,
+      "unitCost"            : this.refs.unitCost.value,
+      "totalBudget"         : this.refs.totalBudget.value,
+      "noOfBeneficiaries"   : this.refs.noOfBeneficiaries.value,
+      "LHWRF"               : this.refs.LHWRF.value,
+      "NABARD"              : this.refs.NABARD.value,
+      "bankLoan"            : this.refs.bankLoan.value,
+      "govtscheme"          : this.refs.govtscheme.value,
+      "directCC"            : this.refs.directCC.value,
+      "indirectCC"          : this.refs.indirectCC.value,
+      "other"               : this.refs.other.value,
+      "remark"              : this.refs.remark.value,
+    });
+    let fields = this.state.fields;
+    // fields[event.target.name] = event.target.value;
+    this.setState({
+      [event.target.name] : event.target.value
+    });
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
+  }
    
   SubmitAnnualPlan(event){
     event.preventDefault();
@@ -138,8 +171,8 @@ class AnnualPlan extends Component{
       "sectorName"          : this.refs.sectorName.value.split('|')[0],
       "activity_ID"         : this.refs.activityName.value.split('|')[1],
       "activityName"        : this.refs.activityName.value.split('|')[0],
-      "subactivity_ID"      : this.state.subActivityName.split('|')[1],
-      "subactivityName"     : this.state.subActivityName.split('|')[0],
+      // "subactivity_ID"      : this.state.subActivityName.split('|')[1],
+      "subactivityName"     : this.state.subActivityName,
       "unit"                : this.state.unit,
       "physicalUnits"       : this.refs.physicalUnits.value,
       "unitCost"            : this.refs.unitCost.value,
@@ -430,9 +463,11 @@ class AnnualPlan extends Component{
       console.log('sub', response.data, activity_ID);
       var availableSubActivity = _.flatten(response.data.map((a, i)=>{
           console.log('a',a);
-          return a.activity.map((b, j)=>{return b._id ==  activity_ID ? b.subActivity : [] });
+          return a.activity.map((b, j)=>{return b._id ==  activity_ID ? b.subActivity : [] 
+          });
+
         }))
-      console.log('availableSubActivity', availableSubActivity);
+      // console.log('availableSubActivity', availableSubActivity);  
       this.setState({
         availableSubActivity : availableSubActivity
       },()=>{
@@ -442,6 +477,54 @@ class AnnualPlan extends Component{
       console.log('error', error);
     });    
   }
+/*  subActivityDetails(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    var subActivity_ID = event.target.value.split('|')[1];
+    console.log("subActivity_ID",subActivity_ID);
+
+    var subActivityDetails = _.flatten(this.state.availableSubActivity.map((a, i)=>{ return a._id == subActivity_ID ? a.unit : ""}))
+    console.log('subActivityDetails', subActivityDetails);
+    this.setState({
+      subActivity_ID     : subActivity_ID,
+      subActivityDetails : subActivityDetails
+    })
+    this.handleChange(event);
+  }*/
+/*  subActivityDetails(event){
+    var availableSubActivity = this.state.availableSubActivity;
+
+  
+    var id    = event.target.id;
+
+    this.setState({
+      [id] : value
+    },()=>{
+      console.log('activityName', this.state[id], id);
+      if(this.state[id] == true){
+        availableSubActivity.push({
+          subActivity_ID      : id.split("|")[0],
+          subActivityName     : id.split("|")[1],
+          unit                : id.split("|")[2],
+          familyUpgradation   : id.split("|")[3]
+        });
+        this.setState({
+          availableSubActivity : availableSubActivity
+        });
+        console.log('availableSubActivity', availableSubActivity);
+      }else{
+        var index = availableSubActivity.findIndex(v => v.activityName === id);
+        // console.log('index', index);
+        availableSubActivity.splice(availableSubActivity.findIndex(v => v.activityName === id), 1);
+        this.setState({
+          availableSubActivity : availableSubActivity
+        },()=>{
+          console.log('availableSubActivity',this.state.availableSubActivity);
+        });
+      }
+    });      
+  }*/
+
 
   edit(id){
     axios({
@@ -455,7 +538,7 @@ class AnnualPlan extends Component{
         "month"               : editData.month,
         "center"              : editData.center,
         "sectorName"          : editData.sectorName,
-        "activityName"            : editData.activityName,
+        "activityName"        : editData.activityName,
         "physicalUnits"       : editData.physicalUnits,
         "unitCost"            : editData.unitCost,
         "totalBudget"         : editData.totalBudget,
@@ -549,7 +632,7 @@ class AnnualPlan extends Component{
                           </div>
                         </div> 
                       </div><br/>                      
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" /* style={hidden}*/ id="Academic_details">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" /*  style={hidden} */id="Academic_details">
                         
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
@@ -559,15 +642,15 @@ class AnnualPlan extends Component{
                                 <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sector} onChange={this.selectSector.bind(this)}>
                                   <option  className="hidden" >--Select--</option>
                                   {
-                                  this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                  this.state.availableSectors.map((data, index)=>{
-                                    return(
-                                      <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                }
+                                    this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                    this.state.availableSectors.map((data, index)=>{
+                                      return(
+                                        <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
                                 </select>
                               </div>
                               <div className="errorMsg">{this.state.errors.sectorName}</div>
@@ -596,16 +679,16 @@ class AnnualPlan extends Component{
                           </div> 
                         </div><br/>  
                         <div>
-                          {this.state.activityName ? <hr className="hr-head"/> :""}
+                          {this.state.availableSubActivity ? <hr className="hr-head"/> :""}
                         </div>                     
                           {
                             this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
                             this.state.availableSubActivity.map((data, index)=>{
                               if(data.subActivityName ){
                                 return(
-                                  <div className="subActDiv ">
+                                  <div className="subActDiv"  key={data._id}>
                                     <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 contentDiv  ">
-                                      <label className="head" key={data._id} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </label><br/>
+                                      <label className="head" value={data.subActivityName+'|'+data._id} >{data.subActivityName} </label><br/>
                                       <label className="formLable">Unit :<span>{data.unit}</span></label>
                                      </div>
                                     <div className="col-lg-9 col-sm-10 col-xs-10 ">
@@ -618,68 +701,68 @@ class AnnualPlan extends Component{
                                         <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Physical Units</label>
                                           <div className=" input-group inputBox-main " id="physicalUnits" >
-                                            <input type="text" className="form-control inputBoxAP nameParts" name="physicalUnits" placeholder="" ref="physicalUnits" value={this.state.physicalUnits} onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="physicalUnits" placeholder="" ref="physicalUnits" value={this.state.physicalUnits} onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Unit Cost</label>
                                           <div className=" input-group inputBox-main" id="unitCost" >
-                                            <input type="text" className="form-control inputBoxAP nameParts" name="unitCost" placeholder=""ref="unitCost" value={this.state.unitCost} onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="unitCost" placeholder=""ref="unitCost" value={this.state.unitCost} onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Total Cost</label>
                                           <div className="input-group inputBox-main" id="totalBudget" >
-                                            <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">No.of Beneficiaries</label>
                                           <div className=" input-group inputBox-main" id="noOfBeneficiaries" >
-                                            <input type="text" className="form-control inputBoxAP nameParts" name="noOfBeneficiaries" placeholder=""ref="noOfBeneficiaries" value={this.state.noOfBeneficiaries} onChange={this.handleChange.bind(this)}/>                              
+                                            <input type="text" className="form-control inputBox nameParts" name="noOfBeneficiaries" placeholder=""ref="noOfBeneficiaries" value={this.state.noOfBeneficiaries} onChange={this.handleDataChange.bind(this)}/>                              
                                           </div>
                                         </div>
                                       </div>
                                       <div className="row">
                                         <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
-                                          <label className="formLable head">Financial Sources</label>
+                                          <label className="formLable head">Sources of Fund</label>
                                         </div>
                                       </div>
                                       <div className="row">
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">LHWRF</label>
                                           <div className=" input-group inputBox-main" id="LHWRF" >
-                                            <input type="text" className="form-control inputBox nameParts" name="LHWRF" placeholder=""ref="LHWRF" value={this.state.LHWRF}  onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="LHWRF" placeholder=""ref="LHWRF" value={this.state.LHWRF}  onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">NABARD</label>
                                           <div className=" input-group inputBox-main" id="NABARD" >
-                                            <input type="text" className="form-control inputBox nameParts" name="NABARD" placeholder=""ref="NABARD" value={this.state.NABARD}  onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="NABARD" placeholder=""ref="NABARD" value={this.state.NABARD}  onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Bank Loan</label>
                                           <div className=" input-group inputBox-main" id="bankLoan" >
-                                            <input type="text" className="form-control inputBox nameParts" name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan}  onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan}  onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Govt. Schemes</label>
                                           <div className=" input-group inputBox-main" id="govtscheme" >
-                                            <input type="text" className="form-control inputBox nameParts" name="govtscheme" placeholder=""ref="govtscheme" value={this.state.govtscheme}  onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="govtscheme" placeholder=""ref="govtscheme" value={this.state.govtscheme}  onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Direct Com. Cont.</label>
                                           <div className=" input-group inputBox-main" id="directCC" >
-                                            <input type="text" className="form-control inputBox nameParts" name="directCC" placeholder=""ref="directCC" value={this.state.directCC}  onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="directCC" placeholder=""ref="directCC" value={this.state.directCC}  onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Indirect Com. Cont.</label>
                                           <div className=" input-group inputBox-main" id="indirectCC" >
-                                            <input type="text" className="form-control inputBox nameParts" name="indirectCC" placeholder=""ref="indirectCC" value={this.state.indirectCC}  onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="indirectCC" placeholder=""ref="indirectCC" value={this.state.indirectCC}  onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>
                                       </div>
@@ -687,13 +770,13 @@ class AnnualPlan extends Component{
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Other</label>
                                           <div className=" input-group inputBox-main" id="other" >
-                                            <input type="text" className="form-control inputBox nameParts" name="other" placeholder=""ref="other" value={this.state.other}  onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="other" placeholder=""ref="other" value={this.state.other}  onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
                                           <label className="formLable">Remark</label>
                                           <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="remark" >
-                                            <input type="text" className="form-control inputBox nameParts" name="remark" placeholder="Remark" ref="remark" value={this.state.remark}  onChange={this.handleChange.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name="remark" placeholder="Remark" ref="remark" value={this.state.remark}  onChange={this.handleDataChange.bind(this)}/>
                                           </div>
                                         </div>
                                       </div>  
@@ -756,4 +839,4 @@ class AnnualPlan extends Component{
     );
   }
 }
-export default AnnualPlan
+export default PlanDetails

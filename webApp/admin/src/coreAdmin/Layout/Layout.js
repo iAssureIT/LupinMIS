@@ -25,10 +25,9 @@ import centerDetail                               from '../../coreAdmin/masterDa
 
 import SectorMapping                              from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
 
-import plan                                       from '../../admin/annualPlan/AnnualPlan.js';
+import plan                                       from '../../admin/annualPlan/PlanDetails.js';
 import MonthlyPlan                                from '../../admin/monthlyPlan/MonthlyPlan.js';
 import report1                          from "../../admin/Reports/DailyReport.jsx";
-
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
