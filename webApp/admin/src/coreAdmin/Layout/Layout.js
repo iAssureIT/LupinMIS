@@ -87,9 +87,10 @@ class Layout extends Component{
                     <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
                     <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
                     <Route path="/sector-mapping"                                               exact strict component={ SectorMapping } />
-                    <Route path="/sector-mapping/:sectorMappingId/:sectorId"                                           exact strict component={ SectorMapping } />
+                    <Route path="/sector-mapping/:sectorMappingId"                                           exact strict component={ SectorMapping } />
                     { /*Plans Routes*/}
                     <Route path="/plan"                                                         exact strict component={ plan } />
+                    <Route path="/plan/:id"                                                         exact strict component={ plan } />
                     <Route path="/report1"                                                         exact strict component={ report1 } />
 {/*                    <Route path="/monthly-plan"                  /:sectorId                               exact strict component={ MonthlyPlan } />
 */}                  </Switch>        

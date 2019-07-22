@@ -33,6 +33,7 @@ class SectorMapping extends Component{
         actions            : 'Action',
       },
       "tableObjects"       : {
+        deleteMethod       : 'delete',
         apiLink            : '/api/sectorMappings/',
         paginationApply    : true,
         searchApply        : true,
@@ -41,9 +42,7 @@ class SectorMapping extends Component{
       "startRange"         : 0,
       "limitRange"         : 10,
       "editId"             : this.props.match.params ? this.props.match.params.sectorMappingId : '',
-      "editSectorId"        : props.match.params ? props.match.params.sectorId : '',
     }
-    console.log('params', this.props.match.params); 
   }
 
  
@@ -81,6 +80,7 @@ class SectorMapping extends Component{
   }
   Submit(event){
     event.preventDefault();
+    var selectedActivities = this.state.selectedActivities;
     if (this.validateFormReq() && this.validateForm()) {
       if (this.state.selectedActivities==""){      
         swal({
@@ -109,18 +109,24 @@ class SectorMapping extends Component{
           .catch(function(error){
             console.log("error = ",error);
           });
-        $('input[type=checkbox]').attr('checked', false);
+        selectedActivities.map((a, index)=>{
+          this.setState({
+            [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : false
+          })
+        })
         this.setState({
           "goalName"           :"",
           "goalType"           :"",
           "selectedActivities" :[],
           fields               :fields
         });
+        
       }
     }  
   }
   Update(event){
     event.preventDefault();
+    var selectedActivities = this.state.selectedActivities;
     if(this.refs.goalName.value == "" || this.refs.goalType.value =="")
    {
       if (this.validateFormReq() && this.validateForm()){
@@ -139,7 +145,7 @@ class SectorMapping extends Component{
     fields["goalType"]  = "";
 
     axios.patch('/api/sectorMappings/update',mappingValues)
-      .then(function(response){
+      .then((response)=>{
         swal({
           title : response.data.message,
           text  : response.data.message
@@ -149,15 +155,20 @@ class SectorMapping extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
+      selectedActivities.map((a, index)=>{
+        this.setState({
+          [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : false
+        })
+      })
       this.setState({
-        "goalName"           :"",
-        "goalType"           :"",
-        "selectedActivities" :[],
-        fields               :fields
+        "goalName"           : "",
+        "goalType"           : "",
+        "selectedActivities" : [],
+        fields               : fields
       });
-      $('input[type=checkbox]').attr('checked', false);
+      
     }   
-    $('input[type=checkbox]').attr('checked', false);
+    
     this.props.history.push('/sector-mapping');
     this.setState({
       "editId"              : "",
@@ -205,14 +216,11 @@ class SectorMapping extends Component{
       },()=>{
         this.edit(this.state.editId);
       })
-      
       this.getAvailableSector(this.state.editId);
-    console.log("editId",this.state.editId);
     }
   }
 
   componentDidMount() {
-    console.log("editId",this.state.editId);
     var editId = this.props.match.params.sectorMappingId;
     if(this.state.editId){      
       this.edit(this.state.editId);
@@ -222,16 +230,15 @@ class SectorMapping extends Component{
   }
 
   edit(id){
-    console.log('id',id);
     axios({
       method: 'get',
       url: '/api/sectorMappings/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log('editData',editData);
       editData.sector.map((a, i)=>{
         this.setState({
           [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : true
+        },()=>{
         })
       })
       this.setState({
@@ -248,9 +255,8 @@ class SectorMapping extends Component{
       limitRange : limitRange,
       startRange : startRange,
       }
-       axios.post('/api/sectorMappings/list',data)
+       axios.post('/api/sectorMappings/edit/list',data)
       .then((response)=>{
-        // console.log('response', response.data);
         this.setState({
           tableData : response.data
         })
@@ -261,33 +267,27 @@ class SectorMapping extends Component{
 
   selectActivity(event){
     var selectedActivities = this.state.selectedActivities;
-
     var value = event.target.checked;
     var id    = event.target.id;
 
     this.setState({
       [id] : value
     },()=>{
-      console.log('activityName', this.state[id], id);
       if(this.state[id] == true){
         selectedActivities.push({
-          sector_ID  :id.split("|")[0],
-          sectorName: id.split("|")[1],
-          activity_ID:id.split("|")[2],
-          activityName   : id.split("|")[3]
+          "sector_ID"      : id.split("|")[0],
+          "sectorName"     : id.split("|")[1],
+          "activity_ID"    : id.split("|")[2],
+          "activityName"   : id.split("|")[3]
         });
         this.setState({
-          selectedActivities : selectedActivities
+          selectedActivities   : selectedActivities,
         });
-        console.log('selectedActivities', selectedActivities);
       }else{
         var index = selectedActivities.findIndex(v => v.activityName === id);
-        // console.log('index', index);
         selectedActivities.splice(selectedActivities.findIndex(v => v.activityName === id), 1);
         this.setState({
           selectedActivities : selectedActivities
-        },()=>{
-          console.log('selectedActivities',this.state.selectedActivities);
         });
       }
     });      
@@ -298,10 +298,9 @@ class SectorMapping extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {        
-        this.setState({
-          availableSectors : response.data
-        })
-      // console.log('availableSectors',this.state.availableSectors);
+      this.setState({
+        availableSectors : response.data
+      })
     }).catch(function (error) {
       console.log('error', error);
     });
@@ -362,7 +361,6 @@ class SectorMapping extends Component{
                             {
                               this.state.availableSectors ?
                               this.state.availableSectors.map((data, index)=>{
-                                // console.log('data', data);
                                 return(
                                   <div key={index} className=" col-md-4  col-lg-4 col-sm-12 col-xs-12 noPadding">
                                     <label  className="formLable faintColor">{data.sector}</label>

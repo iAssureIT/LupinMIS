@@ -24,22 +24,12 @@ class ListOfBeneficiaries extends Component{
       errors: {},
       "twoLevelHeader"             : {
         apply                     : false,
-        firstHeaderData           : [
-                                      {
-                                          heading : '',
-                                          mergedColoums : 10
-                                      },
-                                      {
-                                          heading : 'Source of Fund',
-                                          mergedColoums : 7
-                                      },
-                                    ]
       },
       "tableHeading"                : {
         familyID                    : "Family ID",
-        beneficariesId              : "Beneficiary ID",
-        nameofbeneficaries          : "Name of Beneficiary",
-        actions                     : 'Action',
+        beneficiaryID               : "Beneficiary ID",
+        nameofbeneficiary           : "Name of Beneficiary",
+        // actions                     : 'Action',
       },
       "startRange"                  : 0,
       "limitRange"                  : 10,
@@ -65,6 +55,7 @@ class ListOfBeneficiaries extends Component{
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
+      [event.target.name] : event.target.value,
       fields
     });
   /*  if (this.validateForm()) {
@@ -75,14 +66,20 @@ class ListOfBeneficiaries extends Component{
       });
     }*/
   }
- componentWillReceiveProps(nextProps){
-    /*var editId = nextProps.match.params.id;
-    if(nextProps.match.params.id){
+  componentWillReceiveProps(nextProps){
+    if(nextProps){
       this.setState({
-        editId : editId
+        selectedValues : nextProps.selectedValues,
+        sendBeneficiary: nextProps.sendBeneficiary,
+        tableData      : nextProps.sendBeneficiary
+      },()=>{
+        if(this.state.selectedValues){
+          this.setState({
+            tableData : []
+          })
+        }
       })
-      this.edit(editId);
-    }*/
+    }
   }
 
   isNumberKey(evt){
@@ -96,8 +93,7 @@ class ListOfBeneficiaries extends Component{
       return true;
     }
   }
-  isTextKey(evt)
-  {
+  isTextKey(evt) {
    var charCode = (evt.which) ? evt.which : evt.keyCode
    if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
@@ -109,100 +105,7 @@ class ListOfBeneficiaries extends Component{
     }
  
   }
-/*
-  SubmitAcademics(event){
-    event.preventDefault();
-    var academicArray=[];
-    var id2 = this.state.uID;
-    if (this.validateForm()) {
-    var academicValues= 
-    {
-    "QualificationLevel"   : this.refs.QualificationLevel.value,          
-    "Qualification"        : this.refs.Qualification.value,          
-    "Specialization"       : this.refs.Specialization.value,
-    "Mode"                 : this.refs.Mode.value, 
-    "Grade"                : this.refs.Grade.value,
-    "PassoutYear"          : this.refs.PassoutYear.value,
-    "UniversityName"       : this.refs.UniversityName.value,
-    "City"                 : this.refs.City.value,
-    "CollegeName"          : this.refs.CollegeName.value,
-    "State"                : this.refs.State.value,
-    "Country"              : this.refs.Country.value,
-    };
 
-    let fields = {};
-    fields["QualificationLevel"] = "";
-    fields["Qualification"] = "";
-    fields["Specialization"] = "";
-    fields["Mode"] = "";
-    fields["Grade"] = "";
-    fields["PassoutYear"] = "";
-    fields["CollegeName"] = "";
-    fields["UniversityName"] = "";
-    fields["City"] = "";
-    fields["State"] = "";
-    fields["Country"] = "";
-    this.setState({
-      "QualificationLevel"  :"",
-      "Qualification"       :"",
-      "Specialization"      :"",
-      "Mode"                :"",
-      "Grade"               :"",
-      "PassoutYear"         :"",
-      "CollegeName"         :"",
-      "UniversityName"      :"",
-      "City"                :"",
-      "State"               :"",
-      "Country"             :"",
-      fields:fields
-    });
-      axios
-      .post('https://jsonplaceholder.typicode.com/posts',{academicValues})
-      .then(function(response){
-        swal({
-          title : response.data.message,
-          text  : response.data.message,
-        });
-      })
-      .catch(function(error){
-        console.log(error);
-      });
-      console.log("academicValues =>",academicValues);
-      academicArray.push(academicValues);
-      console.log("add value",academicValues);      
-      alert("Data inserted Successfully!")
-      }
-
-  }
- 
-  
-  componentDidMount() {
-    if(this.state.editId){      
-      this.edit(this.state.editId);
-    }
-
-    var data = {
-      limitRange : 0,
-      startRange : 1,
-    }
-  
-      axios({
-        method: 'get',
-        url: '/api/centers/list',
-      }).then((response)=> {
-        var tableData = response.data.map((a, index)=>{return});
-        this.setState({
-          dataCount : tableData.length,
-          tableData : tableData.slice(this.state.startRange, this.state.limitRange),
-          editUrl   : this.props.match.params
-        },()=>{
-          
-        });
-      }).catch(function (error) {
-        console.log('error', error);
-      });
-    }
-*/
   getData(startRange, limitRange){
     axios({
       method: 'get',
@@ -217,6 +120,13 @@ class ListOfBeneficiaries extends Component{
       console.log('error', error);
     });
   }
+  listofBeneficiaries(selectedBeneficiaries){
+   
+    this.setState({
+      tableData : selectedBeneficiaries
+    })
+    this.props.getBeneficiaries(selectedBeneficiaries);
+  }
     render() {
     return (
       <div className="container-fluid">
@@ -224,10 +134,7 @@ class ListOfBeneficiaries extends Component{
           <div className="formWrapper">    
             <div className="col-lg-12 col-sm-12 col-xs-12" >
               <div className="row">
-{/*                <h4 className="pageSubHeader col-lg-6 col-sm-6 col-xs-6 ">List of Beneficiaries</h4>
-                <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#NewBeneficiary"> <i class="fa fa-plus" aria-hidden="true"></i></div>
-*/}
-                <NewBeneficiary />
+                <NewBeneficiary listofBeneficiaries={this.listofBeneficiaries.bind(this)} selectedValues={this.state.selectedValues} sendBeneficiary={this.state.sendBeneficiary}/>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother" >
                   <div className="row">  
                     <IAssureTable 
@@ -235,7 +142,8 @@ class ListOfBeneficiaries extends Component{
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.dataCount}
                       tableData={this.state.tableData}
-                      getData={this.getData.bind(this)}                      
+                      getData={this.getData.bind(this)}   
+                                         
                     />
                   </div>
                 </div> 

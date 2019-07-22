@@ -22,14 +22,12 @@ class Activity extends Component{
   
   constructor(props){
     super(props);
-   
     this.state = {
-
       "center_id"         : "",
       "centerName"        : "",
       "dist"              : "",
       "block"             : "",
-      "dateOfIntervention": "",
+      "dateofIntervention": "",
       "village"           : "",
       "date"              : "",
       "sector"            : "",
@@ -91,44 +89,23 @@ class Activity extends Component{
         actions                    : 'Action',
       },
       "tableObjects"               : {
+        deleteMethod               : 'delete',
         apiLink                    : '/api/activityReport/',
         paginationApply            : true,
         searchApply                : true,
         editUrl                    : '/activity/'
       },
+      "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
       "limitRange"                 : 10,
       "editId"                     : this.props.match.params ? this.props.match.params.id : ''
-    
     }
   }
 
   handleChange(event){
     event.preventDefault(); 
     this.setState({
-      "center_id"         : "",
-      "centerName"        : "",
-      "dist"              : this.refs.dist.value,
-      "block"             : this.refs.block.value,
-      "village"           : this.refs.village.value,
-      "date"              : this.refs.date.value,
-      "sector"            : this.refs.sector.value,
-      "typeofactivity"    : this.refs.typeofactivity.value,
-      "activity"          : this.refs.activity.value,
-      "subactivity"       : this.refs.subactivity.value,
-      // "unit"              : this.state.unit.value,
-      "unitCost"          : this.refs.unitCost.value,
-      "quantity"          : this.refs.quantity.value,
-      "totalcost"         : this.state.totalcost,
-      "LHWRF"             : this.refs.LHWRF.value,
-      "NABARD"            : this.refs.NABARD.value,
-      "bankLoan"          : this.refs.bankLoan.value,
-      "govtscheme"        : this.refs.govtscheme.value,
-      "directCC"          : this.refs.directCC.value,
-      "indirectCC"        : this.refs.indirectCC.value,
-      "other"             : this.refs.other.value,
-      "remark"            : this.refs.remark.value,
-
+      [event.target.name]: event.target.value
     });
  
     let fields = this.state.fields;
@@ -167,18 +144,22 @@ class Activity extends Component{
       return true;
     }
   }
+  getBeneficiaries(selectedBeneficiaries){
+    this.setState({
+      selectedBeneficiaries : selectedBeneficiaries
+    })
+  }
   SubmitActivity(event){
-    console.log('SubmitActivity');
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
-    var activityValues= 
-    {
+    // if (this.validateFormReq() && this.validateForm()) {
+    var activityValues= {
       "center_ID"         : "123",
       "centerName"        : "Pune",
+      "date"              : this.refs.dateofIntervention.value,
       "district"          : this.refs.dist.value,
       "block"             : this.refs.block.value,
       "village"           : this.refs.village.value,
-      "date"              : this.refs.dateOfIntervention.value,
+      "dateofIntervention": this.refs.dateofIntervention.value,
       "sector_ID"         : this.refs.sector.value.split('|')[1],
       "sectorName"        : this.refs.sector.value.split('|')[0],
       "typeofactivity"    : this.refs.typeofactivity.value,
@@ -186,7 +167,7 @@ class Activity extends Component{
       "activityName"      : this.refs.activity.value.split('|')[0],
       "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
       "subactivityName"   : this.refs.subactivity.value.split('|')[0],
-      "unit"              : this.state.unit,
+      "unit"              : document.getElementById('unit').innerHTML,
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
@@ -197,16 +178,15 @@ class Activity extends Component{
       "directCC"          : this.refs.directCC.value,
       "indirectCC"        : this.refs.indirectCC.value,
       "other"             : this.refs.other.value,
-      "total"             : this.state.total.value,
+      "total"             : this.state.total,
       "remark"            : this.refs.remark.value,
-      "listofBeneficiaries": []
+      "listofBeneficiaries": this.state.selectedBeneficiaries
     };
-    console.log('activityValues',activityValues);
     let fields                  = {};
     fields["dist"]              = "";
     fields["block"]             = "";
     fields["village"]           = "";
-    fields["dateOfIntervention"]= "";
+    fields["dateofIntervention"]= "";
     fields["sector"]            = "";
     fields["typeofactivity"]    = "";
     fields["nameofactivity"]    = "";
@@ -223,11 +203,26 @@ class Activity extends Component{
     fields["directCC"]          = "";
     fields["indirectCC"]        = "";
     fields["other"]             = "";
-    this.setState({
+    
+      axios.post('/api/activityReport',activityValues)
+      .then((response)=>{
+        swal({
+          title : response.data.message,
+          text  : response.data.message,
+        });
+          this.getData(this.state.startRange, this.state.limitRange);  
+          this.setState({
+            selectedValues : this.state.selectedBeneficiaries 
+          })    
+        })
+      .catch(function(error){       
+        console.log('error',error);
+      });
+      this.setState({
       "dist"              : "",
       "block"             : "",
       "village"           : "",
-      "dateOfIntervention": "",
+      "dateofIntervention": "",
       "sector"            : "",
       "typeofactivity"    : "",
       "nameofactivity"    : "",
@@ -246,37 +241,24 @@ class Activity extends Component{
       "other"             : "",
       "total"             : "",
       "remark"            : "",
-      fields:fields
+      "fields"            : fields,
+      "selectedBeneficiaries" :[],
+      "listofBeneficiaries": []
     });
-    axios.post('/api/activityReport',activityValues)
-      .then((response)=>{
-    console.log('activityValues',activityValues);
-
-        swal({
-          title : response.data.message,
-          text  : response.data.message,
-        });
-      this.getData(this.state.startRange, this.state.limitRange);      
-      })
-      .catch(function(error){       
-    console.log('error',error);
-
-      });
-    }
+    // }
   }
-  Update(event)
-  {
+  Update(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
-    var activityValues= 
-    {
+    // if (this.validateFormReq() && this.validateForm()) {
+    var activityValues= {
       "activityReport_ID" : this.state.editId,
       "center_ID"         : "123",
       "centerName"        : "Pune",
+      "date"              : this.refs.dateofIntervention.value,
       "district"          : this.refs.dist.value,
       "block"             : this.refs.block.value,
       "village"           : this.refs.village.value,
-      "date"              : this.refs.dateOfIntervention.value,
+      "dateofIntervention": this.refs.dateofIntervention.value,
       "sector_ID"         : this.refs.sector.value.split('|')[1],
       "sectorName"        : this.refs.sector.value.split('|')[0],
       "typeofactivity"    : this.refs.typeofactivity.value,
@@ -284,7 +266,7 @@ class Activity extends Component{
       "activityName"      : this.refs.activity.value.split('|')[0],
       "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
       "subactivityName"   : this.refs.subactivity.value.split('|')[0],
-      "unit"              : this.state.unit,
+      "unit"              : document.getElementById('unit').innerHTML,
       "unitCost"          : this.refs.unitCost.value,
       "quantity"          : this.refs.quantity.value,
       "totalcost"         : this.state.totalcost,
@@ -295,15 +277,15 @@ class Activity extends Component{
       "directCC"          : this.refs.directCC.value,
       "indirectCC"        : this.refs.indirectCC.value,
       "other"             : this.refs.other.value,
-      "total"             : this.state.total.value,
-      "remark"            : this.state.remark.value,
-      // "listofBeneficiaries": this.state.listofBeneficiaries
+      "total"             : this.state.total,
+      "remark"            : this.refs.remark.value,
+      "listofBeneficiaries": this.state.selectedBeneficiaries
     };
     let fields                  = {};
     fields["dist"]              = "";
     fields["block"]             = "";
     fields["village"]           = "";
-    fields["dateOfIntervention"]= "";
+    fields["dateofIntervention"]= "";
     fields["sector"]            = "";
     fields["typeofactivity"]    = "";
     fields["nameofactivity"]    = "";
@@ -321,11 +303,21 @@ class Activity extends Component{
     fields["indirectCC"]        = "";
     fields["other"]             = "";
     fields["remark"]             = "";
+    axios.patch('/api/activityReport',activityValues)
+    .then((response)=>{
+      swal({
+        title : response.data.message,
+        text  : response.data.message,
+      });
+    this.getData(this.state.startRange, this.state.limitRange);      
+    })
+    .catch(function(error){        
+    });
     this.setState({
       "dist"              : "",
       "block"             : "",
       "village"           : "",
-      "dateOfIntervention": "",
+      "dateofIntervention": "",
       "sector"            : "",
       "typeofactivity"    : "",
       "nameofactivity"    : "",
@@ -344,19 +336,14 @@ class Activity extends Component{
       "other"             : "",
       "total"             : "",
       "remark"            : "",
-      fields:fields
+      "fields"            : fields,
+      "selectedBeneficiaries" :[],
+      "listofBeneficiaries": [],
+      "editId"            : "",
     });
-    axios.patch('/api/activityReport',activityValues)
-      .then(function(response){
-        swal({
-          title : response.data.message,
-          text  : response.data.message,
-        });
-      this.getData(this.state.startRange, this.state.limitRange);      
-      })
-      .catch(function(error){        
-      });
-    }
+    
+      this.props.history.push('/activity');
+    // }
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -374,9 +361,9 @@ class Activity extends Component{
         formIsValid = false;
         errors["village"] = "This field is required.";
       }
-      if (!fields["dateOfIntervention"]) {
+      if (!fields["dateofIntervention"]) {
         formIsValid = false;
-        errors["dateOfIntervention"] = "This field is required.";
+        errors["dateofIntervention"] = "This field is required.";
       }
       if (!fields["sector"]) {
         formIsValid = false;
@@ -456,7 +443,6 @@ class Activity extends Component{
     var indirectCC  = this.state.indirectCC;
     var other       = this.state.other;
      add = parseInt(LHWRF) + parseInt(NABARD) + parseInt(bankLoan) + parseInt(govtscheme) + parseInt(directCC) + parseInt(indirectCC) + parseInt(other);
-    console.log("total=",add);
     this.setState({
       total : add,
     })
@@ -466,7 +452,6 @@ class Activity extends Component{
     this.setState({
       "totalcost" : total
     })
-    console.log(this.state.totalcost);
   }
 
   toglehidden(){
@@ -481,33 +466,36 @@ class Activity extends Component{
       url: '/api/activityReport/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log('editData',editData);
+      this.getAvailableActivity(editData.sector_ID);
+      this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID)
+
       this.setState({
         "dist"              : editData.district,
         "block"             : editData.block,
         "village"           : editData.village,
         "date"              : editData.date,
-        "sector"            : editData.sectorName,
+        "sector"            : editData.sectorName+'|'+editData.sector_ID,
         "typeofactivity"    : editData.typeofactivity,
-        "activity"          : editData.activityName,
-        "subactivity"       : editData.subactivityName,
-        // "unit"              : editData.unit,
+        "activity"          : editData.activityName+'|'+editData.activity_ID,
+        "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
+        "subActivityDetails": editData.unit,
         "unitCost"          : editData.unitCost,
         "quantity"          : editData.quantity,
         "totalcost"         : editData.totalcost,
-        "LHWRF"             : editData.LHWRF,
-        "NABARD"            : editData.NABARD,
-        "bankLoan"          : editData.bankLoan,
-        "govtscheme"        : editData.govtscheme,
-        "directCC"          : editData.directCC,
-        "indirectCC"        : editData.indirectCC,
-        "other"             : editData.other,
-        "total"             : editData.total,
+        "LHWRF"             : editData.sourceofFund.LHWRF,
+        "NABARD"            : editData.sourceofFund.NABARD,
+        "bankLoan"          : editData.sourceofFund.bankLoan,
+        "govtscheme"        : editData.sourceofFund.govtscheme,
+        "directCC"          : editData.sourceofFund.directCC,
+        "indirectCC"        : editData.sourceofFund.indirectCC,
+        "other"             : editData.sourceofFund.other,
+        "total"             : editData.sourceofFund.total,
         "remark"            : editData.remark,
+        "listofBeneficiaries" : editData.listofBeneficiaries,
+        "selectedBeneficiaries" : editData.listofBeneficiaries
       });
     }).catch(function (error) {
     });
-        this.props.history.push('/sector-mapping');
     this.setState({
       "editId"              : "",
     });
@@ -521,17 +509,18 @@ class Activity extends Component{
     }
     axios.post('/api/activityReport/list', data)
     .then((response)=>{
-      console.log('response', response.data);
+
       var tableData = response.data.map((a, i)=>{
         return {
-          date                       : a.date,
+          _id                        : a._id,
+          date                       : moment(a.date).format('YYYY-MM-DD'),
           place                      : a.place,
           sectorName                 : a.sectorName,
           typeofactivity             : a.typeofactivity,
           activityName               : a.activityName,
           subactivityName            : a.subactivityName,
           unit                       : a.unit,
-          unitCost                   : a.unitcost,
+          unitCost                   : a.unitCost,
           quantity                   : a.quantity,
           totalcost                  : a.totalcost,
           numofBeneficiaries         : a.numofBeneficiaries,
@@ -560,38 +549,31 @@ class Activity extends Component{
       this.getAvailableActivity(this.state.editSectorId);
       this.edit(this.state.editId);
     }
+    var editId = this.props.match.params ? this.props.match.params.id : '';
+    this.setState({
+      editId : editId
+    })
     var dateObj = new Date();
     var momentObj = moment(dateObj);
-    console.log('momentObj', momentObj);
     var momentString = momentObj.format('YYYY-MM-DD');
-    console.log("maxDatefrm",momentString);  
 
     this.setState({
-      date :momentString,
-    },()=>{console.log("date",this.state.date)})
-    
-    var id = this.state.editId;
-      console.log('editId componentDidMount', this.state.editId);
-    if(this.state.editId){      
-      this.edit(this.state.editId);
-    }
+      dateofIntervention :momentString,
+    })
     this.getData(this.state.startRange, this.state.limitRange);
   }
 
   componentWillReceiveProps(nextProps){
-    this.getAvailableSectors();
     var editId = nextProps.match.params.id;
-    console.log('editId',editId);
-    if(nextProps.match.params.id){
-      this.setState({
-        editId : editId,
-        editSectorId : nextProps.match.params.sectorId
-      },()=>{
-        this.getAvailableActivity(this.state.editSectorId);
-        this.getAvailableSubActivity(this.state.editSectorId);
-        this.edit(this.state.editId);
-      })    
-    }
+    this.getAvailableSectors();      
+    this.setState({
+      "editId" : editId,
+    },()=>{
+      this.getAvailableActivity(this.state.editSectorId);
+      this.getAvailableSubActivity(this.state.editSectorId);
+      this.edit(this.state.editId);
+    })    
+    
   }
    
   getAvailableSectors(){
@@ -624,11 +606,9 @@ class Activity extends Component{
       method: 'get',
       url: '/api/sectors/'+sector_ID,
     }).then((response)=> {
-      console.log('response', response.data, response.data[0].activity);
         this.setState({
           availableActivity : response.data[0].activity
         },()=>{
-          console.log("availableActivity",this.state.availableActivity)
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -651,16 +631,12 @@ class Activity extends Component{
       method: 'get',
       url: '/api/sectors/'+sector_ID,
     }).then((response)=> {
-      console.log('sub', response.data, activity_ID);
       var availableSubActivity = _.flatten(response.data.map((a, i)=>{
-          console.log('a',a);
           return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
         }))
-      console.log('availableSubActivity', availableSubActivity);
       this.setState({
         availableSubActivity : availableSubActivity
       },()=>{
-        console.log('availableSubActivity', this.state.availableSubActivity);
       });
     }).catch(function (error) {
       console.log('error', error);
@@ -670,10 +646,8 @@ class Activity extends Component{
     event.preventDefault();
     this.setState({[event.target.name]:event.target.value});
     var subActivity_ID = event.target.value.split('|')[1];
-    console.log("subActivity_ID",subActivity_ID);
 
     var subActivityDetails = _.flatten(this.state.availableSubActivity.map((a, i)=>{ return a._id === subActivity_ID ? a.unit : ""}))
-    console.log('subActivityDetails', subActivityDetails);
     this.setState({
       subActivityDetails : subActivityDetails
     })
@@ -688,8 +662,7 @@ class Activity extends Component{
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
-    // console.log("",this.state.date)
-     
+   
     return (
       <div className="container-fluid">
         <div className="row">
@@ -712,8 +685,8 @@ class Activity extends Component{
                         
                         <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                           <label className="formLable">Date of intervention</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateOfIntervention" >
-                            <input type="date" className="form-control inputBox toUpper" name="date" ref="date" value={this.state.date} onChange={this.handleChange.bind(this)}/>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
+                            <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.Date}</div>
                         </div>
@@ -832,11 +805,11 @@ class Activity extends Component{
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                          <div className="unit" id="" >
+                          <div className="unit"  >
                             <label className="formLable">Unit :</label><br/>
                               {this.state.subActivityDetails ? 
                                 <div >
-                                  <label className="formLable">{this.state.subActivityDetails}</label>
+                                  <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
                                 </div>
                                 :
                                 null
@@ -847,14 +820,14 @@ class Activity extends Component{
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                           <label className="formLable">Unit Cost</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
-                            <input type="text"   className="form-control inputBox" name="unitCost" placeholder=""onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost}   onChange={this.handleChange.bind(this)}/>
+                            <input type="text"   className="form-control inputBox" name="unitCost" placeholder="" onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost}   onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.unitCost}</div>
                         </div>
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                           <label className="formLable">Quantity</label>
                           <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
-                            <input type="text" className="form-control inputBox" name="quantity" placeholder=""ref="quantity" onKeyUp={this.calTotal.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
+                            <input type="text" className="form-control inputBox" name="quantity" placeholder="" ref="quantity" onKeyUp={this.calTotal.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.quantity}</div>
                         </div>
@@ -953,7 +926,11 @@ class Activity extends Component{
                     </div>
                 
                     <div className="tableContainrer">
-                      <ListOfBeneficiaries />
+                      <ListOfBeneficiaries 
+                        getBeneficiaries={this.getBeneficiaries.bind(this)}
+                        selectedValues={this.state.selectedValues}
+                        sendBeneficiary={this.state.selectedBeneficiaries}
+                      />
                     </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       <br/>

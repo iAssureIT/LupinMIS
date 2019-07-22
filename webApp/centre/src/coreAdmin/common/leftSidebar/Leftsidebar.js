@@ -55,7 +55,7 @@ export default class Leftsidebar extends Component{
                   </a>
                   <ul className="collapse list-unstyled" id="Activity">
                     <li>
-                      <a href="/Activity">
+                      <a href="/activity">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Submit Activity</span>
                       </a>

@@ -70,6 +70,7 @@ class IAssureTable extends Component {
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
 	    	this.props.getData(this.state.startRange, this.state.limitRange);
+	    	// this.props.history.push(tableObjects.editUrl);
 	        swal({
 	        	text : response.data.message,
 	        	title : response.data.message

@@ -21,7 +21,7 @@ class PlanDetails extends Component{
       "sectorName"          :"",
       "subActivity"         :"",
       "activityName"        :"",
-      "physicalUnits"       :"",
+      "physicalUnit"        :"",
       "unitCost"            :"",
       "totalBudget"         :"",
       "noOfBeneficiaries"   :"",
@@ -40,7 +40,6 @@ class PlanDetails extends Component{
       "months"              :["April","May","June","--Quarter 1--","July","August","September","--Quarter 2--","October","November","December","--Quarter 3--","January","February","March","--Quarter 4--",],
       "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
       "YearPair"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
-
       shown                 : true,
        "twoLevelHeader"     : {
         apply               : true,
@@ -61,11 +60,12 @@ class PlanDetails extends Component{
       },
       "tableHeading"        : {
         month               : "Month",
+        year                : "Year",
         sectorName          : "Sector",
         activityName        : "Activity",
         subactivityName     : "Sub-Activity",
         unit                : "Unit",
-        physicalUnits       : "Physical Unit",
+        physicalUnit        : "Physical Unit",
         unitCost            : "Unit Cost",
         totalBudget         : "Total Cost",
         noOfBeneficiaries   : "No. Of Beneficiaries",
@@ -79,44 +79,28 @@ class PlanDetails extends Component{
         remark              : "Remark",
         actions             : 'Action',
       },
-      "tableObjects"       : {
+      "tableObjects"        : {
+        deleteMethod        : 'delete',
         apiLink             : '/api/annualPlans/',
         paginationApply     : true,
         searchApply         : true,
-        editUrl             : '/planDetails/',
+        editUrl             : '/plan/',
       },   
       "startRange"          : 0,
       "limitRange"          : 10,
       "editId"              : this.props.match.params ? this.props.match.params.id : '',
-      "editSectorId"        : props.match.params ? props.match.params.sectorId : '',
       fields                : {},
       errors                : {},
+      subActivityDetails    : [],
+      apiCall               : '/api/annualPlans'
     }
   }
  
   handleChange(event){
-    event.preventDefault();
-    this.setState({
-      "month"               : this.refs.month.value,          
-      "year"                : this.refs.year.value,          
-      "sectorName"          : this.state.sector,
-      "activityName"        : this.refs.activityName.value,
-     /* "physicalUnits"       : this.refs.physicalUnits.value,
-      "unitCost"            : this.refs.unitCost.value,
-      "totalBudget"         : this.refs.totalBudget.value,
-      "noOfBeneficiaries"   : this.refs.noOfBeneficiaries.value,
-      "LHWRF"               : this.refs.LHWRF.value,
-      "NABARD"              : this.refs.NABARD.value,
-      "bankLoan"            : this.refs.bankLoan.value,
-      "govtscheme"          : this.refs.govtscheme.value,
-      "directCC"            : this.refs.directCC.value,
-      "indirectCC"          : this.refs.indirectCC.value,
-      "other"               : this.refs.other.value,
-      "remark"              : this.refs.remark.value,*/
-    });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
+      [event.target.name] : event.target.value,
       fields
     });
     if (this.validateForm()) {
@@ -127,25 +111,32 @@ class PlanDetails extends Component{
       });
     }
   }
-
-  handleDataChange(event){
+  selectMonth(event){
     event.preventDefault();
-    this.setState({
-      "physicalUnits"       : this.refs.physicalUnits.value,
-      "unitCost"            : this.refs.unitCost.value,
-      "totalBudget"         : this.refs.totalBudget.value,
-      "noOfBeneficiaries"   : this.refs.noOfBeneficiaries.value,
-      "LHWRF"               : this.refs.LHWRF.value,
-      "NABARD"              : this.refs.NABARD.value,
-      "bankLoan"            : this.refs.bankLoan.value,
-      "govtscheme"          : this.refs.govtscheme.value,
-      "directCC"            : this.refs.directCC.value,
-      "indirectCC"          : this.refs.indirectCC.value,
-      "other"               : this.refs.other.value,
-      "remark"              : this.refs.remark.value,
-    });
+    var tableObjects = this.state.tableObjects;
+    tableObjects["apiLink"] = this.refs.month.value == 'Annually' ? '/api/annualPlans/' : '/api/monthlyPlans/';
     let fields = this.state.fields;
-    // fields[event.target.name] = event.target.value;
+    fields[event.target.name] = event.target.value;
+    this.setState({
+      "month"               : this.refs.month.value,        
+      "apiCall"             : this.refs.month.value == 'Annually' ? '/api/annualPlans' : '/api/monthlyPlans',
+      tableObjects,
+      fields
+    },()=>{
+      this.getData(this.state.startRange, this.state.limitRange);
+    });
+
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
+  }
+  subActivityDetails(event){
+    event.preventDefault();
+    let fields = this.state.fields;
     this.setState({
       [event.target.name] : event.target.value
     });
@@ -156,137 +147,41 @@ class PlanDetails extends Component{
         errors: errors
       });
     }
+    var subActivityDetails = this.state.subActivityDetails;
+    var id = (event.target.name).split('-')[1];
+    
+    var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID == id});
+    var name = (event.target.name).split('-')[0];
+    if(idExist.length > 0){      
+      for(var i=0; i<subActivityDetails.length; i++){
+        if(subActivityDetails[i].subactivity_ID == id){
+          subActivityDetails[i][name] = event.target.value
+        }
+      }
+    }else{
+      subActivityDetails.push({
+        "subactivity_ID"      : id,
+        "subactivityName"     : document.getElementById('subActivityName-'+id).innerHTML,
+        "unit"                : document.getElementById('unit-'+id).innerHTML,
+        [name]                : event.target.value
+
+      })
+    }
+    this.setState({
+      subActivityDetails : subActivityDetails
+    })
   }
-   
   SubmitAnnualPlan(event){
     event.preventDefault();
-    if (this.validateFormReq() &&this.validateForm()) {
-    var planValues= 
-    {
-      "month"               : this.refs.month.value,          
-      "year"                : this.refs.year.value,          
-      "center_ID"           : "P01",
-      "center"              : "Pune",
-      "sector_ID"           : this.refs.sectorName.value.split('|')[1],
-      "sectorName"          : this.refs.sectorName.value.split('|')[0],
-      "activity_ID"         : this.refs.activityName.value.split('|')[1],
-      "activityName"        : this.refs.activityName.value.split('|')[0],
-      // "subactivity_ID"      : this.state.subActivityName.split('|')[1],
-      "subactivityName"     : this.state.subActivityName,
-      "unit"                : this.state.unit,
-      "physicalUnits"       : this.refs.physicalUnits.value,
-      "unitCost"            : this.refs.unitCost.value,
-      "totalBudget"         : this.refs.totalBudget.value,
-      "noOfBeneficaries"    : this.refs.noOfBeneficiaries.value,
-      "LHWRF"               : this.refs.LHWRF.value,
-      "NABARD"              : this.refs.NABARD.value,
-      "bankLoan"            : this.refs.bankLoan.value,
-      "govtscheme"          : this.refs.govtscheme.value,
-      "directCC"            : this.refs.directCC.value,
-      "indirectCC"          : this.refs.indirectCC.value,
-      "other"               : this.refs.other.value,
-      "remark"              : this.refs.remark.value,
-    };
-
-   let fields = {};
-    fields["year"]              = "";
-    fields["month"]             = "";
-    fields["sectorName"]        = "";
-    fields["activityName"]      = "";
-    fields["physicalUnits"]     = "";
-    fields["unitCost"]          = "";
-    fields["totalBudget"]       = "";
-    fields["noOfBeneficiaries"] = "";
-    fields["LHWRF"]             = "";
-    fields["NABARD"]            = "";
-    fields["bankLoan"]          = "";
-    fields["govtscheme"]        = "";
-    fields["directCC"]          = "";
-    fields["indirectCC"]        = "";
-    fields["other"]             = "";
-    fields["remark"]            = "";
-   
+    var subActivityDetails = this.state.subActivityDetails;
+    // if (this.validateFormReq() &&this.validateForm()) {
     
-    console.log("planValues",planValues);
-
-    axios.post('/api/annualPlans/',planValues)
-    .then(function(response){
-      swal({
-        title : response.data.message,
-        text  : response.data.message
-      });
-      this.getData(this.state.startRange, this.state.limitRange);
-      console.log("response"+response.data);
-    })
-    .catch(function(error){
-      console.log("error"+error);
-      });
-      this.setState({
-        "year"                :"",
-        "month"               :"",
-        "center"              :"",
-        "sectorName"          :"",
-        "activityName"        :"",
-        "physicalUnits"       :"",
-        "unitCost"            :"",
-        "totalBudget"         :"",
-        "noOfBeneficiaries"   :"",
-        "LHWRF"               :"",
-        "NABARD"              :"",
-        "bankLoan"            :"",
-        "govtscheme"          :"",
-        "directCC"            :"",
-        "indirectCC"          :"",
-        "other"               :"",
-        "remark"              :"",
-        "fields":fields
-      });
-    }
-  }
- 
-
-  Update(event){    
-    event.preventDefault();
-    if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
-      || this.refs.physicalUnits.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
-      || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
-      || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
-      {
-        if (this.validateFormReq() && this.validateForm()){
-        }
-      }else{
-        console.log('this.state.subActivityName',this.state.subActivityName);
-        var planValues= {
-          "month"               : this.refs.month.value,          
-          "year"                : this.refs.year.value,          
-          "center_ID"           : this.state.center.value.split('|')[1],
-          "center"              : this.state.center.value.split('|')[0],
-          "sector_ID"           : this.refs.sectorName.value.split('|')[1],
-          "sectorName"          : this.refs.sectorName.value.split('|')[0],
-          "activity_ID"         : this.refs.activityName.value.split('|')[1],
-          "activityName"        : this.refs.activityName.value.split('|')[0],
-          "subactivity_ID"      : this.state.subActivityName,
-          "subactivityName"     : this.state.subActivityName,
-          "unit"                : this.state.unit,
-          "physicalUnits"       : this.refs.physicalUnits.value,
-          "unitCost"            : this.refs.unitCost.value,
-          "totalBudget"         : this.refs.totalBudget.value,
-          "noOfBeneficaries"    : this.refs.noOfBeneficiaries.value,
-          "LHWRF"               : this.refs.LHWRF.value,
-          "NABARD"              : this.refs.NABARD.value,
-          "bankLoan"            : this.refs.bankLoan.value,
-          "govtscheme"          : this.refs.govtscheme.value,
-          "directCC"            : this.refs.directCC.value,
-          "indirectCC"          : this.refs.indirectCC.value,
-          "other"               : this.refs.other.value,
-          "remark"              : this.refs.remark.value,
-        };
       let fields = {};
       fields["year"]              = "";
       fields["month"]             = "";
       fields["sectorName"]        = "";
       fields["activityName"]      = "";
-      fields["physicalUnits"]     = "";
+      fields["physicalUnit"]      = "";
       fields["unitCost"]          = "";
       fields["totalBudget"]       = "";
       fields["noOfBeneficiaries"] = "";
@@ -298,17 +193,53 @@ class PlanDetails extends Component{
       fields["indirectCC"]        = "";
       fields["other"]             = "";
       fields["remark"]            = "";
-      axios.patch('/api/annualPlans/update',planValues)
-      .then((response)=>{
-        swal({
-          title : response.data,
-          text  : response.data
-        });
-        this.getData(this.state.startRange, this.state.limitRange);
-      })
-      .catch(function(error){
-        console.log("error"+error);
-        });
+      if(subActivityDetails.length > 0){
+        for(var i=0; i<subActivityDetails.length; i++){
+          var planValues = {
+            "month"               : this.refs.month.value,          
+            "year"                : this.refs.year.value,          
+            "center_ID"           : "P01",
+            "center"              : "Pune",
+            "sector_ID"           : this.refs.sectorName.value.split('|')[1],
+            "sectorName"          : this.refs.sectorName.value.split('|')[0],
+            "activity_ID"         : this.refs.activityName.value.split('|')[1],
+            "activityName"        : this.refs.activityName.value.split('|')[0],
+            "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
+            "subactivityName"     : subActivityDetails[i].subactivityName,
+            "unit"                : subActivityDetails[i].unit,
+            "physicalUnit"        : subActivityDetails[i].physicalUnit,
+            "unitCost"            : subActivityDetails[i].unitCost,
+            "totalBudget"         : subActivityDetails[i].totalBudget,
+            "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
+            "LHWRF"               : subActivityDetails[i].LHWRF,
+            "NABARD"              : subActivityDetails[i].NABARD,
+            "bankLoan"            : subActivityDetails[i].bankLoan,
+            "govtscheme"          : subActivityDetails[i].govtscheme,
+            "directCC"            : subActivityDetails[i].directCC,
+            "indirectCC"          : subActivityDetails[i].indirectCC,
+            "other"               : subActivityDetails[i].other,
+            "remark"              : subActivityDetails[i].remark,
+          };
+          axios.post(this.state.apiCall, planValues)
+            .then((response)=>{
+              swal({
+                title : response.data.message,
+                text  : response.data.message
+              });
+              this.getData(this.state.startRange, this.state.limitRange);
+            })
+            .catch(function(error){
+              console.log("error"+error);
+          });
+          Object.entries(planValues).map( 
+            ([key, value], i)=> {
+              this.setState({
+                [key+'-'+this.state.subactivity_ID] : ""
+              })
+            }
+          );
+        }
+      }
       this.setState({
         "year"                :"",
         "month"               :"",
@@ -316,7 +247,7 @@ class PlanDetails extends Component{
         "sector_id"           :"",
         "sectorName"          :"",
         "activityName"        :"",
-        "physicalUnits"       :"",
+        "physicalUnit"        :"",
         "unitCost"            :"",
         "totalBudget"         :"",
         "noOfBeneficiaries"   :"",
@@ -328,15 +259,122 @@ class PlanDetails extends Component{
         "indirectCC"          :"",
         "other"               :"",
         "remark"              :"",
-        "fields"              :fields
+        "fields"              :fields,
+        "editId"              :"",
+        "subActivityDetails"  :[],
+        "availableSubActivity":[]
       });
-      this.props.history.push('/family');
-      this.setState({
-        "editId"               : "",
-      });
-    }
+    // }
   }
-  
+  Update(event){    
+    event.preventDefault();
+    var subActivityDetails = this.state.subActivityDetails;
+    console.log('subActivityDetails update', subActivityDetails);
+    // if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
+    //   || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
+    //   || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
+    //   || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
+    //   {
+    //     if (this.validateFormReq() && this.validateForm()){
+    //     }
+    //   }else{
+        
+      let fields = {};
+      fields["year"]              = "";
+      fields["month"]             = "";
+      fields["sectorName"]        = "";
+      fields["activityName"]      = "";
+      fields["physicalUnit"]      = "";
+      fields["unitCost"]          = "";
+      fields["totalBudget"]       = "";
+      fields["noOfBeneficiaries"] = "";
+      fields["LHWRF"]             = "";
+      fields["NABARD"]            = "";
+      fields["bankLoan"]          = "";
+      fields["govtscheme"]        = "";
+      fields["directCC"]          = "";
+      fields["indirectCC"]        = "";
+      fields["other"]             = "";
+      fields["remark"]            = "";
+      if(subActivityDetails.length > 0){
+        for(var i=0; i<subActivityDetails.length; i++){
+          var planValues = {
+            "annualPlan_ID"       : this.state.editId,
+            "monthlyPlan_ID"      : this.state.editId,
+            "month"               : this.refs.month.value,          
+            "year"                : this.refs.year.value,          
+            "center_ID"           : "P01",
+            "center"              : "Pune",
+            "sector_ID"           : this.refs.sectorName.value.split('|')[1],
+            "sectorName"          : this.refs.sectorName.value.split('|')[0],
+            "activity_ID"         : this.refs.activityName.value.split('|')[1],
+            "activityName"        : this.refs.activityName.value.split('|')[0],
+            "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
+            "subactivityName"     : subActivityDetails[i].subactivityName,
+            "unit"                : subActivityDetails[i].unit,
+            "physicalUnit"        : subActivityDetails[i].physicalUnit,
+            "unitCost"            : subActivityDetails[i].unitCost,
+            "totalBudget"         : subActivityDetails[i].totalBudget,
+            "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
+            "LHWRF"               : subActivityDetails[i].LHWRF,
+            "NABARD"              : subActivityDetails[i].NABARD,
+            "bankLoan"            : subActivityDetails[i].bankLoan,
+            "govtscheme"          : subActivityDetails[i].govtscheme,
+            "directCC"            : subActivityDetails[i].directCC,
+            "indirectCC"          : subActivityDetails[i].indirectCC,
+            "other"               : subActivityDetails[i].other,
+            "remark"              : subActivityDetails[i].remark,
+          };
+          // console.log('planValues',planValues);
+
+          axios.patch(this.state.apiCall+'/update', planValues)
+            .then((response)=>{
+              swal({
+                title : response.data.message,
+                text  : response.data.message
+              });
+              this.props.history.push('/plan');
+              this.getData(this.state.startRange, this.state.limitRange);
+            })
+            .catch(function(error){
+              console.log("error"+error);
+          });
+          Object.entries(planValues).map( 
+            ([key, value], i)=> {
+              this.setState({
+                [key+'-'+this.state.subactivity_ID] : ""
+              })
+            }
+          );
+        }
+      }
+      console.log('subActivityDetails', subActivityDetails);
+      this.setState({
+        "year"                :"",
+        "month"               :"",
+        "center"              :"",
+        "sector_id"           :"",
+        "sectorName"          :"",
+        "activityName"        :"",
+        "physicalUnit"        :"",
+        "unitCost"            :"",
+        "totalBudget"         :"",
+        "noOfBeneficiaries"   :"",
+        "LHWRF"               :"",
+        "NABARD"              :"",
+        "bankLoan"            :"",
+        "govtscheme"          :"",
+        "directCC"            :"",
+        "indirectCC"          :"",
+        "other"               :"",
+        "remark"              :"",
+        "fields"              :fields,
+        "editId"              :"",
+        "subActivityDetails"  :[],
+        "availableSubActivity":[]
+      });
+    // }
+  }
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
@@ -355,7 +393,6 @@ class PlanDetails extends Component{
       });
       return formIsValid;
   }
-  
   validateForm() {
     let fields = this.state.fields;
     let errors = {};
@@ -367,15 +404,16 @@ class PlanDetails extends Component{
       });
       return formIsValid;
   }
-
+  componentWillUpdate(){
+    // this.getData(this.state.startRange,this.state.limitRange);
+  }
   getData(startRange, limitRange){
     var data = {
     startRange : startRange,
     limitRange : limitRange
     }
-    axios.post('/api/annualPlans/list', data)
+    axios.post(this.state.apiCall+'/list', data)
       .then((response)=>{
-        console.log("response",response.data);
         this.setState({
           tableData : response.data
         });
@@ -384,16 +422,27 @@ class PlanDetails extends Component{
         console.log("error = ",error);
       });
   }
-  
   componentWillReceiveProps(nextProps){
     this.getAvailableSectors();
     var editId = nextProps.match.params.id;
-    console.log('editId',editId);
+
     if(nextProps.match.params.id){
       this.setState({
         editId : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
+        if(this.state.editId && this.state.month == 'Annually'){
+          this.setState({
+            "months"              :[],
+            "YearPair"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+          })
+        }
+        // else if(this.state.editId && this.state.month != 'Annually'){
+        //   this.setState({
+        //     "months"              :["April","May","June","--Quarter 1--","July","August","September","--Quarter 2--","October","November","December","--Quarter 3--","January","February","March","--Quarter 4--"],
+        //     "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+        //   })
+        // }
         this.getAvailableActivity(this.state.editSectorId);
         this.getAvailableSubActivity(this.state.editSectorId);
         this.edit(this.state.editId);
@@ -402,9 +451,8 @@ class PlanDetails extends Component{
   }
   componentDidMount() {
     this.getAvailableSectors();
-    if(this.state.editId){      
-      this.getAvailableActivity(this.state.editSectorId);
-      this.edit(this.state.editId);
+    if(this.state.editId){     
+    this.edit(this.state.editId);       
     }
     this.getData(this.state.startRange, this.state.limitRange);
   }
@@ -431,18 +479,16 @@ class PlanDetails extends Component{
     this.handleChange(event);
     this.getAvailableActivity(sector_ID);
   }
-
- 
   getAvailableActivity(sector_ID){
     axios({
       method: 'get',
       url: '/api/sectors/'+sector_ID,
     }).then((response)=> {
-      console.log('response', response.data, response.data[0].activity);
+      
         this.setState({
           availableActivity : response.data[0].activity
         },()=>{
-          console.log("availableActivity",this.state.availableActivity)
+          
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -460,98 +506,69 @@ class PlanDetails extends Component{
       method: 'get',
       url: '/api/sectors/'+sector_ID,
     }).then((response)=> {
-      console.log('sub', response.data, activity_ID);
       var availableSubActivity = _.flatten(response.data.map((a, i)=>{
-          console.log('a',a);
-          return a.activity.map((b, j)=>{return b._id ==  activity_ID ? b.subActivity : [] 
-          });
+        return a.activity.map((b, j)=>{return b._id ==  activity_ID ? b.subActivity : [] 
+      });
 
         }))
-      // console.log('availableSubActivity', availableSubActivity);  
       this.setState({
         availableSubActivity : availableSubActivity
       },()=>{
-        console.log('availableSubActivity', this.state.availableSubActivity);
       });
     }).catch(function (error) {
       console.log('error', error);
     });    
   }
-/*  subActivityDetails(event){
-    event.preventDefault();
-    this.setState({[event.target.name]:event.target.value});
-    var subActivity_ID = event.target.value.split('|')[1];
-    console.log("subActivity_ID",subActivity_ID);
-
-    var subActivityDetails = _.flatten(this.state.availableSubActivity.map((a, i)=>{ return a._id == subActivity_ID ? a.unit : ""}))
-    console.log('subActivityDetails', subActivityDetails);
-    this.setState({
-      subActivity_ID     : subActivity_ID,
-      subActivityDetails : subActivityDetails
-    })
-    this.handleChange(event);
-  }*/
-/*  subActivityDetails(event){
-    var availableSubActivity = this.state.availableSubActivity;
-
-  
-    var id    = event.target.id;
-
-    this.setState({
-      [id] : value
-    },()=>{
-      console.log('activityName', this.state[id], id);
-      if(this.state[id] == true){
-        availableSubActivity.push({
-          subActivity_ID      : id.split("|")[0],
-          subActivityName     : id.split("|")[1],
-          unit                : id.split("|")[2],
-          familyUpgradation   : id.split("|")[3]
-        });
-        this.setState({
-          availableSubActivity : availableSubActivity
-        });
-        console.log('availableSubActivity', availableSubActivity);
-      }else{
-        var index = availableSubActivity.findIndex(v => v.activityName === id);
-        // console.log('index', index);
-        availableSubActivity.splice(availableSubActivity.findIndex(v => v.activityName === id), 1);
-        this.setState({
-          availableSubActivity : availableSubActivity
-        },()=>{
-          console.log('availableSubActivity',this.state.availableSubActivity);
-        });
-      }
-    });      
-  }*/
-
 
   edit(id){
     axios({
       method: 'get',
-      url: '/api/annualPlans/'+id,
+      url: this.state.apiCall+'/'+id,
       }).then((response)=> {
       var editData = response.data[0];
-      console.log('editData',editData);
+      console.log('editData', editData);
+      this.getAvailableActivity(editData.sector_ID);
       this.setState({
-        "year"                : editData.year,
-        "month"               : editData.month,
-        "center"              : editData.center,
-        "sectorName"          : editData.sectorName,
-        "activityName"        : editData.activityName,
-        "physicalUnits"       : editData.physicalUnits,
-        "unitCost"            : editData.unitCost,
-        "totalBudget"         : editData.totalBudget,
-        "noOfBeneficiaries"   : editData.noOfBeneficiaries,
-        "LHWRF"               : editData.LHWRF,
-        "NABARD"              : editData.NABARD,
-        "bankLoan"            : editData.bankLoan,
-        "govtscheme"          : editData.govtscheme,
-        "directCC"            : editData.directCC,
-        "indirectCC"          : editData.indirectCC,
-        "other"               : editData.other,
-        "remark"              : editData.remark,
-      });
+        "availableSubActivity"    : [{
+          _id                     : editData.subactivity_ID,
+          subActivityName         : editData.subactivityName,
+        }],
+      },()=>{
+        this.setState({
+          "year"                    : editData.year,
+          "month"                   : editData.month,
+          "center"                  : editData.center,
+          "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
+          "activityName"            : editData.activityName+'|'+editData.activity_ID,
+          "subactivity_ID"          : editData.subactivity_ID,
+          "subActivityDetails"      : [{
+            "subactivity_ID"      : editData.subactivity_ID,
+            "subactivityName"     : editData.subactivityName,
+            "unit"                : editData.unit,
+            "physicalUnit"        : editData.physicalUnit,
+            "unitCost"            : editData.unitCost,
+            "totalBudget"         : editData.totalBudget,
+            "noOfBeneficiaries"   : editData.noOfBeneficiaries,
+            "LHWRF"               : editData.LHWRF,
+            "NABARD"              : editData.NABARD,
+            "bankLoan"            : editData.bankLoan,
+            "govtscheme"          : editData.govtscheme,
+            "directCC"            : editData.directCC,
+            "indirectCC"          : editData.indirectCC,
+            "other"               : editData.other,
+            "remark"              : editData.remark,
+          }]
+        },()=>{
+          var subActivityDetails = this.state.subActivityDetails[0];
+          Object.entries(subActivityDetails).map( 
+            ([key, value], i)=> {
+              this.setState({
+                [key+'-'+this.state.subactivity_ID] : value
+              })
+            }
+          );
+        });
+      })
     }).catch(function (error) {
     });
   }
@@ -582,7 +599,7 @@ class PlanDetails extends Component{
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                          Plan Details                                       
+                          Plan Details                          
                       </div>
                       <hr className="hr-head container-fluid row"/>
                     </div>
@@ -592,8 +609,8 @@ class PlanDetails extends Component{
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                            <div className=" col-lg-3  col-lg-offset-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
-                              <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
-                                <option className="" >Annually</option>
+                              <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
+                                <option className="" value="Annually" >Annually</option>
                                {this.state.months.map((data,index) =>
                                 <option key={index}  className="" >{data}</option>
                                 )}
@@ -639,7 +656,7 @@ class PlanDetails extends Component{
                             <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                               <label className="formLable">Sector</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
-                                <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                                <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
                                   <option  className="hidden" >--Select--</option>
                                   {
                                     this.state.availableSectors && this.state.availableSectors.length >0 ?
@@ -688,8 +705,8 @@ class PlanDetails extends Component{
                                 return(
                                   <div className="subActDiv"  key={data._id}>
                                     <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 contentDiv  ">
-                                      <label className="head" value={data.subActivityName+'|'+data._id} >{data.subActivityName} </label><br/>
-                                      <label className="formLable">Unit :<span>{data.unit}</span></label>
+                                      <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
+                                      <label className="formLable">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
                                      </div>
                                     <div className="col-lg-9 col-sm-10 col-xs-10 ">
                                       <div className="row">
@@ -700,26 +717,26 @@ class PlanDetails extends Component{
                                       <div className=" row">
                                         <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Physical Units</label>
-                                          <div className=" input-group inputBox-main " id="physicalUnits" >
-                                            <input type="text" className="form-control inputBox nameParts" name="physicalUnits" placeholder="" ref="physicalUnits" value={this.state.physicalUnits} onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} value={this.state["physicalUnit-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Unit Cost</label>
-                                          <div className=" input-group inputBox-main" id="unitCost" >
-                                            <input type="text" className="form-control inputBox nameParts" name="unitCost" placeholder=""ref="unitCost" value={this.state.unitCost} onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} value={this.state["unitCost-"+data._id]} onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Total Cost</label>
-                                          <div className="input-group inputBox-main" id="totalBudget" >
-                                            <input type="text" className="form-control inputBox nameParts" name="totalBudget" placeholder=""ref="totalBudget" value={this.state.totalBudget}  onChange={this.handleDataChange.bind(this)}/>
+                                          <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">No.of Beneficiaries</label>
-                                          <div className=" input-group inputBox-main" id="noOfBeneficiaries" >
-                                            <input type="text" className="form-control inputBox nameParts" name="noOfBeneficiaries" placeholder=""ref="noOfBeneficiaries" value={this.state.noOfBeneficiaries} onChange={this.handleDataChange.bind(this)}/>                              
+                                          <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onChange={this.subActivityDetails.bind(this)}/>                              
                                           </div>
                                         </div>
                                       </div>
@@ -731,52 +748,52 @@ class PlanDetails extends Component{
                                       <div className="row">
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">LHWRF</label>
-                                          <div className=" input-group inputBox-main" id="LHWRF" >
-                                            <input type="text" className="form-control inputBox nameParts" name="LHWRF" placeholder=""ref="LHWRF" value={this.state.LHWRF}  onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" input-group inputBox-main" id={"LHWRF-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">NABARD</label>
-                                          <div className=" input-group inputBox-main" id="NABARD" >
-                                            <input type="text" className="form-control inputBox nameParts" name="NABARD" placeholder=""ref="NABARD" value={this.state.NABARD}  onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" input-group inputBox-main" id={"NABARD-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Bank Loan</label>
-                                          <div className=" input-group inputBox-main" id="bankLoan" >
-                                            <input type="text" className="form-control inputBox nameParts" name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan}  onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" input-group inputBox-main" id={"bankLoan-"+data._id}>
+                                            <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Govt. Schemes</label>
-                                          <div className=" input-group inputBox-main" id="govtscheme" >
-                                            <input type="text" className="form-control inputBox nameParts" name="govtscheme" placeholder=""ref="govtscheme" value={this.state.govtscheme}  onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" input-group inputBox-main" id={"govtscheme-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Direct Com. Cont.</label>
-                                          <div className=" input-group inputBox-main" id="directCC" >
-                                            <input type="text" className="form-control inputBox nameParts" name="directCC" placeholder=""ref="directCC" value={this.state.directCC}  onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" input-group inputBox-main" id={"directCC-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Indirect Com. Cont.</label>
-                                          <div className=" input-group inputBox-main" id="indirectCC" >
-                                            <input type="text" className="form-control inputBox nameParts" name="indirectCC" placeholder=""ref="indirectCC" value={this.state.indirectCC}  onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" input-group inputBox-main" id={"indirectCC-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                       </div>
                                       <div className=" row">
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Other</label>
-                                          <div className=" input-group inputBox-main" id="other" >
-                                            <input type="text" className="form-control inputBox nameParts" name="other" placeholder=""ref="other" value={this.state.other}  onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" input-group inputBox-main" id={"other-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
                                           <label className="formLable">Remark</label>
-                                          <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="remark" >
-                                            <input type="text" className="form-control inputBox nameParts" name="remark" placeholder="Remark" ref="remark" value={this.state.remark}  onChange={this.handleDataChange.bind(this)}/>
+                                          <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                       </div>  
@@ -814,7 +831,7 @@ class PlanDetails extends Component{
                           ?
                             <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-                            <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? " - "+(this.state.year ? this.state.year :"" ) : null}</h5> 
+                            <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>
                     </div>

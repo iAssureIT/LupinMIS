@@ -147,6 +147,7 @@ class centerDetail extends Component{
   }
   Submit(event){
     event.preventDefault();
+    var selectedVillages = this.state.selectedVillages;
     if (this.validateForm() && this.validateFormReq()) {
       var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
 
@@ -227,11 +228,12 @@ class centerDetail extends Component{
         "listofVillages"            : [],
         "fields"                    : fields
       });
-      $('input[type=checkbox]').attr('checked', false);
+      selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
     }
   }
   Update(event){
   event.preventDefault();
+  var selectedVillages = this.state.selectedVillages;
   if(this.refs.address.value == "" || this.refs.typeOfCenter.value =="" || this.refs.nameOfCenter.value=="" 
     || this.refs.district.value=="" || this.refs.pincode.value=="" || this.refs.centerInchargeName.value=="" 
     || this.refs.centerInchargeContact.value=="" || this.refs.centerInchargeEmail.value=="" || this.refs.MISCoordinatorName.value=="" 
@@ -317,9 +319,8 @@ class centerDetail extends Component{
           "listofVillages"            : [],
           "fields"                    : fields
         });
-        $('input[type=checkbox]').attr('checked', false);
+        selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
     } 
-    $('input[type=checkbox]').attr('checked', false);
     this.props.history.push('/center-detail');
     this.setState({
       "editId"              : "",
@@ -442,13 +443,11 @@ class centerDetail extends Component{
     })
   }
   edit(id){
-    // $('input:checkbox').attr('checked','unchecked');
     axios({
       method: 'get',
       url: '/api/centers/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log('editData',editData);
       editData.villagesCovered.map((data, i)=>{
         this.setState({
           [data.village] : true
@@ -592,7 +591,7 @@ class centerDetail extends Component{
     this.setState({
       [id] : value
     },()=>{
-      // console.log('village', this.state[id], id);
+      console.log('village', this.state[id], id);
       if(this.state[id] == true){
         selectedVillages.push({
           district  : this.refs.districtCovered.value,

@@ -27,6 +27,7 @@ class IAssureTable extends Component {
 		    "limitRange" 				: 10,
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
+		    "selectedBeneficiaries" 	: []
 		}
 		this.delete = this.delete.bind(this);
 	}
@@ -45,7 +46,25 @@ class IAssureTable extends Component {
         this.setState({
             tableData	    : nextProps.tableData,
             dataCount 		: nextProps.dataCount,
+            selectedValues  : nextProps.selectedValues,
+            sendBeneficiary : nextProps.sendBeneficiary,
+            selectedBeneficiaries : nextProps.sendBeneficiary
         },()=>{
+        	
+        	if(this.state.selectedValues){
+	        	this.state.selectedValues.map((a, i)=>{
+	        		this.setState({
+	        			[a.beneficiary_ID+'|'+a.beneficiaryID+'|'+a.family_ID+'|'+a.familyID+'|'+a.nameofbeneficiary] : false
+	        		})
+	        	})
+        	}
+        	if(this.state.selectedBeneficiaries){
+        		this.state.selectedBeneficiaries.map((a, i)=>{
+        			this.setState({
+	        			[a.beneficiary_ID+'|'+a.beneficiaryID+'|'+a.family_ID+'|'+a.familyID+'|'+a.nameofbeneficiary] : true
+	        		})
+        		})
+        	}
         	this.paginationFunction();
         })
         
@@ -283,7 +302,7 @@ class IAssureTable extends Component {
 		});
 	}
 	getStartEndNum(event){	
-		console.log('getStartEndNum');	
+		
 		var limitRange = $(event.target).attr('id').split('|')[0];
 		var limitRange2     = parseInt(limitRange);
 		var startRange = parseInt($(event.target).attr('id').split('|')[1]);
@@ -470,19 +489,40 @@ class IAssureTable extends Component {
 			}			
 		});
     }
-    selectAllCheckBoxes(event){
-		var shiftCheck = event.target.getAttribute('data-index');		
-		console.log("className of sel cb=",this.state.checkedIndex);
-		if(event.target.checked){
-			$("."+shiftCheck).prop("checked",true);
-		}else{
-			$("."+shiftCheck).prop("checked",false);
-		}
-	}
+    selectBeneficiary(event){
+    	var selectedBeneficiaries = this.state.selectedBeneficiaries;
+    	var value = event.target.checked;
+	    var id    = event.target.id;
+	    
+	    this.setState({
+	      [id] : value
+	    },()=>{
+	    	
+	    	if(this.state[id] == true){
+			    selectedBeneficiaries.push({
+		    		beneficiary_ID      : id.split('|')[0],
+					beneficiaryID       : id.split('|')[1],
+		    		family_ID           : id.split('|')[2],
+					familyID            : id.split('|')[3],
+					nameofbeneficiary   : id.split('|')[4],
+		    	});
+		    	this.setState({
+		          selectedBeneficiaries : selectedBeneficiaries
+		        },()=>{
+		          this.props.getBeneficiaries(this.state.selectedBeneficiaries);
+		        });
+			}else{
+				var index = selectedBeneficiaries.findIndex(v => v.beneficiary_ID === id.split('|')[0]);
+		        selectedBeneficiaries.splice(selectedBeneficiaries.findIndex(v => v.beneficiary_ID === id.split('|')[0]), 1);
+		        this.setState({
+		          selectedBeneficiaries : selectedBeneficiaries
+		        },()=>{
+		          this.props.getBeneficiaries(this.state.selectedBeneficiaries);
+		        });
+			}
+	    });
+    }
 	render() {
-		// var x = Object.keys(this.state.tableHeading).length ;
-		// var y = 4;
-		// var z = 2;
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       	{
@@ -514,7 +554,8 @@ class IAssureTable extends Component {
 		        	</div>	
 	        	:
 	        	null
-	       	}					
+	       	}
+					
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop17">			            	        
 	                <div className="table-responsive">
 						<table className="table iAssureITtable-bordered table-striped table-hover">
@@ -531,12 +572,12 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd textAlignLeft">
-	                                <td className="checkboxContainer bgGrey">
-										<input type="checkbox"  onChange={this.selectAllCheckBoxes.bind(this)} />
-										<span className="checkmark text-center"></span> 
-									</td>
-	                            </th>
+	                            {/*<th className="textAlignCenter">
+									<input type="checkbox" />
+								</th>*/}
+
+	                            <th className="umDynamicHeader srpadd textAlignLeft">Select</th>
+
 	                            <th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
@@ -564,9 +605,8 @@ class IAssureTable extends Component {
 										(value, i)=> {													
 											return(
 												<tr key={i} className="">
-													<td className="checkboxContainer bgGrey">
-														<input type="checkbox" className="" onChange={this.selectAllCheckBoxes.bind(this)} />
-														<span className="checkboxMark text-center"></span> 
+													<td className="textAlignCenter">
+														<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries]?true:false} id={value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries} onChange={this.selectBeneficiary.bind(this)}/>
 													</td>
 													<td className="textAlignCenter">{this.state.startRange+1+i}</td>
 													{
