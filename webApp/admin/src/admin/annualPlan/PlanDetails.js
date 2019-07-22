@@ -14,7 +14,6 @@ class PlanDetails extends Component{
   
   constructor(props){
     super(props); 
-   
     this.state = {
       "center"              :"",
       "sector_id"           :"",
@@ -35,12 +34,10 @@ class PlanDetails extends Component{
       "remark"              :"",
       "shown"               : true,
       "uID"                 :"",
-      "month"               :"Annually",
       "heading"             :"Monthly Plan",
-      "months"              :["April","May","June","--Quarter 1--","July","August","September","--Quarter 2--","October","November","December","--Quarter 3--","January","February","March","--Quarter 4--",],
-      "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-      "YearPair"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
-      shown                 : true,
+      "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
+      "years"               :[],
+      "shown"               : true,
        "twoLevelHeader"     : {
         apply               : true,
         firstHeaderData     : [
@@ -56,6 +53,11 @@ class PlanDetails extends Component{
                                     heading : '',
                                     mergedColoums : 1
                                 },
+                                {
+                                    heading : '',
+                                    mergedColoums : 1
+                                },
+
                               ]
       },
       "tableHeading"        : {
@@ -92,10 +94,9 @@ class PlanDetails extends Component{
       fields                : {},
       errors                : {},
       subActivityDetails    : [],
-      apiCall               : '/api/annualPlans'
+      // apiCall               : '/api/annualPlans'
     }
   }
- 
   handleChange(event){
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -114,12 +115,16 @@ class PlanDetails extends Component{
   selectMonth(event){
     event.preventDefault();
     var tableObjects = this.state.tableObjects;
-    tableObjects["apiLink"] = this.refs.month.value == 'Annually' ? '/api/annualPlans/' : '/api/monthlyPlans/';
+    tableObjects["apiLink"] = this.refs.month.value == 'All Months' ? '/api/annualPlans/' : '/api/monthlyPlans/';
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
+      "years"               : this.refs.month.value == 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
       "month"               : this.refs.month.value,        
-      "apiCall"             : this.refs.month.value == 'Annually' ? '/api/annualPlans' : '/api/monthlyPlans',
+      "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+      "sectorName"          : "",
+      "activityName"        : "",
+      "availableSubActivity": "",
       tableObjects,
       fields
     },()=>{
@@ -346,6 +351,7 @@ class PlanDetails extends Component{
               })
             }
           );
+
         }
       }
       console.log('subActivityDetails', subActivityDetails);
@@ -373,6 +379,7 @@ class PlanDetails extends Component{
         "subActivityDetails"  :[],
         "availableSubActivity":[]
       });
+      this.props.history.push('/plan');
     // }
   }
   validateFormReq() {
@@ -404,9 +411,6 @@ class PlanDetails extends Component{
       });
       return formIsValid;
   }
-  componentWillUpdate(){
-    // this.getData(this.state.startRange,this.state.limitRange);
-  }
   getData(startRange, limitRange){
     var data = {
     startRange : startRange,
@@ -431,18 +435,19 @@ class PlanDetails extends Component{
         editId : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
-        if(this.state.editId && this.state.month == 'Annually'){
+        if(this.state.editId && this.state.month == 'All Months'){
           this.setState({
-            "months"              :[],
-            "YearPair"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+            "months"              :["All Months"],
+            "years"               : this.refs.month.value == 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+            "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+          })
+        }else if(this.state.editId && this.state.month != 'All Months'){
+          this.setState({
+            "months"              :["April","May","June","July","August","September","October","November","December","January","February","March"],
+            "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+            "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
           })
         }
-        // else if(this.state.editId && this.state.month != 'Annually'){
-        //   this.setState({
-        //     "months"              :["April","May","June","--Quarter 1--","July","August","September","--Quarter 2--","October","November","December","--Quarter 3--","January","February","March","--Quarter 4--"],
-        //     "Year"                :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-        //   })
-        // }
         this.getAvailableActivity(this.state.editSectorId);
         this.getAvailableSubActivity(this.state.editSectorId);
         this.edit(this.state.editId);
@@ -452,8 +457,14 @@ class PlanDetails extends Component{
   componentDidMount() {
     this.getAvailableSectors();
     if(this.state.editId){     
-    this.edit(this.state.editId);       
+      this.edit(this.state.editId);       
     }
+    this.setState({
+      apiCall : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+    },()=>{
+      console.log('this.this.state.', this.state )
+    })
+    
     this.getData(this.state.startRange, this.state.limitRange);
   }
   getAvailableSectors(){
@@ -501,26 +512,74 @@ class PlanDetails extends Component{
     this.handleChange(event);
     this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
   }
+  excludeSubmittedSubActivity(){
+    console.log('this.state.apiCall',this.state.apiCall, this.state.availableSubActivity);
+    axios({
+      method: 'get',
+      url: this.state.apiCall+'/list',
+    }).then((response)=> {
+      if(response.data.length > 0){
+        var submittedSubActivity = response.data.map((a, i)=>{
+          return _.pick(a, "subactivity_ID", "month")
+        })
+
+        console.log('submittedSubActivity', submittedSubActivity);
+        var abc = _.compact(submittedSubActivity.map((m, i)=> { 
+          if(m.month == this.refs.month.value){
+            return m
+          } 
+        }));
+
+        console.log('abc', abc);
+        var x = this.state.availableSubActivity.map((a, i)=>{
+          console.log('a',a);
+          // if(abc){
+          //   console.log('abc',abc);
+            // return abc.map((b, j)=>{ 
+            //   console.log(a._id +'!='+ b.subactivity_ID); 
+            //   if(a._id != b.subactivity_ID){
+            //     return a;
+            //   }  
+            // })
+          // }  
+
+          if(abc.filter((b)=>{return a._id != b.subactivity_ID ? true : false})){
+            console.log(true);
+            return a;
+          }
+        });
+
+        this.setState({
+          availableSubActivity : _.compact(_.flatten(x))
+        },()=>{
+          console.log('availableSubActivity', this.state.availableSubActivity);
+        });
+      }
+    }).catch(function (error) {
+      console.log('error', error);
+    }); 
+  }
   getAvailableSubActivity(sector_ID, activity_ID){
     axios({
       method: 'get',
       url: '/api/sectors/'+sector_ID,
     }).then((response)=> {
-      var availableSubActivity = _.flatten(response.data.map((a, i)=>{
-        return a.activity.map((b, j)=>{return b._id ==  activity_ID ? b.subActivity : [] 
-      });
-
+        var availableSubActivity = _.flatten(response.data.map((a, i)=>{
+            return a.activity.map((b, j)=>{return b._id ==  activity_ID ? b.subActivity : [] 
+          });
         }))
-      this.setState({
-        availableSubActivity : availableSubActivity
-      },()=>{
-      });
+        this.setState({
+          availableSubActivity : availableSubActivity
+        })
+        this.excludeSubmittedSubActivity(availableSubActivity);
+       
+      
     }).catch(function (error) {
       console.log('error', error);
-    });    
+    }); 
   }
-
   edit(id){
+    console.log('this.state.apiCall',this.state.apiCall);
     axios({
       method: 'get',
       url: this.state.apiCall+'/'+id,
@@ -572,14 +631,11 @@ class PlanDetails extends Component{
     }).catch(function (error) {
     });
   }
-
   toglehidden(){
    this.setState({
        shown: !this.state.shown
       });
   }
-
-
   render() {
     var shown = {
       display: this.state.shown ? "block" : "none"
@@ -610,7 +666,7 @@ class PlanDetails extends Component{
                            <div className=" col-lg-3  col-lg-offset-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
-                                <option className="" value="Annually" >Annually</option>
+                                
                                {this.state.months.map((data,index) =>
                                 <option key={index}  className="" >{data}</option>
                                 )}
@@ -623,22 +679,16 @@ class PlanDetails extends Component{
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                               <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
                                 <option className="hidden" >-- Select Year --</option>
-                               {this.state.month  ? (this.state.month !== "Annually" ?
-                                  this.state.Year.map((data,index) =>
-                                  <option key={index}  className="" >{data}</option>
-                                  ):
-                                  this.state.YearPair.map((data,index) =>
-                                  <option key={index}  className="" >{data}</option>
-                                  ) ) : 
-                                  this.state.YearPair.map((data,index) =>
-                                  <option key={index}  className="" >{data}</option>
-                                  )
-                                }
+                               {
+                                this.state.years.map((data, i)=>{
+                                  return <option key={i}>{data}</option>
+                                })
+                               }
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.year}</div>
                           </div>
-                          <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
+                         {/* <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 " >
                               <div className="addform " id="click_advance"  onClick={this.toglehidden.bind(this)}>
                                 <div className="display_advance addContainerAct"  id="display_advance">
@@ -646,11 +696,10 @@ class PlanDetails extends Component{
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div>*/}
                         </div> 
                       </div><br/>                      
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" /*  style={hidden} */id="Academic_details">
-                        
+                    {/*  <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"  style={hidden} id="Academic_details">
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
                             <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
@@ -808,6 +857,8 @@ class PlanDetails extends Component{
                                     </div>  <br/>
                                   </div>
                                 );
+                              }else{
+                                return <label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity  </label>
                               }
                             })
                             :
@@ -822,7 +873,7 @@ class PlanDetails extends Component{
                         }
                         </div>
                       
-                      </form>
+                      </form>*/}
                     </div>
                     <div className="AnnualHeadCont">
                       <div className="annualHead">
@@ -831,7 +882,7 @@ class PlanDetails extends Component{
                           ?
                             <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-                            <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                            <h5>{this.state.month !== "All Months" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>
                     </div>
