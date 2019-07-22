@@ -83,7 +83,7 @@ class PlanDetails extends Component{
       },
       "tableObjects"        : {
         deleteMethod        : 'delete',
-        apiLink             : '/api/annualPlans/',
+        apiLink             : 'http://localhost:3054/api/annualPlans/',
         paginationApply     : true,
         searchApply         : true,
         editUrl             : '/plan/',
@@ -94,7 +94,7 @@ class PlanDetails extends Component{
       fields                : {},
       errors                : {},
       subActivityDetails    : [],
-      // apiCall               : '/api/annualPlans'
+      apiCall               : 'http://localhost:3054/api/annualPlans'
     }
   }
   handleChange(event){
@@ -115,13 +115,13 @@ class PlanDetails extends Component{
   selectMonth(event){
     event.preventDefault();
     var tableObjects = this.state.tableObjects;
-    tableObjects["apiLink"] = this.refs.month.value == 'All Months' ? '/api/annualPlans/' : '/api/monthlyPlans/';
+    tableObjects["apiLink"] = this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans/' : 'http://localhost:3054/api/monthlyPlans/';
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
       "years"               : this.refs.month.value == 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
       "month"               : this.refs.month.value,        
-      "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+      "apiCall"             : this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans' : 'http://localhost:3054/api/monthlyPlans',
       "sectorName"          : "",
       "activityName"        : "",
       "availableSubActivity": "",
@@ -274,7 +274,6 @@ class PlanDetails extends Component{
   Update(event){    
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    console.log('subActivityDetails update', subActivityDetails);
     // if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
     //   || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
     //   || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
@@ -330,8 +329,7 @@ class PlanDetails extends Component{
             "other"               : subActivityDetails[i].other,
             "remark"              : subActivityDetails[i].remark,
           };
-          // console.log('planValues',planValues);
-
+          
           axios.patch(this.state.apiCall+'/update', planValues)
             .then((response)=>{
               swal({
@@ -354,10 +352,10 @@ class PlanDetails extends Component{
 
         }
       }
-      console.log('subActivityDetails', subActivityDetails);
+      
       this.setState({
         "year"                :"",
-        "month"               :"",
+        "month"               :"All Months",
         "center"              :"",
         "sector_id"           :"",
         "sectorName"          :"",
@@ -377,7 +375,11 @@ class PlanDetails extends Component{
         "fields"              :fields,
         "editId"              :"",
         "subActivityDetails"  :[],
-        "availableSubActivity":[]
+        "availableSubActivity":[],
+        "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
+        "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+        "shown"               : true,
+        "apiCall"             : 'http://localhost:3054/api/annualPlans'
       });
       this.props.history.push('/plan');
     // }
@@ -439,13 +441,13 @@ class PlanDetails extends Component{
           this.setState({
             "months"              :["All Months"],
             "years"               : this.refs.month.value == 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+            "apiCall"             : this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans' : 'http://localhost:3054/api/monthlyPlans',
           })
         }else if(this.state.editId && this.state.month != 'All Months'){
           this.setState({
             "months"              :["April","May","June","July","August","September","October","November","December","January","February","March"],
             "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+            "apiCall"             : this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans' : 'http://localhost:3054/api/monthlyPlans',
           })
         }
         this.getAvailableActivity(this.state.editSectorId);
@@ -460,9 +462,7 @@ class PlanDetails extends Component{
       this.edit(this.state.editId);       
     }
     this.setState({
-      apiCall : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
-    },()=>{
-      console.log('this.this.state.', this.state )
+      apiCall : this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans' : 'http://localhost:3054/api/monthlyPlans',
     })
     
     this.getData(this.state.startRange, this.state.limitRange);
@@ -470,7 +470,7 @@ class PlanDetails extends Component{
   getAvailableSectors(){
     axios({
       method: 'get',
-      url: '/api/sectors/list',
+      url: 'http://localhost:3054/api/sectors/list',
     }).then((response)=> {
         
         this.setState({
@@ -493,7 +493,7 @@ class PlanDetails extends Component{
   getAvailableActivity(sector_ID){
     axios({
       method: 'get',
-      url: '/api/sectors/'+sector_ID,
+      url: 'http://localhost:3054/api/sectors/'+sector_ID,
     }).then((response)=> {
       
         this.setState({
@@ -513,7 +513,6 @@ class PlanDetails extends Component{
     this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
   }
   excludeSubmittedSubActivity(){
-    console.log('this.state.apiCall',this.state.apiCall, this.state.availableSubActivity);
     axios({
       method: 'get',
       url: this.state.apiCall+'/list',
@@ -522,37 +521,20 @@ class PlanDetails extends Component{
         var submittedSubActivity = response.data.map((a, i)=>{
           return _.pick(a, "subactivity_ID", "month")
         })
-
-        console.log('submittedSubActivity', submittedSubActivity);
-        var abc = _.compact(submittedSubActivity.map((m, i)=> { 
+        var abc = _.pluck(_.compact(submittedSubActivity.map((m, i)=> { 
           if(m.month == this.refs.month.value){
-            return m
+            return m;
           } 
-        }));
+        })), "subactivity_ID");
 
-        console.log('abc', abc);
         var x = this.state.availableSubActivity.map((a, i)=>{
-          console.log('a',a);
-          // if(abc){
-          //   console.log('abc',abc);
-            // return abc.map((b, j)=>{ 
-            //   console.log(a._id +'!='+ b.subactivity_ID); 
-            //   if(a._id != b.subactivity_ID){
-            //     return a;
-            //   }  
-            // })
-          // }  
-
-          if(abc.filter((b)=>{return a._id != b.subactivity_ID ? true : false})){
-            console.log(true);
+          if(!abc.includes(a._id)){
             return a;
           }
         });
 
         this.setState({
           availableSubActivity : _.compact(_.flatten(x))
-        },()=>{
-          console.log('availableSubActivity', this.state.availableSubActivity);
         });
       }
     }).catch(function (error) {
@@ -562,7 +544,7 @@ class PlanDetails extends Component{
   getAvailableSubActivity(sector_ID, activity_ID){
     axios({
       method: 'get',
-      url: '/api/sectors/'+sector_ID,
+      url: 'http://localhost:3054/api/sectors/'+sector_ID,
     }).then((response)=> {
         var availableSubActivity = _.flatten(response.data.map((a, i)=>{
             return a.activity.map((b, j)=>{return b._id ==  activity_ID ? b.subActivity : [] 
@@ -579,13 +561,11 @@ class PlanDetails extends Component{
     }); 
   }
   edit(id){
-    console.log('this.state.apiCall',this.state.apiCall);
     axios({
       method: 'get',
       url: this.state.apiCall+'/'+id,
       }).then((response)=> {
       var editData = response.data[0];
-      console.log('editData', editData);
       this.getAvailableActivity(editData.sector_ID);
       this.setState({
         "availableSubActivity"    : [{
@@ -594,6 +574,7 @@ class PlanDetails extends Component{
         }],
       },()=>{
         this.setState({
+          "shown"                   : false,
           "year"                    : editData.year,
           "month"                   : editData.month,
           "center"                  : editData.center,
@@ -633,8 +614,15 @@ class PlanDetails extends Component{
   }
   toglehidden(){
    this.setState({
-       shown: !this.state.shown
-      });
+     shown: !this.state.shown
+    },()=>{
+      console.log('shown', this.state.shown, !this.state.shown);
+    });
+  }
+  getSearchText(searchText, startRange, limitRange){
+    this.setState({
+      tableData : []
+    })
   }
   render() {
     var shown = {
@@ -895,6 +883,7 @@ class PlanDetails extends Component{
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
+                          getSearchText={this.getSearchText.bind(this)}
                         />
                       </div>
                     </div> 

@@ -53,10 +53,6 @@ class PlanDetails extends Component{
                                     heading : '',
                                     mergedColoums : 1
                                 },
-                                {
-                                    heading : '',
-                                    mergedColoums : 1
-                                },
 
                               ]
       },
@@ -79,11 +75,11 @@ class PlanDetails extends Component{
         indirectCC          : "Indirect Community Contribution",
         other               : "Other",
         remark              : "Remark",
-        actions             : 'Action',
+        // actions             : 'Action',
       },
       "tableObjects"        : {
         deleteMethod        : 'delete',
-        apiLink             : '/api/annualPlans/',
+        apiLink             : 'http://localhost:3054/api/annualPlans/',
         paginationApply     : true,
         searchApply         : true,
         editUrl             : '/plan/',
@@ -94,7 +90,7 @@ class PlanDetails extends Component{
       fields                : {},
       errors                : {},
       subActivityDetails    : [],
-      // apiCall               : '/api/annualPlans'
+      apiCall               : 'http://localhost:3054/api/annualPlans'
     }
   }
   handleChange(event){
@@ -115,13 +111,13 @@ class PlanDetails extends Component{
   selectMonth(event){
     event.preventDefault();
     var tableObjects = this.state.tableObjects;
-    tableObjects["apiLink"] = this.refs.month.value == 'All Months' ? '/api/annualPlans/' : '/api/monthlyPlans/';
+    tableObjects["apiLink"] = this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans/' : 'http://localhost:3054/api/monthlyPlans/';
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
       "years"               : this.refs.month.value == 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
       "month"               : this.refs.month.value,        
-      "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+      "apiCall"             : this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans' : 'http://localhost:3054/api/monthlyPlans',
       "sectorName"          : "",
       "activityName"        : "",
       "availableSubActivity": "",
@@ -439,13 +435,13 @@ class PlanDetails extends Component{
           this.setState({
             "months"              :["All Months"],
             "years"               : this.refs.month.value == 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+            "apiCall"             : this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans' : 'http://localhost:3054/api/monthlyPlans',
           })
         }else if(this.state.editId && this.state.month != 'All Months'){
           this.setState({
             "months"              :["April","May","June","July","August","September","October","November","December","January","February","March"],
             "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+            "apiCall"             : this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans' : 'http://localhost:3054/api/monthlyPlans',
           })
         }
         this.getAvailableActivity(this.state.editSectorId);
@@ -460,7 +456,7 @@ class PlanDetails extends Component{
       this.edit(this.state.editId);       
     }
     this.setState({
-      apiCall : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+      apiCall : this.refs.month.value == 'All Months' ? 'http://localhost:3054/api/annualPlans' : 'http://localhost:3054/api/monthlyPlans',
     },()=>{
       console.log('this.this.state.', this.state )
     })
@@ -470,7 +466,7 @@ class PlanDetails extends Component{
   getAvailableSectors(){
     axios({
       method: 'get',
-      url: '/api/sectors/list',
+      url: 'http://localhost:3054/api/sectors/list',
     }).then((response)=> {
         
         this.setState({
@@ -493,7 +489,7 @@ class PlanDetails extends Component{
   getAvailableActivity(sector_ID){
     axios({
       method: 'get',
-      url: '/api/sectors/'+sector_ID,
+      url: 'http://localhost:3054/api/sectors/'+sector_ID,
     }).then((response)=> {
       
         this.setState({
@@ -562,7 +558,7 @@ class PlanDetails extends Component{
   getAvailableSubActivity(sector_ID, activity_ID){
     axios({
       method: 'get',
-      url: '/api/sectors/'+sector_ID,
+      url: 'http://localhost:3054/api/sectors/'+sector_ID,
     }).then((response)=> {
         var availableSubActivity = _.flatten(response.data.map((a, i)=>{
             return a.activity.map((b, j)=>{return b._id ==  activity_ID ? b.subActivity : [] 
@@ -630,6 +626,11 @@ class PlanDetails extends Component{
       })
     }).catch(function (error) {
     });
+  }
+  getSearchText(searchText, startRange, limitRange){
+    this.setState({
+      tableData : []
+    })
   }
   toglehidden(){
    this.setState({
@@ -895,6 +896,7 @@ class PlanDetails extends Component{
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
+                          getSearchText={this.getSearchText.bind(this)}
                         />
                       </div>
                     </div> 

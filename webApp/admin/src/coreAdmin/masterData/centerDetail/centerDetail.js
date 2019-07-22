@@ -663,6 +663,11 @@ class centerDetail extends Component{
       // console.log('selectedVillages',this.state.selectedVillages);
     });
   }
+  getSearchText(searchText, startRange, limitRange){
+    this.setState({
+      tableData : []
+    })
+  }
   changeTab = (data)=>{
     this.setState({
       tabtype : data,
@@ -971,6 +976,7 @@ class centerDetail extends Component{
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
+                          getSearchText={this.getSearchText.bind(this)}
                         />
                       </div>
                     </div>

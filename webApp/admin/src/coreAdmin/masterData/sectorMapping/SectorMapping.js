@@ -305,6 +305,11 @@ class SectorMapping extends Component{
       console.log('error', error);
     });
   }
+  getSearchText(searchText, startRange, limitRange){
+    this.setState({
+      tableData : []
+    })
+  }
   render() {
     return(
       <div className="container-fluid">
@@ -409,6 +414,7 @@ class SectorMapping extends Component{
                       tableData={this.state.tableData}
                       getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects}
+                      getSearchText={this.getSearchText.bind(this)}
                     />
                   </div>
                 </div>

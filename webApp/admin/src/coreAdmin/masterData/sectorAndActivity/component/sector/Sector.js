@@ -28,7 +28,9 @@ class Sector extends Component{
       "tableObjects"        : {
         deleteMethod        : 'delete',
         apiLink             : '/api/sectors/delete/',
-        editUrl             : '/sector-and-activity/'
+        editUrl             : '/sector-and-activity/',
+        paginationApply     : true,
+        searchApply         : true,
       },
       "startRange"          : 0,
       "limitRange"          : 10,
