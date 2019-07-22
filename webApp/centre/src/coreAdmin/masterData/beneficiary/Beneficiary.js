@@ -182,12 +182,20 @@ class Beneficiary extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
-    /*if (typeof fields["beneficiaryID"] !== "undefined") {
-      if (!fields["beneficiaryID"].match()) {
+    if (typeof fields["beneficiaryID"] !== "undefined") {
+      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+      if (!fields["beneficiaryID"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
         formIsValid = false;
-        errors["beneficiaryID"] = "Please enter valid mobile no.";
+        errors["beneficiaryID"] = "Please enter valid Beneficiary ID.";
       }
-    }*/
+    }
+    if (typeof fields["nameofbeneficiaries"] !== "undefined") {
+      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+      if (!fields["nameofbeneficiaries"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+        formIsValid = false;
+        errors["nameofbeneficiaries"] = "Please enter valid Name.";
+      }
+    }
 
       this.setState({
         errors: errors
@@ -211,6 +219,7 @@ class Beneficiary extends Component{
       this.edit(this.state.editId);
     }
     this.getData(this.state.startRange, this.state.limitRange);
+    this.getAvailableFamilyId();
   }
 
   edit(id){
@@ -223,8 +232,8 @@ class Beneficiary extends Component{
       console.log('editData',editData);
       
       this.setState({
-        "familyID"              : editData.familyID+"|"+"id",          
-        "beneficiaryID"       : editData.beneficiaryID,          
+        "familyID"              : editData.familyID+"|"+editData.family_ID,          
+        "beneficiaryID"         : editData.beneficiaryID,          
         "nameofbeneficiaries"   : editData.nameofbeneficiaries,
       });
     })
@@ -248,7 +257,21 @@ class Beneficiary extends Component{
 
     });
   }
-  
+  getAvailableFamilyId(){
+    axios({
+      method: 'get',
+      url: '/api/families/list',
+    }).then((response)=> {
+        
+        this.setState({
+          availableFamilies : response.data
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+    console.log("availableFamilies", this.state.availableFamilies)
+  }
+
   render() {
     return (
       <div className="container-fluid">
@@ -274,11 +297,20 @@ class Beneficiary extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
                             <select className="custom-select form-control inputBox" value={this.state.familyID} ref="familyID" name="familyID" onChange={this.handleChange.bind(this)} >
                               <option value="" className="hidden" >-- Select --</option>
-                              <option value={"PL00001"+"|"+"id"}>PL00001</option>
+                             {/* <option value={"PL00001"+"|"+"id"}>PL00001</option>
                               <option value={"PL00002"+"|"+"id"}>PL00002</option>
                               <option value={"PL00003"+"|"+"id"}>PL00003</option>
                               <option value={"PL00004"+"|"+"id"}>PL00004</option>
-                              <option value={"PL00005"+"|"+"id"}>PL00005</option>
+                              <option value={"PL00005"+"|"+"id"}>PL00005</option>*/}
+                              {
+                                this.state.availableFamilies ? this.state.availableFamilies.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.familyID+'|'+data._id}>{data.familyID}</option>
+                                    );
+                                }) 
+                                : 
+                                null                            
+                              }
                               
                             </select>
                           </div>
@@ -315,7 +347,7 @@ class Beneficiary extends Component{
                       }
                     </div> 
                   </form>
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 

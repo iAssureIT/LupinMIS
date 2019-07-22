@@ -6,8 +6,10 @@
     background-color: #fff;
 }
 .iAssureITtable-bordered{
-  background: #039BE5 !important;
   border: 1px solid #039BE5;
+}
+.tempTableHeader{
+  background: #039BE5 !important;
 }
 .paginationAdminWrap{
   text-align: center !important;
@@ -54,6 +56,7 @@
   transform: translate(0,0);
   margin: 30px auto;
 }
+/* Create a custom checkbox */
 .checkboxContainer{
   position: relative;
   padding-left: 15px;
@@ -64,30 +67,20 @@
   -moz-user-select: none;
   user-select: none;
   padding-top: 8px;
-
-  /*position: relative;
-  padding-left: 3px;
-  align-content: center;
-  cursor: pointer;
-  font-size: 10px;
-  user-select: none;
-  text-align: center;*/
 }
 /* Hide the browser's default checkbox */
 .checkboxContainer input {
   position: relative;
-  /*opacity: 0;*/
+  opacity: 0;
   z-index: 1;
   cursor: pointer;
   height: 17px;
   width: 17px;
-  /*right: 10px;*/
 }
-/* Create a custom checkbox */
 .checkboxMark {
   position: absolute;
-  top: 21%;
-  /*right: 92%;*/
+  top: 28%;
+  right: 42%;
   vertical-align: center !important;
   align-content: center;
   height: 17px;
@@ -125,6 +118,10 @@
   height: 10px;
   align-content: center;
   border: solid #fff;
-  border-width: 0 2px 2px 0;
+  border-width: 0 3px 3px 0;
   transform: rotate(45deg);
+}
+
+.umDynamicHeader{
+  white-space: nowrap !important;
 }

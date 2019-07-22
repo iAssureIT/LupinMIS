@@ -309,6 +309,27 @@ class Family extends Component{
         errors["contact"] = "Please enter valid mobile no.";
       }
     }
+    if (typeof fields["familyID"] !== "undefined") {
+      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+      if (!fields["familyID"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
+        formIsValid = false;
+        errors["familyID"] = "Please enter valid Family ID.";
+      }
+    }
+    if (typeof fields["uID"] !== "undefined") {
+      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+      if (!fields["uID"].match(/^[_0-9]*((-|\s)*[_0-9]){12}$/)) {
+        formIsValid = false;
+        errors["uID"] = "Please enter valid Aadhar No.";
+      }
+    }
+    if (typeof fields["nameOfFamilyHead"] !== "undefined") {
+      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+      if (!fields["nameOfFamilyHead"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+        formIsValid = false;
+        errors["nameOfFamilyHead"] = "Please enter valid Name.";
+      }
+    }
     this.setState({
       errors: errors
     });
@@ -392,7 +413,7 @@ class Family extends Component{
                         <div className="col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
                           <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uID" >
-                            <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="uID" name="uID" value={this.state.uID}  maxLength = "12" onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="uID" name="uID" value={this.state.uID} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.uID}</div>
                         </div>
@@ -446,9 +467,7 @@ class Family extends Component{
                             <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.handleChange.bind(this)}  >
                               <option  className="hidden" >-- Select --</option>
                               <option>Pune</option>
-                              <option>Pune</option>
-                              <option>Pune</option>
-                              <option>Pune</option>                              
+                              <option>Thane</option>
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.district}</div>
@@ -459,8 +478,8 @@ class Family extends Component{
                             <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.handleChange.bind(this)} >
                               <option  className="hidden" >-- Select --</option>
                               <option>Pimpari</option>
-                              <option>Pimpari</option>
-                              <option>Pimpari</option>
+                              <option>Haveli</option>
+                              <option>Chinchwad</option>
                               
                             </select>
                           </div>
@@ -472,9 +491,8 @@ class Family extends Component{
                             <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.handleChange.bind(this)}  >
                               <option  className="hidden" >-- Select --</option>
                               <option>Shivne</option>
-                              <option>Shivne</option>
-                              <option>Shivne</option>
-                              <option>Shivne</option>                             
+                              <option>Hadapsar</option>
+                              <option>Manjari</option>
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.village}</div>

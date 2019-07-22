@@ -528,7 +528,7 @@ class IAssureTable extends Component {
 	       	{
 	       		this.state.tableObjects.paginationApply === true ?
 		       		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding">
-						<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding">Data Per Page</label>
+						<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding formLable">Data Per Page</label>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 							<select onChange={this.setLimit.bind(this)} value={this.state.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12  noPadding  form-control">
 								<option value="Not Selected" disabled>Select Limit</option>
@@ -546,7 +546,7 @@ class IAssureTable extends Component {
 	       	{
 	       		this.state.tableObjects.searchApply === true ? 
 		       		<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding pull-right">
-		        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search</label>
+		        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding formLable">Search</label>
 		        		<div className="input-group">
 					        <input type="text" onChange={this.tableSearch.bind(this)} className="NOpadding-right form-control" ref="tableSearch" id="tableSearch" name="tableSearch"/>
 					    	<span className="input-group-addon"><i className="fa fa-search"></i></span>
@@ -605,8 +605,9 @@ class IAssureTable extends Component {
 										(value, i)=> {													
 											return(
 												<tr key={i} className="">
-													<td className="textAlignCenter">
+													<td className="textAlignCenter checkboxContainer">
 														<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries]?true:false} id={value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries} onChange={this.selectBeneficiary.bind(this)}/>
+														<span className="checkboxMark"></span>
 													</td>
 													<td className="textAlignCenter">{this.state.startRange+1+i}</td>
 													{

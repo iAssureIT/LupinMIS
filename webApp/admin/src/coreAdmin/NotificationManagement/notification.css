@@ -850,7 +850,7 @@
   }
   .adminModal-header {
       border-radius: 9px 9px 0 0;
-      background: #2189d1;
+      /*background: #2189d1;*/
       color: #fff;
       border: none;
   }
@@ -866,7 +866,7 @@
   }
   .adminCancel-btn, .adminFinish-btn {
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #2189d1;
+      box-shadow: 2px 2px 9px -2px #000;
   }
   .btnUpdate{
       color: #fff;

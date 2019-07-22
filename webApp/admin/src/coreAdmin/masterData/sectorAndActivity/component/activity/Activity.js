@@ -201,8 +201,7 @@ class Activity extends Component{
       },()=>{
         this.edit(this.state.editSectorId);
         // console.log("editId",this.state.editId);    
-      })
-      
+      })      
     }
   }
 

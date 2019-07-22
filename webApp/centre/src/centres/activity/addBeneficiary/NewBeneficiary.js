@@ -1,4 +1,5 @@
 import React, { Component }   from 'react';
+import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
@@ -15,12 +16,16 @@ class NewBeneficiary extends Component{
     super(props);
 
     this.state = {
-      
+      "familyID"            :"",
+      "beneficiaryID"       :"",
+      "nameofbeneficiaries" :"",
+      "fields"              : {},
+      "errors"              : {},
       "uID"                 :"",
       "shown"               : true,
       "twoLevelHeader"      : {
         apply               : false,
-      firstHeaderData       : [
+        firstHeaderData       : [
                                 {
                                     heading : '',
                                     mergedColoums : 10
@@ -52,43 +57,127 @@ class NewBeneficiary extends Component{
       errors: {},    
     }
   }
+  
   handleChange(event){
-    event.preventDefault(); 
+    event.preventDefault();
     this.setState({
-      "center_id"         : "",
-      "centerName"        : "",
-      "dist"              : this.refs.dist.value,
-      "block"             : this.refs.block.value,
-      "village"           : this.refs.village.value,
-      "date"              : this.refs.date.value,
-      "sector"            : this.refs.sector.value,
-      "typeofactivity"    : this.refs.typeofactivity.value,
-      "activity"          : this.refs.activity.value,
-      "subactivity"       : this.refs.subactivity.value,
-      "unit"              : this.state.unit.value,
-      "unitCost"          : this.refs.unitCost.value,
-      "quantity"          : this.refs.quantity.value,
-      "totalcost"         : this.state.totalcost,
-      "LHWRF"             : this.refs.LHWRF.value,
-      "NABARD"            : this.refs.NABARD.value,
-      "bankLoan"          : this.refs.bankLoan.value,
-      "govtscheme"        : this.refs.govtscheme.value,
-      "directCC"          : this.refs.directCC.value,
-      "indirectCC"        : this.refs.indirectCC.value,
-      "other"             : this.refs.other.value,
-
+      "familyID"              : this.refs.familyID.value,          
+      "beneficiaryID"         : this.refs.beneficiaryID.value,          
+      "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
     });
- 
-    let fields = this.state.fields;
+    let fields                = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
       fields
     });
+    if (this.validateForm()) {
+      let errors                = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
   }
+  isTextKey(evt){
+   var charCode = (evt.which) ? evt.which : evt.keyCode
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   {
+    evt.preventDefault();
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  SubmitBeneficiary(event){
+    event.preventDefault();
+    if (this.validateFormReq() && this.validateForm()){
+      var beneficiaryValue= 
+      {
+        "family_ID"             : this.refs.familyID.value.split('|')[1],          
+        "familyID"              : this.refs.familyID.value.split('|')[0],          
+        "beneficiaryID"         : this.refs.beneficiaryID.value,          
+        "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
+      };
+      let fields                    = {};
+      fields["familyID"]            = "";
+      fields["beneficiaryID"]       = "";
+      fields["nameofbeneficiaries"] = "";
+
+      this.setState({
+        "familyID"                 :"",
+        "beneficiaryID"            :"",
+        "nameofbeneficiaries"      :"",   
+        fields:fields
+      });
+      axios.post('/api/beneficiaries',beneficiaryValue)
+      .then((response)=>{
+        this.getData(this.state.startRange, this.state.limitRange);
+        swal({
+          title : response.data.message,
+          text  : response.data.message,
+        });
+      })
+      .catch((error)=>{
+        console.log("error = ",error);
+      });
+    }
+  }
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+    $("html,body").scrollTop(0);
+      if (!fields["familyID"]) {
+        formIsValid = false;
+        errors["familyID"] = "This field is required.";
+      }     
+       if (!fields["beneficiaryID"]) {
+        formIsValid = false;
+        errors["beneficiaryID"] = "This field is required.";
+      }     
+       if (!fields["nameofbeneficiaries"]) {
+        formIsValid = false;
+        errors["nameofbeneficiaries"] = "This field is required.";
+      }     
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+    $("html,body").scrollTop(0);
+    if (typeof fields["beneficiaryID"] !== "undefined") {
+      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+      if (!fields["beneficiaryID"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
+        formIsValid = false;
+        errors["beneficiaryID"] = "Please enter valid Beneficiary ID.";
+      }
+    }
+    if (typeof fields["nameofbeneficiaries"] !== "undefined") {
+      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+      if (!fields["nameofbeneficiaries"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+        formIsValid = false;
+        errors["nameofbeneficiaries"] = "Please enter valid Name.";
+      }
+    }
+
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
+  }
+
   componentDidMount() {
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
+    this.getAvailableFamilyId();
     this.getData(this.state.startRange, this.state.limitRange);
   }
   componentWillReceiveProps(nextProps){
@@ -130,6 +219,22 @@ class NewBeneficiary extends Component{
     event.preventDefault();
     this.props.listofBeneficiaries(this.state.selectedBeneficiaries);
   }
+
+  getAvailableFamilyId(){
+    axios({
+      method: 'get',
+      url: '/api/families/list',
+    }).then((response)=> {
+        
+        this.setState({
+          availableFamilies : response.data
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+    console.log("availableFamilies", this.state.availableFamilies)
+  }
+
   render() {
      var shown = {
       display: this.state.shown ? "block" : "none"
@@ -163,7 +268,6 @@ class NewBeneficiary extends Component{
                                   <option>Thane</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
                             </div>
                             <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Block</label>
@@ -175,7 +279,6 @@ class NewBeneficiary extends Component{
                                   <option>Chinchwad</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
                             </div>
                             <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Village</label>
@@ -187,7 +290,6 @@ class NewBeneficiary extends Component{
                                   <option>Manjari</option>
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
                             </div>
                           </div>
                           <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight row">
@@ -199,34 +301,53 @@ class NewBeneficiary extends Component{
                             </div>
                              <div className=" col-lg-1 col-md-1 col-sm-1 col-xs-1  boxHeightother">
                               <div className="col-lg-12 col-sm-12 col-xs-12 mt23" >
-                                <div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i className="fa fa-plus" aria-hidden="true" id="click"></i></div></div>
+                                <div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i className="fa fa-plus" aria-hidden="true" id="click"></i></div>
+                                </div>
                               </div>
                             </div>
                           </div> 
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight " style={hidden}>
-                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 formLable boxHeightother">
+                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight boxHeightother" style={hidden}>
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Family ID </label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel"  onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
+                                <select className="custom-select form-control inputBox" ref="familyID" name="familyID"  onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                  <option>L000001</option>
-                                  <option>B000001</option>
+                                  {
+                                    this.state.availableFamilies ? this.state.availableFamilies.map((data, index)=>{
+                                      return(
+                                        <option key={data._id} value={data.familyID+'|'+data._id}>{data.familyID}</option>
+                                        );
+                                    }) 
+                                    : 
+                                    null                            
+                                  }
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.QualificationLevel}</div>
+                              <div className="errorMsg">{this.state.errors.familyID}</div>
                             </div>
-                            <div className=" col-lg-4 col-sm-12 col-xs-12 formLable boxHeightother ">
-                              <label className="formLable">Beneficiary Name</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
+                            <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                              <label className="formLable">Beneficiary ID</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficiaryID" >
+                                {/*<div className="input-group-addon inputIcon">
+                                  <i className="fa fa-graduation-cap fa"></i>
+                                </div>*/}
+                                <input type="text" className="form-control inputBox"  placeholder=""value={this.state.beneficiaryID} ref="beneficiaryID" name="beneficiaryID" onChange={this.handleChange.bind(this)} />
                               </div>
+                              <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
                             </div>
-                            <div className=" col-lg-4 col-sm-12 col-xs-12 formLable boxHeightother ">
-                              <label className="formLable">Beneficiary ID</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                <input type="text"  className="form-control inputBox" name="UniversityName" placeholder="" ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
+                            <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                              <label className="formLable">Name of Beneficiary</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="nameofbeneficiaries" >
+                                {/*<div className="input-group-addon inputIcon">
+                                  <i className="fa fa-graduation-cap fa"></i>
+                                </div>*/}
+                                <input type="text" className="form-control inputBox"  placeholder="" value={this.state.nameofbeneficiaries} ref="nameofbeneficiaries" name="nameofbeneficiaries" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
                               </div>
-                            </div>
+                              <div className="errorMsg">{this.state.errors.nameofbeneficiaries}</div>
+                            </div>    
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt23">
+                              <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
+                            </div>                      
                           </div>
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
                             <div className="">  

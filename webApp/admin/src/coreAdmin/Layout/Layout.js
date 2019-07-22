@@ -81,17 +81,21 @@ class Layout extends Component{
                     <Route path="/admin/AssignPermissionToModule"                               exact strict component={ AssignPermissionToModules } />
                    {/*Master Data*/}
                     <Route path="/center-detail"                                                exact strict component={ centerDetail } />
+                    <Route path="/center-detail/"                                               exact strict component={ centerDetail } />
                     <Route path="/center-detail/:id"                                            exact strict component={ centerDetail } />
                     <Route path="/sector-and-activity"                                          exact strict component={ SectorAndActivity } />
-                    <Route path="/sector-and-activity/:sectorId"                                      exact strict component={ SectorAndActivity } />
+                    <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivity } />
+                    <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
                     <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
                     <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
                     <Route path="/sector-mapping"                                               exact strict component={ SectorMapping } />
-                    <Route path="/sector-mapping/:sectorMappingId"                                           exact strict component={ SectorMapping } />
+                    <Route path="/sector-mapping/"                                              exact strict component={ SectorMapping } />
+                    <Route path="/sector-mapping/:sectorMappingId"                              exact strict component={ SectorMapping } />
                     { /*Plans Routes*/}
                     <Route path="/plan"                                                         exact strict component={ plan } />
-                    <Route path="/plan/:id"                                                         exact strict component={ plan } />
-                    <Route path="/report1"                                                         exact strict component={ report1 } />
+                    <Route path="/plan/"                                                        exact strict component={ plan } />
+                    <Route path="/plan/:id"                                                     exact strict component={ plan } />
+                    <Route path="/report1"                                                      exact strict component={ report1 } />
 {/*                    <Route path="/monthly-plan"                  /:sectorId                               exact strict component={ MonthlyPlan } />
 */}                  </Switch>        
                 </Router>

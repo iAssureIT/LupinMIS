@@ -584,8 +584,7 @@ margin-right: 12px;
 }
 /****************************************/
 
-
-.blackFont{
+ .blackFont{
     color: #333;
   }
   .redFont{
@@ -599,7 +598,7 @@ margin-right: 12px;
   }
   .adminModal-header {
       border-radius: 9px 9px 0 0;
-      background: #2189d1;
+      background: #039BE5;
       color: #fff;
       border: none;
   }
@@ -611,23 +610,23 @@ margin-right: 12px;
       border-radius: 0 0 9px 9px;
       background: #eee;
       padding-top: 15px!important;
-      padding-bottom: 0!important;
+      /*padding-bottom: 0!important;*/
   }
   .adminCancel-btn, .adminFinish-btn {
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #2189d1;
+      box-shadow: 2px 2px 9px -2px #555;
   }
   .btnUpdate{
       color: #fff;
-      background: #2189d1;
+      background: #039BE5;
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #2189d1;
+      box-shadow: 2px 2px 9px -2px #039BE5;
   }
 /*  .btnSubmit{
       color: #fff;
-      background: #2189d1;
+      background: #039BE5;
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #2189d1; 
+      box-shadow: 2px 2px 9px -2px #039BE5; 
   }*/
   .adminCloseCircleDiv {
       display: inline-grid;
@@ -635,7 +634,7 @@ margin-right: 12px;
       height: 30px;
       width: 30px;
       background: #fff;
-      border-radius: 100%;
+      border-radius: 100% !important;
   }
   .adminCloseButton {
       font-weight: 700;
@@ -666,4 +665,26 @@ margin-right: 12px;
   .NOpadding{
     padding-right: 0px;
     padding-left: 0px;
+  }
+  
+  .adminModal-dialog{
+    position: relative;
+    transform: translate(0,0);
+    margin-top: 10% !important;
+  }
+  .adminModal-content{
+    border-radius: 9px !important;
+  }
+  .adminCancel-btn{
+    background-color: #ccc;
+  }
+
+  .examDelete-btn{
+    background-color: #f00;
+    box-shadow: 2px 2px 9px -2px #555;
+  }
+  
+  .input_status {
+    background-color: #fff !important;
+    border: 0px !important;
   }

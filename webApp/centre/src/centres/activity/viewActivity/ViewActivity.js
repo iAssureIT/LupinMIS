@@ -1,14 +1,11 @@
 import React, { Component }   from 'react';
 import axios                  from 'axios';
+import moment                 from "moment";
+import 'bootstrap/js/tab.js';
 
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
-
-
-import 'bootstrap/js/tab.js';
-import 'react-table/react-table.css'; 
-
+import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 import "./ViewActivity.css";
-import ListOfBeneficiaries from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -110,7 +107,7 @@ getData(startRange, limitRange){
       console.log('response', response.data);
       var tableData = response.data.map((a, i)=>{
         return {
-          date                       : a.date,
+          date                       : moment(a.date).format('YYYY-MM-DD'),
           place                      : a.place,
           sectorName                 : a.sectorName,
           typeofactivity             : a.typeofactivity,

@@ -250,7 +250,7 @@ class centerDetail extends Component{
         var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
 
         var centerDetail = {
-          "center_ID"               : this.state.editId,
+          "center_ID"                : this.state.editId,
           "centerName"                : this.refs.nameOfCenter.value,
           "type"                      : this.refs.typeOfCenter.value,
           "address"                   : {
@@ -396,7 +396,7 @@ class centerDetail extends Component{
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         if (!pattern.test(fields["centerInchargeEmail"])) {
           formIsValid = false;
-          errors["centerInchargeEmail"] = "Please enter valid email.";
+          errors["centerInchargeEmail"] = "Please enter valid Email.";
         }
       }
       if (typeof fields["MISCoordinatorEmail"] !== "undefined") {
@@ -404,7 +404,7 @@ class centerDetail extends Component{
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         if (!pattern.test(fields["MISCoordinatorEmail"])) {
           formIsValid = false;
-          errors["MISCoordinatorEmail"] = "Please enter valid email.";
+          errors["MISCoordinatorEmail"] = "Please enter valid Email.";
         }
       }
       if (typeof fields["centerInchargeContact"] !== "undefined") {
@@ -422,7 +422,35 @@ class centerDetail extends Component{
       if (typeof fields["pincode"] !== "undefined") {
         if (!fields["pincode"].match(/^[0-9]{6}$/)) {
           formIsValid = false;
-          errors["pincode"] = "Please enter valid mobile no.";
+          errors["pincode"] = "Please enter valid Pincode.";
+        }
+      }
+      if (typeof fields["nameOfCenter"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["nameOfCenter"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["nameOfCenter"] = "Please enter valid Center Name.";
+        }
+      }
+      if (typeof fields["centerInchargeName"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["centerInchargeName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["centerInchargeName"] = "Please enter valid Name.";
+        }
+      }
+      if (typeof fields["MISCoordinatorName"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["MISCoordinatorName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["MISCoordinatorName"] = "Please enter valid Name.";
+        }
+      }
+      if (typeof fields["address"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["address"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
+          formIsValid = false;
+          errors["address"] = "Please enter valid Address.";
         }
       }
          
