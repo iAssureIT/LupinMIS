@@ -133,9 +133,7 @@ class SubActivity extends Component{
     event.preventDefault();
     if(this.refs.sector.value =="" || this.refs.activityName.value=="" || this.refs.subActivityName.value =="" || this.state.unit =="")
     {
-      console.log('state validation');
-      if (this.validateFormReq() && this.validateForm()) {
-      }
+      if (this.validateFormReq() && this.validateForm()) {}
     }else{
     var subActivityValues = {
       "sector_ID"            : this.refs.sector.value.split('|')[1],
@@ -162,7 +160,6 @@ class SubActivity extends Component{
       "availableActivity"     :[],
       fields                  :fields
     });
-    console.log('subActivityValues', subActivityValues);
     axios.patch('/api/sectors/subactivity/update',subActivityValues)
         .then((response)=>{
           this.getData(this.state.startRange, this.state.limitRange);
@@ -233,7 +230,7 @@ class SubActivity extends Component{
   componentWillReceiveProps(nextProps){
     this.getAvailableSectors();
     var editId = nextProps.match.params.subactivityId;
-    // console.log('editId',editId);
+
     if(nextProps.match.params.subactivityId){
       this.setState({
         editId : editId,
@@ -278,38 +275,29 @@ class SubActivity extends Component{
       method: 'get',
       url: '/api/sectors/'+sector_id,
     }).then((response)=> {
-      console.log('response', response.data[0].activity)
+
         this.setState({
           availableActivity : response.data[0].activity
-        },()=>{console.log("availableActivity",this.state.availableActivity)})
+        },()=>{})
     }).catch(function (error) {
       console.log('error', error);
     });
   }
   edit(id){
-    console.log('id', id);
     var activity_id = this.props.match.params.activityId;
     var subactivity_id = this.props.match.params.subactivityId;
-    console.log('activity_id', activity_id, subactivity_id);
       axios({
         method: 'get',
         url: '/api/sectors/'+id,
       }).then((response)=> {
         var editData = response.data[0];
-        console.log('editData', editData);
-        // console.log('subActivityName', _.first(editData.activityName.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''})));
         this.setState({
           "sector"                : editData.sector+'|'+editData._id,
-          // "activityName"          : _.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activityName : ''}))+'|'+activity_id,
-          "activityName"          : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName,
-          // "subActivityName"       : ((editData.activity.filter((a)=>{return a._id == activity_id ? (a.subActivity).filter((b)=>{return b._id == subactivity_id ? b.subActivityName : ""}) : ''})))[0],
-          "subActivityName"       : (editData.activity.filter((a)=>{return a._id == activity_id ? (a.subActivity).filter((b)=>{return b._id == subactivity_id ? b.subActivityName : ""}) : ''})),
-
-          "unit"                  : (_.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivity).map((b, j)=>{return b._id == subactivity_id ? b.unit : ""}) : ''})))[0],
-          "familyUpgradation"     : (_.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivity).map((b, j)=>{return b._id == subactivity_id ? b.familyUpgradation : ""}) : ''})))[0],
+          "activityName"          : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName+'|'+activity_id,
+          "subActivityName"       : (_.flatten(editData.activity.map((a)=>{if(a._id == activity_id) return (a.subActivity).filter((b)=>{ if(b._id == subactivity_id) return b.subActivityName }) })))[0].subActivityName,
+          "unit"                  : (_.flatten(editData.activity.map((a, i)=>{if(a._id == activity_id) return (a.subActivity).filter((b)=>{ if(b._id == subactivity_id) return b.unit }) })))[0].unit,
+          "familyUpgradation"     : (_.flatten(editData.activity.map((a, i)=>{if(a._id == activity_id)  return (a.subActivity).filter((b)=>{if(b._id == subactivity_id) return b.familyUpgradation}) })))[0].familyUpgradation,
         },()=>{
-          console.log('this.state.activityName', this.state.activityName);
-          console.log('this.state.subActivityName', this.state.subActivityName);
         });
       }).catch(function (error) {
     });
@@ -322,7 +310,6 @@ class SubActivity extends Component{
     }
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{
-      console.log("response",response.data);
       this.setState({
         tableData : response.data
       });
