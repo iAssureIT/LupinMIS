@@ -21,38 +21,35 @@ class IAssureTable extends Component {
 		    "reN" 						: /[^0-9]/g,
 		    "sort" 	  					: true,
 		    "examMasterData2" 			: '',
-		    "activeClass" 				: 'activeCircle',
 		    "paginationArray" 			: [],
 		    "startRange" 				: 0,
-		    "limitRange" 				: 10,
-		    "activeClass" 				: 'activeCircle', 		    
+		    "limitRange" 				: 10, 		    
 		    "normalData" 				: true,
 		}
 		this.delete = this.delete.bind(this);
 	}
 	componentDidMount() {
       $("html,body").scrollTop(0); 
-      
-      // this.palindrome('Moam');
       this.setState({
       	tableHeading	: this.props.tableHeading,
       	tableData 		: this.props.tableData,
       	dataCount 		: this.props.dataCount,
+      },()=>{
+      	this.paginationFunction();
       });
-      // this.paginationFunction();
+      
 	}
 	componentWillReceiveProps(nextProps) {
         this.setState({
             tableData	    : nextProps.tableData,
             dataCount 		: nextProps.dataCount,
         },()=>{
-        	this.paginationFunction();
+        	// this.paginationFunction();
         })
         
     }
-	componentWillUnmount(){
-    	$("script[src='/js/adminSide.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
+	componentWillMount(){
+    	this.paginationFunction();
 	}
 	edit(event){
 		event.preventDefault();
@@ -256,8 +253,9 @@ class IAssureTable extends Component {
 		this.setState({
 			dataLength : dataLen,
 		},()=>{
-			$('li').removeClass('activeCircle');
-			$(".queDataCircle:first").addClass('activeCircle');
+			// console.log('dataLength', this.state.dataLength)
+			// $('li').removeClass('activeCircle');
+			// $(".queDataCircle:first").addClass('activeCircle');
 			const maxRowsPerPage = this.state.limitRange;
 			var paginationNum = dataLength/maxRowsPerPage;
 			var pageCount = Math.ceil(paginationNum) > 20 ? 20 : Math.ceil(paginationNum);
@@ -285,7 +283,10 @@ class IAssureTable extends Component {
 		});
 	}
 	getStartEndNum(event){	
+		event.preventDefault();
 		console.log('getStartEndNum');	
+		$('li').removeClass('activeCircle');
+		$(event.target).addClass('activeCircle');
 		var limitRange = $(event.target).attr('id').split('|')[0];
 		var limitRange2     = parseInt(limitRange);
 		var startRange = parseInt($(event.target).attr('id').split('|')[1]);
@@ -293,9 +294,6 @@ class IAssureTable extends Component {
 		this.setState({
 			startRange:startRange,
 		});
-		$('li').removeClass('activeCircle');
-		$(event.target).addClass('activeCircle');
-		var counter = $(event.target).text();
 	}
 	setLimit(event){
 		event.preventDefault();
@@ -473,9 +471,6 @@ class IAssureTable extends Component {
 		});
     }
 	render() {
-		// var x = Object.keys(this.state.tableHeading).length ;
-		// var y = 4;
-		// var z = 2;
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       	{
@@ -485,6 +480,7 @@ class IAssureTable extends Component {
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding inputBox-main input-group">
 							<select onChange={this.setLimit.bind(this)} value={this.state.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12  noPadding inputBox form-control">
 								<option value="Not Selected" disabled>Select Limit</option>
+								<option value={1}>1</option>
 								<option value={10}>10</option>
 								<option value={25}>25</option>
 								<option value={50}>50</option>

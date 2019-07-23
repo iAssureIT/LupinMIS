@@ -14,7 +14,6 @@ class Sector extends Component{
   
   constructor(props){
     super(props);
-   
     this.state = {
       "sector"              :"",
       "user_ID"             :"",
@@ -32,6 +31,7 @@ class Sector extends Component{
         paginationApply     : true,
         searchApply         : true,
       },
+      // "dataCount"           : 0,
       "startRange"          : 0,
       "limitRange"          : 10,
       "editId"              : props.match.params ? props.match.params.sectorId : ''
@@ -57,8 +57,7 @@ class Sector extends Component{
     }
   }
 
-  isTextKey(evt)
-  {
+  isTextKey(evt) {
    var charCode = (evt.which) ? evt.which : evt.keyCode
    if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
@@ -104,9 +103,8 @@ class Sector extends Component{
 
   updateSector(event){
     event.preventDefault();
-    if(this.refs.sector.value =="")
-    {
-      console.log('state validation');
+    if(this.refs.sector.value =="") {
+      // console.log('state validation');
       if (this.validateFormReq() && this.validateForm()) {
       }
     }else{
@@ -168,7 +166,7 @@ class Sector extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("editId",editId);
+  console.log('componentWillReceiveProps');
     var editId = nextProps.match.params.sectorId;
     if(nextProps.match.params.sectorId){
       this.setState({
@@ -177,14 +175,16 @@ class Sector extends Component{
         this.edit(this.state.editId);
       })
     }
+    // this.getLength();
   }
-
-  componentDidMount() {
-    console.log("editId",editId);
+  
+  componentDidMount(){
+  console.log('componentDidMount');
     var editId = this.props.match.params.sectorId;
     if(editId){      
       this.edit(editId);
     }
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
   }
 
@@ -208,9 +208,10 @@ class Sector extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
+    // console.log('data', data);
      axios.post('/api/sectors/list',data)
     .then((response)=>{
-      console.log('response', response.data);
+      // console.log('tableData', response.data);
       this.setState({
         tableData : response.data
       })
@@ -219,12 +220,30 @@ class Sector extends Component{
       
     });
   }
+  getLength(){
+    axios.get('/api/sectors/length')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        // console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      
+    });
+  }
+  componentWillMount(){
+    console.log('componentWillMount');
+    this.getLength();
+  }
   getSearchText(searchText, startRange, limitRange){
       this.setState({
           tableData : []
       });
   }
-   componentWillUnmount(){
+  componentWillUnmount(){
     this.setState({
       "sector" :"",
       "editId" : ""
@@ -232,6 +251,7 @@ class Sector extends Component{
   }
 
   render() {
+  console.log('render');
     return (
       <div className="container-fluid">
         <div className="row">
