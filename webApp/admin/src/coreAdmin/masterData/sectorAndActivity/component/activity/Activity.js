@@ -117,7 +117,7 @@ class Activity extends Component{
 
   updateActivity(event){
     event.preventDefault();
-    if(this.refs.sector.value =="" || this.refs.activity.value=="" )
+    if(this.refs.sector.value =="" && this.refs.activity.value=="" )
     {
       // console.log('state validation');
       if (this.validateFormReq() && this.validateForm()) {
@@ -184,6 +184,14 @@ class Activity extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
+
+      if (typeof fields["activity"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["activity"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["activity"] = "Please enter valid Center Name.";
+        }
+      }
     
       this.setState({
         errors: errors
@@ -228,19 +236,19 @@ class Activity extends Component{
   }
   edit(id){
     var activity_id = this.props.match.params.activityId;
-    // console.log('activity_id',activity_id);
+    console.log('activity_id',activity_id);
     axios({
       method: 'get',
       url: '/api/sectors/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      // console.log("editData",editData)
+      console.log("editData",editData)
       this.setState({
         "sector"        : editData.sector+'|'+editData._id,
-        "activity"      : _.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activityName : ''})),
+        "activity"      : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName,
         // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
       },()=>{
-        // console.log('this.state', this.state)
+        console.log('this.state', this.state.activity)
       });
     }).catch(function (error) {
     });
@@ -292,7 +300,7 @@ class Activity extends Component{
                     <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                       <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)}>
-                        <option  className="hidden" >-- Select Sector--</option>
+                        <option  className="hidden" value="" >-- Select Sector--</option>
                         {
                           this.state.availableSectors && this.state.availableSectors.length >0 ?
                           this.state.availableSectors.map((data, index)=>{
@@ -312,7 +320,7 @@ class Activity extends Component{
                     <label className="formLable">Name of Activity</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activity" >
                       
-                      <input type="text" className="form-control inputBox nameParts"  placeholder="" name="activity"  value={this.state.activity} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activity" />
+                      <input type="text" className="form-control inputBox "  placeholder="" name="activity"  value={this.state.activity} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activity" />
                     </div>
                     <div className="errorMsg">{this.state.errors.activity}</div>
                   </div>

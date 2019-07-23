@@ -246,6 +246,7 @@ class PlanDetails extends Component{
         }
       }
       this.setState({
+        "planValues"          :"",
         "year"                :"",
         "month"               :"",
         "center"              :"",
@@ -267,7 +268,9 @@ class PlanDetails extends Component{
         "fields"              :fields,
         "editId"              :"",
         "subActivityDetails"  :[],
-        "availableSubActivity":[]
+        "availableSubActivity":[],
+        "availableSectors"    :[],
+        "availableActivity"   :[],
       });
     // }
   }
@@ -632,7 +635,6 @@ class PlanDetails extends Component{
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
-  
     return (
       <div className="container-fluid">
         <div className="row">

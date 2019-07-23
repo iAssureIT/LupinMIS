@@ -87,7 +87,6 @@ class Sector extends Component{
           title : response.data.message,
           text  : response.data.message
         });
-        
       })
       .catch(function(error){
         console.log("error = ",error);

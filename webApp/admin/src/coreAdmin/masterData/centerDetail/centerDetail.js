@@ -83,10 +83,19 @@ class centerDetail extends Component{
     this.changeTab = this.changeTab.bind(this); 
   }
 
+  handleclick(event){
+  /*  let fields = {};
+    let errors={};
+    if(this.refs.district.value===""){ 
+      console.log("state", this.state.state);
+       errors["district"] = "Please select State.";
+       errors["districtCovered"] = "Please select State.";
+    }*/
+  }
   handleChange(event){
     event.preventDefault();
     this.setState({
-     "typeOfCenter"              : this.refs.typeOfCenter.value,
+      "typeOfCenter"             : this.refs.typeOfCenter.value,
       "nameOfCenter"             : this.refs.nameOfCenter.value,
       "address"                  : this.refs.address.value,
       "state"                    : this.refs.state.value,
@@ -106,6 +115,7 @@ class centerDetail extends Component{
     this.setState({
       fields
     });
+  
     if (this.validateForm()) {
       let errors = {};
       errors[event.target.name] = "";
@@ -452,8 +462,7 @@ class centerDetail extends Component{
           formIsValid = false;
           errors["address"] = "Please enter valid Address.";
         }
-      }
-         
+      }         
       this.setState({
         errors: errors
       });
@@ -464,7 +473,6 @@ class centerDetail extends Component{
       this.edit(this.state.editId);
     }
     this.getData(this.state.startRange, this.state.limitRange);
-
     var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];
     this.setState({
       listofStates : listofStates
@@ -495,11 +503,10 @@ class centerDetail extends Component{
         "MISCoordinatorContact"    : editData.misCoordinatorMobile,
         "MISCoordinatorEmail"      : editData.misCoordinatorEmail,
         "selectedVillages"         : editData.villagesCovered,
-        "districtCovered"          :"",
-        "blockCovered"             :"",
+        "districtCovered"          : "",
+        "blockCovered"             : "",
         "villagesCovered"          : editData.villagesCovered,
       },()=>{
-        
         if(this.state.state == 'Maharashtra'){
           var listofDistrict = ['Pune', 'Mumbai'];
           this.setState({
@@ -746,8 +753,8 @@ class centerDetail extends Component{
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                                <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district"  onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >--Select--</option>
+                                <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onClick={this.handleclick.bind(this)}  onChange={this.handleChange.bind(this)} >
+                                  <option  className="hidden" >--Select District--</option>
                                   {
                                     this.state.listofDistrict ? 
                                     this.state.listofDistrict.map((district, index)=>{
@@ -756,7 +763,7 @@ class centerDetail extends Component{
                                       );
                                     })
                                     :
-                                    null
+                                    <option>Select state First</option>
                                   }                                
                                 </select>
                               </div>

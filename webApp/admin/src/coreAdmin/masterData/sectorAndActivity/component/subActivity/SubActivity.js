@@ -113,6 +113,7 @@ class SubActivity extends Component{
       "activityName"          :"",
       "subActivityName"       :"",      
       "unit"                  :"",
+      "availableActivity"     :[],
       fields                  :fields
     });
     axios.patch('/api/sectors/subactivity',subActivityValues)
@@ -158,6 +159,7 @@ class SubActivity extends Component{
       "activityName"          :"",
       "subActivityName"       :"",      
       "unit"                  :"",
+      "availableActivity"     :[],
       fields                  :fields
     });
     console.log('subActivityValues', subActivityValues);
@@ -209,7 +211,20 @@ class SubActivity extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
-
+      if (typeof fields["unit"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["unit"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["unit"] = "Please enter valid Center Name.";
+        }
+      }
+      if (typeof fields["subActivityName"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["subActivityName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["subActivityName"] = "Please enter valid Center Name.";
+        }
+      }
       this.setState({
         errors: errors
       });
@@ -285,12 +300,16 @@ class SubActivity extends Component{
         // console.log('subActivityName', _.first(editData.activityName.map((a, i)=>{return a._id == activity_id ? (a.subActivityName).map((b, j)=>{return b.subActivityName ? b.subActivityName : "a"}) : ''})));
         this.setState({
           "sector"                : editData.sector+'|'+editData._id,
-          "activityName"          : _.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activityName : ''}))+'|'+activity_id,
-          "subActivityName"       : (_.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivity).map((b, j)=>{return b._id == subactivity_id ? b.subActivityName : ""}) : ''})))[0],
+          // "activityName"          : _.first(editData.activity.map((a, i)=>{return a._id == activity_id ? a.activityName : ''}))+'|'+activity_id,
+          "activityName"          : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName,
+          // "subActivityName"       : ((editData.activity.filter((a)=>{return a._id == activity_id ? (a.subActivity).filter((b)=>{return b._id == subactivity_id ? b.subActivityName : ""}) : ''})))[0],
+          "subActivityName"       : (editData.activity.filter((a)=>{return a._id == activity_id ? (a.subActivity).filter((b)=>{return b._id == subactivity_id ? b.subActivityName : ""}) : ''})),
+
           "unit"                  : (_.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivity).map((b, j)=>{return b._id == subactivity_id ? b.unit : ""}) : ''})))[0],
           "familyUpgradation"     : (_.flatten(editData.activity.map((a, i)=>{return a._id == activity_id ? (a.subActivity).map((b, j)=>{return b._id == subactivity_id ? b.familyUpgradation : ""}) : ''})))[0],
         },()=>{
-          console.log('this.state', this.state);
+          console.log('this.state.activityName', this.state.activityName);
+          console.log('this.state.subActivityName', this.state.subActivityName);
         });
       }).catch(function (error) {
     });

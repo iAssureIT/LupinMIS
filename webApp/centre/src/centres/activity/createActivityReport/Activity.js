@@ -155,7 +155,7 @@ class Activity extends Component{
   }
   SubmitActivity(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    // if (this.validateFormReq() && this.validateForm()) {
       var activityValues= {
         "center_ID"         : "123",
         "centerName"        : "Pune",
@@ -247,9 +247,14 @@ class Activity extends Component{
         "remark"            : "",
         "fields"            : fields,
         "selectedBeneficiaries" :[],
-        "listofBeneficiaries": []
+        "listofBeneficiaries": [],
+        "subActivityDetails" : [],
+        "availableSectors"   : [],
+        "availableActivity"  : [],
+        "availableSubActivity": []
+
       });
-    }
+    // }
   }
   Update(event){
     event.preventDefault();
@@ -342,8 +347,12 @@ class Activity extends Component{
       "remark"            : "",
       "fields"            : fields,
       "selectedBeneficiaries" :[],
-      "listofBeneficiaries": [],
-      "editId"            : "",
+      "listofBeneficiaries": [],      
+      "subActivityDetails" : [],
+      "availableSectors"   : [],
+      "availableActivity"  : [],
+      "availableSubActivity": [],
+      "editId"             : "",
     });
       this.props.history.push('/activity');
     }
@@ -665,7 +674,6 @@ class Activity extends Component{
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
-   
     return (
       <div className="container-fluid">
         <div className="row">
@@ -691,8 +699,8 @@ class Activity extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
                             <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)}/>
                           </div>
-                          <div className="errorMsg">{this.state.errors.Date}</div>
-                        </div>
+{/*                          <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
+*/}                        </div>
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">District</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="dist" >
