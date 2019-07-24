@@ -249,7 +249,6 @@ class Activity extends Component{
         "selectedBeneficiaries" :[],
         "listofBeneficiaries": [],
         "subActivityDetails" : [],
-        "availableSectors"   : [],
         "availableActivity"  : [],
         "availableSubActivity": []
 

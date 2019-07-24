@@ -132,6 +132,7 @@ class Activity extends Component{
       };
       axios.patch('/api/sectors/activity/update',activityValues)
         .then((response)=>{
+          console.log("activityValues",activityValues);
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,

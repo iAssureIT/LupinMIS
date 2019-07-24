@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import IAssureTable         from '../IAssureTable/IAssureTable.jsx';
+import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+
 export default class YearlyReport extends Component{
 	constructor(props){
         super(props);

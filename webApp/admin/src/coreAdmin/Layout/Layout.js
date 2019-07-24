@@ -27,7 +27,7 @@ import SectorMapping                              from '../../coreAdmin/masterDa
 
 import plan                                       from '../../admin/annualPlan/PlanDetails.js';
 import MonthlyPlan                                from '../../admin/monthlyPlan/MonthlyPlan.js';
-import report1                          from "../../admin/Reports/DailyReport.jsx";
+// import report1                          from "../../admin/Reports/YearlyReport.jsx";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -95,7 +95,7 @@ class Layout extends Component{
                     <Route path="/plan"                                                         exact strict component={ plan } />
                     <Route path="/plan/"                                                        exact strict component={ plan } />
                     <Route path="/plan/:id"                                                     exact strict component={ plan } />
-                    <Route path="/report1"                                                      exact strict component={ report1 } />
+                  {/*  <Route path="/report1"                                                      exact strict component={ report1 } />*/}
 {/*                    <Route path="/monthly-plan"                  /:sectorId                               exact strict component={ MonthlyPlan } />
 */}                  </Switch>        
                 </Router>

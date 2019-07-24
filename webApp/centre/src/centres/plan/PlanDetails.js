@@ -34,9 +34,10 @@ class PlanDetails extends Component{
       "remark"              :"",
       "shown"               : true,
       "uID"                 :"",
+/*      "month"               :"Annually",*/ 
       "heading"             :"Monthly Plan",
       "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
-      "years"               :[],
+      "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       "shown"               : true,
        "twoLevelHeader"     : {
         apply               : true,
@@ -269,7 +270,7 @@ class PlanDetails extends Component{
         "editId"              :"",
         "subActivityDetails"  :[],
         "availableSubActivity":[],
-        "availableSectors"    :[],
+        // "availableSectors"    :[],
         "availableActivity"   :[],
       });
     // }
@@ -644,6 +645,18 @@ class PlanDetails extends Component{
       tableData : []
     })
   }
+
+  isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
+    {
+    evt.preventDefault();
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
   render() {
     var shown = {
       display: this.state.shown ? "block" : "none"
@@ -774,25 +787,25 @@ class PlanDetails extends Component{
                                         <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Physical Units</label>
                                           <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} value={this.state["physicalUnit-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Unit Cost</label>
                                           <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} value={this.state["unitCost-"+data._id]} onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Total Cost</label>
                                           <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">No.of Beneficiaries</label>
                                           <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onChange={this.subActivityDetails.bind(this)}/>                              
+                                            <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
                                           </div>
                                         </div>
                                       </div>
@@ -805,37 +818,37 @@ class PlanDetails extends Component{
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">LHWRF</label>
                                           <div className=" input-group inputBox-main" id={"LHWRF-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}   onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">NABARD</label>
                                           <div className=" input-group inputBox-main" id={"NABARD-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Bank Loan</label>
                                           <div className=" input-group inputBox-main" id={"bankLoan-"+data._id}>
-                                            <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Govt. Schemes</label>
                                           <div className=" input-group inputBox-main" id={"govtscheme-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Direct Com. Cont.</label>
                                           <div className=" input-group inputBox-main" id={"directCC-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Indirect Com. Cont.</label>
                                           <div className=" input-group inputBox-main" id={"indirectCC-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                       </div>
@@ -843,13 +856,13 @@ class PlanDetails extends Component{
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                           <label className="formLable">Other</label>
                                           <div className=" input-group inputBox-main" id={"other-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
                                           <label className="formLable">Remark</label>
                                           <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                       </div>  
@@ -890,6 +903,7 @@ class PlanDetails extends Component{
                             <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
                             <h5>{this.state.month !== "All Months" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                            // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>
                     </div>

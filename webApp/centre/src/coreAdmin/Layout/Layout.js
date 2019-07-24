@@ -26,7 +26,8 @@ import Activity                                   from "../../centres/activity/c
 import ViewActivity                               from "../../centres/activity/viewActivity/ViewActivity.js";
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import Plan                                       from "../../centres/plan/PlanDetails.js";
-import CenterList                                 from "../../centres/centerList/centerList.js";
+/*import Monthwise                                       from "../../centres/plan/Monthwise.js";
+*/import CenterList                                 from "../../centres/centerList/centerList.js";
 
 
 import ActivityReportView                         from "../../centres/activityReportView/ActivityReportView.js";
@@ -92,7 +93,8 @@ class Layout extends Component{
                     <Route path="/activityReportView"                  exact strict component={ ActivityReportView } />
                     <Route path="/centerList"                          exact strict component={ CenterList } />
 
-                  </Switch>        
+{/*                    <Route path="/monthwise"                         exact strict component={ Monthwise } />
+*/}                  </Switch>        
                 </Router>
               </div>
             </div>

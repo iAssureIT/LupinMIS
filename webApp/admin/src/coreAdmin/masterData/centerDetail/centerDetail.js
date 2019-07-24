@@ -409,19 +409,19 @@ class centerDetail extends Component{
         }
       }
       if (typeof fields["centerInchargeContact"] !== "undefined") {
-        if (!fields["centerInchargeContact"].match(/^[0-9]{10}$/)) {
+        if (!fields["centerInchargeContact"].match(/^[0-9]{10}$|^$/)) {
           formIsValid = false;
           errors["centerInchargeContact"] = "Please enter valid mobile no.";
         }
       }
       if (typeof fields["MISCoordinatorContact"] !== "undefined") {
-        if (!fields["MISCoordinatorContact"].match(/^[0-9]{10}$/)) {
+        if (!fields["MISCoordinatorContact"].match(/^[0-9]{10}$|^$/)) {
           formIsValid = false;
           errors["MISCoordinatorContact"] = "Please enter valid mobile no.";
         }
       }
       if (typeof fields["pincode"] !== "undefined") {
-        if (!fields["pincode"].match(/^[0-9]{6}$/)) {
+        if (!fields["pincode"].match(/^[0-9]{6}$|^$/)) {
           formIsValid = false;
           errors["pincode"] = "Please enter valid Pincode.";
         }
