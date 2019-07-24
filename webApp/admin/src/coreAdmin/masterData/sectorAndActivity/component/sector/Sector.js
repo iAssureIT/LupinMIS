@@ -26,12 +26,12 @@ class Sector extends Component{
       },
       "tableObjects"        : {
         deleteMethod        : 'delete',
-        apiLink             : '/api/sectors/delete/',
+        apiLink             : 'http://localhost:3054/api/sectors/delete/',
         editUrl             : '/sector-and-activity/',
         paginationApply     : true,
         searchApply         : true,
       },
-      // "dataCount"           : 0,
+      "dataCount"           : 0,
       "startRange"          : 0,
       "limitRange"          : 10,
       "editId"              : props.match.params ? props.match.params.sectorId : ''
@@ -79,7 +79,7 @@ class Sector extends Component{
     };
 
     
-    axios.post('/api/sectors',sectorValues)
+    axios.post('http://localhost:3054/api/sectors',sectorValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
         swal({
@@ -115,7 +115,7 @@ class Sector extends Component{
       };
 
       
-      axios.patch('/api/sectors/update',sectorValues, this.state.editId)
+      axios.patch('http://localhost:3054/api/sectors/update',sectorValues, this.state.editId)
         .then((response)=>{
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
@@ -173,9 +173,13 @@ class Sector extends Component{
         editId : editId
       },()=>{
         this.edit(this.state.editId);
+
       })
     }
-    // this.getLength();
+    if(nextProps){
+      this.getLength();
+    }
+    
   }
   
   componentDidMount(){
@@ -191,7 +195,7 @@ class Sector extends Component{
   edit(id){
     axios({
       method: 'get',
-      url: '/api/sectors/'+id,
+      url: 'http://localhost:3054/api/sectors/'+id,
     }).then((response)=> {
       var editData = response.data[0];      
       this.setState({
@@ -209,7 +213,7 @@ class Sector extends Component{
       startRange : startRange,
     }
     // console.log('data', data);
-     axios.post('/api/sectors/list',data)
+     axios.post('http://localhost:3054/api/sectors/list',data)
     .then((response)=>{
       // console.log('tableData', response.data);
       this.setState({
@@ -221,13 +225,13 @@ class Sector extends Component{
     });
   }
   getLength(){
-    axios.get('/api/sectors/length')
+    axios.get('http://localhost:3054/api/sectors/length')
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        // console.log('dataCount', this.state.dataCount);
+        console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){

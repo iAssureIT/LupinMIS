@@ -25,6 +25,8 @@ class IAssureTable extends Component {
 		    "startRange" 				: 0,
 		    "limitRange" 				: 10, 		    
 		    "normalData" 				: true,
+		    "runPagination" 			: true,
+		    "previous" 					: false
 		}
 		this.delete = this.delete.bind(this);
 	}
@@ -46,6 +48,13 @@ class IAssureTable extends Component {
         },()=>{
         	// this.paginationFunction();
         })
+        if(this.state.runPagination){
+        	this.setState({
+        		runPagination : false
+        	},()=>{
+        		this.paginationFunction();
+        	})
+        }
         
     }
 	componentWillMount(){
@@ -331,6 +340,7 @@ class IAssureTable extends Component {
 		if(beforeDataLength != this.state.dataCount){
 			this.setState({
 				dataLength : (beforeDataLength+ 20) > this.state.dataCount ? this.state.dataCount : (beforeDataLength+ 20),
+				previous : true
 			},()=>{
 				$('li').removeClass('activeCircle');
 				$(".queDataCircle:first").addClass('activeCircle');
@@ -368,6 +378,10 @@ class IAssureTable extends Component {
 		this.setState({
 			dataLength : beforeDataLength > 20 ? beforeDataLength- this.state.paginationArray.length : 0,
 		},()=>{
+			this.setState({
+				previous : this.state.dataLength == 20 ? false : true
+			})
+
 			$('li').removeClass('activeCircle');
 			$(".queDataCircle:first").addClass('activeCircle');
 			const maxRowsPerPage = this.state.limitRange;
@@ -404,6 +418,9 @@ class IAssureTable extends Component {
 		this.setState({
 			dataLength : 20,
 		},()=>{
+			// this.setState({
+			// 	previous : this.state.dataLength == 20 ? false : true
+			// })
 			$('li').removeClass('activeCircle');
 			$(".queDataCircle:first").addClass('activeCircle');
 			const maxRowsPerPage = this.state.limitRange;
@@ -471,6 +488,7 @@ class IAssureTable extends Component {
 		});
     }
 	render() {
+		console.log(this.state.limitRange +'>='+  this.state.dataLength, this.state.dataCount);
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       	{
@@ -628,22 +646,33 @@ class IAssureTable extends Component {
 	                    	this.state.tableObjects.paginationApply == true ?
 		                    	this.state.tableData && this.state.tableData.length > 0 ?
 		                    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paginationAdminWrap">
-			                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-				                    	{ 
+		                    		{
+		                    			this.state.previous == true ?
+				                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+					                    	{ 
 					                    		this.state.limitRange >=  this.state.dataLength?		                    		
 						                    	null
 						                    	:
 				                    			<div className="btn btn-primary" onClick={this.showFirstTweentyButtons.bind(this)} title="Fast Backward"><i className="fa fa-fast-backward"></i></div>
-				                    	}
-			                    	</div>
-			                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-				                    	{ 
-				                    		this.state.limitRange >=  this.state.dataLength?                  		
-					                    	null
-					                    	:
-					                    	<div className="btn btn-primary" onClick={this.showPreviousPaginationButtons.bind(this)} title="Previous"><i className="fa fa-caret-left"></i></div>
-					                    }
-				                    </div>
+					                    	}
+				                    	</div>
+				                    	:
+					                    <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+		                    		}
+		                    		{
+		                    			this.state.previous == true ?
+				                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+					                    	{ 
+					                    		this.state.limitRange >=  this.state.dataLength?                  		
+						                    	null
+						                    	:
+						                    	<div className="btn btn-primary" onClick={this.showPreviousPaginationButtons.bind(this)} title="Previous"><i className="fa fa-caret-left"></i></div>
+						                    }
+					                    </div>
+					                    :
+					                    <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+		                    		}
+
 									<ol className="questionNumDiv paginationAdminOES col-lg-8 col-md-8 col-sm-8 col-xs-8 mainExamMinDeviceNoPad">										 
 										{this.state.paginationArray}
 									</ol>
