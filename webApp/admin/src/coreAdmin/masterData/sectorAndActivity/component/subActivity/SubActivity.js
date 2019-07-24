@@ -240,6 +240,9 @@ class SubActivity extends Component{
         this.edit(this.state.editSectorId);
       })    
     }
+    if(nextProps){
+      this.getLength();
+    }
   }
 
   componentDidMount() {
@@ -248,6 +251,7 @@ class SubActivity extends Component{
       this.getAvailableActivity(this.state.editSectorId);
       this.edit(this.state.editId);
     }
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
   }
   getAvailableSectors(){
@@ -302,7 +306,22 @@ class SubActivity extends Component{
       }).catch(function (error) {
     });
   }
-  
+
+  getLength(){
+    axios.get('/api/sectors/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      
+    });
+  }
+    
   getData(startRange, limitRange){
       var data = {
       startRange : startRange,

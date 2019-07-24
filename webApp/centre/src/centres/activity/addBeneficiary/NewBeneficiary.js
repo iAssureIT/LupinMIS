@@ -244,11 +244,16 @@ class NewBeneficiary extends Component{
       display: this.state.shown ? "none" : "block"
     }
     return (
-        <div className="col-lg-12 col-sm-12 col-xs-12" >
-          <div className="row">
-            <h4 className="pageSubHeader col-lg-6 col-sm-6 col-xs-6 ">List of Beneficiaries</h4>
-            <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#myModal"> <i className="fa fa-plus" aria-hidden="true"></i></div>
-             <div className="modal fade in " id="myModal" role="dialog">
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+          <div className="">
+            <h4 className="pageSubHeader col-lg-6 col-sm-6 col-xs-6 noPadding">List of Beneficiaries</h4>
+            <div className="col-lg-1 col-lg-offset-5 col-md-4 col-sm-6 col-xs-6 text-center addform" data-toggle="modal" data-target="#myModal">
+            Add
+            </div>
+           {/* <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#myModal">
+               <i className="fa fa-plus" aria-hidden="true"></i>
+            </div>*/}
+            <div className="modal fade in " id="myModal" role="dialog">
               <div className="modal-dialog modal-lg " >
                 <div className="modal-content ">
                   <div className=" ">
@@ -299,10 +304,13 @@ class NewBeneficiary extends Component{
                                 <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
                               </div>
                             </div>
-                             <div className=" col-lg-1 col-md-1 col-sm-1 col-xs-1  boxHeightother">
+                             <div className=" col-lg-2 col-md-1 col-sm-1 col-xs-1  boxHeightother">
                               <div className="col-lg-12 col-sm-12 col-xs-12 mt23" >
-                                <div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i className="fa fa-plus" aria-hidden="true" id="click"></i></div>
+                                <div className="text-center addform" id="click_advance"  onClick={this.toglehidden.bind(this)}>
+                                  Create 
                                 </div>
+                                {/*<div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i className="fa fa-plus" aria-hidden="true" id="click"></i></div>
+                                </div>*/}
                               </div>
                             </div>
                           </div> 

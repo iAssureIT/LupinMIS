@@ -218,6 +218,9 @@ class SectorMapping extends Component{
       })
       this.getAvailableSector(this.state.editId);
     }
+    if(nextProps){
+      this.getLength();
+    }
   }
 
   componentDidMount() {
@@ -225,6 +228,7 @@ class SectorMapping extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableSector(this.state.editSectorId);  
   }
@@ -247,6 +251,21 @@ class SectorMapping extends Component{
         "selectedActivities"      :editData.sector, 
       });
     }).catch(function (error) {
+    });
+  }
+  
+  getLength(){
+    axios.get('/api/sectorMappings/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      
     });
   }
   

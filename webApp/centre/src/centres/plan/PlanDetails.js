@@ -416,6 +416,20 @@ class PlanDetails extends Component{
       });
       return formIsValid;
   }
+
+  getLength(){
+    axios.get(this.state.apiCall+'/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){      
+    });
+  }
   getData(startRange, limitRange){
     var data = {
     startRange : startRange,
@@ -457,6 +471,9 @@ class PlanDetails extends Component{
         this.getAvailableSubActivity(this.state.editSectorId);
         this.edit(this.state.editId);
       })    
+    }    
+    if(nextProps){
+      this.getLength();
     }
   }
   componentDidMount() {
@@ -467,7 +484,7 @@ class PlanDetails extends Component{
     this.setState({
       apiCall : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
     })
-    
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
   }
   getAvailableSectors(){
@@ -678,12 +695,12 @@ class PlanDetails extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.year}</div>
                           </div>
-                          <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
+                          <div className="col-lg-2 col-lg-offset-1 col-md-4 col-sm-6 col-xs-6 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 " >
-                              <div className="addform " id="click_advance"  onClick={this.toglehidden.bind(this)}>
-                                <div className="display_advance addContainerAct"  id="display_advance">
+                              <div className="addform text-center" id="click_advance"  onClick={this.toglehidden.bind(this)}>Add Plan
+                               {/* <div className="display_advance addContainerAct"  id="display_advance">
                                   <i className="fa fa-plus" aria-hidden="true" id="click"></i>
-                                </div>
+                                </div>*/}
                               </div>
                             </div>
                           </div>
@@ -857,9 +874,9 @@ class PlanDetails extends Component{
                         <div className="col-lg-12">
                          <br/>{
                           this.state.editId ? 
-                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
+                          <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
                           :
-                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
+                          <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
                         }
                         </div>
                       

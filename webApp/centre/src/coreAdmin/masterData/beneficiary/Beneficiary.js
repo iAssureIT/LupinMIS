@@ -211,6 +211,9 @@ class Beneficiary extends Component{
       })
       this.edit(editId);
     }
+    if(nextProps){
+      this.getLength();
+    }  
   }
 
   componentDidMount() {
@@ -218,6 +221,7 @@ class Beneficiary extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableFamilyId();
   }
@@ -241,6 +245,20 @@ class Beneficiary extends Component{
     });
   }
   
+  getLength(){
+    axios.get('/api/beneficiaries/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      
+    });
+  }
   getData(startRange, limitRange){
     var data = {
       limitRange : limitRange,

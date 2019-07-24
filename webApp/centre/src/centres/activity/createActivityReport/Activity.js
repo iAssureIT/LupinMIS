@@ -514,6 +514,20 @@ class Activity extends Component{
 
   }
 
+  getLength(){
+    axios.get('/api/activityReport/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      
+    });
+  }
   getData(startRange, limitRange){ 
    var data = {
       limitRange : limitRange,
@@ -572,6 +586,7 @@ class Activity extends Component{
     this.setState({
       dateofIntervention :momentString,
     })
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
   }
 
@@ -584,8 +599,10 @@ class Activity extends Component{
       this.getAvailableActivity(this.state.editSectorId);
       this.getAvailableSubActivity(this.state.editSectorId);
       this.edit(this.state.editId);
-    })    
-    
+    })  
+    if(nextProps){
+      this.getLength();
+    }
   }
    
   getAvailableSectors(){

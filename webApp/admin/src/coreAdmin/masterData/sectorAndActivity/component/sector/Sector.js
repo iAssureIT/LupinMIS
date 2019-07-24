@@ -158,6 +158,13 @@ class Sector extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+      if (typeof fields["sector"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["sector"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["sector"] = "Please enter valid Sector Name.";
+        }
+      }
     $("html,body").scrollTop(0);
       this.setState({
         errors: errors
@@ -179,7 +186,6 @@ class Sector extends Component{
     if(nextProps){
       this.getLength();
     }
-    
   }
   
   componentDidMount(){
@@ -225,7 +231,7 @@ class Sector extends Component{
     });
   }
   getLength(){
-    axios.get('/api/sectors/length')
+    axios.get('/api/sectors/count')
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -270,10 +276,8 @@ class Sector extends Component{
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Name of Sector</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sector" >
-                      {/*<div className="input-group-addon inputIcon">
-                        <i className="fa fa-graduation-cap fa"></i>
-                      </div>*/}
-                      <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="sector" name="sector" value={this.state.sector} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                     
+                      <input type="text" className="form-control inputBox"  placeholder=""ref="sector" name="sector" value={this.state.sector} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
                     <div className="errorMsg">{this.state.errors.sector}</div>
                   </div>
@@ -295,7 +299,7 @@ class Sector extends Component{
                 tableData={this.state.tableData}
                 getData={this.getData.bind(this)}
                 tableObjects={this.state.tableObjects}
-                getSearchText={this.getSearchText.bind(this)}
+                // getSearchText={this.getSearchText.bind(this)}
               />
             </div>              
           </div>

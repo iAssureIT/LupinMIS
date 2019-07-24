@@ -189,7 +189,7 @@ class Activity extends Component{
         // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
         if (!fields["activity"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
           formIsValid = false;
-          errors["activity"] = "Please enter valid Center Name.";
+          errors["activity"] = "Please enter valid Activity Name.";
         }
       }
     
@@ -210,6 +210,9 @@ class Activity extends Component{
         this.edit(this.state.editSectorId);
         // console.log("editId",this.state.editId);    
       })      
+    }    
+    if(nextProps){
+      this.getLength();
     }
   }
 
@@ -219,6 +222,7 @@ class Activity extends Component{
       this.edit(this.state.editSectorId);
     }
     
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
   }
   getAvailableSectors(){
@@ -251,6 +255,21 @@ class Activity extends Component{
         console.log('this.state', this.state.activity)
       });
     }).catch(function (error) {
+    });
+  }
+  
+  getLength(){
+    axios.get('/api/sectors/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      
     });
   }
   

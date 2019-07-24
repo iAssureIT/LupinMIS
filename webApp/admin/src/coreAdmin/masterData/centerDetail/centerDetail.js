@@ -124,15 +124,6 @@ class centerDetail extends Component{
       });
     }
   }
-  componentWillReceiveProps(nextProps){
-    var editId = nextProps.match.params.id;
-    if(nextProps.match.params.id){
-      this.setState({
-        editId : editId
-      })
-      this.edit(editId);
-    }
-  }
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
@@ -242,18 +233,18 @@ class centerDetail extends Component{
     }
   }
   Update(event){
-  event.preventDefault();
-  var selectedVillages = this.state.selectedVillages;
-  if(this.refs.address.value == "" || this.refs.typeOfCenter.value =="" || this.refs.nameOfCenter.value=="" 
-    || this.refs.district.value=="" || this.refs.pincode.value=="" || this.refs.centerInchargeName.value=="" 
-    || this.refs.centerInchargeContact.value=="" || this.refs.centerInchargeEmail.value=="" || this.refs.MISCoordinatorName.value=="" 
-    || this.refs.MISCoordinatorContact.value=="" || this.refs.MISCoordinatorEmail.value=="")
-   {
-      console.log('state validation');
-      if (this.validateForm() && this.validateFormReq()){
-        console.log('abc');
-      }
-    }else{
+    event.preventDefault();
+    var selectedVillages = this.state.selectedVillages;
+    if(this.refs.address.value == "" || this.refs.typeOfCenter.value =="" || this.refs.nameOfCenter.value=="" 
+      || this.refs.district.value=="" || this.refs.pincode.value=="" || this.refs.centerInchargeName.value=="" 
+      || this.refs.centerInchargeContact.value=="" || this.refs.centerInchargeEmail.value=="" || this.refs.MISCoordinatorName.value=="" 
+      || this.refs.MISCoordinatorContact.value=="" || this.refs.MISCoordinatorEmail.value=="")
+     {
+        console.log('state validation');
+        if (this.validateForm() && this.validateFormReq()){
+          console.log('abc');
+        }
+      }else{
 
         var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
         var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
@@ -403,7 +394,7 @@ class centerDetail extends Component{
     
       if (typeof fields["centerInchargeEmail"] !== "undefined") {
         //regular expression for email validation
-        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/i);
         if (!pattern.test(fields["centerInchargeEmail"])) {
           formIsValid = false;
           errors["centerInchargeEmail"] = "Please enter valid Email.";
@@ -411,7 +402,7 @@ class centerDetail extends Component{
       }
       if (typeof fields["MISCoordinatorEmail"] !== "undefined") {
         //regular expression for email validation
-        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/i);
         if (!pattern.test(fields["MISCoordinatorEmail"])) {
           formIsValid = false;
           errors["MISCoordinatorEmail"] = "Please enter valid Email.";
@@ -472,12 +463,26 @@ class centerDetail extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
     var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];
     this.setState({
       listofStates : listofStates
     })
   }
+  componentWillReceiveProps(nextProps){
+    var editId = nextProps.match.params.id;
+    if(nextProps.match.params.id){
+      this.setState({
+        editId : editId
+      })
+      this.edit(editId);
+    }
+    if(nextProps){
+      this.getLength();
+    }
+  }
+  
   edit(id){
     axios({
       method: 'get',
@@ -521,6 +526,20 @@ class centerDetail extends Component{
         }
       });
     }).catch(function (error) {
+    });
+  }
+  getLength(){
+    axios.get('/api/centers/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      
     });
   }
   getData(startRange, limitRange){
@@ -893,11 +912,11 @@ class centerDetail extends Component{
                             </div>
                           </div> 
                         </div><br/>
-                        <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight mt ">
-                            {
-                              this.state.blockCovered?
-                              <h5 className="col-lg-12 col-sm-12 col-xs-12">Villages Covered</h5> : ""}                          
+                        {
+                          this.state.blockCovered?
+                          <div className="row">
+                            <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight mt ">
+                              <h5 className="col-lg-12 col-sm-12 col-xs-12">Villages Covered</h5>                     
                             {
                               this.state.listofVillages?
                               this.state.listofVillages.map((village, index)=>{
@@ -924,7 +943,11 @@ class centerDetail extends Component{
                               null
                             }
                           </div>
-                        </div><br/>
+                        </div>
+                        : 
+                        null
+                        }      
+                        <br/>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  ">
                             

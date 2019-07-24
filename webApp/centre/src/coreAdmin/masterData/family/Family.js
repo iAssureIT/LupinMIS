@@ -62,8 +62,10 @@ class Family extends Component{
       },()=>{
         this.edit(this.state.editId);
       })
-      
-      this.getData(this.state.startRange, this.state.limitRange);
+    if(nextProps){
+      this.getLength();
+    }      
+    this.getData(this.state.startRange, this.state.limitRange);
     }
   }
   
@@ -72,6 +74,7 @@ class Family extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
   }
  
@@ -360,6 +363,20 @@ class Family extends Component{
     });
   }
 
+  getLength(){
+    axios.get('/api/families/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      
+    });
+  }
   getData(startRange, limitRange){ 
    var data = {
       limitRange : limitRange,
