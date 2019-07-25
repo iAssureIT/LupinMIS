@@ -180,7 +180,7 @@ class PlanDetails extends Component{
   SubmitAnnualPlan(event){
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    // if (this.validateFormReq() &&this.validateForm()) {
+    if (this.validateFormReq() &&this.validateForm()) {
     
       let fields = {};
       fields["year"]              = "";
@@ -270,10 +270,10 @@ class PlanDetails extends Component{
         "editId"              :"",
         "subActivityDetails"  :[],
         "availableSubActivity":[],
-        // "availableSectors"    :[],
         "availableActivity"   :[],
+        shown                 : !this.state.shown
       });
-    // }
+    }
   }
   Update(event){    
     event.preventDefault();
@@ -393,6 +393,7 @@ class PlanDetails extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
+
       if (!fields["sectorName"]) {
         formIsValid = false;
         errors["sectorName"] = "This field is required.";
@@ -400,7 +401,8 @@ class PlanDetails extends Component{
       if (!fields["activityName"]) {
         formIsValid = false;
         errors["activityName"] = "This field is required.";
-      }     
+      }       
+         
       this.setState({
         errors: errors
       });
@@ -487,6 +489,9 @@ class PlanDetails extends Component{
     })
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
+    $('.Activityfields').click(function() {
+      $.scrollTo($('#physicalUnit-'), 1200);
+    });
   }
   getAvailableSectors(){
     axios({
@@ -634,11 +639,30 @@ class PlanDetails extends Component{
     });
   }
   toglehidden(){
-   this.setState({
-     shown: !this.state.shown
-    },()=>{
-      console.log('shown', this.state.shown, !this.state.shown);
-    });
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+    $("html,body").scrollTop(0);
+      if (!fields["month"]) {
+        formIsValid = false;
+        errors["month"] = "This field is required.";
+      }       
+      if (!fields["year"]) {
+        formIsValid = false;
+        errors["year"] = "This field is required.";
+      }       
+      this.setState({
+        errors: errors
+      });
+      // return formIsValid;     
+
+      if(this.state.year && this.state.month){
+      this.setState({
+       shown: !this.state.shown
+      },()=>{
+        console.log('shown', this.state.shown, !this.state.shown);
+      });      
+    }
   }
   getSearchText(searchText, startRange, limitRange){
     this.setState({
@@ -687,8 +711,9 @@ class PlanDetails extends Component{
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
                                 
+                                <option className="hidden" >-- Select Month --</option>
                                {this.state.months.map((data,index) =>
-                                <option key={index}  className="" >{data}</option>
+                                <option default="All Months" key={index}  className="" >{data}</option>
                                 )}
                                 
                               </select>
@@ -902,7 +927,8 @@ class PlanDetails extends Component{
                           ?
                             <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-                            <h5>{this.state.month !== "All Months" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+
+                            <h5 default="Annual Plan">{this.state.month == "All Months" ? "Annual Plan": "Monthly Plan" || this.state.month !== "All Months" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                             // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>

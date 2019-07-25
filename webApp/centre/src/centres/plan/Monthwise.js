@@ -1,8 +1,9 @@
-import React, { Component }   from 'react';
-import $                      from 'jquery';
-import axios                  from 'axios';
-import swal                   from 'sweetalert';
-// import { RFSdetails } from '/imports/sourcingManagement/RFSManagement/createRFS/apiCreateRequest.js';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import TrackerReact from 'meteor/ultimatejs:tracker-react';
+import { FlowRouter }   from 'meteor/ostrio:flow-router-extra';
+import { withTracker } from 'meteor/react-meteor-data';
+import { RFSdetails } from '/imports/sourcingManagement/RFSManagement/createRFS/apiCreateRequest.js';
 import Form from 'react-validation/build/form';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
@@ -163,7 +164,7 @@ class Monthwise extends TrackerReact(Component) {
                                   <span className="fa fa-caret-right nextarrow"></span>
                                 </div>
                               </div>
-                            {/*  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 { this.RFSdetails().length != 0 ?
                                    <ReactHTMLTableToExcel
                                         id="test-table-xls-button"
@@ -222,7 +223,7 @@ class Monthwise extends TrackerReact(Component) {
                                         
                                     </tbody>
                                 </table>
-                                </div>*/}
+                                </div>
                           </div>
                      </div>
           </div>
