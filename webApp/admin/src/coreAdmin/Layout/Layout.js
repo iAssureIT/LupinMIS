@@ -27,8 +27,10 @@ import SectorMapping                              from '../../coreAdmin/masterDa
 
 import plan                                       from '../../admin/annualPlan/PlanDetails.js';
 import MonthlyPlan                                from '../../admin/monthlyPlan/MonthlyPlan.js';
-import report                                   from "../../admin/Reports/Reports.js";
+import report                                     from "../../admin/Reports/Reports.js";
 import report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
+import report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
+import report3                                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -96,7 +98,10 @@ class Layout extends Component{
                     <Route path="/plan"                                                         exact strict component={ plan } />
                     <Route path="/plan/"                                                        exact strict component={ plan } />
                     <Route path="/plan/:id"                                                     exact strict component={ plan } />
-                    <Route path="/report1"                                                      exact strict component={ report1 } />
+                    <Route path="/report"                                                       exact strict component={ report } />
+                    <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
+                    <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
+                    <Route path="/activity-wise-periodic-variance-report"                 exact strict component={ report2 } />
 {/*                    <Route path="/monthly-plan"                  /:sectorId                               exact strict component={ MonthlyPlan } />
 */}                  </Switch>        
                 </Router>

@@ -34,9 +34,10 @@ class PlanDetails extends Component{
       "remark"              :"",
       "shown"               : true,
       "uID"                 :"",
+/*      "month"               :"Annually",*/ 
       "heading"             :"Monthly Plan",
       "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
-      "years"               :[],
+      "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       "shown"               : true,
        "twoLevelHeader"     : {
         apply               : true,
@@ -48,6 +49,10 @@ class PlanDetails extends Component{
                                 {
                                     heading : 'Source of Fund',
                                     mergedColoums : 8
+                                },
+                                {
+                                    heading : '',
+                                    mergedColoums : 1
                                 },
                                 {
                                     heading : '',
@@ -75,7 +80,7 @@ class PlanDetails extends Component{
         indirectCC          : "Indirect Community Contribution",
         other               : "Other",
         remark              : "Remark",
-        // actions             : 'Action',
+        actions             : 'Action',
       },
       "tableObjects"        : {
         deleteMethod        : 'delete',
@@ -175,7 +180,7 @@ class PlanDetails extends Component{
   SubmitAnnualPlan(event){
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    // if (this.validateFormReq() &&this.validateForm()) {
+    if (this.validateFormReq() &&this.validateForm()) {
     
       let fields = {};
       fields["year"]              = "";
@@ -240,8 +245,14 @@ class PlanDetails extends Component{
             }
           );
         }
+      }else{
+        swal({
+          title : "abc",
+          text  : "Please fill atleast one SubActivity Details."
+        });
       }
       this.setState({
+        "planValues"          :"",
         "year"                :"",
         "month"               :"",
         "center"              :"",
@@ -263,22 +274,23 @@ class PlanDetails extends Component{
         "fields"              :fields,
         "editId"              :"",
         "subActivityDetails"  :[],
-        "availableSubActivity":[]
+        "availableSubActivity":[],
+        "availableActivity"   :[],
+        shown                 : !this.state.shown
       });
-    // }
+    }
   }
   Update(event){    
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    console.log('subActivityDetails update', subActivityDetails);
-    // if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
-    //   || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
-    //   || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
-    //   || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
-    //   {
-    //     if (this.validateFormReq() && this.validateForm()){
-    //     }
-    //   }else{
+    if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
+      || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
+      || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
+      || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
+      {
+        if (this.validateFormReq() && this.validateForm()){
+        }
+      }else{
         
       let fields = {};
       fields["year"]              = "";
@@ -326,8 +338,7 @@ class PlanDetails extends Component{
             "other"               : subActivityDetails[i].other,
             "remark"              : subActivityDetails[i].remark,
           };
-          // console.log('planValues',planValues);
-
+          
           axios.patch(this.state.apiCall+'/update', planValues)
             .then((response)=>{
               swal({
@@ -350,10 +361,10 @@ class PlanDetails extends Component{
 
         }
       }
-      console.log('subActivityDetails', subActivityDetails);
+      
       this.setState({
         "year"                :"",
-        "month"               :"",
+        "month"               :"All Months",
         "center"              :"",
         "sector_id"           :"",
         "sectorName"          :"",
@@ -373,16 +384,23 @@ class PlanDetails extends Component{
         "fields"              :fields,
         "editId"              :"",
         "subActivityDetails"  :[],
-        "availableSubActivity":[]
+        "availableSubActivity":[],
+        "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
+        "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+       /* "shown"               : true,*/
+        "apiCall"             : '/api/annualPlans',
+        shown                 : !this.state.shown
+        
       });
       this.props.history.push('/plan');
-    // }
+    }
   }
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
+
       if (!fields["sectorName"]) {
         formIsValid = false;
         errors["sectorName"] = "This field is required.";
@@ -390,7 +408,8 @@ class PlanDetails extends Component{
       if (!fields["activityName"]) {
         formIsValid = false;
         errors["activityName"] = "This field is required.";
-      }     
+      }       
+         
       this.setState({
         errors: errors
       });
@@ -406,6 +425,20 @@ class PlanDetails extends Component{
         errors: errors
       });
       return formIsValid;
+  }
+
+  getLength(){
+    axios.get(this.state.apiCall+'/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){      
+    });
   }
   getData(startRange, limitRange){
     var data = {
@@ -448,6 +481,9 @@ class PlanDetails extends Component{
         this.getAvailableSubActivity(this.state.editSectorId);
         this.edit(this.state.editId);
       })    
+    }    
+    if(nextProps){
+      this.getLength();
     }
   }
   componentDidMount() {
@@ -457,11 +493,12 @@ class PlanDetails extends Component{
     }
     this.setState({
       apiCall : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
-    },()=>{
-      console.log('this.this.state.', this.state )
     })
-    
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
+    $('.Activityfields').change(function() {
+      $.scrollTo($('#physicalUnit-'), 1200);
+    });
   }
   getAvailableSectors(){
     axios({
@@ -509,7 +546,6 @@ class PlanDetails extends Component{
     this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
   }
   excludeSubmittedSubActivity(){
-    console.log('this.state.apiCall',this.state.apiCall, this.state.availableSubActivity);
     axios({
       method: 'get',
       url: this.state.apiCall+'/list',
@@ -518,37 +554,20 @@ class PlanDetails extends Component{
         var submittedSubActivity = response.data.map((a, i)=>{
           return _.pick(a, "subactivity_ID", "month")
         })
-
-        console.log('submittedSubActivity', submittedSubActivity);
-        var abc = _.compact(submittedSubActivity.map((m, i)=> { 
+        var abc = _.pluck(_.compact(submittedSubActivity.map((m, i)=> { 
           if(m.month == this.refs.month.value){
-            return m
+            return m;
           } 
-        }));
+        })), "subactivity_ID");
 
-        console.log('abc', abc);
         var x = this.state.availableSubActivity.map((a, i)=>{
-          console.log('a',a);
-          // if(abc){
-          //   console.log('abc',abc);
-            // return abc.map((b, j)=>{ 
-            //   console.log(a._id +'!='+ b.subactivity_ID); 
-            //   if(a._id != b.subactivity_ID){
-            //     return a;
-            //   }  
-            // })
-          // }  
-
-          if(abc.filter((b)=>{return a._id != b.subactivity_ID ? true : false})){
-            console.log(true);
+          if(!abc.includes(a._id)){
             return a;
           }
         });
 
         this.setState({
           availableSubActivity : _.compact(_.flatten(x))
-        },()=>{
-          console.log('availableSubActivity', this.state.availableSubActivity);
         });
       }
     }).catch(function (error) {
@@ -575,13 +594,11 @@ class PlanDetails extends Component{
     }); 
   }
   edit(id){
-    console.log('this.state.apiCall',this.state.apiCall);
     axios({
       method: 'get',
       url: this.state.apiCall+'/'+id,
       }).then((response)=> {
       var editData = response.data[0];
-      console.log('editData', editData);
       this.getAvailableActivity(editData.sector_ID);
       this.setState({
         "availableSubActivity"    : [{
@@ -590,6 +607,7 @@ class PlanDetails extends Component{
         }],
       },()=>{
         this.setState({
+          "shown"                   : false,
           "year"                    : editData.year,
           "month"                   : editData.month,
           "center"                  : editData.center,
@@ -597,21 +615,21 @@ class PlanDetails extends Component{
           "activityName"            : editData.activityName+'|'+editData.activity_ID,
           "subactivity_ID"          : editData.subactivity_ID,
           "subActivityDetails"      : [{
-            "subactivity_ID"      : editData.subactivity_ID,
-            "subactivityName"     : editData.subactivityName,
-            "unit"                : editData.unit,
-            "physicalUnit"        : editData.physicalUnit,
-            "unitCost"            : editData.unitCost,
-            "totalBudget"         : editData.totalBudget,
-            "noOfBeneficiaries"   : editData.noOfBeneficiaries,
-            "LHWRF"               : editData.LHWRF,
-            "NABARD"              : editData.NABARD,
-            "bankLoan"            : editData.bankLoan,
-            "govtscheme"          : editData.govtscheme,
-            "directCC"            : editData.directCC,
-            "indirectCC"          : editData.indirectCC,
-            "other"               : editData.other,
-            "remark"              : editData.remark,
+              "subactivity_ID"      : editData.subactivity_ID,
+              "subactivityName"     : editData.subactivityName,
+              "unit"                : editData.unit,
+              "physicalUnit"        : editData.physicalUnit,
+              "unitCost"            : editData.unitCost,
+              "totalBudget"         : editData.totalBudget,
+              "noOfBeneficiaries"   : editData.noOfBeneficiaries,
+              "LHWRF"               : editData.LHWRF,
+              "NABARD"              : editData.NABARD,
+              "bankLoan"            : editData.bankLoan,
+              "govtscheme"          : editData.govtscheme,
+              "directCC"            : editData.directCC,
+              "indirectCC"          : editData.indirectCC,
+              "other"               : editData.other,
+              "remark"              : editData.remark,
           }]
         },()=>{
           var subActivityDetails = this.state.subActivityDetails[0];
@@ -627,15 +645,47 @@ class PlanDetails extends Component{
     }).catch(function (error) {
     });
   }
+  toglehidden(){
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+    $("html,body").scrollTop(0);
+      if (!fields["month"]) {
+        formIsValid = false;
+        errors["month"] = "This field is required.";
+      }       
+      if (!fields["year"]) {
+        formIsValid = false;
+        errors["year"] = "This field is required.";
+      }       
+      this.setState({
+        errors: errors
+      }); 
+
+      if(this.state.year && this.state.month){
+      this.setState({
+       shown: !this.state.shown
+      },()=>{
+        console.log('shown', this.state.shown, !this.state.shown);
+      });      
+    }
+  }
   getSearchText(searchText, startRange, limitRange){
     this.setState({
       tableData : []
     })
   }
-  toglehidden(){
-   this.setState({
-       shown: !this.state.shown
-      });
+
+  isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
+    {
+    evt.preventDefault();
+      return false;
+    }
+    else{
+      return true;
+    }
   }
   render() {
     var shown = {
@@ -667,8 +717,8 @@ class PlanDetails extends Component{
                            <div className=" col-lg-3  col-lg-offset-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
-                                
-                               {this.state.months.map((data,index) =>
+                                <option className="hidden" >-- Select Month --</option>
+                                {this.state.months.map((data,index) =>
                                 <option key={index}  className="" >{data}</option>
                                 )}
                                 
@@ -883,7 +933,9 @@ class PlanDetails extends Component{
                           ?
                             <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-                            <h5>{this.state.month !== "All Months" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+
+                            <h5 default="Annual Plan">{this.state.month == "All Months" ? "Annual Plan": "Monthly Plan" || this.state.month !== "All Months" ? "Monthly Plan": "Annual Plan" }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                            // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>
                     </div>

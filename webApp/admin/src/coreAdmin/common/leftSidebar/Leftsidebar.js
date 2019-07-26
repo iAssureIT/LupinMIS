@@ -55,12 +55,50 @@ export default class Leftsidebar extends Component{
                   </a>
                 </li>*/}
                 <li className="sidebarMenuText">
-                  <a href="/report1">
-                    <i className="fa fa-calendar" />
+                  <a href="/activitywise-annual-completion-report">
+                    <i className="fa fa-book" />
+                    Reports
+                  </a>              
+                </li>
+               {/* <li className="sidebarMenuText">
+                  <a href="#report" data-toggle="collapse" aria-expanded="false">
+                    <i className="fa fa-book" />
                     Reports
                   </a>
-              
-                </li>
+                  <ul className="collapse list-unstyled" id="report">
+                    <li>
+                        <a href="/activitywise-annual-completion-report">
+                          <i className="fa fa-circle-o" /> 
+                          <span className="sidebarMenuSubText">Activity wise Annual Completion Report</span>
+                        </a>
+                      </li>
+
+                    <li>
+                      <a href="/sector-wise-annual-completion-summary-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Sector wise Annual Completion Summary Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/activity-wise-periodic-variance-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Activity wise Periodic Variance Report (Physical & Financial)</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/activity-wise-periodic-variance-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Sector wise Periodic Variance Summary Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/activity-wise-periodic-variance-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Activity wise Periodic Physical Variance Report</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li> */}
                 <li className="sidebarMenuText">
                   <a href="#MasterData" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-database" />
