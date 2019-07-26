@@ -63,7 +63,7 @@ class centerDetail extends Component{
       "tableHeading"                : {
         type                      : "Type of Center",
         centerName                : "Name of Center",
-        // address                   : "Address",
+        places                    : "Address",
         centerInchargeDetail      : "Center Incharge Detail",
         misCoordinatorDetail      : "MIS Coordinator Detail",
         numberofVillage           : "No of Villages",
@@ -445,14 +445,14 @@ class centerDetail extends Component{
           formIsValid = false;
           errors["MISCoordinatorName"] = "Please enter valid Name.";
         }
-      }
+      }/*
       if (typeof fields["address"] !== "undefined") {
         // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
         if (!fields["address"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
           formIsValid = false;
           errors["address"] = "Please enter valid Address.";
         }
-      }         
+      }    */     
       this.setState({
         errors: errors
       });
@@ -549,19 +549,19 @@ class centerDetail extends Component{
        axios.post('/api/centers/list',data)
       .then((response)=>{
         console.log('response', response.data);
-        /*var tableData = response.data.map((a, i)=>{
+        var tableData = response.data.map((a, i)=>{
         return {
           _id                       : a._id,
           type                      : a.type,
           centerName                : a.centerName,
-          address                   : a.address,
+          places                    : a.address,
           centerInchargeDetail      : a.centerInchargeDetail,
           misCoordinatorDetail      : a.misCoordinatorDetail,
           numberofVillage           : a.numberofVillage,
         }
-      })*/
+      })
         this.setState({
-          tableData : response.data
+          tableData : tableData
         })
       })
       .catch(function(error){

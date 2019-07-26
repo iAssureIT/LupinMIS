@@ -9,6 +9,7 @@ import "./PlanDetails.css";
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+
 class PlanDetails extends Component{
   
   constructor(props){
@@ -176,6 +177,106 @@ class PlanDetails extends Component{
       subActivityDetails : subActivityDetails
     })
   }
+/*  
+  SubmitAnnualPlan(event){
+    event.preventDefault();
+    var subActivityDetails = this.state.subActivityDetails;
+    // if (this.validateFormReq() &&this.validateForm()) {
+    
+      let fields = {};
+      fields["year"]              = "";
+      fields["month"]             = "";
+      fields["sectorName"]        = "";
+      fields["activityName"]      = "";
+      fields["physicalUnit"]      = "";
+      fields["unitCost"]          = "";
+      fields["totalBudget"]       = "";
+      fields["noOfBeneficiaries"] = "";
+      fields["LHWRF"]             = "";
+      fields["NABARD"]            = "";
+      fields["bankLoan"]          = "";
+      fields["govtscheme"]        = "";
+      fields["directCC"]          = "";
+      fields["indirectCC"]        = "";
+      fields["other"]             = "";
+      fields["remark"]            = "";
+      if(subActivityDetails.length > 0){
+        for(var i=0; i<subActivityDetails.length; i++){
+          var planValues = {
+            "month"               : this.refs.month.value,          
+            "year"                : this.refs.year.value,          
+            "center_ID"           : "P01",
+            "center"              : "Pune",
+            "sector_ID"           : this.refs.sectorName.value.split('|')[1],
+            "sectorName"          : this.refs.sectorName.value.split('|')[0],
+            "activity_ID"         : this.refs.activityName.value.split('|')[1],
+            "activityName"        : this.refs.activityName.value.split('|')[0],
+            "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
+            "subactivityName"     : subActivityDetails[i].subactivityName,
+            "unit"                : subActivityDetails[i].unit,
+            "physicalUnit"        : subActivityDetails[i].physicalUnit,
+            "unitCost"            : subActivityDetails[i].unitCost,
+            "totalBudget"         : subActivityDetails[i].totalBudget,
+            "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
+            "LHWRF"               : subActivityDetails[i].LHWRF,
+            "NABARD"              : subActivityDetails[i].NABARD,
+            "bankLoan"            : subActivityDetails[i].bankLoan,
+            "govtscheme"          : subActivityDetails[i].govtscheme,
+            "directCC"            : subActivityDetails[i].directCC,
+            "indirectCC"          : subActivityDetails[i].indirectCC,
+            "other"               : subActivityDetails[i].other,
+            "remark"              : subActivityDetails[i].remark,
+          };
+          axios.post(this.state.apiCall, planValues)
+            .then((response)=>{
+              swal({
+                title : response.data.message,
+                text  : response.data.message
+              });
+              this.getData(this.state.startRange, this.state.limitRange);
+            })
+            .catch(function(error){
+              console.log("error"+error);
+          });
+          Object.entries(planValues).map( 
+            ([key, value], i)=> {
+              this.setState({
+                [key+'-'+this.state.subactivity_ID] : ""
+              })
+            }
+          );
+        }
+      }
+      this.setState({
+        "planValues"          :"",
+        "year"                :"",
+        "month"               :"",
+        "center"              :"",
+        "sector_id"           :"",
+        "sectorName"          :"",
+        "activityName"        :"",
+        "physicalUnit"        :"",
+        "unitCost"            :"",
+        "totalBudget"         :"",
+        "noOfBeneficiaries"   :"",
+        "LHWRF"               :"",
+        "NABARD"              :"",
+        "bankLoan"            :"",
+        "govtscheme"          :"",
+        "directCC"            :"",
+        "indirectCC"          :"",
+        "other"               :"",
+        "remark"              :"",
+        "fields"              :fields,
+        "editId"              :"",
+        "subActivityDetails"  :[],
+        "availableSubActivity":[],
+        // "availableSectors"    :[],
+        "availableActivity"   :[],
+      });
+    // }
+  }*/
+  
   SubmitAnnualPlan(event){
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
@@ -282,14 +383,14 @@ class PlanDetails extends Component{
   Update(event){    
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
-      || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
-      || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
-      || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
-      {
-        if (this.validateFormReq() && this.validateForm()){
-        }
-      }else{
+    // if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
+    //   || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
+    //   || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
+    //   || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
+    //   {
+    //     if (this.validateFormReq() && this.validateForm()){
+    //     }
+    //   }else{
         
       let fields = {};
       fields["year"]              = "";
@@ -386,20 +487,17 @@ class PlanDetails extends Component{
         "availableSubActivity":[],
         "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
         "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-       /* "shown"               : true,*/
-        "apiCall"             : '/api/annualPlans',
-        shown                 : !this.state.shown
-        
+        "shown"               : true,
+        "apiCall"             : '/api/annualPlans'
       });
       this.props.history.push('/plan');
-    }
+    // }
   }
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
-
       if (!fields["sectorName"]) {
         formIsValid = false;
         errors["sectorName"] = "This field is required.";
@@ -407,8 +505,7 @@ class PlanDetails extends Component{
       if (!fields["activityName"]) {
         formIsValid = false;
         errors["activityName"] = "This field is required.";
-      }       
-         
+      }     
       this.setState({
         errors: errors
       });
@@ -495,9 +592,6 @@ class PlanDetails extends Component{
     })
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
-    $('.Activityfields').change(function() {
-      $.scrollTo($('#physicalUnit-'), 1200);
-    });
   }
   getAvailableSectors(){
     axios({
@@ -603,6 +697,7 @@ class PlanDetails extends Component{
         "availableSubActivity"    : [{
           _id                     : editData.subactivity_ID,
           subActivityName         : editData.subactivityName,
+          unit                    : editData.unit,
         }],
       },()=>{
         this.setState({
@@ -614,21 +709,20 @@ class PlanDetails extends Component{
           "activityName"            : editData.activityName+'|'+editData.activity_ID,
           "subactivity_ID"          : editData.subactivity_ID,
           "subActivityDetails"      : [{
-              "subactivity_ID"      : editData.subactivity_ID,
-              "subactivityName"     : editData.subactivityName,
-              "unit"                : editData.unit,
-              "physicalUnit"        : editData.physicalUnit,
-              "unitCost"            : editData.unitCost,
-              "totalBudget"         : editData.totalBudget,
-              "noOfBeneficiaries"   : editData.noOfBeneficiaries,
-              "LHWRF"               : editData.LHWRF,
-              "NABARD"              : editData.NABARD,
-              "bankLoan"            : editData.bankLoan,
-              "govtscheme"          : editData.govtscheme,
-              "directCC"            : editData.directCC,
-              "indirectCC"          : editData.indirectCC,
-              "other"               : editData.other,
-              "remark"              : editData.remark,
+            "subactivity_ID"      : editData.subactivity_ID,
+            "subactivityName"     : editData.subactivityName,           
+            "physicalUnit"        : editData.physicalUnit,
+            "unitCost"            : editData.unitCost,
+            "totalBudget"         : editData.totalBudget,
+            "noOfBeneficiaries"   : editData.noOfBeneficiaries,
+            "LHWRF"               : editData.LHWRF,
+            "NABARD"              : editData.NABARD,
+            "bankLoan"            : editData.bankLoan,
+            "govtscheme"          : editData.govtscheme,
+            "directCC"            : editData.directCC,
+            "indirectCC"          : editData.indirectCC,
+            "other"               : editData.other,
+            "remark"              : editData.remark,
           }]
         },()=>{
           var subActivityDetails = this.state.subActivityDetails[0];
@@ -649,10 +743,10 @@ class PlanDetails extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
-      if (!fields["month"]) {
+      /*if (!fields["month"]) {
         formIsValid = false;
         errors["month"] = "This field is required.";
-      }       
+      }  */     
       if (!fields["year"]) {
         formIsValid = false;
         errors["year"] = "This field is required.";
@@ -660,14 +754,11 @@ class PlanDetails extends Component{
       this.setState({
         errors: errors
       }); 
-
-      if(this.state.year && this.state.month){
-      this.setState({
-       shown: !this.state.shown
-      },()=>{
-        console.log('shown', this.state.shown, !this.state.shown);
-      });      
-    }
+    this.setState({
+     shown: !this.state.shown
+    },()=>{
+      console.log('shown', this.state.shown, !this.state.shown);
+    });
   }
   getSearchText(searchText, startRange, limitRange){
     this.setState({
@@ -716,9 +807,8 @@ class PlanDetails extends Component{
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
                                 
-                                <option className="hidden" >-- Select Month --</option>
                                {this.state.months.map((data,index) =>
-                                <option default="All Months" key={index}  className="" >{data}</option>
+                                <option key={index}  className="" >{data}</option>
                                 )}
                                 
                               </select>
@@ -932,8 +1022,7 @@ class PlanDetails extends Component{
                           ?
                             <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-
-                            <h5 default="Annual Plan">{this.state.month == "All Months" ? "Annual Plan": "Monthly Plan" || this.state.month !== "All Months" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                            <h5 defaultValue="Annual Plan">{this.state.month == "All Months" ? "Annual Plan": "Monthly Plan" || this.state.month !== "All Months" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                             // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>

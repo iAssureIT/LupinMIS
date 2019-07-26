@@ -132,7 +132,13 @@ class Family extends Component{
 
   SubmitFamily(event){
     event.preventDefault();
-    if (this.validateForm() && this.validateFormReq()) {
+    if(this.refs.familyID.value === "" || this.refs.nameOfFamilyHead.value ==="" || this.refs.contact.value===""
+     || this.refs.uID.value==="" || this.refs.caste.value==="" || this.refs.category.value==="" 
+     || this.refs.district.value==="" || this.refs.block.value==="" || this.refs.village.value==="" )
+    {
+    if (this.validateFormReq() && this.validateForm()){
+     }
+    }else{
     var familyValues= 
       {
         "familyID"             :this.refs.familyID.value, 

@@ -114,8 +114,7 @@ class Beneficiary extends Component{
         if (this.validateFormReq() && this.validateForm()){
         }
       }else{
-      var beneficaryArray=[];
-      var id2 = this.state.uID;
+     
       var beneficiaryValue= 
       {
         "beneficiary_ID"        : this.state.editId,          
@@ -128,14 +127,7 @@ class Beneficiary extends Component{
       let fields                    = {};
       fields["familyID"]            = "";
       fields["beneficiaryID"]       = "";
-      fields["nameofbeneficiaries"] = "";
-
-      this.setState({
-        "familyID"                 :"",
-        "beneficiaryID"            :"",
-        "nameofbeneficiaries"      :"",   
-        fields:fields
-      });
+      fields["nameofbeneficiaries"] = "";      
       console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
@@ -144,14 +136,21 @@ class Beneficiary extends Component{
             title : response.data.message,
             text  : response.data.message,
           });
-          this.props.history.push('/beneficiary');
-          this.setState({
-            "editId"              : "",
-          });
+          
         })
         .catch((error)=>{
           console.log("error = ",error);
         });
+      this.setState({
+        "familyID"                 :"",
+        "beneficiaryID"            :"",
+        "nameofbeneficiaries"      :"",   
+        fields:fields
+      });
+      this.props.history.push('/beneficiary');
+      this.setState({
+        "editId"              : "",
+      });
     }
   }
   validateFormReq() {

@@ -74,12 +74,12 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li> 
-                <li className="sidebarMenuText">
+                {/*<li className="sidebarMenuText">
                   <a href="/planDetails" >
                     <i className="fa fa-book" />
                     Reports
                   </a>
-                </li>
+                </li>*/}
                <li className="sidebarMenuText">
                   <a href="/centerList" >
                     <i className="fa fa-th" />

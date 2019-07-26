@@ -386,7 +386,7 @@ class SectorMapping extends Component{
                               this.state.availableSectors ?
                               this.state.availableSectors.map((data, index)=>{
                                 return(
-                                  <div key={index} className=" col-md-4  col-lg-4 col-sm-12 col-xs-12 noPadding">
+                                  <div key={index} className=" col-md-4  col-lg-4 col-sm-12 col-xs-12 blockheight noPadding">
                                     <label  className="formLable faintColor">{data.sector}</label>
                                     {
                                       data.activity.map((a, i)=>{
