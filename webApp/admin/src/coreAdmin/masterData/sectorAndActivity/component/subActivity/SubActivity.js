@@ -380,7 +380,7 @@ class SubActivity extends Component{
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                        <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                        <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.selectSector.bind(this)}>
                           <option  className="hidden" >--Select Sector--</option>
                           {
                           this.state.availableSectors && this.state.availableSectors.length >0 ?
@@ -399,7 +399,7 @@ class SubActivity extends Component{
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Select Activity Name</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
-                        <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.handleChange.bind(this)} >
+                        <select className="custom-select form-control inputBox" ref="activityName" name="activityName" value={this.state.activityName} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)} >
                           <option  className="hidden" >-- Select Activity--</option>
                           {
                           this.state.availableActivity && this.state.availableActivity.length >0 ?

@@ -130,6 +130,11 @@ input, select{
   border: none !important;
   font-size: 12px !important;
 }
+.inputBox:disabled{
+  background: #fff;
+  cursor: auto;
+}
+
 .valid_box{
   height: 70px;
 }

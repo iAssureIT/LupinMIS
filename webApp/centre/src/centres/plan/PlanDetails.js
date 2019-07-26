@@ -9,7 +9,6 @@ import "./PlanDetails.css";
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-
 class PlanDetails extends Component{
   
   constructor(props){
@@ -245,6 +244,11 @@ class PlanDetails extends Component{
             }
           );
         }
+      }else{
+        swal({
+          title : "abc",
+          text  : "Please fill atleast one SubActivity Details."
+        });
       }
       this.setState({
         "planValues"          :"",
@@ -278,14 +282,14 @@ class PlanDetails extends Component{
   Update(event){    
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    // if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
-    //   || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
-    //   || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
-    //   || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
-    //   {
-    //     if (this.validateFormReq() && this.validateForm()){
-    //     }
-    //   }else{
+    if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
+      || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
+      || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
+      || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
+      {
+        if (this.validateFormReq() && this.validateForm()){
+        }
+      }else{
         
       let fields = {};
       fields["year"]              = "";
@@ -382,11 +386,13 @@ class PlanDetails extends Component{
         "availableSubActivity":[],
         "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
         "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-        "shown"               : true,
-        "apiCall"             : '/api/annualPlans'
+       /* "shown"               : true,*/
+        "apiCall"             : '/api/annualPlans',
+        shown                 : !this.state.shown
+        
       });
       this.props.history.push('/plan');
-    // }
+    }
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -489,7 +495,7 @@ class PlanDetails extends Component{
     })
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
-    $('.Activityfields').click(function() {
+    $('.Activityfields').change(function() {
       $.scrollTo($('#physicalUnit-'), 1200);
     });
   }
@@ -608,21 +614,21 @@ class PlanDetails extends Component{
           "activityName"            : editData.activityName+'|'+editData.activity_ID,
           "subactivity_ID"          : editData.subactivity_ID,
           "subActivityDetails"      : [{
-            "subactivity_ID"      : editData.subactivity_ID,
-            "subactivityName"     : editData.subactivityName,
-            "unit"                : editData.unit,
-            "physicalUnit"        : editData.physicalUnit,
-            "unitCost"            : editData.unitCost,
-            "totalBudget"         : editData.totalBudget,
-            "noOfBeneficiaries"   : editData.noOfBeneficiaries,
-            "LHWRF"               : editData.LHWRF,
-            "NABARD"              : editData.NABARD,
-            "bankLoan"            : editData.bankLoan,
-            "govtscheme"          : editData.govtscheme,
-            "directCC"            : editData.directCC,
-            "indirectCC"          : editData.indirectCC,
-            "other"               : editData.other,
-            "remark"              : editData.remark,
+              "subactivity_ID"      : editData.subactivity_ID,
+              "subactivityName"     : editData.subactivityName,
+              "unit"                : editData.unit,
+              "physicalUnit"        : editData.physicalUnit,
+              "unitCost"            : editData.unitCost,
+              "totalBudget"         : editData.totalBudget,
+              "noOfBeneficiaries"   : editData.noOfBeneficiaries,
+              "LHWRF"               : editData.LHWRF,
+              "NABARD"              : editData.NABARD,
+              "bankLoan"            : editData.bankLoan,
+              "govtscheme"          : editData.govtscheme,
+              "directCC"            : editData.directCC,
+              "indirectCC"          : editData.indirectCC,
+              "other"               : editData.other,
+              "remark"              : editData.remark,
           }]
         },()=>{
           var subActivityDetails = this.state.subActivityDetails[0];
@@ -653,8 +659,7 @@ class PlanDetails extends Component{
       }       
       this.setState({
         errors: errors
-      });
-      // return formIsValid;     
+      }); 
 
       if(this.state.year && this.state.month){
       this.setState({

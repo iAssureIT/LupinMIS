@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
-
 export default class MonthlyReport extends Component{
 	constructor(props){
         super(props);
@@ -146,8 +145,6 @@ export default class MonthlyReport extends Component{
                                 getSearchText={this.getSearchText.bind(this)}/>
                         </div>
                     </div>
-                
-                    
                 </div>            
             );
         }else{

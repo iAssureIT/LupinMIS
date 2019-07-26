@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 
 export default class CustomisedReport extends Component{
 	constructor(props){

@@ -156,7 +156,6 @@ class centerDetail extends Component{
       var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
 
       var id2 = this.state.uID;
-        /*    if (this.validateForm()) {*/    
       var centerDetail= 
       {
         "type"                      : this.refs.typeOfCenter.value,
@@ -579,12 +578,17 @@ class centerDetail extends Component{
 
      }
   districtCoveredChange(event){
+    
     event.preventDefault();
     var districtCovered = event.target.value;
-    // console.log('districtCovered', districtCovered);
+    console.log('districtCovered', districtCovered);
     this.setState({
       districtCovered: districtCovered
     },()=>{
+    
+           
+
+
       var listofBlocks = ['Ambegaon', 'Baramati', 'Bhor', 'Daund', 'Haveli', 'Indapur', 'Junnar', 'Khed', 'Mawal', 'Mulshi', 'Pune City', 'Purandhar', 'Shirur', 'Velhe'];
       if(this.state.districtCovered == 'Pune'){          
         this.setState({
@@ -604,6 +608,7 @@ class centerDetail extends Component{
     this.setState({
       state : selectedState
     },()=>{
+
       if(this.state.state == 'Maharashtra'){
         var listofDistrict = ['Pune', 'Mumbai'];
         this.setState({
@@ -689,6 +694,25 @@ class centerDetail extends Component{
       // console.log('selectedVillages',this.state.selectedVillages);
     });
   }
+/*  onclickDist(event){
+    event.preventDefault();
+    console.log('ghjg');
+
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+    // $("html,body").scrollTop(0);
+    console.log(!fields["state"]);
+    if (!fields["state"]) {
+      console.log('state errors');
+      formIsValid = false;
+      errors["state"] = "This field is required.";
+    }       
+    this.setState({
+      errors: errors
+    });
+
+  }*/
   getSearchText(searchText, startRange, limitRange){
     this.setState({
       tableData : []
@@ -775,14 +799,14 @@ class centerDetail extends Component{
                                 <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onClick={this.handleclick.bind(this)}  onChange={this.handleChange.bind(this)} >
                                   <option  className="hidden" >--Select District--</option>
                                   {
-                                    this.state.listofDistrict ? 
+                                    this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((district, index)=>{
                                       return(
                                         <option key={index} value={district}>{district}</option>
                                       );
                                     })
                                     :
-                                    <option>Select state First</option>
+                                    <option disabled>Select select State first</option>
                                   }                                
                                 </select>
                               </div>
@@ -871,21 +895,21 @@ class centerDetail extends Component{
                            <h5 className="pageSubHeader">Villages Covered</h5>
                         </div>
                         <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
+                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight">
+                            <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
                               <label className="formLable">District Covered</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtCovered" >
-                                <select className="custom-select form-control inputBox"  value={this.state.districtCovered}  ref="districtCovered" name="districtCovered"  onChange={this.districtCoveredChange.bind(this)} >
+                                <select className="custom-select form-control inputBox"  value={this.state.districtCovered}  ref="districtCovered" name="districtCovered" onChange={this.districtCoveredChange.bind(this)} >
                                   <option  className="hidden" >--Select District--</option>
                                   {
-                                    this.state.listofDistrict ? 
+                                    this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((district, index)=>{
                                       return(
                                         <option key={index} value={district}>{district}</option>
                                       );
                                     })
                                     :
-                                    null
+                                    <option disabled>Please select State first</option>
                                   }
                                 </select>
                               </div>
@@ -897,14 +921,14 @@ class centerDetail extends Component{
                                 <select className="custom-select form-control inputBox"  value={this.state.blockCovered}  ref="blockCovered" name="blockCovered"  onChange={this.blockCoveredChange.bind(this)} >
                                   <option  className="hidden" >--Select Block--</option>
                                   {
-                                    this.state.listofBlocks ? 
+                                    this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                     this.state.listofBlocks.map((block, index)=>{
                                       return(
                                         <option key={index} value={block}>{block}</option>
                                       );
                                     })
                                     :
-                                    null
+                                    <option disabled>Please select District</option>
                                   }
                                 </select>
                               </div>
@@ -913,7 +937,7 @@ class centerDetail extends Component{
                           </div> 
                         </div><br/>
                         {
-                          this.state.blockCovered?
+                          this.state.listofVillages.length > 0 ?
                           <div className="row">
                             <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight mt ">
                               <h5 className="col-lg-12 col-sm-12 col-xs-12">Villages Covered</h5>                     

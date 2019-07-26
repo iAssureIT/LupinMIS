@@ -55,13 +55,11 @@ export default class Leftsidebar extends Component{
                   </a>
                 </li>*/}
                 <li className="sidebarMenuText">
-                  <a href="#Plan" data-toggle="collapse" aria-expanded="false">
+                  <a href="/report1">
                     <i className="fa fa-calendar" />
                     Reports
                   </a>
-                  <ul className="collapse list-unstyled" id="Plan">
-
-                  </ul>
+              
                 </li>
                 <li className="sidebarMenuText">
                   <a href="#MasterData" data-toggle="collapse" aria-expanded="false">

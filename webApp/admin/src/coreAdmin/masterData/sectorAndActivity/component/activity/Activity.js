@@ -85,7 +85,6 @@ class Activity extends Component{
   submitActivity(event){
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
-      
     var activityValues = {
       "sector_ID"            : this.refs.sector.value.split('|')[1],
       "sector"               : this.refs.sector.value.split('|')[0],
@@ -95,22 +94,23 @@ class Activity extends Component{
     let fields            = {};
     fields["sector"]      = "";
     fields["activity"]    = "";
+    this.setState({
+      activity : '',
+      sector   : ''
+    })
   
     axios.patch('/api/sectors/activity', activityValues)
       .then((response)=>{
-       // console.log('response', response.data);
+       console.log(this.validateForm());
        this.getData(this.state.startRange, this.state.limitRange);
         swal({
           title : response.data.message,
           text  : response.data.message
         });
-        this.setState({
-          activity : '',
-          sector   : ''
-        })
+        
       })
       .catch(function(error){
-        // console.log("error ============== ",error);
+        console.log("error ============== ",error);
       });
     }
   }
@@ -319,7 +319,7 @@ class Activity extends Component{
                   <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
                     <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                      <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.handleChange.bind(this)}>
+                      <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)}>
                         <option  className="hidden" value="" >-- Select Sector--</option>
                         {
                           this.state.availableSectors && this.state.availableSectors.length >0 ?

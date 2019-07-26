@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import React, { Component }     from 'react';
+import IAssureTable             from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 
 export default class WeeklyReport extends Component{
 	constructor(props){
