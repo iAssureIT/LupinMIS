@@ -852,9 +852,9 @@ class centerDetail extends Component{
                               <div className="errorMsg">{this.state.errors.centerInchargeEmail}</div>
                             </div>
                           </div> 
-                        </div><br/>
+                        </div>
                         <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight mt">
                             
                             <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                               <label className="formLable">Name of MIS Coordinator</label><span className="asterix">*</span>
@@ -887,11 +887,11 @@ class centerDetail extends Component{
                               <div className="errorMsg">{this.state.errors.MISCoordinatorEmail}</div>
                             </div>
                           </div> 
-                        </div><br/>
+                        </div>
                         <div className="col-lg-12 ">
                            <hr />
                         </div>
-                        <div className="col-lg-12 ">
+                        <div className="col-lg-12">
                            <h5 className="pageSubHeader">Villages Covered</h5>
                         </div>
                         <div className="row">
@@ -935,11 +935,11 @@ class centerDetail extends Component{
                               <div className="errorMsg">{this.state.errors.blockCovered}</div>
                             </div>
                           </div> 
-                        </div><br/>
+                        </div>
                         {
                           this.state.listofVillages.length > 0 ?
                           <div className="row">
-                            <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight mt ">
+                            <div className=" col-lg-12 col-sm-12 col-xs-12 mt">
                               <h5 className="col-lg-12 col-sm-12 col-xs-12">Villages Covered</h5>                     
                             {
                               this.state.listofVillages?
@@ -971,12 +971,7 @@ class centerDetail extends Component{
                         : 
                         null
                         }      
-                        <br/>
-                        <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  ">
-                            
-                          </div> 
-                        </div><br/>             
+                                   
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                            <hr />
                         </div>
@@ -1022,6 +1017,9 @@ class centerDetail extends Component{
                         }
                         </div>                          
                       </form>
+                      <div className="col-lg-12 ">
+                         <hr className="hr-head"/>
+                      </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
                           tableHeading={this.state.tableHeading}

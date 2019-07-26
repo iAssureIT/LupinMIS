@@ -506,6 +506,15 @@ class PlanDetails extends Component{
         formIsValid = false;
         errors["activityName"] = "This field is required.";
       }     
+      /*if (!fields["month"]) {
+        formIsValid = false;
+        errors["month"] = "This field is required.";
+      } 
+      if (!fields["year"]) {
+        formIsValid = false;
+        errors["year"] = "This field is required.";
+      }       
+       */     
       this.setState({
         errors: errors
       });
@@ -885,7 +894,7 @@ class PlanDetails extends Component{
                           </div> 
                         </div><br/>  
                         <div>
-                          {this.state.availableSubActivity ? <hr className="hr-head"/> :""}
+                          {this.state.availableSubActivity ? <hr className=""/> :""}
                         </div>                     
                           {
                             this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
@@ -982,7 +991,7 @@ class PlanDetails extends Component{
                                         <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
                                           <label className="formLable">Remark</label>
                                           <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]}   onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                       </div>  
@@ -1015,6 +1024,7 @@ class PlanDetails extends Component{
                       
                       </form>
                     </div>
+                    
                     <div className="AnnualHeadCont">
                       <div className="annualHead">
                       {

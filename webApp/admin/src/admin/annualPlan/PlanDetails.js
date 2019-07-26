@@ -687,6 +687,20 @@ class PlanDetails extends Component{
       return true;
     }
   }
+  getAvailableSectors(){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+        
+        this.setState({
+          availableCenters : response.data
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+ 
   render() {
     var shown = {
       display: this.state.shown ? "block" : "none"
@@ -696,6 +710,7 @@ class PlanDetails extends Component{
       display: this.state.shown ? "none" : "block"
     }
   
+                                  console.log("availableCenters",this.state.availableCenters);
     return (
       <div className="container-fluid">
         <div className="row">
@@ -714,10 +729,29 @@ class PlanDetails extends Component{
                     <div className="row">
                       <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                           <div className=" col-lg-3  col-lg-offset-3 col-md-4 col-sm-6 col-xs-12 ">
+                        <div className=" col-lg-9 col-lg-offset-1 col-sm-12 col-xs-12 formLable boxHeight ">
+                          <div className=" col-lg-3 col-lg-offset-2 col-md-4 col-sm-6 col-xs-12 ">
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                              <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center }  onChange={this.handleChange.bind(this)} >
+                                <option className="hidden" >-- Select Center --</option>
+                                {
+                                  this.state.availableCenters && this.state.availableCenters.length >0 ?
+                                  this.state.availableCenters.map((data, index)=>{
+                                    return(
+                                      <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.center}</div>
+                          </div>
+                          <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
-                                <option className="hidden" >-- Select Month --</option>
+                               {/* <option className="hidden" >-- Select Month --</option>*/}
                                 {this.state.months.map((data,index) =>
                                 <option key={index}  className="" >{data}</option>
                                 )}
@@ -729,7 +763,7 @@ class PlanDetails extends Component{
                           <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                               <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
-                                <option className="hidden" >-- Select Year --</option>
+                               {/* <option className="hidden" >-- Select Year --</option>*/}
                                {
                                 this.state.years.map((data, i)=>{
                                   return <option key={i}>{data}</option>
@@ -738,16 +772,9 @@ class PlanDetails extends Component{
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.year}</div>
-                          </div>
-                         {/* <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
-                            <div className="col-lg-12 col-sm-12 col-xs-12 " >
-                              <div className="addform " id="click_advance"  onClick={this.toglehidden.bind(this)}>
-                                <div className="display_advance addContainerAct"  id="display_advance">
-                                  <i className="fa fa-plus" aria-hidden="true" id="click"></i>
-                                </div>
-                              </div>
-                            </div>
-                          </div>*/}
+                          </div>                          
+                         
+                        </div> 
                         </div> 
                       </div><br/>                      
                     {/*  <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"  style={hidden} id="Academic_details">

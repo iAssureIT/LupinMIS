@@ -306,7 +306,7 @@ input, select{
 
 /*Page header bottom horizontal line*/
 .hr-head{
-  border:0.25px solid #999;
+  border:0.5px solid #999;
   width: 100%;
 }
 

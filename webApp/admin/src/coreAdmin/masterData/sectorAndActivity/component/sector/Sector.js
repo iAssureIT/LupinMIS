@@ -291,7 +291,10 @@ class Sector extends Component{
                   </div> 
                 </div> 
               </div><br/>
-            </form>
+            </form>    
+            <div className="col-lg-12 ">
+               <hr className=""/>
+            </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
               <IAssureTable 
                 tableHeading={this.state.tableHeading}

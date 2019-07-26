@@ -874,7 +874,7 @@ class Activity extends Component{
                           <div className="errorMsg">{this.state.errors.remark}</div>
                     </div>
                     <div className="col-lg-12 ">
-                       <hr className="hr-head"/>
+                       <hr className=""/>
                     </div>
                     <div className="col-lg-12 ">
                        <div className="pageSubHeader">Sources of Fund</div>
@@ -949,7 +949,7 @@ class Activity extends Component{
                       </div> 
                     </div><br/>
                     <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
-                       <hr className="hr-head"/>
+                       <hr className=""/>
                     </div>
                 
                     <div className="tableContainrer">
@@ -968,6 +968,9 @@ class Activity extends Component{
                         <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
                       }
                     </div> 
+                    <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
+                     <hr className=""/>
+                    </div>
                   </form>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 

@@ -460,7 +460,10 @@ class SubActivity extends Component{
                     <button className=" col-lg-2 btn submit pull-right" onClick={this.submitSubActivity.bind(this)}> Submit </button>
                   }
                 </div> 
-              </form>
+              </form>             
+              <div className="col-lg-12 mt">
+                 <hr className=""/>
+              </div>
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                 <IAssureTable 
                   tableHeading={this.state.tableHeading}

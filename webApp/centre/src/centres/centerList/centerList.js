@@ -56,7 +56,7 @@ class centerList extends Component{
       "tableHeading"                : {
         type                      : "Type of Center",
         centerName                : "Name of Center",
-        // address                   : "Address",
+        place                   : "Address",
         centerInchargeDetail      : "Center Incharge Detail",
         misCoordinatorDetail      : "MIS Coordinator Detail",
         numberofVillage           : "No of Villages",
@@ -84,16 +84,19 @@ class centerList extends Component{
       console.log('response', response.data);
       var tableData = response.data.map((a, i)=>{
         return {
+          _id                       : a._id,
           type                      : a.type,
           centerName                : a.centerName,
-          address                   : a.address,
+          place                     : a.address,
           centerInchargeDetail      : a.centerInchargeDetail,
           misCoordinatorDetail      : a.misCoordinatorDetail,
           numberofVillage           : a.numberofVillage,
         }
       })
       this.setState({
-        tableData : response.data
+        tableData : tableData
+      },()=>{
+        console.log("tableData",this.state.tableData)
       })
     })
     .catch(function(error){
