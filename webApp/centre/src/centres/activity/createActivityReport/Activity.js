@@ -257,7 +257,7 @@ class Activity extends Component{
   }
   Update(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    // if (this.validateFormReq() && this.validateForm()) {
     var activityValues= {
       "activityReport_ID" : this.state.editId,
       "center_ID"         : "123",
@@ -313,11 +313,11 @@ class Activity extends Component{
     fields["remark"]             = "";
     axios.patch('/api/activityReport',activityValues)
     .then((response)=>{
+    this.getData(this.state.startRange, this.state.limitRange);      
       swal({
         title : response.data.message,
         text  : response.data.message,
       });
-    this.getData(this.state.startRange, this.state.limitRange);      
     })
     .catch(function(error){        
     });
@@ -351,10 +351,13 @@ class Activity extends Component{
       "availableSectors"   : [],
       "availableActivity"  : [],
       "availableSubActivity": [],
-      "editId"             : "",
+      
     });
       this.props.history.push('/activity');
-    }
+      this.setState({
+        "editId"              : "",
+      });
+    // }
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -481,6 +484,7 @@ class Activity extends Component{
       this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID)
 
       this.setState({
+        // "editId" : id,
         "dist"              : editData.district,
         "block"             : editData.block,
         "village"           : editData.village,
@@ -507,9 +511,9 @@ class Activity extends Component{
       });
     }).catch(function (error) {
     });
-    this.setState({
-      "editId"              : "",
-    });
+    // this.setState({
+    //   "editId"              : "",
+    // });
 
   }
 
@@ -595,10 +599,12 @@ class Activity extends Component{
     this.setState({
       "editId" : editId,
     },()=>{
-      this.getAvailableActivity(this.state.editSectorId);
-      this.getAvailableSubActivity(this.state.editSectorId);
-      this.edit(this.state.editId);
+      console.log('editId componentWillReceiveProps', this.state.editId);
+      // this.getAvailableActivity(this.state.editSectorId);
+      // this.getAvailableSubActivity(this.state.editSectorId);
+      
     })  
+    this.edit(editId);
     if(nextProps){
       this.getLength();
     }

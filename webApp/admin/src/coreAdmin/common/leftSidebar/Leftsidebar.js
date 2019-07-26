@@ -54,12 +54,12 @@ export default class Leftsidebar extends Component{
                     Reports
                   </a>
                 </li>*/}
-                <li className="sidebarMenuText">
+               {/* <li className="sidebarMenuText">
                   <a href="/activitywise-annual-completion-report">
                     <i className="fa fa-book" />
                     Reports
                   </a>              
-                </li>
+                </li>*/}
                {/* <li className="sidebarMenuText">
                   <a href="#report" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-book" />

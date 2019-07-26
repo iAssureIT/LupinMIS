@@ -552,8 +552,33 @@ class PlanDetails extends Component{
     }
     axios.post(this.state.apiCall+'/list', data)
       .then((response)=>{
+         var tableData = response.data.map((a, i)=>{
+        return {
+        _id                        : a._id,
+        month               : a.month,
+        year                : a.year,
+        sectorName          : a.sectorName,
+        activityName        : a.activityName,
+        subactivityName     : a.subactivityName,
+        unit                : a.unit,
+        physicalUnit        : a.physicalUnit,
+        unitCost            : a.unitCost,
+        totalBudget         : a.totalBudget,
+        noOfBeneficiaries   : a.noOfBeneficiaries,
+        LHWRF               : a.LHWRF,
+        NABARD              : a.NABARD,
+        bankLoan            : a.bankLoan,
+        govtscheme          : a.govtscheme,
+        directCC            : a.directCC,
+        indirectCC          : a.indirectCC,
+        other               : a.other,
+        remark              : a.remark,
+        
+        }
+      })
+
         this.setState({
-          tableData : response.data
+          tableData : tableData
         });
       })
       .catch(function(error){

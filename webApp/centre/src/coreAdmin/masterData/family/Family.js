@@ -410,7 +410,8 @@ class Family extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                      Master Data                                        </div>
+                      Beneficiary Management   
+                    </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
                   <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="family">
