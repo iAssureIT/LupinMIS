@@ -221,7 +221,11 @@ class UMListOfUsers extends Component {
 
 				   	if(this.state.blockswal == true)
 				   	{
-				   		 swal("Account blocked successfully","","success");
+				   		
+				   		  swal({
+										title: "Account blocked successfully",
+										text: "Account blocked successfully",
+									});
 				   	}
 				    break;
 
@@ -288,7 +292,11 @@ class UMListOfUsers extends Component {
 
 					   if(this.state.activeswal == true)
 					   {
-					   	 swal("Account activated successfully","","success");
+					   	
+					   	  swal({
+										title: "Account activated successfully",
+										text: "Account activated successfully",
+									});
 					   }
 				    break;
 
@@ -324,7 +332,11 @@ class UMListOfUsers extends Component {
 					})
 					.then((response)=> {
 				    	// console.log('delete response',response);
-				    	swal("User deleted successfully","", "success");
+				    	
+				    	swal({
+										title: "User deleted successfully",
+										text: "User deleted successfully",
+									});
 
 				    		// update table here
 				          		var data = {
@@ -381,7 +393,11 @@ class UMListOfUsers extends Component {
 				      .then(
 				        (res)=>{
 				          // console.log('res', res);
-				          swal("Assigned Role Added Successfully","","success");
+				         
+				          swal({
+										title: "Assigned Role Added Successfully",
+										text: "Assigned Role Added Successfully",
+									});
 				          checkedUsersList = null;
 
 				          		// update table here
@@ -438,7 +454,11 @@ class UMListOfUsers extends Component {
 				      .then(
 				        (res)=>{
 				          // console.log('res', res);
-				          swal("Assigned Role Removed Successfully","","success");
+				          
+				           swal({
+										title: "Assigned Role Removed Successfully",
+										text: "Assigned Role Removed Successfully",
+									});
 				          checkedUsersList = null;
 
 				          		// update table here
@@ -559,7 +579,11 @@ class UMListOfUsers extends Component {
 					            },()=>{
 					            }) 
 					        }).catch((error)=>{ 
-					            swal("Sorry there is no data of "+selectedValue,"","error");
+					           
+					            swal({
+										title: "Sorry there is no data of "+selectedValue,
+										text: "Sorry there is no data of "+selectedValue,
+									});
 					      });
 
 					}
@@ -636,7 +660,11 @@ class UMListOfUsers extends Component {
 				            },()=>{
 				            })
 				        }).catch((error)=>{ 
-				        	swal("Sorry there is no data of "+selectedValue, "","error");
+				        	
+				        	swal({
+										title: "Sorry there is no data of "+selectedValue,
+										text: "Sorry there is no data of "+selectedValue,
+									});
 				      });
 					}
 

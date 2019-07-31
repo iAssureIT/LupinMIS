@@ -66,7 +66,7 @@ class CompanyInformation extends Component{
   }
   componentDidMount() {
   var companyId = 1;
-    axios.get('/api/tgkSpecificcompanysettings/'+ companyId)
+    axios.get('/api/companysettings/'+ companyId)
     .then( (res)=>{      
       console.log("here company data",res.data);
       this.setState({
@@ -191,7 +191,7 @@ class CompanyInformation extends Component{
 
      var companyInfoFormValueUpdate = {
 
-      companyId               :1,
+      companyId               : 1,
       companyName             : this.state.companyName,
       companyContactNumber    : this.state.companyContactNumber,
       companyMobileNumber     : this.state.companyAltContactNumber,
@@ -209,8 +209,9 @@ class CompanyInformation extends Component{
       taluka                  : this.state.taluka,
     }
   
-    console.log("companyInfoFormValueUpdate--------------------",companyInfoFormValueUpdate);
-    // formValid(this.state.formerrors)
+    console.log("companyInfoFormValue--------------------",companyInfoFormValue);
+
+    formValid(this.state.formerrors)
   if(this.state.companyName!= "" && this.state.companyContactNumber!= "" && this.state.companyEmail!= ""
    && this.state.companywebsite!= "" && this.state.companyAddressLine1!= "" && this.state.companyCountry!= ""
    && this.state.companyState!= "" && this.state.companyDist!= "" && this.state.companyCity!= "" && 
@@ -218,11 +219,15 @@ class CompanyInformation extends Component{
     
 
     if(this.state.submitVal == true){
-        axios.post('/api/tgkSpecificcompanysettings',companyInfoFormValue)
-        .then( (response)=> {
+        axios.post('/api/companysettings',companyInfoFormValue)
+        .then( (response)=> { 
           // handle success
           console.log("this is response===>>>",response);
-          swal("Good job!", "Company Information submitted Successfully", "success");
+        
+           swal({
+                    title: "Company Information submitted Successfully",
+                    text: "Company Information submitted Successfully",
+                  });
           this.setState({
         
           companyName             : "",
@@ -247,7 +252,11 @@ class CompanyInformation extends Component{
         .catch(function (error) {
           // handle error
           console.log(error);
-          swal("Sorry!", "Company Information submition failed!", "error")
+        
+          swal({
+                    title: "Company Information submition failed!",
+                    text: "Company Information submition failed!",
+                  });
 
         })
         .finally(function () {
@@ -257,15 +266,19 @@ class CompanyInformation extends Component{
       // upate function
 
       console.log("update axios");
-      axios.patch('/api/tgkSpecificcompanysettings/information',companyInfoFormValueUpdate)
+      axios.patch('/api/companysettings/information',companyInfoFormValueUpdate)
         .then( (response)=> {
           // handle success
           console.log("this is response===>>>",response);
-          swal("Good job!", "Company Information Updated Successfully", "success");
+         
+           swal({
+                    title: "Company Information Updated Successfully",
+                    text: "Company Information Updated Successfully",
+                  });
 
            // after update show updated data
                         var companyId = 1;
-                        axios.get('/api/tgkSpecificcompanysettings/'+ companyId)
+                        axios.get('/api/companysettings/'+ companyId)
                         .then( (res)=>{      
                           // console.log("here company data",res.data);
                           this.setState({
@@ -296,12 +309,21 @@ class CompanyInformation extends Component{
         .catch(function (error) {
           // handle error
           console.log(error);
-          swal("", "Company Information updation failed!", "Danger")
+          
+             swal({
+                    title: "Company Information updation failed!",
+                    text: "Company Information updation failed!",
+                  });
 
         });
     }
   }else{
-    swal("warning" ,"Please enter mandatory fields");
+ 
+
+             swal({
+                    title: "Please enter mandatory fields",
+                    text: "Please enter mandatory fields",
+                  });
     console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
   }
  

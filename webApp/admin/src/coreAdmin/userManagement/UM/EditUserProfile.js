@@ -33,7 +33,11 @@ class EditUserProfile extends Component{
 		console.log("formvalues",formvalues);
 				axios.patch('/api/users/'+userid, formvalues)
 				.then((response)=> {		
-					swal("User updated successfully","", "success");		
+					
+					swal({
+										title: "User updated successfully",
+										text: "User updated successfully",
+									});
 					 this.props.history.push('/umlistofusers');	
 					console.log('response --====================',response);
 

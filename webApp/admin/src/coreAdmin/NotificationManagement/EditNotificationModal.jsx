@@ -141,9 +141,13 @@ class EditNotificationModal extends Component{
 					"subject":this.state.subject
 				}
 				
-				axios.put('/api/masternotifications/'+editId, formValues)
+				axios.put('/api/masternotification/'+editId, formValues)
 				.then((response)=> {		
-					swal("Template updated successfully","", "success");			
+				
+					 swal({
+										title: "Template updated successfully",
+										text: "Template updated successfully",
+									});		
 					this.setState({
 						shown : false,
 					});
@@ -169,7 +173,11 @@ class EditNotificationModal extends Component{
 				})
 				.catch((error)=> {
 					
-					swal(" Sorry! Template can't update successfully","", "error");
+					
+					 swal({
+										title: "Sorry! Template can't update successfully",
+										text: "Sorry! Template can't update successfully",
+									});
 					this.setState({
 						shown : false,
 					});

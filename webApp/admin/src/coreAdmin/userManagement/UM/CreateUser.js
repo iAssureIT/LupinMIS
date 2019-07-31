@@ -166,11 +166,20 @@ class CreateUser extends Component {
         if(this.state.firstname!=="" && this.state.lastname !=="" && this.state.signupEmail && this.state.mobNumber && this.state.role !== "--select--"){
            axios.post('/api/users', formValues)
                 .then( (res)=>{
-                    swal("User added successfully", "", "success");
-                    this.refs.firstname.value = '';
-                    this.refs.lastname.value  = '';
-                    this.refs.signupEmail.value  = '';
-                    this.refs.mobNumber.value = '';
+                 
+                     swal({
+                    title: "User added successfully",
+                    text: "User added successfully",
+                  });
+                    this.setState({
+                      firstname   : "",
+                      lastname    : "",
+                      signupEmail : "",
+                      mobNumber   : "",
+                      role        : "",
+                    })
+                    
+                    // this.refs.office.value = "",
                     this.setState({show: false})
 
                     var data = {
@@ -189,7 +198,12 @@ class CreateUser extends Component {
                 this.setState({show: false})
               });
         }else{
-          swal("Please enter mandatory fields", "", "warning");
+         
+
+                     swal({
+                    title: "Please enter mandatory fields",
+                    text: "Please enter mandatory fields",
+                  });
           console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
         }
 

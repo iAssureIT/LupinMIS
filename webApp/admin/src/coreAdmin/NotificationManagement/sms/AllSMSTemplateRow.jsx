@@ -20,7 +20,7 @@ export default class AllSMSTemplateRow extends Component{
 		event.preventDefault();
 		var id = event.target.id;
 		console.log('id',id);
-		axios.get('/api/masternotifications/'+id)
+		axios.get('/api/masternotification/'+id)
 		.then((response)=> {
 	    	console.log('delete response',response);
 	    	
@@ -39,9 +39,13 @@ export default class AllSMSTemplateRow extends Component{
 		event.preventDefault();
 		var id = event.target.id;
 		console.log('id',id);
-		axios.delete('/api/masternotifications/'+id)
+		axios.delete('/api/masternotification/'+id)
 		.then((response)=> {
-			swal("Template deleted successfully","", "success");
+			
+			 swal({
+										title: "Template deleted successfully",
+										text: "Template deleted successfully",
+									});
 	    	console.log('delete response',response);
 	    	console.log("here response message",response.data.message);
 	    	if(response.data.message=="Master notification deleted")

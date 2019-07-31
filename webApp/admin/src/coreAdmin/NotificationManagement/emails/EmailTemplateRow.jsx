@@ -32,7 +32,7 @@ class EmailTemplateRow extends Component{
 		var id = event.target.id;
 		console.log("id",id);
 		const token = '';
-		const url = '/api/masternotifications/'+id ;
+		const url = '/api/masternotification/'+id ;
 		const headers = {
 			    "Authorization" : token,
 			    "Content-Type" 	: "application/json",
@@ -55,8 +55,11 @@ class EmailTemplateRow extends Component{
 		})
 		.then((response)=> {
 	    	console.log('delete response',response);
-	    	swal("Template deleted successfully","", "success"); 
-
+	    	
+	    	 swal({
+										title: "Template deleted successfully",
+										text: "Template deleted successfully",
+									});
 	    	console.log("here response message",response.data.message);
 	    	if(response.data.message=="Master notification deleted")
 	    	{

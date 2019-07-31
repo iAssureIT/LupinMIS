@@ -174,7 +174,7 @@ class ViewTemplates extends Component{
 		// console.log('getData');
 		axios({
 			method: 'get',
-			url: '/api/masternotifications/list',
+			url: '/api/masternotification/list',
 		}).then((response)=> {
 			var emailTemplatesList = response.data.filter((a)=>{ return a.templateType == "Email"});	   	    
 			var notificationTemplatesList = response.data.filter((a)=>{ return a.templateType == "Notification"});	   	    
@@ -209,7 +209,7 @@ class ViewTemplates extends Component{
     getId(id){
     	axios({
 			method: 'get',
-			url: '/api/masternotifications/'+id,
+			url: '/api/masternotification/'+id,
 		}).then((response)=> {
 		    this.setState({
 				emailTemplates : response.data
@@ -220,8 +220,8 @@ class ViewTemplates extends Component{
 	  if (id) {
 	  axios({
 					method: 'get',
-					// url: 'http://localhost:3048/api/masternotifications/'+id,
-					url: '/api/masternotifications/'+id,
+					// url: 'http://localhost:3048/api/masternotification/'+id,
+					url: '/api/masternotification/'+id,
 				}).then((response)=> {
 	    this.setState({
 						emailTemplates : response.data
@@ -234,8 +234,8 @@ class ViewTemplates extends Component{
 		 if (id) {
 	  axios({
 					method: 'get',
-					// url: 'http://localhost:3048/api/masternotifications/'+id,
-					url: '/api/masternotifications/'+id,
+					// url: 'http://localhost:3048/api/masternotification/'+id,
+					url: '/api/masternotification/'+id,
 				}).then((response)=> {
 	    this.setState({
 						notificationTemplates : response.data
@@ -248,8 +248,8 @@ class ViewTemplates extends Component{
 		 if (id) {
 	  axios({
 					method: 'get',
-					// url: 'http://localhost:3048/api/masternotifications/'+id,
-					url: '/api/masternotifications/'+id,
+					// url: 'http://localhost:3048/api/masternotification/'+id,
+					url: '/api/masternotification/'+id,
 				}).then((response)=> {
 	    this.setState({
 						smsTemplates : response.data
@@ -262,7 +262,7 @@ class ViewTemplates extends Component{
     getNotificationId(id){
     	axios({
 			method: 'get',
-			url: '/api/masternotifications/'+id,
+			url: '/api/masternotification/'+id,
 		}).then((response)=> {
 			this.setState({
 				notificationTemplates : response.data
@@ -272,7 +272,7 @@ class ViewTemplates extends Component{
     getSmsId(id){
     	axios({
 			method: 'get',
-			url: '/api/masternotifications/'+id,
+			url: '/api/masternotification/'+id,
 		}).then((response)=> {
 	    	this.setState({
 				smsTemplates : response.data
@@ -324,13 +324,21 @@ class ViewTemplates extends Component{
 			console.log("here value of templatetype", this.state.templateType);
 			console.log("here value of templateName", this.state.templateName);
 			if( cketext === null || cketext == "" || templateType === '-- Select --' || templateName === '--Select Template Name--'){
-				swal("Please enter mandatory fields", "", "warning");
+				
+				 swal({
+										title: "Please enter mandatory fields",
+										text: "Please enter mandatory fields",
+									});
           		// console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
 			}else{	
 
 				if(templateType === 'Email' && (subject === null || subject == ""))
 				{
-					swal("Please enter mandatory fields", "", "warning");
+					
+					 swal({
+										title: "Please enter mandatory fields",
+										text: "Please enter mandatory fields",
+									});
 				}else{
 
 					var formValues = {   
@@ -341,12 +349,16 @@ class ViewTemplates extends Component{
 					}
 				
 						if(formValid(this.state.formerrors)){
-							axios.post('/api/masternotifications', formValues)
+							axios.post('/api/masternotification', formValues)
 							.then((response)=> {	
 							console.log('response here of add --------------',response);	
 								if(response.data.message== "Master Notification Template Name already exists")
 								{
-									swal("This template already exists","", "error");
+									
+									 swal({
+										title: "This template already exists",
+										text: "This template already exists",
+									});
 									 this.setState({
 									    	templateType 	: '-- Select --',
 									    	templateName 	: '--Select Template Name--',
@@ -354,11 +366,14 @@ class ViewTemplates extends Component{
 									    	content 		: null
 									    });   
 								}else{
-									swal("Template added successfully","", "success");
+									swal({
+										title: "Template added successfully",
+										text: "Template added successfully",
+									});
 								}			
 									axios({
 										method: 'get',
-										url: '/api/masternotifications/list',
+										url: '/api/masternotification/list',
 									}).then((response)=> {
 										console.log("here are the response--------------------", response);
 										
@@ -395,7 +410,12 @@ class ViewTemplates extends Component{
 								})
 						}else
 						{
-						    swal("Please enter mandatory fields", "", "warning");
+						   
+
+						    swal({
+										title: "Please enter mandatory fields",
+										text: "Please enter mandatory fields",
+									});
 						    // console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
 						}
 
