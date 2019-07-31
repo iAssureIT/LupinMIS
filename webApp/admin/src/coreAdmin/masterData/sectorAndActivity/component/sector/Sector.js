@@ -189,7 +189,7 @@ class Sector extends Component{
   }
   
   componentDidMount(){
-  console.log('componentDidMount');
+  console.log('componentDidMount', this.state.tableData);
     var editId = this.props.match.params.sectorId;
     if(editId){      
       this.edit(editId);
@@ -221,7 +221,7 @@ class Sector extends Component{
     // console.log('data', data);
      axios.post('/api/sectors/list',data)
     .then((response)=>{
-      // console.log('tableData', response.data);
+      console.log('tableData', response.data);
       this.setState({
         tableData : response.data
       })

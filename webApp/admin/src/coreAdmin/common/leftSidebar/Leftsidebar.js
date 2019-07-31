@@ -37,13 +37,13 @@ export default class Leftsidebar extends Component{
               </div>
               <ul className="list-unstyled components">
                 <li className="active sidebarMenuText">
-                  <a href="/">
+                  <a href="/dashboard">
                     <i className="glyphicon glyphicon-briefcase"></i>
                     Dashboard
                   </a>
                 </li>
                 <li className="sidebarMenuText">
-                  <a href="/plan" >
+                  <a href="/plan-details" >
                     <i className="fa fa-pie-chart" />
                     Plan Details
                   </a>
@@ -106,7 +106,7 @@ export default class Leftsidebar extends Component{
                   </a>
                   <ul className="collapse list-unstyled" id="MasterData">
                     <li>
-                        <a href="/center-detail">
+                        <a href="/center-details">
                           <i className="fa fa-circle-o" /> 
                           <span className="sidebarMenuSubText">Center Details</span>
                         </a>
@@ -127,19 +127,19 @@ export default class Leftsidebar extends Component{
                   </ul>
                 </li> 
                 <li className="sidebarMenuText">
-                  <a href="/" >
+                  <a href="/dashboard" >
                     <i className="fa fa-list" />
                     Case Studies
                   </a>
                 </li>
                 <li className="sidebarMenuText">
-                  <a href="/" >
+                  <a href="/dashboard" >
                     <i className="fa fa-hand-o-right " />
                     Highlights
                   </a>
                 </li>
                 <li className="sidebarMenuText">
-                  <a href="/" >
+                  <a href="/dashboard" >
                     <i className="fa fa-map-marker" />
                     Training Center
                   </a>

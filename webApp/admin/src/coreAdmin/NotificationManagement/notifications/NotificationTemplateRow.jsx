@@ -40,16 +40,19 @@ export default class NotificationTemplateRow extends Component{
 				{
 					this.props.notificationTemplatesList && this.props.notificationTemplatesList.length>0?
 						this.props.notificationTemplatesList.map((templateData, index)=>{
-						return (
-							<li key={templateData._id} onClick={this.getnotifTemplate.bind(this)} className="tempCategory col-lg-12" id={templateData._id}>
-								<span className="col-lg-2 NOpadding">
-									<i className="fa fa-book iconCss " aria-hidden="true"></i>
-								</span>  
-								<span className="col-lg-10 emailSpan" id={templateData._id}>
-									{templateData.templateName}
-								</span>
-							</li>
-						);
+							if(templateData){
+								return (
+									<li key={index} onClick={this.getnotifTemplate.bind(this)} className="tempCategory col-lg-12" id={templateData._id}>
+										<span className="col-lg-2 NOpadding">
+											<i className="fa fa-book iconCss " aria-hidden="true"></i>
+										</span>  
+										<span className="col-lg-10 emailSpan" id={templateData._id}>
+											{templateData.templateName}
+										</span>
+									</li>
+								);
+							}
+						
 					})
 					:
 					<li className="tempCategory col-lg-12">

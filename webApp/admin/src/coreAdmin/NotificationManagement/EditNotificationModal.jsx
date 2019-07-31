@@ -7,9 +7,6 @@ import CKEditor 				  from "react-ckeditor-component";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 
-axios.defaults.baseURL = 'http://localhost:3006';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class EditNotificationModal extends Component{
 
@@ -22,6 +19,10 @@ class EditNotificationModal extends Component{
 		'content'			: props.data ? props.data.content : '',
 	   	'optionA'			: '',
 	   	'messageError' 		: '',
+	   	shown 				: true,
+	   	emailTemplatesList 			: "",
+		notificationTemplatesList 	: "",
+		smsTemplatesList 			: "",
 	  };
 
 	    this.handleChange = this.handleChange.bind(this);
@@ -34,6 +35,7 @@ class EditNotificationModal extends Component{
 			'subject'			: nextProps.data.subject,
 			'content'			: nextProps.data.content,
 		});
+		// this.props.sendData();
 	}
 
 	handleChange(event){
@@ -114,9 +116,7 @@ class EditNotificationModal extends Component{
 
 	updateNotificationEmail(event){
 		event.preventDefault();
-		// var emailContent     = $('#messageContent').summernote('code');
-    	// if($("#editModal").valid()){   
-    	// console.log('this.state.content',this.state.content); 	
+
 	    if(this.state.content){
 	    	var editId 		 = this.props.emailNot;
 			var templateType     = this.state.templateType;
@@ -125,8 +125,8 @@ class EditNotificationModal extends Component{
 			var cketext          = this.state.content;
 			if(templateType === '-- Select --' || templateName === '--Select Template Name--'){
 				swal({
-					title: 'Please fill in all the required fields',
-					text:"Please fill in all the required fields",
+					title: 'This field is required.',
+					text:"This field is required.",
 					type: 'success',
 					showCancelButton: false,
 					confirmButtonColor: '#666',
@@ -134,60 +134,47 @@ class EditNotificationModal extends Component{
 				});
 			}else{	
 				var formValues = {
-					"notificationmasterID": "5cfbfc2eb1514e2ec11f20fd",
-					"templateType": "Email",
-					"templateName": "Admin New Registration",
-					"content": "<p>hkhkjhkhkjhkjkn,n,kgjvhhbj</p>",
-					"subject":"vvvnv"
+					"notificationmasterID":this.props.emailNot,
+					"templateType": this.state.templateType,
+					"templateName": this.state.templateName,
+					"content": this.state.content,
+					"subject":this.state.subject
 				}
 				
-				
-				axios.put('/masternotification', formValues)
-				.then((response)=> {					
-					/*if(templateType =='Email'){
-						var emailTemplatesList = this.state.emailTemplatesList;
-						emailTemplatesList.push(response.data.dataBody);
-						this.setState({
-							emailTemplatesList : emailTemplatesList
-						});
-					}else if(templateType =='SMS'){
-						var smsTemplatesList = this.state.smsTemplatesList;
-						smsTemplatesList.push(response.data.dataBody);
-						this.setState({
-							smsTemplatesList : smsTemplatesList
-						});
-					}else if(templateType =='Notification'){
-						var notificationTemplatesList = this.state.notificationTemplatesList;
-						notificationTemplatesList.push(response.data.dataBody);
-						this.setState({
-							notificationTemplatesList : notificationTemplatesList
-						});
-					}
-					swal({
-						title:'swal',
-						text: response.data.message ,
-						type: 'success',
-						showCancelButton: false,
-						confirmButtonColor: '#666',
-						confirmButtonText: 'Ok'
+				axios.put('/api/masternotifications/'+editId, formValues)
+				.then((response)=> {		
+					swal("Template updated successfully","", "success");			
+					this.setState({
+						shown : false,
 					});
-					$('#createNotifyModal').hide();
-					$('.modal-backdrop').remove();*/
 					console.log('response --==',response);
+					if (templateType  == "Email") {
+						this.props.emailGetData(editId)
+
+					}
+					if (templateType  == "Notification") {
+						this.props.notiGetData(editId)
+
+					}
+
+					if (templateType  == "SMS") {
+						this.props.smsGetData(editId)
+
+					}
+
+
+					$('#editNotifyModal-'+this.props.emailNot).hide();
+				    $('.modal-backdrop').remove();
+                   
 				})
-				.catch(function (error) {
-					/*swal({
-						text: "esponse.data",
-						type: 'success',
-						showCancelButton: false,
-						confirmButtonColor: '#666',
-						confirmButtonText: 'Ok'
-					});*/
+				.catch((error)=> {
+					
+					swal(" Sorry! Template can't update successfully","", "error");
+					this.setState({
+						shown : false,
+					});
 				console.log('error============',error);
 				})
-				.finally(function () {
-				// always executed
-				});
 			}
 		}else{
 			this.setState({
@@ -237,6 +224,8 @@ class EditNotificationModal extends Component{
 	render() {
 		if(this.props.emailNot){
 	        return (
+	        	<div>
+	        		{this.state.shown == true ? 
 					<div className="modal fade modalHide" id={"editNotifyModal-"+this.props.emailNot} role="dialog">
 					  	<div className="modal-dialog modal-lg" role="document">
 					    	<div className="modal-content modalContent col-lg-12 NOpadding">
@@ -280,14 +269,19 @@ class EditNotificationModal extends Component{
 												</div>
 											</div>
 										</div>
-										<div className="row rowPadding subjectRow col-lg-12 col-md-12 col-xs-12 col-sm-12">
-											<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-												<div className="form-group">
-												 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Subject <span className="astrick">*</span></label>     						
-											        <input type="text" name="subject" value={this.state.subject} onChange={this.handleChange} className="subject col-lg-12 col-md-12 col-sm-12 col-xs-12 inputValid" required/>
-												</div>	
+										{this.state.templateType!='Notification' && this.state.templateType!='SMS' ?
+											<div className="row rowPadding subjectRow col-lg-12 col-md-12 col-xs-12 col-sm-12">
+												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+													<div className="form-group">
+													 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Subject <span className="astrick">*</span></label>     						
+												        <input type="text" name="subject" value={this.state.subject} onChange={this.handleChange} className="subject col-lg-12 col-md-12 col-sm-12 col-xs-12 inputValid" required/>
+													</div>	
+												</div>
 											</div>
-										</div>
+											:
+											null
+										}
+										
 										<div className="row rowPadding col-lg-12 col-md-12 col-xs-12 col-sm-12">
 											<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 												<div className="form-group">
@@ -310,6 +304,10 @@ class EditNotificationModal extends Component{
 					   		</div>
 					  	</div>
 					</div>
+					:
+					null
+				}
+				</div>
 		    );
 		}else{
 			return (<div></div>);

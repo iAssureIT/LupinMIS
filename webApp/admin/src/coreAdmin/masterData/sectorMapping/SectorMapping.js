@@ -16,13 +16,13 @@ class SectorMapping extends Component{
     super(props);
    
     this.state = {
-      "goalName"           :"",
-      "goalType"           :"",
-      "sector"             :"",
-      "activity"           :"",
-      "uID"                :"",
-      "activityName"       :"",
-      "selectedActivities" :[],
+      "goalName"           : "",
+      "goalType"           : "",
+      "sector"             : "",
+      "activity"           : "",
+      "uID"                : "",
+      "activityName"       : "",
+      "selectedActivities" : [],
       fields               : {},
       errors               : {},
       "tableHeading"       : {
@@ -135,8 +135,8 @@ class SectorMapping extends Component{
     var id2 = this.state.uID;
     var mappingValues= 
     {     
-      "sectorMapping_ID"    :this.state.editId,
-      "goal"                :this.refs.goalName.value,
+      "sectorMapping_ID"    : this.state.editId,
+      "goal"                : this.refs.goalName.value,
       "type"                : this.refs.goalType.value,          
       "sector"              : this.state.selectedActivities,                  
     };

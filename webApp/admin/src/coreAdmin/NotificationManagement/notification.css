@@ -1,3 +1,66 @@
+/*********button css***********/
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+  color: #fff;
+  background-color: #fff !important;
+  text-decoration-color: none;
+}
+
+.notifTab{
+  position: absolute;
+  left: -67px;
+  z-index: 2;
+  border: none; 
+  margin-top: -42px;
+}
+
+.notifTab li a{
+  padding: 12px 15px;
+    margin-right: 248px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #039BE5;
+    text-transform: uppercase;
+    border: 1px solid #039BE5;
+    border-radius: 0px;
+    overflow: hidden;
+    z-index: 1;
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+    color: #039BE5;
+    width: 180px;
+
+}
+.notifTab li a:hover,
+.notifTab li a:focus,
+.notifTab li.active a{
+  background: transparent;
+  border: 1px solid #039BE5 !important;
+  color: #fff !important ;
+}
+
+
+.notifTab li a:before{
+  content: "";
+  width: 520%;
+  height: 0;
+  background: #039BE5;
+  position: absolute;
+  top: 56%;
+  left: 35%;
+  opacity: 0;
+  z-index: -1;
+  transform: translateX(-49%) translateY(-65%) rotate(5deg);
+  transition: all 0.3s ease-in-out 0s;
+}
+.notifTab li a:hover:before,
+.notifTab li.active a:before{
+    height: 200%;
+    opacity: 1;
+}
+
 .NotificationContent {
   min-height: 600px;
   margin-right: auto;
@@ -5,8 +68,18 @@
   padding-left: 32px;
   padding-right: 15px;
 }
+.my-custom-scrollbar {
+position: relative;
+height: 200px !important;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
+
 .CreateTempModal{
     margin-top: 8px;
+     font-family:'Montserrat',sans-serif;
 }
 .CreateTempModalDelete{
     margin-top: -30px !important;
@@ -30,11 +103,6 @@
     padding: 0px !important;
 }
 
-.notifTab{
-    text-align: center;
-    font-family: 'MYRIADPROREGULAR';
-    letter-spacing: 1px;
-}
 .notifWrapper{
     height: auto;
     border-radius: 3px;
@@ -53,7 +121,7 @@
     margin: 2% 0% !important;
 }
 .notificationTitle{
-	text-align: center;
+    text-align: center;
     color: #DA2128;
     font-weight: bold;
     margin-bottom: 20px;
@@ -81,11 +149,11 @@
     margin-top: 18px;
     font-weight: bold;
     font-size: 13px;
-    font-family: 'MYRIADPROREGULAR';
+    font-family: 'Roboto', sans-serif !important;
 }
 .fixlength{
     color: #1B4F72;
-    font-family: 'MYRIADPROREGULAR';
+    font-family: 'Roboto', sans-serif !important;
     margin-top: 5px;
 }
 #textarea{
@@ -95,7 +163,7 @@
 }
 #textarea_feedback{
     color: #1B4F72;
-    font-family: 'MYRIADPROREGULAR';
+    font-family: 'Roboto', sans-serif !important;
     margin-top: -19px;
 }
 .senderTxtarea{
@@ -244,7 +312,7 @@
 .emailSpan{
     color:#333;
     margin-top: .7em;
-    font-family: 'MYRIADPROREGULAR';
+    font-family: 'Roboto', sans-serif !important;
     letter-spacing: 1px;
 }
 
@@ -253,8 +321,8 @@
     margin-bottom: 2em;
     height: auto;
     min-height: 300px;
-    border:1px solid #f1f1f1;
-   border-top: 1px solid #f1f1f1;
+    /*border:1px solid #f1f1f1;
+   border-top: 1px solid #f1f1f1;*/
 }
 
 #notificationTemplates{
@@ -262,11 +330,11 @@
     margin-bottom: 2em;
     height: auto;
     min-height: 300px;
-    border:1px solid #f1f1f1;
-    border-top: 1px solid #f1f1f1;
+  /*  border:1px solid #f1f1f1;
+    border-top: 1px solid #f1f1f1;*/
 }
 .templateTitle{
-    font-family: 'Myriad-Pro-Semibold';
+    font-family: 'Roboto', sans-serif !important;
     letter-spacing: 1px;
 }
 
@@ -276,8 +344,8 @@
     margin-bottom: 2em;
     height: auto;
     min-height: 300px;
-    border:1px solid #f1f1f1;
-    border-top: 1px solid #f1f1f1;
+    /*border:1px solid #f1f1f1;
+    border-top: 1px solid #f1f1f1;*/
 }
 .savetemp b{
     margin-left:3px;
@@ -318,7 +386,7 @@
 .labelcontactsHeader{
     text-align: center;
     font-size: 15px;
-    font-family: 'MYRIADPROREGULAR';
+    font-family: 'Roboto', sans-serif !important;
 }
 .labelContainer{
     margin-top: 10px;
@@ -345,13 +413,13 @@
 }
 .createlabel-label{
     font-size: 14px;
-    font-family: 'MYRIADPROREGULAR';
+    font-family: 'Roboto', sans-serif !important;
     color: #616A6B  ;
 }
 .createlabel-label1{
      font-size: 13px;
     font-weight: normal;
-    font-family: 'MYRIADPROREGULAR';
+    font-family: 'Roboto', sans-serif !important;
     color: #616A6B;
 
 }
@@ -400,7 +468,7 @@
     margin-top: 7px;
     font-weight: bold;
     font-size: 13px;
-    font-family: 'MYRIADPROREGULAR';
+    font-family: 'Roboto', sans-serif !important;
 }
 .sendemailbtn{
     border-radius: 0px;
@@ -454,7 +522,7 @@
     text-decoration: none;
     color: #444 !important;
     font-size: 13px;
-    font-family: 'MYRIADPROREGULAR';
+    font-family: 'Roboto', sans-serif !important;
 }
 .templateLibrary ul li:hover{
     background: linear-gradient(to bottom, #bfc2cb, #dadde7, #bfc2cb);
@@ -701,6 +769,7 @@
     margin-bottom: 1em;
 }
 .modalContent{
+    margin-top: 2%;
     border-radius: 10px;
     /*border-top: 3px solid #2189d1;*/
 }
@@ -710,8 +779,8 @@
 }
 .notifTabs{
     text-align: center;
-    margin-bottom: 2em;
-    margin-top: 2em;
+    margin-bottom: 3em;
+    margin-top: 5em;
 }
 .dropbtn {
     color: #666;
@@ -762,7 +831,7 @@
 .dropdown-content:after {
     position: absolute;
     top: -11px;
-    right: 14px;
+    right: 19px;
     display: inline-block;
     border-right: 10px solid transparent;
     border-bottom: 10px solid #f2f2f2;
@@ -776,7 +845,7 @@
     cursor: pointer;
     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
     -webkit-font-smoothing: antialiased;
-    font-family:'Myriad-Pro-Semibold';
+    font-family:'Roboto', sans-serif !important;
     letter-spacing: 1px;
     -webkit-align-items: center;
     background-color: #fff;
@@ -807,11 +876,9 @@
     height: 650px;
 }
 .nav-pillss>li>a {
-    color: #333;
+  
     white-space: nowrap;
-    box-shadow: 4px 4px 10px 0 #7d7c7c;
-    background: #ccc;
-}
+  }
 .dropbtn {
     color: #666;
     font-size: 16px;
@@ -850,13 +917,14 @@
   }
   .adminModal-header {
       border-radius: 9px 9px 0 0;
-      /*background: #2189d1;*/
+      background: #039BE5;
       color: #fff;
       border: none;
   }
   .adminModal-body {
-      margin-top: 50px;
+      margin-top: 0px;
       margin-bottom: 50px;
+      background: #fff;
   }
   .adminModal-footer {
       border-radius: 0 0 9px 9px;
@@ -866,20 +934,24 @@
   }
   .adminCancel-btn, .adminFinish-btn {
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #000;
+      box-shadow: 2px 2px 9px -2px #039BE5;
   }
   .btnUpdate{
       color: #fff;
-      background: #2189d1;
+      background: #039BE5;
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #2189d1;
+      box-shadow: 2px 2px 9px -2px #039BE5;
   }
-/*  .btnSubmit{
-      color: #fff;
-      background: #2189d1;
-      margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #2189d1;	
-  }*/
+.btnSubmit{
+    height: 40px;
+    background-color: #039BE5;
+    color: #fff;
+    font-weight: 600 !important;
+    font-family:'Montserrat',sans-serif;
+    font-size: 14px !important;
+    border-radius: 5px;
+    border: none;
+}
   .adminCloseCircleDiv {
       display: inline-grid;
       box-shadow: 3px 4px 7px -3px #666!important;
@@ -911,6 +983,16 @@
   .textAlignRight {
       text-align: right!important;
   }
-  .error{
-      color: red;
-  }
+  .addexamform {
+    font-size: 12px;
+    margin-top: 5px;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+    background: #0689ca;
+    border: 1px solid #039BE5;
+    padding: 8px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,.302), 0 1px 3px 1px rgba(60,64,67,.149);
+    -webkit-font-smoothing: antialiased;
+}

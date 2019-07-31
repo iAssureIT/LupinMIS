@@ -1,10 +1,38 @@
+.App {
+/*  text-align: center;
+*/}
 
+/*html *
+{
+   font-family:'Roboto', sans-serif !important;
+}*/
+
+.pointerCls{
+  cursor: pointer;
+}
+.mar0{
+  margin: 0px !important;
+}
+.zeropadd{
+  padding: 0px !important;
+}
+.marbtm30{
+  margin-bottom: 30px;
+}
+.tablebox{
+  margin-top: 30px;
+}
+.leftmar{
+  margin-left: 10px;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
   pointer-events: none;
 }
-
+.zzero{
+  z-index: 0!important;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -43,12 +71,10 @@
 {
     width: 94%!important;
   }
-
-.dashboardeffect
+  .dashboardeffect
 {
     width: 94.2%!important;
-}
-
+  }
 .leftsidebarbackgroundcolor{
   position: fixed!important;
   left: 15px;
@@ -62,6 +88,12 @@
 .emptyclass{
   height: 100px;
 }
+.kbhj{
+
+}
+
+
+/*********************************************/
 
 /*.....................Main.css........................*/
 body {
@@ -115,12 +147,10 @@ input, select{
 }
 /*Form input lable*/
 .formLable{
-  font-family:'Montserrat',sans-serif;
+  font-family:'Montserrat',sans-serif !important;
   font-size: 12px !important;
   color: #333333;
   font-weight: normal;
-  
-
 }
 
 /*add this class next to form-control*/
@@ -702,7 +732,7 @@ margin-right: 12px;
 
   .input_status {
     background-color: #fff !important;
-    border: 0px;
+    border: none !important;
   }
   .abc{
     

@@ -1,28 +1,29 @@
 import React, { Component }   from 'react';
 import axios                  from 'axios';
-import moment                 from "moment";
-import 'bootstrap/js/tab.js';
+
 
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
-import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
+import moment                 from "moment";
+
+
+import 'bootstrap/js/tab.js';
+import 'react-table/react-table.css'; 
+
 import "./ViewActivity.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-var add = 0;
 
 class ViewActivity extends Component{
   
   constructor(props){
     super(props);
-   
     this.state = {
-
       "center_id"         : "",
       "centerName"        : "",
       "dist"              : "",
       "block"             : "",
-      "dateOfIntervention": "",
+      "dateofIntervention": "",
       "village"           : "",
       "date"              : "",
       "sector"            : "",
@@ -59,7 +60,8 @@ class ViewActivity extends Component{
                             {
                               heading : '',
                               mergedColoums : 1
-                            },]
+                            },
+                            ]
       },
       "tableHeading"      : {
         date                       : "Date",
@@ -84,29 +86,44 @@ class ViewActivity extends Component{
         // actions                    : 'Action',
       },
       "tableObjects"               : {
+        deleteMethod               : 'delete',
         apiLink                    : '/api/activityReport/',
         paginationApply            : true,
         searchApply                : true,
         editUrl                    : '/activity/'
       },
+      "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
       "limitRange"                 : 10,
       "editId"                     : this.props.match.params ? this.props.match.params.id : ''
-    
     }
   }
 
-
-getData(startRange, limitRange){ 
+  getLength(){
+    axios.get('/api/activityReport/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        // console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      
+    });
+  }
+  getData(startRange, limitRange){ 
    var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
     axios.post('/api/activityReport/list', data)
     .then((response)=>{
-      console.log('response', response.data);
+
       var tableData = response.data.map((a, i)=>{
         return {
+          _id                        : a._id,
           date                       : moment(a.date).format('YYYY-MM-DD'),
           place                      : a.place,
           sectorName                 : a.sectorName,
@@ -114,7 +131,7 @@ getData(startRange, limitRange){
           activityName               : a.activityName,
           subactivityName            : a.subactivityName,
           unit                       : a.unit,
-          unitCost                   : a.unitcost,
+          unitCost                   : a.unitCost,
           quantity                   : a.quantity,
           totalcost                  : a.totalcost,
           numofBeneficiaries         : a.numofBeneficiaries,
@@ -136,10 +153,20 @@ getData(startRange, limitRange){
     .catch(function(error){      
     });
   }
-  componentDidMount(){
+
+  componentDidMount() {
+    var dateObj = new Date();
+    var momentObj = moment(dateObj);
+    var momentString = momentObj.format('YYYY-MM-DD');
+
+    this.setState({
+      dateofIntervention :momentString,
+    })
+    this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
   }
-  render(){
+
+  render() {
     return (
       <div className="container-fluid">
         <div className="row">
@@ -153,7 +180,7 @@ getData(startRange, limitRange){
                      </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-                
+                 
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
                       tableHeading={this.state.tableHeading}

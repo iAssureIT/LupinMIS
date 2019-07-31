@@ -10,7 +10,7 @@ import "../Reports/Reports.css";
    Total Budget Outreach  Family Upgradation plan Outreach   Families Upgraded  " Financial
 Total " % to Annual Plan  LHWRF NABARD  Bank  Loan  Community  Contribution   Govt. Others  
                       Direct  Indirect      */
-class ActivitywiseAnnualCompletionReport extends Component{
+class SectorwiseAnnualCompletionSummaryReport extends Component{
 	constructor(props){
     super(props);
     this.state = {
@@ -33,15 +33,11 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     mergedColoums : 1
                 },
                 {
-                    heading : '',
-                    mergedColoums : 1
-                },
-                {
                     heading : 'Annual Plan',
-                    mergedColoums : 4
+                    mergedColoums : 3
                 },
                 {
-                    heading : "Annual Financial Achievement 'Lakh'",
+                    heading : "Annual Achievement",
                     mergedColoums : 4
                 },
                 {
@@ -55,16 +51,14 @@ class ActivitywiseAnnualCompletionReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "abcs"    : 'Activity & Sub Activity',
-            "abcd"    : 'Unit',
-            "abcf"    : 'Reach', 
-            "fdgf"    : 'Families Upgradation', 
-            "dfgg"    : 'Physical Units', 
-            "abcx"    : "Total Budget 'Rs'",
-            "cbfg"    : 'Reach', 
-            "hgjh"    : 'Families Upgradation', 
-            "cfgf"    : 'Physical Units', 
-            "acbc"    : "Total Expenditure 'Rs'",
+            "abcs"    : 'Sector',
+            "abcx"    : "Total Budget",
+            "cbfg"    : 'OutReach', 
+            "fdgf"    : 'Family Upgradation', 
+            "weqw"    : 'OutReach', 
+            "hgjh"    : 'Families Upgraded', 
+            "abcf"    : 'Financial Total', 
+            "abcd"    : '% to Annual Plan',
             "ouio"    : 'LHWRF',
             "dgfg"    : 'NABARD',
             "ghgh"    : 'Bank Loan',
@@ -73,8 +67,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
             "ertr"    : 'Govt',
             "abui"    : 'Others',
             "yiyi"    : 'Remarks',
+           
         },
-
     }
     window.scrollTo(0, 0);
   }
@@ -108,19 +102,19 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17">
                       <div className="sales-report-main-class">
                         <div className="sales-report-commonpre">
-                          <div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView == "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
+                          <div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
                             Daily
                           </div>
-                          <div onClick={this.changeReportComponent.bind(this)} id="Weekly"  className={this.state.currentTabView == "Weekly" ? "sales-report-common sales-report-thisweek report-currentlyActive" : "sales-report-common sales-report-thisweek"}>
+                          <div onClick={this.changeReportComponent.bind(this)} id="Weekly"  className={this.state.currentTabView === "Weekly" ? "sales-report-common sales-report-thisweek report-currentlyActive" : "sales-report-common sales-report-thisweek"}>
                             Weekly
                           </div>
-                          <div onClick={this.changeReportComponent.bind(this)} id="Monthly"  className={this.state.currentTabView == "Monthly" ? "sales-report-common sales-report-thismonth report-currentlyActive" : "sales-report-common sales-report-thismonth"}>
+                          <div onClick={this.changeReportComponent.bind(this)} id="Monthly"  className={this.state.currentTabView === "Monthly" ? "sales-report-common sales-report-thismonth report-currentlyActive" : "sales-report-common sales-report-thismonth"}>
                             Monthly
                           </div>
-                          <div onClick={this.changeReportComponent.bind(this)} id="Yearly"  className={this.state.currentTabView == "Yearly" ? "sales-report-common sales-report-thisyear report-currentlyActive" : "sales-report-common sales-report-thisyear"}>
+                          <div onClick={this.changeReportComponent.bind(this)} id="Yearly"  className={this.state.currentTabView === "Yearly" ? "sales-report-common sales-report-thisyear report-currentlyActive" : "sales-report-common sales-report-thisyear"}>
                             Yearly
                           </div>
-                          <div onClick={this.changeReportComponent.bind(this)} id="Customised"  className={this.state.currentTabView == "Customised" ? "sales-report-common sales-report-costomised report-currentlyActive" : "sales-report-common sales-report-costomised"}>
+                          <div onClick={this.changeReportComponent.bind(this)} id="Customised"  className={this.state.currentTabView === "Customised" ? "sales-report-common sales-report-costomised report-currentlyActive" : "sales-report-common sales-report-costomised"}>
                             Customised Dates
                           </div>
                         </div>
@@ -128,10 +122,10 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     </div>
                     
                     {
-                      this.state.currentTabView == "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
-                      this.state.currentTabView == "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-                      this.state.currentTabView == "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
-                      this.state.currentTabView == "Yearly"  ? <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
+                      this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
+                      this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
+                      this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
+                      this.state.currentTabView === "Yearly"  ? <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
                       <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} />  
                     }
                     
@@ -145,4 +139,4 @@ class ActivitywiseAnnualCompletionReport extends Component{
     );
   }
 }
-export default ActivitywiseAnnualCompletionReport
+export default SectorwiseAnnualCompletionSummaryReport

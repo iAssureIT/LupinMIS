@@ -488,7 +488,7 @@ class IAssureTable extends Component {
 		});
     }
 	render() {
-		console.log(this.state.limitRange +'>='+  this.state.dataLength, this.state.dataCount);
+		// console.log(this.state.limitRange +'>='+  this.state.dataLength, this.state.dataCount);
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       	{

@@ -1,0 +1,157 @@
+.sidebar1-header{
+    color: #fff;
+    padding-left: 20px;
+}
+
+.leftpadd{
+    padding-left: 20px;
+    margin: 0px !important;
+}
+
+#sidebar1 {
+    min-width: 250px;
+    max-width: 270px;
+    background: #333;
+    color: #fff;
+    transition: all 0.80s;
+}
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+
+.RightSide{
+  min-width: 250px !important;
+    max-width: 270px !important;
+}
+#sidebar1.active {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+}
+
+.logopos{
+  margin-top: 13px !important;
+  margin-bottom: 10px !important;
+  text-align: center;
+}
+#sidebar1.active .sidebar1-header h4,  #sidebar1.active .CTAs {
+    display: none;
+}
+
+#sidebar1.active .sidebar1-header strong {
+    display: block;
+}
+
+#sidebar1 ul li a {
+    text-align: left;
+}
+
+#sidebar1.active ul li a {
+    padding: 20px 10px;
+    text-align: center;
+    font-size: 0.85em;
+}
+
+#sidebar1.active ul li a i {
+    margin-right:  0;
+    display: block;
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+
+#sidebar1.active ul ul a {
+    padding: 10px !important;
+}
+
+#sidebar1.active a[aria-expanded="false"]::before, #sidebar1.active a[aria-expanded="true"]::before {
+    top: auto;
+    bottom: 5px;
+    right: 50%;
+    -webkit-transform: translateX(50%);
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
+}
+
+#sidebar1 .sidebar1-header {
+    padding: 4px;
+    background: #222;
+}
+
+#sidebar1 .sidebar1-header strong {
+    display: none;
+    font-size: 1.8em;
+}
+
+#sidebar1 ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #333;
+}
+
+#sidebar1 ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+#sidebar1 ul li a:hover {
+    color: #555;
+    background: #fff;
+}
+#sidebar1 ul li a i {
+    margin-right: 10px;
+}
+
+#sidebar1 ul li.active > a, a[aria-expanded="true"] {
+    color: #fff;
+    background: #222;
+}
+
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+/* a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
+    content: '\e259';
+    display: block;
+    position: absolute;
+    right: 20px;
+    font-family: 'Glyphicons Halflings';
+    font-size: 0.6em;
+}
+a[aria-expanded="true"]::before {
+    content: '\e260';
+} */
+
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #222;
+}
+
+ul.CTAs {
+    padding: 20px;
+}
+
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+a.download {
+    background: #fff;
+    color: #7386D5;
+}
+
+a.article, a.article:hover {
+    background: #222 !important;
+    color: #fff !important;
+}
+
+

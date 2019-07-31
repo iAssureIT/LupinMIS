@@ -40,7 +40,7 @@ export default class SMSTemplateRow extends Component{
 					this.props.smsTemplatesList && this.props.smsTemplatesList.length>0?
 						this.props.smsTemplatesList.map((templateData, index)=>{
 						return (
-							<li key={templateData._id} onClick={this.getsmsTemplate.bind(this)} className="tempCategory col-lg-12" id={templateData._id}>
+							<li key={index} onClick={this.getsmsTemplate.bind(this)} className="tempCategory col-lg-12" id={templateData._id}>
 								<span className="col-lg-2 NOpadding">
 									<i className="fa fa-book iconCss " aria-hidden="true"></i>
 								</span>  

@@ -1,6 +1,7 @@
 import React, { Component }     from 'react';
 import EditNotificationModal    from '../EditNotificationModal.jsx';
 import axios 					from 'axios';
+import swal                     	from 'sweetalert';
 
 export default class AllSMSTemplateRow extends Component{
 
@@ -12,15 +13,17 @@ export default class AllSMSTemplateRow extends Component{
 			content         : '',
 		};
       	this.editSMSModal = this.editSMSModal.bind(this);
+      	this.smsGetData    = this.smsGetData.bind(this);
     }
 
     editSMSModal(event){
 		event.preventDefault();
 		var id = event.target.id;
 		console.log('id',id);
-		axios.get('/masternotification/'+id)
+		axios.get('/api/masternotifications/'+id)
 		.then((response)=> {
 	    	console.log('delete response',response);
+	    	
 	    	this.setState({
 				'templateType' 		: response.data.templateType,
 				'templateName'		: response.data.templateName,
@@ -36,19 +39,32 @@ export default class AllSMSTemplateRow extends Component{
 		event.preventDefault();
 		var id = event.target.id;
 		console.log('id',id);
-		axios.delete('/masternotification/'+id)
+		axios.delete('/api/masternotifications/'+id)
 		.then((response)=> {
+			swal("Template deleted successfully","", "success");
 	    	console.log('delete response',response);
+	    	console.log("here response message",response.data.message);
+	    	if(response.data.message=="Master notification deleted")
+	    	{
+	    	this.props.deleteData("SMS",id);
+    		}
+    		
 		}).catch((error)=> {
 		    // handle error
 		    console.log(error);
 		});
 	}
+
+	smsGetData =(id)=>{
+    this.props.getSmsData(id);
+	}
+
+
 	render() {
 		var text= this.props.smstemplateValues.content ? this.props.smstemplateValues.content : 'abc';
 		var regex = new RegExp(/(<([^>]+)>)/ig);
 		text = text.replace(regex, '');
-		console.log('smstemplateValues',this.props.smstemplateValues);
+		// console.log('smstemplateValues',this.props.smstemplateValues);
 		if(this.props.smstemplateValues.content){
 			
 	        return (
@@ -63,19 +79,19 @@ export default class AllSMSTemplateRow extends Component{
 										<span className="">&nbsp;&nbsp;&nbsp; Edit</span>
 									</div>
 								</span>
-								<span className="">
+								
 									<div className="deleteNotif" data-toggle="modal" data-target={`#${this.props.smstemplateValues._id}-rm`} id={this.props.smstemplateValues._id}>
 										<span>
 											<i className="fa fa-trash deleteEM" aria-hidden="true" id={this.props.smstemplateValues._id}></i>
 											<span>&nbsp;&nbsp;&nbsp; Delete</span>
 										</span>
 									</div>
-								</span>
+							
 							</div>
 						</div>
 
 					</div>
-					<EditNotificationModal emailNot={this.props.smstemplateValues._id} />
+					<EditNotificationModal emailNot={this.props.smstemplateValues._id} smsGetData={this.smsGetData.bind(this)} data={this.props.smstemplateValues}/>
 					<div className="modal fade col-lg-12 col-md-12 col-sm-12 col-xs-12" id={`${this.props.smstemplateValues._id}-rm`}  role="dialog">
 	                    <div className=" modal-dialog adminModal adminModal-dialog">
 	                         <div className="modal-content adminModal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -107,7 +123,7 @@ export default class AllSMSTemplateRow extends Component{
 						<div className="col-lg-10 col-md-12 col-sm-12 col-xs-12">
 							<div className="form-group">
 								<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Message:</label>     						
-								<p className="textAreaBox">{text}</p>
+								 <p  dangerouslySetInnerHTML={{ __html:text}} className="textAreaBox"></p>
 							</div>	
 						</div>
 					</div>

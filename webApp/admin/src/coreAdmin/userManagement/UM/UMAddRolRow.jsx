@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
-import TrackerReact from 'meteor/ultimatejs:tracker-react';
+// import React, { Component } from 'react';
+// import { render } from 'react-dom';
+/*import TrackerReact from 'meteor/ultimatejs:tracker-react';
 
 export default class UMAddRolRow extends TrackerReact(Component) {
 
@@ -12,4 +12,23 @@ export default class UMAddRolRow extends TrackerReact(Component) {
 
 	} 
 
+}*/
+
+import React, { Component, PropTypes } from 'react';
+
+class UMAddRolRow extends Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+    	var name = this.props.roleDataVales;
+    	// console.log("herer role namessssssssssssssssssss",name);
+        return (
+            <option  value={`add$${this.props.roleDataVales}`} name="userListDDOption">Add {this.props.roleDataVales} Role to Selected </option>
+        );
+    }
 }
+
+export default UMAddRolRow;

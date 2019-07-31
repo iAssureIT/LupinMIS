@@ -87,7 +87,7 @@ class PlanDetails extends Component{
         apiLink             : '/api/annualPlans/',
         paginationApply     : true,
         searchApply         : true,
-        editUrl             : '/plan/',
+        editUrl             : '/plan-details/',
       },   
       "startRange"          : 0,
       "limitRange"          : 10,
@@ -445,7 +445,7 @@ class PlanDetails extends Component{
                 title : response.data.message,
                 text  : response.data.message
               });
-              this.props.history.push('/plan');
+              this.props.history.push('/plan-details');
               this.getData(this.state.startRange, this.state.limitRange);
             })
             .catch(function(error){
@@ -490,7 +490,7 @@ class PlanDetails extends Component{
         "shown"               : true,
         "apiCall"             : '/api/annualPlans'
       });
-      this.props.history.push('/plan');
+      this.props.history.push('/plan-details');
     // }
   }
   validateFormReq() {

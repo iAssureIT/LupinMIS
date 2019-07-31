@@ -1,20 +1,34 @@
+/*Form input lable*/
+.formLable{
+  font-family:'Montserrat',sans-serif !important;
+  font-size: 12px !important;
+  color: #333333;
+  font-weight: normal;
+}
 .fixbox{
     height: 65px !important;
   }
-  .outlinebox{
-    outline: -webkit-focus-ring-color auto 0px!important;
-    
-}/*
+.outlinebox{
+  outline: -webkit-focus-ring-color auto 0px!important;
+}
+
+.mar0{
+  margin: 0px !important;
+}
+.margin15{
+  margin: 0px 15px;
+}
   .btnSubmit,.btnUpdate{
     color: #FFF;
     background-color: #275d8e;
     border-radius: 35px;
     margin-bottom: 30px;
     border-top-color: #275d8e;
-    font-family:'Montserrat', sans-serif;
+    font-family:'Roboto', sans-serif !important;
     letter-spacing: 1px;
     box-shadow: 2px 2px 2px #fff;
-}*/
+
+}
   .tablefthr:hover{
     background: #275d8e!important;
   }
@@ -30,6 +44,10 @@
  }
  .statelabel{
   font-weight: 400!important;
+  font-family:'Montserrat',sans-serif !important;
+  font-size: 12px !important;
+  color: #333333;
+  font-weight: normal;
  }
   .formht{
     height: 75px;
@@ -47,14 +65,13 @@
   }
   .basicinfotxt{
     font-size: 14px !important;
-   
-      font-weight: 700;
-      color: #000;
-      font-family: 'Montserrat', sans-serif;
-      line-height: 1.1;
-      /*margin-left: 15px;*/
-      margin-top: 5px;
-      margin-bottom: 15px;
+    font-family:'Montserrat',sans-serif !important;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.1;
+    /*margin-left: 15px;*/
+    margin-top: 5px;
+    margin-bottom: 15px;
   }
   .Box-Bottom-Header{
   
@@ -241,7 +258,7 @@
       margin-bottom: 2%;
       color: #333!important;
       border: 1px solid #ccc!important;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Roboto', sans-serif !important;
   }
   .companySettingMarginTop{
     margin-top: 2%;

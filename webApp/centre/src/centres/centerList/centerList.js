@@ -60,7 +60,7 @@ class centerList extends Component{
         centerInchargeDetail      : "Center Incharge Detail",
         misCoordinatorDetail      : "MIS Coordinator Detail",
         numberofVillage           : "No of Villages",
-        actions                   : 'Action',
+        // actions                   : 'Action',
       },
       "tableObjects"              : {
         deleteMethod              : 'delete',

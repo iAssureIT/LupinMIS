@@ -35,7 +35,7 @@ export default class Leftsidebar extends Component{
                 <h4 className="text-center"><b>Lupin MIS</b></h4>
                 <strong>LFMIS</strong>
               </div>
-              <ul className="list-unstyled components">
+              <ul className="list-unstyled sidebar-menu components">
                 <li className="active sidebarMenuText">
                   <a href="/">
                     <i className="glyphicon glyphicon-briefcase"></i>
@@ -43,7 +43,7 @@ export default class Leftsidebar extends Component{
                   </a>
                 </li>
                 <li className="sidebarMenuText">
-                  <a href="/plan" >
+                  <a href="/plan-details" >
                     <i className="fa fa-pie-chart" />
                     Plan Details
                   </a>
@@ -52,6 +52,9 @@ export default class Leftsidebar extends Component{
                   <a href="#Activity" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-edit" />
                     Activity
+                   {/* <span className="pull-right-container">
+                      <i className="fa fa-angle-left pull-right" />
+                    </span>*/}
                   </a>
                   <ul className="collapse list-unstyled" id="Activity">
                     <li>

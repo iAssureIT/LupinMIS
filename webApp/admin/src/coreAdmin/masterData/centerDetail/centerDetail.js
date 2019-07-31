@@ -43,6 +43,7 @@ class centerDetail extends Component{
       "listofBlocks"             : [],
       "listofVillages"           : [],
       "selectedVillages"         : [],
+      "stateCode"                : [],
       "twoLevelHeader"           : {
         apply                    : false,
         firstHeaderData          : [
@@ -74,7 +75,7 @@ class centerDetail extends Component{
         apiLink                   : '/api/centers/',
         paginationApply           : true,
         searchApply               : true,
-        editUrl                   : '/center-detail/'
+        editUrl                   : '/center-details/'
       },
       "startRange"                : 0,
       "limitRange"                : 10,
@@ -162,8 +163,8 @@ class centerDetail extends Component{
         "centerName"                : this.refs.nameOfCenter.value,
         "address"                   : {
             "addressLine"           : this.refs.address.value,
-            "state"                 : this.refs.state.value,
-            "district"              : this.refs.district.value,
+            "state"                 : this.refs.state.value.split('|')[0],
+            "district"              : this.refs.district.value.split('|')[0],
             "pincode"               : this.refs.pincode.value,
         },
         "districtsCovered"          : districtsCovered,
@@ -255,8 +256,8 @@ class centerDetail extends Component{
           "type"                      : this.refs.typeOfCenter.value,
           "address"                   : {
               "addressLine"           : this.refs.address.value,
-              "state"                 : this.refs.state.value,
-              "district"              : this.refs.district.value,
+              "state"                 : this.refs.state.value.split('|')[0],
+              "district"              : this.refs.district.value.split('|')[0],
               "pincode"               : this.refs.pincode.value,
           },
           "districtsCovered"          : districtsCovered,
@@ -288,6 +289,7 @@ class centerDetail extends Component{
         // console.log('centerDetail', centerDetail);
         axios.patch('/api/centers',centerDetail)
         .then((response)=>{
+          console.log('response',response);
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
@@ -321,7 +323,7 @@ class centerDetail extends Component{
         });
         selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
     } 
-    this.props.history.push('/center-detail');
+    this.props.history.push('/center-details');
     this.setState({
       "editId"              : "",
     });
@@ -463,11 +465,9 @@ class centerDetail extends Component{
       this.edit(this.state.editId);
     }
     this.getLength();
+    this.getState();
     this.getData(this.state.startRange, this.state.limitRange);
-    var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];
-    this.setState({
-      listofStates : listofStates
-    })
+ 
   }
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
@@ -487,18 +487,19 @@ class centerDetail extends Component{
       method: 'get',
       url: '/api/centers/'+id,
     }).then((response)=> {
+      console.log("editData",editData);
       var editData = response.data[0];
-      editData.villagesCovered.map((data, i)=>{
+    /*  editData.villagesCovered.map((data, i)=>{
         this.setState({
           [data.village] : true
         })
-      })
+      })*/
       this.setState({
         "typeOfCenter"             : editData.type,
         "nameOfCenter"             : editData.centerName,
-        "address"                  : editData.address.addressLine,
-        "state"                    : editData.address.state,
-        "district"                 : editData.address.district,
+        "address"                  : editData.address.addressLine, 
+        "state"                    : editData.address.stateName+'|'+editData.address._id+'|'+editData.address.stateCode,
+        "district"                 : editData.address.districtName+'|'+editData.address._id,
         "pincode"                  : editData.address.pincode,
         "centerInchargeName"       : editData.centerInchargeName,
         "centerInchargeContact"    : editData.centerInchargeMobile,
@@ -511,7 +512,7 @@ class centerDetail extends Component{
         "blockCovered"             : "",
         "villagesCovered"          : editData.villagesCovered,
       },()=>{
-        if(this.state.state == 'Maharashtra'){
+        /*if(this.state.state == 'Maharashtra'){
           var listofDistrict = ['Pune', 'Mumbai'];
           this.setState({
             listofDistrict : listofDistrict
@@ -522,7 +523,7 @@ class centerDetail extends Component{
           this.setState({
             listofBlocks : listofBlocks
           });
-        }
+        }*/
       });
     }).catch(function (error) {
     });
@@ -534,13 +535,13 @@ class centerDetail extends Component{
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
-    .catch(function(error){
-      
+    .catch(function(error){      
     });
   }
+
   getData(startRange, limitRange){
     var data = {
       limitRange : limitRange,
@@ -548,7 +549,7 @@ class centerDetail extends Component{
     }
        axios.post('/api/centers/list',data)
       .then((response)=>{
-        console.log('response', response.data);
+        // console.log('response', response.data);
         var tableData = response.data.map((a, i)=>{
         return {
           _id                       : a._id,
@@ -567,78 +568,118 @@ class centerDetail extends Component{
       .catch(function(error){
         
       });
-
+/*
       var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];
       this.setState({
         listofStates : listofStates
-      })
+      })*/
   }
   componentWillMount(){
         // window.location.reload(true);
-
-     }
-  districtCoveredChange(event){
-    
-    event.preventDefault();
-    var districtCovered = event.target.value;
-    console.log('districtCovered', districtCovered);
-    this.setState({
-      districtCovered: districtCovered
-    },()=>{
-    
-           
-
-
-      var listofBlocks = ['Ambegaon', 'Baramati', 'Bhor', 'Daund', 'Haveli', 'Indapur', 'Junnar', 'Khed', 'Mawal', 'Mulshi', 'Pune City', 'Purandhar', 'Shirur', 'Velhe'];
-      if(this.state.districtCovered == 'Pune'){          
+  }
+  
+  getState(){
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/states/get/list/IN',
+    }).then((response)=> {
+        // console.log('response ==========', response.data);
         this.setState({
-          listofBlocks : listofBlocks
-        });
-      }else{
-        this.setState({
-          listofBlocks : [],
-          listofVillages:[]
-        });
-      }
+          listofStates : response.data
+        },()=>{
+        // console.log('listofStates', this.state.listofStates);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
     });
   }
   selectState(event){
     event.preventDefault();
     var selectedState = event.target.value;
     this.setState({
-      state : selectedState
+      state : selectedState,
     },()=>{
-
-      if(this.state.state == 'Maharashtra'){
-        var listofDistrict = ['Pune', 'Mumbai'];
-        this.setState({
-          listofDistrict : listofDistrict
-        });
-      }else{
-        this.setState({
-          listofDistrict:[],
-          listofVillages:[]
-        });
-      }
+      var stateCode = this.state.state.split('|')[2];
+      // console.log('state', stateCode);
+      this.setState({
+        stateCode :stateCode
+      },()=>{
+      console.log('stateCode',this.state.stateCode);
+      this.getDistrict(this.state.stateCode);
+      })
     });
     this.handleChange(event);
   }
-  blockCoveredChange(event){
+  getDistrict(stateCode){
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
+    }).then((response)=> {
+        // console.log('response ==========', response.data);
+        this.setState({
+          listofDistrict : response.data
+        },()=>{
+        console.log('listofDistrict', this.state.listofDistrict);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  districtCoveredChange(event){    
+    event.preventDefault();
+    var districtCovered = event.target.value;
+    // console.log('districtCovered', districtCovered);
+    this.setState({
+      districtCovered: districtCovered
+    },()=>{
+      var selectedDistrict = this.state.districtCovered.split('|')[0];
+      console.log("selectedDistrict",selectedDistrict);
+      this.setState({
+        selectedDistrict :selectedDistrict
+      },()=>{
+      console.log('selectedDistrict',this.state.selectedDistrict);
+      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      })
+    });
+  }
+  getBlock(stateCode, selectedDistrict){
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
+    }).then((response)=> {
+        console.log('response ==========', response.data);
+        this.setState({
+          listofBlocks : response.data
+        },()=>{
+        console.log('listofBlocks', this.state.listofBlocks);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectBlock(event){
     event.preventDefault();
     var blockCovered = event.target.value;
     this.setState({
       blockCovered : blockCovered
     },()=>{
-      var listofVillages = ['Magarpatta', 'Kharadi', 'Wagholi', 'Manjari'];
-      if(this.state.blockCovered == 'Haveli'){
+      console.log("blockCovered",blockCovered);
+      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.blockCovered);
+    });
+  }
+  getVillages(stateCode, selectedDistrict, blockCovered){
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/cities/get/list/'+blockCovered+'/'+selectedDistrict+'/'+stateCode+'/IN',
+    }).then((response)=> {
+        console.log('response ==========', response.data);
         this.setState({
-          listofVillages : listofVillages
+          listofVillages : response.data
+        },()=>{
+        console.log('listofVillages', this.state.listofVillages);
         })
-      }else{
-        this.setState({
-          listofVillages : []
-        })
-      }        
+    }).catch(function (error) {
+      console.log('error', error);
     });
   }
   selectVillage(event){
@@ -781,9 +822,9 @@ class centerDetail extends Component{
                                   <option  className="hidden" value="">--Select--</option> 
                                   {
                                     this.state.listofStates ?
-                                    this.state.listofStates.map((state, index)=>{
+                                    this.state.listofStates.map((data, index)=>{
                                       return(
-                                        <option key={index} value={state}>{state}</option> 
+                                        <option key={index} value={data.stateName+'|'+data._id+'|'+data.stateCode}>{data.stateName}</option> 
                                       );
                                     })
                                     :
@@ -800,9 +841,9 @@ class centerDetail extends Component{
                                   <option  className="hidden" >--Select District--</option>
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
-                                    this.state.listofDistrict.map((district, index)=>{
+                                    this.state.listofDistrict.map((data, index)=>{
                                       return(
-                                        <option key={index} value={district}>{district}</option>
+                                        <option key={index} value={data.districtName+'|'+data._id}>{data.districtName}</option>
                                       );
                                     })
                                     :
@@ -903,9 +944,9 @@ class centerDetail extends Component{
                                   <option  className="hidden" >--Select District--</option>
                                   {
                                     this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
-                                    this.state.listofDistrict.map((district, index)=>{
+                                    this.state.listofDistrict.map((data, index)=>{
                                       return(
-                                        <option key={index} value={district}>{district}</option>
+                                        <option key={index} value={data.districtName+'|'+data._id}>{data.districtName}</option>
                                       );
                                     })
                                     :
@@ -918,13 +959,13 @@ class centerDetail extends Component{
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
                               <label className="formLable">Block Covered</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockCovered" >
-                                <select className="custom-select form-control inputBox"  value={this.state.blockCovered}  ref="blockCovered" name="blockCovered"  onChange={this.blockCoveredChange.bind(this)} >
+                                <select className="custom-select form-control inputBox"  value={this.state.blockCovered}  ref="blockCovered" name="blockCovered"  onChange={this.selectBlock.bind(this)} >
                                   <option  className="hidden" >--Select Block--</option>
                                   {
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                    this.state.listofBlocks.map((block, index)=>{
+                                    this.state.listofBlocks.map((data, index)=>{
                                       return(
-                                        <option key={index} value={block}>{block}</option>
+                                        <option key={index} value={data.blockName}>{data.blockName}</option>
                                       );
                                     })
                                     :
@@ -943,7 +984,7 @@ class centerDetail extends Component{
                               <h5 className="col-lg-12 col-sm-12 col-xs-12">Villages Covered</h5>                     
                             {
                               this.state.listofVillages?
-                              this.state.listofVillages.map((village, index)=>{
+                              this.state.listofVillages.map((data, index)=>{
                             /*  this.setState({
                                 array : village,
                               })*/
@@ -953,11 +994,11 @@ class centerDetail extends Component{
                                       <div className="col-lg-12 noPadding">  
                                        <div className="actionDiv">
                                           <div className="centerDetailContainer col-lg-1">
-                                            <input type="checkbox" id={village}  checked={this.state[village]?true:false} onChange={this.selectVillage.bind(this)}/>
+                                            <input type="checkbox" id={data.cityName}  checked={this.state[data.cityName]?true:false} onChange={this.selectVillage.bind(this)}/>
                                             <span className="centerDetailCheck"></span>
                                           </div>
                                         </div>                            
-                                        <label className="centerDetaillistItem"> {village}</label>
+                                        <label className="centerDetaillistItem"> {data.cityName}</label>
                                       </div>
                                     </div>  
                                   </div>
@@ -992,7 +1033,7 @@ class centerDetail extends Component{
                               this.state.selectedVillages.map((data, index)=>{
                                 return(
                                   <tr key={index}>
-                                    <td>{data.district}</td>
+                                    <td>{data.district.split('|')[0]}</td>
                                     <td>{data.block}</td>
                                     <td>{data.village}</td>
                                     {/*<td>

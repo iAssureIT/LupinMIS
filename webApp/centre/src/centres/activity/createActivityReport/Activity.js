@@ -1,18 +1,15 @@
 import React, { Component }   from 'react';
 import axios                  from 'axios';
+import $                      from 'jquery';
 import _                      from 'underscore';
-
-
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
 import moment                 from "moment";
-
-
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 import "./Activity.css";
-import ListOfBeneficiaries from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -117,7 +114,7 @@ class Activity extends Component{
     this.setState({
       fields
     });
-    if (this.validateForm()) {
+    if (this.validateForm() ) {
       let errors = {};
       errors[event.target.name] = "";
       this.setState({
@@ -155,7 +152,11 @@ class Activity extends Component{
   }
   SubmitActivity(event){
     event.preventDefault();
-    // if (this.validateFormReq() && this.validateForm()) {
+    if(this.refs.dateofIntervention.value == "" ){
+        if (this.validateFormReq() && this.validateForm()){
+        }
+    }else{
+            console.log("date",this.state.dateofIntervention);
       var activityValues= {
         "center_ID"         : "123",
         "centerName"        : "Pune",
@@ -223,37 +224,37 @@ class Activity extends Component{
           console.log('error',error);
         });
       this.setState({
-        "dist"              : "",
-        "block"             : "",
-        "village"           : "",
-        "dateofIntervention": "",
-        "sector"            : "",
-        "typeofactivity"    : "",
-        "nameofactivity"    : "",
-        "activity"          : "",
-        "subactivity"       : "",
-        "unit"              : "",
-        "unitCost"          : "",
-        "quantity"          : "",
-        "totalcost"         : "",
-        "LHWRF"             : "",
-        "NABARD"            : "",
-        "bankLoan"          : "",
-        "govtscheme"        : "",
-        "directCC"          : "",
-        "indirectCC"        : "",
-        "other"             : "",
-        "total"             : "",
-        "remark"            : "",
-        "fields"            : fields,
-        "selectedBeneficiaries" :[],
-        "listofBeneficiaries": [],
-        "subActivityDetails" : [],
-        "availableActivity"  : [],
-        "availableSubActivity": []
+        "dist"                   : "",
+        "block"                  : "",
+        "village"                : "",
+        "dateofIntervention"     : "",
+        "sector"                 : "",
+        "typeofactivity"         : "",
+        "nameofactivity"         : "",
+        "activity"               : "",
+        "subactivity"            : "",
+        "unit"                   : "",
+        "unitCost"               : "",
+        "quantity"               : "",
+        "totalcost"              : "",
+        "LHWRF"                  : "",
+        "NABARD"                 : "",
+        "bankLoan"               : "",
+        "govtscheme"             : "",
+        "directCC"               : "",
+        "indirectCC"             : "",
+        "other"                  : "",
+        "total"                  : "",
+        "remark"                 : "",
+        "fields"                 : fields,
+        "selectedBeneficiaries"  : [],
+        "listofBeneficiaries"    : [],
+        "subActivityDetails"     : [],
+        "availableActivity"      : [],
+        "availableSubActivity"   : []
 
       });
-    // }
+    }
   }
   Update(event){
     event.preventDefault();
@@ -363,6 +364,7 @@ class Activity extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
       if (!fields["dist"]) {
         formIsValid = false;
         errors["dist"] = "This field is required.";
@@ -441,6 +443,7 @@ class Activity extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    $("html,body").scrollTop(0);
     this.setState({
       errors: errors
     });
@@ -721,8 +724,8 @@ class Activity extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
                             <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)}/>
                           </div>
-{/*                          <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
-*/}                        </div>
+                          <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
+                        </div>
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">District</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="dist" >
