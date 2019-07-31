@@ -31,7 +31,7 @@ class centerDetail extends Component{
       "MISCoordinatorContact"    :"",
       "MISCoordinatorEmail"      :"",
       "districtCovered"          :"",
-      "blockCovered"             :"",
+      "blocksCovered"             :"",
       "centerDetailArray"        :[],
       "array"                    :[],
       "shown"                    : true,
@@ -109,7 +109,7 @@ class centerDetail extends Component{
       "MISCoordinatorContact"    : this.refs.MISCoordinatorContact.value,
       "MISCoordinatorEmail"      : this.refs.MISCoordinatorEmail.value,
       "districtCovered"          : this.refs.districtCovered.value,
-      "blockCovered"             : this.refs.blockCovered.value,
+      "blocksCovered"             : this.refs.blocksCovered.value,
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -164,8 +164,9 @@ class centerDetail extends Component{
         "address"                   : {
             "addressLine"           : this.refs.address.value,
             "state"                 : this.refs.state.value.split('|')[0],
-            "district"              : this.refs.district.value.split('|')[0],
+            "district"              : this.refs.district.value,
             "pincode"               : this.refs.pincode.value,
+            "stateCode"             : this.refs.state.value.split('|')[1],
         },
         "districtsCovered"          : districtsCovered,
         "blocksCovered"             : blocksCovered,
@@ -193,7 +194,7 @@ class centerDetail extends Component{
       fields["MISCoordinatorContact"]  = "";
       fields["MISCoordinatorEmail"]    = "";
       fields["districtCovered"]        = "";
-      fields["blockCovered"]           = "";
+      fields["blocksCovered"]           = "";
 
       // console.log('centerDetail',centerDetail);
       axios.post('/api/centers',centerDetail)
@@ -222,7 +223,7 @@ class centerDetail extends Component{
         "MISCoordinatorContact"     : "",
         "MISCoordinatorEmail"       : "",
         "districtCovered"           : "",
-        "blockCovered"              : "",
+        "blocksCovered"              : "",
         "selectedVillages"          : [],
         "listofDistrict"            : [],
         "listofBlocks"              : [],
@@ -257,8 +258,9 @@ class centerDetail extends Component{
           "address"                   : {
               "addressLine"           : this.refs.address.value,
               "state"                 : this.refs.state.value.split('|')[0],
-              "district"              : this.refs.district.value.split('|')[0],
+              "district"              : this.refs.district.value,
               "pincode"               : this.refs.pincode.value,
+              "stateCode"             : this.refs.state.value.split('|')[1],
           },
           "districtsCovered"          : districtsCovered,
           "blocksCovered"             : blocksCovered,
@@ -285,7 +287,7 @@ class centerDetail extends Component{
         fields["MISCoordinatorContact"] = "";
         fields["MISCoordinatorEmail"] = "";
         fields["districtCovered"] = "";
-        fields["blockCovered"] = "";
+        fields["blocksCovered"] = "";
         // console.log('centerDetail', centerDetail);
         axios.patch('/api/centers',centerDetail)
         .then((response)=>{
@@ -314,7 +316,7 @@ class centerDetail extends Component{
           "MISCoordinatorContact"     : "",
           "MISCoordinatorEmail"       : "",
           "districtCovered"           : "",
-          "blockCovered"              : "",
+          "blocksCovered"              : "",
           "selectedVillages"          : [],
           "listofDistrict"            : [],
           "listofBlocks"              : [],
@@ -467,7 +469,6 @@ class centerDetail extends Component{
     this.getLength();
     this.getState();
     this.getData(this.state.startRange, this.state.limitRange);
- 
   }
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
@@ -487,19 +488,23 @@ class centerDetail extends Component{
       method: 'get',
       url: '/api/centers/'+id,
     }).then((response)=> {
-      console.log("editData",editData);
       var editData = response.data[0];
-    /*  editData.villagesCovered.map((data, i)=>{
+      editData.villagesCovered.map((data, i)=>{
         this.setState({
           [data.village] : true
         })
-      })*/
+      })
+      console.log("editData",editData);
+      this.getDistrict(editData.address.stateCode);
+      this.getBlock(editData.address.stateCode, editData.address.district);
+      console.log(editData.address.stateCode, editData.address.district, editData.blocksCovered);
+      this.getVillages(editData.address.stateCode, editData.address.district, editData.blocksCovered);
       this.setState({
         "typeOfCenter"             : editData.type,
         "nameOfCenter"             : editData.centerName,
         "address"                  : editData.address.addressLine, 
-        "state"                    : editData.address.stateName+'|'+editData.address._id+'|'+editData.address.stateCode,
-        "district"                 : editData.address.districtName+'|'+editData.address._id,
+        "state"                    : editData.address.state+'|'+editData.address.stateCode,
+        "district"                 : editData.address.district,
         "pincode"                  : editData.address.pincode,
         "centerInchargeName"       : editData.centerInchargeName,
         "centerInchargeContact"    : editData.centerInchargeMobile,
@@ -509,21 +514,10 @@ class centerDetail extends Component{
         "MISCoordinatorEmail"      : editData.misCoordinatorEmail,
         "selectedVillages"         : editData.villagesCovered,
         "districtCovered"          : "",
-        "blockCovered"             : "",
+        "blocksCovered"             : "",
         "villagesCovered"          : editData.villagesCovered,
       },()=>{
-        /*if(this.state.state == 'Maharashtra'){
-          var listofDistrict = ['Pune', 'Mumbai'];
-          this.setState({
-            listofDistrict : listofDistrict
-          });
-        }
-        if(this.state.district == 'Pune'){
-          var listofBlocks = ['Ambegaon', 'Baramati', 'Bhor', 'Daund', 'Haveli', 'Indapur', 'Junnar', 'Khed', 'Mawal', 'Mulshi', 'Pune City', 'Purandhar', 'Shirur', 'Velhe'];
-          this.setState({
-            listofBlocks : listofBlocks
-          });
-        }*/
+        console.log(this.state)
       });
     }).catch(function (error) {
     });
@@ -599,7 +593,7 @@ class centerDetail extends Component{
     this.setState({
       state : selectedState,
     },()=>{
-      var stateCode = this.state.state.split('|')[2];
+      var stateCode = this.state.state.split('|')[1];
       // console.log('state', stateCode);
       this.setState({
         stateCode :stateCode
@@ -659,18 +653,19 @@ class centerDetail extends Component{
   }
   selectBlock(event){
     event.preventDefault();
-    var blockCovered = event.target.value;
+    var blocksCovered = event.target.value;
     this.setState({
-      blockCovered : blockCovered
+      blocksCovered : blocksCovered
     },()=>{
-      console.log("blockCovered",blockCovered);
-      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.blockCovered);
+      console.log("blocksCovered",blocksCovered);
+      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.blocksCovered);
     });
   }
-  getVillages(stateCode, selectedDistrict, blockCovered){
+  getVillages(stateCode, selectedDistrict, blocksCovered){
+    console.log(stateCode, selectedDistrict, blocksCovered);
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/'+blockCovered+'/'+selectedDistrict+'/'+stateCode+'/IN',
+      url: 'http://locationapi.iassureit.com/api/cities/get/list/'+blocksCovered+'/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
         console.log('response ==========', response.data);
         this.setState({
@@ -695,7 +690,7 @@ class centerDetail extends Component{
       if(this.state[id] == true){
         selectedVillages.push({
           district  : this.refs.districtCovered.value,
-          block     : this.refs.blockCovered.value,
+          block     : this.refs.blocksCovered.value,
           village   : id
         });
         this.setState({
@@ -824,7 +819,7 @@ class centerDetail extends Component{
                                     this.state.listofStates ?
                                     this.state.listofStates.map((data, index)=>{
                                       return(
-                                        <option key={index} value={data.stateName+'|'+data._id+'|'+data.stateCode}>{data.stateName}</option> 
+                                        <option key={index} value={data.stateName+'|'+data.stateCode}>{data.stateName}</option> 
                                       );
                                     })
                                     :
@@ -842,8 +837,9 @@ class centerDetail extends Component{
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
+                                      // console.log(data);
                                       return(
-                                        <option key={index} value={data.districtName+'|'+data._id}>{data.districtName}</option>
+                                        <option key={index} value={data.districtName}>{data.districtName}</option>
                                       );
                                     })
                                     :
@@ -958,8 +954,8 @@ class centerDetail extends Component{
                             </div>
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
                               <label className="formLable">Block Covered</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockCovered" >
-                                <select className="custom-select form-control inputBox"  value={this.state.blockCovered}  ref="blockCovered" name="blockCovered"  onChange={this.selectBlock.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
+                                <select className="custom-select form-control inputBox"  value={this.state.blocksCovered}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
                                   <option  className="hidden" >--Select Block--</option>
                                   {
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
@@ -973,7 +969,7 @@ class centerDetail extends Component{
                                   }
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.blockCovered}</div>
+                              <div className="errorMsg">{this.state.errors.blocksCovered}</div>
                             </div>
                           </div> 
                         </div>
