@@ -401,7 +401,7 @@ class IAssureTableUM extends Component {
 				            },()=>{
 				            })
 				        }).catch((error)=>{ 
-				        	swal("No results found","","error");
+				        	// swal("No results found","","error");
 				      });
 			}else{
 
@@ -590,7 +590,11 @@ class IAssureTableUM extends Component {
 		})
 		.then((response)=> {
 	    	// console.log('delete response',response);
-	    	swal("User deleted successfully","", "success");
+	    
+	    	swal({
+										title: "User updated successfully",
+										text: "User updated successfully",
+									});
 
 				    	var data = {
 						"startRange"        : this.state.startRange,
@@ -651,9 +655,13 @@ class IAssureTableUM extends Component {
 						axios.put('/api/users/resetpwd/'+ newID, formValues)
 					      .then( (res)=>{
 					      	console.log("response-------------",res);
-					  		  swal("Password has been changed successfully!!","", "success");
-					          this.refs.resetPassword.value				= '';
-					          this.refs.resetPasswordConfirm.value  	= '';
+					  		
+					  		  swal({
+										title: "Password has been changed successfully!!",
+										text: "Password has been changed successfully!!",
+									});
+					          // this.refs.resetPassword.value				= '';
+					          // this.refs.resetPasswordConfirm.value  	= '';
 					          var modalid="RestpwdModal-"+id;
 					  		  var modal = document.getElementById(modalid);
 					  		  modal.style.display = "none";
@@ -661,7 +669,11 @@ class IAssureTableUM extends Component {
 					      })
 					      .catch((error)=>{
 					        console.log("error = ",error);
-					        swal("Sorry! Something went wrong","", "error");
+					       
+					         swal({
+										title: "Sorry! Something went wrong",
+										text: "Sorry! Something went wrong",
+									});
 					        var modalid="RestpwdModal-"+id;
 					  		var modal = document.getElementById(modalid);
 					        modal.style.display = "none";
@@ -669,13 +681,25 @@ class IAssureTableUM extends Component {
 
 					      });
 					}else{
-						swal("Password should be at least 6 characters long","","error");				
+								
+						 swal({
+										title: "Password should be at least 6 characters long",
+										text: "Password should be at least 6 characters long",
+									});		
 					}
 				}else{
-					swal("Passwords don't match","","error");
+				
+					 swal({
+										title: "Passwords don't match",
+										text: "Passwords don't match",
+									});
 				}
 			}else{
-				swal("Please enter mandatory fields", "", "warning");
+				
+				 swal({
+										title: "Please enter mandatory fields",
+										text: "Please enter mandatory fields",
+									});
           		console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
 			}
 	}

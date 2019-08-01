@@ -67,7 +67,7 @@ class SignUp extends Component {
 	                email           : this.refs.signupEmail.value,
 	                pwd        		: this.refs.signupPassword.value,
 	                signupPassword  : this.refs.signupConfirmPassword.value,
-	                role 			: 'users'
+	                roles 			: 'users'
 	            }
 	            
  			console.log("-------auth------>>",auth);
@@ -95,6 +95,7 @@ class SignUp extends Component {
 		            		swal("Great","Information submitted successfully and OTP is sent to your registered Email ID and Mobile no","success");
 			                // this.props.history.push("/confirm-otp");
 			                this.props.history.push("/login");
+			                window.location.reload();
 			            })
 			            .catch(function (error) {
 			                console.log(error);

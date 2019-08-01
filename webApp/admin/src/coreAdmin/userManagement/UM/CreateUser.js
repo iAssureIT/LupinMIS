@@ -88,7 +88,7 @@ class CreateUser extends Component {
     componentDidMount() {
 
       axios
-      .get('/api/tgkSpecificcompanysettings/list')
+      .get('/api/companysettings/list')
       .then(
         (res)=>{
           // console.log('res', res);
