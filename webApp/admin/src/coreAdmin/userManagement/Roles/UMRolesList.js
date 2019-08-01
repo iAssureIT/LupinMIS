@@ -86,7 +86,7 @@ export default class UMRolesList extends Component {
 	render(){
 
        return(
-			<div className="">
+			<div className="content">
 				<div className=""></div>
 				<section className="">
 			        <div className="">

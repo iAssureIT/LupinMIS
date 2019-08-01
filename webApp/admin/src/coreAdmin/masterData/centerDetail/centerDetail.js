@@ -109,7 +109,7 @@ class centerDetail extends Component{
       "MISCoordinatorContact"    : this.refs.MISCoordinatorContact.value,
       "MISCoordinatorEmail"      : this.refs.MISCoordinatorEmail.value,
       "districtCovered"          : this.refs.districtCovered.value,
-      "blocksCovered"             : this.refs.blocksCovered.value,
+      "blocksCovered"            : this.refs.blocksCovered.value,
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -194,7 +194,7 @@ class centerDetail extends Component{
       fields["MISCoordinatorContact"]  = "";
       fields["MISCoordinatorEmail"]    = "";
       fields["districtCovered"]        = "";
-      fields["blocksCovered"]           = "";
+      fields["blocksCovered"]          = "";
 
       // console.log('centerDetail',centerDetail);
       axios.post('/api/centers',centerDetail)

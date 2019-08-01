@@ -1,20 +1,144 @@
-.headerPage{
+.dropbtn {
+    color: #666;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.dropbtn {
+    color: #666;
+    /*padding: 16px;*/
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: -8px;
+    min-width: 160px;
+    box-shadow: 0px 8px 8px 0px #eee;
+    z-index: 1;
+    border-radius: 5px;
+    border: 1px solid #f1f1f1;
+    /*margin-top: -4px;*/
+}
+
+.dropdown-content .deleteNotif:hover {background-color: #f1f1f1;
+    cursor:pointer;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: #fff; color:#666;}
+
+.dropdown-content .deleteNotif:hover { 
+    background-color: #f1f1f1;
+    cursor: pointer;
+    color: #666666;
+    padding: 7px 7px;
+    text-decoration: none;
+    display: block;
+    border-radius: 3px;}
+.dropdown:hover .dropdown-content {display: block; background: #fff;}
+.dropdown:hover .dropbtn {background-color: #fff; color:#666;}
+
+.pageHeader{
     height: 50px;
+}
+.paddleft{
+  padding-left: 0px !important;
+}
+.padd0{
+  padding: 0px;
+}
+.marTop{
+  margin-top: 6px;
+}
+.wid260{
+  width: 260px !important;
+  margin-right: 5px;
+}
+.marLeft{
+  margin-left: 25px;
+  padding-bottom: 5px;
+}
+.paddLeft5{
+  padding-left:7px;
+}
+.noneAtag{
+    
+    padding-left: 0px !important;
+    background: none !important;
+}
+.dropdown:hover .dropbtn{
+  background: transparent!important;
+}
+.nomargin{
+  margin: 0px;
+}
+.arrowbtn{
+  color: #333 !important;
+  background: none;
+}
+.topmargin{
+  margin-top: 20px;
+}
+.topmargin:hover{
+  background: none;
+}
+.nopadd{
+padding: 5px 5px !important;
+}
+.btnpadd{
+  padding: 0px 0px !important;
+  background: none !important;
+}
+.cmpysethdr{
+  padding-left: 20px;
+}
+.fonticonshdr{
+  font-size: 14px;
+  color:#888;
+}
+.compannysethdr{
+  color:  #0275d8;
+  font-size: 12px;
+  cursor: pointer;
+}
+.borderline{
+  border: 1px solid #ddd;
+  margin: 0px !important;
+}
+.profilefoot{
+  padding: 10px 5px;
+  background: #fff;
+  height: 50px;
+  padding-bottom: 0px;
+}
+.profilebtn{
+  
+}
+.profileTitle{
+  cursor: pointer;
 }
 .headicon{
     font-size: 1.1vw;
-    font-weight: normal;
+    font-weight: bold;
     padding-top: 20px;
-    color: #333;
+    color: #444;
+    cursor: pointer;
 }
 .hover:hover{
-    background-color: #039BE5 ;
+    background-color: #039BE5;
     height: 50px;
-    color: #fff;
-    
+    color: #fff !important;
 }
 .hover:hover i{
-    color: #fff;
+    color: #fff !important;
 }
 .img{
     position: absolute;
@@ -25,9 +149,8 @@
     position: absolute;
     top: 11px;
     /*text-align: center;*/
-    /*font-size: 0.9vw;*/
-    padding: 2px 2px;
-    right: 4px;
+    font-size: 0.9vw;
+    padding: 2px 3px;
     /*line-height: .9;*/
 
 }
@@ -35,13 +158,13 @@
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1;
-  top: 50px;
+  z-index: 10;
+  /*top: 50px;*/
   right: 0;
   background-color: #111;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
+ /* padding-top: 60px;*/
 }
 
 .sidenav a {
@@ -82,3 +205,7 @@
   right: 0px;
   transition: all 0.8s;
   }
+
+.fontB{
+  color: #333;
+}

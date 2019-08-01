@@ -29,7 +29,7 @@ import UMListOfEmp                                from '../userManagement/UM/Off
 
 // import EditUserProfile                            from '../userManagementG/UM/EditUserProfile.js';
 import EditUserProfile                            from '../userManagement/UM/EditUserProfile.js';
-// import UMRolesList                                from '../userManagementG/Roles/UMRolesList.js';
+import UMRolesList                                from '../userManagement/Roles/UMRolesList.js';
 // import CompanySettingG                            from '../companysettingG/Components/CompanySetting.js';
 import CompanySetting                             from '../companysetting/Components/CompanySetting.js';
 import ViewTemplates                              from '../NotificationManagement/ViewTemplates.jsx';
@@ -134,14 +134,15 @@ componentDidMount(){
                          {/* <button className="btn btn-primary pull-right" onClick={this.logout.bind(this)}>Logout</button>
                           */} <Router>
                               <Switch>
+                              <Route path="/" component={Dashboard} exact />
+                              <Route path="/dashboard" component={Dashboard} exact />
                               <Route path="/umlistofusers" component={UMListOfUsers} exact />
 {/*                              <Route path="/umlistofemp" component={UMListOfEmp} exact />
 */}
-{/*                              <Route path="/umroleslist" component={UMRolesList} exact />
-*/}                              <Route path="/edituserprofile/:id" component={EditUserProfile} exact />
+                              <Route path="/umroleslist" component={UMRolesList} exact />
+                              <Route path="/edituserprofile/:id" component={EditUserProfile} exact />
 
                               <Route path="/ViewTemplates" component={ViewTemplates} exact />
-                              <Route path="/dashboard" component={Dashboard} exact />
 
                               <Route path="/companysetting" component={CompanySetting} exact />
 {/*                              <Route path="/companysettingG" component={CompanySettingG} exact />

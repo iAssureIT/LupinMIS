@@ -34,15 +34,14 @@ class UMListOfUsers extends Component {
             "limitRange"        : 10, 
 
             blockActive			: "all",
+            "listofRoles"	    : "",
 
             adminRolesListData   : [
 
-            	{ roleName : "Technical Admin"},
-            	{ roleName : "Executive Admin"},
-            	{ roleName : "Sales Manager"},
+            	{ roleName : "Admin"},
+            	{ roleName : "Center Incharge"},
+            	{ roleName : "MIS Coordinator"},
             	{ roleName : "Sales Agent"},
-            	{ roleName : "Field Manager"},
-            	{ roleName : "Field Agent"},
             	
             	  
             ],
@@ -65,6 +64,7 @@ class UMListOfUsers extends Component {
     }
 
 	componentDidMount(){
+		this.getRole();
 		var data = {
 			"startRange"        : this.state.startRange,
             "limitRange"        : this.state.limitRange, 
@@ -221,11 +221,7 @@ class UMListOfUsers extends Component {
 
 				   	if(this.state.blockswal == true)
 				   	{
-				   		
-				   		  swal({
-										title: "Account blocked successfully",
-										text: "Account blocked successfully",
-									});
+				   		 swal("Account blocked successfully","","success");
 				   	}
 				    break;
 
@@ -292,11 +288,7 @@ class UMListOfUsers extends Component {
 
 					   if(this.state.activeswal == true)
 					   {
-					   	
-					   	  swal({
-										title: "Account activated successfully",
-										text: "Account activated successfully",
-									});
+					   	 swal("Account activated successfully","","success");
 					   }
 				    break;
 
@@ -332,11 +324,7 @@ class UMListOfUsers extends Component {
 					})
 					.then((response)=> {
 				    	// console.log('delete response',response);
-				    	
-				    	swal({
-										title: "User deleted successfully",
-										text: "User deleted successfully",
-									});
+				    	swal("User deleted successfully","", "success");
 
 				    		// update table here
 				          		var data = {
@@ -393,11 +381,7 @@ class UMListOfUsers extends Component {
 				      .then(
 				        (res)=>{
 				          // console.log('res', res);
-				         
-				          swal({
-										title: "Assigned Role Added Successfully",
-										text: "Assigned Role Added Successfully",
-									});
+				          swal("Assigned Role Added Successfully","","success");
 				          checkedUsersList = null;
 
 				          		// update table here
@@ -454,11 +438,7 @@ class UMListOfUsers extends Component {
 				      .then(
 				        (res)=>{
 				          // console.log('res', res);
-				          
-				           swal({
-										title: "Assigned Role Removed Successfully",
-										text: "Assigned Role Removed Successfully",
-									});
+				          swal("Assigned Role Removed Successfully","","success");
 				          checkedUsersList = null;
 
 				          		// update table here
@@ -579,11 +559,7 @@ class UMListOfUsers extends Component {
 					            },()=>{
 					            }) 
 					        }).catch((error)=>{ 
-					           
-					            swal({
-										title: "Sorry there is no data of "+selectedValue,
-										text: "Sorry there is no data of "+selectedValue,
-									});
+					            swal("Sorry there is no data of "+selectedValue,"","error");
 					      });
 
 					}
@@ -660,11 +636,7 @@ class UMListOfUsers extends Component {
 				            },()=>{
 				            })
 				        }).catch((error)=>{ 
-				        	
-				        	swal({
-										title: "Sorry there is no data of "+selectedValue,
-										text: "Sorry there is no data of "+selectedValue,
-									});
+				        	swal("Sorry there is no data of "+selectedValue, "","error");
 				      });
 					}
 
@@ -684,8 +656,23 @@ class UMListOfUsers extends Component {
 		})
 
 		// console.log("this.state.checkedUser",this.state.checkedUser);
-
 	}
+	getRole(){
+		axios({
+		  method: 'get',
+		  url: '/api/roles/list',
+		}).then((response)=> {
+		    console.log('response ==========', response.data);
+		    this.setState({
+		      adminRolesListData : response.data
+		    },()=>{
+		    console.log('adminRolesListData', this.state.adminRolesListData);
+		    })
+		}).catch(function (error) {
+		  console.log('error', error);
+		});
+	}
+
 render(){
 	// console.log('this.state.completeDataCount', this.state.completeDataCount);
 	var adminRolesListDataList = this.state.adminRolesListData;
@@ -729,11 +716,11 @@ render(){
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="active_selected" name="userListDDOption">Active Selected</option>
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="cancel_selected" name="userListDDOption">Delete Selected Acccounts</option>	
 													{ 	adminRolesListDataList.map( (rolesData,index)=>{
-															return <UMAddRolRow key={index} roleDataVales={rolesData.roleName}/>
+															return <UMAddRolRow key={index} roleDataVales={rolesData.role}/>
 													  	})
 													}
 													{ adminRolesListDataList.map( (rolesData,index)=>{
-														return <UMDelRolRow key={index} roleDataVales={rolesData.roleName}/>
+														return <UMDelRolRow key={index} roleDataVales={rolesData.role}/>
 														  })
 													}
 												</select>
@@ -743,10 +730,11 @@ render(){
 												<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding inputBox-main  form-control" ref="roleListDropdown" name="roleListDropdown" onChange={this.selectedRole.bind(this)} >
 													<option name="roleListDDOption">-- Select --</option>
 													<option value="all" name="roleListDDOption">Show All</option>		
+													
 													{ adminRolesListDataList.map( (rolesData,index)=>{
-														return <UMSelectRoleUsers  key={index} roleDataVales={rolesData.roleName}/>
+														return <UMSelectRoleUsers  key={index} roleDataVales={rolesData.role}/>
 													  }) 
-													}	
+													}
 												</select>
 											</div>
 											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">

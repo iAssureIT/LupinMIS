@@ -44,7 +44,10 @@ class Activity extends Component{
       "indirectCC"        : 0,
       "other"             : 0,
       "total"             : 0,
-      shown               : true,
+      shown               : true,      
+      "listofDistrict"    :"",
+      "listofBlocks"      :"",
+      "listofVillages"    :"",
       fields              : {},
       errors              : {},
        "twoLevelHeader"   : {
@@ -151,11 +154,12 @@ class Activity extends Component{
     })
   }
   SubmitActivity(event){
+  /* 
     event.preventDefault();
-    if(this.refs.dateofIntervention.value == "" ){
+    if(this.refs.dateofIntervention.value === "" ){
         if (this.validateFormReq() && this.validateForm()){
-        }
-    }else{
+       }
+    }else{*/
             console.log("date",this.state.dateofIntervention);
       var activityValues= {
         "center_ID"         : "123",
@@ -254,7 +258,7 @@ class Activity extends Component{
         "availableSubActivity"   : []
 
       });
-    }
+    // }
   }
   Update(event){
     event.preventDefault();
@@ -593,6 +597,7 @@ class Activity extends Component{
       dateofIntervention :momentString,
     })
     this.getLength();
+    this.getDistrict();
     this.getData(this.state.startRange, this.state.limitRange);
   }
 
@@ -692,6 +697,91 @@ class Activity extends Component{
 
   }
 
+  getDistrict(stateCode){
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/districts/get/list/MH/IN',
+      // url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
+    }).then((response)=> {
+        // console.log('response ==========', response.data);
+        this.setState({
+          listofDistrict : response.data
+        },()=>{
+        console.log('listofDistrict', this.state.listofDistrict);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  distChange(event){    
+    event.preventDefault();
+    var dist = event.target.value;
+    // console.log('dist', dist);
+    this.setState({
+      dist: dist
+    },()=>{
+      var selectedDistrict = this.state.dist.split('|')[0];
+      console.log("selectedDistrict",selectedDistrict);
+      this.setState({
+        selectedDistrict :selectedDistrict
+      },()=>{
+      console.log('selectedDistrict',this.state.selectedDistrict);
+      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      })
+    });
+  }
+  getBlock(stateCode, selectedDistrict){
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
+      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
+    }).then((response)=> {
+        console.log('response ==========', response.data);
+        this.setState({
+          listofBlocks : response.data
+        },()=>{
+        console.log('listofBlocks', this.state.listofBlocks);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectBlock(event){
+    event.preventDefault();
+    var block = event.target.value;
+    this.setState({
+      block : block
+    },()=>{
+      console.log("block",block);
+      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+    });
+  }
+  getVillages(stateCode, selectedDistrict, block){
+    console.log(stateCode, selectedDistrict, block);
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/MH/IN',
+    }).then((response)=> {
+        console.log('response ==========', response.data);
+        this.setState({
+          listofVillages : response.data
+        },()=>{
+        console.log('listofVillages', this.state.listofVillages);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectVillage(event){
+    event.preventDefault();
+    var village = event.target.value;
+    this.setState({
+      village : village
+    },()=>{
+      console.log("village",village);
+    });
+  }
+
   render() {
     var shown = {
       display: this.state.shown ? "block" : "none"
@@ -729,10 +819,19 @@ class Activity extends Component{
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">District</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="dist" >
-                              <select className="custom-select form-control inputBox" ref="dist" name="dist" value={this.state.dist} onChange={this.handleChange.bind(this)} >
+                              <select className="custom-select form-control inputBox" ref="dist" name="dist" value={this.state.dist} onChange={this.distChange.bind(this)} >
                                 <option  className="hidden" >--select--</option>
-                                <option>Pune</option>
-                                <option>Thane</option>
+                                {
+                                this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                                this.state.listofDistrict.map((data, index)=>{
+                                  // console.log(data);
+                                  return(
+                                    <option key={index} value={data.districtName}>{data.districtName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.dist}</div>
@@ -740,10 +839,18 @@ class Activity extends Component{
                         <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                           <label className="formLable">Block</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                            <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.handleChange.bind(this)} >
+                            <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                                <option>Pimpari</option>
-                                <option>Haveli</option>
+                              {
+                                this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                this.state.listofBlocks.map((data, index)=>{
+                                  return(
+                                    <option key={index} value={data.blockName}>{data.blockName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }  
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.block}</div>
@@ -751,10 +858,18 @@ class Activity extends Component{
                        <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                           <label className="formLable">Village</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                            <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.handleChange.bind(this)} >
+                            <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
                               <option  className="hidden" >--select--</option>
-                               <option>Hadapsar</option>
-                                <option>Manjari</option>
+                              {
+                                this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                this.state.listofVillages.map((data, index)=>{
+                                  return(
+                                    <option key={index} value={data.cityName}>{data.cityName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              } 
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.village}</div>

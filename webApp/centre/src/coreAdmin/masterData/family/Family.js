@@ -28,6 +28,9 @@ class Family extends Component{
       "block"                :"",
       "village"              :"",
       "contact"              :"",
+      "listofDistrict"       :"",
+      "listofBlocks"         :"",
+      "listofVillages"       :"",
       fields: {},
       errors: {},
       "tableObjects"         : {
@@ -75,6 +78,7 @@ class Family extends Component{
       this.edit(this.state.editId);
     }
     this.getLength();
+    this.getDistrict();
     this.getData(this.state.startRange, this.state.limitRange);
   }
  
@@ -313,7 +317,7 @@ class Family extends Component{
     $("html,body").scrollTop(0);
 
     if (typeof fields["contact"] !== "undefined") {
-      if (!fields["contact"].match(/^[0-9]{10}$/)) {
+      if (!fields["contact"].match(/^[0-9]{10}$|^$/)) {
         formIsValid = false;
         errors["contact"] = "Please enter valid mobile no.";
       }
@@ -327,7 +331,7 @@ class Family extends Component{
     }
     if (typeof fields["uID"] !== "undefined") {
       // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["uID"].match(/^[_0-9]*((-|\s)*[_0-9]){12}$/)) {
+      if (!fields["uID"].match(/^[_0-9]*((-|\s)*[_0-9]){12}$|^$/)) {
         formIsValid = false;
         errors["uID"] = "Please enter valid Aadhar No.";
       }
@@ -398,8 +402,90 @@ class Family extends Component{
     .catch(function(error){      
     });
   }
-
-  
+  getDistrict(stateCode){
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/districts/get/list/MH/IN',
+      // url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
+    }).then((response)=> {
+        // console.log('response ==========', response.data);
+        this.setState({
+          listofDistrict : response.data
+        },()=>{
+        console.log('listofDistrict', this.state.listofDistrict);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  districtChange(event){    
+    event.preventDefault();
+    var district = event.target.value;
+    // console.log('district', district);
+    this.setState({
+      district: district
+    },()=>{
+      var selectedDistrict = this.state.district.split('|')[0];
+      console.log("selectedDistrict",selectedDistrict);
+      this.setState({
+        selectedDistrict :selectedDistrict
+      },()=>{
+      console.log('selectedDistrict',this.state.selectedDistrict);
+      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      })
+    });
+  }
+  getBlock(stateCode, selectedDistrict){
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
+      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
+    }).then((response)=> {
+        console.log('response ==========', response.data);
+        this.setState({
+          listofBlocks : response.data
+        },()=>{
+        console.log('listofBlocks', this.state.listofBlocks);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectBlock(event){
+    event.preventDefault();
+    var block = event.target.value;
+    this.setState({
+      block : block
+    },()=>{
+      console.log("block",block);
+      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+    });
+  }
+  getVillages(stateCode, selectedDistrict, block){
+    console.log(stateCode, selectedDistrict, block);
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/MH/IN',
+    }).then((response)=> {
+        console.log('response ==========', response.data);
+        this.setState({
+          listofVillages : response.data
+        },()=>{
+        console.log('listofVillages', this.state.listofVillages);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectVillage(event){
+    event.preventDefault();
+    var village = event.target.value;
+    this.setState({
+      village : village
+    },()=>{
+      console.log("village",village);
+    });  
+  }  
   render() {     
     return (
       <div className="container-fluid">
@@ -488,10 +574,19 @@ class Family extends Component{
                         <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">District</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                            <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.handleChange.bind(this)}  >
+                            <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
                               <option  className="hidden" >-- Select --</option>
-                              <option>Pune</option>
-                              <option>Thane</option>
+                              {
+                                this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                                this.state.listofDistrict.map((data, index)=>{
+                                  // console.log(data);
+                                  return(
+                                    <option key={index} value={data.districtName}>{data.districtName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }                                  
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.district}</div>
@@ -499,12 +594,18 @@ class Family extends Component{
                         <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Block</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                            <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.handleChange.bind(this)} >
+                            <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
                               <option  className="hidden" >-- Select --</option>
-                              <option>Pimpari</option>
-                              <option>Haveli</option>
-                              <option>Chinchwad</option>
-                              
+                              {
+                                this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                this.state.listofBlocks.map((data, index)=>{
+                                  return(
+                                    <option key={index} value={data.blockName}>{data.blockName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }                              
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.block}</div>
@@ -512,11 +613,18 @@ class Family extends Component{
                         <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Village</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                            <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.handleChange.bind(this)}  >
+                            <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
                               <option  className="hidden" >-- Select --</option>
-                              <option>Shivne</option>
-                              <option>Hadapsar</option>
-                              <option>Manjari</option>
+                              {
+                                this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                this.state.listofVillages.map((data, index)=>{
+                                  return(
+                                    <option key={index} value={data.cityName}>{data.cityName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              } 
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.village}</div>

@@ -33,6 +33,7 @@ class CompanyInformation extends Component{
       companyAltContactNumber : "",
       companyEmail            : "",
       companyAddressLine1     : "",
+      defaultPassword         : "",
       companyDist             : "",
       companyPincode          : "",
       companyCity             : "",
@@ -84,6 +85,7 @@ class CompanyInformation extends Component{
         companyCountry          : res.data.country,
         taluka                  : res.data.taluka,
         submitVal               : false,
+        defaultPassword         : res.data.defaultPassword, 
       });
       console.log("this.this.state.companyName",this.state.companyName)
     })
@@ -160,6 +162,7 @@ class CompanyInformation extends Component{
                 taluka                  : this.state.taluka,
                 logoFilename            : this.state.logoFilename,
                 companyLogo             : this.state.companyLogo,
+                defaultPassword         : this.state.defaultPassword
 
      });
     }
@@ -187,6 +190,7 @@ class CompanyInformation extends Component{
       city                    : this.state.companyCity,
       pincode                 : this.state.companyPincode,
       taluka                  : this.state.taluka,
+      defaultPassword         : this.state.defaultPassword
     }//close array
 
      var companyInfoFormValueUpdate = {
@@ -207,6 +211,7 @@ class CompanyInformation extends Component{
       city                    : this.state.companyCity,
       pincode                 : this.state.companyPincode,
       taluka                  : this.state.taluka,
+      defaultPassword         : this.state.defaultPassword
     }
   
     console.log("companyInfoFormValue--------------------",companyInfoFormValue);
@@ -215,7 +220,7 @@ class CompanyInformation extends Component{
   if(this.state.companyName!= "" && this.state.companyContactNumber!= "" && this.state.companyEmail!= ""
    && this.state.companywebsite!= "" && this.state.companyAddressLine1!= "" && this.state.companyCountry!= ""
    && this.state.companyState!= "" && this.state.companyDist!= "" && this.state.companyCity!= "" && 
-    this.state.companyPincode!= "" && this.state.taluka!= ""){
+    this.state.companyPincode!= "" && this.state.taluka!= "" && this.state.defaultPassword!= ""){
     
 
     if(this.state.submitVal == true){
@@ -244,6 +249,7 @@ class CompanyInformation extends Component{
           logoFilename            : "",
           taluka                  : "",
           companywebsite          : "",
+          defaultPassword         : "",
           });
 
           
@@ -295,6 +301,7 @@ class CompanyInformation extends Component{
                             companyState            : res.data.state,
                             companyCountry          : res.data.country,
                             taluka                  : res.data.taluka,
+                            defaultPassword         : res.data.defaultPassword,
                             submitVal               : false,
                           });
                           
@@ -504,6 +511,15 @@ class CompanyInformation extends Component{
                   <input className="form-control areaStaes inputBox-main" title="Please enter valid webside address"   data-text="companywebsitename"  id="companywebsite" type="text" name="companywebsite" ref="companywebsite" value={this.state.companywebsite} aria-required="true" onChange={this.handleChange.bind(this)} required/>
                   {this.state.formerrors.companywebsitename &&(
                       <span className="text-danger">{formerrors.companywebsitename}</span> 
+                  )}
+                </div> 
+              </div>
+              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div className="form-group">
+                  <label className="control-label statelabel locationlabel" >Default Password</label><span className="astrick">*</span>
+                  <input className="form-control areaStaes inputBox-main" title="Please enter valid Password"   data-text="password"  id="defaultPassword" type="text" name="defaultPassword" ref="defaultPassword" value={this.state.defaultPassword} aria-required="true" onChange={this.handleChange.bind(this)} required/>
+                  {this.state.formerrors.password &&(
+                      <span className="text-danger">{formerrors.password}</span> 
                   )}
                 </div> 
               </div>

@@ -34,6 +34,7 @@ class CreateUser extends Component {
       lastname          :"",
       signupEmail       : "",
       mobNumber         : "",
+      adminRolesListData: "",
       
       formerrors :{
          firstname    : "",
@@ -86,7 +87,8 @@ class CreateUser extends Component {
 
 
     componentDidMount() {
-
+      this.getRole();
+      this.getCenters();
       axios
       .get('/api/companysettings/list')
       .then(
@@ -210,6 +212,37 @@ class CreateUser extends Component {
 
     }
 
+  getRole(){
+    axios({
+      method: 'get',
+      url: '/api/roles/list',
+    }).then((response)=> {
+        console.log('response ==========', response.data);
+        this.setState({
+          adminRolesListData : response.data
+        },()=>{
+        console.log('adminRolesListData', this.state.adminRolesListData);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  getCenters(){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+        console.log('response ==========', response.data);
+        this.setState({
+          listofCenters : response.data
+        },()=>{
+        console.log('listofCenters', this.state.listofCenters);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+
   render() {
     const {formerrors} = this.state;
     return (
@@ -228,9 +261,9 @@ class CreateUser extends Component {
                   <div className="userBox-body">
                     <div className="">
                       <form id="signUpUser">
-                        <div className="valid_box ">
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12inputContent">
-                            <label className="formLable">First Name <label className="requiredsign">*</label></label>
+                        <div className="">
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box ">
+                            <div className="formLable">First Name <span className="requiredsign">*</span></div>
                             <span className="blocking-span">
                               <div className="input-group inputBox-main  new_inputbx " >
                                 <div className="input-group-addon remove_brdr inputIcon">
@@ -246,8 +279,8 @@ class CreateUser extends Component {
                               <span className="text-danger">{this.state.formerrors.firstname}</span> 
                             )}
                           </div> 
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12inputContent">
-                            <label className="formLable">Last Name <label className="requiredsign">*</label></label>
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box">
+                            <div className="formLable">Last Name <span className="requiredsign">*</span></div>
                             <span className="blocking-span ">
                               <div className="input-group inputBox-main  new_inputbx " >
                                 <div className="input-group-addon remove_brdr inputIcon">
@@ -264,8 +297,8 @@ class CreateUser extends Component {
                           </div>                                                      
                         </div>
                         <div className="valid_box">
-                         <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent">
-                          <label className="formLable">Email ID <label className="requiredsign">*</label></label>
+                         <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box">
+                          <div className="formLable">Email ID <span className="requiredsign">*</span></div>
                             <span className="blocking-span col-lg-12 col-md-12 col-xs-12 col-sm-12 emailfixdomain">
                               <div className="input-group inputBox-main   " >
                                <div className="input-group-addon remove_brdr inputIcon">
@@ -279,8 +312,8 @@ class CreateUser extends Component {
                                       <span className="text-danger">{this.state.formerrors.signupEmail}</span> 
                                     )}
                           </div>                                                     
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent">
-                            <label className="formLable">Mobile Number <label className="requiredsign">*</label></label>
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box">
+                            <div className="formLable">Mobile Number <span className="requiredsign">*</span></div>
                             <span className="blocking-span ">
                               <div className="input-group inputBox-main  new_inputbx " >
                                 <div className="input-group-addon remove_brdr inputIcon">
@@ -298,46 +331,50 @@ class CreateUser extends Component {
                           </div>                                                      
                         </div>
                         <div className="valid_box">
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent " >
-                            <label className="formLable mrgtop6">Role<label className="requiredsign"></label></label>
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box " >
+                            <div className="formLable mrgtop6">Role<span className="requiredsign"></span></div>
                             <div className="input-group inputBox-main" id="role">
                               <span className="input-group-addon inputIcon">
                                  <i className="fa fa-crosshairs InputAddOn fa"></i>
                               </span> 
                               <select className="form-control inputBox" value={this.state.role} onChange={this.handleChange} ref ="role" id="role" name="role" data-text="role">
                                 <option  hidden> --Select-- </option>
-                                <option value="Technical Admin" > Technical Admin </option>
-                                <option value="Executive Admin" > Executive Admin </option>
-                                <option value="Sales Manager" > Sales Manager </option>
-                                <option value="Sales Agent" > Sales Agent </option>
-                                <option value="Field Manager" > Field Manager </option>
-                                <option value=" Field Agent" >  Field Agent </option>
+                                {
+                                    this.state.adminRolesListData && this.state.adminRolesListData.length > 0 ? 
+                                    this.state.adminRolesListData.map((data, index)=>{
+                                      // console.log(data);
+                                      return(
+                                        <option key={index} value={data.role}>{data.role}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }  
                               </select>
                             </div>
                              {this.state.formerrors.role &&(
                                 <span className="text-danger">{ this.state.formerrors.role}</span> 
                               )}
                           </div>
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent " >
-                            <label className="formLable mrgtop6">Office Location <label className="requiredsign"></label></label>
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box " >
+                            <div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
                             <div className="input-group inputBox-main" id="office">
                               <span className="input-group-addon inputIcon">
                                  <i className="fa fa-crosshairs InputAddOn fa"></i>
                               </span> 
                               <select className="form-control inputBox" value={this.state.officeid} ref ="office" id="office" name="office" data-text="office">
                                 <option hidden> --Select-- </option>
-                                <option value="Head Office">  Head Office </option>
-                                <option value="Sales Agent Office"> Sales Agent Office </option>
-                                  { this.state.office !== null ?
-                                  this.state.office[0].map( (locData, index)=>{
-                                  // console.log('locData',locData);
-                                  return( 
-                                    <option key={index} value={locData.officeLocationid ? locData.officeLocationid : null } > {locData.officeLocationid ? locData.officeLocationid : null}  </option>
-                                     )}
-                                   )
-                                  :
-                                  null
-                                  }
+                                  {
+                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
+                                    this.state.listofCenters.map((data, index)=>{
+                                      // console.log(data);
+                                      return(
+                                        <option key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }  
                               </select>
                             </div>
                           </div>
@@ -349,29 +386,29 @@ class CreateUser extends Component {
                                 {/*<form id="signUpUser" onSubmit={this.createUser.bind(this)}>
                                     <div className="signuppp col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                     <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
-                                          <label className="">First Name <label className="requiredsign">*</label></label>
+                                     <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent valid_box">
+                                          <div className="">First Name <div className="requiredsign">*</div></div>
                                           <span className="blocking-span">
                                               <input type="text" style={{textTransform:'capitalize'}} className="form-control UMname inputText tmsUserAccForm has-content" id="firstname" ref="firstname" name="firstname"/>
                                           </span>
                                       </div>
 
-                                     <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
-                                          <label className="">Last Name <label className="requiredsign">*</label></label>
+                                     <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent valid_box">
+                                          <div className="">Last Name <div className="requiredsign">*</div></div>
                                           <span className="blocking-span row">
                                              <input type="text"className="form-control UMname inputText tmsUserAccForm has-content" id="lastname" ref="lastname" name="lastname" />
                                           </span>
                                       </div>
 
-                                      <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent">
-                                          <label className="">Email ID <label className="requiredsign">*</label></label>
+                                      <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box">
+                                          <div className="">Email ID <div className="requiredsign">*</div></div>
                                           <span className="blocking-span col-lg-12 col-md-12 col-xs-12 col-sm-12 emailfixdomain">
                                             <input type="text" className="formFloatingLabels form-control" ref="signupEmail" name="signupEmail" id="signupEmail"/>
                                           </span>
                                       </div>
 
-                                      <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-6 inputContent">
-                                          <label className="">Mobile Number <label className="requiredsign">*</label></label>
+                                      <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-6 inputContent valid_box">
+                                          <div className="">Mobile Number <div className="requiredsign">*</div></div>
                                           <span className="blocking-span">
                                              <InputMask mask="99999-99999" pattern="^(0|[1-9][0-9-]*)$"   className= "form-control UMname inputText tmsUserAccForm has-content" ref="mobNumber" name="mobNumber" id="mobNumber"/>
                                           </span>

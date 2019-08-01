@@ -11,7 +11,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import './SignUp.css';
 
 import axios from 'axios';
-axios.defaults.baseURL = 'http://apitgk3t.iassureit.com/';
+axios.defaults.baseURL = 'http://qalmisapi.iassureit.com/';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -35,7 +35,7 @@ class SignUp extends Component {
         this.state = {           
            loggedIn : false,
            auth:{
-                firstname       : '',
+                fullName       : '',
                 lastname        : '',
                 mobNumber       : '',
                 email           : '',
@@ -61,7 +61,7 @@ class SignUp extends Component {
  		event.preventDefault();
  			console.log("-------this.state.auth------>>",this.state.auth);
  			var auth={
-	                firstname       : this.refs.firstname.value,
+	                fullName       : this.refs.firstname.value,
 	                lastname        : this.refs.lastname.value,
 	                mobNumber       : this.refs.mobNumber.value,
 	                email           : this.refs.signupEmail.value,
@@ -92,7 +92,7 @@ class SignUp extends Component {
                 	 	.post('/api/users',auth)
 			            .then((response)=> {
 			                console.log("-------userData------>>",response);
-		            		swal("Great","Information submitted successfully and OTP is sent to your registered Email ID and Mobile no","success");
+		            		swal("success","Information submitted successfully ");
 			                // this.props.history.push("/confirm-otp");
 			                this.props.history.push("/login");
 			            })
