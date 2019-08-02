@@ -184,7 +184,7 @@ class SignUp extends Component {
         $(".modalbg").css("display","none");
     }
     componentDidMount(){
-
+    	this.getCenters();
     }
 
 	showSignPass(){
@@ -198,6 +198,21 @@ class SignUp extends Component {
         return $('.inputTextPass').attr('type', 'password');
     }
 
+	getCenters(){
+	    axios({
+	      method: 'get',
+	      url: '/api/centers/list',
+	    }).then((response)=> {
+	        console.log('response ==========', response.data);
+	        this.setState({
+	          listofCenters : response.data
+	        },()=>{
+	        console.log('listofCenters', this.state.listofCenters);
+	        })
+	    }).catch(function (error) {
+	      console.log('error', error);
+	    });
+	}
 	render(){
 		// var winHeight = window.innerHeight;
   //       var divHeight = winHeight/4.5+'px';
@@ -230,7 +245,7 @@ class SignUp extends Component {
 							<div className="col-lg-12 col-md-12 signUpInnerWrapperOES signupfrm">
 								<div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
 							   		<span className="blocking-span noIb">
-									   <input type="text" className="form-control abacusTextbox oesSignUpForm" id="firstname" ref="firstname" name="firstname"  onChange={this.handleChange} data-text="firstNameV" required/>
+									   <input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="firstname" ref="firstname" name="firstname"  onChange={this.handleChange} data-text="firstNameV" required/>
 									   {this.state.formerrors.firstNameV  && (
 				                        <span className="text-danger">{this.state.formerrors.firstNameV}</span> 
 				                      )}
@@ -242,7 +257,7 @@ class SignUp extends Component {
 								</div>
 							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
 									<span className="blocking-span noIb">   
-										<input type="text" className="form-control abacusTextbox oesSignUpForm" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
+										<input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
 										{this.state.formerrors.lastNameV  && (
 				                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
 				                      )}
@@ -252,25 +267,55 @@ class SignUp extends Component {
 								    	</span>					   			
 									</span>
 							    </div>
-							    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent boxMarg">
-									<span className="blocking-span noIb">   
-									   <input className="form-control  abacusTextbox oesSignUpForm" ref="mobNumber" name="mobNumber" id="mobNumber" onChange={this.handleChange} data-text="mobileV" required/>
+							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
+							   		<span className="blocking-span noIb">   
+									   <input className="form-control  abacusTextbox oesSignUpForm formLable" ref="mobNumber" name="mobNumber" id="mobNumber" onChange={this.handleChange} data-text="mobileV" required/>
 									   {this.state.formerrors.mobileV  && (
 				                        <span className="text-danger">{this.state.formerrors.mobileV}</span> 
 				                      )}
 									   <span className="floating-label">
 									   <i className="fa fa-mobile signupIconFont" aria-hidden="true"></i>Mobile Number</span>					   			
 								    </span>
-							    </div>
-						   		<div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent boxMarg">
+								</div>
+							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
 									<span className="blocking-span noIb">   
-									  <input type="email" className="form-control signupsetting  abacusTextbox oesSignUpForm" ref="signupEmail" name="signupEmail" onChange={this.handleChange} data-text="emailIDV" required/>
+									<select className="form-control inputBox abacusTextbox formLable" value={this.state.officeid} ref ="office" id="office" name="office" data-text="office">
+		                               	<option hidden> Center Name</option>
+		                                  {
+		                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
+		                                    this.state.listofCenters.map((data, index)=>{
+		                                      // console.log(data);
+		                                      return(
+		                                        <option className="formLable" key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+		                                      );
+		                                    })
+		                                    :
+		                                    null
+		                                  }  
+		                              </select>
+										{/*<input type="text" className="form-control abacusTextbox oesSignUpForm" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
+										{this.state.formerrors.lastNameV  && (
+				                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
+				                      )}*/}
+								    	{/*<span className="floating-label1 lbfloatpass">
+								    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
+								    		Center Name
+								    	</span>		*/}			   			
+									</span>
+{/*									<div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
+*/}		                           
+		                              
+		                            
+							    </div>	
+							    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent boxMarg">
+									<span className="blocking-span noIb">   
+									  <input type="email" className="form-control signupsetting formLable abacusTextbox oesSignUpForm" ref="signupEmail" name="signupEmail" onChange={this.handleChange} data-text="emailIDV" required/>
 									  {this.state.formerrors.emailIDV  && (
 				                        <span className="text-danger">{this.state.formerrors.emailIDV}</span> 
 				                      )}
 							    		<span className="floating-label"><i className="fa fa-envelope-o signupIconFont" aria-hidden="true"></i>Email ID</span>					   			
 									</span>
-							    </div>
+							    </div>				   		
 						   		<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent marBtm">
 								    <div className="form-group form-group1 fltlft input-group col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
 							   			{/*<span className="blocking-span noIb">
@@ -286,7 +331,7 @@ class SignUp extends Component {
 					                    </span>*/}
 
 					                    <span className="blocking-span noIb">
-						                    <input type="password" className="form-control pass border3 oesSignUpForm confirmbtm inputTextPass tmsLoginTextBox" ref="signupPassword" name="signupPassword" required/>
+						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPass tmsLoginTextBox" ref="signupPassword" name="signupPassword" required/>
 						                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Password</span>                 
 						                  </span>
 						                <div className="showHideSignDiv">
@@ -300,7 +345,7 @@ class SignUp extends Component {
 							   		<div className="input-group textpdEye fltlft col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
 							   			
 					                     <span className="blocking-span noIb">
-						                    <input type="password" className="form-control pass border3 oesSignUpForm confirmbtm inputTextPass tmsLoginTextBox" ref="signupConfirmPassword" name="signupConfirmPassword" required/>
+						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPass tmsLoginTextBox" ref="signupConfirmPassword" name="signupConfirmPassword" required/>
 						                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Confirm Password</span>                 
 						                  </span>
 						                <div className="showHideSignDiv">
