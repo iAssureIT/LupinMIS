@@ -18,7 +18,7 @@ export default class UMaddRoles extends Component {
     axios.post('/api/roles', formValues)
       .then( (res)=>{
           console.log("submit ");
-          swal("Role added successfully", "", "success");
+          swal("success", "Role added successfully" );
           this.refs.role.value = '';        
       })
       .catch((error)=>{
