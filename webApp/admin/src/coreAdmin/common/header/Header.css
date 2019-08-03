@@ -1,3 +1,51 @@
+.dropbtn {
+    color: #666;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.dropbtn {
+    color: #666;
+    /*padding: 16px;*/
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: -8px;
+    min-width: 160px;
+    box-shadow: 0px 8px 8px 0px #eee;
+    z-index: 1;
+    border-radius: 5px;
+    border: 1px solid #f1f1f1;
+    /*margin-top: -4px;*/
+}
+
+.dropdown-content .deleteNotif:hover {background-color: #f1f1f1;
+    cursor:pointer;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: #fff; color:#666;}
+
+.dropdown-content .deleteNotif:hover { 
+    background-color: #f1f1f1;
+    cursor: pointer;
+    color: #666666;
+    padding: 7px 7px;
+    text-decoration: none;
+    display: block;
+    border-radius: 3px;}
+.dropdown:hover .dropdown-content {display: block; background: #fff;}
+.dropdown:hover .dropbtn {background-color: #fff; color:#666;}
+
 .pageHeader{
     height: 50px;
 }

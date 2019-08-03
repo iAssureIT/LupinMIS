@@ -209,6 +209,13 @@ class Sector extends Component{
       },()=>{
         
       });
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
     }).catch(function (error) {
     });
   }

@@ -238,7 +238,14 @@ class Beneficiary extends Component{
         "familyID"              : editData.familyID+"|"+editData.family_ID,          
         "beneficiaryID"         : editData.beneficiaryID,          
         "nameofbeneficiaries"   : editData.nameofbeneficiaries,
+      });      
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+      this.setState({
+        errors: errors
       });
+      return formIsValid;
     })
     .catch(function (error) {
     });

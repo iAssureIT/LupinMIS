@@ -94,51 +94,79 @@ class ForgotPassword extends Component {
     }
 
   render(){
-    var winHeight = window.innerHeight;
-    var divHeight = winHeight/1.4+'px';
+    
+    var y = 550;
+    var h = y + 'px';
+
+    var x = $(window).height();   
+    var z = 0;
+    var winHeight =(x-z) + 'px';
+    var winHeight1 =(x-z) ;
+    console.log('x',$(window).height());
+    console.log('winHeight',winHeight1);
+
+    var innerheight = winHeight1-60 + 'px';
+    var innerheight1 = winHeight1-60 ;
+   
+    var margin = parseInt( innerheight1-y );
+    var margint = (margin/2);
+    console.log('margint',margint);
+    console.log('margin',margin);
+    var windowWidth = $(window).width();
+    // console.log('ww',windowWidth);
+    if(windowWidth>=320&&windowWidth<=992){
+    var backImage = "visible-xs col-xs-12 visible-sm col-sm-12 noBackImage"
+    }else{
+    var backImage = "signUpBackground hidden-xs hidden-sm"
+    }
 
     return(
-      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
-        <div className="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap bg-success" style={{"height": divHeight}}>
-          <div className="divForgotPasswordWrap">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  verifypd">
-              <h3 className="signInNameTitle"><span className="bordbt">VERIFY EMAIL</span> </h3>
-              <div className="FormWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 forPassWrap">
-                <form id="forgotPassword" onSubmit={this.forgotpassword.bind(this)}>
-                  <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
-                    <span>Enter registerd Email Id </span>
-                  </div>
-                  <div className="form-group col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr veribtm">
-                    <div className="input-effect input-group col-lg-12">
-                      <input type="email" className="effect-21  form-control loginInputs" ref="enterEmail" name="enterEmail" onBlur={this.inputEffect.bind(this)} aria-label="Email Id" aria-describedby="basic-addon1" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Please add '.' and enter only 2 or 3 characters following '.'!" required/>
-                      <span className="input-group-addon glyphi-custommm"><i className="fa fa-envelope" aria-hidden="true"></i></span>
-                      <span className="focus-border">
-                        <i></i>
-                      </span>
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 middlepo middlebord pull-right" id="contentsroll" style={{"height": innerheight}}>
+        <div className="row">
+          <div id="scrollcont" className={backImage} style={{"height": winHeight}}>
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">   
+              <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{"marginTop": margint , "height": h}}>
+                <div className="divForgotPasswordWrap">
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  verifypd">
+                    <h3 className="signInNameTitle"><span className="bordbt">VERIFY EMAIL</span> </h3>
+                    <div className="FormWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 forPassWrap">
+                      <form id="forgotPassword" onSubmit={this.forgotpassword.bind(this)}>
+                        <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
+                          <span>Enter registerd Email Id </span>
+                        </div>
+                        <div className="form-group col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr veribtm">
+                          <div className="input-effect input-group col-lg-12">
+                            <input type="email" className="effect-21  form-control loginInputs" ref="enterEmail" name="enterEmail" onBlur={this.inputEffect.bind(this)} aria-label="Email Id" aria-describedby="basic-addon1" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Please add '.' and enter only 2 or 3 characters following '.'!" required/>
+                            <span className="input-group-addon glyphi-custommm"><i className="fa fa-envelope" aria-hidden="true"></i></span>
+                            <span className="focus-border">
+                              <i></i>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
+                          <span>Enter registerd Mobile Number </span>
+                        </div>
+                        <div className="form-group col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr veribtm">
+                          <div className="input-effect input-group">
+                            <InputMask mask="9999-999-999" maskChar=" " name="enterMobNo" ref="enterMobNo" onChange={this.handleChange} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 inputText"  pattern="^(0|[0-9-+]*)$" title="Enter Mobile Number!" autoComplete="off" required/>
+                            <span className="input-group-addon glyphi-custommm"><i className="fa fa-phone-square" aria-hidden="true"></i></span>
+                            <span className="focus-border">
+                              <i></i>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr">
+                          <Link to='/confirm-otp'>
+                            <button type="submit" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submitBtn UMloginbutton">Send Verification Code</button>
+                          </Link>
+                        </div>
+                        <div className="col-lg-5 col-lg-offset-3 col-md-4 col-sm-4 col-xs-4 pdcls">
+                          <Link to='/' className="UMGrey UMcreateacc  signInbtn1 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">Sign In</Link>  
+                        </div>
+                      </form>
                     </div>
                   </div>
-                  <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
-                    <span>Enter registerd Mobile Number </span>
-                  </div>
-                  <div className="form-group col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr veribtm">
-                    <div className="input-effect input-group">
-                      <InputMask mask="9999-999-999" maskChar=" " name="enterMobNo" ref="enterMobNo" onChange={this.handleChange} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 inputText"  pattern="^(0|[0-9-+]*)$" title="Enter Mobile Number!" autoComplete="off" required/>
-                      <span className="input-group-addon glyphi-custommm"><i className="fa fa-phone-square" aria-hidden="true"></i></span>
-                      <span className="focus-border">
-                        <i></i>
-                      </span>
-                    </div>
-                  </div>
-                  <div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr">
-                    <Link to='/confirm-otp'>
-                      <button type="submit" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submitBtn UMloginbutton">Send Verification Code</button>
-                    </Link>
-                  </div>
-                  <div className="col-lg-5 col-lg-offset-3 col-md-4 col-sm-4 col-xs-4 pdcls">
-                    <Link to='/' className="UMGrey UMcreateacc  signInbtn1 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">Sign In</Link>  
-{/*                    <Link to='/' className="UMGrey signInbtn col-lg-12 col-md-12 col-sm-12 col-xs-12">Sign In</Link>   
-*/}                  </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>

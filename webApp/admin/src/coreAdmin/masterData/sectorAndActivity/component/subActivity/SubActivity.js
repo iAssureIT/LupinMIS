@@ -303,6 +303,13 @@ class SubActivity extends Component{
           "familyUpgradation"     : (_.flatten(editData.activity.map((a, i)=>{if(a._id == activity_id)  return (a.subActivity).filter((b)=>{if(b._id == subactivity_id) return b.familyUpgradation}) })))[0].familyUpgradation,
         },()=>{
         });
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
       }).catch(function (error) {
     });
   }

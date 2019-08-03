@@ -214,32 +214,42 @@ class SignUp extends Component {
 	    });
 	}
 	render(){
-		// var winHeight = window.innerHeight;
-  //       var divHeight = winHeight/4.5+'px';
+		var y = 620;
+	    var h = y + 'px';
+
+	    var x = $(window).height();   
+	    var z = 0;
+	    var winHeight =(x-z) + 'px';
+	    var winHeight1 =(x-z) ;
+	    console.log('x',$(window).height());
+	    console.log('winHeight',winHeight1);
+
+	    var innerheight = winHeight1-60 + 'px';
+	    var innerheight1 = winHeight1-60 ;
+	   
+	    var margin = parseInt( innerheight1-y );
+	    var margint = (margin/2);
+	    console.log('margint',margint);
+	    console.log('margin',margin);
+    	var windowWidth = $(window).width();
+      // console.log('ww',windowWidth);
+		if(windowWidth>=320&&windowWidth<=992){
+		var backImage = "visible-xs col-xs-12 visible-sm col-sm-12 noBackImage"
+		}else{
+		var backImage = "signUpBackground hidden-xs hidden-sm"
+		}
+
+
 		const {formerrors} = this.state;
 		console.log("formerrors====?>>>",formerrors);
-
-
-		  var windowWidth = $(window).width();
-    // console.log('ww',windowWidth);
-      if(windowWidth>=320&&windowWidth<=992){
-        var backImage = "visible-xs col-xs-12 visible-sm col-sm-12 noBackImage"
-        }else{
-        var backImage = "signUpBackground hidden-xs hidden-sm"
-      }
-
-
-    var winHeight = window.innerHeight;
-    var boxHeight = 520;
-    var divHeight = 450 +'px';
-      console.log("-------------------------------",this.state.loggedIn)
-    
+      /*console.log("-------------------------------",this.state.loggedIn)*/    
 		return(
-
-		<div className={backImage} style={{"height": winHeight}}> 
-			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
-        		<div className="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 margintop20 formbg1 bg-success signupPadding signUpFormWrap loginOesWrap loginforms1" style={{"height": boxHeight}}>
-					<div className="divLoginInWrap">
+			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 middlepo middlebord pull-right" id="contentsroll" style={{"height": innerheight}}>
+         		<div className="row">
+            		<div id="scrollcont" className={backImage} style={{"height": winHeight}}>
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
+                    	<div className="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap loginOesWrap loginforms1 middleblock hght" style={{"marginTop": margint , "height": h}}>
+						<div className="divLoginInWrap">
 						<form id="signUpUser" onSubmit={this.usersignup.bind(this)}>
 	                    	<h3 className="signUpNameTitle2 margintop0"><span className="bordbt">SIGN UP</span></h3>
 							<div className="col-lg-12 col-md-12 signUpInnerWrapperOES signupfrm">
@@ -388,6 +398,8 @@ class SignUp extends Component {
 						    </div> 
 					  	</form>
 				  	</div>
+				</div>
+				</div>
 				</div>
 			</div>
 		</div>

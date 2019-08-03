@@ -518,7 +518,14 @@ class centerDetail extends Component{
         "villagesCovered"          : editData.villagesCovered,
       },()=>{
         console.log(this.state)
+      });      
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+      this.setState({
+        errors: errors
       });
+      return formIsValid;
     }).catch(function (error) {
     });
   }

@@ -9,7 +9,7 @@
 }
 .logoImage {
     height: 80px;
-    margin-left: 10px;
+    margin-left: 40px;
 }
 .signUpBackground{
   background: #0275cf !important;
@@ -25,7 +25,9 @@
 .margintop0{
   margin-top: 0px !important;
 }
-
+.inputContent{
+  height: 45px !important;
+}
 .signUpFormWrap, .forgetpassFormWrap, .confirmModalFormWrap{
   border-radius: 10px;
   height: 650px;

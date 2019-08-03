@@ -254,7 +254,14 @@ class Activity extends Component{
         // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
       },()=>{
         console.log('this.state', this.state.activity)
+      });      
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+      this.setState({
+        errors: errors
       });
+      return formIsValid;
     }).catch(function (error) {
     });
   }

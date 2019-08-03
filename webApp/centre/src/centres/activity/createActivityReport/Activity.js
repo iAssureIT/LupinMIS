@@ -515,8 +515,16 @@ class Activity extends Component{
         "remark"            : editData.remark,
         "listofBeneficiaries" : editData.listofBeneficiaries,
         "selectedBeneficiaries" : editData.listofBeneficiaries
+      });      
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+      this.setState({
+        errors: errors
       });
-    }).catch(function (error) {
+      return formIsValid;
+    })
+    .catch(function (error) {
     });
     // this.setState({
     //   "editId"              : "",

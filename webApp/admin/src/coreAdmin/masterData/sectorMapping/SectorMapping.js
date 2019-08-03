@@ -250,6 +250,13 @@ class SectorMapping extends Component{
         "goalType"                :editData.type,      
         "selectedActivities"      :editData.sector, 
       });
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
     }).catch(function (error) {
     });
   }
