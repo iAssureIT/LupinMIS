@@ -95,13 +95,13 @@ class ForgotPassword extends Component {
 
   render(){
     var winHeight = window.innerHeight;
-    var divHeight = winHeight/4.5+'px';
+    var divHeight = winHeight/1.4+'px';
 
     return(
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
-        <div className="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap bg-success" style={{"height": winHeight}}>
+        <div className="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap bg-success" style={{"height": divHeight}}>
           <div className="divForgotPasswordWrap">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 forgotpwd verifypd">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  verifypd">
               <h3 className="signInNameTitle"><span className="bordbt">VERIFY EMAIL</span> </h3>
               <div className="FormWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 forPassWrap">
                 <form id="forgotPassword" onSubmit={this.forgotpassword.bind(this)}>
@@ -134,9 +134,10 @@ class ForgotPassword extends Component {
                       <button type="submit" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submitBtn UMloginbutton">Send Verification Code</button>
                     </Link>
                   </div>
-                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdcls">
-                    <Link to='/' className="UMGrey signInbtn col-lg-12 col-md-12 col-sm-12 col-xs-12">Sign In</Link>   
-                  </div>
+                  <div className="col-lg-5 col-lg-offset-3 col-md-4 col-sm-4 col-xs-4 pdcls">
+                    <Link to='/' className="UMGrey UMcreateacc  signInbtn1 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">Sign In</Link>  
+{/*                    <Link to='/' className="UMGrey signInbtn col-lg-12 col-md-12 col-sm-12 col-xs-12">Sign In</Link>   
+*/}                  </div>
                 </form>
               </div>
             </div>

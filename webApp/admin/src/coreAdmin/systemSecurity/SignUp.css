@@ -12,7 +12,7 @@
     margin-left: 10px;
 }
 .signUpBackground{
-  background: #fff !important;
+  background: #0275cf !important;
   /*background-image: url("/images/TGK.png");*/
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -33,7 +33,7 @@
   box-shadow: 0px 0px 0px;
   border: 1px solid #ccc;
   margin-top: 80px;
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: #fff !important;
   float: right;
 }
 .signUpWrapper{
@@ -84,35 +84,6 @@
 .boxMarg{
   margin-bottom: 20px !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .firstverification{
   margin-top: 32%;
@@ -184,13 +155,13 @@
 .abacusTextbox{
     border: 0 !important;
     box-shadow: none;
-    border-bottom: 1px solid #efefef !important;
+    /*border-bottom: 1px solid #efefef !important;*/
     border-radius: 4px;
     height: 35px !important;
     font-size: 16px;
     background: #d8d8d8;
     font-family: 'Roboto', sans-serif !important;
-}
+}/*
 .tmsLoginTextBox{
   height: 35px !important;
   margin-bottom: 30px;
@@ -201,7 +172,7 @@
   font-size: 16px;
   background: #d8d8d8;
   font-family: 'Roboto', sans-serif !important;
-}
+}*/
 .glyphi-custommm{
   border-left: 0px solid; 
 }
@@ -267,7 +238,7 @@
 .oesSignUpForm:focus ~, .floating-label,.oesSignUpForm:not(:focus):valid ~, .floating-label{
   top: -16px;
   font-size: 15px;
-  color: #4183D7;
+  color: #555;
   left: 10px;
   display: block;
   font-weight: bold;
@@ -429,63 +400,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .UMGrey,.UMGrey1,.UMGreyy, .UMIHaveRead{
   color: #999;
   /*font-family: Poppins-Regular;*/
@@ -570,23 +484,25 @@
   display: none;
 }
 .UMloginbutton{
-  background: #1d109d;
+  background: #0D47A1;
   padding: 4px 0;
-  color: #fff;
+  color: #fff !important;
   border: 0;
   text-transform: uppercase;
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 20px;
+  margin-top: 20px;
   border-radius: 4px !important; 
 }
 
 .UMloginbutton:hover{
-  color: #fff;
+  background: #0D47A1 !important;
+  color: #fff !important;
 }
 .UMloginbutton:focus{
   outline: none;
-  background: #54Aff3;
+  background: #0D47A1;
   color: #fff;
 }
 
@@ -783,7 +699,7 @@
 .oesSignUpForm:focus ~ .floating-label, .oesSignUpForm:not(:focus):valid ~ .floating-label {
     top: -16px;
     font-size: 13px;
-    color: #4183D7;
+    color: #555;
     left: 18px !important;
     display: block;
     font-weight: bold;
@@ -801,7 +717,7 @@
 .oesSignUpForm:focus ~ .floating-label1, .oesSignUpForm:not(:focus):valid ~ .floating-label1 {
     top: -16px;
     font-size: 13px;
-    color: #4183D7;
+    color: #555;
     left: 5px !important;
     display: block;
     font-weight: bold;
@@ -1024,6 +940,7 @@ input[type=radio]:checked ~ span{
   border-radius: 4px;
   /* margin-left: 5%; */
   font-weight: bold;
+  margin-top: 15px;
 }
 .signuppd1{
   padding: 3px;
@@ -1036,24 +953,12 @@ input[type=radio]:checked ~ span{
       margin: 20% auto;
       border-radius: 50%;
   }
-
 input[type="radio"]:checked:before {
       background: #4183D7;
    }*/
 /*input[type=radio]:checked ~ .check {
   border: 5px solid #0DFF92;
 }*/
-.confirmbtm{
-  border: 0 !important;
-  box-shadow: none;
-  border-bottom: 1px solid #efefef !important;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  height: 35px !important;
-  font-size: 16px;
-  background: #d8d8d8;
-  font-family: 'Roboto', sans-serif !important;
-}
 
 .userCreateWrap{
   padding-top:55px;
@@ -1269,7 +1174,7 @@ input[type="radio"]:checked:before {
   margin-top: 8%;
   margin-bottom: 10%;
   /*color: #333333;*/
-  color: #DAA520;
+  color: #0275cf;
   font-weight: bold;
   font-family:'Roboto', sans-serif !important;
 }
@@ -1374,10 +1279,14 @@ input[type="radio"]:checked:before {
     background-color: #fff;
     font-family: 'Roboto', sans-serif !important;
 }
+.oesSignUpForm{
+  border: 1px solid #aaa !important;
+
+}
 .tmsLoginTextBox{
   height: 35px !important;
   margin-bottom: 30px;
-  border: 1px solid #ccc;
+  border: 1px solid #aaa !important;
   box-shadow: none;
   border-radius: 4px;
   font-size: 16px;
@@ -1439,7 +1348,7 @@ input[type="radio"]:checked:before {
 .inputTextSearch:focus ~ .floating-label{
   top: -22px;
   /*font-size: 15px;*/
-  color: #fff;
+  color: #333;
   /*left: 17px;*/
   font-weight: 100;
   display: block;
@@ -1454,7 +1363,7 @@ input[type="radio"]:checked:before {
 .oesSignUpForm:focus ~, .floating-label,.oesSignUpForm:not(:focus):valid ~, .floating-label{
   top: -16px;
   font-size: 15px;
-  color: #fff !important;
+  color: #333 !important;
   left: 10px;
   display: block;
   font-weight: 100;
@@ -1764,7 +1673,7 @@ input[type="radio"]:checked:before {
   display: none;
 }
 .UMloginbutton{
-  background: #DAA520;
+  /*background: #DAA520;*/
   padding: 7px 0;
   color: #fff;
   border: 0;
@@ -1861,7 +1770,7 @@ input[type="radio"]:checked:before {
 .signInbtn{
   text-align: center;
   /*color: #333333;*/
-  color: #fff;
+  /*color: #fff;*/
   padding: 4px;
   /*background: #fff;*/
  /* margin-top: 15px !important;*/
@@ -1987,7 +1896,7 @@ input[type="radio"]:checked:before {
 .oesSignUpForm:focus ~ .floating-label, .oesSignUpForm:not(:focus):valid ~ .floating-label {
     top: -16px;
     font-size: 13px;
-    color: #fff;
+    color: #333;
     left: 18px !important;
     display: block;
     font-weight: 100;
@@ -2005,7 +1914,7 @@ input[type="radio"]:checked:before {
 .oesSignUpForm:focus ~ .floating-label1, .oesSignUpForm:not(:focus):valid ~ .floating-label1 {
     top: -16px;
     font-size: 13px;
-    color: #fff;
+    color: #333;
     left: 5px !important;
     display: block;
     font-weight: 100;
@@ -2243,7 +2152,6 @@ input[type=radio]:checked ~ span{
       margin: 20% auto;
       border-radius: 50%;
   }
-
 input[type="radio"]:checked:before {
       background: #4183D7;
    }*/
@@ -2253,7 +2161,7 @@ input[type="radio"]:checked:before {
 .confirmbtm{
   /*border: 0 !important;*/
   box-shadow: none;
-  border: 1px solid #ccc;
+  /*border: 1px solid #ccc;*/
   /*border-bottom: 1px solid #efefef !important;*/
   border-radius: 4px;
   margin-bottom: 15px;
@@ -2273,7 +2181,7 @@ input[type="radio"]:checked:before {
 .terms1{
   position: relative;
   top: -2px;
-  color: #fff;
+  color: #333;
   left: 2px;
 }
 .mrleftsign{
@@ -2460,12 +2368,6 @@ input[type="radio"]:checked:before {
     z-index: 999;
     position: relative;
     font-size: 16px;
-}
-
-.signUpBackground{
-  background-image: url("/images/TGK.png");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
 }
 
 .backImageModal{

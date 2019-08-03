@@ -279,7 +279,7 @@ class SignUp extends Component {
 								</div>
 							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
 									<span className="blocking-span noIb">   
-									<select className="form-control inputBox abacusTextbox formLable" value={this.state.officeid} ref ="office" id="office" name="office" data-text="office">
+									<select className="form-control inputBox abacusTextbox oesSignUpForm formLable" value={this.state.officeid} ref ="office" id="office" name="office" data-text="office">
 		                               	<option hidden> Center Name</option>
 		                                  {
 		                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
@@ -383,7 +383,7 @@ class SignUp extends Component {
 							    </div>		   
 
 						    	<div className="col-lg-4 col-lg-offset-4 col-md-4 col-sm-4 col-xs-4 pdcls">
-							    	<Link to='/' className="UMGrey signInbtn1 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">Sign In</Link> 	
+							    	<Link to='/' className="UMGrey UMcreateacc signInbtn1 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">Sign In</Link> 	
 						    	</div>
 						    </div> 
 					  	</form>

@@ -60,7 +60,7 @@ export default class Leftsidebar extends Component{
                     Reports
                   </a>              
                 </li>*/}
-               {/* <li className="sidebarMenuText">
+                <li className="sidebarMenuText">
                   <a href="#report" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-book" />
                     Reports
@@ -79,7 +79,7 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Sector wise Annual Completion Summary Report</span>
                       </a>
                     </li>
-                    <li>
+                   {/* <li>
                       <a href="/activity-wise-periodic-variance-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activity wise Periodic Variance Report (Physical & Financial)</span>
@@ -96,9 +96,9 @@ export default class Leftsidebar extends Component{
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activity wise Periodic Physical Variance Report</span>
                       </a>
-                    </li>
+                    </li>*/}
                   </ul>
-                </li> */}
+                </li> 
                 <li className="sidebarMenuText">
                   <a href="#MasterData" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-database" />

@@ -17,14 +17,14 @@ class VerifyAccount extends Component {
 
   render(){
     var winHeight = window.innerHeight;
-    var divHeight = winHeight/4.5+'px';
+    var divHeight = winHeight/1.7+'px';
     // console.log('window inner height: ', window.innerHeight);
 
     return(
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
-        <div className="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap bg-success" style={{"height": winHeight}}>
+        <div className="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap bg-success" style={{"height": divHeight}}>
           <div className="divVerifyEmailWrap">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 forgotpwd verifypd">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 verifypd">
               <form id="OTPMobMail" /*onSubmit={this.VerifyMobileAOS.bind(this)}*/>
                 <h3 className="signInNameTitle"><span className="bordbt">VERIFY ACCOUNT</span></h3>
                 <div className="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
@@ -42,8 +42,8 @@ class VerifyAccount extends Component {
                 <div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr">
                   <button type="submit" className="btn btn-info submitBtn col-lg-12 col-md-12 col-sm-12 col-xs-12 UMloginbutton">Submit</button>
                 </div>
-                <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdcls">
-                  <Link to='/' className="UMGrey signInbtn pdleftclr col-lg-12 col-md-12 col-sm-12 col-xs-12">Sign In</Link>   
+                <div className="col-lg-5 col-lg-offset-4 col-md-4 col-sm-4 col-xs-4 pdcls">
+                  <Link to='/' className="UMGrey signInbtn UMcreateacc pdleftclr col-lg-12 col-md-12 col-sm-12 col-xs-12">Sign In</Link>   
                 </div>
               </form>
             </div>
