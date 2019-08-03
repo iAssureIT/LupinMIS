@@ -51,6 +51,8 @@ import report                                     from "../../admin/Reports/Repo
 import report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
 import report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
 import report3                                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
+import report4                                    from "../../admin/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";
+import report5                                    from "../../admin/LupinReports/ActivitywisePeriodicPhysicalVarianceReport.js";
 
  class Layout extends Component{
   
@@ -171,7 +173,9 @@ componentDidMount(){
                               <Route path="/report"                                                       exact strict component={ report } />
                               <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
                               <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
-                              <Route path="/activity-wise-periodic-variance-report"                       exact strict component={ report2 } />
+                              <Route path="/activity-wise-periodic-variance-report"                       exact strict component={ report3 } />
+                              <Route path="/sectorwise-periodic-variance-summary-report"                       exact strict component={ report4 } />
+                              <Route path="/activity-wise-periodic-physical-variance-report"                       exact strict component={ report5 } />
 
                               
 

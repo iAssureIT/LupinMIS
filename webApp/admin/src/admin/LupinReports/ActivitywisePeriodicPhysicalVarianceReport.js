@@ -34,20 +34,20 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     mergedColoums : 1
                 },
                 {
-                    heading : 'Annual Plan',
-                    mergedColoums : 2
+                    heading : 'Annual Physical Plan',
+                    mergedColoums : 3
                 },
                 {
-                    heading : "Source of Financial Periodic Plan (Physical & Financial 'Lakh')",
-                    mergedColoums : 9
+                    heading : "Periodic Physical Plan",
+                    mergedColoums : 3
                 },
                 {
-                    heading : "Source wise Financial Periodic Achievements",
-                    mergedColoums : 9
+                    heading : "Periodic Achievements",
+                    mergedColoums : 3
                 },
                 {
-                    heading : "Agency wise Variance Periodic Report 'Lakh'",
-                    mergedColoums : 9
+                    heading : "Periodic Varance Report",
+                    mergedColoums : 3
                 },
             ]
         },
@@ -55,40 +55,20 @@ class ActivityWisePeriodicVarianceReport extends Component{
             "abcs"    : 'Activity & Sub Activity',
             "abcd"    : 'Unit',
             "dfgg"    : 'Physical Units', 
-            "abcx"    : "Total Budget 'Lakh'",
-            "dfng"    : 'Physical Units', 
-            "abbx"    : "Total Budget 'Lakh'",
-            "ouio"    : 'LHWRF',
-            "dgfg"    : 'NABARD',
-            "ghgh"    : 'Bank Loan',
-            "werr"    : 'Direct Community  Contribution',
-            "ghgf"    : 'Indirect Community  Contribution',
-            "ertr"    : 'Govt',
-            "abui"    : 'Others',
-            "yiyi"    : 'Physical Units', 
-            "abax"    : "Financal Total",
-            "ouis"    : 'LHWRF',
-            "dgfd"    : 'NABARD',
-            "dhgh"    : 'Bank Loan',
-            "wcrr"    : 'Direct Community  Contribution',
-            "ghqf"    : 'Indirect Community  Contribution',
-            "ertd"    : 'Govt',
-            "afui"    : 'Others',
-            "dfwg"    : 'Physical Units', 
-            "amcx"    : "Financal Total",
-            "ouyo"    : 'LHWRF',
-            "dghg"    : 'NABARD',
-            "ghlh"    : 'Bank Loan',
-            "wenr"    : 'Direct Community  Contribution',
-            "ghmf"    : 'Indirect Community  Contribution',
-            "ere"    : 'Govt',
-            "abhi"    : 'Others',
+            "abcx"    : "Reach",
+            "dfng"    : 'Family Upgradation plan', 
+            "vbvh"    : 'Physical Units', 
+            "jjij"    : "Reach",
+            "mkmk"    : 'Family Upgradation plan', 
+            "xfxf"    : 'Physical Units', 
+            "hhhh"    : "Reach",
+            "uiuh"    : 'Family Upgraded', 
+            "xxdx"    : 'Physical Units', 
+            "jjjn"    : "Reach",
+            "xcbv"    : 'Family Upgraded', 
         },
-    }/*Sr No  Activity & Sub Activity Unit  Annual Plan   Periodic Plan (Physical & Financial 'Lakh'                  Periodic Achievements                 Variance Periodic Report 'Lakh'                 
-      Physical Units   Total Budget 'Lakh'  Physical Units  Total Budget 'Lakh' Source of Financial Plan              Physical Units   Financal Total Source wise Financial Achievements              Physical Units  Financial Total Agency wise Variance              
-              LHWRF NABARD  Bank Loan Community Contribution    GOVT  Others      LHWRF NABARD  Bank Loan Community Contribution    GOVT  Other     LHWRF NABARD  Bank Loan Community Contribution    GOVT  Others  
-                    Indirect  Indirect                Indirect  Indirect                Indirect  Indirect      */
-    window.scrollTo(0, 0);
+    }
+        window.scrollTo(0, 0);
   }
 
   componentDidMount(){

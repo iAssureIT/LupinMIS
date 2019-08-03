@@ -79,24 +79,24 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Sector wise Annual Completion Summary Report</span>
                       </a>
                     </li>
-                   {/* <li>
+                   <li>
                       <a href="/activity-wise-periodic-variance-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activity wise Periodic Variance Report (Physical & Financial)</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/activity-wise-periodic-variance-report">
+                      <a href="/sectorwise-periodic-variance-summary-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector wise Periodic Variance Summary Report</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/activity-wise-periodic-variance-report">
+                      <a href="/activity-wise-periodic-physical-variance-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activity wise Periodic Physical Variance Report</span>
                       </a>
-                    </li>*/}
+                    </li>
                   </ul>
                 </li> 
                 <li className="sidebarMenuText">

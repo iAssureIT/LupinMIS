@@ -6,12 +6,11 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import "../Reports/Reports.css";
-
-class ActivityWisePeriodicVarianceReport extends Component{
+class SectorwiseAnnualCompletionSummaryReport extends Component{
 	constructor(props){
     super(props);
     this.state = {
-        'currentTabView'    : "Monthly",
+        'currentTabView'    : "Daily",
         'tableDatas'        : [],
         'reportData'        : {},
         'tableData'         : [],
@@ -34,60 +33,66 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     mergedColoums : 1
                 },
                 {
-                    heading : 'Annual Plan',
+                    heading : "",
+                    mergedColoums : 1
+                },
+                {
+                    heading : "Source of Financial Plan (Periodic) 'Lakh'",
+                    mergedColoums : 7
+                },
+                {
+                    heading : "Periodic Achievements",
                     mergedColoums : 2
                 },
                 {
-                    heading : "Source of Financial Periodic Plan (Physical & Financial 'Lakh')",
-                    mergedColoums : 9
+                    heading : "Source of Financial Achievement (Periodic) 'Lakh'",
+                    mergedColoums : 7
                 },
                 {
-                    heading : "Source wise Financial Periodic Achievements",
-                    mergedColoums : 9
+                    heading : "",
+                    mergedColoums : 1
                 },
                 {
-                    heading : "Agency wise Variance Periodic Report 'Lakh'",
-                    mergedColoums : 9
+                    heading : "Source wise Financial Variance Report (Periodic) 'Lakh'",
+                    mergedColoums : 7
                 },
             ]
         },
         "tableHeading"      : {
-            "abcs"    : 'Activity & Sub Activity',
-            "abcd"    : 'Unit',
-            "dfgg"    : 'Physical Units', 
-            "abcx"    : "Total Budget 'Lakh'",
-            "dfng"    : 'Physical Units', 
-            "abbx"    : "Total Budget 'Lakh'",
-            "ouio"    : 'LHWRF',
+            "abcs"    : 'Sector',
+            "abcx"    : "Annual Budget Plan 'Lakh'",
+            "cbfg"    : 'Periodic Budget plan "Lakh"', 
+            "yghj"    : 'LHWRF',
             "dgfg"    : 'NABARD',
             "ghgh"    : 'Bank Loan',
             "werr"    : 'Direct Community  Contribution',
             "ghgf"    : 'Indirect Community  Contribution',
             "ertr"    : 'Govt',
             "abui"    : 'Others',
-            "yiyi"    : 'Physical Units', 
-            "abax"    : "Financal Total",
-            "ouis"    : 'LHWRF',
-            "dgfd"    : 'NABARD',
-            "dhgh"    : 'Bank Loan',
-            "wcrr"    : 'Direct Community  Contribution',
-            "ghqf"    : 'Indirect Community  Contribution',
-            "ertd"    : 'Govt',
-            "afui"    : 'Others',
-            "dfwg"    : 'Physical Units', 
-            "amcx"    : "Financal Total",
-            "ouyo"    : 'LHWRF',
-            "dghg"    : 'NABARD',
-            "ghlh"    : 'Bank Loan',
-            "wenr"    : 'Direct Community  Contribution',
-            "ghmf"    : 'Indirect Community  Contribution',
-            "ere"    : 'Govt',
-            "abhi"    : 'Others',
+            "abcf"    : 'Financial', 
+            "abcd"    : '% Achievement',
+            "hgfh"    : 'LHWRF',
+            "hffg"    : 'NABARD',
+            "tert"    : 'Bank Loan',
+            "ouio"    : 'Direct Community  Contribution',
+            "jshk"    : 'Indirect Community  Contribution',
+            "khjk"    : 'Govt',
+            "kgkk"    : 'Others',
+            "JHHH"    : 'Financial Variance (Periodic)',
+            "reee"    : 'LHWRF',
+            "zxcc"    : 'NABARD',
+            "rsee"    : 'Bank Loan',
+            "jyuy"    : 'Direct Community  Contribution',
+            "tuty"    : 'Indirect Community  Contribution',
+            "gjhg"    : 'Govt',
+            "nmbbbbm"    : 'Others',
+
+           
         },
-    }/*Sr No  Activity & Sub Activity Unit  Annual Plan   Periodic Plan (Physical & Financial 'Lakh'                  Periodic Achievements                 Variance Periodic Report 'Lakh'                 
-      Physical Units   Total Budget 'Lakh'  Physical Units  Total Budget 'Lakh' Source of Financial Plan              Physical Units   Financal Total Source wise Financial Achievements              Physical Units  Financial Total Agency wise Variance              
-              LHWRF NABARD  Bank Loan Community Contribution    GOVT  Others      LHWRF NABARD  Bank Loan Community Contribution    GOVT  Other     LHWRF NABARD  Bank Loan Community Contribution    GOVT  Others  
-                    Indirect  Indirect                Indirect  Indirect                Indirect  Indirect      */
+    }/*Sector Annual Budget Plan 'Lakh' Periodic Budget plan 'Lakh' Source of Financial Plan (Periodic) 'Lakh'              Periodic Achievements   Source of Financial Achievement (Periodic) 'Lakh'             Financial Variance (Periodic) Source wise Financial Variance Report (Periodic) 'Lakh'               
+      LHWRF NABARD  Bank loan   Community Contribution    Govt  Others  " Financial
+" % Achievement LHWRF NABARD  Bank  Loan  Community  Contribution   Govt. Others    LHWRF NABARD  Bank loan   Community  Contribution   Govt. Others    
+            Direct  Indirect                Direct  Indirect              Direct  Indirect        */
     window.scrollTo(0, 0);
   }
 
@@ -142,7 +147,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     {
                       /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
                       this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-                     */ this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
+                */    this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
                       this.state.currentTabView === "Yearly"  ? <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
                       <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} />  
                     }
@@ -157,4 +162,4 @@ class ActivityWisePeriodicVarianceReport extends Component{
     );
   }
 }
-export default ActivityWisePeriodicVarianceReport
+export default SectorwiseAnnualCompletionSummaryReport
