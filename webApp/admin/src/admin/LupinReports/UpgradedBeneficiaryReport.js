@@ -7,7 +7,7 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import "../Reports/Reports.css";
-class CategorywiseReport extends Component{
+class UpgradedBeneficiaryReport extends Component{
 	constructor(props){
     super(props);
     this.state = {
@@ -18,7 +18,7 @@ class CategorywiseReport extends Component{
         "startRange"        : 0,
         "limitRange"        : 10,
         "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
-        "twoLevelHeader"    : {
+       "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
                 {
@@ -30,21 +30,72 @@ class CategorywiseReport extends Component{
                     mergedColoums : 1
                 },
                 {
-                    heading : 'No of Families',
-                    mergedColoums : 2
-                },        
+                    heading : '',
+                    mergedColoums : 1
+                },
+                {
+                    heading : '',
+                    mergedColoums : 1
+                },
+                {
+                    heading : '',
+                    mergedColoums : 1
+                },
+                {
+                    heading : '',
+                    mergedColoums : 1
+                },
+                {
+                    heading : '',
+                    mergedColoums : 1
+                },
+                {
+                    heading : '',
+                    mergedColoums : 1
+                },
+                {
+                    heading : '',
+                    mergedColoums : 1
+                },
+                {
+                    heading : '',
+                    mergedColoums : 1
+                },
+                {
+                    heading : '',
+                    mergedColoums : 1
+                },
+                {
+                    heading : 'Cost Sharing "Rs"',
+                    mergedColoums : 9 
+                },
+               
             ]
         },
         "tableHeading"      : {
-            "abcs"    : 'Family Category',
-            "dgfg"    : 'Reached',
-            "ghgh"    : 'Upgraded',
-        
+            "abcs"    : 'Block',
+            "yghj"    : 'Village',
+            "dgfg"    : 'Name of Beneficiary',
+            "ghgh"    : 'Project',
+            "ertr"    : 'Sector',
+            "abui"    : 'Activity',
+            "abcf"    : 'Quantity',    
+            "ggjk"    : 'Date Of Intervention',
+            "ugku"    : 'Unit',
+            "hgjj"    : 'Quantity',            
+            "hgfh"    : 'LHWRF',
+            "hffg"    : 'NABARD',
+            "tert"    : 'Bank Loan',
+            "ouio"    : 'Direct Community  Contribution',
+            "jshk"    : 'Indirect Community  Contribution',
+            "khjk"    : 'Govt',
+            "kgkk"    : 'Others',
+            "hkjh"    : 'Total "Rs"',
+           
         },
     }
         window.scrollTo(0, 0);
-  }/*Sr.  Family Category No of Families  
-No.   Reached Upgraded*/
+  } 
   componentDidMount(){
     this.getState();
     this.getAvailableCenters();
@@ -209,28 +260,7 @@ No.   Reached Upgraded*/
                        {/* <div className="errorMsg">{this.state.errors.district}</div>*/}
                       </div>
                     </div>
-                    
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17">
-                      <div className="sales-report-main-class">
-                        <div className="sales-report-commonpre">
-                          {/*<div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
-                            Daily
-                          </div>
-                          <div onClick={this.changeReportComponent.bind(this)} id="Weekly"  className={this.state.currentTabView === "Weekly" ? "sales-report-common sales-report-thisweek report-currentlyActive" : "sales-report-common sales-report-thisweek"}>
-                            Weekly
-                          </div>*/}
-                          <div onClick={this.changeReportComponent.bind(this)} id="Monthly"  className={this.state.currentTabView === "Monthly" ? "sales-report-common sales-report-thismonth report-currentlyActive" : "sales-report-common sales-report-thismonth"}>
-                            Monthly
-                          </div>
-                          <div onClick={this.changeReportComponent.bind(this)} id="Yearly"  className={this.state.currentTabView === "Yearly" ? "sales-report-common sales-report-thisyear report-currentlyActive" : "sales-report-common sales-report-thisyear"}>
-                            Yearly
-                          </div>
-                          <div onClick={this.changeReportComponent.bind(this)} id="Customised"  className={this.state.currentTabView === "Customised" ? "sales-report-common sales-report-costomised report-currentlyActive" : "sales-report-common sales-report-costomised"}>
-                            Customised Dates
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
                     
                     {
                       /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
@@ -250,4 +280,4 @@ No.   Reached Upgraded*/
     );
   }
 }
-export default CategorywiseReport
+export default UpgradedBeneficiaryReport

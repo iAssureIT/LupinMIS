@@ -47,7 +47,8 @@ import SectorMapping                              from '../../coreAdmin/masterDa
 
 import plan                                       from '../../admin/annualPlan/PlanDetails.js';
 import MonthlyPlan                                from '../../admin/monthlyPlan/MonthlyPlan.js';
-import report                                     from "../../admin/Reports/Reports.js";
+// import report                                     from "../../admin/Reports/Reports.js";
+import report                                     from "../../admin/LupinReports/Report.js";
 import report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
 import report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
 import report3                                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
@@ -56,6 +57,10 @@ import report5                                    from "../../admin/LupinReports
 import report6                                    from "../../admin/LupinReports/GeographicalReport.js";
 import report7                                    from "../../admin/LupinReports/VillagewisefamilyReport.js";
 import report8                                    from "../../admin/LupinReports/CategorywiseReport.js";
+import report9                                    from "../../admin/LupinReports/UpgradedBeneficiaryReport.js";
+import report10                                   from "../../admin/LupinReports/SDGReport.js";
+import report11                                   from "../../admin/LupinReports/ADPReport.js";
+import report12                                   from "../../admin/LupinReports/EMPReport.js";
 
  class Layout extends Component{
   
@@ -182,6 +187,12 @@ componentDidMount(){
                               <Route path="/geographical-report"                                          exact strict component={ report6 } />
                               <Route path="/villagewise-family-report"                                    exact strict component={ report7 } />
                               <Route path="/category-wise-report"                                         exact strict component={ report8 } />
+                              <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
+                              <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
+                              <Route path="/SDG-report"                                                   exact strict component={ report10 } />
+                              <Route path="/ADP-report"                                                   exact strict component={ report11 } />
+                              <Route path="/EMP-report"                                                   exact strict component={ report12 } />
+                              <Route path="/Report"                                                   exact strict component={ report } />
 
                               
 

@@ -67,12 +67,17 @@ export default class Leftsidebar extends Component{
                   </a>
                   <ul className="collapse list-unstyled" id="report">
                     <li>
-                        <a href="/activitywise-annual-completion-report">
-                          <i className="fa fa-circle-o" /> 
-                          <span className="sidebarMenuSubText">Activity wise Annual Completion Report</span>
-                        </a>
-                      </li>
-
+                      <a href="/Report">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/activitywise-annual-completion-report">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Activity wise Annual Completion Report</span>
+                      </a>
+                    </li>
                     <li>
                       <a href="/sector-wise-annual-completion-summary-report">
                         <i className="fa fa-circle-o" />
@@ -113,6 +118,30 @@ export default class Leftsidebar extends Component{
                       <a href="/category-wise-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Category wise Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/upgraded-beneficiary-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Upgraded Beneficiary Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/SDG-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">SDG Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/ADP-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">ADP Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/EMP-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">EMP Report</span>
                       </a>
                     </li>
                   </ul>

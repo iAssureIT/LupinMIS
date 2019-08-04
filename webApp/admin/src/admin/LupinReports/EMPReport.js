@@ -7,7 +7,7 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import "../Reports/Reports.css";
-class CategorywiseReport extends Component{
+class EMPReport extends Component{
 	constructor(props){
     super(props);
     this.state = {
@@ -30,21 +30,38 @@ class CategorywiseReport extends Component{
                     mergedColoums : 1
                 },
                 {
-                    heading : 'No of Families',
-                    mergedColoums : 2
-                },        
+                    heading : 'Details of Activity contributing Empowerment line',
+                    mergedColoums : 5
+                },
+                {
+                    heading : 'Financial Sharing "Rs"',
+                    mergedColoums : 9
+                },
             ]
         },
         "tableHeading"      : {
-            "abcs"    : 'Family Category',
-            "dgfg"    : 'Reached',
-            "ghgh"    : 'Upgraded',
+            "yghj"    : 'Empowerment line',
+            "dgfg"    : 'Activity',
+            "ertr"    : 'Unit',
+            "abcf"    : 'Quantity',
+            "ghgh"    : 'Amount',
+            "abui"    : 'Beneficiaries',
+            "hgfh"    : 'LHWRF',
+            "hffg"    : 'NABARD',
+            "tert"    : 'Bank Loan',
+            "ouio"    : 'Direct Community  Contribution',
+            "jshk"    : 'Indirect Community  Contribution',
+            "khjk"    : 'Govt',
+            "kgkk"    : 'Others',
         
         },
     }
-        window.scrollTo(0, 0);
-  }/*Sr.  Family Category No of Families  
-No.   Reached Upgraded*/
+            window.scrollTo(0, 0);
+  }
+  componentDidMount(){
+    this.getAvailableSectors()
+    this.getDistrict();
+  }
   componentDidMount(){
     this.getState();
     this.getAvailableCenters();
@@ -94,39 +111,6 @@ No.   Reached Upgraded*/
     });
     this.handleChange(event);
   }
-  getDistrict(stateCode){
-    axios({
-      method: 'get',
-      url: 'http://locationapi.iassureit.com/api/districts/get/list/MH/IN',
-      // url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
-        this.setState({
-          listofDistrict : response.data
-        },()=>{
-        console.log('listofDistrict', this.state.listofDistrict);
-        })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
-  districtChange(event){    
-    event.preventDefault();
-    var district = event.target.value;
-    // console.log('district', district);
-    this.setState({
-      district: district
-    },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
-      console.log("selectedDistrict",selectedDistrict);
-      this.setState({
-        selectedDistrict :selectedDistrict
-      },()=>{
-      console.log('selectedDistrict',this.state.selectedDistrict);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
-      })
-    });
-  }
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
 
@@ -150,7 +134,7 @@ No.   Reached Upgraded*/
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                     <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
-                      <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                      <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                         <label className="formLable">Center</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center }  /*onChange={this.handleChange.bind(this)} */>
@@ -169,7 +153,7 @@ No.   Reached Upgraded*/
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                       </div>
-                      <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12  ">
+                      <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
                         <label className="formLable">State</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
                           <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
@@ -187,29 +171,8 @@ No.   Reached Upgraded*/
                           </select>
                         </div>
                        {/* <div className="errorMsg">{this.state.errors.state}</div>*/}
-                      </div>                      
-                      <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                        <label className="formLable">District</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                          <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                            <option  className="hidden" >-- Select --</option>
-                            {
-                              this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
-                              this.state.listofDistrict.map((data, index)=>{
-                                // console.log(data);
-                                return(
-                                  <option key={index} value={data.districtName}>{data.districtName}</option>
-                                );
-                              })
-                              :
-                              null
-                            }                                  
-                          </select>
-                        </div>
-                       {/* <div className="errorMsg">{this.state.errors.district}</div>*/}
-                      </div>
+                      </div>  
                     </div>
-                    
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17">
                       <div className="sales-report-main-class">
                         <div className="sales-report-commonpre">
@@ -250,4 +213,4 @@ No.   Reached Upgraded*/
     );
   }
 }
-export default CategorywiseReport
+export default EMPReport
