@@ -576,8 +576,7 @@ class Family extends Component{
                         </div>
                         
                       </div>
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                        
+                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">                        
                         <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">District</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
@@ -636,7 +635,6 @@ class Family extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.village}</div>
                         </div>
-                
                       </div> 
                     </div><br/>
                     <div className="col-lg-12">

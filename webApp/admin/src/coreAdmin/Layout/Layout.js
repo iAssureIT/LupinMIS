@@ -53,6 +53,9 @@ import report2                                    from "../../admin/LupinReports
 import report3                                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
 import report4                                    from "../../admin/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";
 import report5                                    from "../../admin/LupinReports/ActivitywisePeriodicPhysicalVarianceReport.js";
+import report6                                    from "../../admin/LupinReports/GeographicalReport.js";
+import report7                                    from "../../admin/LupinReports/VillagewisefamilyReport.js";
+import report8                                    from "../../admin/LupinReports/CategorywiseReport.js";
 
  class Layout extends Component{
   
@@ -174,8 +177,11 @@ componentDidMount(){
                               <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
                               <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
                               <Route path="/activity-wise-periodic-variance-report"                       exact strict component={ report3 } />
-                              <Route path="/sectorwise-periodic-variance-summary-report"                       exact strict component={ report4 } />
-                              <Route path="/activity-wise-periodic-physical-variance-report"                       exact strict component={ report5 } />
+                              <Route path="/sectorwise-periodic-variance-summary-report"                  exact strict component={ report4 } />
+                              <Route path="/activity-wise-periodic-physical-variance-report"              exact strict component={ report5 } />
+                              <Route path="/geographical-report"                                          exact strict component={ report6 } />
+                              <Route path="/villagewise-family-report"                                    exact strict component={ report7 } />
+                              <Route path="/category-wise-report"                                         exact strict component={ report8 } />
 
                               
 

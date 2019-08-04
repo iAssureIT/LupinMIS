@@ -14,7 +14,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
 	constructor(props){
     super(props);
     this.state = {
-        'currentTabView'    : "Daily",
+        'currentTabView'    : "Monthly",
         'tableDatas'        : [],
         'reportData'        : {},
         'tableData'         : [],

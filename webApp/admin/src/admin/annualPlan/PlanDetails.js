@@ -487,7 +487,7 @@ class PlanDetails extends Component{
     }
   }
   componentDidMount() {
-    this.getAvailableSectors();
+    this.getAvailableCenters();
     if(this.state.editId){     
       this.edit(this.state.editId);       
     }
@@ -687,7 +687,7 @@ class PlanDetails extends Component{
       return true;
     }
   }
-  getAvailableSectors(){
+  getAvailableCenters(){
     axios({
       method: 'get',
       url: '/api/centers/list',

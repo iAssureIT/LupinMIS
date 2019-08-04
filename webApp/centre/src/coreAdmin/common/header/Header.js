@@ -74,15 +74,15 @@ logout(){
                 <div className="col-lg-6 col-md-4 col-sm-4 col-xs-4 padd0">
                   <div className="">
                     <div id="sidebarCollapse" className="col-lg-1 col-md-1 col-sm-1 col-xs-1 hover ">
-                    <i className="fa fa-bars headicon"></i>
-                  </div>
+                      <i className="fa fa-bars headicon"></i>
+                    </div>
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 padd0">
                   <div className="">
-                   { <div onClick={this.toggleNav.bind(this)}className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
+          {/*         { <div onClick={this.toggleNav.bind(this)}className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
                     <i className="fa fa-cogs headicon "></i>
-                  </div>}
+                  </div>}*/}
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 pull-right hover">
                     <div className="row">
                      { /*<div className="col-lg-2 col-md-2 col-sm-6 col-xs-6 ">
@@ -143,10 +143,9 @@ logout(){
 
                   </div>
                   </div>
-                
-                  <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover paddLeft5">
+                {/* <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover paddLeft5">
                     <i className="fa fa-bell  headicon "><span className="label label-warning labelhead ">10</span></i>
-                  </div>
+                  </div>*/}
                  
 
                 </div>

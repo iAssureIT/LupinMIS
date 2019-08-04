@@ -97,6 +97,24 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Activity wise Periodic Physical Variance Report</span>
                       </a>
                     </li>
+                    <li>
+                      <a href="/geographical-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Geographical Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/villagewise-family-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Villagewise Family Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/category-wise-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Category wise Report</span>
+                      </a>
+                    </li>
                   </ul>
                 </li> 
                 <li className="sidebarMenuText">
