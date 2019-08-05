@@ -37,11 +37,12 @@ class SignUp extends Component {
            auth:{
                 fullName       : '',
                 lastname        : '',
-                mobNumber       : '',
+                mobileNumber       : '',
                 email           : '',
                 pwd       		: '',
                 signupPassword  : '',
-                role 			: ''
+                role 			: '',
+                centerName		: '',
                
             },
              formerrors :{
@@ -61,13 +62,15 @@ class SignUp extends Component {
  		event.preventDefault();
  			console.log("-------this.state.auth------>>",this.state.auth);
  			var auth={
-	                fullName       : this.refs.firstname.value,
-	                lastname        : this.refs.lastname.value,
-	                mobNumber       : this.refs.mobNumber.value,
-	                email           : this.refs.signupEmail.value,
+	                firstName       : this.refs.firstname.value,
+	                lastName        : this.refs.lastname.value,
+	                mobileNumber       : this.refs.mobileNumber.value,
+	                emailId           : this.refs.signupEmail.value,
 	                pwd        		: this.refs.signupPassword.value,
 	                signupPassword  : this.refs.signupConfirmPassword.value,
-	                role 			: 'users'
+	                roles 			: 'users',
+	                status			: "Blocked",
+	                centerName		: this.refs.centerName.value.split('|')[0],
 	            }
 	            
  			console.log("-------auth------>>",auth);
@@ -75,10 +78,11 @@ class SignUp extends Component {
         document.getElementById("signUpBtn").value = 'We are processing. Please Wait...';            
             
         var firstname                = this.refs.firstname.value;
-        var mobile                   = this.refs.mobNumber.value;
+        var mobile                   = this.refs.mobileNumber.value;
         var email                    = this.refs.signupEmail.value;
         var passwordVar              = this.refs.signupPassword.value;
         var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
+        var centerName				 = this.refs.centerName.value;
  		
             if(formValid(this.state.formerrors)){
     			console.log('companyName==',this.state.formerrors);
@@ -279,7 +283,7 @@ class SignUp extends Component {
 							    </div>
 							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
 							   		<span className="blocking-span noIb">   
-									   <input className="form-control  abacusTextbox oesSignUpForm formLable" ref="mobNumber" name="mobNumber" id="mobNumber" onChange={this.handleChange} data-text="mobileV" required/>
+									   <input className="form-control  abacusTextbox oesSignUpForm formLable" ref="mobileNumber" name="mobileNumber" id="mobileNumber" onChange={this.handleChange} data-text="mobileV" required/>
 									   {this.state.formerrors.mobileV  && (
 				                        <span className="text-danger">{this.state.formerrors.mobileV}</span> 
 				                      )}
@@ -289,7 +293,7 @@ class SignUp extends Component {
 								</div>
 							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
 									<span className="blocking-span noIb">   
-									<select className="form-control inputBox abacusTextbox oesSignUpForm formLable" value={this.state.officeid} ref ="office" id="office" name="office" data-text="office">
+									<select className="form-control inputBox abacusTextbox oesSignUpForm formLable" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName">
 		                               	<option hidden> Center Name</option>
 		                                  {
 		                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 

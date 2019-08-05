@@ -28,23 +28,16 @@ class UMListOfUsers extends Component {
                 mobileNumber    : 'Mobile Number', 
                 status        	: 'Status',
                 roles        	: 'Role',
+                centerName		: 'Center Name',
                 actions        	: 'Action',
             },
             "startRange"        : 0,
-            "limitRange"        : 10, 
+            "limitRange"        : 100, 
 
             blockActive			: "all",
             "listofRoles"	    : "",
 
-            adminRolesListData   : [
-
-            	{ roleName : "Admin"},
-            	{ roleName : "Center Incharge"},
-            	{ roleName : "MIS Coordinator"},
-            	{ roleName : "Sales Agent"},
-            	
-            	  
-            ],
+            adminRolesListData   : [],
 
             checkedUser  : [],
             activeswal : false,
@@ -71,15 +64,16 @@ class UMListOfUsers extends Component {
 		}
 		axios.post('/api/users/userslist', data)
 		.then( (res)=>{      
-			console.log("herer=========================>>>>>>>>>>",res.data);
+			console.log("res =============",res.data);
 			var tableData = res.data.map((a, i)=>{
 				return {
 					_id 			: a._id,
 					fullName        : a.fullName,
 	                emailId    		: a.emailId,
-	                mobileNumber       : a.mobileNumber, 
+	                mobileNumber    : a.mobileNumber, 
 	                status        	: a.status,	
 	                roles 			: a.roles,
+					centerName 	    : a.centerName,
 				}
 			})
 			this.setState({
@@ -100,16 +94,17 @@ class UMListOfUsers extends Component {
 			"startRange"        : startRange,
             "limitRange"        : limitRange, 
 		}    
-       axios.post('/api/users/userslist', data)
+       axios.post('http://localhost:3055/api/users/userslist', data)
         .then( (res)=>{  
         	var tableData = res.data.map((a, i)=>{
 				return {
 					_id 			: a._id,
 					fullName        : a.fullName,
 	                emailId    		: a.emailId,
-	                mobileNumber       : a.mobileNumber, 
+	                mobileNumber    : a.mobileNumber, 
 	                status        	: a.status,	
 	                roles 			: a.roles,
+					centerName 	    : a.centerName,
 				}
 			})
         	// console.log('res============', res.data);
@@ -172,10 +167,8 @@ class UMListOfUsers extends Component {
 				          this.setState({
 				          	blockswal : true,
 				          	checkedUser : null,
-
 				          })
-
-				         
+			         
 				          checkedUsersList = null;
 				          // this.props.history.push('/umlistofusers');
 
@@ -186,15 +179,16 @@ class UMListOfUsers extends Component {
 										}
 										axios.post('/api/users/userslist', data)
 										.then( (res)=>{      
-											// console.log("herer",res);
+											console.log("herer",res);
 											var tableData = res.data.map((a, i)=>{
 												return {
 													_id 			: a._id,
 													fullName        : a.fullName,
 									                emailId    		: a.emailId,
-									                mobileNumber       : a.mobileNumber, 
+									                mobileNumber    : a.mobileNumber, 
 									                status        	: a.status,	
 									                roles 			: a.roles,
+						                			centerName 	    : a.centerName,
 												}
 											})
 											this.setState({
@@ -255,7 +249,7 @@ class UMListOfUsers extends Component {
 										}
 										axios.post('/api/users/userslist', data)
 										.then( (res)=>{      
-											// console.log("herer",res);
+											console.log("herer",res);
 											var tableData = res.data.map((a, i)=>{
 												return {
 													_id 			: a._id,
@@ -264,6 +258,7 @@ class UMListOfUsers extends Component {
 									                mobileNumber       : a.mobileNumber, 
 									                status        	: a.status,	
 									                roles 			: a.roles,
+						                			centerName 	    : a.centerName,
 												}
 											})
 											this.setState({
@@ -342,6 +337,7 @@ class UMListOfUsers extends Component {
 									                mobileNumber       : a.mobileNumber, 
 									                status        	: a.status,	
 									                roles 			: a.roles,
+						                			centerName 	    : a.centerName,
 												}
 											})
 											this.setState({
@@ -400,6 +396,7 @@ class UMListOfUsers extends Component {
 									                mobileNumber       : a.mobileNumber, 
 									                status        	: a.status,	
 									                roles 			: a.roles,
+						                			centerName 	    : a.centerName,
 												}
 											})
 											this.setState({
@@ -457,6 +454,7 @@ class UMListOfUsers extends Component {
 									                mobileNumber       : a.mobileNumber, 
 									                status        	: a.status,	
 									                roles 			: a.roles,
+						                			centerName 	    : a.centerName,
 												}
 											})
 											this.setState({
@@ -521,6 +519,7 @@ class UMListOfUsers extends Component {
 						                mobileNumber       : a.mobileNumber, 
 						                status        	: a.status,	
 						                roles 			: a.roles,
+						                centerName 	    : a.centerName,
 									}
 								})
 								this.setState({
@@ -549,8 +548,9 @@ class UMListOfUsers extends Component {
 										_id 			: a._id,
 										fullName        : a.profile.fullName,
 						                emailId    		: a.emails[0].address,
-						                mobileNumber       : a.profile.mobileNumber, 
-						                status        	: a.profile.status,	
+						                mobileNumber    : a.profile.mobileNumber, 
+						                status        	: a.profile.status,
+						                centerName 	    : a.profile.centerName,	
 						                roles 			: ((a.roles.map((b, i)=>{return '<p>'+b+'</p>'})).toString()).replace(/,/g, " "),
 									}
 								})
@@ -594,9 +594,10 @@ class UMListOfUsers extends Component {
 										_id 			: a._id,
 										fullName        : a.fullName,
 						                emailId    		: a.emailId,
-						                mobileNumber       : a.mobileNumber, 
+						                mobileNumber    : a.mobileNumber, 
 						                status        	: a.status,	
 						                roles 			: a.roles,
+						                centerName 	    : a.centerName,
 									}
 								})
 								this.setState({
@@ -626,8 +627,9 @@ class UMListOfUsers extends Component {
 									_id 			: a._id,
 									fullName        : a.profile.fullName,
 					                emailId    		: a.emails[0].address,
-					                mobileNumber       : a.profile.mobileNumber, 
+					                mobileNumber    : a.profile.mobileNumber, 
 					                status        	: a.profile.status,	
+						            centerName 	    : a.profile.centerName,	
 					                roles 			: ((a.roles.map((b, i)=>{return '<p>'+b+'</p>'})).toString()).replace(/,/g, " "),
 								}
 							})
@@ -666,7 +668,7 @@ class UMListOfUsers extends Component {
 		    this.setState({
 		      adminRolesListData : response.data
 		    },()=>{
-		    console.log('adminRolesListData', this.state.adminRolesListData);
+		    // console.log('adminRolesListData', this.state.adminRolesListData);
 		    })
 		}).catch(function (error) {
 		  console.log('error', error);
@@ -676,7 +678,7 @@ class UMListOfUsers extends Component {
 render(){
 	// console.log('this.state.completeDataCount', this.state.completeDataCount);
 	var adminRolesListDataList = this.state.adminRolesListData;
-	// console.log("adminRolesListDataList",adminRolesListDataList);
+	console.log("adminRolesListDataList",adminRolesListDataList);
      return(
      	<div className="container-fluid">
 	        <div className="row">

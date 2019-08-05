@@ -36,7 +36,9 @@ class Family extends Component{
       "tableObjects"         : {
      
         apiLink               : '/api/families/',
-        editUrl               : '/family/'
+        editUrl               : '/family/',      
+        paginationApply           : true,
+        searchApply               : true,
       },
       "tableHeading"          : {
         familyID              : "Family ID",

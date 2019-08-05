@@ -33,14 +33,14 @@ class CreateUser extends Component {
       role              : "--select--",
       lastname          :"",
       signupEmail       : "",
-      mobNumber         : "",
+      mobileNumber         : "",
       adminRolesListData: "",
       
       formerrors :{
          firstname    : "",
          lastname     :"",
          signupEmail  : "",
-         mobNumber    : "",
+         mobileNumber    : "",
          role         : "",
       },
 
@@ -63,8 +63,8 @@ class CreateUser extends Component {
        formerrors.lastname = nameRegex.test(value)  && value.length>0 ? '' : "Please Enter Valid Name";
        break;
 
-      case 'mobNumber' : 
-       formerrors.mobNumber = mobileRegex.test(value) && value.length>0 ? '' : "Please enter a valid Contact Number";
+      case 'mobileNumber' : 
+       formerrors.mobileNumber = mobileRegex.test(value) && value.length>0 ? '' : "Please enter a valid Contact Number";
        break;
 
       case 'signupEmail' : 
@@ -73,6 +73,10 @@ class CreateUser extends Component {
 
       case 'role' : 
         formerrors.role =  value!== "--select--" ? "":"Please select role";
+        break;
+
+      case 'centerName' : 
+        formerrors.role =  value!== "--select--" ? "":"Please select Center";
         break;
       
       default :
@@ -123,9 +127,10 @@ class CreateUser extends Component {
                                     _id             : a._id,
                                     fullName        : a.fullName,
                                     emailId         : a.emailId,
-                                    mobNumber       : a.mobNumber, 
+                                    mobileNumber       : a.mobileNumber, 
                                     status          : a.status, 
                                     roles           : a.roles,
+                                    centerName      : a.centerName, 
                           }
                         })
                         this.setState({
@@ -157,15 +162,16 @@ class CreateUser extends Component {
           "lastName"        : this.state.lastname,
           "emailId"         : this.state.signupEmail,
           "countryCode"     : "+91",
-          "mobileNumber"    : this.state.mobNumber,
+          "mobileNumber"    : this.state.mobileNumber,
           "pwd"             : "user123",
           
-          "status"          : "Active",
+          "status"          : "Blocked",
           "roles"           :  this.state.role,
-          "officeLocation"  : this.refs.office.value,
+          "center_ID"       : this.refs.centerName.value.split('|')[1],
+          "centerName"      : this.refs.centerName.value.split('|')[0],
         }
 
-        if(this.state.firstname!=="" && this.state.lastname !=="" && this.state.signupEmail && this.state.mobNumber && this.state.role !== "--select--"){
+        if(this.state.firstname!=="" && this.state.lastname !=="" && this.state.signupEmail && this.state.mobileNumber && this.state.role !== "--select--"){
            axios.post('/api/users', formValues)
                 .then( (res)=>{
                  
@@ -177,8 +183,9 @@ class CreateUser extends Component {
                       firstname   : "",
                       lastname    : "",
                       signupEmail : "",
-                      mobNumber   : "",
+                      mobileNumber   : "",
                       role        : "",
+                      centerName  : ""
                     })
                     
                     // this.refs.office.value = "",
@@ -199,10 +206,8 @@ class CreateUser extends Component {
                 console.log("error = ",error);
                 this.setState({show: false})
               });
-        }else{
-         
-
-                     swal({
+        }else{ 
+                  swal({
                     title: "Please enter mandatory fields",
                     text: "Please enter mandatory fields",
                   });
@@ -321,12 +326,12 @@ class CreateUser extends Component {
                                 </div>  
                                 <InputMask mask="9999999999" pattern="^(0|[1-9][0-9-]*)$" 
                                  className= "form-control UMname inputText form-control inputBox has-content"
-                                  ref="mobNumber" name="mobNumber" id="mobNumber" data-text="mobNumber" placeholder="Mobile No"
-                                   onChange={this.handleChange} value={this.state.mobNumber}/>
+                                  ref="mobileNumber" name="mobileNumber" id="mobileNumber" data-text="mobileNumber" placeholder="Mobile No"
+                                   onChange={this.handleChange} value={this.state.mobileNumber}/>
                               </div>   
                             </span>
-                            {this.state.formerrors.mobNumber &&(
-                              <span className="text-danger">{ this.state.formerrors.mobNumber}</span> 
+                            {this.state.formerrors.mobileNumber &&(
+                              <span className="text-danger">{ this.state.formerrors.mobileNumber}</span> 
                             )}
                           </div>                                                      
                         </div>
@@ -358,11 +363,11 @@ class CreateUser extends Component {
                           </div>
                           <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box " >
                             <div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
-                            <div className="input-group inputBox-main" id="office">
+                            <div className="input-group inputBox-main" id="centerName">
                               <span className="input-group-addon inputIcon">
                                  <i className="fa fa-crosshairs InputAddOn fa"></i>
                               </span> 
-                              <select className="form-control inputBox" value={this.state.officeid} ref ="office" id="office" name="office" data-text="office">
+                              <select className="form-control inputBox" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName" onChange={this.handleChange} >
                                 <option hidden> --Select-- </option>
                                   {
                                     this.state.listofCenters && this.state.listofCenters.length > 0 ? 
@@ -410,7 +415,7 @@ class CreateUser extends Component {
                                       <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-6 inputContent valid_box">
                                           <div className="">Mobile Number <div className="requiredsign">*</div></div>
                                           <span className="blocking-span">
-                                             <InputMask mask="99999-99999" pattern="^(0|[1-9][0-9-]*)$"   className= "form-control UMname inputText tmsUserAccForm has-content" ref="mobNumber" name="mobNumber" id="mobNumber"/>
+                                             <InputMask mask="99999-99999" pattern="^(0|[1-9][0-9-]*)$"   className= "form-control UMname inputText tmsUserAccForm has-content" ref="mobileNumber" name="mobileNumber" id="mobileNumber"/>
                                           </span>
                                       </div>
 

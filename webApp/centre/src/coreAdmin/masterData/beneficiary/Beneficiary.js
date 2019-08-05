@@ -28,7 +28,9 @@ class Beneficiary extends Component{
       },
       "tableObjects"        : {
         apiLink             : '/api/beneficiaries/',
-        editUrl             : '/beneficiary/',
+        editUrl             : '/beneficiary/',        
+        paginationApply           : true,
+        searchApply               : true,
       },
       "startRange"          : 0,
       "limitRange"          : 10,
