@@ -1095,7 +1095,7 @@ class PlanDetails extends Component{
                         }
                       </div>
                     </div>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  formLable " >
                       <div className="row">  
                        <IAssureTable 
                           tableHeading={this.state.tableHeading}

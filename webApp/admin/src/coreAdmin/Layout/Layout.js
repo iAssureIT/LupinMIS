@@ -132,85 +132,82 @@ componentDidMount(){
     if(this.state.loggedIn===true){
       return(
             <div className="App container-fluid">
-           
-                <div className="row">
+               <div className="col-lg-2 row leftsidebarbackgroundcolor">
+                    <div className="row">
+                       <Leftsidebar />
+                    </div>
+                  </div>
+                <div className="row  ">
                   <div id="headerid" className="headerbackgroundcolor ">
                     <div className="">
                       <Header />
                    </div>
                   </div>
-                      <div className="">                  
-                        <div id="dashbordid" className="">
-                         {/* <button className="btn btn-primary pull-right" onClick={this.logout.bind(this)}>Logout</button>
-                          */} <Router>
-                              <Switch>
-                              <Route path="/" component={Dashboard} exact />
-                              <Route path="/dashboard" component={Dashboard} exact />
-                              <Route path="/umlistofusers" component={UMListOfUsers} exact />
-{/*                              <Route path="/umlistofemp" component={UMListOfEmp} exact />
-*/}
-                              <Route path="/umroleslist" component={UMRolesList} exact />
-                              <Route path="/edituserprofile/:id" component={EditUserProfile} exact />
+                  <div className="content">                  
+                    <div id="dashbordid" className="">
+                      <Router>
+                        <Switch>
+                          <Route path="/" component={Dashboard} exact />
+                          <Route path="/dashboard" component={Dashboard} exact />
+                          <Route path="/umlistofusers" component={UMListOfUsers} exact />
+                        {/* <Route path="/umlistofemp" component={UMListOfEmp} exact />*/}
+                          <Route path="/umroleslist" component={UMRolesList} exact />
+                          <Route path="/edituserprofile/:id" component={EditUserProfile} exact />
 
-                              <Route path="/ViewTemplates" component={ViewTemplates} exact />
+                          <Route path="/ViewTemplates" component={ViewTemplates} exact />
 
-                              <Route path="/companysetting" component={CompanySetting} exact />
-{/*                              <Route path="/companysettingG" component={CompanySettingG} exact />
-*/}                              
-                             {/*----------------------------------------------*/}
+                          <Route path="/companysetting" component={CompanySetting} exact />
+                        {/*      <Route path="/companysettingG" component={CompanySettingG} exact />*/}                              
+                         {/*----------------------------------------------*/}
 
-                            {/*Access Management*/}
-                              <Route path="/admin/AddModuleFacility"                                      exact strict component={ AddModuleFacility } />
-                              <Route path="/admin/AssignPermissionToModule"                               exact strict component={ AssignPermissionToModules } />
-                             {/*Master Data*/}
-                              <Route path="/center-details"                                               exact strict component={ centerDetail } />
-                              <Route path="/center-details/"                                              exact strict component={ centerDetail } />
-                              <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />
-                              <Route path="/sector-and-activity"                                          exact strict component={ SectorAndActivity } />
-                              <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivity } />
-                              <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
-                              <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
-                              <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
-                              <Route path="/sector-mapping"                                               exact strict component={ SectorMapping } />
-                              <Route path="/sector-mapping/"                                              exact strict component={ SectorMapping } />
-                              <Route path="/sector-mapping/:sectorMappingId"                              exact strict component={ SectorMapping } />
-                              { /*Plans Routes*/}
-                              <Route path="/plan-details"                                                 exact strict component={ plan } />
-                              <Route path="/plan-details/"                                                exact strict component={ plan } />
-                              <Route path="/plan-details/:id"                                             exact strict component={ plan } />
-                              <Route path="/report"                                                       exact strict component={ report } />
-                              <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
-                              <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
-                              <Route path="/activity-wise-periodic-variance-report"                       exact strict component={ report3 } />
-                              <Route path="/sectorwise-periodic-variance-summary-report"                  exact strict component={ report4 } />
-                              <Route path="/activity-wise-periodic-physical-variance-report"              exact strict component={ report5 } />
-                              <Route path="/geographical-report"                                          exact strict component={ report6 } />
-                              <Route path="/villagewise-family-report"                                    exact strict component={ report7 } />
-                              <Route path="/category-wise-report"                                         exact strict component={ report8 } />
-                              <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
-                              <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
-                              <Route path="/SDG-report"                                                   exact strict component={ report10 } />
-                              <Route path="/ADP-report"                                                   exact strict component={ report11 } />
-                              <Route path="/EMP-report"                                                   exact strict component={ report12 } />
-                              <Route path="/Report"                                                   exact strict component={ report } />
-                              <Route path="/Report/:id"                                                   exact strict component={ report } />
+                        {/*Access Management*/}
+                          <Route path="/admin/AddModuleFacility"                                      exact strict component={ AddModuleFacility } />
+                          <Route path="/admin/AssignPermissionToModule"                               exact strict component={ AssignPermissionToModules } />
+                         {/*Master Data*/}
+                          <Route path="/center-details"                                               exact strict component={ centerDetail } />
+                          <Route path="/center-details/"                                              exact strict component={ centerDetail } />
+                          <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />
+                          <Route path="/sector-and-activity"                                          exact strict component={ SectorAndActivity } />
+                          <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivity } />
+                          <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
+                          <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
+                          <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
+                          <Route path="/sector-mapping"                                               exact strict component={ SectorMapping } />
+                          <Route path="/sector-mapping/"                                              exact strict component={ SectorMapping } />
+                          <Route path="/sector-mapping/:sectorMappingId"                              exact strict component={ SectorMapping } />
+                          { /*Plans Routes*/}
+                          <Route path="/plan-details"                                                 exact strict component={ plan } />
+                          <Route path="/plan-details/"                                                exact strict component={ plan } />
+                          <Route path="/plan-details/:id"                                             exact strict component={ plan } />
+                          <Route path="/report"                                                       exact strict component={ report } />
+                          <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
+                          <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
+                          <Route path="/activity-wise-periodic-variance-report"                       exact strict component={ report3 } />
+                          <Route path="/sectorwise-periodic-variance-summary-report"                  exact strict component={ report4 } />
+                          <Route path="/activity-wise-periodic-physical-variance-report"              exact strict component={ report5 } />
+                          <Route path="/geographical-report"                                          exact strict component={ report6 } />
+                          <Route path="/villagewise-family-report"                                    exact strict component={ report7 } />
+                          <Route path="/category-wise-report"                                         exact strict component={ report8 } />
+                          <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
+                          <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
+                          <Route path="/SDG-report"                                                   exact strict component={ report10 } />
+                          <Route path="/ADP-report"                                                   exact strict component={ report11 } />
+                          <Route path="/EMP-report"                                                   exact strict component={ report12 } />
+                          <Route path="/Report"                                                   exact strict component={ report } />
+                          <Route path="/Report/:id"                                                   exact strict component={ report } />
 
-                              
-
-                              </Switch>        
-                          </Router>
-                        </div>
-                      </div>
-                  <div className="leftsidebarbackgroundcolor">
-                    <div className="row">
-                       <Leftsidebar />
+                        </Switch>        
+                      </Router>
                     </div>
                   </div>
-                  <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+                 
+
+                </div>
+                <div  id="headerid" className="">
                     <div className="">
+                    {/*<Footer/>*/}
                    </div>
                   </div>
-                </div>
             </div> 
         );
     }else{

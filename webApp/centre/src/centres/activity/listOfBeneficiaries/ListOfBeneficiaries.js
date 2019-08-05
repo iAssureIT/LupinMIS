@@ -135,7 +135,7 @@ class ListOfBeneficiaries extends Component{
             <div className="col-lg-12 col-sm-12 col-xs-12" >
               <div className="row">
                 <NewBeneficiary listofBeneficiaries={this.listofBeneficiaries.bind(this)} selectedValues={this.state.selectedValues} sendBeneficiary={this.state.sendBeneficiary}/>
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother" >
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  formLable " >
                   <div className="row">  
                     <IAssureTable 
                       tableHeading={this.state.tableHeading}

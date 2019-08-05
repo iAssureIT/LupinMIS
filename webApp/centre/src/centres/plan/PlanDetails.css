@@ -188,6 +188,7 @@
 }
 .annualHead h5{
 	font-weight: bold;
+	margin-bottom: 0px;
 }
 .button-clicked{
 	transform: rotate(180deg) !important;

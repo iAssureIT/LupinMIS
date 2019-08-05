@@ -965,9 +965,9 @@ class Activity extends Component{
                       <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                           <div className="unit"  >
-                            <label className="formLable">Unit :</label><br/>
+                            <label className="formLable">Unit :</label>
                               {this.state.subActivityDetails ? 
-                                <div >
+                                <div className="redirectDiv">
                                   <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
                                 </div>
                                 :
@@ -992,7 +992,14 @@ class Activity extends Component{
                         </div>
                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                           <div className="unit " id="PassoutYear" >
-                            <label className="formLable">Total Cost of Activity :</label><br/><label className="formLable"> {this.state.totalcost ?  this.state.totalcost : null}</label>
+                            <label className="formLable">Total Cost of Activity :</label>
+                            {this.state.totalcost ?
+                              <div className="redirectDiv">
+                                <label className="formLable"> {this.state.totalcost}</label>
+                              </div>
+                              :
+                              null
+                            }
                           </div>
                           <div className="errorMsg">{this.state.errors.totalcost}</div>
                         </div>

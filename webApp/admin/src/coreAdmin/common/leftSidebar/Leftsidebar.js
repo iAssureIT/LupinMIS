@@ -61,6 +61,12 @@ export default class Leftsidebar extends Component{
                   </a>              
                 </li>*/}
                 <li className="sidebarMenuText">
+                  <a href="/report" >
+                    <i className="fa fa-book" />
+                    Reports
+                  </a>
+                </li>
+                {/*<li className="sidebarMenuText">
                   <a href="#report" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-book" />
                     Reports
@@ -145,7 +151,7 @@ export default class Leftsidebar extends Component{
                       </a>
                     </li>
                   </ul>
-                </li> 
+                </li> */}
                 <li className="sidebarMenuText">
                   <a href="#MasterData" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-database" />

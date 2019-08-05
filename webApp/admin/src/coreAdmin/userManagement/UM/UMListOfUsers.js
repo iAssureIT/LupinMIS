@@ -94,7 +94,7 @@ class UMListOfUsers extends Component {
 			"startRange"        : startRange,
             "limitRange"        : limitRange, 
 		}    
-       axios.post('http://localhost:3055/api/users/userslist', data)
+       axios.post('/api/users/userslist', data)
         .then( (res)=>{  
         	var tableData = res.data.map((a, i)=>{
 				return {
@@ -587,7 +587,7 @@ class UMListOfUsers extends Component {
 							}
 							axios.post('/api/users/userslist', data)
 							.then( (res)=>{      
-								// console.log("herer",res);
+								console.log("herer",res);
 								// swal("Success! Showing "+selectedValue,"","success");
 								var tableData = res.data.map((a, i)=>{
 									return {

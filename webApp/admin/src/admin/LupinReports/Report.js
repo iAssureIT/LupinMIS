@@ -7,6 +7,8 @@ import WeeklyReport         from '../Reports/WeeklyReport.js';
 import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
+import EMPReport                                   from "../../admin/LupinReports/EMPReport.js";
+
 import "../Reports/Reports.css";
 class SDGReport extends Component{
 	constructor(props){
@@ -120,9 +122,20 @@ class SDGReport extends Component{
       'currentTabView': currentComp,
     })
   }
+  selectReportPath(e){
+    this.props.history.push(`/${e.target.value}`);
+   /* e.preventDefault();
+    var selectedReport = e.target.value;
+    this.setState({
+      selectedReport : selectedReport,
+    },()=>{
+      console.log('selectedReport',this.state.selectedReport);
+      })*/
+  }
+  
   render(){
 
-    return( 
+    return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
           <div className="formWrapper">
@@ -140,27 +153,30 @@ class SDGReport extends Component{
                       <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                       {console.log("sdasd" , this.value)}
                         <label className="formLable">Select Report</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                          <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center }  onChange="window.location.href=this.value" >
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="report" >
+                          <select className="custom-select form-control inputBox" ref="report" name="report" value={this.state.report}  onChange={this.selectReportPath.bind(this)} >
                             <option className="hidden" >-- Select --</option>
-                            <option className="formLable" value="/activitywise-annual-completion-report">Activity wise Annual Completion Report</option>
-                            <option className="formLable">Sector wise Annual Completion Summary Report</option>
-                            <option className="formLable" value="https://www.w3schools.com">Activity wise Periodic Variance Report (Physical & Financial)</option>
-                            <option className="formLable">Sector wise Periodic Variance Summary Report</option>
-                            <option className="formLable">Activity wise Periodic Physical Variance Report</option>
-                            <option className="formLable">Geographical Report</option>
-                            <option className="formLable">Villagewise Family Report</option>
-                            <option className="formLable">Category wise Report</option>
-                            <option className="formLable">Upgraded Beneficiary Report</option>
-                            <option className="formLable">SDG Report</option>
-                            <option className="formLable">ADP Report</option>
-                            <option className="formLable">EMP Report</option>
+                            <option className="formLable" value="activitywise-annual-completion-report">Activity wise Annual Completion Report</option>
+                            <option className="formLable" value="sector-wise-annual-completion-summary-report">Sector wise Annual Completion Summary Report</option>
+                            <option className="formLable" value="activity-wise-periodic-variance-report">Activity wise Periodic Variance Report (Physical & Financial)</option>
+                            <option className="formLable" value="sectorwise-periodic-variance-summary-report">Sector wise Periodic Variance Summary Report</option>
+                            <option className="formLable" value="activity-wise-periodic-physical-variance-report">Activity wise Periodic Physical Variance Report</option>
+                            <option className="formLable" value="geographical-report">Geographical Report</option>
+                            <option className="formLable" value="villagewise-family-report">Villagewise Family Report</option>
+                            <option className="formLable" value="category-wise-report">Category wise Report</option>
+                            <option className="formLable" value="upgraded-beneficiary-report">Upgraded Beneficiary Report</option>
+                            <option className="formLable" value="SDG-report">SDG Report</option>
+                            <option className="formLable" value="ADP-report">ADP Report</option>
+                            <option className="formLable" value="EMPReport">EMP Report</option>
                             
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                       </div>                     
                     </div>                    
+                        {/*<div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
+                          <Link href="this.state.selectedReport"><EMPReport/></Link>
+                        </div> */}                    
                 </div>
                 </div>
               </div>
