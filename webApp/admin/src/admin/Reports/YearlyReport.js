@@ -94,8 +94,8 @@ export default class YearlyReport extends Component{
         }
         this.setState({
             reportData : reportData
-        });*/
-    }
+        });
+ */   }
     getData(startRange, limitRange){
         this.setState({
             tableData : this.state.tableDatas.slice(parseInt(startRange), parseInt(limitRange)),
