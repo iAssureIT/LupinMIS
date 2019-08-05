@@ -193,6 +193,7 @@ componentDidMount(){
                               <Route path="/ADP-report"                                                   exact strict component={ report11 } />
                               <Route path="/EMP-report"                                                   exact strict component={ report12 } />
                               <Route path="/Report"                                                   exact strict component={ report } />
+                              <Route path="/Report/:id"                                                   exact strict component={ report } />
 
                               
 

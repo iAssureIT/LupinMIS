@@ -247,8 +247,8 @@ class NewBeneficiary extends Component{
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
           <div className="">
             <h4 className="pageSubHeader col-lg-6 col-sm-6 col-xs-6 noPadding">List of Beneficiaries</h4>
-            <div className="col-lg-1 col-lg-offset-5 col-md-4 col-sm-6 col-xs-6 text-center addform" data-toggle="modal" data-target="#myModal">
-            Add
+            <div className="col-lg-2 col-lg-offset-4 col-md-4 col-sm-6 col-xs-6 text-center addform" data-toggle="modal" data-target="#myModal">
+            Add Beneficiary
             </div>
            {/* <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#myModal">
                <i className="fa fa-plus" aria-hidden="true"></i>

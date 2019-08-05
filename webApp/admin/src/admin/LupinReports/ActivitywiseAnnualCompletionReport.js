@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
+import axios                from 'axios';
 import DailyReport          from '../Reports/DailyReport.js';
 import WeeklyReport         from '../Reports/WeeklyReport.js';
 import MonthlyReport        from '../Reports/MonthlyReport.js';
@@ -17,7 +18,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10,
-        "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
+        "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -52,24 +53,24 @@ class ActivitywiseAnnualCompletionReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "abcs"    : 'Activity & Sub Activity',
-            "abcd"    : 'Unit',
-            "abcf"    : 'Reach', 
-            "fdgf"    : 'Families Upgradation', 
-            "dfgg"    : 'Physical Units', 
-            "abcx"    : "Total Budget 'Rs'",
-            "cbfg"    : 'Reach', 
-            "hgjh"    : 'Families Upgradation', 
-            "cfgf"    : 'Physical Units', 
-            "acbc"    : "Total Expenditure 'Rs'",
-            "ouio"    : 'LHWRF',
-            "dgfg"    : 'NABARD',
-            "ghgh"    : 'Bank Loan',
-            "werr"    : 'Direct Community  Contribution',
-            "ghgf"    : 'Indirect Community  Contribution',
-            "ertr"    : 'Govt',
-            "abui"    : 'Others',
-            "yiyi"    : 'Remarks',
+            "activityName"                  : 'Activity & Sub Activity',
+            "unit"                          : 'Unit',
+            "annualPlan_Reach"              : 'Reach', 
+            "annualPlan_Upgradation"        : 'Families Upgradation', 
+            "annualPlan_physicalUnit"       : 'Physical Units', 
+            "annualPlans_totalBudget"       : "Total Budget 'Rs'",
+            "annualFYAchie_Reach"           : 'Reach', 
+            "annualFYAchie_Upgradation"     : 'Families Upgradation', 
+            "annualFYAchie_physcialUnit"    : 'Physical Units', 
+            "annualFYAchie_totalExp"        : "Total Expenditure 'Rs'",
+            "scrFYAchie_LHWRF"              : 'LHWRF',
+            "scrFYAchie_NABARD"             : 'NABARD',
+            "scrFYAchie_BankLoan"           : 'Bank Loan',
+            "scrFYAchie_Direct"             : 'Direct Community  Contribution',
+            "scrFYAchie_Indirect"           : 'Indirect Community  Contribution',
+            "scrFYAchie_Govt"               : 'Govt',
+            "scrFYAchie_Other"              : 'Others',
+            "yiyi"                          : 'Remarks',
         },
 
     }
@@ -77,9 +78,36 @@ class ActivitywiseAnnualCompletionReport extends Component{
   }
 
   componentDidMount(){
+    this.getAvailableCenters();
+    this.getData();
+  }
+  getAvailableCenters(){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+        
+        this.setState({
+          availableCenters : response.data
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }   
+  getData(){
+   
+       axios.get('api/report/annual_completion/:year/:center_ID')
+      .then((response)=>{
+        this.setState({
+          tableDatas : response.data
+        },()=>{
+          console.log("resp",this.state.tableDatas)
+        })
+      })
+      .catch(function(error){        
+      });
 
   }
-  
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
 
@@ -102,7 +130,27 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     <hr className="hr-head container-fluid row"/>
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+                     <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                        <label className="formLable">Center</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                          <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center }  /*onChange={this.handleChange.bind(this)} */>
+                            <option className="hidden" >-- Select --</option>
+                            {
+                              this.state.availableCenters && this.state.availableCenters.length >0 ?
+                              this.state.availableCenters.map((data, index)=>{
+                                return(
+                                  <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                                );
+                              })
+                              :
+                              null
+                            }
+                          </select>
+                        </div>
+                        {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
+                      </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17">
+                     
                       <div className="sales-report-main-class">
                         <div className="sales-report-commonpre">
                           {/*<div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>

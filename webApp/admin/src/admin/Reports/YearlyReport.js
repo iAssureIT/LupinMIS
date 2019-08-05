@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import $                    from 'jquery';
+import moment from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 export default class YearlyReport extends Component{
 	constructor(props){
@@ -44,55 +46,55 @@ export default class YearlyReport extends Component{
 
 
     currentyear(){
-		// var yearSession = Session.get('selectedYear');
-		// if(yearSession){
-		// 	var currentYear = yearSession;
-		// }else{
-		// 	var today = new Date();
-	 //        var currentYear = today.getFullYear();
-		// 	Session.set("selectedYear",currentYear);
-		// }
+		var yearSession = localStorage.getItem('selectedYear');
+		if(yearSession){
+			var currentYear = yearSession;
+		}else{
+			var today = new Date();
+	        var currentYear = today.getFullYear();
+			localStorage.setItem("selectedYear",currentYear);
+		}
     var d = new Date();
     var currentYear = d.getFullYear();
     return currentYear;
 	}
 
 	previousYear(event){
-		// event.preventDefault();
-		// var selectedYear = $(".inputyearlyValue").val();
-		// var newYear = moment(selectedYear).subtract(1,'years').format('YYYY');
-		// Session.set('selectedYear', newYear);
+		event.preventDefault();
+		var selectedYear = $(".inputyearlyValue").val();
+		var newYear = moment(selectedYear).subtract(1,'years').format('YYYY');
+		localStorage.setItem('selectedYear', newYear);
 	}
 
 	nextYear(event){
-		// event.preventDefault();
-		// var selectedYear = $(".inputyearlyValue").val();
-		// var newYear = moment(selectedYear).add(1,'years').format('YYYY');
-		// Session.set('selectedYear', newYear);
+		event.preventDefault();
+		var selectedYear = $(".inputyearlyValue").val();
+		var newYear = moment(selectedYear).add(1,'years').format('YYYY');
+		localStorage.setItem('selectedYear', newYear);
 
     }
     
 
     dataTableList(){
-		// var yearFromSess = Session.get("selectedYear");
+		/*var yearFromSess = localStorage.getItem("selectedYear");
         
-  //       var thisYear = yearFromSess;
-  //       var yearDateStart = new Date("1/1/" + thisYear);
-  //       var yearDateEnd = new Date (yearDateStart.getFullYear(), 11, 31);
+        var thisYear = yearFromSess;
+        var yearDateStart = new Date("1/1/" + thisYear);
+        var yearDateEnd = new Date (yearDateStart.getFullYear(), 11, 31);
 
-		// var reportData = [];
-  //       if(this.props.selectedCategory){
-  //           if(this.props.selectedSubCategory){
-  //               reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory, subCategory: this.props.selectedSubCategory}}}, {sort: {'createdAt': -1}}).fetch();
-  //           }else{
-  //               reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory}}}, {sort: {'createdAt': -1}}).fetch();
-  //           }
-  //       }else{
-  //           reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid'}, {sort: {'createdAt': -1}}).fetch();
-  //       }
-  //       this.setState({
-  //           reportData : reportData
-  //       });
+		var reportData = [];
+        if(this.props.selectedCategory){
+            if(this.props.selectedSubCategory){
+                reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory, subCategory: this.props.selectedSubCategory}}}, {sort: {'createdAt': -1}}).fetch();
+            }else{
+                reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory}}}, {sort: {'createdAt': -1}}).fetch();
+            }
+        }else{
+            reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid'}, {sort: {'createdAt': -1}}).fetch();
+        }
+        this.setState({
+            reportData : reportData
+        });*/
     }
     getData(startRange, limitRange){
         this.setState({
@@ -148,7 +150,7 @@ export default class YearlyReport extends Component{
     }
 }
 // export default YearlyListContainer = withTracker(props =>{
-//     var yearFromSess = Session.get("selectedYear");
+//     var yearFromSess = localStorage.getItem("selectedYear");
         
 //     var thisYear = yearFromSess;
 //     var yearDateStart = new Date("1/1/" + thisYear);

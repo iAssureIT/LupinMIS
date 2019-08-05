@@ -121,6 +121,7 @@ class SDGReport extends Component{
     })
   }
   render(){
+
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
@@ -137,13 +138,14 @@ class SDGReport extends Component{
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                     <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
                       <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                      {console.log("sdasd" , this.value)}
                         <label className="formLable">Select Report</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                          <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center }  /*onChange={this.handleChange.bind(this)} */>
+                          <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center }  onChange="window.location.href=this.value" >
                             <option className="hidden" >-- Select --</option>
-                            <option className="formLable">Activity wise Annual Completion Report</option>
+                            <option className="formLable" value="/activitywise-annual-completion-report">Activity wise Annual Completion Report</option>
                             <option className="formLable">Sector wise Annual Completion Summary Report</option>
-                            <option className="formLable">Activity wise Periodic Variance Report (Physical & Financial)</option>
+                            <option className="formLable" value="https://www.w3schools.com">Activity wise Periodic Variance Report (Physical & Financial)</option>
                             <option className="formLable">Sector wise Periodic Variance Summary Report</option>
                             <option className="formLable">Activity wise Periodic Physical Variance Report</option>
                             <option className="formLable">Geographical Report</option>

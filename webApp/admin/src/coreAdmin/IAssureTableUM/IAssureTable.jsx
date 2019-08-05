@@ -592,8 +592,8 @@ class IAssureTableUM extends Component {
 	    	// console.log('delete response',response);
 	    
 	    	swal({
-										title: "User updated successfully",
-										text: "User updated successfully",
+										title: "User deleted successfully",
+										text: "User deleted successfully",
 									});
 
 				    	var data = {
