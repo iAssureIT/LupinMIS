@@ -1,17 +1,17 @@
-import React, { Component } 		  from 'react';
-import CreateUser 					       from './CreateUser.js';
-import axios                        from 'axios';
-import _                        from 'underscore';
-import swal                     	from 'sweetalert';
+import React, { Component } 		 	 from 'react';
+import CreateUser 					     from './CreateUser.js';
+import axios                       		 from 'axios';
+import _                       			 from 'underscore';
+import swal                     		 from 'sweetalert';
 import './userManagement.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/js/modal.js';
-import IAssureTableUM from '../../IAssureTableUM/IAssureTable.jsx';
+import IAssureTableUM 					from '../../IAssureTableUM/IAssureTable.jsx';
 
-import  UMDelRolRow from './UMDelRolRow.jsx';
-import  UMAddRolRow from './UMAddRolRow.jsx';
-import  UMSelectRoleUsers from './UMSelectRoleUsers.jsx';
+import  UMDelRolRow 					from './UMDelRolRow.jsx';
+import  UMAddRolRow 					from './UMAddRolRow.jsx';
+import  UMSelectRoleUsers 				from './UMSelectRoleUsers.jsx';
 
 class UMListOfUsers extends Component {
 	constructor(props){
@@ -217,7 +217,7 @@ class UMListOfUsers extends Component {
 
 				   	if(this.state.blockswal == true)
 				   	{
-				   		 swal("Account blocked successfully","","success");
+				   		 swal("abc","Account blocked successfully",);
 				   	}
 				    break;
 
@@ -285,7 +285,7 @@ class UMListOfUsers extends Component {
 
 					   if(this.state.activeswal == true)
 					   {
-					   	 swal("Account activated successfully","","success");
+					   	 swal("abc","Account activated successfully");
 					   }
 				    break;
 
@@ -321,7 +321,7 @@ class UMListOfUsers extends Component {
 					})
 					.then((response)=> {
 				    	// console.log('delete response',response);
-				    	swal("User deleted successfully","", "success");
+				    	swal("abc","User deleted successfully",);
 
 				    		// update table here
 				          		var data = {
@@ -379,7 +379,7 @@ class UMListOfUsers extends Component {
 				      .then(
 				        (res)=>{
 				          // console.log('res', res);
-				          swal("Assigned Role Added Successfully","","success");
+				          swal("abc","Assigned Role Added Successfully",);
 				          checkedUsersList = null;
 
 				          		// update table here
@@ -437,7 +437,7 @@ class UMListOfUsers extends Component {
 				      .then(
 				        (res)=>{
 				          // console.log('res', res);
-				          swal("Assigned Role Removed Successfully","","success");
+				          swal("abc","Assigned Role Removed Successfully",);
 				          checkedUsersList = null;
 
 				          		// update table here
@@ -561,7 +561,7 @@ class UMListOfUsers extends Component {
 					            },()=>{
 					            }) 
 					        }).catch((error)=>{ 
-					            swal("Sorry there is no data of "+selectedValue,"","error");
+					            swal("abc", "Sorry there is no data of "+selectedValue,"");
 					      });
 
 					}
@@ -640,7 +640,7 @@ class UMListOfUsers extends Component {
 				            },()=>{
 				            })
 				        }).catch((error)=>{ 
-				        	swal("Sorry there is no data of "+selectedValue, "","error");
+				        	swal("abc", "Sorry there is no data of "+selectedValue, );
 				      });
 					}
 

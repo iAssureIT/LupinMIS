@@ -46,23 +46,29 @@ class Login extends Component {
         // });
 
         localStorage.setItem("token",response.data.token);
+        localStorage.setItem("emailId",response.data.emailId);
+        localStorage.setItem("center_ID",response.data.center_ID);
+        localStorage.setItem("centerName",response.data.centerName);
+        console.log("localStorage =",response.data.emailId,localStorage.getItem('emailId'));
         console.log("localStorage =",localStorage);
         // browserHistory.replace('/');
         this.props.history.push("/dashboard");
-        window.location.reload(); 
+        // window.location.reload(); 
         // direct.setState({loggedIn:response.data.token})
         if(localStorage==null){
-          swal("Invalid Email or Password","Please Enter valid email and password","warning");
+          swal("Invalid Email or Password","Please Enter valid email and password");
         }else{
           this.setState({
               loggedIn  :   true
+          },()=>{
+            console.log("loggedIn", this.state.loggedIn);
           })
         }
       })
       .catch(function (error) {
           console.log(error);
         if(localStorage!==null){
-          swal("Invalid Email or Password","Please Enter valid email and password","warning");
+          swal("Invalid Email or Password","Please Enter valid email and password");
         }
       });
   }

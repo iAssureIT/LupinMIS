@@ -17,7 +17,7 @@ class Reports extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10,
-        "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
+        "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : false,
             firstHeaderData : [

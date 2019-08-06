@@ -43,6 +43,7 @@ class SignUp extends Component {
                 signupPassword  : '',
                 role 			: '',
                 centerName		: '',
+                center_ID		: '',
                
             },
              formerrors :{
@@ -52,7 +53,7 @@ class SignUp extends Component {
 				        	emailIDV		: "",
 					     },
         }
-        console.log("In constructor");
+        // console.log("In constructor");
          this.handleChange = this.handleChange.bind(this);
     }
     componentWillMount() {
@@ -64,13 +65,14 @@ class SignUp extends Component {
  			var auth={
 	                firstName       : this.refs.firstname.value,
 	                lastName        : this.refs.lastname.value,
-	                mobileNumber       : this.refs.mobileNumber.value,
-	                emailId           : this.refs.signupEmail.value,
+	                mobileNumber    : this.refs.mobileNumber.value,
+	                emailId         : this.refs.signupEmail.value,
 	                pwd        		: this.refs.signupPassword.value,
 	                signupPassword  : this.refs.signupConfirmPassword.value,
 	                roles 			: 'users',
 	                status			: "Active",
 	                centerName		: this.refs.centerName.value.split('|')[0],
+	                center_ID		: this.refs.centerName.value.split('|')[1],
 	            }
 	            
  			console.log("-------auth------>>",auth);
@@ -98,6 +100,7 @@ class SignUp extends Component {
 			                console.log("-------userData------>>",response);
 		            		swal("success","Information submitted successfully ");
 			                // this.props.history.push("/confirm-otp");
+		            		
 			                this.props.history.push("/login");
 			            })
 			            .catch(function (error) {
@@ -108,16 +111,16 @@ class SignUp extends Component {
                 :
 	                (
 		                document.getElementById("signUpBtn").value = 'Sign Up',
-		                swal("Password should be at least 6 Characters Long","Please try again or create an Account","warning")       
+		                swal("Password should be at least 6 Characters Long","Please try again or create an Account")       
 	                )
                 
             } else {
                 document.getElementById("signUpBtn").value = 'Sign Up';
-		        return swal("Passwords does not match","Please Try Again","warning")
+		        return swal("Passwords does not match","Please Try Again")
             }
             }else{
                 document.getElementById("signUpBtn").value = 'Sign Up';
-				swal("Please enter mandatory fields", "", "warning");
+				swal("Please enter mandatory fields", "");
 				console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
 			}
         
@@ -225,16 +228,16 @@ class SignUp extends Component {
 	    var z = 0;
 	    var winHeight =(x-z) + 'px';
 	    var winHeight1 =(x-z) ;
-	    console.log('x',$(window).height());
-	    console.log('winHeight',winHeight1);
+	    // console.log('x',$(window).height());
+	    // console.log('winHeight',winHeight1);
 
 	    var innerheight = winHeight1-60 + 'px';
 	    var innerheight1 = winHeight1-60 ;
 	   
 	    var margin = parseInt( innerheight1-y );
 	    var margint = (margin/2);
-	    console.log('margint',margint);
-	    console.log('margin',margin);
+	    // console.log('margint',margint);
+	    // console.log('margin',margin);
     	var windowWidth = $(window).width();
       // console.log('ww',windowWidth);
 		if(windowWidth>=320&&windowWidth<=992){
@@ -245,7 +248,7 @@ class SignUp extends Component {
 
 
 		const {formerrors} = this.state;
-		console.log("formerrors====?>>>",formerrors);
+		// console.log("formerrors====?>>>",formerrors);
       /*console.log("-------------------------------",this.state.loggedIn)*/    
 		return(
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 middlepo middlebord pull-right" id="contentsroll" style={{"height": innerheight}}>

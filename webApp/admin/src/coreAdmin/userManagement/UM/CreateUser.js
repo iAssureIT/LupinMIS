@@ -165,7 +165,7 @@ class CreateUser extends Component {
           "mobileNumber"    : this.state.mobileNumber,
           "pwd"             : "user123",
           
-          "status"          : "Blocked",
+          "status"          : "Active",
           "roles"           :  this.state.role,
           "center_ID"       : this.refs.centerName.value.split('|')[1],
           "centerName"      : this.refs.centerName.value.split('|')[0],

@@ -19,8 +19,20 @@ export default class Header extends Component{
 
    
   componentDidMount(){
-     const token = localStorage.getItem("token");
+    const Token     = localStorage.getItem("token");
+    const emailId   = localStorage.getItem("emailId");
+    const center_ID = localStorage.getItem("center_ID");
+    const fullName = localStorage.getItem("fullName");
      // console.log("Dashboard Token = ",token);
+    console.log("localStorage =",localStorage.getItem('emailId'));
+    console.log("localStorage =",localStorage);
+    this.setState({
+      emailId   : emailId,
+      fullName : fullName,
+    },()=>{
+    console.log("fullName =",this.state.fullName);
+
+    });
    
   }
     
@@ -89,7 +101,7 @@ logout(){
                       <img src="image/person.png" className="img "/>
                       </div>*/}
                       <div className="col-lg-12 col-md-10 col-xs-6 col-sm-6 dropdown ">
-                      <span className="headicon">Alexander Pierce &nbsp;</span>
+                      <span className="headicon">{this.state.emailId ? this.state.emailId : ""} &nbsp;</span>
                      <span className=" topmargin ">
                         <button className="dropbtn arrowbtn">
                          <span className="hidden-xs angleright"><i className="fa fa-angle-down" aria-hidden="true"></i></span>
@@ -106,9 +118,9 @@ logout(){
                                           </div>
                                           <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12 pull-right padd0 marTop">
                                            <h5 className="fontB nomargin ">
-                                              Alexander Pierce
+                                               {this.state.fullName ? this.state.fullName : ""}
                                            </h5>
-                                            <h6 className="fontB"> alexander@gmail.com </h6>
+                                            <h6 className="fontB"> {this.state.emailId ? this.state.emailId : ""}</h6>
                                           </div>
                                       </div>
                                     </a>

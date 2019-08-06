@@ -18,11 +18,12 @@ class ActivitywiseAnnualCompletionReport extends Component{
         'tableData'         : [],
         'year'              : "FY 2019 - 2020",
         'center'            : "",
+        'sector'            : "",
          "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       
         "startRange"        : 0,
         "limitRange"        : 10,
-        "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID",
+        // "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -83,11 +84,12 @@ class ActivitywiseAnnualCompletionReport extends Component{
 
   componentDidMount(){
     this.getAvailableCenters();
+    this.getAvailableSectors();
     // this.getData();
   }
   componentWillReceiveProps(nextProps){
     this.getAvailableCenters();
-    // this.getData();
+    this.getAvailableSectors();
   }
   handleChange(event){
     event.preventDefault();
@@ -127,24 +129,47 @@ class ActivitywiseAnnualCompletionReport extends Component{
         
       })
     });
-    // this.handleChange();
-  }  
-  getData(){
-       axios.get('api/report/annual_completion/:year/:center_ID')
-      .then((response)=>{
+  } 
+  getAvailableSectors(){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        
         this.setState({
-          tableDatas : response.data
+          availableSectors : response.data,
+          sector           : response.data[0].sector+'|'+response.data[0]._id
         },()=>{
-          console.log("resp",this.state.tableDatas)
-        })
+        console.log('availableSectors', this.state.availableSectors);
+        console.log('sector', this.state.sector);
       })
-      .catch(function(error){        
-      });
-
+    }).catch(function (error) {
+      console.log('error', error);
+    });
   }
+  selectSector(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name]:event.target.value
+    });
+    var sector_id = event.target.value.split('|')[1];
+  }
+
+  getData(){
+    axios.get('api/report/annual_completion/:year/:center_ID/:sector')
+    .then((response)=>{
+      this.setState({
+        tableDatas : response.data
+      },()=>{
+        console.log("resp",this.state.tableDatas)
+      })
+    })
+    .catch(function(error){        
+    });
+  }
+
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
-
     this.setState({
       'currentTabView': currentComp,
     })
@@ -164,7 +189,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     <hr className="hr-head container-fluid row"/>
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                    <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12">
                       <label className="formLable">Center</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                         <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
@@ -183,7 +208,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                       </div>
                       {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                     </div>
-                   <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12">
                       <label className="formLable">Year</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
@@ -197,6 +222,25 @@ class ActivitywiseAnnualCompletionReport extends Component{
                       </div>
                       {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
                     </div>  
+                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                      <label className="formLable">Sector</label><span className="asterix">*</span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                        <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                          <option  className="hidden" >--Select Sector--</option>
+                          {
+                          this.state.availableSectors && this.state.availableSectors.length >0 ?
+                          this.state.availableSectors.map((data, index)=>{
+                            return(
+                              <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                            );
+                          })
+                          :
+                          null
+                        }
+                        </select>
+                      </div>
+                     {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+                    </div>
                   </div>  
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17">
                      
@@ -227,7 +271,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                       this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
                       this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : */
 
-                      <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} /> 
+                      <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} sector={this.state.sector}/> 
                     }
                     
                   </div>

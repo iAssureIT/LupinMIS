@@ -14,6 +14,7 @@ export default class YearlyReport extends Component{
             "tableData"         : props.tableData,
             "year"              : props.year,
             "center"            : props.center,
+            "sector"            : props.sector,
             "startRange"        : 0,
             "limitRange"        : 10
             
@@ -30,10 +31,11 @@ export default class YearlyReport extends Component{
         if(nextProps){
             this.setState({
                 year   : nextProps.year,
-                center : nextProps.center.split('|')[1]
+                center : nextProps.center.split('|')[1],
+                sector : nextProps.sector.split('|')[1]
             },()=>{
-                console.log('year', this.state.year, 'center', this.state.center)
-                this.getData(this.state.year, this.state.center);
+                console.log('year', this.state.year, 'center', this.state.center,'sector', this.state.sector)
+                this.getData(this.state.year, this.state.center, this.state.sector);
             });
         }
     }
@@ -67,9 +69,9 @@ export default class YearlyReport extends Component{
             reportData : reportData
         });
    }*/
-    getData(year, centerID){
-        console.log('year', year, 'centerID', centerID)
-        axios.get('/api/report/annual_completion/'+year+'/'+centerID)
+    getData(year, centerID, sector){
+        console.log('year', year, 'centerID', centerID, 'sector', sector)
+        axios.get('/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)
         .then((response)=>{
             console.log('response', response);
             this.setState({
