@@ -7,7 +7,7 @@ import WeeklyReport         from '../Reports/WeeklyReport.js';
 import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
-import EMPReport                                   from "../../admin/LupinReports/EMPReport.js";
+import EMPReport            from "../../admin/LupinReports/EMPReport.js";
 
 import "../Reports/Reports.css";
 class SDGReport extends Component{

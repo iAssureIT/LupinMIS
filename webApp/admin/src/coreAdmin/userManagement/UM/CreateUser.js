@@ -99,7 +99,7 @@ class CreateUser extends Component {
         (res)=>{
           // console.log('res', res);
           const postsdata = res.data;
-          console.log('postsdata',postsdata);
+          // console.log('postsdata',postsdata);
           this.setState({
             allPosts : postsdata,
           });
@@ -137,7 +137,7 @@ class CreateUser extends Component {
                               completeDataCount : res.data.length,
                               tableData     : tableData,          
                             },()=>{
-                              console.log('tableData', this.state.tableData);
+                              // console.log('tableData', this.state.tableData);
                             })
                       })
                       .catch((error)=>{
@@ -222,11 +222,11 @@ class CreateUser extends Component {
       method: 'get',
       url: '/api/roles/list',
     }).then((response)=> {
-        console.log('response ==========', response.data);
+        // console.log('response ==========', response.data);
         this.setState({
           adminRolesListData : response.data
         },()=>{
-        console.log('adminRolesListData', this.state.adminRolesListData);
+        // console.log('adminRolesListData', this.state.adminRolesListData);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -237,11 +237,11 @@ class CreateUser extends Component {
       method: 'get',
       url: '/api/centers/list',
     }).then((response)=> {
-        console.log('response ==========', response.data);
+        // console.log('response ==========', response.data);
         this.setState({
           listofCenters : response.data
         },()=>{
-        console.log('listofCenters', this.state.listofCenters);
+        // console.log('listofCenters', this.state.listofCenters);
         })
     }).catch(function (error) {
       console.log('error', error);

@@ -69,7 +69,7 @@ class SignUp extends Component {
 	                pwd        		: this.refs.signupPassword.value,
 	                signupPassword  : this.refs.signupConfirmPassword.value,
 	                roles 			: 'users',
-	                status			: "Blocked",
+	                status			: "Active",
 	                centerName		: this.refs.centerName.value.split('|')[0],
 	            }
 	            

@@ -162,8 +162,8 @@ class Activity extends Component{
     }else{*/
             console.log("date",this.state.dateofIntervention);
       var activityValues= {
-        "center_ID"         : "123",
-        "centerName"        : "Pune",
+        "center_ID"         : "",
+        "centerName"        : "",
         "date"              : this.refs.dateofIntervention.value,
         "district"          : this.refs.dist.value,
         "block"             : this.refs.block.value,
@@ -265,8 +265,8 @@ class Activity extends Component{
     // if (this.validateFormReq() && this.validateForm()) {
     var activityValues= {
       "activityReport_ID" : this.state.editId,
-      "center_ID"         : "123",
-      "centerName"        : "Pune",
+      "center_ID"         : "",
+      "centerName"        : "",
       "date"              : this.refs.dateofIntervention.value,
       "district"          : this.refs.dist.value,
       "block"             : this.refs.block.value,

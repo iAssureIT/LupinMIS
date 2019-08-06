@@ -68,6 +68,8 @@ class UMListOfUsers extends Component {
 			var tableData = res.data.map((a, i)=>{
 				return {
 					_id 			: a._id,
+					firstName		:a.firstName,
+					lastName		:a.lastName,
 					fullName        : a.fullName,
 	                emailId    		: a.emailId,
 	                mobileNumber    : a.mobileNumber, 
@@ -255,7 +257,7 @@ class UMListOfUsers extends Component {
 													_id 			: a._id,
 													fullName        : a.fullName,
 									                emailId    		: a.emailId,
-									                mobileNumber       : a.mobileNumber, 
+									                mobileNumber    : a.mobileNumber, 
 									                status        	: a.status,	
 									                roles 			: a.roles,
 						                			centerName 	    : a.centerName,
@@ -678,7 +680,7 @@ class UMListOfUsers extends Component {
 render(){
 	// console.log('this.state.completeDataCount', this.state.completeDataCount);
 	var adminRolesListDataList = this.state.adminRolesListData;
-	console.log("adminRolesListDataList",adminRolesListDataList);
+	// console.log("adminRolesListDataList",adminRolesListDataList);
      return(
      	<div className="container-fluid">
 	        <div className="row">
@@ -695,7 +697,7 @@ render(){
 								<div className="modal-bodyuser">
 							        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 										<div className="col-lg-2 col-md-3 col-sm-12 col-xs-12 "  id="createmodalcl">
-											<button type="button" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 addexamform userbtn clickforhideshow" data-toggle="modal" data-target="#CreateUserModal"><i class="fa fa-plus" aria-hidden="true"></i><b>&nbsp;&nbsp;&nbsp; Add User</b></button>
+											<button type="button" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 addexamform userbtn clickforhideshow" data-toggle="modal" data-target="#CreateUserModal"><i className="fa fa-plus" aria-hidden="true"></i><b>&nbsp;&nbsp;&nbsp; Add User</b></button>
 										    <CreateUser getData={this.getData.bind(this)}/>
 										</div>
 										{/*<div className="col-lg-2 col-md-3 col-sm-12 col-xs-12 "  id="createmodalcl">

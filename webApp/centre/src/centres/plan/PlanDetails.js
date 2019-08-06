@@ -304,8 +304,8 @@ class PlanDetails extends Component{
           var planValues = {
             "month"               : this.refs.month.value,          
             "year"                : this.refs.year.value,          
-            "center_ID"           : "P01",
-            "center"              : "Pune",
+            "center_ID"           : "",
+            "center"              : "",
             "sector_ID"           : this.refs.sectorName.value.split('|')[1],
             "sectorName"          : this.refs.sectorName.value.split('|')[0],
             "activity_ID"         : this.refs.activityName.value.split('|')[1],
@@ -416,8 +416,8 @@ class PlanDetails extends Component{
             "monthlyPlan_ID"      : this.state.editId,
             "month"               : this.refs.month.value,          
             "year"                : this.refs.year.value,          
-            "center_ID"           : "P01",
-            "center"              : "Pune",
+            "center_ID"           : "",
+            "center"              : "",
             "sector_ID"           : this.refs.sectorName.value.split('|')[1],
             "sectorName"          : this.refs.sectorName.value.split('|')[0],
             "activity_ID"         : this.refs.activityName.value.split('|')[1],
@@ -579,6 +579,8 @@ class PlanDetails extends Component{
 
         this.setState({
           tableData : tableData
+        },()=>{
+          console.log("tableData",this.state.tableData);
         });
       })
       .catch(function(error){
