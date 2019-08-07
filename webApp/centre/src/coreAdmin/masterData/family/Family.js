@@ -56,11 +56,11 @@ class Family extends Component{
       "limitRange"            : 10,
       "editId"                : this.props.match.params ? this.props.match.params.id : ''    
     }
-    console.log('editId' , this.state.editId);
+    // console.log('editId' , this.state.editId);
   }
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
-    console.log('editId' , editId);
+    // console.log('editId' , editId);
     if(nextProps.match.params.id){
       this.setState({
         editId : editId
@@ -75,13 +75,23 @@ class Family extends Component{
   }
   
   componentDidMount() {
-    console.log('editId componentDidMount', this.state.editId);
+    // console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
     this.getLength();
-    this.getDistrict();
     this.getData(this.state.startRange, this.state.limitRange);
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    // console.log("localStorage =",localStorage);
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+    this.getAvailableCenter(this.state.center_ID);
+    console.log("center_ID =",this.state.center_ID);
+    });
   }
  
   handleChange(event){
@@ -171,6 +181,7 @@ class Family extends Component{
       fields["village"]           = "";
       axios.post('/api/families',familyValues)
         .then((response)=>{
+        console.log('response', response);
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
@@ -403,7 +414,7 @@ class Family extends Component{
     }
     axios.get('/api/families/list',data)
     .then((response)=>{
-      console.log('response', response.data);
+      // console.log('response', response.data);
       this.setState({
         tableData : response.data
       })
@@ -411,22 +422,31 @@ class Family extends Component{
     .catch(function(error){      
     });
   }
-  getDistrict(stateCode){
+
+  getAvailableCenter(center_ID){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/districts/get/list/MH/IN',
-      // url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
+      url: '/api/centers/'+center_ID,
+      }).then((response)=> {
+        // console.log('response ==========',response.data[0].districtsCovered);
         this.setState({
-          listofDistrict : response.data
+          availableDistInCenter  : response.data[0].districtsCovered,
+          address                : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+          // districtsCovered : response.data[0].districtsCovered
         },()=>{
-        console.log('listofDistrict', this.state.listofDistrict);
+        var stateCode =this.state.address.split('|')[0];
+         this.setState({
+          stateCode  : stateCode,
+
+        },()=>{
+        // console.log("address",this.state.stateCode, this.state.availableDistInCenter);
+        });
         })
     }).catch(function (error) {
       console.log('error', error);
     });
   }
+
   districtChange(event){    
     event.preventDefault();
     var district = event.target.value;
@@ -435,26 +455,27 @@ class Family extends Component{
       district: district
     },()=>{
       var selectedDistrict = this.state.district.split('|')[0];
-      console.log("selectedDistrict",selectedDistrict);
+      // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      console.log('selectedDistrict',this.state.selectedDistrict);
+      // console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
   getBlock(stateCode, selectedDistrict){
+    console.log("sd", stateCode,selectedDistrict);
     axios({
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
-        console.log('response ==========', response.data);
+        // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
-        console.log('listofBlocks', this.state.listofBlocks);
+        // console.log('listofBlocks', this.state.listofBlocks);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -466,21 +487,21 @@ class Family extends Component{
     this.setState({
       block : block
     },()=>{
-      console.log("block",block);
+      // console.log("block",block);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
   getVillages(stateCode, selectedDistrict, block){
-    console.log(stateCode, selectedDistrict, block);
+    // console.log(stateCode, selectedDistrict, block);
     axios({
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/MH/IN',
     }).then((response)=> {
-        console.log('response ==========', response.data);
+        // console.log('response ==========', response.data);
         this.setState({
           listofVillages : response.data
         },()=>{
-        console.log('listofVillages', this.state.listofVillages);
+        // console.log('listofVillages', this.state.listofVillages);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -492,7 +513,7 @@ class Family extends Component{
     this.setState({
       village : village
     },()=>{
-      console.log("village",village);
+      // console.log("village",village);
     });  
   }  
   render() {     
@@ -583,18 +604,19 @@ class Family extends Component{
                           <label className="formLable">District</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                             <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              {
-                                this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
-                                this.state.listofDistrict.map((data, index)=>{
-                                  // console.log(data);
+                              <option  className="hidden" >--select--</option>
+                                  
+                                {
+                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                this.state.availableDistInCenter.map((data, index)=>{
+                                  console.log("data",data)
                                   return(
-                                    <option key={index} value={data.districtName}>{data.districtName}</option>
+                                    <option key={index} value={data}>{data.split('|')[0]}</option>
                                   );
                                 })
                                 :
                                 null
-                              }                                  
+                              }                               
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.district}</div>

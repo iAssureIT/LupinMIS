@@ -153,14 +153,13 @@ class Activity extends Component{
       selectedBeneficiaries : selectedBeneficiaries
     })
   }
-  SubmitActivity(event){
-  /* 
-    event.preventDefault();
+  /*    event.preventDefault();
     if(this.refs.dateofIntervention.value === "" ){
         if (this.validateFormReq() && this.validateForm()){
        }
     }else{*/
-            console.log("date",this.state.dateofIntervention);
+/*  SubmitActivity(event){
+    console.log("date",this.state.dateofIntervention);
       var activityValues= {
         "center_ID"         : "",
         "centerName"        : "",
@@ -259,14 +258,120 @@ class Activity extends Component{
 
       });
     // }
+  }*/
+    SubmitActivity(event){
+    event.preventDefault();
+   /* if(this.refs.dateofIntervention.value == "" ){
+        if (this.validateFormReq() && this.validateForm()){
+        }
+    }else{*/
+            // console.log("date",this.state.dateofIntervention);
+      var activityValues= {
+        "center_ID"         : this.state.center_ID,
+        "centerName"        : this.state.centerName,
+        "date"              : this.refs.dateofIntervention.value,
+        "district"          : this.refs.dist.value,
+        "block"             : this.refs.block.value,
+        "village"           : this.refs.village.value,
+        "dateofIntervention": this.refs.dateofIntervention.value,
+        "sector_ID"         : this.refs.sector.value.split('|')[1],
+        "sectorName"        : this.refs.sector.value.split('|')[0],
+        "typeofactivity"    : this.refs.typeofactivity.value,
+        "activity_ID"       : this.refs.activity.value.split('|')[1],
+        "activityName"      : this.refs.activity.value.split('|')[0],
+        "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
+        "subactivityName"   : this.refs.subactivity.value.split('|')[0],
+        "unit"              : document.getElementById('unit').innerHTML,
+        "unitCost"          : this.refs.unitCost.value,
+        "quantity"          : this.refs.quantity.value,
+        "totalcost"         : this.state.totalcost,
+        "LHWRF"             : this.refs.LHWRF.value,
+        "NABARD"            : this.refs.NABARD.value,
+        "bankLoan"          : this.refs.bankLoan.value,
+        "govtscheme"        : this.refs.govtscheme.value,
+        "directCC"          : this.refs.directCC.value,
+        "indirectCC"        : this.refs.indirectCC.value,
+        "other"             : this.refs.other.value,
+        "total"             : this.state.total,
+        "remark"            : this.refs.remark.value,
+        "listofBeneficiaries": this.state.selectedBeneficiaries
+      };
+      let fields                  = {};
+      fields["dist"]              = "";
+      fields["block"]             = "";
+      fields["village"]           = "";
+      fields["dateofIntervention"]= "";
+      fields["sector"]            = "";
+      fields["typeofactivity"]    = "";
+      fields["nameofactivity"]    = "";
+      fields["activity"]          = "";
+      fields["subactivity"]       = "";
+      fields["unit"]              = "";
+      fields["unitCost"]          = "";
+      fields["quantity"]          = "";
+      fields["totalcost"]         = "";
+      fields["LHWRF"]             = "";
+      fields["NABARD"]            = "";
+      fields["bankLoan"]          = "";
+      fields["govtscheme"]        = "";
+      fields["directCC"]          = "";
+      fields["indirectCC"]        = "";
+      fields["other"]             = "";
+      
+      axios.post('/api/activityReport',activityValues)
+        .then((response)=>{
+          console.log("response", response);
+          swal({
+            title : response.data.message,
+            text  : response.data.message,
+          });
+            this.getData(this.state.startRange, this.state.limitRange);  
+            this.setState({
+              selectedValues : this.state.selectedBeneficiaries 
+            })    
+          })
+        .catch(function(error){       
+          console.log('error',error);
+        });
+      this.setState({
+        "dist"                   : "",
+        "block"                  : "",
+        "village"                : "",
+        "dateofIntervention"     : "",
+        "sector"                 : "",
+        "typeofactivity"         : "",
+        "nameofactivity"         : "",
+        "activity"               : "",
+        "subactivity"            : "",
+        "unit"                   : "",
+        "unitCost"               : "",
+        "quantity"               : "",
+        "totalcost"              : "",
+        "LHWRF"                  : "",
+        "NABARD"                 : "",
+        "bankLoan"               : "",
+        "govtscheme"             : "",
+        "directCC"               : "",
+        "indirectCC"             : "",
+        "other"                  : "",
+        "total"                  : "",
+        "remark"                 : "",
+        "fields"                 : fields,
+        "selectedBeneficiaries"  : [],
+        "listofBeneficiaries"    : [],
+        "subActivityDetails"     : [],
+        "availableActivity"      : [],
+        "availableSubActivity"   : []
+      });
+   /* }*/
   }
   Update(event){
     event.preventDefault();
     // if (this.validateFormReq() && this.validateForm()) {
     var activityValues= {
       "activityReport_ID" : this.state.editId,
-      "center_ID"         : "",
-      "centerName"        : "",
+      "center_ID"         : this.state.center_ID,
+      "centerName"        : this.state.centerName,
       "date"              : this.refs.dateofIntervention.value,
       "district"          : this.refs.dist.value,
       "block"             : this.refs.block.value,
@@ -605,13 +710,25 @@ class Activity extends Component{
       dateofIntervention :momentString,
     })
     this.getLength();
-    this.getDistrict();
+    
     this.getData(this.state.startRange, this.state.limitRange);
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    // console.log("localStorage =",localStorage);
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+    this.getAvailableCenter(this.state.center_ID);
+    console.log("center_ID =",this.state.center_ID);
+    });
   }
 
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
     this.getAvailableSectors();      
+    this.getAvailableCenter();      
     this.setState({
       "editId" : editId,
     },()=>{
@@ -705,21 +822,43 @@ class Activity extends Component{
 
   }
 
-  getDistrict(stateCode){
+  getAvailableCenter(center_ID){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/districts/get/list/MH/IN',
-      // url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
+      url: '/api/centers/'+center_ID,
+      }).then((response)=> {
+        console.log('response ==========',response.data[0].districtsCovered);
         this.setState({
-          listofDistrict : response.data
+          availableDistInCenter  : response.data[0].districtsCovered,
+          address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+          // districtsCovered : response.data[0].districtsCovered
         },()=>{
-        console.log('listofDistrict', this.state.listofDistrict);
+        var stateCode =this.state.address.split('|')[0];
+         this.setState({
+          stateCode  : stateCode,
+
+        },()=>{
+        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
+        });
         })
     }).catch(function (error) {
       console.log('error', error);
     });
+  }
+  getDistrict(stateCode, districtsCovered){
+        // console.log('getD==========', stateCode, districtsCovered);
+   /* axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/districts/get/list/MH/IN',
+      url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
+    }).then((response)=> {
+        this.setState({
+          listofDistrict : response.data
+        },()=>{
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });*/
   }
   distChange(event){    
     event.preventDefault();
@@ -729,11 +868,11 @@ class Activity extends Component{
       dist: dist
     },()=>{
       var selectedDistrict = this.state.dist.split('|')[0];
-      console.log("selectedDistrict",selectedDistrict);
+      // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      console.log('selectedDistrict',this.state.selectedDistrict);
+      // console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
@@ -741,14 +880,14 @@ class Activity extends Component{
   getBlock(stateCode, selectedDistrict){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
-      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
+      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
+      url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
-        console.log('response ==========', response.data);
+        // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
-        console.log('listofBlocks', this.state.listofBlocks);
+        // console.log('listofBlocks', this.state.listofBlocks);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -760,7 +899,7 @@ class Activity extends Component{
     this.setState({
       block : block
     },()=>{
-      console.log("block",block);
+      // console.log("block",block);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
@@ -768,13 +907,13 @@ class Activity extends Component{
     console.log(stateCode, selectedDistrict, block);
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/MH/IN',
+      url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
-        console.log('response ==========', response.data);
+        // console.log('response ==========', response.data);
         this.setState({
           listofVillages : response.data
         },()=>{
-        console.log('listofVillages', this.state.listofVillages);
+        // console.log('listofVillages', this.state.listofVillages);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -786,7 +925,7 @@ class Activity extends Component{
     this.setState({
       village : village
     },()=>{
-      console.log("village",village);
+      // console.log("village",village);
     });
   }
 
@@ -829,12 +968,13 @@ class Activity extends Component{
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="dist" >
                               <select className="custom-select form-control inputBox" ref="dist" name="dist" value={this.state.dist} onChange={this.distChange.bind(this)} >
                                 <option  className="hidden" >--select--</option>
+                                  
                                 {
-                                this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
-                                this.state.listofDistrict.map((data, index)=>{
-                                  // console.log(data);
+                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                this.state.availableDistInCenter.map((data, index)=>{
+                                  console.log('dta', data);
                                   return(
-                                    <option key={index} value={data.districtName}>{data.districtName}</option>
+                                    <option key={index} value={data}>{data.split('|')[0]}</option>
                                   );
                                 })
                                 :

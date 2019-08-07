@@ -304,8 +304,8 @@ class PlanDetails extends Component{
           var planValues = {
             "month"               : this.refs.month.value,          
             "year"                : this.refs.year.value,          
-            "center_ID"           : "",
-            "center"              : "",
+            "center_ID"           : this.state.center_ID,
+            "center"              : this.state.centerName,
             "sector_ID"           : this.refs.sectorName.value.split('|')[1],
             "sectorName"          : this.refs.sectorName.value.split('|')[0],
             "activity_ID"         : this.refs.activityName.value.split('|')[1],
@@ -328,6 +328,7 @@ class PlanDetails extends Component{
           };
           axios.post(this.state.apiCall, planValues)
             .then((response)=>{
+              console.log("response",response);
               swal({
                 title : response.data.message,
                 text  : response.data.message
@@ -415,9 +416,9 @@ class PlanDetails extends Component{
             "annualPlan_ID"       : this.state.editId,
             "monthlyPlan_ID"      : this.state.editId,
             "month"               : this.refs.month.value,          
-            "year"                : this.refs.year.value,          
-            "center_ID"           : "",
-            "center"              : "",
+            "year"                : this.refs.year.value,           
+            "center_ID"           : this.state.center_ID,
+            "center"              : this.state.centerName,
             "sector_ID"           : this.refs.sectorName.value.split('|')[1],
             "sectorName"          : this.refs.sectorName.value.split('|')[0],
             "activity_ID"         : this.refs.activityName.value.split('|')[1],
@@ -554,7 +555,7 @@ class PlanDetails extends Component{
       .then((response)=>{
          var tableData = response.data.map((a, i)=>{
         return {
-        _id                        : a._id,
+        _id                 : a._id,
         month               : a.month,
         year                : a.year,
         sectorName          : a.sectorName,
@@ -629,6 +630,17 @@ class PlanDetails extends Component{
     this.getLength();
     this.calTotal();
     this.getData(this.state.startRange, this.state.limitRange);
+
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    console.log("localStorage =",localStorage.getItem('centerName'));
+    console.log("localStorage =",localStorage);
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+    console.log("center_ID =",this.state.center_ID);
+    });
   }
   getAvailableSectors(){
     axios({

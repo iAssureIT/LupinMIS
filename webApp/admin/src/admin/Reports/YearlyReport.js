@@ -23,7 +23,7 @@ export default class YearlyReport extends Component{
     }
 
     componentDidMount(){
-        this.getData(this.state.year, this.state.center);
+        this.getData(this.state.year, this.state.center, this.state.sector);
         this.handleChange = this.handleChange.bind(this);
         
     }

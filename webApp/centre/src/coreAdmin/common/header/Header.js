@@ -23,14 +23,13 @@ export default class Header extends Component{
     const emailId   = localStorage.getItem("emailId");
     const center_ID = localStorage.getItem("center_ID");
     const fullName = localStorage.getItem("fullName");
-     // console.log("Dashboard Token = ",token);
-    console.log("localStorage =",localStorage.getItem('emailId'));
-    console.log("localStorage =",localStorage);
+    // console.log("localStorage =",localStorage.getItem('emailId'));
+    // console.log("localStorage =",localStorage);
     this.setState({
       emailId   : emailId,
       fullName : fullName,
     },()=>{
-    console.log("fullName =",this.state.fullName);
+    // console.log("fullName =",this.state.fullName);
 
     });
    
