@@ -91,6 +91,9 @@ body {
   min-height: auto;
 
 }
+.zeroIndex{
+  z-index: 0;
+}
 .toLower{
   text-transform: lowercase;
 }

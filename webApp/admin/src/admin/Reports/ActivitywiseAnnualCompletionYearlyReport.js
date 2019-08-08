@@ -7,102 +7,81 @@ export default class YearlyReport extends Component{
     constructor(props){
         super(props);
         this.state = {
-            "reportData": [],
-            "twoLevelHeader"    : this.props.twoLevelHeader,
-            "tableHeading"      : this.props.tableHeading,
-            "tableObjects"      : this.props.tableObjects,
-            "tableDatas"        : this.props.tableDatas,
+            "reportData"        : [],
+            "twoLevelHeader"    : props.twoLevelHeader,
+            "tableHeading"      : props.tableHeading,
+            "tableObjects"      : props.tableObjects,
+            "tableData"         : props.tableData,
+            "year"              : props.year,
+            "center"            : props.center,
+            "sector"            : props.sector,
             "startRange"        : 0,
             "limitRange"        : 10
             
         }
+        console.log("tableData", this.state.tableData);
         this.handleChange = this.handleChange.bind(this);
-        
     }
 
     componentDidMount(){
-        this.dataTableList();
-        this.setState({
-            tableData : this.state.tableDatas.slice(this.state.startRange, this.state.limitRange),
-        });
+        this.getData(this.state.year, this.state.center, this.state.sector);
         this.handleChange = this.handleChange.bind(this);
         
     }
     componentWillReceiveProps(nextProps){
-        if(nextProps.reportData){
+        if(nextProps){
             this.setState({
-                reportData : nextProps.reportData
+                year   : nextProps.year,
+                center : nextProps.center.split('|')[1],
+                sector : nextProps.sector.split('|')[1]
+            },()=>{
+                console.log('year', this.state.year, 'center', this.state.center,'sector', this.state.sector)
+                this.getData(this.state.year, this.state.center, this.state.sector);
             });
         }
     }
     handleChange(event){
         event.preventDefault();
-       const target = event.target;
-       const name = target.name;
+        const target = event.target;
+        const name = target.name;
 
-       this.setState({
-           [name] : event.target.value,
-       });
-   }
-
-    currentyear(){
-        var yearSession = localStorage.getItem('selectedYear');
-        if(yearSession){
-         var currentYear = yearSession;
-        }else{
-         var today = new Date();
-            var currentYear = today.getFullYear();
-        localStorage.setItem("selectedYear",currentYear);
-        }
-        var d = new Date();
-        var currentYear = d.getFullYear();
-        return currentYear;
-        console.log(currentYear);
-    }
-
-
-    previousYear(event){
-        event.preventDefault();
-        var selectedYear = $(".inputyearlyValue").val();
-        var newYear = moment(selectedYear).subtract(1,'years').format('YYYY');
-        localStorage.setItem('selectedYear', newYear);
-    }
-
-    nextYear(event){
-        event.preventDefault();
-        var selectedYear = $(".inputyearlyValue").val();
-        var newYear = moment(selectedYear).add(1,'years').format('YYYY');
-        localStorage.setItem('selectedYear', newYear);
-
-    }
-
-    dataTableList(){
-        // var yearFromSess = Session.get("selectedYear");
-        
-  //       var thisYear = yearFromSess;
-  //       var yearDateStart = new Date("1/1/" + thisYear);
-  //       var yearDateEnd = new Date (yearDateStart.getFullYear(), 11, 31);
-
-        // var reportData = [];
-  //       if(this.props.selectedCategory){
-  //           if(this.props.selectedSubCategory){
-  //               reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory, subCategory: this.props.selectedSubCategory}}}, {sort: {'createdAt': -1}}).fetch();
-  //           }else{
-  //               reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory}}}, {sort: {'createdAt': -1}}).fetch();
-  //           }
-  //       }else{
-  //           reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid'}, {sort: {'createdAt': -1}}).fetch();
-  //       }
-  //       this.setState({
-  //           reportData : reportData
-  //       });
-    }
-    getData(startRange, limitRange){
         this.setState({
-            tableData : this.state.tableDatas.slice(parseInt(startRange), parseInt(limitRange)),
-        },()=>{
-            console.log('tableData',this.state.tableData);
+           [name] : event.target.value,
         });
+   }
+    /*dataTableList(){
+        var yearFromSess = localStorage.getItem("selectedYear");
+        
+        var thisYear = yearFromSess;
+        var yearDateStart = new Date("1/1/" + thisYear);
+        var yearDateEnd = new Date (yearDateStart.getFullYear(), 11, 31);
+
+        var reportData = [];
+        if(this.props.selectedCategory){
+            if(this.props.selectedSubCategory){
+                // reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory, subCategory: this.props.selectedSubCategory}}}, {sort: {'createdAt': -1}}).fetch();
+            }else{
+                // reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory}}}, {sort: {'createdAt': -1}}).fetch();
+            }
+        }else{
+            // reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid'}, {sort: {'createdAt': -1}}).fetch();
+        }
+        this.setState({
+            reportData : reportData
+        });
+   }*/
+    getData(year, centerID, sector){
+        console.log('year', year, 'centerID', centerID, 'sector', sector)
+        axios.get('/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)
+        .then((response)=>{
+            console.log('response', response.data);
+            this.setState({
+                tableData : response.data
+            })
+        })
+        .catch((error)=>{
+            console.log('error', error);
+        })
     }
     getSearchText(searchText, startRange, limitRange){
         console.log(searchText, startRange, limitRange);
@@ -118,18 +97,18 @@ export default class YearlyReport extends Component{
                     <div className="sales-report-main-class">
                         <div className="reports-select-date-boxmain">
                             <div className="reports-select-date-boxsec">
-                                <div className="reports-select-date-Title">Yearly Reports</div>
+                               {/* <div className="reports-select-date-Title">Yearly Reports</div>
                                 <div className="input-group">
                                     <span onClick={this.previousYear.bind(this)} className="commonReportArrowPoiner input-group-addon" id="basic-addon1"><i className="fa fa-chevron-circle-left" aria-hidden="true"></i></span>
                                     <input onChange={this.handleChange} value={this.currentyear()} name="inputyearlyValue" type="text" className="inputyearlyValue reportsDateRef form-control" placeholder="" aria-label="Brand" aria-describedby="basic-addon1" ref="inputyearlyValue"  />
                                     <span onClick={this.nextYear.bind(this)} className="commonReportArrowPoiner input-group-addon" id="basic-addon1"><i className="fa fa-chevron-circle-right" aria-hidden="true"></i></span>
-                                </div>
+                                </div>*/}
                             </div>
                         </div>
 
                         <div className="report-list-downloadMain">
                             <IAssureTable 
-                                completeDataCount={this.state.tableDatas.length}
+                                // completeDataCount={this.state.tableDatas.length}
                                 twoLevelHeader={this.state.twoLevelHeader} 
                                 editId={this.state.editSubId} 
                                 getData={this.getData.bind(this)} 
@@ -138,8 +117,7 @@ export default class YearlyReport extends Component{
                                 tableObjects={this.state.tableObjects}
                                 getSearchText={this.getSearchText.bind(this)}/>
                         </div>
-                    </div>
-                
+                    </div>                
                     
                 </div>
             );
@@ -151,7 +129,7 @@ export default class YearlyReport extends Component{
     }
 }
 // export default YearlyListContainer = withTracker(props =>{
-//     var yearFromSess = Session.get("selectedYear");
+//     var yearFromSess = localStorage.getItem("selectedYear");
         
 //     var thisYear = yearFromSess;
 //     var yearDateStart = new Date("1/1/" + thisYear);
@@ -174,20 +152,3 @@ export default class YearlyReport extends Component{
 //         reportData,
 //     };
 // })(CategoryWiseReportsYearlyList);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

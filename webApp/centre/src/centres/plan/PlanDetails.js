@@ -72,6 +72,7 @@ class PlanDetails extends Component{
         unitCost            : "Unit Cost",
         totalBudget         : "Total Cost",
         noOfBeneficiaries   : "No. Of Beneficiaries",
+        noOfFamilies        : "No. Of Families",
         LHWRF               : "LHWRF",
         NABARD              : "NABARD",
         bankLoan            : "Bank Loan",
@@ -290,6 +291,7 @@ class PlanDetails extends Component{
       fields["physicalUnit"]      = "";
       fields["unitCost"]          = "";
       fields["totalBudget"]       = "";
+      fields["noOfFamilies"]      = "";
       fields["noOfBeneficiaries"] = "";
       fields["LHWRF"]             = "";
       fields["NABARD"]            = "";
@@ -317,6 +319,7 @@ class PlanDetails extends Component{
             "unitCost"            : subActivityDetails[i].unitCost,
             "totalBudget"         : subActivityDetails[i].totalBudget,
             "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
+            "noOfFamilies"        : subActivityDetails[i].noOfFamilies,
             "LHWRF"               : subActivityDetails[i].LHWRF,
             "NABARD"              : subActivityDetails[i].NABARD,
             "bankLoan"            : subActivityDetails[i].bankLoan,
@@ -364,6 +367,7 @@ class PlanDetails extends Component{
         "unitCost"            :"",
         "totalBudget"         :"",
         "noOfBeneficiaries"   :"",
+        "noOfFamilies"        :"",
         "LHWRF"               :"",
         "NABARD"              :"",
         "bankLoan"            :"",
@@ -402,6 +406,7 @@ class PlanDetails extends Component{
       fields["unitCost"]          = "";
       fields["totalBudget"]       = "";
       fields["noOfBeneficiaries"] = "";
+      fields["noOfFamilies"]      = "";
       fields["LHWRF"]             = "";
       fields["NABARD"]            = "";
       fields["bankLoan"]          = "";
@@ -430,6 +435,7 @@ class PlanDetails extends Component{
             "unitCost"            : subActivityDetails[i].unitCost,
             "totalBudget"         : subActivityDetails[i].totalBudget,
             "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
+            "noOfFamilies"        : subActivityDetails[i].noOfFamilies,
             "LHWRF"               : subActivityDetails[i].LHWRF,
             "NABARD"              : subActivityDetails[i].NABARD,
             "bankLoan"            : subActivityDetails[i].bankLoan,
@@ -474,6 +480,7 @@ class PlanDetails extends Component{
         "unitCost"            :"",
         "totalBudget"         :"",
         "noOfBeneficiaries"   :"",
+        "noOfFamilies"        :"",
         "LHWRF"               :"",
         "NABARD"              :"",
         "bankLoan"            :"",
@@ -566,6 +573,7 @@ class PlanDetails extends Component{
         unitCost            : a.unitCost,
         totalBudget         : a.totalBudget,
         noOfBeneficiaries   : a.noOfBeneficiaries,
+        noOfFamilies        : a.noOfFamilies,
         LHWRF               : a.LHWRF,
         NABARD              : a.NABARD,
         bankLoan            : a.bankLoan,
@@ -764,6 +772,7 @@ class PlanDetails extends Component{
             "unitCost"            : editData.unitCost,
             "totalBudget"         : editData.totalBudget,
             "noOfBeneficiaries"   : editData.noOfBeneficiaries,
+            "noOfFamilies"        : editData.noOfFamilies,
             "LHWRF"               : editData.LHWRF,
             "NABARD"              : editData.NABARD,
             "bankLoan"            : editData.bankLoan,
@@ -888,7 +897,7 @@ class PlanDetails extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.month}</div>
                           </div>
-                          <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
+                          <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 zeroIndex">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                               <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
                                 <option className="hidden" >-- Select Year --</option>
@@ -912,7 +921,7 @@ class PlanDetails extends Component{
                           </div>
                         </div> 
                       </div><br/>                      
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" style={hidden} id="Academic_details">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" /*style={hidden}*/ id="Academic_details">
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
                             <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
@@ -1005,34 +1014,40 @@ class PlanDetails extends Component{
                                           <div className="errorMsg">{this.state.errors.totalcost}</div>
                                         </div>
                                       </div>*/}
-                                      <div className=" row">
-                                        <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                      <div className="row ">
+                                        <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">Physical Units</label>
                                           <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
                                             <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} onKeyUp={this.calTotal.bind(this)} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
-                                        <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">Unit Cost</label>
                                           <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
                                             <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} onKeyUp={this.calTotal.bind(this)} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>  
-                                        <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">Total Cost</label>
                                           <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
                                             <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id}  value={this.state["totalBudget-"+data._id]} value={this.state.totalBudget ? this.state["totalBudget-"+data._id] : null} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>{console.log("state",this.state)}
                                         </div>  
-                                        <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">No.of Beneficiaries</label>
                                           <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+data._id} >
                                             <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
                                           </div>
+                                        </div> 
+                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
+                                          <label className="formLable">No.of Families</label>
+                                          <div className=" input-group inputBox-main" id={"noOfFamilies-"+data._id} >
+                                            <input type="text" className="form-control inputBox nameParts" name={"noOfFamilies-"+data._id} placeholder="" ref={"noOfFamilies-"+data._id} value={this.state["noOfFamilies-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
+                                          </div>
                                         </div>
                                       </div>
                                       <div className="row">
-                                        <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
+                                        <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields   ">
                                           <label className="formLable head">Sources of Fund</label>
                                         </div>
                                       </div>

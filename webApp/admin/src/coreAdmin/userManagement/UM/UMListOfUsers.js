@@ -320,9 +320,9 @@ class UMListOfUsers extends Component {
 						data: null,
 					})
 					.then((response)=> {
+				    	window.location.reload(); 
 				    	// console.log('delete response',response);
 				    	swal("abc","User deleted successfully",);
-
 				    		// update table here
 				          		var data = {
 											"startRange"        : this.state.startRange,
@@ -652,6 +652,7 @@ class UMListOfUsers extends Component {
 		this.setState({
 			confirmDel : true,
 		})
+		window.location.reload(); 
 	}
 	selectedUser(checkedUsersList){
 		// console.log('checkedUsersList', checkedUsersList);
