@@ -1,17 +1,31 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link }             from 'react-router-dom';
 import $                    from 'jquery';
-import axios                  from 'axios';
+import axios                from 'axios';
 import DailyReport          from '../Reports/DailyReport.js';
 import WeeklyReport         from '../Reports/WeeklyReport.js';
 import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import EMPReport            from "../../admin/LupinReports/EMPReport.js";
-
+import report1              from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
+import report2              from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
+import report3              from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
+import report4              from "../../admin/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";
+import report5              from "../../admin/LupinReports/ActivitywisePeriodicPhysicalVarianceReport.js";
+import report6              from "../../admin/LupinReports/GeographicalReport.js";
+import report7              from "../../admin/LupinReports/VillagewisefamilyReport.js";
+import report8              from "../../admin/LupinReports/CategorywiseReport.js";
+import report9              from "../../admin/LupinReports/UpgradedBeneficiaryReport.js";
+import report10             from "../../admin/LupinReports/SDGReport.js";
+import report11             from "../../admin/LupinReports/ADPReport.js";
+import report12             from "../../admin/LupinReports/EMPReport.js";
 import "../Reports/Reports.css";
+
+
+const ReportsList = [];
 class SDGReport extends Component{
-  constructor(props){
+	constructor(props){
     super(props);
     this.state = {
         'currentTabView'    : "Monthly",
@@ -65,6 +79,10 @@ class SDGReport extends Component{
   componentDidMount(){
     this.getAvailableSectors()
     this.getDistrict();
+
+    for (let i=1; i<13;i++) {
+        ReportsList[i] = React.getComponentByName(`Report${i}`);
+    }
   }
   componentDidMount(){
     this.getState();
@@ -123,18 +141,19 @@ class SDGReport extends Component{
     })
   }
   selectReportPath(e){
-    this.props.history.push(`/${e.target.value}`);
-   /* e.preventDefault();
+    // this.props.history.push(`/${e.target.value}`);
+   e.preventDefault();
     var selectedReport = e.target.value;
     this.setState({
       selectedReport : selectedReport,
     },()=>{
       console.log('selectedReport',this.state.selectedReport);
-      })*/
+      })
   }
   
   render(){
-
+      const selectedReport = this.state.selectedReport;
+console.log("selectedReport", selectedReport)
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
@@ -154,29 +173,34 @@ class SDGReport extends Component{
                       {console.log("sdasd" , this.value)}
                         <label className="formLable">Select Report</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="report" >
-                          <select className="custom-select form-control inputBox" ref="report" name="report" value={this.state.report}  onChange={this.selectReportPath.bind(this)} >
+                          <select className="custom-select form-control inputBox" ref="report" name="report" value={this.state.report} onChange={this.selectReportPath.bind(this)} >
                             <option className="hidden" >-- Select --</option>
-                            <option className="formLable" value="activitywise-annual-completion-report">Activity wise Annual Completion Report</option>
-                            <option className="formLable" value="sector-wise-annual-completion-summary-report">Sector wise Annual Completion Summary Report</option>
-                            <option className="formLable" value="activity-wise-periodic-variance-report">Activity wise Periodic Variance Report (Physical & Financial)</option>
-                            <option className="formLable" value="sectorwise-periodic-variance-summary-report">Sector wise Periodic Variance Summary Report</option>
-                            <option className="formLable" value="activity-wise-periodic-physical-variance-report">Activity wise Periodic Physical Variance Report</option>
-                            <option className="formLable" value="geographical-report">Geographical Report</option>
-                            <option className="formLable" value="villagewise-family-report">Villagewise Family Report</option>
-                            <option className="formLable" value="category-wise-report">Category wise Report</option>
-                            <option className="formLable" value="upgraded-beneficiary-report">Upgraded Beneficiary Report</option>
-                            <option className="formLable" value="SDG-report">SDG Report</option>
-                            <option className="formLable" value="ADP-report">ADP Report</option>
-                            <option className="formLable" value="EMP-report">EMP Report</option>
+                            <option className="formLable" id="" value="activitywise-annual-completion-report">Activity wise Annual Completion Report</option>
+                            <option className="formLable" id="" value="sector-wise-annual-completion-summary-report">Sector wise Annual Completion Summary Report</option>
+                            <option className="formLable" id="" value="activity-wise-periodic-variance-report">Activity wise Periodic Variance Report (Physical & Financial)</option>
+                            <option className="formLable" id="" value="sectorwise-periodic-variance-summary-report">Sector wise Periodic Variance Summary Report</option>
+                            <option className="formLable" id="" value="activity-wise-periodic-physical-variance-report">Activity wise Periodic Physical Variance Report</option>
+                            <option className="formLable" id="" value="geographical-report">Geographical Report</option>
+                            <option className="formLable" id="" value="villagewise-family-report">Villagewise Family Report</option>
+                            <option className="formLable" id="" value="category-wise-report">Category wise Report</option>
+                            <option className="formLable" id="" value="upgraded-beneficiary-report">Upgraded Beneficiary Report</option>
+                            <option className="formLable" id="" value="SDG-report">SDG Report</option>
+                            <option className="formLable" id="" value="ADP-report">ADP Report</option>
+                            <option className="formLable" id="" value="EMPReport">EMP Report</option>
                             
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                       </div>                     
                     </div>                    
-                        {/*<div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
-                          <Link href="this.state.selectedReport"><EMPReport/></Link>
-                        </div> */}                    
+                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
+                          <selectedReport/>
+                        </div> 
+                    <div>
+                    {/*  {
+                         ReportsList[this.props.componentId]
+                      }*/}
+                    </div>                
                 </div>
                 </div>
               </div>
@@ -188,4 +212,4 @@ class SDGReport extends Component{
   }
 }
 export default SDGReport
-{/*https://reactstrap.github.io/components/dropdowns/*/}
+/*https://reactstrap.github.io/components/dropdowns/*/

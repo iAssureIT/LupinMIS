@@ -120,18 +120,18 @@ class EMPReport extends Component{
   }
   render(){
     return( 
-      <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
-        <div className="row">
-          <div className="formWrapper">
-            <section className="content">
-              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
-                <div className="row">
-                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+      // <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      //   <div className="row">
+      //     <div className="formWrapper">
+      //       <section className="content">
+              <div className="noPadding">
+                <div className="">
+{/*                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
                       Report                   
-                    </div>
+                    </div>*/}
                     <hr className="hr-head container-fluid row"/>
-                  </div>
+                 {/* </div>*/}
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                     <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
                       <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
@@ -206,10 +206,10 @@ class EMPReport extends Component{
                   </div>
                 </div>
               </div>
-            </section>
-          </div>
-        </div>
-      </div>        
+      //       </section>
+      //     </div>
+      //   </div>
+      // </div>        
     );
   }
 }

@@ -120,7 +120,11 @@ padding: 5px 5px !important;
   padding-bottom: 0px;
 }
 .profilebtn{
-  
+  background: #0689ca;
+}
+.profilebtn:hover{
+  background: #0689ca;
+  color: #fff;
 }
 .profileTitle{
   cursor: pointer;

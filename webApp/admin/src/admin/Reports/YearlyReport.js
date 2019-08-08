@@ -73,12 +73,13 @@ export default class YearlyReport extends Component{
         console.log('year', year, 'centerID', centerID, 'sector', sector)
         axios.get('/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)
         .then((response)=>{
-            console.log('response', response);
+            console.log('response', response.data);
             this.setState({
                 tableData : response.data
             })
         })
         .catch((error)=>{
+            console.log('error', error);
 
         })
     }

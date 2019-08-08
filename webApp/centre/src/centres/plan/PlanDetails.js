@@ -8,7 +8,7 @@ import "./PlanDetails.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-
+var add=0
 
 class PlanDetails extends Component{
   
@@ -633,9 +633,9 @@ class PlanDetails extends Component{
 
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    console.log("localStorage =",localStorage.getItem('centerName'));
+    /*console.log("localStorage =",localStorage.getItem('centerName'));
     console.log("localStorage =",localStorage);
-    this.setState({
+   */ this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
@@ -821,32 +821,24 @@ class PlanDetails extends Component{
       tableData : []
     })
   }
-
-  calTotal(event){
-    // event.preventDefault();
-  /*  var LHWRF       = this.state.LHWRF;
-    var NABARD      = this.state.NABARD;
-    var bankLoan    = this.state.bankLoan;
-    var govtscheme  = this.state.govtscheme;
-    var directCC    = this.state.directCC;
-    var indirectCC  = this.state.indirectCC;
-    var other       = this.state.other;
-     add = parseInt(LHWRF) + parseInt(NABARD) + parseInt(bankLoan) + parseInt(govtscheme) + parseInt(directCC) + parseInt(indirectCC) + parseInt(other);
+  /*calTotal(event){
+    var unitCost = this.state.unitCost;
+    var quantity = this.state.quantity;
+    var total = parseInt(unitCost) * parseInt(quantity)
     this.setState({
-      total : add,
-    })*/
-      var unitCost = this.state.unitCost;
-    var physicalUnit = this.state.physicalUnit;
+      "totalcost" : total
+      .split('-').[0];
+    })
+  }*/
+ calTotal(event){
+    var unitCost = this.state.unitCost;
+    var physicalUnit = this.state.physicalUnit.split;
     var total = parseInt(unitCost) * parseInt(physicalUnit)
     this.setState({
       "totalBudget" : total
-    /*  ["totalBudget-"+data._id]*/
-    },()=>{
-      var budget=this.state.totalBudget.toString().split('-');
-      var bd =this.state.totalBudget[1];
-      console.log("this.state.totalBudget",bd);
     })
   }
+
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
@@ -920,7 +912,7 @@ class PlanDetails extends Component{
                           </div>
                         </div> 
                       </div><br/>                      
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"   style={hidden} id="Academic_details">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" style={hidden} id="Academic_details">
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
                             <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
@@ -984,24 +976,53 @@ class PlanDetails extends Component{
                                           <label className="formLable head">Sub-Activity Details</label>
                                         </div>
                                       </div>
+                                     { /*<div className=" row">
+                                        <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                          <label className="formLable">Unit Cost</label>
+                                          <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
+                                            <input type="text"   className="form-control inputBox" name="unitCost" placeholder="" onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                          </div>
+                                          <div className="errorMsg">{this.state.errors.unitCost}</div>
+                                        </div>
+                                        <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                          <label className="formLable">Physical Units</label>
+                                          <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
+                                            <input type="text" className="form-control inputBox" name="quantity" placeholder="" ref="quantity" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
+                                          </div>
+                                          <div className="errorMsg">{this.state.errors.quantity}</div>
+                                        </div>
+                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
+                                          <label className="formLable">Total Cost</label>
+                                          <div className="input-group inputBox-main " id={"totalBudget-"+data._id} >                                         
+                                            {this.state.totalcost ?
+                                              <div className="">
+                                                <label className="formLable"> {this.state.totalcost}</label>
+                                              </div>
+                                              :
+                                              null
+                                            }
+                                          </div>
+                                          <div className="errorMsg">{this.state.errors.totalcost}</div>
+                                        </div>
+                                      </div>*/}
                                       <div className=" row">
                                         <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Physical Units</label>
                                           <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} /*onKeyUp={this.calTotal.bind(this)}*/ value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} onKeyUp={this.calTotal.bind(this)} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Unit Cost</label>
                                           <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id}/* onKeyUp={this.calTotal.bind(this)}*/ value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} onKeyUp={this.calTotal.bind(this)} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">Total Cost</label>
                                           <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
-                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id}  value={this.state["totalBudget-"+data._id]}/*value={this.state.totalBudget ? this.state["totalBudget-"+data._id] : null}*/ onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
+                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id}  value={this.state["totalBudget-"+data._id]} value={this.state.totalBudget ? this.state["totalBudget-"+data._id] : null} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                          </div>{console.log("state",this.state)}
                                         </div>  
                                         <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields">
                                           <label className="formLable">No.of Beneficiaries</label>

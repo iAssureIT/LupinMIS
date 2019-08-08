@@ -23,7 +23,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
       
         "startRange"        : 0,
         "limitRange"        : 10,
-        // "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID",
+        // "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID/:sector_ID",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -109,7 +109,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
         availableCenters : response.data,
         center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
-        console.log('availableCenters4', this.state.availableCenters);
+        // console.log('availableCenters', this.state.availableCenters);
         console.log('center', this.state.center);
       })
     }).catch(function (error) {
@@ -140,7 +140,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
           availableSectors : response.data,
           sector           : response.data[0].sector+'|'+response.data[0]._id
         },()=>{
-        console.log('availableSectors', this.state.availableSectors);
+        // console.log('availableSectors', this.state.availableSectors);
         console.log('sector', this.state.sector);
       })
     }).catch(function (error) {
@@ -153,10 +153,11 @@ class ActivitywiseAnnualCompletionReport extends Component{
       [event.target.name]:event.target.value
     });
     var sector_id = event.target.value.split('|')[1];
+    console.log('sector_id',sector_id);
   }
 
-  getData(){
-    axios.get('api/report/annual_completion/:year/:center_ID/:sector')
+  getData(year, center_ID, sector_ID){
+    axios.get('api/report/annual_completion/:year/:center_ID/:sector_ID')
     .then((response)=>{
       this.setState({
         tableDatas : response.data
@@ -184,7 +185,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                      Yearly Report                   
+                      Activity wise Annual Completion Report                  
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
@@ -212,7 +213,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                       <label className="formLable">Year</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                         {/* <option className="hidden" >-- Select Year --</option>*/}
+                         <option className="hidden" >-- Select Year --</option>
                          {
                           this.state.years.map((data, i)=>{
                             return <option key={i}>{data}</option>
@@ -271,7 +272,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                       this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
                       this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : */
 
-                      <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} sector={this.state.sector}/> 
+                      <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas}/> 
                     }
                     
                   </div>

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import axios 						   from 'axios';
+import swal                            from 'sweetalert';
 import 'font-awesome/css/font-awesome.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
-import swal                     	from 'sweetalert';
 
 import './userManagement.css';
 class OfficeEmpList extends Component {
