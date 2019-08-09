@@ -842,9 +842,10 @@ class PlanDetails extends Component{
  calTotal(event){
     var unitCost = this.state.unitCost;
     var physicalUnit = this.state.physicalUnit.split;
+    console.log("unitCost", unitCost, physicalUnit);
     var total = parseInt(unitCost) * parseInt(physicalUnit)
     this.setState({
-      "totalBudget" : total
+      // ["totalBudget-"+id] : total
     })
   }
 
