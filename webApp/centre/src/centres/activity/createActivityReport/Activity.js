@@ -270,7 +270,7 @@ class Activity extends Component{
         "center_ID"         : this.state.center_ID,
         "centerName"        : this.state.centerName,
         "date"              : this.refs.dateofIntervention.value,
-        "district"          : this.refs.dist.value,
+        "district"          : this.refs.dist.value.split('|')[0],
         "block"             : this.refs.block.value,
         "village"           : this.refs.village.value,
         "dateofIntervention": this.refs.dateofIntervention.value,
@@ -658,7 +658,7 @@ class Activity extends Component{
     }
     axios.post('/api/activityReport/list', data)
     .then((response)=>{
-
+      console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                        : a._id,
@@ -845,6 +845,13 @@ class Activity extends Component{
       console.log('error', error);
     });
   }
+  camelCase(str){
+    return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  }
   getDistrict(stateCode, districtsCovered){
         // console.log('getD==========', stateCode, districtsCovered);
    /* axios({
@@ -974,7 +981,7 @@ class Activity extends Component{
                                 this.state.availableDistInCenter.map((data, index)=>{
                                   console.log('dta', data);
                                   return(
-                                    <option key={index} value={data}>{data.split('|')[0]}</option>
+                                    <option key={index} value={data}>{this.camelCase(data.split('|')[0])}</option>
                                   );
                                 })
                                 :
@@ -993,7 +1000,7 @@ class Activity extends Component{
                                 this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                 this.state.listofBlocks.map((data, index)=>{
                                   return(
-                                    <option key={index} value={data.blockName}>{data.blockName}</option>
+                                    <option key={index} value={data.blockName}>{this.camelCase(data.blockName)}</option>
                                   );
                                 })
                                 :
@@ -1012,7 +1019,7 @@ class Activity extends Component{
                                 this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                 this.state.listofVillages.map((data, index)=>{
                                   return(
-                                    <option key={index} value={data.cityName}>{data.cityName}</option>
+                                    <option key={index} value={data.cityName}>{this.camelCase(data.cityName)}</option>
                                   );
                                 })
                                 :

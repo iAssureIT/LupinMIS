@@ -111,7 +111,7 @@ class Beneficiary extends Component{
 
   Update(event){
     event.preventDefault();
-      if(this.refs.familyID.value == "" || this.refs.beneficiaryID.value =="" || this.refs.nameofbeneficiaries.value=="")
+      if(this.refs.familyID.value === "" || this.refs.beneficiaryID.value ==="" || this.refs.nameofbeneficiaries.value==="")
       {
         if (this.validateFormReq() && this.validateForm()){
         }

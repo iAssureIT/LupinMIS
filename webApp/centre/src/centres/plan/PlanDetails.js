@@ -44,21 +44,13 @@ class PlanDetails extends Component{
         firstHeaderData     : [
                                 {
                                     heading : 'Activity Details',
-                                    mergedColoums : 10
+                                    mergedColoums : 12
                                 },
                                 {
                                     heading : 'Source of Fund',
-                                    mergedColoums : 8
+                                    mergedColoums : 9
                                 },
-                                {
-                                    heading : '',
-                                    mergedColoums : 1
-                                },
-                                {
-                                    heading : '',
-                                    mergedColoums : 1
-                                },
-
+                               
                               ]
       },
       "tableHeading"        : {
@@ -117,13 +109,13 @@ class PlanDetails extends Component{
   selectMonth(event){
     event.preventDefault();
     var tableObjects = this.state.tableObjects;
-    tableObjects["apiLink"] = this.refs.month.value == 'All Months' ? '/api/annualPlans/' : '/api/monthlyPlans/';
+    tableObjects["apiLink"] = this.refs.month.value === 'All Months' ? '/api/annualPlans/' : '/api/monthlyPlans/';
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
-      "years"               : this.refs.month.value == 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+      "years"               : this.refs.month.value === 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
       "month"               : this.refs.month.value,        
-      "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+      "apiCall"             : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
       "sectorName"          : "",
       "activityName"        : "",
       "availableSubActivity": "",
@@ -157,11 +149,11 @@ class PlanDetails extends Component{
     var subActivityDetails = this.state.subActivityDetails;
     var id = (event.target.name).split('-')[1];
     
-    var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID == id});
+    var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID === id});
     var name = (event.target.name).split('-')[0];
     if(idExist.length > 0){      
       for(var i=0; i<subActivityDetails.length; i++){
-        if(subActivityDetails[i].subactivity_ID == id){
+        if(subActivityDetails[i].subactivity_ID === id){
           subActivityDetails[i][name] = event.target.value
         }
       }
@@ -388,10 +380,10 @@ class PlanDetails extends Component{
   Update(event){    
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    // if(this.refs.year.value == "" || this.refs.month.value =="" || this.refs.sectorName.value=="" || this.refs.activityName.value=="" 
-    //   || this.refs.physicalUnit.value=="" || this.refs.unitCost.value=="" || this.refs.totalBudget.value=="" || this.refs.noOfBeneficiaries.value=="" 
-    //   || this.refs.LHWRF.value=="" || this.refs.NABARD.value=="" || this.refs.bankLoan.value=="" || this.refs.govtscheme.value=="" 
-    //   || this.refs.directCC.value=="" || this.refs.indirectCC.value=="" || this.refs.other.value=="" || this.refs.remark.value=="")
+    // if(this.refs.year.value === "" || this.refs.month.value ==="" || this.refs.sectorName.value==="" || this.refs.activityName.value==="" 
+    //   || this.refs.physicalUnit.value==="" || this.refs.unitCost.value==="" || this.refs.totalBudget.value==="" || this.refs.noOfBeneficiaries.value==="" 
+    //   || this.refs.LHWRF.value==="" || this.refs.NABARD.value==="" || this.refs.bankLoan.value==="" || this.refs.govtscheme.value==="" 
+    //   || this.refs.directCC.value==="" || this.refs.indirectCC.value==="" || this.refs.other.value==="" || this.refs.remark.value==="")
     //   {
     //     if (this.validateFormReq() && this.validateForm()){
     //     }
@@ -513,7 +505,11 @@ class PlanDetails extends Component{
       if (!fields["activityName"]) {
         formIsValid = false;
         errors["activityName"] = "This field is required.";
-      }     
+      }  
+      if (!fields["year"]) {
+        formIsValid = false;
+        errors["year"] = "This field is required.";
+      }      
       /*if (!fields["month"]) {
         formIsValid = false;
         errors["month"] = "This field is required.";
@@ -589,7 +585,7 @@ class PlanDetails extends Component{
         this.setState({
           tableData : tableData
         },()=>{
-          console.log("tableData",this.state.tableData);
+          // console.log("tableData",this.state.tableData);
         });
       })
       .catch(function(error){
@@ -605,17 +601,17 @@ class PlanDetails extends Component{
         editId : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
-        if(this.state.editId && this.state.month == 'All Months'){
+        if(this.state.editId && this.state.month === 'All Months'){
           this.setState({
             "months"              :["All Months"],
-            "years"               : this.refs.month.value == 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+            "years"               : this.refs.month.value === 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+            "apiCall"             : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
           })
-        }else if(this.state.editId && this.state.month != 'All Months'){
+        }else if(this.state.editId && this.state.month !== 'All Months'){
           this.setState({
             "months"              :["April","May","June","July","August","September","October","November","December","January","February","March"],
             "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+            "apiCall"             : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
           })
         }
         this.getAvailableActivity(this.state.editSectorId);
@@ -633,7 +629,7 @@ class PlanDetails extends Component{
       this.edit(this.state.editId);       
     }
     this.setState({
-      apiCall : this.refs.month.value == 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+      apiCall : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
     })
     this.getLength();
     this.calTotal();
@@ -647,7 +643,7 @@ class PlanDetails extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    console.log("center_ID =",this.state.center_ID);
+    // console.log("center_ID =",this.state.center_ID);
     });
   }
   getAvailableSectors(){
@@ -705,7 +701,7 @@ class PlanDetails extends Component{
           return _.pick(a, "subactivity_ID", "month")
         })
         var abc = _.pluck(_.compact(submittedSubActivity.map((m, i)=> { 
-          if(m.month == this.refs.month.value){
+          if(m.month === this.refs.month.value){
             return m;
           } 
         })), "subactivity_ID");
@@ -730,7 +726,7 @@ class PlanDetails extends Component{
       url: '/api/sectors/'+sector_ID,
     }).then((response)=> {
         var availableSubActivity = _.flatten(response.data.map((a, i)=>{
-            return a.activity.map((b, j)=>{return b._id ==  activity_ID ? b.subActivity : [] 
+            return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] 
           });
         }))
         this.setState({
@@ -804,25 +800,11 @@ class PlanDetails extends Component{
     });
   }
   toglehidden(){
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-      /*if (!fields["month"]) {
-        formIsValid = false;
-        errors["month"] = "This field is required.";
-      }  */     
-      if (!fields["year"]) {
-        formIsValid = false;
-        errors["year"] = "This field is required.";
-      }       
-      this.setState({
-        errors: errors
-      }); 
+   
     this.setState({
      shown: !this.state.shown
     },()=>{
-      console.log('shown', this.state.shown, !this.state.shown);
+      // console.log('shown', this.state.shown, !this.state.shown);
     });
   }
   getSearchText(searchText, startRange, limitRange){
@@ -840,14 +822,30 @@ class PlanDetails extends Component{
     })
   }*/
  calTotal(event){
-    var unitCost = this.state.unitCost;
-    var physicalUnit = this.state.physicalUnit.split;
-    console.log("unitCost", unitCost, physicalUnit);
-    var total = parseInt(unitCost) * parseInt(physicalUnit)
-    this.setState({
-      // ["totalBudget-"+id] : total
-    })
-  }
+   
+      var subActivityDetails = this.state.subActivityDetails;
+        if(subActivityDetails.length > 0){
+          for(var i=0; i<subActivityDetails.length; i++){
+             var planValues = {
+              "physicalUnit"        : subActivityDetails[i].physicalUnit,
+              "unitCost"            : subActivityDetails[i].unitCost,
+              "totalBudget"         : subActivityDetails[i].totalBudget,
+            }
+            console.log("this.state.unitCost", planValues.unitCost,"phy",planValues.physicalUnit, this.state.physicalUnit);
+            var unitCost = planValues.unitCost;
+            var physicalUnit = planValues.physicalUnit;
+            var totalBudget = parseInt(unitCost) * parseInt(physicalUnit);
+            this.setState({
+              "totalBudget" : totalBudget
+            },()=>{
+              console.log("Total", this.state.totalBudget);
+            })
+          }
+        }
+     }
+
+
+
 
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -861,10 +859,10 @@ class PlanDetails extends Component{
     }
   }
   render() {
-    var shown = {
+    /*var shown = {
       display: this.state.shown ? "block" : "none"
     };
-    
+    */
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
@@ -922,7 +920,7 @@ class PlanDetails extends Component{
                           </div>
                         </div> 
                       </div><br/>                      
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" /*style={hidden}*/ id="Academic_details">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" style={hidden} id="Academic_details">
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
                             <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
@@ -1020,7 +1018,7 @@ class PlanDetails extends Component{
                                           <label className="formLable">Physical Units</label>
                                           <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
                                             <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} onKeyUp={this.calTotal.bind(this)} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
+                                          </div>{/*{console.log("state",this.state)}*/}
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">Unit Cost</label>
@@ -1032,7 +1030,7 @@ class PlanDetails extends Component{
                                           <label className="formLable">Total Cost</label>
                                           <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
                                             <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id}  value={this.state["totalBudget-"+data._id]} value={this.state.totalBudget ? this.state["totalBudget-"+data._id] : null} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>{console.log("state",this.state)}
+                                          </div>
                                         </div>  
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">No.of Beneficiaries</label>
@@ -1137,11 +1135,11 @@ class PlanDetails extends Component{
                     <div className="AnnualHeadCont">
                       <div className="annualHead">
                       {
-                        this.state.month=="--Quarter 1--"
+                        this.state.month==="--Quarter 1--"
                           ?
                             <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-                            <h5 defaultValue="Annual Plan">{this.state.month == "All Months" ? "Annual Plan": "Monthly Plan" || this.state.month !== "All Months" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                            <h5 defaultValue="Annual Plan">{this.state.month === "All Months" ? "Annual Plan": "Monthly Plan" || this.state.month !== "All Months" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                             // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>

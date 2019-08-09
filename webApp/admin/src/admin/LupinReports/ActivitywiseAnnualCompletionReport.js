@@ -51,10 +51,10 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     heading : "Source OF Financial Achievement",
                     mergedColoums : 7
                 },
-                {
+           /*     {
                     heading : "",
                     mergedColoums : 1
-                },
+                },*/
             ]
         },
         "tableHeading"      : {
@@ -75,7 +75,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
             "scrFYAchie_Indirect"           : 'Indirect Community  Contribution',
             "scrFYAchie_Govt"               : 'Govt',
             "scrFYAchie_Other"              : 'Others',
-            "yiyi"                          : 'Remarks',
+            // "yiyi"                          : 'Remarks',
         },
 
     }

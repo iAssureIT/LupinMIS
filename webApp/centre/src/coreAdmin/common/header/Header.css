@@ -1,3 +1,22 @@
+
+#headerid{
+  position: absolute;
+  height: 50px;
+  width: 82.5%;
+  right: 0px;
+  transition: all 0.8s;
+  }
+
+.fontB{
+  color: #333;
+}
+.headicon{
+    font-size: 16px;
+    font-weight: bold;
+    padding-top: 15px;
+    color: #444;
+    cursor: pointer;
+}
 .dropbtn {
     color: #666;
     font-size: 16px;
@@ -10,6 +29,7 @@
     font-size: 16px;
     border: none;
     cursor: pointer;
+    margin-bottom: 0px;
 
 }
 
@@ -21,7 +41,7 @@
 .dropdown-content {
     display: none;
     position: absolute;
-    right: -8px;
+    right: 0px;
     min-width: 160px;
     box-shadow: 0px 8px 8px 0px #eee;
     z-index: 1;
@@ -56,7 +76,7 @@
   padding: 0px;
 }
 .marTop{
-  margin-top: 6px;
+  margin-top: 16px;
 }
 .wid260{
   width: 260px !important;
@@ -85,7 +105,9 @@
   background: none;
 }
 .topmargin{
-  margin-top: 20px;
+  margin-top: 10px;
+  width: 30px;
+  margin-left: 10px;
 }
 .topmargin:hover{
   background: none;
@@ -128,13 +150,6 @@ padding: 5px 5px !important;
 }
 .profileTitle{
   cursor: pointer;
-}
-.headicon{
-    font-size: 1.1vw;
-    font-weight: bold;
-    padding-top: 20px;
-    color: #444;
-    cursor: pointer;
 }
 .hover:hover{
     background-color: #039BE5;
@@ -202,13 +217,6 @@ padding: 5px 5px !important;
       z-index: 100;
 
 }
-
-#headerid{
-  position: absolute;
-  width: 82.5%;
-  right: 0px;
-  transition: all 0.8s;
-  }
 
 .fontB{
   color: #333;

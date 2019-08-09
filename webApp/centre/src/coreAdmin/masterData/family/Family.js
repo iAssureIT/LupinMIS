@@ -446,7 +446,14 @@ class Family extends Component{
       console.log('error', error);
     });
   }
-
+  
+  camelCase(str){
+    return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  }
   districtChange(event){    
     event.preventDefault();
     var district = event.target.value;
@@ -611,7 +618,7 @@ class Family extends Component{
                                 this.state.availableDistInCenter.map((data, index)=>{
                                   console.log("data",data)
                                   return(
-                                    <option key={index} value={data}>{data.split('|')[0]}</option>
+                                    <option key={index} value={data}>{this.camelCase(data.split('|')[0])}</option>
                                   );
                                 })
                                 :
@@ -630,7 +637,7 @@ class Family extends Component{
                                 this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                 this.state.listofBlocks.map((data, index)=>{
                                   return(
-                                    <option key={index} value={data.blockName}>{data.blockName}</option>
+                                    <option key={index} value={data.blockName}>{this.camelCase(data.blockName)}</option>
                                   );
                                 })
                                 :
@@ -649,7 +656,7 @@ class Family extends Component{
                                 this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                 this.state.listofVillages.map((data, index)=>{
                                   return(
-                                    <option key={index} value={data.cityName}>{data.cityName}</option>
+                                    <option key={index} value={data.cityName}>{this.camelCase(data.cityName)}</option>
                                   );
                                 })
                                 :

@@ -756,6 +756,14 @@ class centerDetail extends Component{
     });
 
   }*/
+
+  camelCase(str){
+    return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  }
   getSearchText(searchText, startRange, limitRange){
     this.setState({
       tableData : []
@@ -826,7 +834,7 @@ class centerDetail extends Component{
                                     this.state.listofStates ?
                                     this.state.listofStates.map((data, index)=>{
                                       return(
-                                        <option key={index} value={data.stateName+'|'+data.stateCode}>{data.stateName}</option> 
+                                        <option key={index} value={data.stateName+'|'+data.stateCode}>{this.camelCase(data.stateName)}</option> 
                                       );
                                     })
                                     :
@@ -846,7 +854,7 @@ class centerDetail extends Component{
                                     this.state.listofDistrict.map((data, index)=>{
                                       // console.log(data);
                                       return(
-                                        <option key={index} value={data.districtName}>{data.districtName}</option>
+                                        <option key={index} value={data.districtName}>{this.camelCase(data.districtName)}</option>
                                       );
                                     })
                                     :
@@ -949,7 +957,7 @@ class centerDetail extends Component{
                                     this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
                                       return(
-                                        <option key={index} value={data.districtName+'|'+data._id}>{data.districtName}</option>
+                                        <option key={index} value={data.districtName+'|'+data._id}>{this.camelCase(data.districtName)}</option>
                                       );
                                     })
                                     :
@@ -968,7 +976,7 @@ class centerDetail extends Component{
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                     this.state.listofBlocks.map((data, index)=>{
                                       return(
-                                        <option key={index} value={data.blockName}>{data.blockName}</option>
+                                        <option key={index} value={data.blockName}>{this.camelCase(data.blockName)}</option>
                                       );
                                     })
                                     :
@@ -1001,7 +1009,7 @@ class centerDetail extends Component{
                                             <span className="centerDetailCheck"></span>
                                           </div>
                                         </div>                            
-                                        <label className="centerDetaillistItem"> {data.cityName}</label>
+                                        <label className="centerDetaillistItem"> {this.camelCase(data.cityName)}</label>
                                       </div>
                                     </div>  
                                   </div>

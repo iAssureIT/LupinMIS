@@ -96,7 +96,8 @@ class Activity extends Component{
     fields["activity"]    = "";
     this.setState({
       activity : '',
-      sector   : ''
+      sector   : '',
+      fields   : ''
     })
   
     axios.patch('/api/sectors/activity', activityValues)
