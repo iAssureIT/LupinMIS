@@ -138,18 +138,19 @@ class PlanDetails extends Component{
     }
   }
   subActivityDetails(event){
-    console.log("subActivityDetails",subActivityDetails);
+    // console.log("subActivityDetails",subActivityDetails);
     event.preventDefault();
     var id = (event.target.name).split('-')[1];
     let fields = this.state.fields;
-    var x =  this.refs["physicalUnit-"+id].value * this.refs["unitCost-"+id].value;
-    console.log('x',x)
-    this.setState({
-      [event.target.name] : event.target.value,
-      ["totalBudget-"+id] : x
-    },()=>{
-      console.log('this=========',this.state)
-    });
+    // var x =  this.refs["physicalUnit-"+id].value * this.refs["unitCost-"+id].value;
+    // console.log('x',x)
+    // this.setState({
+    //   [event.target.name] : event.target.value,
+    //   totalBud : x,
+    //   ["totalBudget-"+id] : x
+    // },()=>{
+    //   console.log('totalBud=========',this.state.totalBud )
+    // });
     if (this.validateForm()) {
       let errors = {};
       errors[event.target.name] = "";
@@ -162,6 +163,7 @@ class PlanDetails extends Component{
     console.log("this.state.subActivityDetails",this.state.subActivityDetails);
     var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID === id});
     var name = (event.target.name).split('-')[0];
+    // console.log("aaaaaaa",name);
     if(idExist.length > 0){      
       for(var i=0; i<subActivityDetails.length; i++){
         if(subActivityDetails[i].subactivity_ID === id){
@@ -169,122 +171,23 @@ class PlanDetails extends Component{
         }
       }
     }else{
+      console.log("aaaaaaaaaa",this.state.totalBud);
       subActivityDetails.push({
         "subactivity_ID"      : id,
         "subactivityName"     : document.getElementById('subActivityName-'+id).innerHTML,
         "unit"                : document.getElementById('unit-'+id).innerHTML,
-        "totalBudget"       :  this.refs["totalBudget-"+id].value,
+        // "totalBudget"         : this.state.totalBud,
         [name]                : event.target.value
 
       })
     }
     this.setState({
       subActivityDetails : subActivityDetails
-
     },()=>{
       console.log("subActivityDetails",this.state.subActivityDetails);
     })
   }
-/*  
-  SubmitAnnualPlan(event){
-    event.preventDefault();
-    var subActivityDetails = this.state.subActivityDetails;
-    // if (this.validateFormReq() &&this.validateForm()) {
-    
-      let fields = {};
-      fields["year"]              = "";
-      fields["month"]             = "";
-      fields["sectorName"]        = "";
-      fields["activityName"]      = "";
-      fields["physicalUnit"]      = "";
-      fields["unitCost"]          = "";
-      fields["totalBudget"]       = "";
-      fields["noOfBeneficiaries"] = "";
-      fields["LHWRF"]             = "";
-      fields["NABARD"]            = "";
-      fields["bankLoan"]          = "";
-      fields["govtscheme"]        = "";
-      fields["directCC"]          = "";
-      fields["indirectCC"]        = "";
-      fields["other"]             = "";
-      fields["remark"]            = "";
-      if(subActivityDetails.length > 0){
-        for(var i=0; i<subActivityDetails.length; i++){
-          var planValues = {
-            "month"               : this.refs.month.value,          
-            "year"                : this.refs.year.value,          
-            "center_ID"           : "P01",
-            "center"              : "Pune",
-            "sector_ID"           : this.refs.sectorName.value.split('|')[1],
-            "sectorName"          : this.refs.sectorName.value.split('|')[0],
-            "activity_ID"         : this.refs.activityName.value.split('|')[1],
-            "activityName"        : this.refs.activityName.value.split('|')[0],
-            "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
-            "subactivityName"     : subActivityDetails[i].subactivityName,
-            "unit"                : subActivityDetails[i].unit,
-            "physicalUnit"        : subActivityDetails[i].physicalUnit,
-            "unitCost"            : subActivityDetails[i].unitCost,
-            "totalBudget"         : subActivityDetails[i].totalBudget,
-            "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
-            "LHWRF"               : subActivityDetails[i].LHWRF,
-            "NABARD"              : subActivityDetails[i].NABARD,
-            "bankLoan"            : subActivityDetails[i].bankLoan,
-            "govtscheme"          : subActivityDetails[i].govtscheme,
-            "directCC"            : subActivityDetails[i].directCC,
-            "indirectCC"          : subActivityDetails[i].indirectCC,
-            "other"               : subActivityDetails[i].other,
-            "remark"              : subActivityDetails[i].remark,
-          };
-          axios.post(this.state.apiCall, planValues)
-            .then((response)=>{
-              swal({
-                title : response.data.message,
-                text  : response.data.message
-              });
-              this.getData(this.state.startRange, this.state.limitRange);
-            })
-            .catch(function(error){
-              console.log("error"+error);
-          });
-          Object.entries(planValues).map( 
-            ([key, value], i)=> {
-              this.setState({
-                [key+'-'+this.state.subactivity_ID] : ""
-              })
-            }
-          );
-        }
-      }
-      this.setState({
-        "planValues"          :"",
-        "year"                :"",
-        "month"               :"",
-        "center"              :"",
-        "sector_id"           :"",
-        "sectorName"          :"",
-        "activityName"        :"",
-        "physicalUnit"        :"",
-        "unitCost"            :"",
-        "totalBudget"         :"",
-        "noOfBeneficiaries"   :"",
-        "LHWRF"               :"",
-        "NABARD"              :"",
-        "bankLoan"            :"",
-        "govtscheme"          :"",
-        "directCC"            :"",
-        "indirectCC"          :"",
-        "other"               :"",
-        "remark"              :"",
-        "fields"              :fields,
-        "editId"              :"",
-        "subActivityDetails"  :[],
-        "availableSubActivity":[],
-        // "availableSectors"    :[],
-        "availableActivity"   :[],
-      });
-    // }
-  }*/
-  
+
   SubmitAnnualPlan(event){
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
@@ -659,9 +562,9 @@ class PlanDetails extends Component{
 
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    /*console.log("localStorage =",localStorage.getItem('centerName'));
-    console.log("localStorage =",localStorage);
-   */ this.setState({
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    // console.log("localStorage =",localStorage);
+    this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
@@ -833,29 +736,20 @@ class PlanDetails extends Component{
       tableData : []
     })
   }
-  /*calTotal(event){
-    var unitCost = this.state.unitCost;
-    var quantity = this.state.quantity;
-    var total = parseInt(unitCost) * parseInt(quantity)
-    this.setState({
-      "totalcost" : total
-      .split('-').[0];
-    })
-  }*/
   calTotal(event){   
-    console.log('onKeyUp');
+    // console.log('onKeyUp');
       // var physicalUnit = event.target.name;
 
       this.setState({
         // physicalUnit : event.target.value
       }, ()=>{
-        console.log(this.state)
+        // console.log(this.state)
       })
 
   }
 
   isNumberKey(evt){
-    console.log('onKeyDown');
+    // console.log('onKeyDown');
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
     {
@@ -997,19 +891,19 @@ class PlanDetails extends Component{
                                         <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">Physical Units</label>
                                           <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} onKeyUp={this.calTotal.bind(this)} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>{/*{console.log("state",this.state)}*/}
                                         </div>
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">Unit Cost</label>
                                           <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} onKeyUp={this.calTotal.bind(this)} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
+                                            <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">Total Cost</label>
                                           <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
-                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id}  value={this.state["totalBudget-"+data._id]}  onKeyDown={this.isNumberKey.bind(this)}/>
+                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]}  onChange={this.subActivityDetails.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">

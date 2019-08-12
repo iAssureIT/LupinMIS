@@ -49,30 +49,9 @@ export default class YearlyReport extends Component{
            [name] : event.target.value,
         });
    }
-    /*dataTableList(){
-        var yearFromSess = localStorage.getItem("selectedYear");
-        
-        var thisYear = yearFromSess;
-        var yearDateStart = new Date("1/1/" + thisYear);
-        var yearDateEnd = new Date (yearDateStart.getFullYear(), 11, 31);
-
-        var reportData = [];
-        if(this.props.selectedCategory){
-            if(this.props.selectedSubCategory){
-                // reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory, subCategory: this.props.selectedSubCategory}}}, {sort: {'createdAt': -1}}).fetch();
-            }else{
-                // reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: this.props.selectedCategory}}}, {sort: {'createdAt': -1}}).fetch();
-            }
-        }else{
-            // reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid'}, {sort: {'createdAt': -1}}).fetch();
-        }
-        this.setState({
-            reportData : reportData
-        });
-   }*/
     getData(year, centerID, sector){
         console.log('year', year, 'centerID', centerID, 'sector', sector)
-        axios.get('/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)
+        axios.get('http://qalmisapi.iassureit.com/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)
         .then((response)=>{
             console.log('response', response.data);
             var tableData = response.data.map((a, i)=>{
@@ -152,27 +131,3 @@ export default class YearlyReport extends Component{
         } 
     }
 }
-// export default YearlyListContainer = withTracker(props =>{
-//     var yearFromSess = localStorage.getItem("selectedYear");
-        
-//     var thisYear = yearFromSess;
-//     var yearDateStart = new Date("1/1/" + thisYear);
-//     var yearDateEnd = new Date (yearDateStart.getFullYear(), 11, 31);
-
-//     const reportHandle = Meteor.subscribe("OrdersData");
-//     var reportData = [];
-//     if(props.selectedCategory){
-//         if(props.selectedSubCategory){
-//             reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: props.selectedCategory, subCategory: props.selectedSubCategory}}}, {sort: {'createdAt': -1}}).fetch();
-//         }else{
-//             reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid',  "products": { $elemMatch: { category: props.selectedCategory}}}, {sort: {'createdAt': -1}}).fetch();
-//         }
-//     }else{
-//         reportData =  Orders.find({'createdAt':{$gte : yearDateStart, $lt : yearDateEnd }, 'status' : 'Paid'}, {sort: {'createdAt': -1}}).fetch();
-//     }
-//     const loading = !reportHandle.ready();
-//     return{
-//         loading,
-//         reportData,
-//     };
-// })(CategoryWiseReportsYearlyList);

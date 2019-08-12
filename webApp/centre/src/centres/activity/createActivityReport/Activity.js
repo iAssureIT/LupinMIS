@@ -823,6 +823,7 @@ class Activity extends Component{
   }
 
   getAvailableCenter(center_ID){
+    // console.log("CID"  ,center_ID);
     axios({
       method: 'get',
       url: '/api/centers/'+center_ID,

@@ -110,7 +110,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
         availableCenters : response.data,
         center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
-        // console.log('availableCenters', this.state.availableCenters);
+        console.log('availableCenters', this.state.availableCenters);
         console.log('center', this.state.center);
       })
     }).catch(function (error) {
@@ -158,7 +158,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
   }
 
   getData(year, center_ID, sector_ID){
-    axios.get('api/report/annual_completion/:year/:center_ID/:sector_ID')
+    axios.get('http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID/:sector_ID')
     .then((response)=>{
       console.log("resp",response);
       this.setState({
