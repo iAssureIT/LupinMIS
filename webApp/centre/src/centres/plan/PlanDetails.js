@@ -140,9 +140,15 @@ class PlanDetails extends Component{
   subActivityDetails(event){
     console.log("subActivityDetails",subActivityDetails);
     event.preventDefault();
+    var id = (event.target.name).split('-')[1];
     let fields = this.state.fields;
+    var x =  this.refs["physicalUnit-"+id].value * this.refs["unitCost-"+id].value;
+    console.log('x',x)
     this.setState({
-      [event.target.name] : event.target.value
+      [event.target.name] : event.target.value,
+      ["totalBudget-"+id] : x
+    },()=>{
+      console.log('this=========',this.state)
     });
     if (this.validateForm()) {
       let errors = {};
@@ -152,8 +158,8 @@ class PlanDetails extends Component{
       });
     }
     var subActivityDetails = this.state.subActivityDetails;
-    var id = (event.target.name).split('-')[1];
     
+    console.log("this.state.subActivityDetails",this.state.subActivityDetails);
     var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID === id});
     var name = (event.target.name).split('-')[0];
     if(idExist.length > 0){      
@@ -167,12 +173,16 @@ class PlanDetails extends Component{
         "subactivity_ID"      : id,
         "subactivityName"     : document.getElementById('subActivityName-'+id).innerHTML,
         "unit"                : document.getElementById('unit-'+id).innerHTML,
+        "totalBudget"       :  this.refs["totalBudget-"+id].value,
         [name]                : event.target.value
 
       })
     }
     this.setState({
       subActivityDetails : subActivityDetails
+
+    },()=>{
+      console.log("subActivityDetails",this.state.subActivityDetails);
     })
   }
 /*  
@@ -999,7 +1009,7 @@ class PlanDetails extends Component{
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">Total Cost</label>
                                           <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
-                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id}  value={this.state["totalBudget-"+data._id]} value={this.state.totalBudget ? this.state["totalBudget-"+data._id] : null} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id}  value={this.state["totalBudget-"+data._id]}  onKeyDown={this.isNumberKey.bind(this)}/>
                                           </div>
                                         </div>  
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
