@@ -665,14 +665,14 @@ margin-right: 12px;
       border: none;
   }
   .adminModal-body {
-      margin-top: 50px;
-      margin-bottom: 50px;
+      margin-top: 50px !important;
+      margin-bottom: 50px !important;
   }
   .adminModal-footer {
       border-radius: 0 0 9px 9px;
       background: #eee;
-      padding-top: 15px!important;
-      padding-bottom: 0!important;
+      padding-top: 20px!important;
+      padding-bottom: 20!important;
   }
   .adminCancel-btn, .adminFinish-btn {
       margin-bottom: 15px;
@@ -731,7 +731,7 @@ margin-right: 12px;
     margin-top: 10%;
   }
   .adminModal-content{
-    border-radius: 9px;
+    border-radius: 9px !important;
   }
   .adminCancel-btn{
     background-color: #ccc;

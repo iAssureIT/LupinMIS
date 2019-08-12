@@ -33,11 +33,13 @@ class SignUp extends Component {
  	constructor(){
       super();
         this.state = {           
-           loggedIn : false,
-           auth:{
-                fullName       : '',
+            loggedIn : false,
+            fields	 : {},
+     	    errors	 : {},
+            auth:{
+                fullName        : '',
                 lastname        : '',
-                mobileNumber       : '',
+                mobileNumber    : '',
                 email           : '',
                 pwd       		: '',
                 signupPassword  : '',

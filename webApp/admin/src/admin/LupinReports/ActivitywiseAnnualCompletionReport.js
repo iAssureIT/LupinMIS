@@ -1,6 +1,7 @@
 import React, { Component }                        from 'react';
 import $                                           from 'jquery';
 import axios                                       from 'axios';
+import { Link }                                    from 'react-router-dom'
 import DailyReport                                 from '../Reports/DailyReport.js';
 import WeeklyReport                                from '../Reports/WeeklyReport.js';
 import MonthlyReport                               from '../Reports/MonthlyReport.js';
@@ -185,8 +186,11 @@ class ActivitywiseAnnualCompletionReport extends Component{
               <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
+                    <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
                       Activity wise Annual Completion Report                  
+                    </div>
+                    <div className="col-lg-1 col-lg-offset-5 col-md-12 col-xs-12 col-sm-12 backBtn">
+                      <Link to="/report">Back to Reports</Link>                 
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>

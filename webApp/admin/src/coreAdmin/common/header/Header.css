@@ -10,7 +10,10 @@
 .fontB{
   color: #333;
 }
-.headicon{
+.headicon:hover{
+
+}
+  .headicon{
     font-size: 16px;
     font-weight: bold;
     padding-top: 15px;
@@ -36,6 +39,7 @@
 .dropdown {
     position: relative;
     display: inline-block;
+    z-index: 50;
 }
 
 .dropdown-content {

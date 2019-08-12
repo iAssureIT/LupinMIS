@@ -614,7 +614,8 @@ class centerDetail extends Component{
   getDistrict(stateCode){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
+      // url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
+      url: 'http://locationapi.iassureit.com/api/districts/get/list/IN/'+stateCode,
     }).then((response)=> {
         // console.log('response ==========', response.data);
         this.setState({
@@ -646,7 +647,8 @@ class centerDetail extends Component{
   getBlock(stateCode, selectedDistrict){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
+      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
         console.log('response ==========', response.data);
         this.setState({
@@ -672,7 +674,8 @@ class centerDetail extends Component{
     console.log(stateCode, selectedDistrict, blocksCovered);
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/'+blocksCovered+'/'+selectedDistrict+'/'+stateCode+'/IN',
+      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
+      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+blocksCovered+'/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
         console.log('response ==========', response.data);
         this.setState({
@@ -858,7 +861,7 @@ class centerDetail extends Component{
                                       );
                                     })
                                     :
-                                    <option disabled>Select select State first</option>
+                                    <option disabled>Select select State</option>
                                   }                                
                                 </select>
                               </div>
@@ -961,7 +964,7 @@ class centerDetail extends Component{
                                       );
                                     })
                                     :
-                                    <option disabled>Please select State first</option>
+                                    <option disabled>Please select State</option>
                                   }
                                 </select>
                               </div>

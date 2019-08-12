@@ -439,7 +439,7 @@ class Family extends Component{
           stateCode  : stateCode,
 
         },()=>{
-        // console.log("address",this.state.stateCode, this.state.availableDistInCenter);
+        console.log("address",this.state.stateCode, this.state.availableDistInCenter);
         });
         })
     }).catch(function (error) {
@@ -475,8 +475,8 @@ class Family extends Component{
     console.log("sd", stateCode,selectedDistrict);
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
+      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
         // console.log('response ==========', response.data);
         this.setState({
@@ -502,7 +502,8 @@ class Family extends Component{
     // console.log(stateCode, selectedDistrict, block);
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/MH/IN',
+      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
+      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
     }).then((response)=> {
         // console.log('response ==========', response.data);
         this.setState({

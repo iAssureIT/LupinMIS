@@ -612,8 +612,8 @@ margin-right: 12px;
   .adminModal-footer {
       border-radius: 0 0 9px 9px;
       background: #eee;
-      padding-top: 15px!important;
-      /*padding-bottom: 0!important;*/
+      padding-top: 20px!important;
+      padding-bottom: 20!important;
   }
   .adminCancel-btn, .adminFinish-btn {
       margin-bottom: 15px;
