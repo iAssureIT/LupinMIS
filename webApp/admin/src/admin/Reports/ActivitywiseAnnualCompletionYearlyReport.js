@@ -48,7 +48,7 @@ export default class YearlyReport extends Component{
         this.setState({
            [name] : event.target.value,
         });
-   }
+    }
     getData(year, centerID, sector){
         console.log('year', year, 'centerID', centerID, 'sector', sector)
         axios.get('http://qalmisapi.iassureit.com/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)

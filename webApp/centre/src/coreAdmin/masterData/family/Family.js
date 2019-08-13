@@ -414,7 +414,7 @@ class Family extends Component{
     }
     axios.get('/api/families/list',data)
     .then((response)=>{
-      // console.log('response', response.data);
+      console.log('response', response);
       this.setState({
         tableData : response.data
       })

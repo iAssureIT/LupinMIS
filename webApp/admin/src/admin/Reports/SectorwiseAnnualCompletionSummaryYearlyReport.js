@@ -68,14 +68,36 @@ export default class YearlyReport extends Component{
             reportData : reportData
         });
    }*/
+
+
     getData(year, centerID, sector){
         console.log('year', year, 'centerID', centerID)
         axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
         .then((response)=>{
             console.log('response', response.data);
+            var tableData = response.data.map((a, i)=>{
+            return {
+                _id                                : a._id,
+                "sector"                           : a.sector,
+                "annualPlans_totalBudget"          : a.annualPlans_totalBudget,
+                "annualPlan_Reach"                 : a.annualPlan_Reach, 
+                "annualPlan_Upgradation"           : a.annualPlan_Upgradation, 
+                "annualFYAchie_Reach"              : a.annualFYAchie_Reach, 
+                "annualFYAchie_Upgradation"        : a.annualFYAchie_Upgradation, 
+                "annualFYAchie_fin_total"          : a.annualFYAchie_fin_total, 
+                "annualFYAchie_perc_annualPlan"    : a.annualFYAchie_perc_annualPlan,
+                "scrFYAchie_LHWRF"                 : a.scrFYAchie_LHWRF,
+                "scrFYAchie_NABARD"                : a.scrFYAchie_NABARD,
+                "scrFYAchie_BankLoan"              : a.scrFYAchie_BankLoan,
+                "scrFYAchie_Direct"                : a.scrFYAchie_Direct,
+                "scrFYAchie_Indirect"              : a.scrFYAchie_Indirect,
+                "scrFYAchie_Govt"                  : a.scrFYAchie_Govt,
+                "scrFYAchie_Other"                 : a.scrFYAchie_Other,
+            }
+        })
             this.setState({
-                tableData : response.data
-            })
+                tableData : tableData
+            });
         })
         .catch((error)=>{
             console.log('error', error);
