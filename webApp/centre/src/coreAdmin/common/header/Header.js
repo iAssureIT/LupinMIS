@@ -87,9 +87,12 @@ logout(){
                 </div>
                 <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 padd0">
                   <div className="row">
-                   { <div onClick={this.toggleNav.bind(this)}className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
+                  {/* { <div onClick={this.toggleNav.bind(this)}className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
                     <i className="fa fa-cogs headicon "></i>
-                  </div>}
+                  </div>}*/}
+                  {/*<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover paddLeft5">
+                    <i className="fa fa-bell  headicon "><span className="label label-warning labelhead ">10</span></i>
+                  </div>*/}
                   <div className="col-lg-5 col-md-6 col-sm-6 col-xs-6 pull-right noPadding">
                     <div className="">
                      { /*<div className="col-lg-2 col-md-2 col-sm-6 col-xs-6 ">
@@ -107,14 +110,14 @@ logout(){
                                     <li>
                                       <a className="noneAtag">
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 padd0 " > 
-                                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-left padd0 marTop ">
+                                            <div className="col-lg-3  col-md-6 col-sm-12 col-xs-12 pull-left padd0 marTop ">
                                               <img src="images/person.png" height="50px" className=" marLeft "/>
                                             </div>
                                             <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12 pull-right padd0 marTop">
-                                             <h5 className="fontB nomargin ">
+                                             <h6 className="fontB fs12 nomargin ">
                                                  {this.state.fullName ? this.state.fullName : ""}
-                                             </h5>
-                                              <h6 className="fontB"> {this.state.emailId ? this.state.emailId : ""}</h6>
+                                             </h6>
+                                              <h6 className="fontB fs12"> {this.state.emailId ? this.state.emailId : ""}</h6>
                                             </div>
                                         </div>
                                       </a>
@@ -140,22 +143,21 @@ logout(){
                               </ul>
                           </div>
                         </span>
-                        <span className="headicon pull-right">{this.state.emailId ? this.state.emailId : ""} &nbsp;</span>  
+                        <span className="hoverText pull-right">{this.state.emailId ? this.state.emailId : ""} &nbsp;</span>  
 
                       </div>
                     </div>
                   </div>                
-                  <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover paddLeft5">
-                    <i className="fa fa-bell  headicon "><span className="label label-warning labelhead ">10</span></i>
-                  </div>
+                  
                 </div>
               </div>
             </div>
             </header>
-          <div id="mySidenav" className="sidenav">
+       {/*   <div id="mySidenav" className="sidenav">*/}
          {/* <a href="javascript:void(0)" className="closebtn" onClick={this.toggleNav.bind(this)} >&times;</a>
-         */}<Rightsidebar/>
-        </div>
+         */}
+       {/*  <Rightsidebar/>
+        </div>*/}
       </div>
     );
   }

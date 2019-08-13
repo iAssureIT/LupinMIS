@@ -983,7 +983,7 @@ class Activity extends Component{
                                 this.state.availableDistInCenter.map((data, index)=>{
                                   console.log('dta', data);
                                   return(
-                                    <option key={index} value={data}>{this.camelCase(data.split('|')[0])}</option>
+                                    <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
                                   );
                                 })
                                 :
@@ -1002,7 +1002,7 @@ class Activity extends Component{
                                 this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                 this.state.listofBlocks.map((data, index)=>{
                                   return(
-                                    <option key={index} value={data.blockName}>{this.camelCase(data.blockName)}</option>
+                                    <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
                                   );
                                 })
                                 :
@@ -1021,7 +1021,7 @@ class Activity extends Component{
                                 this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                 this.state.listofVillages.map((data, index)=>{
                                   return(
-                                    <option key={index} value={data.cityName}>{this.camelCase(data.cityName)}</option>
+                                    <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
                                   );
                                 })
                                 :
@@ -1110,21 +1110,28 @@ class Activity extends Component{
                         </div>                        
                       </div> 
                     </div><br/>
-                    <div className="row">
+                    <div className="row ">
                       <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                          <div className="unit"  >
+                          <div className=""  >
                             <label className="formLable">Unit :</label>
-                              {this.state.subActivityDetails ? 
-                                <div className="redirectDiv">
-                                  <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
-                                </div>
-                                :
-                                null
-                              }
+                              <div className="form-control inputBox inputBox-main unit">
+                                {this.state.subActivityDetails ? 
+                                    <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
+                                  :
+                                  null
+                                }
+                              </div>
                           </div>
                           <div className="errorMsg">{this.state.errors.unit}</div>
                         </div>
+                        {/*<div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                          <div className=""  >
+                            <label className="formLable">Unit :</label>
+                            <input type="text" className="form-control inputBox inputBox-main" id="unit" name="unit " placeholder="" ref="unit" onKeyDown={this.isNumberKey.bind(this)} value={this.state.subActivityDetails ? this.state.subActivityDetails: ""} disabled />
+                          </div>
+                          <div className="errorMsg">{this.state.errors.unit}</div>
+                        </div>*/}
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                           <label className="formLable">Unit Cost</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
@@ -1140,21 +1147,18 @@ class Activity extends Component{
                           <div className="errorMsg">{this.state.errors.quantity}</div>
                         </div>
                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <div className="unit " id="PassoutYear" >
+                          <div className=" " id="PassoutYear" >
+
                             <label className="formLable">Total Cost of Activity :</label>
-                            {this.state.totalcost ?
-                              <div className="redirectDiv">
-                                <label className="formLable"> {this.state.totalcost}</label>
-                              </div>
-                              :
-                              null
-                            }
+                          
+                            <input type="text" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost" onKeyDown={this.isNumberKey.bind(this)} value={this.state.totalcost ?this.state.totalcost: ""} disabled />
+                            
                           </div>
                           <div className="errorMsg">{this.state.errors.totalcost}</div>
                         </div>
                       </div> 
                     </div>
-                    <div className="col-lg-12 ">
+                    <div className="col-lg-12 boxHeightother">
                       <label className="formLable">Remark</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
                             <input type="text"   className="form-control inputBox" name="remark" placeholder="" ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
@@ -1227,11 +1231,19 @@ class Activity extends Component{
                           <div className="errorMsg">{this.state.errors.other}</div>
                         </div>
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <div className="unit" id="total" >
-                            <label className="formLable">Total :</label>
-                            <br/>
-                            <label className="formLable">&nbsp;{this.state.total ?  this.state.total : " 0"}</label>
-                          </div>
+                          <div className="" id="total" >
+                            <label className="formLable">Total :</label>                            
+                             
+                                <div className="form-control inputBox inputBox-main unit">
+                                  {this.state.total ? 
+                                      <label className="formLable" id="total">{this.state.total}</label>
+                                    :
+                                    0
+                                  }
+                                </div>
+                            
+                            {/*<label className="formLable">&nbsp;{this.state.total ?  this.state.total : " 0"}</label>
+                      */}    </div>
                           <div className="errorMsg">{this.state.errors.total}</div>
                         </div>
                       </div> 

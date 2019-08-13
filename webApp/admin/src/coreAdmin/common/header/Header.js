@@ -111,11 +111,11 @@ logout(){
                                               <img src="images/person.png" height="50px" className=" marLeft "/>
                                             </div>
                                             <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12 pull-right padd0 marTop">
-                                             <h5 className="fontB nomargin ">
+                                             <h5 className="fontB fs12 nomargin ">
                                                 {/* {this.state.fullName ? this.state.fullName : ""}*/}
                                                 Super Admin
                                              </h5>
-                                              <h6 className="fontB">superAdmin@gmail.com{/* {this.state.emailId ? this.state.emailId : ""}*/}</h6>
+                                              <h6 className="fontB fs12">superAdmin@gmail.com{/* {this.state.emailId ? this.state.emailId : ""}*/}</h6>
                                             </div>
                                         </div>
                                       </a>
@@ -141,7 +141,7 @@ logout(){
                               </ul>
                           </div>
                         </span>
-                        <span className="headicon pull-right">superAdmin@gmail.com {/* {this.state.emailId ? this.state.emailId : ""}*/} &nbsp;</span>  
+                        <span className="hoverText pull-right">superAdmin@gmail.com {/* {this.state.emailId ? this.state.emailId : ""}*/} &nbsp;</span>  
 
                       </div>
                     </div>

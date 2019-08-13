@@ -837,7 +837,7 @@ class centerDetail extends Component{
                                     this.state.listofStates ?
                                     this.state.listofStates.map((data, index)=>{
                                       return(
-                                        <option key={index} value={data.stateName+'|'+data.stateCode}>{this.camelCase(data.stateName)}</option> 
+                                        <option key={index} value={this.camelCase(data.stateName)+'|'+data.stateCode}>{this.camelCase(data.stateName)}</option> 
                                       );
                                     })
                                     :
@@ -857,7 +857,7 @@ class centerDetail extends Component{
                                     this.state.listofDistrict.map((data, index)=>{
                                       // console.log(data);
                                       return(
-                                        <option key={index} value={data.districtName}>{this.camelCase(data.districtName)}</option>
+                                        <option key={index} value={this.camelCase(data.districtName)}>{this.camelCase(data.districtName)}</option>
                                       );
                                     })
                                     :
@@ -960,7 +960,7 @@ class centerDetail extends Component{
                                     this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
                                       return(
-                                        <option key={index} value={data.districtName+'|'+data._id}>{this.camelCase(data.districtName)}</option>
+                                        <option key={index} value={this.camelCase(data.districtName)+'|'+data._id}>{this.camelCase(data.districtName)}</option>
                                       );
                                     })
                                     :
@@ -979,7 +979,7 @@ class centerDetail extends Component{
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                     this.state.listofBlocks.map((data, index)=>{
                                       return(
-                                        <option key={index} value={data.blockName}>{this.camelCase(data.blockName)}</option>
+                                        <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
                                       );
                                     })
                                     :

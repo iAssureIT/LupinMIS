@@ -29,6 +29,7 @@ class PlanDetails extends Component{
       "bankLoan"            :"",
       "govtscheme"          :"",
       "directCC"            :"",
+      "year"                :"FY 2019 - 2020",
       "indirectCC"          :"",
       "other"               :"",
       "remark"              :"",
@@ -907,7 +908,7 @@ class PlanDetails extends Component{
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                           <label className="formLable">Total Cost</label>
                                           <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
-                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]} />
+                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" disabled ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]} />
                                           </div>
                                         </div>  
                                         <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
