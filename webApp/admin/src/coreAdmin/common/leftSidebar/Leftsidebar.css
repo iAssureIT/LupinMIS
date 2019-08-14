@@ -52,7 +52,7 @@ i, span {
 }
 
 #sidebar {
-    min-width: 228px;
+    min-width: 240px;
     max-width: 250px;
     background: #333;
     color: #fff;
@@ -60,7 +60,7 @@ i, span {
 }
 
 #sidebar.active {
-    min-width: 80px;
+    min-width: 82px;
     max-width: 80px;
     text-align: center;
 }

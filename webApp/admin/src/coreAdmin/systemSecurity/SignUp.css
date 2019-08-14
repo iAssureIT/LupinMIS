@@ -1,3 +1,4 @@
+
 /*****SignUp.css*****/
 @font-face{
   font-family: 'Roboto', sans-serif !important;
@@ -7,9 +8,100 @@
   font-family: 'Roboto', sans-serif !important;
   src: url("/fonts/Roboto-Regular.ttf");
 }
+.systemHeader{
+  background: #0D47A1;
+  /*background: #0275cf;*/
+}
+.logoName{
+  color: #fff;
+  font-size: 24px;
+  padding: 35px 10px;
+  font-weight: 900
+}
+/* Create a custom checkbox */
+.signUpContainer{
+  position: relative;
+/*  padding-left: 3px;
+ margin-bottom: 12px;
+*/  
+  align-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  user-select: none;
+  text-align: center;
+  left:3px;
+}
+/* Hide the browser's default checkbox */
+.signUpContainer input {
+     position: relative;
+    opacity: 0;
+    z-index: 1;
+    cursor: pointer;
+    height: 17px;
+    width: 17px;
+    /* right: 10px; */
+    margin-top: 2px;
+    float: left;
+
+}
+
+.signUpCheck {
+  position: absolute;
+  top: 2px;
+  /*vertical-align: center !important;
+  align-content: center;*/
+  height: 17px;
+  width: 17px;
+  background-color: #ffffff;
+  border-radius: 3px;
+  border: 2px solid #ddd;
+  z-index: 0;
+  left: 14px
+}
+/* On mouse-over, add a grey background color */
+.signUpContainer:hover input ~ .signUpCheck{
+  background-color: #eee;
+}
+/* When the checkbox is checked, add a blue background */
+.signUpContainer input:checked ~ .signUpCheck {
+  background-color: #2196F3;
+  border:2px solid #2196F3;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.signUpCheck:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+/* Show the checkmark when checked */
+.signUpContainer input:checked ~ .signUpCheck:after {
+  display: block;
+}
+/* Style the checkmark/indicator */
+.signUpContainer .signUpCheck:after {
+  left: 4px;
+  top: 0px;
+  width: 6px;
+  height: 10px;
+  align-content: center;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+.centerDetaillistItem{
+  font-family: 'Montserrat',sans-serif !important;
+  padding-left: 14px;
+  padding-top: 3px;
+  font-size: 12px !important;
+  cursor: pointer;
+}
 .logoImage {
     height: 80px;
-    margin-left: 10px;
+    margin-left: 16px;
+}
+.lupinImage{
+  height: 100px;
+  float: left;
 }
 .signUpBackground{
   background: #0275cf !important;
@@ -25,7 +117,9 @@
 .margintop0{
   margin-top: 0px !important;
 }
-
+.inputContent{
+  height: 45px !important;
+}
 .signUpFormWrap, .forgetpassFormWrap, .confirmModalFormWrap{
   border-radius: 10px;
   height: 650px;
@@ -37,7 +131,7 @@
   float: right;
 }
 .signUpWrapper{
-  background: #fff;
+  background: #0275cf !important;
   display: flex;
   flex-wrap: wrap;
   padding: 0px !important;
@@ -61,8 +155,8 @@
 }
 .signInNameTitle{
   font-size: 20px;
-  margin-top: 13%;
-  margin-bottom: 10%;
+  /*margin-top: 13%;*/
+  /*margin-bottom: 10%;*/
   color: #333333;
 }
 .signT{
@@ -410,6 +504,7 @@
   color: #333333;
 }
 .UMGrey{
+  
   color: #333333;
   float: left;
 }
@@ -421,6 +516,7 @@
 .UMGreyy{
   color: #333333;
   float: left;
+  font-weight: 900 !important;
 }
 #businessListTable > tbody > tr > td:first-child{
   /*cursor: pointer;*/
@@ -491,8 +587,8 @@
   text-transform: uppercase;
   font-size: 15px;
   font-weight: bold;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  /*margin-bottom: 20px;*/
+  /*margin-top: 20px;*/
   border-radius: 4px !important; 
 }
 
@@ -667,8 +763,9 @@
     text-align: center;
     padding: 5px;
     border-radius: 4px;
+    float: right;
     /*margin-top: 17px;*/
-    margin-left: 75px;
+    /*margin-left: 75px;*/
     font-weight: bold;
 }
 .resendOtpWrap span{
@@ -968,7 +1065,7 @@ input[type="radio"]:checked:before {
 }
 .terms1{
   position: relative;
-  top: -2px;
+  top: 1px !important;
 }
 .mrleftsign{
   margin-left: 15px;
@@ -1006,7 +1103,7 @@ input[type="radio"]:checked:before {
   background: #fff; 
 }
 .resendOtpWrapcss{
-  background: #d8d8d8!important;
+  /*background: #d8d8d8!important;*/
 }
 .textpd{
   padding-right: 7px;
@@ -1169,10 +1266,13 @@ input[type="radio"]:checked:before {
   padding-right: 0px;
   padding-bottom: 0px;
 }
+.mb20{
+  margin-bottom: 20px;
+}
 .signInNameTitle{
   font-size: 20px;
-  margin-top: 8%;
-  margin-bottom: 10%;
+  /*margin-top: 8%;*/
+  /*margin-bottom: 5% !important;*/
   /*color: #333333;*/
   color: #0275cf;
   font-weight: bold;
@@ -1193,6 +1293,7 @@ input[type="radio"]:checked:before {
 }
 .noIb {
     display: initial;
+
 }
 .boxMarg{
   margin-bottom: 20px !important;
@@ -1291,6 +1392,7 @@ input[type="radio"]:checked:before {
   border-radius: 4px;
   font-size: 16px;
   background: #fff;
+  color: #333;
   font-family: 'Roboto', sans-serif !important;
 }
 .glyphi-custommm{
@@ -1836,8 +1938,8 @@ input[type="radio"]:checked:before {
   margin-bottom: 15%;
 }
 .otpHeader{
-  /*color: #333;*/
-  color: #fff;
+  color: #333;
+  /*color: #fff;*/
   margin-bottom: 1%;
   /*text-align: left;*/
   font-family: 'Roboto', sans-serif !important;
@@ -1865,7 +1967,7 @@ input[type="radio"]:checked:before {
     padding: 5px;
     border-radius: 4px;
     /*margin-top: 17px;*/
-    margin-left: 75px;
+    /*margin-left: 75px;*/
     font-weight: bold;
 }
 .resendOtpWrap span{
@@ -2094,7 +2196,7 @@ a { color: #333; text-decoration: none; }
   font-weight: bold;
 }
 .signupfrm{
-  margin-top: 8%;
+  margin-top: 4% !important;
 }
 .verifypd{
   padding: 4px;
@@ -2169,6 +2271,7 @@ input[type="radio"]:checked:before {
   font-size: 16px;
   /*background: #d8d8d8;*/
   background-color: #fff;
+  color: #333 !important;
   font-family:'Roboto', sans-serif !important;
 }
 
@@ -2223,7 +2326,7 @@ input[type="radio"]:checked:before {
   background: #fff; 
 }
 .resendOtpWrapcss{
-  background: #d8d8d8!important;
+  /*background: #d8d8d8!important;*/
 }
 .textpd{
   padding-right: 7px;

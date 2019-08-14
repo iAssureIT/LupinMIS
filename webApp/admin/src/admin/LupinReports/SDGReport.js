@@ -121,20 +121,15 @@ class SDGReport extends Component{
   }
   render(){
     return( 
-      <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
-        <div className="row">
-          <div className="formWrapper">
-            <section className="content">
-              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                      Report                   
+                    <hr className="hr-map"/>
+                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                      SDG Report                   
                     </div>
-                    <hr className="hr-head container-fluid row"/>
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
+                    <div className="valid_box ">  
                       <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                         <label className="formLable">Center</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
@@ -195,22 +190,17 @@ class SDGReport extends Component{
                         </div>
                       </div>
                     </div>
-                    
-                    {
-                      /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
-                      this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-                */    this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
-                      this.state.currentTabView === "Yearly"  ? <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-                      <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} />  
-                    }
-                    
+                    <div className="row">                    
+                      {
+                        /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
+                        this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
+                  */    this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
+                        this.state.currentTabView === "Yearly"  ? <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
+                        <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} />  
+                      }
+                    </div>                    
                   </div>
                 </div>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>        
     );
   }
 }

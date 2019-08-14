@@ -223,7 +223,7 @@ class SignUp extends Component {
 	    });
 	}
 	render(){
-		var y = 620;
+		var y = 530;
 	    var h = y + 'px';
 
 	    var x = $(window).height();   
@@ -233,8 +233,8 @@ class SignUp extends Component {
 	    // console.log('x',$(window).height());
 	    // console.log('winHeight',winHeight1);
 
-	    var innerheight = winHeight1-60 + 'px';
-	    var innerheight1 = winHeight1-60 ;
+	    var innerheight = winHeight1-20 + 'px';
+	    var innerheight1 = winHeight1-110 ;
 	   
 	    var margin = parseInt( innerheight1-y );
 	    var margint = (margin/2);
@@ -256,11 +256,19 @@ class SignUp extends Component {
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 middlepo middlebord pull-right" id="contentsroll" style={{"height": innerheight}}>
          		<div className="row">
             		<div id="scrollcont" className={backImage} style={{"height": winHeight}}>
+            			<div className="col-lg-12 systemHeader   ">
+		                  	<div className="col-lg-6 col-md-6 col-sm-6 ">
+		                    	<img className="lupinImage" src="images/lupin.png" height="70px"/>
+		                  	</div>
+		                  	<div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
+		                    	Management Information System
+		                  	</div>
+		                </div>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
-                    	<div className="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap loginOesWrap loginforms1 middleblock hght" style={{"marginTop": margint , "height": h}}>
+                    	<div className="col-lg-4 col-lg-offset-7 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap loginOesWrap loginforms1 middleblock hght" style={{"marginTop": margint , "height": h}}>
 						<div className="divLoginInWrap">
 						<form id="signUpUser" onSubmit={this.usersignup.bind(this)}>
-	                    	<h3 className="signUpNameTitle2 margintop0"><span className="bordbt">SIGN UP</span></h3>
+						<h4 className="signInNameTitle "><span className="bordbt">SIGN UP</span></h4>
 							<div className="col-lg-12 col-md-12 signUpInnerWrapperOES signupfrm">
 								<div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
 							   		<span className="blocking-span noIb">
@@ -313,7 +321,8 @@ class SignUp extends Component {
 		                                  }  
 		                              </select>
 										{/*<input type="text" className="form-control abacusTextbox oesSignUpForm" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
-										{this.state.formerrors.lastNameV  && (
+										{this.state.formerrors.la
+										stNameV  && (
 				                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
 				                      )}*/}
 								    	{/*<span className="floating-label1 lbfloatpass">
@@ -376,13 +385,15 @@ class SignUp extends Component {
 						                  </span>
 									</div>
 								</div>
-							    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent termspad">
-					                <input  id="idacceptcondition" type="checkbox"  value="acceptedconditions" onClick={this.acceptcondition.bind(this)}/><Link data-toggle="modal" data-target="#myModal" className="form-checkbox UMGrey1 modalbutton fontbold terms1" onClick={this.showModal.bind(this)}>&nbsp;I agree to the <span className="under"> terms & conditions</span><label className="sign">*</label></Link>
-					                <span className="checkmark1"></span>
+							    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent signUpContainer termspad">
+					                <input  id="idacceptcondition" type="checkbox"  value="acceptedconditions" onClick={this.acceptcondition.bind(this)}/>
+					                <Link data-toggle="modal" data-target="#myModal" className="form-checkbox UMGrey1 modalbutton fontbold terms1 pull-left" onClick={this.showModal.bind(this)}>&nbsp;I agree to the <span className="under"> terms & conditions</span><label className="sign asterix">*</label></Link>
+					                <span className="signUpCheck"></span>
 					            </div>
 							    <div class="modal fade" id="myModal" role="dialog">
 							      <div class="modal-dialog">
 							        <div class="modal-content">
+
 							          <div class="modal-header">
 							            <button type="button" class="close" data-dismiss="modal">&times;</button>
 							            <h2 className="modaltext">Terms & Conditions</h2>
@@ -401,8 +412,8 @@ class SignUp extends Component {
 							    	<input id="signUpBtn" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 acceptinput UMloginbutton UMloginbutton1 hvr-sweep-to-right" type="submit" value="Sign Up" disabled/>
 							    </div>		   
 
-						    	<div className="col-lg-4 col-lg-offset-4 col-md-4 col-sm-4 col-xs-4 pdcls">
-							    	<Link to='/' className="UMGrey UMcreateacc signInbtn1 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">Sign In</Link> 	
+						    	<div className="col-lg-12 col-md-4 col-sm-4 col-xs-4 ">
+							    	<Link to='/' className="UMGreyy  signInbtn1"><u>Sign In</u></Link> 	
 						    	</div>
 						    </div> 
 					  	</form>

@@ -95,7 +95,7 @@ class ForgotPassword extends Component {
 
   render(){
     
-    var y = 550;
+    var y = 400;
     var h = y + 'px';
 
     var x = $(window).height();   
@@ -160,8 +160,8 @@ class ForgotPassword extends Component {
                             <button type="submit" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submitBtn UMloginbutton">Send Verification Code</button>
                           </Link>
                         </div>
-                        <div className="col-lg-5 col-lg-offset-3 col-md-4 col-sm-4 col-xs-4 pdcls">
-                          <Link to='/' className="UMGrey UMcreateacc  signInbtn1 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">Sign In</Link>  
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls pull-right">
+                          <Link to='/' className="UMGreyy   col-lg-12 col-md-12 col-sm-12 col-xs-12 "><u>Sign In</u></Link>  
                         </div>
                       </form>
                     </div>

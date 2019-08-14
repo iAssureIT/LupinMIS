@@ -8,24 +8,10 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import EMPReport            from "../../admin/LupinReports/EMPReport.js";
-import Report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
-import Report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
-import Report3                                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
-import Report4                                    from "../../admin/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";
-import Report5                                    from "../../admin/LupinReports/ActivitywisePeriodicPhysicalVarianceReport.js";
-import Report6                                    from "../../admin/LupinReports/GeographicalReport.js";
-import Report7                                    from "../../admin/LupinReports/VillagewisefamilyReport.js";
-import Report8                                    from "../../admin/LupinReports/CategorywiseReport.js";
-import Report9                                    from "../../admin/LupinReports/UpgradedBeneficiaryReport.js";
-import Report10                                   from "../../admin/LupinReports/SDGReport.js";
-import Report11                                   from "../../admin/LupinReports/ADPReport.js";
-import Report12                                   from "../../admin/LupinReports/EMPReport.js";
+
 import "../Reports/Reports.css";
-
-
-const ReportsList = [];
 class SDGReport extends Component{
-	constructor(props){
+  constructor(props){
     super(props);
     this.state = {
         'currentTabView'    : "Monthly",
@@ -79,10 +65,6 @@ class SDGReport extends Component{
   componentDidMount(){
     this.getAvailableSectors()
     this.getDistrict();
-
-    for (let i=1; i<13;i++) {
-        ReportsList[i] = React.getComponentByName(`Report${i}`);
-    }
   }
   componentDidMount(){
     this.getState();
@@ -141,21 +123,18 @@ class SDGReport extends Component{
     })
   }
   selectReportPath(e){
-    // this.props.history.push(`/${e.target.value}`);
-   e.preventDefault();
-    // var selectedReport = e.target.id;
+    this.props.history.push(`/${e.target.value}`);
+   /* e.preventDefault();
     var selectedReport = e.target.value;
-    console.log('selectedReport', selectedReport)
     this.setState({
       selectedReport : selectedReport,
     },()=>{
       console.log('selectedReport',this.state.selectedReport);
-      })
+      })*/
   }
   
   render(){
-      const selectedReport = this.state.selectedReport;
-console.log("selectedReport", selectedReport)
+
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
@@ -175,38 +154,29 @@ console.log("selectedReport", selectedReport)
                       {console.log("sdasd" , this.value)}
                         <label className="formLable">Select Report</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="report" >
-                          {/*<div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
-                            Daily
-                          </div>*/}
-                          <select className="custom-select form-control inputBox" ref="report" name="report" value={this.state.report} onChange={this.selectReportPath.bind(this)} >
+                          <select className="custom-select form-control inputBox" ref="report" name="report" value={this.state.report}  onChange={this.selectReportPath.bind(this)} >
                             <option className="hidden" >-- Select --</option>
-                            <option className="formLable" id="Report1" value="Report1">Activity wise Annual Completion Report</option>
-                            <option className="formLable" id="Report2" value="Report2">Sector wise Annual Completion Summary Report</option>
-                            <option className="formLable" id="Report3" value="Report3">Activity wise Periodic Variance Report (Physical & Financial)</option>
-                            <option className="formLable" id="Report4" value="Report4">Sector wise Periodic Variance Summary Report</option>
-                            <option className="formLable" id="Report5" value="Report5">Activity wise Periodic Physical Variance Report</option>
-                            <option className="formLable" id="Report6" value="Report6">Geographical Report</option>
-                            <option className="formLable" id="Report7" value="Report7">Villagewise Family Report</option>
-                            <option className="formLable" id="Report8" value="Report8">Category wise Report</option>
-                            <option className="formLable" id="Report9" value="Report9">Upgraded Beneficiary Report</option>
-                            <option className="formLable" id="Report10" value="Report10">SDG Report</option>
-                            <option className="formLable" id="Report11" value="Report11">ADP Report</option>
-                            <option className="formLable" id="Report12" value="Report12">EMP Report</option>
+                            <option className="formLable" value="activitywise-annual-completion-report">Activity wise Annual Completion Report</option>
+                            <option className="formLable" value="sector-wise-annual-completion-summary-report">Sector wise Annual Completion Summary Report</option>
+                            <option className="formLable" value="activity-wise-periodic-variance-report">Activity wise Periodic Variance Report (Physical & Financial)</option>
+                            <option className="formLable" value="sectorwise-periodic-variance-summary-report">Sector wise Periodic Variance Summary Report</option>
+                            <option className="formLable" value="activity-wise-periodic-physical-variance-report">Activity wise Periodic Physical Variance Report</option>
+                            <option className="formLable" value="geographical-report">Geographical Report</option>
+                            <option className="formLable" value="villagewise-family-report">Villagewise Family Report</option>
+                            <option className="formLable" value="category-wise-report">Category wise Report</option>
+                            <option className="formLable" value="upgraded-beneficiary-report">Upgraded Beneficiary Report</option>
+                            <option className="formLable" value="SDG-report">SDG Report</option>
+                            <option className="formLable" value="ADP-report">ADP Report</option>
+                            <option className="formLable" value="EMP-report">EMP Report</option>
                             
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                       </div>                     
                     </div>                    
-                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
-                          <selectedReport />
-                         {/* <Report12 />*/}
-                        </div> 
-                    <div>
-                    {/*  {
-                         ReportsList[this.props.componentId]
-                      }*/}
-                    </div>                
+                        {/*<div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
+                          <Link href="this.state.selectedReport"><EMPReport/></Link>
+                        </div> */}                    
                 </div>
                 </div>
               </div>
@@ -218,4 +188,4 @@ console.log("selectedReport", selectedReport)
   }
 }
 export default SDGReport
-/*https://reactstrap.github.io/components/dropdowns/*/
+{/*https://reactstrap.github.io/components/dropdowns/*/}

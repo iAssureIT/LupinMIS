@@ -2,6 +2,13 @@
 	height: 40vh;
 }
 */
+/*
+.sectMap:nth-child(3n+4) {
+  float: none;
+ }*/
+.hr-map{
+ 	border: 0.5px solid #dcd9d9 !important
+ }
 .notbtn{
 
 	border:1px solid #f4f4f4;

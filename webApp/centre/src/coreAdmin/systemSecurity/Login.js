@@ -84,7 +84,7 @@ class Login extends Component {
       return $('.inputTextPass').attr('type', 'password');
   }
   render(){
-    var y = 550;
+    var y = 430;
     var h = y + 'px';
 
     var x = $(window).height();   
@@ -95,7 +95,7 @@ class Login extends Component {
     console.log('winHeight',winHeight1);
 
     var innerheight = winHeight1-60 + 'px';
-    var innerheight1 = winHeight1-60 ;
+    var innerheight1 = winHeight1-100 ;
    
     var margin = parseInt( innerheight1-y );
     var margint = (margin/2);
@@ -116,21 +116,30 @@ class Login extends Component {
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 middlepo middlebord pull-right" id="contentsroll" style={{"height": innerheight}}>
           <div className="row">
               <div id="scrollcont" className={backImage} style={{"height": winHeight}}>
+                <div className="col-lg-12 systemHeader   ">
+                  <div className="col-lg-6 col-md-6 col-sm-6 ">
+                    <img className="lupinImage" src="images/lupin.png" height="70px"/>
+                  </div>
+                  <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
+                    Management Information System
+                  </div>
+                </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">   
-                  <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{"marginTop": margint , "height": h}}>
+                  <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{ "marginTop": margint , "height": h}}>
                   
 {/*                  <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{"height": divHeight}}>
 */}                    <div className="divLoginInWrap">
 
-                      <div className="col-lg-4 col-lg-offset-4 marbtm10 ">
+                      <div className="col-lg-4 col-lg-offset-4  ">
                         <img className="logoImage" src="images/logo.png" height="70px"/>
                         </div>
 
-                      <form id="login" onSubmit={this.userlogin.bind(this)}>
+                      <form id="login" className="" onSubmit={this.userlogin.bind(this)}>
                         <br/>
                         <div className="col-lg-4 col-lg-offset-4 ">
                        {/* <h3> hhhh</h3>*/}
-                        {<h4 className="signInNameTitle "><span className="bordbt">SIGN IN</span></h4>
+                     {/*blue, white top new pink skyblue redyellow jerkin new jaket*/}
+                        {<h4 className="signInNameTitle mb20"><span className="bordbt">SIGN IN</span></h4>
                         }</div>
                         <div className="col-lg-12 col-md-12 col-sm-12 ">
                           <div className="inputContent">
@@ -156,25 +165,25 @@ class Login extends Component {
                             </span>
                           </div>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12">
+                        <div className="col-lg-12 col-md-12 col-sm-12 btn">
                           <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 UMloginbutton hvr-sweep-to-right" value="Login"/>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls">
-                          <div className="col-lg-6 col-md-6 col-sm-6 ">
-                            <Link to='/signup' className="UMGreyy UMGreyy_l UMcreateacc col-lg-12 col-md-12 col-xs-12 col-sm-12"> Sign Up</Link>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  customFl pdcls ">
+                          <div className="col-lg-6 col-md-6 col-sm-6">
+                            <Link to='/signup' className="UMGreyy UMGreyy_l pull-left"> <u>Sign Up</u></Link>
                           </div>
-                          <div className="col-lg-6 col-md-6 col-sm-6 offset-lg-1 customFl">
-                            <Link to='/forgot-pwd' className="UMGreyy UMGreyy_l UMcreateacc col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                              Forgot Password?
+                          <div className="col-lg-6 col-md-6 col-sm-6 ">
+                            <Link to='/forgot-pwd' className="UMGreyy UMGreyy_l pull-right">
+                              <u>Forgot Password?</u>
                             </Link>
                           </div>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 pdcls">
-                          <div className="col-lg-12 col-md-12 col-sm-12 ">
+                        <div className="col-lg-12 col-md-12 col-sm-12 pdcls btn">
+                        {/*  <div className="col-lg-12 col-md-12 col-sm-12 ">
                             <Link to='/verify-account' className="UMGreyy UMGreyy_l forgotpass emailverify col-lg-12 col-md-12 col-xs-12 col-sm-12">
                               OTP Verification
                             </Link>
-                          </div>
+                          </div>*/}
                         </div>
                       </form>
                     </div>

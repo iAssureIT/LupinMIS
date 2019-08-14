@@ -388,7 +388,7 @@ class SectorMapping extends Component{
                     <div className="">
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable">
                         <div >
-                          <div >
+                      {/*    <div >
                             {
                               this.state.availableSectors ?
                               this.state.availableSectors.map((data, index)=>{
@@ -412,6 +412,43 @@ class SectorMapping extends Component{
                                         );
                                       })
                                     }
+                                  </div>
+                               
+                                );
+                              })
+                              :
+                              null
+                            }
+                          </div> */}
+                          <div >
+                            {
+                              this.state.availableSectors ?
+                              this.state.availableSectors.map((data, index)=>{
+                                return(
+                                  <div key={index} className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 blockheight noPadding">
+                                    <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding">
+                                      <label  className="formLable faintColor">{data.sector}</label>
+                                    </div>
+                                    {
+                                      data.activity.map((a, i)=>{
+                                        return(
+                                          <div key ={i} className="col-lg-4 col-md-4 col-sm-6 col-xs-6 ">
+                                            <div className="row"> 
+                                              <div className="actionDiv" id="activityName">
+                                                <div className="SDGContainer col-lg-1">
+                                                  <input type="checkbox" name="activityName" className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={this.state[data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName]?true:false} onChange={this.selectActivity.bind(this)} />
+                                                  <span className="SDGCheck"></span>
+                                                </div>
+                                              </div>                            
+                                              <label className="listItem">{a.activityName}</label>
+                                            </div>  
+                                          </div>
+                                        );
+                                      })
+                                    }
+                                  <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding" >
+                                    <hr className="hr-map"/>
+                                  </div> 
                                   </div>
                                
                                 );

@@ -100,7 +100,7 @@ class PlanDetails extends Component{
       [event.target.name] : event.target.value,
       fields
     },()=>{
-      this.getData(this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     });
     if (this.validateForm()) {
       let errors = {};
@@ -127,7 +127,7 @@ class PlanDetails extends Component{
       fields
     },()=>{
       console.log('month =====================================', this.state.month, this.state.year)
-      this.getData(this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     });
 
     if (this.validateForm()) {
@@ -251,7 +251,7 @@ class PlanDetails extends Component{
                 title : response.data.message,
                 text  : response.data.message
               });
-              this.getData(this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
             })
             .catch(function(error){
               console.log("error"+error);
@@ -368,7 +368,7 @@ class PlanDetails extends Component{
                 text  : response.data.message
               });
               this.props.history.push('/plan-details');
-              this.getData(this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
             })
             .catch(function(error){
               console.log("error"+error);
@@ -472,8 +472,9 @@ class PlanDetails extends Component{
     .catch(function(error){      
     });
   }
-  getData(month, year, startRange, limitRange ){
+  getData(center_ID, month, year, startRange, limitRange ){
     var data = {
+    center_ID  : center_ID,
     month      : month,
     year       : year,
     startRange : startRange,
@@ -481,6 +482,7 @@ class PlanDetails extends Component{
     }
     axios.post(this.state.apiCall+'/list', data)
       .then((response)=>{
+          console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
         _id                 : a._id,
@@ -544,7 +546,7 @@ class PlanDetails extends Component{
         this.edit(this.state.editId);
       })    
     }    
-     this.getData(this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+     this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     if(nextProps){
       this.getLength();
     }
@@ -559,7 +561,7 @@ class PlanDetails extends Component{
       apiCall : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
     },()=>{
       console.log('year', this.state.year)
-       this.getData(this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     })
     this.getLength();
     this.calTotal();
@@ -818,7 +820,7 @@ class PlanDetails extends Component{
                           </div>
                           <div className="col-lg-2 col-lg-offset-1 col-md-4 col-sm-6 col-xs-6 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 " >
-                              <div className="addform text-center" id="click_advance"  onClick={this.toglehidden.bind(this)}>Add Plan
+                              <div className="addform text-center " id="click_advance"  onClick={this.toglehidden.bind(this)}>Add Plan
                                {/* <div className="display_advance addContainerAct"  id="display_advance">
                                   <i className="fa fa-plus" aria-hidden="true" id="click"></i>
                                 </div>*/}
