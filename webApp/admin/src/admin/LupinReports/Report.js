@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import $                    from 'jquery';
-import axios                  from 'axios';
-import DailyReport          from '../Reports/DailyReport.js';
-import WeeklyReport         from '../Reports/WeeklyReport.js';
-import MonthlyReport        from '../Reports/MonthlyReport.js';
-import YearlyReport         from '../Reports/YearlyReport.js';
-import CustomisedReport     from '../Reports/CustomisedReport.js';
-import EMPReport            from "../../admin/LupinReports/EMPReport.js";
-import Report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
-import Report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
-import Report3                                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
-import Report4                                    from "../../admin/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";
-import Report5                                    from "../../admin/LupinReports/ActivitywisePeriodicPhysicalVarianceReport.js";
-import Report6                                    from "../../admin/LupinReports/GeographicalReport.js";
-import Report7                                    from "../../admin/LupinReports/VillagewisefamilyReport.js";
-import Report8                                    from "../../admin/LupinReports/CategorywiseReport.js";
-import Report9                                    from "../../admin/LupinReports/UpgradedBeneficiaryReport.js";
-import Report10                                   from "../../admin/LupinReports/SDGReport.js";
-import Report11                                   from "../../admin/LupinReports/ADPReport.js";
-import Report12                                   from "../../admin/LupinReports/EMPReport.js";
+import React, { Component }       from 'react';
+import { Link }                   from 'react-router-dom';
+import $                          from 'jquery';
+import axios                      from 'axios';
+import ReactHTMLTableToExcel      from 'react-html-table-to-excel';
+import DailyReport                from '../Reports/DailyReport.js';
+import WeeklyReport               from '../Reports/WeeklyReport.js';
+import MonthlyReport              from '../Reports/MonthlyReport.js';
+import YearlyReport               from '../Reports/YearlyReport.js';
+import CustomisedReport           from '../Reports/CustomisedReport.js';
+import EMPReport                  from "../../admin/LupinReports/EMPReport.js";
+import Report1                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
+import Report2                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
+import Report3                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
+import Report4                    from "../../admin/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";
+import Report5                    from "../../admin/LupinReports/ActivitywisePeriodicPhysicalVarianceReport.js";
+import Report6                    from "../../admin/LupinReports/GeographicalReport.js";
+import Report7                    from "../../admin/LupinReports/VillagewisefamilyReport.js";
+import Report8                    from "../../admin/LupinReports/CategorywiseReport.js";
+import Report9                    from "../../admin/LupinReports/UpgradedBeneficiaryReport.js";
+import Report10                   from "../../admin/LupinReports/SDGReport.js";
+import Report11                   from "../../admin/LupinReports/ADPReport.js";
+import Report12                   from "../../admin/LupinReports/EMPReport.js";
 import "../Reports/Reports.css";
-
 
 const ReportsList = [];
 class SDGReport extends Component{
@@ -145,18 +145,18 @@ class SDGReport extends Component{
    e.preventDefault();
     // var selectedReport = e.target.id;
     var selectedReport = e.target.value;
-    console.log('selectedReport', selectedReport)
+    // console.log('selectedReport', selectedReport)
 
     this.setState({
       selectedReport : selectedReport,
     },()=>{
-      console.log('selectedReport',this.state.selectedReport);
+      // console.log('selectedReport',this.state.selectedReport);
       })
   }
   
   render(){
       const selectedReport = this.state.selectedReport;
-console.log("selectedReport", selectedReport)
+// console.log("selectedReport", selectedReport)
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
@@ -173,7 +173,6 @@ console.log("selectedReport", selectedReport)
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                     <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
                       <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                      {console.log("sdasd" , this.value)}
                         <label className="formLable"><b>Select Report</b></label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="report" >
                           {/*<div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
@@ -197,9 +196,54 @@ console.log("selectedReport", selectedReport)
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
-                      </div>                     
+                      </div> 
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 assessmentBlockMargin complAssessmentBtnMargin">
+                                  { this.state.selectedReport ?
+                                    <ReactHTMLTableToExcel
+                                    id="test-table-xls-button"
+                                    className="pull-right dwnldAsExcel fa fa-download download-table-xls-button btn report-list-downloadXLXS exportIcon"
+                                    table="adminReport"
+                                    filename="Report"
+                                    sheet="tablexls"
+                                    buttonText=""/>
+                                    :
+                                    null
+                                  }
+                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                   {/* <table id="MyVendorsReport" className="table table-hover">
+                                      <thead className="table-head">
+                                        <tr>
+                                      
+                                          <th>Vendor Name</th>
+                                          <th>SPOC Name</th>
+                                          <th>SPOC Email</th>
+                                          <th>SPOC Mobile</th>
+                                          <th>SPOC Designation</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                          {this.state.allPosts && this.state.allPosts.length >0?
+                                            this.state.allPosts.map((data,index)=>{
+                                              return(
+                                                <tr key={index}>
+                                               
+                                                  <td className="">{data.companyName}</td>
+                                                  <td className="">{data.spocDetails?data.spocDetails.fullname:'-'}</td>
+                                                  <td className="">{data.spocDetails?data.spocDetails.emailId:'-'}</td>
+                                                  <td className="">{data.spocDetails?data.spocDetails.mobNumber:'-'}</td>
+                                                  <td className="">{data.spocDetails?data.spocDetails.designation:'-'}</td>
+                                                </tr>
+                                              );
+                                            })
+                                            :
+                                            null 
+                                          }
+                                      </tbody>
+                                    </table>*/}
+                                  </div>
+                      </div>                    
                     </div>                    
-                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
+                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box "  id="adminReport">  
                           {/*<selectedReport />*/}
                           {
                             this.state.selectedReport=='Report1'?

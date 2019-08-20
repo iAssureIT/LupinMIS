@@ -44,6 +44,7 @@ class Activity extends Component{
       "indirectCC"        : 0,
       "other"             : 0,
       "total"             : 0,
+      "remark"            : "",
       shown               : true,      
       "listofDistrict"    :"",
       "listofBlocks"      :"",
@@ -592,6 +593,7 @@ class Activity extends Component{
       url: '/api/activityReport/'+id,
     }).then((response)=> {
       var editData = response.data[0];
+      console.log("editData",editData);
       this.getAvailableActivity(editData.sector_ID);
       this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID)
 

@@ -665,7 +665,7 @@ margin-right: 12px;
       border: none;
   }
   .adminModal-body {
-      margin-top: 50px !important;
+      /*margin-top: 50px !important;*/
       margin-bottom: 50px !important;
   }
   .adminModal-footer {

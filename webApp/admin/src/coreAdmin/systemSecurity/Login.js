@@ -138,7 +138,7 @@ class Login extends Component {
                         <br/>
                         <div className="col-lg-4 col-lg-offset-4 ">
                        {/* <h3> hhhh</h3>*/}
-                     {/*blue, white top new pink skyblue redyellow jerkin new jaket*/}
+                     
                         {<h4 className="signInNameTitle mb20"><span className="bordbt">SIGN IN</span></h4>
                         }</div>
                         <div className="col-lg-12 col-md-12 col-sm-12 ">

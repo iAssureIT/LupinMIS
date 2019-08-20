@@ -1,3 +1,9 @@
+.exportIcon{
+    height: 20px;
+    width: 20px;
+    background: #ff0
+}
+
 .reports-list-outerTR {
     background: #266fb9;
     color: #fff;

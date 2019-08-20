@@ -272,8 +272,8 @@ class PlanDetails extends Component{
       }
       this.setState({
         "planValues"          :"",
-        "year"                :"",
-        "month"               :"",
+        "year"                : this.refs.year.value,
+        "month"               : this.refs.month.value,
         "center"              :"",
         "sector_id"           :"",
         "sectorName"          :"",
@@ -296,6 +296,7 @@ class PlanDetails extends Component{
         "subActivityDetails"  :[],
         "availableSubActivity":[],
         "availableActivity"   :[],
+        "subActivityDetails[i][name]":"",
         shown                 : !this.state.shown
       });
     }
@@ -385,8 +386,10 @@ class PlanDetails extends Component{
       }
       
       this.setState({
-        "year"                :"",
-        "month"               :"All Months",
+        "year"                : this.refs.year.value,
+        "month"               : this.refs.month.value,
+      /*  "year"                :"",
+        "month"               :"All Months",*/
         "center"              :"",
         "sector_id"           :"",
         "sectorName"          :"",
@@ -408,12 +411,13 @@ class PlanDetails extends Component{
         "editId"              :"",
         "subActivityDetails"  :[],
         "availableSubActivity":[],
+        "subActivityDetails[i][name]":"",
         "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
         "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
         "shown"               : true,
         "apiCall"             : '/api/annualPlans'
       });
-      this.props.history.push('/plan-details');
+      // this.props.history.push('/plan-details');
     // }
   }
   validateFormReq() {

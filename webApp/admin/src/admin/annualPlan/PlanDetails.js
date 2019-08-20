@@ -73,7 +73,7 @@ class PlanDetails extends Component{
         indirectCC          : "Indirect Community Contribution",
         other               : "Other",
         remark              : "Remark",
-        actions             : 'Action',
+        // actions             : 'Action',
       },
       "tableObjects"        : {
         deleteMethod        : 'delete',

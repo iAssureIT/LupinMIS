@@ -1,100 +1,368 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
+import axios                from 'axios';
+import moment               from 'moment';
 import DailyReport          from '../Reports/DailyReport.js';
 import WeeklyReport         from '../Reports/WeeklyReport.js';
 import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
+import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 
 class ActivityWisePeriodicVarianceReport extends Component{
 	constructor(props){
-    super(props);
-    this.state = {
-        'currentTabView'    : "Monthly",
-        'tableDatas'        : [],
-        'reportData'        : {},
-        'tableData'         : [],
-        "startRange"        : 0,
-        "limitRange"        : 10,
-        "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
-        "twoLevelHeader"    : {
-            apply           : true,
-            firstHeaderData : [
-                {
-                    heading : '',
-                    mergedColoums : 1
-                },
-                {
-                    heading : '',
-                    mergedColoums : 1
-                },
-                {
-                    heading : '',
-                    mergedColoums : 1
-                },
-                {
-                    heading : 'Annual Plan',
-                    mergedColoums : 2
-                },
-                {
-                    heading : "Source of Financial Periodic Plan (Physical & Financial 'Lakh')",
-                    mergedColoums : 9
-                },
-                {
-                    heading : "Source wise Financial Periodic Achievements",
-                    mergedColoums : 9
-                },
-                {
-                    heading : "Agency wise Variance Periodic Report 'Lakh'",
-                    mergedColoums : 9
-                },
-            ]
-        },
-        "tableHeading"      : {
-            "abcs"    : 'Activity & Sub Activity',
-            "abcd"    : 'Unit',
-            "dfgg"    : 'Physical Units', 
-            "abcx"    : "Total Budget 'Lakh'",
-            "dfng"    : 'Physical Units', 
-            "abbx"    : "Total Budget 'Lakh'",
-            "ouio"    : 'LHWRF',
-            "dgfg"    : 'NABARD',
-            "ghgh"    : 'Bank Loan',
-            "werr"    : 'Direct Community  Contribution',
-            "ghgf"    : 'Indirect Community  Contribution',
-            "ertr"    : 'Govt',
-            "abui"    : 'Others',
-            "yiyi"    : 'Physical Units', 
-            "abax"    : "Financal Total",
-            "ouis"    : 'LHWRF',
-            "dgfd"    : 'NABARD',
-            "dhgh"    : 'Bank Loan',
-            "wcrr"    : 'Direct Community  Contribution',
-            "ghqf"    : 'Indirect Community  Contribution',
-            "ertd"    : 'Govt',
-            "afui"    : 'Others',
-            "dfwg"    : 'Physical Units', 
-            "amcx"    : "Financal Total",
-            "ouyo"    : 'LHWRF',
-            "dghg"    : 'NABARD',
-            "ghlh"    : 'Bank Loan',
-            "wenr"    : 'Direct Community  Contribution',
-            "ghmf"    : 'Indirect Community  Contribution',
-            "ere"    : 'Govt',
-            "abhi"    : 'Others',
-        },
-    }/*Sr No  Activity & Sub Activity Unit  Annual Plan   Periodic Plan (Physical & Financial 'Lakh'                  Periodic Achievements                 Variance Periodic Report 'Lakh'                 
-      Physical Units   Total Budget 'Lakh'  Physical Units  Total Budget 'Lakh' Source of Financial Plan              Physical Units   Financal Total Source wise Financial Achievements              Physical Units  Financial Total Agency wise Variance              
-              LHWRF NABARD  Bank Loan Community Contribution    GOVT  Others      LHWRF NABARD  Bank Loan Community Contribution    GOVT  Other     LHWRF NABARD  Bank Loan Community Contribution    GOVT  Others  
-                    Indirect  Indirect                Indirect  Indirect                Indirect  Indirect      */
-    window.scrollTo(0, 0);
-  }
+        super(props);
+        this.state = {
+            'currentTabView'    : "Monthly",
+            'tableDatas'        : [],
+            'reportData'        : {},
+            'tableData'         : [],
+            "startRange"        : 0,
+            "limitRange"        : 10,
+            "startDate"         : "",
+            "endDate"           : "",
+            // "sector"            : "",
+            // "sector_ID"         : "",
+            // "center"            : "",
+            // "center_ID"         : "",
+            // "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/masternotifications/list",
+            "twoLevelHeader"    : {
+                apply           : true,
+                firstHeaderData : [
+                    {
+                        heading : '',
+                        mergedColoums : 1
+                    },
+                    {
+                        heading : '',
+                        mergedColoums : 1
+                    },
+                    {
+                        heading : '',
+                        mergedColoums : 1
+                    },
+                    {
+                        heading : 'Annual Plan',
+                        mergedColoums : 2
+                    },
+                    {
+                        heading : "Source of Financial Periodic Plan (Physical & Financial 'Lakh')",
+                        mergedColoums : 9
+                    },
+                    {
+                        heading : "Source wise Financial Periodic Achievements",
+                        mergedColoums : 9
+                    },
+                    {
+                        heading : "Agency wise Variance Periodic Report 'Lakh'",
+                        mergedColoums : 9
+                    },
+                ]
+            },
+            "tableHeading"      : {
+                "Activity_SubActivity"        : 'Activity & Sub Activity',
+                "Unit"                        : 'Unit',
+                "AnnualPlan_Physical_unit"    : 'Physical Units', 
+                "AnnualPlan_Total_Budget"     : "Total Budget 'Lakh'",
+                "periodicPlan_Physical_unit"  : 'Physical Units', 
+                "PeriodicPlan_Total_Budget"   : "Total Budget 'Lakh'",
+                "PeriodicPlan_LHWRF"          : 'LHWRF',
+                "PeriodicPlan_NABARD"         : 'NABARD',
+                "PeriodicPlan_Bank_Loan"      : 'Bank Loan',
+                "PeriodicPlan_DirectCC"       : 'Direct Community  Contribution',
+                "PeriodicPlan_Indirect"       : 'Indirect Community  Contribution',
+                "PeriodicPlan_govtscheme"     : 'Govt',
+                "PeriodicPlan_other"          : 'Others',
+                "PeriodicAchv_Physical_unit"  : 'Physical Units', 
+                "PeriodicAchv_Total_Budget"   : "Financal Total",
+                "PeriodicAchv_LHWRF"          : 'LHWRF',
+                "PeriodicAchv_NABARD"         : 'NABARD',
+                "PeriodicAchv_Bank_Loan"      : 'Bank Loan',
+                "PeriodicAchv_DirectCC"       : 'Direct Community  Contribution',
+                "PeriodicAchv_Indirect"       : 'Indirect Community  Contribution',
+                "PeriodicAchv_govtscheme"     : 'Govt',
+                "PeriodicAchv_other"          : 'Others',
+                "Variance_Physical_unit"      : 'Physical Units', 
+                "Variance_Total_Budget"       : "Financal Total",
+                "Variance_LHWRF"              : 'LHWRF',
+                "Variance_NABARD"             : 'NABARD',
+                "Variance_Bank_Loan"          : 'Bank Loan',
+                "Variance_DirectCC"           : 'Direct Community  Contribution',
+                "Variance_Indirect"           : 'Indirect Community  Contribution',
+                "Variance_govtscheme"         : 'Govt',
+                "Variance_other"              : 'Others',
+            },
+        }
+        window.scrollTo(0, 0);
+        this.handleFromChange    = this.handleFromChange.bind(this);
+        this.handleToChange      = this.handleToChange.bind(this);
+        this.currentFromDate     = this.currentFromDate.bind(this);
+        this.currentToDate       = this.currentToDate.bind(this);
+        this.getAvailableCenters = this.getAvailableCenters.bind(this);
+        this.getAvailableSectors = this.getAvailableSectors.bind(this);
+        
+    }
 
-  componentDidMount(){
+    componentDidMount(){
+        this.getAvailableCenters();
+        this.getAvailableSectors();
+        this.currentFromDate();
+        this.currentToDate();
+        this.setState({
+          // "center"  : this.state.center[0],
+          // "sector"  : this.state.sector[0],
+          tableData : this.state.tableData,
+        },()=>{
+        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        })
+        this.handleFromChange = this.handleFromChange.bind(this);
+        this.handleToChange = this.handleToChange.bind(this);
+    }
+   
+    componentWillReceiveProps(nextProps){
+        this.getAvailableCenters();
+        this.getAvailableSectors();
+        this.currentFromDate();
+        this.currentToDate();
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    }
+    handleChange(event){
+        event.preventDefault();
+        this.setState({
+          [event.target.name] : event.target.value
+        },()=>{
+          console.log('name', this.state)
+        });
+    }
+    getAvailableCenters(){
+        axios({
+          method: 'get',
+          url: '/api/centers/list',
+        }).then((response)=> {
+          this.setState({
+            availableCenters : response.data,
+            center           : response.data[0].centerName+'|'+response.data[0]._id
+          },()=>{
+            // console.log('center', this.state.center);
+            var center_ID = this.state.center.split('|')[1];
+            this.setState({
+              center_ID        : center_ID
+            },()=>{
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            })
+          })
+        }).catch(function (error) {
+          console.log('error', error);
+        });
+    } 
+    selectCenter(event){
+        var selectedCenter = event.target.value;
+        this.setState({
+          [event.target.name] : event.target.value,
+          selectedCenter : selectedCenter,
+        },()=>{
+          var center = this.state.selectedCenter.split('|')[1];
+          console.log('center', center);
+          this.setState({
+            center_ID :center,            
+          },()=>{
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+          })
+        });
+    } 
+    getAvailableSectors(){
+        axios({
+          method: 'get',
+          url: '/api/sectors/list',
+        }).then((response)=> {
+            
+            this.setState({
+              availableSectors : response.data,
+              sector           : response.data[0].sector+'|'+response.data[0]._id
+            },()=>{
+            var sector_ID = this.state.sector.split('|')[1]
+            this.setState({
+              sector_ID        : sector_ID
+            },()=>{
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            })
+            // console.log('sector', this.state.sector);
+          })
+        }).catch(function (error) {
+          console.log('error', error);
+        });
+    }
+    selectSector(event){
+        event.preventDefault();
+        this.setState({
+          [event.target.name]:event.target.value
+        });
+        var sector_id = event.target.value.split('|')[1];
+        // console.log('sector_id',sector_id);
+        this.setState({
+              sector_ID : sector_id,
+            },()=>{
+            // console.log('availableSectors', this.state.availableSectors);
+            // console.log('sector_ID', this.state.sector_ID);
+            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+          })
 
-  }
-  
+    }
+
+    getData(startDate, endDate, sector_ID,center_ID){
+        console.log(startDate, endDate, center_ID, sector_ID);
+        axios.get('http://qalmisapi.iassureit.com/api/report/periodic_activity/'+startDate+'/'+endDate+'/'+sector_ID+'/'+center_ID)
+        .then((response)=>{
+          console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+                _id                           : a._id,            
+                Activity_SubActivity        : a.Activity_SubActivity,
+                Unit                        : a.Unit,
+                AnnualPlan_Physical_unit    : a.AnnualPlan_Physical_unit,
+                AnnualPlan_Total_Budget     : a.AnnualPlan_Total_Budget,
+                periodicPlan_Physical_unit  : a.periodicPlan_Physical_unit,
+                PeriodicPlan_Total_Budget   : a.PeriodicPlan_Total_Budget,
+                PeriodicPlan_LHWRF          : a.PeriodicPlan_LHWRF,
+                PeriodicPlan_NABARD         : a.PeriodicPlan_NABARD,
+                PeriodicPlan_Bank_Loan      : a.PeriodicPlan_Bank_Loan,
+                PeriodicPlan_DirectCC       : a.PeriodicPlan_DirectCC,
+                PeriodicPlan_Indirect       : a.PeriodicPlan_Indirect,
+                PeriodicPlan_govtscheme     : a.PeriodicPlan_govtscheme,
+                PeriodicPlan_other          : a.PeriodicPlan_other,
+                PeriodicAchv_Physical_unit  : a.PeriodicAchv_Physical_unit,
+                PeriodicAchv_Total_Budget   : a.PeriodicAchv_Total_Budget,
+                PeriodicAchv_LHWRF          : a.PeriodicAchv_LHWRF,
+                PeriodicAchv_NABARD         : a.PeriodicAchv_NABARD,
+                PeriodicAchv_Bank_Loan      : a.PeriodicAchv_Bank_Loan,
+                PeriodicAchv_DirectCC       : a.PeriodicAchv_DirectCC,
+                PeriodicAchv_Indirect       : a.PeriodicAchv_Indirect,
+                PeriodicAchv_govtscheme     : a.PeriodicAchv_govtscheme,
+                PeriodicAchv_other          : a.PeriodicAchv_other,
+                Variance_Physical_unit      : a.Variance_Physical_unit,
+                Variance_Total_Budget       : a.Variance_Total_Budget,
+                Variance_LHWRF              : a.Variance_LHWRF,
+                Variance_NABARD             : a.Variance_NABARD,
+                Variance_Bank_Loan          : a.Variance_Bank_Loan,
+                Variance_DirectCC           : a.Variance_DirectCC,
+                Variance_Indirect           : a.Variance_Indirect,
+                Variance_govtscheme         : a.Variance_govtscheme,
+                Variance_other              : a.Variance_other
+            }
+        })
+          this.setState({
+            tableData : tableData
+          },()=>{
+            console.log("resp",this.state.tableData)
+          })
+        })
+        .catch(function(error){        
+        });
+    }
+    handleFromChange(event){
+        event.preventDefault();
+       const target = event.target;
+       const name = target.name;
+       var dateVal = event.target.value;
+       var dateUpdate = new Date(dateVal);
+       var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+       this.setState({
+           [name] : event.target.value,
+           startDate:startDate
+       },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+       console.log("dateUpdate",this.state.startDate);
+       });
+       // localStorage.setItem('newFromDate',dateUpdate);
+    }
+    handleToChange(event){
+        event.preventDefault();
+        const target = event.target;
+        const name = target.name;
+
+        var dateVal = event.target.value;
+        var dateUpdate = new Date(dateVal);
+        var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+        this.setState({
+           [name] : event.target.value,
+           endDate : endDate
+        },()=>{
+        console.log("dateUpdate",this.state.endDate);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+       });
+       // localStorage.setItem('newToDate',dateUpdate);
+    }
+
+    currentFromDate(){
+       /* if(localStorage.getItem('newFromDate')){
+            var today = localStorage.getItem('newFromDate');
+            console.log("localStoragetoday",today);
+        }*/
+        if(this.state.startDate){
+            var today = this.state.startDate;
+            // console.log("localStoragetoday",today);
+        }else {
+            var today = moment(new Date()).format('YYYY-MM-DD');
+        // console.log("today",today);
+        }
+        // var dd = today.getDate();
+        // var mm = today.getMonth()+1; //January is 0!
+        // var yyyy = today.getFullYear();
+        // if(dd<10){
+        //     dd='0'+dd;
+        // }
+        // if(mm<10){
+        //     mm='0'+mm;
+        // }
+        // var today = yyyy+'-'+mm+'-'+dd;
+        // var today = yyyy+'-'+mm+'-'+dd;
+
+        console.log("nowfrom",today)
+        this.setState({
+           startDate :today
+        },()=>{
+        });
+        return today;
+        // this.handleFromChange()
+    }
+
+    currentToDate(){
+        if(this.state.endDate){
+            var today = this.state.endDate;
+            // console.log("newToDate",today);
+        }else {
+            var today =  moment(new Date()).format('YYYY-MM-DD');
+        }
+        // var dd = today.getDate();
+        // var mm = today.getMonth()+1; //January is 0!
+        // var yyyy = today.getFullYear();
+        // if(dd<10){
+        //     dd='0'+dd;
+        // }
+        // if(mm<10){
+        //     mm='0'+mm;
+        // }
+        // var today = yyyy+'-'+mm+'-'+dd;
+        // var today = yyyy+'-'+mm+'-'+dd;
+        // console.log("nowto",today)
+        this.setState({
+           endDate :today
+        },()=>{
+        });
+        return today;
+        // this.handleToChange();
+    }
+    getSearchText(searchText, startRange, limitRange){
+        console.log(searchText, startRange, limitRange);
+        this.setState({
+            tableData : []
+        });
+    }
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
 
@@ -104,46 +372,109 @@ class ActivityWisePeriodicVarianceReport extends Component{
   }
   render(){
     return( 
-      <div className="row">
-        <hr className="hr-map"/>
-        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-          <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-            Activity wise Periodic Variance Report (Physical & Financial)                   
-          </div>
-        </div>
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17">
-            <div className="sales-report-main-class">
-              <div className="sales-report-commonpre">
-                {/*<div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
-                  Daily
+        <div className="row">
+            <hr className="hr-map"/>
+            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                    Activity wise Periodic Variance Report (Physical & Financial)                   
                 </div>
-                <div onClick={this.changeReportComponent.bind(this)} id="Weekly"  className={this.state.currentTabView === "Weekly" ? "sales-report-common sales-report-thisweek report-currentlyActive" : "sales-report-common sales-report-thisweek"}>
-                  Weekly
-                </div>*/}
-                <div onClick={this.changeReportComponent.bind(this)} id="Monthly"  className={this.state.currentTabView === "Monthly" ? "sales-report-common sales-report-thismonth report-currentlyActive" : "sales-report-common sales-report-thismonth"}>
-                  Monthly
-                </div>
-                <div onClick={this.changeReportComponent.bind(this)} id="Yearly"  className={this.state.currentTabView === "Yearly" ? "sales-report-common sales-report-thisyear report-currentlyActive" : "sales-report-common sales-report-thisyear"}>
-                  Yearly
-                </div>
-                <div onClick={this.changeReportComponent.bind(this)} id="Customised"  className={this.state.currentTabView === "Customised" ? "sales-report-common sales-report-costomised report-currentlyActive" : "sales-report-common sales-report-costomised"}>
-                  Customised Dates
-                </div>
-              </div>
             </div>
-          </div>
-          
-          {
-            /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
-            this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-           */ this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
-            this.state.currentTabView === "Yearly"  ? <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-            <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} />  
-          }
-          
-        </div>
-      </div>    
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+              <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                <label className="formLable">Center</label><span className="asterix"></span>
+                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                  <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                    <option className="hidden" >-- Select --</option>
+                    {
+                      this.state.availableCenters && this.state.availableCenters.length >0 ?
+                      this.state.availableCenters.map((data, index)=>{
+                        return(
+                          <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                        );
+                      })
+                      :
+                      null
+                    }
+                  </select>
+                </div>
+                {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
+              </div>
+              <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                <label className="formLable">Sector</label><span className="asterix">*</span>
+                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                  <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                    <option  className="hidden" >--Select Sector--</option>
+                    {
+                    this.state.availableSectors && this.state.availableSectors.length >0 ?
+                    this.state.availableSectors.map((data, index)=>{
+                      return(
+                        <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                      );
+                    })
+                    :
+                    null
+                  }
+                  </select>
+                </div>
+               {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+              </div>
+                <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                    <label className="formLable">From</label><span className="asterix"></span>
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                        <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                    </div>
+                </div>
+                <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                    <label className="formLable">To</label><span className="asterix"></span>
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                        <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                    </div>
+                </div>
+            </div>  
+            <div className="marginTop11">
+                <div className="row">
+                    <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <IAssureTable 
+                            completeDataCount={this.state.tableDatas.length}
+                            twoLevelHeader={this.state.twoLevelHeader} 
+                            editId={this.state.editSubId} 
+                            getData={this.getData.bind(this)} 
+                            tableHeading={this.state.tableHeading} 
+                            tableData={this.state.tableData} 
+                            tableObjects={this.state.tableObjects}
+                            getSearchText={this.getSearchText.bind(this)}/>
+                    </div>
+               {/*   {
+                    <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading}  year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas} />  
+                  }*/}
+                   {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div className="sales-report-main-class">
+                            <div className="reports-select-date-boxmain">
+                                <div className="reports-select-date-boxsec">
+                                    
+                                        <div className="reports-select-date-from1">
+                                            <div className="reports-select-date-from2">
+                                                From
+                                            </div>
+                                            <div className="reports-select-date-from3">
+                                                <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="reportsDateRef form-control" placeholder=""  />
+                                            </div>
+                                        </div>
+                                        <div className="reports-select-date-to1">
+                                            <div className="reports-select-date-to2">
+                                                To
+                                            </div>
+                                            <div className="reports-select-date-to3">
+                                                <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="reportsDateRef form-control" placeholder=""   />
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>                           
+                        </div>
+                    </div>*/}
+                </div>
+            </div>
+        </div>    
     );
   }
 }

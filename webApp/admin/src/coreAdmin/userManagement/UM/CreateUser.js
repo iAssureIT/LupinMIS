@@ -254,7 +254,7 @@ class CreateUser extends Component {
       <div>
         <div className="modal fade" id="CreateUserModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-lg " role="document">
-            <div className="modal-content modalContent ummodallftmg ummodalmfdrt  ">
+            <div className="modal-content UMmodalContent ummodallftmg ummodalmfdrt  ">
               <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <button type="button" className="close " data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -267,7 +267,7 @@ class CreateUser extends Component {
                     <div className="">
                       <form id="signUpUser">
                         <div className="">
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box ">
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box ">
                             <div className="formLable">First Name <span className="requiredsign">*</span></div>
                             <span className="blocking-span">
                               <div className="input-group inputBox-main  new_inputbx " >
@@ -284,7 +284,7 @@ class CreateUser extends Component {
                               <span className="text-danger">{this.state.formerrors.firstname}</span> 
                             )}
                           </div> 
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box">
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box">
                             <div className="formLable">Last Name <span className="requiredsign">*</span></div>
                             <span className="blocking-span ">
                               <div className="input-group inputBox-main  new_inputbx " >
@@ -302,7 +302,7 @@ class CreateUser extends Component {
                           </div>                                                      
                         </div>
                         <div className="valid_box">
-                         <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box">
+                         <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box">
                           <div className="formLable">Email ID <span className="requiredsign">*</span></div>
                             <span className="blocking-span col-lg-12 col-md-12 col-xs-12 col-sm-12 emailfixdomain">
                               <div className="input-group inputBox-main   " >
@@ -317,7 +317,7 @@ class CreateUser extends Component {
                                       <span className="text-danger">{this.state.formerrors.signupEmail}</span> 
                                     )}
                           </div>                                                     
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box">
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box">
                             <div className="formLable">Mobile Number <span className="requiredsign">*</span></div>
                             <span className="blocking-span ">
                               <div className="input-group inputBox-main  new_inputbx " >
@@ -336,7 +336,7 @@ class CreateUser extends Component {
                           </div>                                                      
                         </div>
                         <div className="valid_box">
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box " >
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box " >
                             <div className="formLable mrgtop6">Role<span className="requiredsign"></span></div>
                             <div className="input-group inputBox-main" id="role">
                               <span className="input-group-addon inputIcon">
@@ -361,7 +361,7 @@ class CreateUser extends Component {
                                 <span className="text-danger">{ this.state.formerrors.role}</span> 
                               )}
                           </div>
-                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent valid_box " >
+                          <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box " >
                             <div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
                             <div className="input-group inputBox-main" id="centerName">
                               <span className="input-group-addon inputIcon">

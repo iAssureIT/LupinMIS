@@ -156,7 +156,7 @@ export default class CustomisedReport extends Component{
                     <div className="sales-report-main-class">
                         <div className="reports-select-date-boxmain">
                             <div className="reports-select-date-boxsec">
-                                {/*<div className="reports-select-date-Title">Customized Sales Report</div>*/}
+                                <div className="reports-select-date-Title">Customized Sales Report</div>
                                 <div className="reports-select-date-fromto">
                                     <div className="reports-select-date-from1">
                                         <div className="reports-select-date-from2">

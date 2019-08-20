@@ -6,6 +6,9 @@
   padding-top: 20px!important;
   padding-bottom: 0px;
 }
+.UMmodalContent{
+    margin-top: 15%;
+}
 .indexcls{
   z-index: 0 !important;
 }
