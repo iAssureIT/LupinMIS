@@ -32,12 +32,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             apply           : true,
             firstHeaderData : [
                 {
-                    heading : '',
-                    mergedColoums : 1
-                },
-                {
-                    heading : '',
-                    mergedColoums : 1
+                    heading : 'Sector Details',
+                    mergedColoums : 2
                 },
                 {
                     heading : 'Annual Plan',
@@ -58,40 +54,23 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "sector"                           : 'Sector',
-            "annualPlans_totalBudget"          : "Total Budget",
-            "annualPlan_Reach"                 : 'OutReach', 
-            "annualPlan_Upgradation"           : 'Family Upgradation', 
-            "annualFYAchie_Reach"              : 'OutReach', 
-            "annualFYAchie_Upgradation"        : 'Families Upgraded', 
-            "annualFYAchie_fin_total"          : 'Financial Total', 
-            "annualFYAchie_perc_annualPlan"    : '% to Annual Plan',
-            "scrFYAchie_LHWRF"                 : 'LHWRF',
-            "scrFYAchie_NABARD"                : 'NABARD',
-            "scrFYAchie_BankLoan"              : 'Bank Loan',
-            "scrFYAchie_Direct"                : 'Direct Community  Contribution',
-            "scrFYAchie_Indirect"              : 'Indirect Community  Contribution',
-            "scrFYAchie_Govt"                  : 'Govt',
-            "scrFYAchie_Other"                 : 'Others',/*
+            "sector"                            : 'Sector',
+            "annualPlan_totalBudget"            : "Total Budget",
+            "annualPlan_reach"                  : 'OutReach', 
+            "annualPlan_familyUpgrade"          : 'Family Upgradation', 
+            "achievement_Reach"                 : 'OutReach', 
+            "achievement_Upgradation"           : 'Families Upgraded', 
+            "achievement_totalExp"              : 'Financial Total', 
+            "annualFYAchie_perc_annualPlan"     : '% to Annual Plan',
+            "achievement_LHWRF"                 : 'LHWRF',
+            "achievement_NABARD"                : 'NABARD',
+            "achievement_BankLoan"              : 'Bank Loan',
+            "achievement_Direct"                : 'Direct Community  Contribution',
+            "achievement_Indirect"              : 'Indirect Community  Contribution',
+            "achievement_Govt"                  : 'Govt',
+            "achievement_Other"                 : 'Others',/*
             "aaaa"                             : 'Remarks',   */        
         },
-        /*
-        sector                        : String,
-        annualPlan_Reach              : Number,
-        annualPlan_Upgradation        : Number,
-        annualPlans_totalBudget       : Number,
-
-        annualFYAchie_Reach           : Number,
-        annualFYAchie_Upgradation     : Number,
-        annualFYAchie_fin_total       : Number,
-        annualFYAchie_perc_annualPlan : Number,
-        scrFYAchie_LHWRF              : Number,
-        scrFYAchie_NABARD             : Number,
-        scrFYAchie_BankLoan           : Number,
-        scrFYAchie_Direct             : Number,
-        scrFYAchie_Indirect           : Number,
-        scrFYAchie_Govt               : Number,
-        scrFYAchie_Other              : Number*/
     }
     window.scrollTo(0, 0);
   }
@@ -144,7 +123,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
  
 
   getData(year, center_ID){
-    axios.get('/api/report/annual_completion_sector/:year/:center_ID')
+    axios.get('/api/report/sector/:startDate/:endDate/:center_ID')
     .then((response)=>{
       console.log("resp",response);
       this.setState({
@@ -166,57 +145,59 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
   }
   render(){
     return(
-      <div className="row">
-        <hr className="hr-map"/>
-        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-          <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-            Sector Wise Annual Completion Summary Report                   
+      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+        <div className="row">
+          <hr className="hr-map"/>
+          <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+            <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+              Sector Wise Annual Completion Summary Report                   
+            </div>
+           {/* <div className="col-lg-1 col-lg-offset-5 col-md-12 col-xs-12 col-sm-12 backBtn">
+              <Link to="/report">Back to Reports</Link>                 
+            </div>*/}
           </div>
-         {/* <div className="col-lg-1 col-lg-offset-5 col-md-12 col-xs-12 col-sm-12 backBtn">
-            <Link to="/report">Back to Reports</Link>                 
-          </div>*/}
-        </div>
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-          <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <label className="formLable">Center</label><span className="asterix"></span>
-            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-              <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                <option className="hidden" >-- Select --</option>
-                {
-                  this.state.availableCenters && this.state.availableCenters.length >0 ?
-                  this.state.availableCenters.map((data, index)=>{
-                    return(
-                      <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                    );
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <label className="formLable">Center</label><span className="asterix"></span>
+              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                  <option className="hidden" >-- Select --</option>
+                  {
+                    this.state.availableCenters && this.state.availableCenters.length >0 ?
+                    this.state.availableCenters.map((data, index)=>{
+                      return(
+                        <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                      );
+                    })
+                    :
+                    null
+                  }
+                </select>
+              </div>
+              {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
+            </div>
+            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <label className="formLable">Year</label><span className="asterix"></span>
+              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                 <option className="hidden" >-- Select Year --</option>
+                 {
+                  this.state.years.map((data, i)=>{
+                    return <option key={i}>{data}</option>
                   })
-                  :
-                  null
-                }
-              </select>
-            </div>
-            {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
-          </div>
-          <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <label className="formLable">Year</label><span className="asterix"></span>
-            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-              <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-               <option className="hidden" >-- Select Year --</option>
-               {
-                this.state.years.map((data, i)=>{
-                  return <option key={i}>{data}</option>
-                })
-               }
-              </select>
-            </div>
-            {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+                 }
+                </select>
+              </div>
+              {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+            </div>  
           </div>  
-        </div>  
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-        {
-          <SectorwiseAnnualCompletionSummaryYearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} tableDatas={this.state.tableDatas}/> 
-        }
-          
-        </div>        
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+          {
+            <SectorwiseAnnualCompletionSummaryYearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} tableDatas={this.state.tableDatas}/> 
+          }
+            
+          </div>        
+        </div>
       </div>
     );
   }

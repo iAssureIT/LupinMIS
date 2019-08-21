@@ -33,21 +33,20 @@ export default class TableComponent extends Component{
         <div className="col-lg-12 box7">
         <div className="row">
           <div className="box1a col-lg-12">
-                  <div className="row">
-                    <div className="col-lg-6  ">
-                      <div><h4>Latest Orders</h4></div>   
-                    </div>
-                  </div>
+            <div className="row">
+              <div className="col-lg-6  ">
+                <div><h4>Latest Orders</h4></div>   
+              </div>
+            </div>
           </div>
           <div className="col-lg-12">
             <table className="table no-margin">
-                  <thead>
+                <thead>
                   <tr>
                     <th>Order ID</th>
                     <th>Item</th>
                     <th>Status</th>
-{/*                    <th>Popularity</th>
-*/}                  </tr>
+                  </tr>
                   </thead>
                   <tbody>
                   <tr>

@@ -179,7 +179,9 @@ componentDidMount(){
                           <Route path="/plan-details"                                                 exact strict component={ plan } />
                           <Route path="/plan-details/"                                                exact strict component={ plan } />
                           <Route path="/plan-details/:id"                                             exact strict component={ plan } />
-                          <Route path="/report"                                                       exact strict component={ report } />
+                          <Route path="/report/activitywise-annual-completion-report"                                                       exact strict component={ report } />
+                          <Route path="/report/"                                                      exact strict component={ report } />
+                          <Route path="/report/:url"                                                  exact strict component={ report } />
                           <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
                           <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
                           <Route path="/activity-wise-periodic-variance-report"                       exact strict component={ report3 } />
@@ -189,19 +191,15 @@ componentDidMount(){
                           <Route path="/villagewise-family-report"                                    exact strict component={ report7 } />
                           <Route path="/category-wise-report"                                         exact strict component={ report8 } />
                           <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
-                          <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
                           <Route path="/SDG-report"                                                   exact strict component={ report10 } />
                           <Route path="/ADP-report"                                                   exact strict component={ report11 } />
                           <Route path="/EMP-report"                                                   exact strict component={ report12 } />
-                          <Route path="/Report"                                                   exact strict component={ report } />
+                          <Route path="/Report"                                                       exact strict component={ report } />
                           <Route path="/Report/:id"                                                   exact strict component={ report } />
-
                         </Switch>        
                       </Router>
                     </div>
                   </div>
-                 
-
                 </div>
                 <div  id="headerid" className="">
                     <div className="">

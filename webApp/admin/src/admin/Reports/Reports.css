@@ -3,7 +3,9 @@
     width: 20px;
     background: #ff0
 }
-
+.redbox{
+    background: #f00
+}
 .reports-list-outerTR {
     background: #266fb9;
     color: #fff;

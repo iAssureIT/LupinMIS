@@ -1,5 +1,7 @@
-import React, { Component }       from 'react';
-import { Link }                   from 'react-router-dom';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter, Route, withRouter } from "react-router-dom";
+
 import $                          from 'jquery';
 import axios                      from 'axios';
 import ReactHTMLTableToExcel      from 'react-html-table-to-excel';
@@ -23,146 +25,20 @@ import Report11                   from "../../admin/LupinReports/ADPReport.js";
 import Report12                   from "../../admin/LupinReports/EMPReport.js";
 import "../Reports/Reports.css";
 
-const ReportsList = [];
-class SDGReport extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-        'currentTabView'    : "Monthly",
-        'tableDatas'        : [],
-        'reportData'        : {},
-        'tableData'         : [],
-        "startRange"        : 0,
-        "limitRange"        : 10,
-        "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
-        "twoLevelHeader"    : {
-            apply           : true,
-            firstHeaderData : [
-                {
-                    heading : '',
-                    mergedColoums : 1
-                }, 
-                {
-                    heading : '',
-                    mergedColoums : 1
-                },
-                {
-                    heading : 'Details of Activity contributing SDG',
-                    mergedColoums : 5
-                },
-                {
-                    heading : 'Financial Sharing "Rs"',
-                    mergedColoums : 9
-                },
-            ]
-        },
-        "tableHeading"      : {
-            "yghj"    : 'SDGs',
-            "dgfg"    : 'Activity',
-            "ertr"    : 'Unit',
-            "abcf"    : 'Quantity',
-            "ghgh"    : 'Amount',
-            "abui"    : 'Beneficiaries',
-            "hgfh"    : 'LHWRF',
-            "hffg"    : 'NABARD',
-            "tert"    : 'Bank Loan',
-            "ouio"    : 'Direct Community  Contribution',
-            "jshk"    : 'Indirect Community  Contribution',
-            "khjk"    : 'Govt',
-            "kgkk"    : 'Others',
-        
-        },
-    }
-    
-        window.scrollTo(0, 0);
-  }
-  componentDidMount(){
-    this.getAvailableSectors()
-    this.getDistrict();
 
-    for (let i=1; i<13;i++) {
-        ReportsList[i] = React.getComponentByName(`Report${i}`);
-    }
-  }
-  componentDidMount(){
-    this.getState();
-    this.getAvailableCenters();
-  }
-  getAvailableCenters(){
-    axios({
-      method: 'get',
-      url: '/api/centers/list',
-    }).then((response)=> {
-        
-        this.setState({
-          availableCenters : response.data
-        })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }   
-  getState(){
-    axios({
-      method: 'get',
-      url: 'http://locationapi.iassureit.com/api/states/get/list/IN',
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
-        this.setState({
-          listofStates : response.data
-        },()=>{
-        // console.log('listofStates', this.state.listofStates);
-        })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
-  selectState(event){
-    event.preventDefault();
-    var selectedState = event.target.value;
-    this.setState({
-      state : selectedState,
-    },()=>{
-      var stateCode = this.state.state.split('|')[1];
-      // console.log('state', stateCode);
-      this.setState({
-        stateCode :stateCode
-      },()=>{
-      console.log('stateCode',this.state.stateCode);
-      this.getDistrict(this.state.stateCode);
-      })
-    });
-    this.handleChange(event);
-  }
-  changeReportComponent(event){
-    var currentComp = $(event.currentTarget).attr('id');
+class Report extends Component {
 
-    this.setState({
-      'currentTabView': currentComp,
-    })
-  }
-  selectReportPath(e){
-    // this.props.history.push(`/${e.target.value}`);
-   e.preventDefault();
-    // var selectedReport = e.target.id;
-    var selectedReport = e.target.value;
-    // console.log('selectedReport', selectedReport)
 
-    this.setState({
-      selectedReport : selectedReport,
-    },()=>{
-      // console.log('selectedReport',this.state.selectedReport);
-      })
+  onChange = (e) => {
+    this.props.history.push(`/report/${e.target.value}`);
   }
-  
-  render(){
-      const selectedReport = this.state.selectedReport;
-// console.log("selectedReport", selectedReport)
-    return(
+  render() {
+    return (
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
           <div className="formWrapper">
-            <section className="content">
-              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
+            <section className="">
+              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
@@ -171,134 +47,67 @@ class SDGReport extends Component{
                     <hr className="hr-head container-fluid row"/>
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
+                    <div className=" valid_box ">  
                       <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                         <label className="formLable"><b>Select Report</b></label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="report" >
-                          {/*<div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
-                            Daily
-                          </div>*/}
-                          <select className="custom-select form-control inputBox" ref="report" name="report" value={this.state.report} onChange={this.selectReportPath.bind(this)} >
-                            <option className="hidden" >-- Select --</option>
-                            <option className="formLable" id="Report1" value="Report1">Activity wise Annual Completion Report</option>
-                            <option className="formLable" id="Report2" value="Report2">Sector wise Annual Completion Summary Report</option>
-                            <option className="formLable" id="Report3" value="Report3">Activity wise Periodic Variance Report (Physical & Financial)</option>
-                            <option className="formLable" id="Report4" value="Report4">Sector wise Periodic Variance Summary Report</option>
-                            <option className="formLable" id="Report5" value="Report5">Activity wise Periodic Physical Variance Report</option>
-                            <option className="formLable" id="Report6" value="Report6">Geographical Report</option>
-                            <option className="formLable" id="Report7" value="Report7">Villagewise Family Report</option>
-                            <option className="formLable" id="Report8" value="Report8">Category wise Report</option>
-                            <option className="formLable" id="Report9" value="Report9">Upgraded Beneficiary Report</option>
-                            <option className="formLable" id="Report10" value="Report10">SDG Report</option>
-                            <option className="formLable" id="Report11" value="Report11">ADP Report</option>
-                            <option className="formLable" id="Report12" value="Report12">EMP Report</option>
-                            
+                          <select onChange={this.onChange} className="custom-select form-control inputBox" ref="report">
+                            <option  className="hidden" value="">Select</option>
+                            <option className="formLable" value="activitywise-annual-completion-report">Activity wise Annual Completion Report</option>
+                            <option className="formLable" value="sector-wise-annual-completion-summary-report">Sector wise Annual Completion Summary Report</option>
+                            <option className="formLable" value="activity-wise-periodic-variance-report">Activity wise Periodic Variance Report (Physical & Financial)</option>
+                            <option className="formLable" value="sectorwise-periodic-variance-summary-report">Sector wise Periodic Variance Summary Report</option>
+                            <option className="formLable" value="activity-wise-periodic-physical-variance-report">Activity wise Periodic Physical Variance Report</option>
+                            <option className="formLable" value="geographical-report">Geographical Report</option>
+                            <option className="formLable" value="villagewise-family-report">Villagewise Family Report</option>
+                            <option className="formLable" value="category-wise-report">Category wise Report</option>
+                            <option className="formLable" value="upgraded-beneficiary-report">Upgraded Beneficiary Report</option>
+                            <option className="formLable" value="SDG-report">SDG Report</option>
+                            <option className="formLable" value="ADP-report">ADP Report</option>
+                            <option className="formLable" value="EMP-report">EMP Report</option>                             
                           </select>
                         </div>
-                        {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
-                      </div> 
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 assessmentBlockMargin complAssessmentBtnMargin">
-                                  { this.state.selectedReport ?
-                                    <ReactHTMLTableToExcel
-                                    id="test-table-xls-button"
-                                    className="pull-right dwnldAsExcel fa fa-download download-table-xls-button btn report-list-downloadXLXS exportIcon"
-                                    table="adminReport"
-                                    filename="Report"
-                                    sheet="tablexls"
-                                    buttonText=""/>
-                                    :
-                                    null
-                                  }
-                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                   {/* <table id="MyVendorsReport" className="table table-hover">
-                                      <thead className="table-head">
-                                        <tr>
-                                      
-                                          <th>Vendor Name</th>
-                                          <th>SPOC Name</th>
-                                          <th>SPOC Email</th>
-                                          <th>SPOC Mobile</th>
-                                          <th>SPOC Designation</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                          {this.state.allPosts && this.state.allPosts.length >0?
-                                            this.state.allPosts.map((data,index)=>{
-                                              return(
-                                                <tr key={index}>
-                                               
-                                                  <td className="">{data.companyName}</td>
-                                                  <td className="">{data.spocDetails?data.spocDetails.fullname:'-'}</td>
-                                                  <td className="">{data.spocDetails?data.spocDetails.emailId:'-'}</td>
-                                                  <td className="">{data.spocDetails?data.spocDetails.mobNumber:'-'}</td>
-                                                  <td className="">{data.spocDetails?data.spocDetails.designation:'-'}</td>
-                                                </tr>
-                                              );
-                                            })
-                                            :
-                                            null 
-                                          }
-                                      </tbody>
-                                    </table>*/}
-                                  </div>
-                      </div>                    
-                    </div>                    
-                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box "  id="adminReport">  
-                          {/*<selectedReport />*/}
-                          {
-                            this.state.selectedReport=='Report1'?
-                            <Report1 />
-                            :
-                            this.state.selectedReport=='Report2'?
-                            <Report2 />
-                            :
-                            this.state.selectedReport=='Report3'?
-                            <Report3 />
-                            :
-                            this.state.selectedReport=='Report4'?
-                            <Report4 />
-                            :
-                            this.state.selectedReport=='Report5'?
-                            <Report5 />
-                            :
-                            this.state.selectedReport=='Report6'?
-                            <Report6 />
-                            :
-                            this.state.selectedReport=='Report7'?
-                            <Report7 />
-                            :
-                            this.state.selectedReport=='Report8'?
-                            <Report8 />
-                            :
-                            this.state.selectedReport=='Report9'?
-                            <Report9 />
-                            :
-                            this.state.selectedReport=='Report10'?
-                            <Report10 />
-                            :
-                            this.state.selectedReport=='Report11'?
-                            <Report11 />
-                            :
-                            this.state.selectedReport=='Report12'?
-                            <Report12 />
-                            :
-                            null
-                          }
-                        </div> 
-                    <div>
-                    {/*  {
-                         ReportsList[this.props.componentId]
-                      }*/}
-                    </div>                
-                </div>
+                      </div>                                     
+                    </div>            
+                  </div>
                 </div>
               </div>
             </section>
           </div>
         </div>
-      </div>        
+      </div>
     );
   }
 }
-export default SDGReport
-/*https://reactstrap.github.io/components/dropdowns/*/
+
+const Menu = withRouter(Report);
+
+
+function App1() {
+  return (
+    <BrowserRouter>     
+      <div className="App1  content">
+        <div className="pageContent">
+          <div className="">
+            <Menu />
+            <Route path="/report/activitywise-annual-completion-report"           render={() => <div><Report1 /></div>}  />
+            <Route path="/report/sector-wise-annual-completion-summary-report"    render={() => <div><Report2 /></div>}  />
+            <Route path="/report/activity-wise-periodic-variance-report"          render={() => <div><Report3 /></div>} />
+            <Route path="/report/sectorwise-periodic-variance-summary-report"     render={() => <div><Report4 /></div>}  />
+            <Route path="/report/activity-wise-periodic-physical-variance-report" render={() => <div><Report5 /></div>}  />
+            <Route path="/report/geographical-report"                             render={() => <div><Report6 /></div>} />
+            <Route path="/report/villagewise-family-report"                       render={() => <div><Report7 /></div>}  />
+            <Route path="/report/category-wise-report"                            render={() => <div><Report8 /></div>} />
+            <Route path="/report/upgraded-beneficiary-report"                     render={() => <div><Report9 /></div>}  />
+            <Route path="/report/SDG-report"                                      render={() => <div><Report10 /></div>} />
+            <Route path="/report/ADP-report"                                      render={() => <div><Report11 /></div>}  />
+            <Route path="/report/EMP-report"                                      render={() => <div><Report12 /></div>}  />
+          </div>
+        </div>
+      </div>
+ 
+ </BrowserRouter>
+  );
+}
+
+export default App1

@@ -167,126 +167,128 @@ class GeographicalReport extends Component{
   }
   render(){
     return( 
-      <div className="row">
-        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-          <hr className="hr-map"/>
-          <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-            Geographical Report                   
-          </div>
-        </div>
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-          <div className="valid_box ">  
-            <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
-              <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
-              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector}  /*onChange={this.handleChange.bind(this)}*/>
-                  <option  className="hidden" value="" >-- Select Sector--</option>
-                  {
-                    this.state.availableSectors && this.state.availableSectors.length >0 ?
-                    this.state.availableSectors.map((data, index)=>{
-                      return(
-                        <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                      );
-                    })
-                    :
-                    null
-                  }
-                  
-                </select>
-              </div>
-             {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
-            </div>                      
-            <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
-              <label className="formLable">District</label><span className="asterix">*</span>
-              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                  <option  className="hidden" >-- Select --</option>
-                  {
-                    this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
-                    this.state.listofDistrict.map((data, index)=>{
-                      // console.log(data);
-                      return(
-                        <option key={index} value={data.districtName}>{data.districtName}</option>
-                      );
-                    })
-                    :
-                    null
-                  }                                  
-                </select>
-              </div>
-             {/* <div className="errorMsg">{this.state.errors.district}</div>*/}
+      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <div className="row">
+          <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+            <hr className="hr-map"/>
+            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+              Geographical Report                   
             </div>
           </div>
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+            <div className="valid_box ">  
+              <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
+                <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
+                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                  <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector}  /*onChange={this.handleChange.bind(this)}*/>
+                    <option  className="hidden" value="" >-- Select Sector--</option>
+                    {
+                      this.state.availableSectors && this.state.availableSectors.length >0 ?
+                      this.state.availableSectors.map((data, index)=>{
+                        return(
+                          <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                        );
+                      })
+                      :
+                      null
+                    }
+                    
+                  </select>
+                </div>
+               {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+              </div>                      
+              <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
+                <label className="formLable">District</label><span className="asterix">*</span>
+                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                  <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
+                    <option  className="hidden" >-- Select --</option>
+                    {
+                      this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                      this.state.listofDistrict.map((data, index)=>{
+                        // console.log(data);
+                        return(
+                          <option key={index} value={data.districtName}>{data.districtName}</option>
+                        );
+                      })
+                      :
+                      null
+                    }                                  
+                  </select>
+                </div>
+               {/* <div className="errorMsg">{this.state.errors.district}</div>*/}
+              </div>
+            </div>
 
-          <div className="valid_box ">  
-            <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
-              <label className="formLable">Block</label><span className="asterix">*</span>
-              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                  <option  className="hidden" >-- Select --</option>
-                  {
-                    this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                    this.state.listofBlocks.map((data, index)=>{
-                      return(
-                        <option key={index} value={data.blockName}>{data.blockName}</option>
-                      );
-                    })
-                    :
-                    null
-                  }                              
-                </select>
+            <div className="valid_box ">  
+              <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
+                <label className="formLable">Block</label><span className="asterix">*</span>
+                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                  <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                    <option  className="hidden" >-- Select --</option>
+                    {
+                      this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                      this.state.listofBlocks.map((data, index)=>{
+                        return(
+                          <option key={index} value={data.blockName}>{data.blockName}</option>
+                        );
+                      })
+                      :
+                      null
+                    }                              
+                  </select>
+                </div>
+                {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
               </div>
-              {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
-            </div>
-            <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
-              <label className="formLable">Village</label><span className="asterix">*</span>
-              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
-                  <option  className="hidden" >-- Select --</option>
-                  {
-                    this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                    this.state.listofVillages.map((data, index)=>{
-                      return(
-                        <option key={index} value={data.cityName}>{data.cityName}</option>
-                      );
-                    })
-                    :
-                    null
-                  } 
-                </select>
+              <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
+                <label className="formLable">Village</label><span className="asterix">*</span>
+                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                  <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
+                    <option  className="hidden" >-- Select --</option>
+                    {
+                      this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                      this.state.listofVillages.map((data, index)=>{
+                        return(
+                          <option key={index} value={data.cityName}>{data.cityName}</option>
+                        );
+                      })
+                      :
+                      null
+                    } 
+                  </select>
+                </div>
+                {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
               </div>
-              {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
-            </div>
-          </div> 
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17">
-            <div className="sales-report-main-class">
-              <div className="sales-report-commonpre">
-                {/*<div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
-                  Daily
-                </div>
-                <div onClick={this.changeReportComponent.bind(this)} id="Weekly"  className={this.state.currentTabView === "Weekly" ? "sales-report-common sales-report-thisweek report-currentlyActive" : "sales-report-common sales-report-thisweek"}>
-                  Weekly
-                </div>*/}
-                <div onClick={this.changeReportComponent.bind(this)} id="Monthly"  className={this.state.currentTabView === "Monthly" ? "sales-report-common sales-report-thismonth report-currentlyActive" : "sales-report-common sales-report-thismonth"}>
-                  Monthly
-                </div>
-                <div onClick={this.changeReportComponent.bind(this)} id="Yearly"  className={this.state.currentTabView === "Yearly" ? "sales-report-common sales-report-thisyear report-currentlyActive" : "sales-report-common sales-report-thisyear"}>
-                  Yearly
-                </div>
-                <div onClick={this.changeReportComponent.bind(this)} id="Customised"  className={this.state.currentTabView === "Customised" ? "sales-report-common sales-report-costomised report-currentlyActive" : "sales-report-common sales-report-costomised"}>
-                  Customised Dates
+            </div> 
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17">
+              <div className="sales-report-main-class">
+                <div className="sales-report-commonpre">
+                  {/*<div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
+                    Daily
+                  </div>
+                  <div onClick={this.changeReportComponent.bind(this)} id="Weekly"  className={this.state.currentTabView === "Weekly" ? "sales-report-common sales-report-thisweek report-currentlyActive" : "sales-report-common sales-report-thisweek"}>
+                    Weekly
+                  </div>*/}
+                  <div onClick={this.changeReportComponent.bind(this)} id="Monthly"  className={this.state.currentTabView === "Monthly" ? "sales-report-common sales-report-thismonth report-currentlyActive" : "sales-report-common sales-report-thismonth"}>
+                    Monthly
+                  </div>
+                  <div onClick={this.changeReportComponent.bind(this)} id="Yearly"  className={this.state.currentTabView === "Yearly" ? "sales-report-common sales-report-thisyear report-currentlyActive" : "sales-report-common sales-report-thisyear"}>
+                    Yearly
+                  </div>
+                  <div onClick={this.changeReportComponent.bind(this)} id="Customised"  className={this.state.currentTabView === "Customised" ? "sales-report-common sales-report-costomised report-currentlyActive" : "sales-report-common sales-report-costomised"}>
+                    Customised Dates
+                  </div>
                 </div>
               </div>
+            </div>          
+            <div className="row">          
+              {
+                /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
+                this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
+          */    this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
+                this.state.currentTabView === "Yearly"  ? <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
+                <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} />  
+              }
             </div>
-          </div>          
-          <div className="row">          
-            {
-              /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
-              this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-        */    this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
-              this.state.currentTabView === "Yearly"  ? <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-              <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} />  
-            }
           </div>
         </div>
       </div>

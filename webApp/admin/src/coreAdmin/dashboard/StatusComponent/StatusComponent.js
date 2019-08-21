@@ -37,9 +37,11 @@ export default class StatusComponent extends Component{
               <div className="col-lg-4 ccon1" style={{backgroundColor:this.props.stats.color}} >
                 <div className="row"><i className={"fa fa-"+this.props.stats.icon}></i></div>
               </div>
-              <div className="col-lg-7">
-                  <div>{this.props.stats.heading}</div>
-                  <div className="per"><strong>{this.props.stats.value}</strong></div>
+              <div className="col-lg-7 statusBox">
+                  <div className="dashboardHeading">{this.props.stats.heading1}</div>
+                  <div className="per"><strong>{this.props.stats.value1}</strong></div>
+                  <div className="dashboardHeading">{this.props.stats.heading2}</div>
+                  <div className="per"><strong>{this.props.stats.value2}</strong></div>
               </div>
             </div>
           </div>

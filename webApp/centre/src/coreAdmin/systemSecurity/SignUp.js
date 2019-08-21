@@ -63,8 +63,6 @@ class SignUp extends Component {
     }
  	usersignup(event){
  		event.preventDefault();
-    	if (this.validateFormReq() && this.validateForm()){
-
  			console.log("-------this.state.auth------>>",this.state.auth);
  			var auth={
 	                firstName       : this.refs.firstname.value,
@@ -127,68 +125,8 @@ class SignUp extends Component {
 				swal("Please enter mandatory fields", "");
 				console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
 			}
-        }
+        
  	}
-
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    if (!fields["firstname"]) {
-      formIsValid = false;
-      errors["firstname"] = "This field is required.";
-    }     
-    if (!fields["lastname"]) {
-      formIsValid = false;
-      errors["lastname"] = "This field is required.";
-    }
-    if (!fields["mobileNumber"]) {
-      formIsValid = false;
-      errors["mobileNumber"] = "This field is required.";
-    }
-    if (!fields["signupEmail"]) {
-      formIsValid = false;
-      errors["signupEmail"] = "This field is required.";
-    }      
-    if (!fields["centerName"]) {
-      formIsValid = false;
-      errors["centerName"] = "This field is required.";
-    }
-    if (!fields["signupEmail"]) {
-      formIsValid = false;
-      errors["signupEmail"] = "This field is required.";
-    }          
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
-  validateForm(){
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-
-    if (typeof fields["contact"] !== "undefined") {
-      if (!fields["contact"].match(/^[0-9]{10}$|^$/)) {
-        formIsValid = false;
-        errors["contact"] = "Please enter valid mobile no.";
-      }
-    }
-    if (typeof fields["nameOfFamilyHead"] !== "undefined") {
-      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["nameOfFamilyHead"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-        formIsValid = false;
-        errors["nameOfFamilyHead"] = "Please enter valid Name.";
-      }
-    }
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
-
  	handleChange(event){
 	    // const target = event.target;
 	    // const {name , value}   = event.target;
@@ -227,19 +165,6 @@ class SignUp extends Component {
 	    this.setState({ formerrors,
 	      [name]:value
 	    } );
-
-	    let fields = this.state.fields;
-	    fields[event.target.name] = event.target.value;
-	    this.setState({
-	      fields
-	    });
-	    if (this.validateForm()) {
-	      let errors = {};
-	      errors[event.target.name] = "";
-	      this.setState({
-	        errors: errors
-	      });
-	    }
 	}
  	acceptcondition(event){
 	    var conditionaccept = event.target.value;
@@ -255,6 +180,7 @@ class SignUp extends Component {
 	        $(".acceptinput").addAttr('disabled');
 	    }
     }
+
     showModal(){
         // if(this.state.roletype){
         //     $(".modalbg").css("display","block");
@@ -280,6 +206,7 @@ class SignUp extends Component {
         $('.hidePwd').toggleClass('hidePwd1');
         return $('.inputTextPass').attr('type', 'password');
     }
+
 	getCenters(){
 	    axios({
 	      method: 'get',
@@ -344,8 +271,8 @@ class SignUp extends Component {
 						<h4 className="signInNameTitle "><span className="bordbt">SIGN UP</span></h4>
 							<div className="col-lg-12 col-md-12 signUpInnerWrapperOES signupfrm">
 								<div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
-							   		<span className="blocking-span noIb" id="firstname">
-									   <input type="text" className="form-control abacusTextbox oesSignUpForm formLable"  ref="firstname" name="firstname"  onChange={this.handleChange} data-text="firstNameV" required/>
+							   		<span className="blocking-span noIb">
+									   <input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="firstname" ref="firstname" name="firstname"  onChange={this.handleChange} data-text="firstNameV" required/>
 									   {this.state.formerrors.firstNameV  && (
 				                        <span className="text-danger">{this.state.formerrors.firstNameV}</span> 
 				                      )}
@@ -354,7 +281,6 @@ class SignUp extends Component {
 								    		First Name
 							    		</span>					   			
 									</span>
-                                    <div className="errorMsg">{this.state.errors.firstname}</div>
 								</div>
 							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
 									<span className="blocking-span noIb">   
@@ -411,7 +337,7 @@ class SignUp extends Component {
 							    </div>	
 							    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent boxMarg">
 									<span className="blocking-span noIb">   
-									  <input type="email" className="form-control signupsetting formLable abacusTextbox oesSignUpForm" ref="signupEmail" name="signupEmail" id="signupEmail" onChange={this.handleChange} data-text="emailIDV" required/>
+									  <input type="email" className="form-control signupsetting formLable abacusTextbox oesSignUpForm" ref="signupEmail" name="signupEmail" onChange={this.handleChange} data-text="emailIDV" required/>
 									  {this.state.formerrors.emailIDV  && (
 				                        <span className="text-danger">{this.state.formerrors.emailIDV}</span> 
 				                      )}
@@ -433,7 +359,7 @@ class SignUp extends Component {
 					                    </span>*/}
 
 					                    <span className="blocking-span noIb">
-						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPass tmsLoginTextBox" ref="signupPassword" name="signupPassword" id="signupPassword" required/>
+						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPass tmsLoginTextBox" ref="signupPassword" name="signupPassword" required/>
 						                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Password</span>                 
 						                  </span>
 						                <div className="showHideSignDiv">
@@ -447,7 +373,7 @@ class SignUp extends Component {
 							   		<div className="input-group textpdEye fltlft col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
 							   			
 					                     <span className="blocking-span noIb">
-						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPass tmsLoginTextBox" ref="signupConfirmPassword" name="signupConfirmPassword"  id="signupConfirmPassword" required/>
+						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPass tmsLoginTextBox" ref="signupConfirmPassword" name="signupConfirmPassword" required/>
 						                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Confirm Password</span>                 
 						                  </span>
 						                <div className="showHideSignDiv">

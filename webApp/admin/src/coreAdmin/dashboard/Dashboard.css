@@ -44,7 +44,13 @@ border-radius: 2px 0px 0px 2px;
     border-radius: 2px 0px 0px 2px;
 }
 .per{
-    font-size: 18px;
+    font-size: 14px;
+}
+.dashboardHeading{
+    font-size: 13px;
+}
+.statusBox{
+    padding-top: 5px;
 }
 .emptybox1{
     height: 15px;
