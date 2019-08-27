@@ -59,27 +59,26 @@ export default class YearlyReport extends Component{
             console.log('response', response.data);
             var tableData = response.data.map((a, i)=>{
             return {
-              _id                         : a._id,
-              activity_subActivity        : a.activity_subActivity,
-              unit                        : a.unit,
-              annualPlan_reach            : a.annualPlan_reach,
-              annualPlan_familyUpgrade    : a.annualPlan_familyUpgrade,
-              annualPlan_physicalUnit     : a.annualPlan_physicalUnit,
-              annualPlan_totalBudget      : a.annualPlan_totalBudget,
-              achievement_Reach           : a.achievement_Reach,
-              achievement_Upgradation     : a.achievement_Upgradation,
-              achievement_physcialUnit    : a.achievement_physcialUnit,
-              achievement_totalExp_L      : a.achievement_totalExp_L,
-              achievement_LHWRF           : a.achievement_LHWRF,
-              achievement_NABARD          : a.achievement_NABARD,
-              achievement_BankLoan        : a.achievement_BankLoan,
-              achievement_Direct          : a.achievement_Direct,
-              achievement_Indirect        : a.achievement_Indirect,
-              achievement_Govt            : a.achievement_Govt,
-              achievement_Other           : a.achievement_Other,
-              remark                      : a.remark,
+              _id                           : a._id,
+              name                          : a.name,
+              unit                          : a.unit,
+              annualPlan_Reach              : a.annualPlan_Reach,
+              annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
+              annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
+              annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
+              achievement_Reach             : a.achievement_Reach,
+              achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
+              achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
+              achievement_TotalBudget_L     : a.achievement_TotalBudget_L,
+              achievement_LHWRF             : a.achievement_LHWRF,
+              achievement_NABARD            : a.achievement_NABARD,
+              achievement_Bank_Loan         : a.achievement_Bank_Loan,
+              achievement_DirectCC          : a.achievement_DirectCC,
+              achievement_IndirectCC        : a.achievement_IndirectCC,
+              achievement_Govt              : a.achievement_Govt,
+              achievement_Other             : a.achievement_Other,
+              remark                        : a.remark,
             }
-            
           })
             this.setState({
                 tableData : tableData

@@ -54,19 +54,19 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "sector"                            : 'Sector',
-            "annualPlan_totalBudget"            : "Total Budget",
-            "annualPlan_reach"                  : 'OutReach', 
-            "annualPlan_familyUpgrade"          : 'Family Upgradation', 
+            "name"                              : 'Sector',
+            "annualPlan_TotalBudget"            : "Total Budget",
+            "annualPlan_Reach"                  : 'OutReach', 
+            "annualPlan_FamilyUpgradation"      : 'Family Upgradation', 
             "achievement_Reach"                 : 'OutReach', 
-            "achievement_Upgradation"           : 'Families Upgraded', 
-            "achievement_totalExp"              : 'Financial Total', 
+            "achievement_FamilyUpgradation"     : 'Families Upgraded', 
+            "achievement_TotalBudget"           : 'Financial Total', 
             "annualFYAchie_perc_annualPlan"     : '% to Annual Plan',
             "achievement_LHWRF"                 : 'LHWRF',
             "achievement_NABARD"                : 'NABARD',
-            "achievement_BankLoan"              : 'Bank Loan',
-            "achievement_Direct"                : 'Direct Community  Contribution',
-            "achievement_Indirect"              : 'Indirect Community  Contribution',
+            "achievement_Bank_Loan"             : 'Bank Loan',
+            "achievement_DirectCC"              : 'Direct Community  Contribution',
+            "achievement_IndirectCC"            : 'Indirect Community  Contribution',
             "achievement_Govt"                  : 'Govt',
             "achievement_Other"                 : 'Others',/*
             "aaaa"                             : 'Remarks',   */        
