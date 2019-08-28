@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
-import axios                  from 'axios';
+import axios                from 'axios';
+import moment               from 'moment';
 import DailyReport          from '../Reports/DailyReport.js';
 import WeeklyReport         from '../Reports/WeeklyReport.js';
 import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
+import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 class CategorywiseReport extends Component{
 	constructor(props){
@@ -17,18 +19,14 @@ class CategorywiseReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10,
-        "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
+        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
                 {
-                    heading : '',
-                    mergedColoums : 1
+                    heading : 'Family Details',
+                    mergedColoums : 2
                 }, 
-                {
-                    heading : '',
-                    mergedColoums : 1
-                },
                 {
                     heading : 'No of Families',
                     mergedColoums : 2
@@ -36,79 +34,154 @@ class CategorywiseReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "abcs"    : 'Family Category',
-            "dgfg"    : 'Reached',
-            "ghgh"    : 'Upgraded',
+            "FamilyCategory"    : 'Family Category',
+            "Reach"             : 'Reached',
+            "FamilyUpgradation" : 'Upgraded',
         
         },
     }
-        window.scrollTo(0, 0);
-  }/*Sr.  Family Category No of Families  
-No.   Reached Upgraded*/
+      window.scrollTo(0, 0);
+      this.handleFromChange    = this.handleFromChange.bind(this);
+      this.handleToChange      = this.handleToChange.bind(this);
+      this.currentFromDate     = this.currentFromDate.bind(this);
+      this.currentToDate       = this.currentToDate.bind(this);
+      this.getAvailableCenters = this.getAvailableCenters.bind(this);
+      this.getAvailableSectors = this.getAvailableSectors.bind(this);
+  }
   componentDidMount(){
-    this.getState();
-    this.getAvailableCenters();
+      this.getAvailableCenters();
+      this.getAvailableSectors();
+      this.currentFromDate();
+      this.currentToDate();
+      this.setState({
+        // "center"  : this.state.center[0],
+        // "sector"  : this.state.sector[0],
+        tableData : this.state.tableData,
+      },()=>{
+      console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      })
+      this.handleFromChange = this.handleFromChange.bind(this);
+      this.handleToChange = this.handleToChange.bind(this);
+  }
+ 
+  componentWillReceiveProps(nextProps){
+      this.getAvailableCenters();
+      this.getAvailableSectors();
+      this.currentFromDate();
+      this.currentToDate();
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+  }
+  handleChange(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name] : event.target.value
+    },()=>{
+      console.log('name', this.state)
+    });
   }
   getAvailableCenters(){
     axios({
       method: 'get',
       url: '/api/centers/list',
     }).then((response)=> {
-        
+      this.setState({
+        availableCenters : response.data,
+        center           : response.data[0].centerName+'|'+response.data[0]._id
+      },()=>{
+        // console.log('center', this.state.center);
+        var center_ID = this.state.center.split('|')[1];
         this.setState({
-          availableCenters : response.data
-        })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }   
-  getState(){
-    axios({
-      method: 'get',
-      url: 'http://locationapi.iassureit.com/api/states/get/list/IN',
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
-        this.setState({
-          listofStates : response.data
+          center_ID        : center_ID
         },()=>{
-        // console.log('listofStates', this.state.listofStates);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
         })
+      })
     }).catch(function (error) {
       console.log('error', error);
     });
   }
-  selectState(event){
-    event.preventDefault();
-    var selectedState = event.target.value;
+  selectCenter(event){
+    var selectedCenter = event.target.value;
     this.setState({
-      state : selectedState,
+      [event.target.name] : event.target.value,
+      selectedCenter : selectedCenter,
     },()=>{
-      var stateCode = this.state.state.split('|')[1];
-      // console.log('state', stateCode);
+      var center = this.state.selectedCenter.split('|')[1];
+      console.log('center', center);
       this.setState({
-        stateCode :stateCode
+        center_ID :center,            
       },()=>{
-      console.log('stateCode',this.state.stateCode);
-      this.getDistrict(this.state.stateCode);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        this.getAvailableCenterData(this.state.center_ID);
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
       })
     });
-    this.handleChange(event);
-  }
-  getDistrict(stateCode){
+  } 
+
+  getAvailableCenterData(center_ID){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/districts/get/list/MH/IN',
-      // url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
+      url: '/api/centers/'+center_ID,
+      }).then((response)=> {
+        // console.log('response ==========',response.data[0].districtsCovered);
         this.setState({
-          listofDistrict : response.data
+          availableDistInCenter  : response.data[0].districtsCovered,
+          address                : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+          // districtsCovered : response.data[0].districtsCovered
         },()=>{
-        console.log('listofDistrict', this.state.listofDistrict);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        var stateCode =this.state.address.split('|')[0];
+        console.log("availableDistInCenter",this.state.availableDistInCenter);
+         this.setState({
+          stateCode  : stateCode,
+
+        },()=>{
+        console.log("address",this.state.stateCode, this.state.availableDistInCenter);
+        });
         })
     }).catch(function (error) {
       console.log('error', error);
     });
+  } 
+  getAvailableSectors(){
+      axios({
+        method: 'get',
+        url: '/api/sectors/list',
+      }).then((response)=> {
+          
+          this.setState({
+            availableSectors : response.data,
+            sector           : response.data[0].sector+'|'+response.data[0]._id
+          },()=>{
+          var sector_ID = this.state.sector.split('|')[1]
+          this.setState({
+            sector_ID        : sector_ID
+          },()=>{
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+          })
+          // console.log('sector', this.state.sector);
+        })
+      }).catch(function (error) {
+        console.log('error', error);
+      });
+  }
+  selectSector(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name]:event.target.value
+    });
+    var sector_id = event.target.value.split('|')[1];
+    // console.log('sector_id',sector_id);
+    this.setState({
+          sector_ID : sector_id,
+        },()=>{
+        // console.log('availableSectors', this.state.availableSectors);
+        // console.log('sector_ID', this.state.sector_ID);
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+    })
   }
   districtChange(event){    
     event.preventDefault();
@@ -118,14 +191,173 @@ No.   Reached Upgraded*/
       district: district
     },()=>{
       var selectedDistrict = this.state.district.split('|')[0];
-      console.log("selectedDistrict",selectedDistrict);
+      // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      console.log('selectedDistrict',this.state.selectedDistrict);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      // console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
+  }
+  getBlock(stateCode, selectedDistrict){
+    console.log("sd", stateCode,selectedDistrict);
+    axios({
+      method: 'get',
+      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
+      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+    }).then((response)=> {
+        // console.log('response ==========', response.data);
+        this.setState({
+          listofBlocks : response.data
+        },()=>{
+        // console.log('listofBlocks', this.state.listofBlocks);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectBlock(event){
+    event.preventDefault();
+    var block = event.target.value;
+    this.setState({
+      block : block
+    },()=>{
+      // console.log("block",block);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+    });
+  }
+  getVillages(stateCode, selectedDistrict, block){
+    // console.log(stateCode, selectedDistrict, block);
+    axios({
+      method: 'get',
+      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
+      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
+    }).then((response)=> {
+        // console.log('response ==========', response.data);
+        this.setState({
+          listofVillages : response.data
+        },()=>{
+        // console.log('listofVillages', this.state.listofVillages);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectVillage(event){
+    event.preventDefault();
+    var village = event.target.value;
+    this.setState({
+      village : village
+    },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      console.log("village",village);
+    });  
+  }  
+
+  camelCase(str){
+    return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  }
+  getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){        
+    console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
+    if(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){
+      // axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+      axios.get('http://qalmisapi.iassureit.com/api/report/category/'+startDate+'/'+endDate+'/'+center_ID)
+      .then((response)=>{
+        console.log("resp",response);
+          var tableData = response.data.map((a, i)=>{
+          return {
+            _id                    : a._id,            
+            Reach                  : a.Reach,
+            FamilyUpgradation      : a.FamilyUpgradation,
+            FamilyCategory         : a.FamilyCategory,
+          }
+        })
+        this.setState({
+          tableData : tableData
+        },()=>{
+          console.log("resp",this.state.tableData)
+        })
+      })
+      .catch(function(error){        
+      });
+    }
+  }
+  handleFromChange(event){
+      event.preventDefault();
+     const target = event.target;
+     const name = target.name;
+     var dateVal = event.target.value;
+     var dateUpdate = new Date(dateVal);
+     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+     this.setState({
+         [name] : event.target.value,
+         startDate:startDate
+     },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+     console.log("dateUpdate",this.state.startDate);
+     });
+  }
+  handleToChange(event){
+      event.preventDefault();
+      const target = event.target;
+      const name = target.name;
+
+      var dateVal = event.target.value;
+      var dateUpdate = new Date(dateVal);
+      var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+      this.setState({
+         [name] : event.target.value,
+         endDate : endDate
+      },()=>{
+      console.log("dateUpdate",this.state.endDate);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+     });
+  }
+
+  currentFromDate(){
+    if(this.state.startDate){
+          var today = this.state.startDate;
+          // console.log("localStoragetoday",today);
+      }else {
+          var today = moment(new Date()).format('YYYY-MM-DD');
+      // console.log("today",today);
+      }
+  
+      console.log("nowfrom",today)
+      this.setState({
+         startDate :today
+      },()=>{
+      });
+      return today;
+  }
+
+  currentToDate(){
+      if(this.state.endDate){
+          var today = this.state.endDate;
+          // console.log("newToDate",today);
+      }else {
+          var today =  moment(new Date()).format('YYYY-MM-DD');
+      }
+      // console.log("nowto",today)
+      this.setState({
+         endDate :today
+      },()=>{
+      });
+      return today;
+      // this.handleToChange();
+  }
+  getSearchText(searchText, startRange, limitRange){
+      console.log(searchText, startRange, limitRange);
+      this.setState({
+          tableData : []
+      });
   }
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
@@ -136,111 +368,113 @@ No.   Reached Upgraded*/
   }
   render(){
     return( 
-      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-        <div className="row">
-          <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-            <hr className="hr-map"/>
-            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-              Category wise Report                    
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-              <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">  
-                <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                  <label className="formLable">Center</label><span className="asterix"></span>
-                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                    <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center }  /*onChange={this.handleChange.bind(this)} */>
-                      <option className="hidden" >-- Select --</option>
-                      {
-                        this.state.availableCenters && this.state.availableCenters.length >0 ?
-                        this.state.availableCenters.map((data, index)=>{
-                          return(
-                            <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                          );
-                        })
-                        :
-                        null
-                      }
-                    </select>
-                  </div>
-                  {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
+        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+            <div className="row">
+                <hr className="hr-map"/>
+                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                        Category wise Report
+                    </div>
                 </div>
-                <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12  ">
-                  <label className="formLable">State</label><span className="asterix"></span>
-                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
-                    <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
-                      <option  className="hidden" value="">--Select--</option> 
-                      {
-                        this.state.listofStates ?
-                        this.state.listofStates.map((data, index)=>{
-                          return(
-                            <option key={index} value={data.stateName+'|'+data.stateCode}>{data.stateName}</option> 
-                          );
-                        })
-                        :
-                        null
-                      }
-                    </select>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 validBox">
+                  <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                    <label className="formLable">Center</label><span className="asterix"></span>
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                      <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                        <option className="hidden" >-- Select --</option>
+                        {
+                          this.state.availableCenters && this.state.availableCenters.length >0 ?
+                          this.state.availableCenters.map((data, index)=>{
+                            return(
+                              <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                            );
+                          })
+                          :
+                          null
+                        }
+                      </select>
+                    </div>
+                    {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                   </div>
-                 {/* <div className="errorMsg">{this.state.errors.state}</div>*/}
-                </div>                      
-                <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                  <label className="formLable">District</label><span className="asterix"></span>
-                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                    <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                      <option  className="hidden" >-- Select --</option>
-                      {
-                        this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
-                        this.state.listofDistrict.map((data, index)=>{
-                          // console.log(data);
-                          return(
-                            <option key={index} value={data.districtName}>{data.districtName}</option>
-                          );
-                        })
-                        :
-                        null
-                      }                                  
-                    </select>
+                  <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                    <label className="formLable">District</label><span className="asterix">*</span>
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                      <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
+                        <option  className="hidden" >--select--</option>
+                            
+                          {
+                          this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                          this.state.availableDistInCenter.map((data, index)=>{
+                            console.log("data",data)
+                            return(
+                              <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
+                            );
+                          })
+                          :
+                          null
+                        }                               
+                      </select>
+                    </div>
+                    {/*<div className="errorMsg">{this.state.errors.district}</div>*/}
                   </div>
-                 {/* <div className="errorMsg">{this.state.errors.district}</div>*/}
+                    <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                        <label className="formLable">From</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                            <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                        </div>
+                    </div>
+                    <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                        <label className="formLable">To</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                            <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                        </div>
+                    </div>
+                </div> 
+                <div className="marginTop11">
+                    <div className="">
+                        <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <IAssureTable 
+                                completeDataCount={this.state.tableDatas.length}
+                                twoLevelHeader={this.state.twoLevelHeader} 
+                                editId={this.state.editSubId} 
+                                getData={this.getData.bind(this)} 
+                                tableHeading={this.state.tableHeading} 
+                                tableData={this.state.tableData} 
+                                tableObjects={this.state.tableObjects}
+                                getSearchText={this.getSearchText.bind(this)}/>
+                        </div>
+                   {/*   {
+                        <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading}  year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas} />  
+                      }*/}
+                       {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div className="sales-report-main-class">
+                                <div className="reports-select-date-boxmain">
+                                    <div className="reports-select-date-boxsec">
+                                        
+                                            <div className="reports-select-date-from1">
+                                                <div className="reports-select-date-from2">
+                                                    From
+                                                </div>
+                                                <div className="reports-select-date-from3">
+                                                    <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="reportsDateRef form-control" placeholder=""  />
+                                                </div>
+                                            </div>
+                                            <div className="reports-select-date-to1">
+                                                <div className="reports-select-date-to2">
+                                                    To
+                                                </div>
+                                                <div className="reports-select-date-to3">
+                                                    <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="reportsDateRef form-control" placeholder=""   />
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>                           
+                            </div>
+                        </div>*/}
+                    </div>
                 </div>
-              </div>
-              
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17">
-                <div className="sales-report-main-class">
-                  <div className="sales-report-commonpre">
-                    {/*<div onClick={this.changeReportComponent.bind(this)} id="Daily" className={this.state.currentTabView === "Daily" ? "sales-report-common sales-report-today report-currentlyActive" : "sales-report-common sales-report-today"}>
-                      Daily
-                    </div>
-                    <div onClick={this.changeReportComponent.bind(this)} id="Weekly"  className={this.state.currentTabView === "Weekly" ? "sales-report-common sales-report-thisweek report-currentlyActive" : "sales-report-common sales-report-thisweek"}>
-                      Weekly
-                    </div>*/}
-                    <div onClick={this.changeReportComponent.bind(this)} id="Monthly"  className={this.state.currentTabView === "Monthly" ? "sales-report-common sales-report-thismonth report-currentlyActive" : "sales-report-common sales-report-thismonth"}>
-                      Monthly
-                    </div>
-                    <div onClick={this.changeReportComponent.bind(this)} id="Yearly"  className={this.state.currentTabView === "Yearly" ? "sales-report-common sales-report-thisyear report-currentlyActive" : "sales-report-common sales-report-thisyear"}>
-                      Yearly
-                    </div>
-                    <div onClick={this.changeReportComponent.bind(this)} id="Customised"  className={this.state.currentTabView === "Customised" ? "sales-report-common sales-report-costomised report-currentlyActive" : "sales-report-common sales-report-costomised"}>
-                      Customised Dates
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {
-                /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
-                this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-          */    this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> :  
-                this.state.currentTabView === "Yearly"  ? <YearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
-                <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} />  
-              }
-              
-            </div>
-          </div>
-        </div>
-      </div>
+            </div>    
+        </div>    
     );
   }
 }

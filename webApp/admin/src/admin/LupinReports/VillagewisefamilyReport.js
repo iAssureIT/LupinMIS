@@ -19,7 +19,7 @@ class VillagewisefamilyReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10,
-        "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
+        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -40,21 +40,21 @@ class VillagewisefamilyReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "abcs"    : 'Name of Family',
-            "familyID"    : 'Family ID',
-            "activityName"    : 'Activity',
-            "subactivityName"    : 'Subactivity',
-            "unit"    : 'Unit',
-            "UnitCost"    : 'Unit Rate',
-            "quantity"    : 'Quantity',
-            "LHWRF"    : 'LHWRF',
-            "NABARD"    : 'NABARD',
-            "Bank_Loan"    : 'Bank Loan',
-            "DirectCC"    : 'Direct Community  Contribution',
-            "IndirectCC"    : 'Indirect Community  Contribution',
-            "Govt"    : 'Govt',
-            "Other"    : 'Others',
-            "total"    : 'Total',
+            "name_family"    : 'Name of Family',
+            "familyID"       : 'Family ID',
+            "activityName"   : 'Activity',
+            "subactivityName": 'Subactivity',
+            "unit"           : 'Unit',
+            "UnitCost"       : 'Unit Rate',
+            "quantity"       : 'Quantity',
+            "LHWRF"          : 'LHWRF',
+            "NABARD"         : 'NABARD',
+            "Bank_Loan"      : 'Bank Loan',
+            "DirectCC"       : 'Direct Community  Contribution',
+            "IndirectCC"     : 'Indirect Community  Contribution',
+            "Govt"           : 'Govt',
+            "Other"          : 'Others',
+            "total"          : 'Total',
         
         },
     }
@@ -294,7 +294,7 @@ class VillagewisefamilyReport extends Component{
           var tableData = response.data.map((a, i)=>{
           return {
             _id                    : a._id,            
-            // name                   : a.name,
+            name_family            : a.name_family,
             familyID               : a.familyID,
             familyID               : a.familyID,
             activityName           : a.activityName,
