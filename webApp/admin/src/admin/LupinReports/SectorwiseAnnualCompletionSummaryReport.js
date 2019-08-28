@@ -61,7 +61,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             "achievement_Reach"                 : 'OutReach', 
             "achievement_FamilyUpgradation"     : 'Families Upgraded', 
             "achievement_TotalBudget"           : 'Financial Total', 
-            "annualFYAchie_perc_annualPlan"     : '% to Annual Plan',
+            "Per_Annual"                        : '% to Annual Plan',
             "achievement_LHWRF"                 : 'LHWRF',
             "achievement_NABARD"                : 'NABARD',
             "achievement_Bank_Loan"             : 'Bank Loan',

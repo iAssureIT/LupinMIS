@@ -89,7 +89,7 @@ export default class YearlyReport extends Component{
                     achievement_Reach                 : a.achievement_Reach, 
                     achievement_FamilyUpgradation     : a.achievement_FamilyUpgradation, 
                     achievement_TotalBudget           : a.achievement_TotalBudget, 
-                    annualFYAchie_perc_annualPlan     : a.annualFYAchie_perc_annualPlan,
+                    Per_Annual                        : a.Per_Annual,
                     achievement_LHWRF                 : a.achievement_LHWRF,
                     achievement_NABARD                : a.achievement_NABARD,
                     achievement_Bank_Loan             : a.achievement_Bank_Loan,
@@ -101,6 +101,8 @@ export default class YearlyReport extends Component{
             })
                 this.setState({
                     tableData : tableData
+                },()=>{
+                    console.log("tableData",this.state.tableData);
                 });
             })
             .catch((error)=>{
