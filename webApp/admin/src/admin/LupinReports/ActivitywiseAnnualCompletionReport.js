@@ -90,7 +90,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      console.log('name', this.state)
+      // console.log('name', this.state)
     });
   }
   getAvailableCenters(){
@@ -102,8 +102,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
         availableCenters : response.data,
         center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
-        console.log('availableCenters', this.state.availableCenters);
-        console.log('center', this.state.center);
+        // console.log('availableCenters', this.state.availableCenters);
+        // console.log('center', this.state.center);
       })
     }).catch(function (error) {
       console.log('error', error);
@@ -116,7 +116,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
       selectedCenter : selectedCenter,
     },()=>{
       var center = this.state.selectedCenter.split('|')[1];
-      console.log('center', center);
+      // console.log('center', center);
       this.setState({
         // center :center,
         
@@ -134,7 +134,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
           sector           : response.data[0].sector+'|'+response.data[0]._id
         },()=>{
         // console.log('availableSectors', this.state.availableSectors);
-        console.log('sector', this.state.sector);
+        // console.log('sector', this.state.sector);
       })
     }).catch(function (error) {
       console.log('error', error);
@@ -146,24 +146,26 @@ class ActivitywiseAnnualCompletionReport extends Component{
       [event.target.name]:event.target.value
     });
     var sector_id = event.target.value.split('|')[1];
-    console.log('sector_id',sector_id);
+    // console.log('sector_id',sector_id);
   }
 
   getData(year, center_ID, sector_ID){/*
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";*/
-    axios.get('http://qalmisapi.iassureit.com/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID')
     // axios.get('http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID/:sector_ID')
-    .then((response)=>{
-      console.log("resp",response);
-      this.setState({
-        tableDatas : response.data
-      },()=>{
-        console.log("resp",this.state.tableDatas)
+    if(year, center_ID, sector_ID){
+      axios.get('http://qalmisapi.iassureit.com/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID')
+      .then((response)=>{
+        console.log("resp",response);
+        this.setState({
+          tableDatas : response.data
+        },()=>{
+          console.log("resp",this.state.tableDatas)
+        })
       })
-    })
-    .catch(function(error){        
-    });
+      .catch(function(error){        
+      });
+    }
   }
 
   changeReportComponent(event){

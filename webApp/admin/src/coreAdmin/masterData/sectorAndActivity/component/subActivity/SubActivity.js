@@ -131,7 +131,7 @@ class SubActivity extends Component{
   }
   updateSubActivity(event){
     event.preventDefault();
-    if(this.refs.sector.value =="" || this.refs.activityName.value=="" || this.refs.subActivityName.value =="" || this.state.unit =="")
+    if(this.refs.sector.value ==="" || this.refs.activityName.value==="" || this.refs.subActivityName.value ==="" || this.state.unit ==="")
     {
       if (this.validateFormReq() && this.validateForm()) {}
     }else{
@@ -297,10 +297,10 @@ class SubActivity extends Component{
         var editData = response.data[0];
         this.setState({
           "sector"                : editData.sector+'|'+editData._id,
-          "activityName"          : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName+'|'+activity_id,
-          "subActivityName"       : (_.flatten(editData.activity.map((a)=>{if(a._id == activity_id) return (a.subActivity).filter((b)=>{ if(b._id == subactivity_id) return b.subActivityName }) })))[0].subActivityName,
-          "unit"                  : (_.flatten(editData.activity.map((a, i)=>{if(a._id == activity_id) return (a.subActivity).filter((b)=>{ if(b._id == subactivity_id) return b.unit }) })))[0].unit,
-          "familyUpgradation"     : (_.flatten(editData.activity.map((a, i)=>{if(a._id == activity_id)  return (a.subActivity).filter((b)=>{if(b._id == subactivity_id) return b.familyUpgradation}) })))[0].familyUpgradation,
+          "activityName"          : ((editData.activity.filter((a)=>{return a._id === activity_id ? a.activityName : ''}))[0]).activityName+'|'+activity_id,
+          "subActivityName"       : (_.flatten(editData.activity.map((a)=>{if(a._id === activity_id) return (a.subActivity).filter((b)=>{ if(b._id === subactivity_id) return b.subActivityName }) })))[0].subActivityName,
+          "unit"                  : (_.flatten(editData.activity.map((a, i)=>{if(a._id === activity_id) return (a.subActivity).filter((b)=>{ if(b._id === subactivity_id) return b.unit }) })))[0].unit,
+          "familyUpgradation"     : (_.flatten(editData.activity.map((a, i)=>{if(a._id === activity_id)  return (a.subActivity).filter((b)=>{if(b._id === subactivity_id) return b.familyUpgradation}) })))[0].familyUpgradation,
         },()=>{
         });
       let fields = this.state.fields;

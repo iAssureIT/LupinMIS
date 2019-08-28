@@ -123,17 +123,19 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
  
 
   getData(year, center_ID){
-    axios.get('/api/report/sector/:startDate/:endDate/:center_ID')
-    .then((response)=>{
-      console.log("resp",response);
-      this.setState({
-        tableDatas : response.data
-      },()=>{
-        console.log("resp",this.state.tableDatas)
+    if(year, center_ID){
+      axios.get('/api/report/sector/:startDate/:endDate/:center_ID')
+      .then((response)=>{
+        console.log("resp",response);
+        this.setState({
+          tableDatas : response.data
+        },()=>{
+          console.log("resp",this.state.tableDatas)
+        })
       })
-    })
-    .catch(function(error){        
-    });
+      .catch(function(error){        
+      });
+    }
   }
   
   changeReportComponent(event){

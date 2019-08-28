@@ -19,7 +19,7 @@ export default class YearlyReport extends Component{
             "limitRange"        : 10
             
         }
-        console.log("tableData", this.state.tableData);
+        // console.log("tableData", this.state.tableData);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -35,7 +35,7 @@ export default class YearlyReport extends Component{
                 center : nextProps.center.split('|')[1],
                 sector : nextProps.sector.split('|')[1]
             },()=>{
-                console.log('year', this.state.year, 'center', this.state.center,'sector', this.state.sector)
+                // console.log('year', this.state.year, 'center', this.state.center,'sector', this.state.sector)
                 this.getData(this.state.year, this.state.center, this.state.sector);
             });
         }
@@ -50,46 +50,49 @@ export default class YearlyReport extends Component{
         });
     }
     getData(year, centerID, sector){
-        console.log('year', year, 'centerID', centerID, 'sector', sector);
+        // console.log('year', year, 'centerID', centerID, 'sector', sector);
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";
         // axios.get('http://qalmisapi.iassureit.com/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)
-        axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
-        .then((response)=>{
-            console.log('response', response.data);
-            var tableData = response.data.map((a, i)=>{
-            return {
-              _id                           : a._id,
-              name                          : a.name,
-              unit                          : a.unit,
-              annualPlan_Reach              : a.annualPlan_Reach,
-              annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
-              annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
-              annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
-              achievement_Reach             : a.achievement_Reach,
-              achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
-              achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
-              achievement_TotalBudget_L     : a.achievement_TotalBudget_L,
-              achievement_LHWRF             : a.achievement_LHWRF,
-              achievement_NABARD            : a.achievement_NABARD,
-              achievement_Bank_Loan         : a.achievement_Bank_Loan,
-              achievement_DirectCC          : a.achievement_DirectCC,
-              achievement_IndirectCC        : a.achievement_IndirectCC,
-              achievement_Govt              : a.achievement_Govt,
-              achievement_Other             : a.achievement_Other,
-              remark                        : a.remark,
-            }
-          })
-            this.setState({
-                tableData : tableData
+        if(startDate, endDate, centerID, sector){
+            axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
+            .then((response)=>{
+                console.log('response', response.data);
+                var tableData = response.data.map((a, i)=>{
+                return {
+                  _id                           : a._id,
+                  name                          : a.name,
+                  unit                          : a.unit,
+                  annualPlan_Reach              : a.annualPlan_Reach,
+                  annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
+                  annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
+                  annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
+                  achievement_Reach             : a.achievement_Reach,
+                  achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
+                  achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
+                  achievement_TotalBudget_L     : a.achievement_TotalBudget_L,
+                  achievement_LHWRF             : a.achievement_LHWRF,
+                  achievement_NABARD            : a.achievement_NABARD,
+                  achievement_Bank_Loan         : a.achievement_Bank_Loan,
+                  achievement_DirectCC          : a.achievement_DirectCC,
+                  achievement_IndirectCC        : a.achievement_IndirectCC,
+                  achievement_Govt              : a.achievement_Govt,
+                  achievement_Other             : a.achievement_Other,
+                  remark                        : a.remark,
+                }
+              })
+                this.setState({
+                    tableData : tableData
+                })
             })
-        })
-        .catch((error)=>{
-            console.log('error', error);
-        })
+            .catch((error)=>{
+                console.log('error', error);
+            })   
+        }
+        
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
+        // console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
