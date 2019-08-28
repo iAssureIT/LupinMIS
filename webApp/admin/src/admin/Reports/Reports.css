@@ -10,7 +10,9 @@
     background: #266fb9;
     color: #fff;
 }
-
+.validBox{
+    height: 65px;
+}
 .reports-list-outerTableth, .reports-list-outerTabletd {
     border: 1px solid #266fb9;
 }
