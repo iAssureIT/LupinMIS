@@ -288,11 +288,11 @@ class UpgradedBeneficiaryReport extends Component{
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
   }
-  getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){        
-    console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
-    if(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){
+  getData(startDate, endDate, center_ID, selectedDistrict){        
+    console.log(startDate, endDate, center_ID, selectedDistrict);
+    if(startDate, endDate, center_ID, selectedDistrict){
       // axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-      axios.get('http://qalmisapi.iassureit.com/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID)
+      axios.get('http://qalmisapi.iassureit.com/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict)
       .then((response)=>{
         console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
