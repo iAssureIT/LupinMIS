@@ -49,6 +49,7 @@ class SDGReport extends Component{
             "Govt"            : 'Govt',
             "Bank"            : 'Bank Loan',
             "Community"       : 'Community',
+            "Other"           : 'Other',
         
         },
     }
@@ -145,6 +146,7 @@ class SDGReport extends Component{
                 Govt            : a.Govt,
                 Bank            : a.Bank,
                 Community       : a.Community,
+                Other           : a.Other,
             }
         })  
           this.setState({

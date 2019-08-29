@@ -49,6 +49,7 @@ class ADPReport extends Component{
             "Govt"            : 'Govt',
             "Bank"            : 'Bank Loan',
             "Community"       : 'Community',
+            "Other"           : 'Other',
         },
     }
     window.scrollTo(0, 0); 
@@ -144,6 +145,7 @@ class ADPReport extends Component{
                 Govt            : a.Govt,
                 Bank            : a.Bank,
                 Community       : a.Community,
+                Other           : a.Other,
             }
         })  
           this.setState({

@@ -1,11 +1,19 @@
 
-#headerid{
+/*#headerid{
   position: absolute;
   height: 50px;
   width: 82.5%;
   right: 0px;
   transition: all 0.8s;
-  }
+}*/
+#headerid {
+    position: absolute;
+    width: 83.1%;
+    right: 0;
+    -webkit-transition: all .8s;
+    transition: all .8s;
+}
+
 
 .fontB{
   color: #333;

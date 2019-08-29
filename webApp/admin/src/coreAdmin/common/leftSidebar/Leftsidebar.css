@@ -52,17 +52,20 @@ i, span {
 }
 
 #sidebar {
-    min-width: 240px;
-    max-width: 250px;
+    height: 100vh!important;
+}
+#sidebar {
+    min-width: 228px;
+    max-width: 250px ;
     background: #333;
     color: #fff;
     transition: all 0.80s;
 }
 
 #sidebar.active {
-    min-width: 82px;
+    min-width: 80px;
     max-width: 80px;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 #sidebar.active .sidebar-header h4,  #sidebar.active .CTAs {

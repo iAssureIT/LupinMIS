@@ -25,7 +25,7 @@ class UpgradedBeneficiaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Beneficiary Details',
-                    mergedColoums : 4
+                    mergedColoums : 5
                 }, 
                 {
                     heading : 'Sector Details',
@@ -45,8 +45,8 @@ class UpgradedBeneficiaryReport extends Component{
         "tableHeading"      : {
             "district"           : 'District',
             "block"              : 'Block',
-            // "date"    : 'Village',
-            "beneficiaryName"    : 'Name of Beneficiary',
+            "village"    : 'Village',
+            "beneficiaryID"    : 'Name of Beneficiary',
             // "activityName"    : 'Project',
             "sectorName"         : 'Sector',
             "activityName"       : 'Activity',
@@ -300,6 +300,8 @@ class UpgradedBeneficiaryReport extends Component{
             _id             : a._id,            
             district        : a.district,
             block           : a.block,
+            village         : a.village,
+            beneficiaryID   : a.beneficiaryID,
             date            : a.date,
             sectorName      : a.sectorName,
             activityName    : a.activityName,
@@ -316,7 +318,6 @@ class UpgradedBeneficiaryReport extends Component{
             indirectCC      : a.indirectCC,
             other           : a.other,
             total           : a.total,
-            beneficiaryName : a.beneficiaryName
           }
         })
         this.setState({
