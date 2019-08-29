@@ -23,9 +23,13 @@ import Report9                    from "../../admin/LupinReports/UpgradedBenefic
 import Report10                   from "../../admin/LupinReports/SDGReport.js";
 import Report11                   from "../../admin/LupinReports/ADPReport.js";
 import Report12                   from "../../admin/LupinReports/EMPReport.js";
+import Report13                   from "../../admin/LupinReports/ActivitywiseAnnualPlanReport.js";
+import Report14                   from "../../admin/LupinReports/ActivitywisePeriodicPlanReport.js";
+import Report15                   from "../../admin/LupinReports/SectorwisePeriodicPlanSummaryReport.js";
+import Report16                   from "../../admin/LupinReports/SectorwiseAnnualPlanSummaryReport.js";
 import "../Reports/Reports.css";
 
-
+      
 class Report extends Component {
 
 
@@ -65,6 +69,10 @@ class Report extends Component {
                             <option className="formLable" value="SDG-report">SDG Report</option>
                             <option className="formLable" value="ADP-report">ADP Report</option>
                             <option className="formLable" value="EMP-report">EMP Report</option>                             
+                            <option className="formLable" value="activitywise-annual-plan-report">Activity wise Annual Plan Report</option>                             
+                            <option className="formLable" value="activity-wise-periodic-plan-report">Activity wise Periodic Plan Report</option>                             
+                            <option className="formLable" value="sector-wise-periodic-plan-summary-report">Sector wise Periodic Plan Summary Report</option>                             
+                            <option className="formLable" value="sector-wise-annual-plan-summary-report">Sector wise Annual Plan Summary Report</option>                             
                           </select>
                         </div>
                       </div>                                     
@@ -102,6 +110,10 @@ function App1() {
             <Route path="/report/SDG-report"                                      render={() => <div><Report10 /></div>} />
             <Route path="/report/ADP-report"                                      render={() => <div><Report11 /></div>}  />
             <Route path="/report/EMP-report"                                      render={() => <div><Report12 /></div>}  />
+            <Route path="/report/activitywise-annual-plan-report"                 render={() => <div><Report13 /></div>}  />
+            <Route path="/report/activity-wise-periodic-plan-report"              render={() => <div><Report14 /></div>}  />
+            <Route path="/report/sector-wise-periodic-plan-summary-report"        render={() => <div><Report15 /></div>}  />
+            <Route path="/report/sector-wise-annual-plan-summary-report"          render={() => <div><Report16 /></div>}  />
           </div>
         </div>
       </div>

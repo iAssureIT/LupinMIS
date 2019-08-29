@@ -10,7 +10,7 @@ import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 
-class ActivityWisePeriodicVarianceReport extends Component{
+class ActivitywisePeriodicPlanReport extends Component{
 	constructor(props){
         super(props);
         this.state = {
@@ -36,54 +36,41 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     },
                     {
                         heading : 'Annual Plan',
-                        mergedColoums : 2
+                        mergedColoums : 5
                     },
                     {
-                        heading : "Source of Financial Periodic Plan (Physical & Financial 'Lakh')",
-                        mergedColoums : 9
+                        heading : 'Periodic Plan',
+                        mergedColoums : 3
                     },
                     {
-                        heading : "Source wise Financial Periodic Achievements",
+                        heading : "Source of Financial Plan 'Rs'",
                         mergedColoums : 9
-                    },
+                    },/*
                     {
-                        heading : "Agency wise Variance Periodic Report 'Lakh'",
-                        mergedColoums : 9
-                    },
+                        heading : "",
+                        mergedColoums : 1
+                    },*/
                 ]
             },
             "tableHeading"      : {
                 "name"                                      : 'Activity & Sub Activity',
                 "unit"                                      : 'Unit',
+                "annualPlan_Reach"                          : 'Reach', 
+                "annualPlan_FamilyUpgradation"              : "Families Upgradation",
                 "annualPlan_PhysicalUnit"                   : 'Physical Units', 
-                "annualPlan_TotalBudget_L"                  : "Total Budget 'Lakh'",
+                "annualPlan_UnitCost"                       : 'Unit Cost "Rs"',
+                "annualPlan_TotalBudget"                    : "Total Budget 'Lakh'",
+                "monthlyPlan_Reach"                         : 'Reach', 
                 "monthlyPlan_PhysicalUnit"                  : 'Physical Units', 
-                "monthlyPlan_TotalBudget_L"                 : "Total Budget 'Lakh'",
+                "monthlyPlan_TotalBudget_L"                 : "Total Budget",
                 "monthlyPlan_LHWRF_L"                       : 'LHWRF',
                 "monthlyPlan_NABARD_L"                      : 'NABARD',
                 "monthlyPlan_Bank_Loan_L"                   : 'Bank Loan',
                 "monthlyPlan_DirectCC_L"                    : 'Direct Community  Contribution',
                 "monthlyPlan_IndirectCC_L"                  : 'Indirect Community  Contribution',
                 "monthlyPlan_Govt_L"                        : 'Govt',
-                "monthlyPlan_Other_L"                       : 'Others',
-                "achievement_PhysicalUnit"                  : 'Physical Units', 
-                "achievement_TotalBudget_L"                 : "Financial Total",
-                "achievement_LHWRF_L"                       : 'LHWRF',
-                "achievement_NABARD_L"                      : 'NABARD',
-                "achievement_Bank_Loan_L"                   : 'Bank Loan',
-                "achievement_DirectCC_L"                    : 'Direct Community  Contribution',
-                "achievement_IndirectCC_L"                  : 'Indirect Community  Contribution',
-                "achievement_Govt_L"                        : 'Govt',
-                "achievement_Other_L"                       : 'Others',
-                "variance_monthlyPlan_PhysicalUnit"         : 'Physical Units', 
-                "variance_monthlyPlan_TotalBudget_L"        : "Financial Total",
-                "variance_monthlyPlan_LHWRF_L"              : 'LHWRF',
-                "variance_monthlyPlan_NABARD_L"             : 'NABARD',
-                "variance_monthlyPlan_Bank_Loan_L"          : 'Bank Loan',
-                "variance_monthlyPlan_DirectCC_L"           : 'Direct Community  Contribution',
-                "variance_monthlyPlan_IndirectCC_L"         : 'Indirect Community  Contribution',
-                "variance_monthlyPlan_Govt_L"               : 'Govt',
-                "variance_monthlyPlan_Other_L"              : 'Others',
+                "monthlyPlan_Other_L"                       : 'Others',/*
+                "monthlyPlan_Other_L"                       : 'Remark',*/
             },
         }
         window.scrollTo(0, 0);
@@ -212,12 +199,16 @@ class ActivityWisePeriodicVarianceReport extends Component{
         .then((response)=>{
           console.log("resp",response);
             var tableData = response.data.map((a, i)=>{
-            return {
+                return {
                 _id                                       : a._id,            
                 name                                      : a.name,
                 unit                                      : a.unit,
+                annualPlan_Reach                          : a.annualPlan_Reach,
+                annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
                 annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                annualPlan_UnitCost                       : a.annualPlan_UnitCost,
+                annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
+                monthlyPlan_Reach                         : a.monthlyPlan_Reach,
                 monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
                 monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,
                 monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
@@ -227,24 +218,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
                 monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                 monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
-                achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
-                achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
-                achievement_LHWRF_L                       : a.achievement_LHWRF_L,
-                achievement_NABARD_L                      : a.achievement_NABARD_L,
-                achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,
-                achievement_DirectCC_L                    : a.achievement_DirectCC_L,
-                achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
-                achievement_Govt_L                        : a.achievement_Govt_L,
-                achievement_Other_L                       : a.achievement_Other_L,
-                variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
-                variance_monthlyPlan_TotalBudget_L        : a.variance_monthlyPlan_TotalBudget_L,
-                variance_monthlyPlan_LHWRF_L              : a.variance_monthlyPlan_LHWRF_L,
-                variance_monthlyPlan_NABARD_L             : a.variance_monthlyPlan_NABARD_L,
-                variance_monthlyPlan_Bank_Loan_L          : a.variance_monthlyPlan_Bank_Loan_L,
-                variance_monthlyPlan_DirectCC_L           : a.variance_monthlyPlan_DirectCC_L,
-                variance_monthlyPlan_IndirectCC_L         : a.variance_monthlyPlan_IndirectCC_L,
-                variance_monthlyPlan_Govt_L               : a.variance_monthlyPlan_Govt_L,
-                variance_monthlyPlan_Other_L              : a.variance_monthlyPlan_Other_L
+                // monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
             }
         })
           this.setState({
@@ -369,7 +343,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 <hr className="hr-map"/>
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                        Activity wise Periodic Variance Report (Physical & Financial)                   
+                        Activity wise Periodic Plan Report              
                     </div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
@@ -472,4 +446,4 @@ class ActivityWisePeriodicVarianceReport extends Component{
     );
   }
 }
-export default ActivityWisePeriodicVarianceReport
+export default ActivitywisePeriodicPlanReport

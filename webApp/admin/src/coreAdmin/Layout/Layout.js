@@ -61,6 +61,7 @@ import report9                                    from "../../admin/LupinReports
 import report10                                   from "../../admin/LupinReports/SDGReport.js";
 import report11                                   from "../../admin/LupinReports/ADPReport.js";
 import report12                                   from "../../admin/LupinReports/EMPReport.js";
+import report13                                   from "../../admin/LupinReports/ActivitywiseAnnualPlanReport.js";
 
  class Layout extends Component{
   
@@ -194,6 +195,7 @@ componentDidMount(){
                           <Route path="/SDG-report"                                                   exact strict component={ report10 } />
                           <Route path="/ADP-report"                                                   exact strict component={ report11 } />
                           <Route path="/EMP-report"                                                   exact strict component={ report12 } />
+                          <Route path="/activitywise-annual-plan-report"                                  exact strict component={ report13 } />
                           <Route path="/Report"                                                       exact strict component={ report } />
                           <Route path="/Report/:id"                                                   exact strict component={ report } />
                         </Switch>        
