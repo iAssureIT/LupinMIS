@@ -44,14 +44,15 @@ class Login extends Component {
         // this.setState({
         //   token : response.data.token
         // });
-
+      /*  axios.defaults.headers.common['Authorization'] = response.data.token;
+*/
         localStorage.setItem("token",response.data.token);
         localStorage.setItem("emailId",response.data.emailId);
         localStorage.setItem("center_ID",response.data.center_ID);
         localStorage.setItem("centerName",response.data.centerName);
         localStorage.setItem("fullName",response.data.fullName);
-        // console.log("localStorage =",response.data.emailId,localStorage.getItem('emailId'));
-        // console.log("localStorage =",localStorage);
+        console.log("localStorage =",localStorage.getItem('token'));
+        console.log("localStorage =",localStorage);
         // browserHistory.replace('/');
         this.props.history.push("/dashboard");
         window.location.reload(); 
@@ -67,7 +68,7 @@ class Login extends Component {
         }
       })
       .catch(function (error) {
-          console.log(error);
+         console.log("error", error);
         if(localStorage!==null){
           swal("Invalid Email or Password","Please Enter valid email and password");
         }

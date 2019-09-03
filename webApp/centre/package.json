@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "bootstrap": "^3.4.1",
+    "chart.js": "^2.8.0",
     "font-awesome": "^4.7.0",
     "html2canvas": "^1.0.0-rc.3",
     "jquery": "^3.4.1",

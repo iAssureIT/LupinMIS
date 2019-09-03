@@ -44,7 +44,7 @@ class Login extends Component {
         // this.setState({
         //   token : response.data.token
         // });
-
+        // axios.defaults.headers.common['Authorization'] = response.data.token;
         localStorage.setItem("token",response.data.token);
         localStorage.setItem("emailId",response.data.emailId);
         localStorage.setItem("center_ID",response.data.center_ID);

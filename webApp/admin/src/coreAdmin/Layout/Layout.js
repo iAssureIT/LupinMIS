@@ -17,6 +17,7 @@ import SignUp                                     from '../systemSecurity/SignUp
 import VerifyAccount                              from '../systemSecurity/VerifyAccount.js';
 // import CommonPage                              from './components/layouts/CommonLayout.js';
 
+import Chart                                  from '../dashboard/chart1/Chart.js'
 
 import Header                                     from '../common/header/Header.js'
 import Footer                                     from '../common/footer/Footer.js'
@@ -148,6 +149,7 @@ componentDidMount(){
                     <div id="dashbordid" className="">
                       <Router>
                         <Switch>
+                          <Route path="/Chart" component={Chart} exact />
                           <Route path="/" component={Dashboard} exact />
                           <Route path="/dashboard" component={Dashboard} exact />
                           <Route path="/umlistofusers" component={UMListOfUsers} exact />

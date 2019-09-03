@@ -25,7 +25,7 @@ class SectorAndActivity extends Component{
     // this.setState({
     //   tabtype : editId.subactivityId ? 'subactivity' : (editId.activityId ? "activity" : "sector" )
     // },()=>{
-    //   console.log(' tabtype ===============', this.state.tabtype, _.has(editId , 'sectorId', 'activityId', "subactivityId"));
+    //   console.log(' tabtype ======================', this.state.tabtype, _.has(editId , 'sectorId', 'activityId', "subactivityId"));
     // });
   }
   componentWillUnmount(){
@@ -110,7 +110,7 @@ class SectorAndActivity extends Component{
                       <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                         <div className="tab-pane active" id="sector">
                         {
-                          this.state.tabtype == "sector" ?
+                          this.state.tabtype === "sector" ?
                           <div className="row"><Sector dataVal={this.state.tabtype} /></div>       
                           :
                           null
@@ -118,7 +118,7 @@ class SectorAndActivity extends Component{
                         </div>
                         <div className="tab-pane" id="activity">
                         {
-                          this.state.tabtype == "activity" ?
+                          this.state.tabtype === "activity" ?
                           <div className="row"><Activity dataVal={this.state.tabtype} /></div>        
                           :
                           null
@@ -126,7 +126,7 @@ class SectorAndActivity extends Component{
                         </div>
                         <div className="tab-pane" id="subactivity">
                         {
-                          this.state.tabtype == "subactivity" ?
+                          this.state.tabtype === "subactivity" ?
                           <div className="row"><SubActivity dataVal={this.state.tabtype} /></div>        
                           :
                           null

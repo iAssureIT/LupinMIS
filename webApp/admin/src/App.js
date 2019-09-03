@@ -10,6 +10,7 @@ import $ from 'jquery';
 axios.defaults.baseURL = "http://qalmisapi.iassureit.com/";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 
 function App() {
