@@ -76,7 +76,7 @@ class Login extends Component {
         localStorage.setItem("fullName",response.data.fullName);
         if(axios.defaults.headers.common.Authorization){
           console.log("axios.defaults.headers.common.Authorization",axios.defaults.headers.common.Authorization);
-          alert("Authorization check ",);
+         /* alert("Authorization check ",);*/
           this.props.history.push("/dashboard");
           window.location.reload();
           if(localStorage==null){
