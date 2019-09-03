@@ -17,15 +17,15 @@ class Activity extends Component{
     super(props);
    
     this.state = {
+      fields                : {},
+      errors                : {},
       "sector"              :"",
-      "activity"            :"",
+      "activityName"        :"",
       "academicData"        :[],
       "user_ID"             :"",
       "shown"               : true,
       "tabtype"             : "location",
       "availableSectors"    : [],
-      fields                : {},
-      errors                : {},
       "tableHeading"        : {
         sector              : "Name of Sector",
         activityName        : "Name of Activity",
@@ -48,10 +48,10 @@ class Activity extends Component{
  
   handleChange(event){
     event.preventDefault();
-    // this.setState({
-    //   "sector"     : this.refs.sector.value,  
-    //   "activity"   : this.refs.activity.value,  
-    // });
+    this.setState({
+      "sector"         : this.refs.sector.value,  
+      "activityName"   : this.refs.activityName.value,  
+    });
     this.setState({
       [event.target.name] : event.target.value
     });
@@ -88,16 +88,16 @@ class Activity extends Component{
     var activityValues = {
       "sector_ID"            : this.refs.sector.value.split('|')[1],
       "sector"               : this.refs.sector.value.split('|')[0],
-      "activityName"         : this.refs.activity.value,
+      "activityName"         : this.refs.activityName.value,
       "user_ID"              : this.state.user_ID,
     };
     let fields            = {};
     fields["sector"]      = "";
-    fields["activity"]    = "";
+    fields["activityName"]    = "";
     this.setState({
-      activity : '',
-      sector   : '',
-      fields   : ''
+      activityName : '',
+      sector       : '',
+      fields       :fields
     })
   
     axios.patch('/api/sectors/activity', activityValues)
@@ -118,7 +118,7 @@ class Activity extends Component{
 
   updateActivity(event){
     event.preventDefault();
-    if(this.refs.sector.value =="" && this.refs.activity.value=="" )
+    if(this.refs.sector.value =="" && this.refs.activityName.value=="" )
     {
       // console.log('state validation');
       if (this.validateFormReq() && this.validateForm()) {
@@ -128,7 +128,7 @@ class Activity extends Component{
         "sector_ID"            : this.refs.sector.value.split('|')[1],
         "sector"               : this.refs.sector.value.split('|')[0],
         "activity_ID"          : this.state.editId,
-        "activityName"         : this.refs.activity.value,
+        "activityName"         : this.refs.activityName.value,
         "user_ID"              : this.state.user_ID,
       };
       axios.patch('/api/sectors/activity/update',activityValues)
@@ -142,7 +142,7 @@ class Activity extends Component{
           
           this.setState({
             editId   : '',
-            activity : '',
+            activityName : '',
             sector   : ''
           })
           this.props.history.push('/sector-and-activity');
@@ -152,11 +152,11 @@ class Activity extends Component{
         });
       let fields             = {};
       fields["sector"]       = "";
-      fields["activity"]     = "";
+      fields["activityName"]     = "";
     
       this.setState({
         "sector"        :"",
-        "activity"      :"",
+        "activityName"      :"",
         fields          :fields
       });
     }
@@ -171,9 +171,9 @@ class Activity extends Component{
         formIsValid = false;
         errors["sector"] = "This field is required.";
       }     
-      if (!fields["activity"]) {
+      if (!fields["activityName"]) {
         formIsValid = false;
-        errors["activity"] = "This field is required.";
+        errors["activityName"] = "This field is required.";
       }
       this.setState({
         errors: errors
@@ -187,11 +187,11 @@ class Activity extends Component{
     let formIsValid = true;
     $("html,body").scrollTop(0);
 
-      if (typeof fields["activity"] !== "undefined") {
+      if (typeof fields["activityName"] !== "undefined") {
         // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["activity"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+        if (!fields["activityName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
           formIsValid = false;
-          errors["activity"] = "Please enter valid Activity Name.";
+          errors["activityName"] = "Please enter valid Activity Name.";
         }
       }
     
@@ -307,7 +307,7 @@ class Activity extends Component{
   componentWillUnmount(){
     this.setState({
       "sector"   :"",
-      "activity" :"",
+      "activityName" :"",
       "editId"   : ""
     })
   }
@@ -346,11 +346,11 @@ class Activity extends Component{
                   </div>
                   <div className=" col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Name of Activity</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activity" >
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activityName" >
                       
-                      <input type="text" className="form-control inputBox "  placeholder="" name="activity"  value={this.state.activity} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activity" />
+                      <input type="text" className="form-control inputBox "  placeholder="" name="activityName"  value={this.state.activityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activityName" />
                     </div>
-                    <div className="errorMsg">{this.state.errors.activity}</div>
+                    <div className="errorMsg">{this.state.errors.activityName}</div>
                   </div>
                 </div> 
               </div><br/>

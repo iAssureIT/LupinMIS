@@ -131,7 +131,7 @@ logout(){
                                         <span className="pull-right">
                                           <a  className="profileTitle btnpadd" href="/login">
                                           {/* <button type="button" className="profilebtn">Logout</button>*/}
-                                        <button type="button" className="btn  profilebtn" onClick={this.logout.bind(this)}>Logout</button>
+                                        <button type="button" className="btn  profilebtn" onClick={this.logout.bind(this)}>Sign Out</button>
                                           </a>
 
                                        </span>  

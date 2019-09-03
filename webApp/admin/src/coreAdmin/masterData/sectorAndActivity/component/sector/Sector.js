@@ -92,7 +92,7 @@ class Sector extends Component{
         if(error.message === "Request failed with status code 401"){
           swal({
               title : "abc",
-              text  : "Session Expired"
+              text  : "Session is Expired. Kindly Sign In again."
           });
         }
       });

@@ -190,8 +190,8 @@ class Login extends Component {
                           </div>
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 btn">
-                          <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 UMloginbutton hvr-sweep-to-right" value="Login"/>
-                        </div>
+                          <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 UMloginbutton hvr-sweep-to-right" value="Sign In"/>
+                        </div>0
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  customFl pdcls ">
                           {/*<div className="col-lg-6 col-md-6 col-sm-6">
                             <Link to='/signup' className="UMGreyy UMGreyy_l pull-left"> <u>Sign Up</u></Link>
