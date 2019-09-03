@@ -89,6 +89,12 @@ class Sector extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session Expired"
+          });
+        }
       });
       let fields       = {};
       fields["sector"] = "";
@@ -189,6 +195,7 @@ class Sector extends Component{
   }
   
   componentDidMount(){
+  axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
   console.log('componentDidMount', this.state.tableData);
     var editId = this.props.match.params.sectorId;
     if(editId){      

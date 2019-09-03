@@ -25,7 +25,7 @@ class Login extends Component {
         }
   }
   componentDidMount(){
-    
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
   }
   userlogin(event){
     event.preventDefault();
@@ -40,13 +40,12 @@ class Login extends Component {
     axios
       .post('/api/users/login',auth)
       .then((response)=> {
-        console.log("-------userData------>>",response);
         // this.setState({
         //   token : response.data.token
         // });
       /*  axios.defaults.headers.common['Authorization'] = response.data.token;
 */
-        localStorage.setItem("token",response.data.token);
+      /*  localStorage.setItem("token",response.data.token);
         localStorage.setItem("emailId",response.data.emailId);
         localStorage.setItem("center_ID",response.data.center_ID);
         localStorage.setItem("centerName",response.data.centerName);
@@ -65,6 +64,30 @@ class Login extends Component {
           },()=>{
             console.log("loggedIn", this.state.loggedIn);
           })
+        }*/
+
+        console.log("-------userData------>>",response);
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token;
+
+        localStorage.setItem("token",response.data.token);
+        localStorage.setItem("emailId",response.data.emailId);
+        localStorage.setItem("center_ID",response.data.center_ID);
+        localStorage.setItem("centerName",response.data.centerName);
+        localStorage.setItem("fullName",response.data.fullName);
+        if(axios.defaults.headers.common.Authorization){
+          console.log("axios.defaults.headers.common.Authorization",axios.defaults.headers.common.Authorization);
+          alert("Authorization check ",);
+          this.props.history.push("/dashboard");
+          window.location.reload();
+          if(localStorage==null){
+            swal("Invalid Email or Password","Please Enter valid email and password");
+          }else{
+            this.setState({
+                loggedIn  :   true
+            },()=>{
+              console.log("loggedIn", this.state.loggedIn);
+            })
+          }
         }
       })
       .catch(function (error) {
