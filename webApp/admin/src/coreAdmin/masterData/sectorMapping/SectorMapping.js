@@ -323,7 +323,8 @@ class SectorMapping extends Component{
     axios({
       method: 'get',
       url: '/api/sectors/list',
-    }).then((response)=> {        
+    }).then((response)=> {   
+    console.log("sector",response.data);     
       this.setState({
         availableSectors : response.data
       })
@@ -425,10 +426,14 @@ class SectorMapping extends Component{
                               this.state.availableSectors ?
                               this.state.availableSectors.map((data, index)=>{
                                 return(
+                                  <div>
+                                  { data.activity.length > 0?
                                   <div key={index} className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 blockheight noPadding">
                                     <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding">
                                       <label  className="formLable faintColor">{data.sector}</label>
+                                      {console.log("activity",data.activity)}
                                     </div>
+                                 
                                     {
                                       data.activity.map((a, i)=>{
                                         return(
@@ -446,11 +451,13 @@ class SectorMapping extends Component{
                                         );
                                       })
                                     }
-                                  <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding" >
-                                    <hr className="hr-map"/>
-                                  </div> 
+                                    <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding" >
+                                      <hr className="hr-map"/>
+                                    </div> 
                                   </div>
-                               
+                                  : null
+                                  }
+                                  </div>
                                 );
                               })
                               :

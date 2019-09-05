@@ -141,7 +141,7 @@ class EditUserProfile extends Component{
 											<div className="box-body">												
 												<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12  EditUserProfileWrap">
 													<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12">
-														   <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
+														<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 btmmargin inputContent">
                                                           <label className="formLable">First Name <label className="requiredsign">*</label></label>
                                                           <span className="blocking-span">
                                                            <div className="input-group inputBox-main  new_inputbx " >
@@ -153,19 +153,19 @@ class EditUserProfile extends Component{
                                                                 id="firstName" ref="firstName" name="firstName" onChange={this.handleChange}  placeholder="First Name"/>
                                                            </div>   
                                                           </span>
-                                                      </div>
-                                                      <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
-                                                          <label className="formLable">Last Name <label className="requiredsign">*</label></label>
-                                                          <span className="blocking-span row">
-                                                          <div className="input-group inputBox-main  new_inputbx " >
-                                                             <div className="input-group-addon remove_brdr inputIcon">
-                                                              <i className="fa fa-user-circle fa "></i>
-                                                            </div>  
-                                                             <input type="text"className="form-control UMname inputText form-control  has-content indexcls" 
-                                                             id="lastName" ref="lastName" name="lastName" onChange={this.handleChange}  placeholder="Last Name" />
-                                                          </div>   
-                                                          </span>
-                                                      </div>
+                                                      	</div>
+														<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 btmmargin inputContent">
+															<label className="formLable">Last Name <label className="requiredsign">*</label></label>
+															<span className="blocking-span row">
+																<div className="input-group inputBox-main  new_inputbx " >
+																	<div className="input-group-addon remove_brdr inputIcon">
+																	  <i className="fa fa-user-circle fa "></i>
+																	</div>  
+																	<input type="text"className="form-control UMname inputText form-control  has-content indexcls" 
+																	 id="lastName" ref="lastName" name="lastName" onChange={this.handleChange}  placeholder="Last Name" />
+																</div>   
+															</span>
+														</div>
 
 
 														<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12 group btmmargin inputContent">

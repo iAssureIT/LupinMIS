@@ -155,7 +155,6 @@ class centerDetail extends Component{
 
       var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
       var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
-
       var id2 = this.state.uID;
       var centerDetail= 
       {
@@ -250,7 +249,9 @@ class centerDetail extends Component{
         var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
         var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
         var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
-
+      console.log("blocksCovered",blocksCovered);
+      console.log("districtsCovered",districtsCovered);
+        
         var centerDetail = {
           "center_ID"                : this.state.editId,
           "centerName"                : this.refs.nameOfCenter.value,

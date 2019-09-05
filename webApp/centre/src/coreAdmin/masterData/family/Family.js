@@ -165,7 +165,7 @@ class Family extends Component{
         "familyCategory"       :this.refs.category.value, 
         // "center"               :this.refs.LHWRFCentre.value, 
         // "state"                :this.state.state, 
-        "dist"                 :this.refs.district.value, 
+        "dist"                 :this.refs.district.value.split('|')[0], 
         "block"                :this.refs.block.value, 
         "village"              :this.refs.village.value, 
       };
@@ -225,7 +225,7 @@ class Family extends Component{
         "uidNumber"            :this.refs.uID.value, 
         "caste"                :this.refs.caste.value, 
         "familyCategory"       :this.refs.category.value, 
-        "dist"                 :this.refs.district.value, 
+        "dist"                 :this.refs.district.value.split('|')[0], 
         "block"                :this.refs.block.value, 
         "village"              :this.refs.village.value, 
       };
@@ -367,7 +367,17 @@ class Family extends Component{
       method: 'get',
       url: '/api/families/'+id,
     }).then((response)=> {
-      var editData = response.data[0];     
+
+      var editData = response.data[0];
+      console.log("editData",editData);
+      this.getAvailableCenter(this.state.center_ID);
+
+      console.log("stateCode",this.state.stateCode);
+      this.getBlock(this.state.stateCode, editData.dist);
+      console.log(this.state.stateCode, editData.dist, editData.block);
+      this.getVillages(this.state.stateCode, editData.dist, editData.block);
+
+
       this.setState({
       "familyID"              : editData.familyID,
       "nameOfFamilyHead"      : editData.familyHead, 
@@ -424,14 +434,22 @@ class Family extends Component{
   }
 
   getAvailableCenter(center_ID){
+    // console.log("CID"  ,center_ID);
     axios({
       method: 'get',
       url: '/api/centers/'+center_ID,
       }).then((response)=> {
-        // console.log('response ==========',response.data[0].districtsCovered);
+        function removeDuplicates(data, param){
+            return data.filter(function(item, pos, array){
+                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+            })
+        }
+        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
-          availableDistInCenter  : response.data[0].districtsCovered,
-          address                : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+          availableDistInCenter  : availableDistInCenter,
+          // availableDistInCenter  : response.data[0].districtsCovered,
+          address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
           // districtsCovered : response.data[0].districtsCovered
         },()=>{
         var stateCode =this.state.address.split('|')[0];
@@ -439,7 +457,7 @@ class Family extends Component{
           stateCode  : stateCode,
 
         },()=>{
-        console.log("address",this.state.stateCode, this.state.availableDistInCenter);
+        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
         });
         })
     }).catch(function (error) {
@@ -554,7 +572,7 @@ class Family extends Component{
                         <div className="col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
                           <label className="formLable">Name of Family Head </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="nameOfFamilyHead" >
-                            <input type="text" className="form-control inputBox nameParts" ref="nameOfFamilyHead" name="nameOfFamilyHead" value={this.state.nameOfFamilyHead} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox" ref="nameOfFamilyHead" name="nameOfFamilyHead" value={this.state.nameOfFamilyHead} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.nameOfFamilyHead}</div>
                         </div>
@@ -619,7 +637,9 @@ class Family extends Component{
                                 this.state.availableDistInCenter.map((data, index)=>{
                                   console.log("data",data)
                                   return(
-                                    <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
+                                    /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+
                                   );
                                 })
                                 :

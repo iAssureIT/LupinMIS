@@ -1,11 +1,11 @@
 import React,{Component} from 'react';
 // import TrackerReact from 'meteor/ultimatejs:tracker-react';
-import { render } from 'react-dom';
+import { render }        from 'react-dom';
+import $                 from "jquery";
 import { BrowserRouter, Route, Switch,Link,location } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import $ from "jquery";
 
 // import Header from '../header/Header.js'
 import './Leftsidebar.css';
@@ -36,7 +36,7 @@ export default class Leftsidebar extends Component{
                 <strong>LFMIS</strong>
               </div>
               <ul className="list-unstyled components">
-                <li className="active sidebarMenuText">
+                <li className=" sidebarMenuText">
                   <a href="/dashboard">
                     <i className="glyphicon glyphicon-briefcase"></i>
                     Dashboard

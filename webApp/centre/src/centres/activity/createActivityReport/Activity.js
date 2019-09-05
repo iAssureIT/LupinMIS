@@ -22,7 +22,7 @@ class Activity extends Component{
     this.state = {
       "center_id"         : "",
       "centerName"        : "",
-      "dist"              : "",
+      "district"          : "",
       "block"             : "",
       "dateofIntervention": "",
       "village"           : "",
@@ -109,7 +109,10 @@ class Activity extends Component{
 
   handleChange(event){
     event.preventDefault(); 
-    this.setState({
+    this.setState({      
+      "district"          : this.refs.district.value,
+      "block"             : this.refs.block.value,
+      "village"           : this.refs.village.value,
       [event.target.name]: event.target.value
     });
  
@@ -154,112 +157,6 @@ class Activity extends Component{
       selectedBeneficiaries : selectedBeneficiaries
     })
   }
-  /*    event.preventDefault();
-    if(this.refs.dateofIntervention.value === "" ){
-        if (this.validateFormReq() && this.validateForm()){
-       }
-    }else{*/
-/*  SubmitActivity(event){
-    console.log("date",this.state.dateofIntervention);
-      var activityValues= {
-        "center_ID"         : "",
-        "centerName"        : "",
-        "date"              : this.refs.dateofIntervention.value,
-        "district"          : this.refs.dist.value,
-        "block"             : this.refs.block.value,
-        "village"           : this.refs.village.value,
-        "dateofIntervention": this.refs.dateofIntervention.value,
-        "sector_ID"         : this.refs.sector.value.split('|')[1],
-        "sectorName"        : this.refs.sector.value.split('|')[0],
-        "typeofactivity"    : this.refs.typeofactivity.value,
-        "activity_ID"       : this.refs.activity.value.split('|')[1],
-        "activityName"      : this.refs.activity.value.split('|')[0],
-        "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
-        "subactivityName"   : this.refs.subactivity.value.split('|')[0],
-        "unit"              : document.getElementById('unit').innerHTML,
-        "unitCost"          : this.refs.unitCost.value,
-        "quantity"          : this.refs.quantity.value,
-        "totalcost"         : this.state.totalcost,
-        "LHWRF"             : this.refs.LHWRF.value,
-        "NABARD"            : this.refs.NABARD.value,
-        "bankLoan"          : this.refs.bankLoan.value,
-        "govtscheme"        : this.refs.govtscheme.value,
-        "directCC"          : this.refs.directCC.value,
-        "indirectCC"        : this.refs.indirectCC.value,
-        "other"             : this.refs.other.value,
-        "total"             : this.state.total,
-        "remark"            : this.refs.remark.value,
-        "listofBeneficiaries": this.state.selectedBeneficiaries
-      };
-      let fields                  = {};
-      fields["dist"]              = "";
-      fields["block"]             = "";
-      fields["village"]           = "";
-      fields["dateofIntervention"]= "";
-      fields["sector"]            = "";
-      fields["typeofactivity"]    = "";
-      fields["nameofactivity"]    = "";
-      fields["activity"]          = "";
-      fields["subactivity"]       = "";
-      fields["unit"]              = "";
-      fields["unitCost"]          = "";
-      fields["quantity"]          = "";
-      fields["totalcost"]         = "";
-      fields["LHWRF"]             = "";
-      fields["NABARD"]            = "";
-      fields["bankLoan"]          = "";
-      fields["govtscheme"]        = "";
-      fields["directCC"]          = "";
-      fields["indirectCC"]        = "";
-      fields["other"]             = "";
-      
-      axios.post('/api/activityReport',activityValues)
-        .then((response)=>{
-          swal({
-            title : response.data.message,
-            text  : response.data.message,
-          });
-            this.getData(this.state.startRange, this.state.limitRange);  
-            this.setState({
-              selectedValues : this.state.selectedBeneficiaries 
-            })    
-          })
-        .catch(function(error){       
-          console.log('error',error);
-        });
-      this.setState({
-        "dist"                   : "",
-        "block"                  : "",
-        "village"                : "",
-        "dateofIntervention"     : "",
-        "sector"                 : "",
-        "typeofactivity"         : "",
-        "nameofactivity"         : "",
-        "activity"               : "",
-        "subactivity"            : "",
-        "unit"                   : "",
-        "unitCost"               : "",
-        "quantity"               : "",
-        "totalcost"              : "",
-        "LHWRF"                  : "",
-        "NABARD"                 : "",
-        "bankLoan"               : "",
-        "govtscheme"             : "",
-        "directCC"               : "",
-        "indirectCC"             : "",
-        "other"                  : "",
-        "total"                  : "",
-        "remark"                 : "",
-        "fields"                 : fields,
-        "selectedBeneficiaries"  : [],
-        "listofBeneficiaries"    : [],
-        "subActivityDetails"     : [],
-        "availableActivity"      : [],
-        "availableSubActivity"   : []
-
-      });
-    // }
-  }*/
     SubmitActivity(event){
     event.preventDefault();
    /* if(this.refs.dateofIntervention.value == "" ){
@@ -271,7 +168,8 @@ class Activity extends Component{
         "center_ID"         : this.state.center_ID,
         "centerName"        : this.state.centerName,
         "date"              : this.refs.dateofIntervention.value,
-        "district"          : this.refs.dist.value.split('|')[0],
+        "stateCode"         : this.state.stateCode,
+        "district"          : this.refs.district.value.split('|')[0],
         "block"             : this.refs.block.value,
         "village"           : this.refs.village.value,
         "dateofIntervention": this.refs.dateofIntervention.value,
@@ -298,7 +196,7 @@ class Activity extends Component{
         "listofBeneficiaries": this.state.selectedBeneficiaries
       };
       let fields                  = {};
-      fields["dist"]              = "";
+      fields["district"]              = "";
       fields["block"]             = "";
       fields["village"]           = "";
       fields["dateofIntervention"]= "";
@@ -335,7 +233,7 @@ class Activity extends Component{
           console.log('error',error);
         });
       this.setState({
-        "dist"                   : "",
+        "district"                   : "",
         "block"                  : "",
         "village"                : "",
         "dateofIntervention"     : "",
@@ -369,12 +267,14 @@ class Activity extends Component{
   Update(event){
     event.preventDefault();
     // if (this.validateFormReq() && this.validateForm()) {
+
     var activityValues= {
       "activityReport_ID" : this.state.editId,
       "center_ID"         : this.state.center_ID,
       "centerName"        : this.state.centerName,
       "date"              : this.refs.dateofIntervention.value,
-      "district"          : this.refs.dist.value,
+      "stateCode"         : this.state.stateCode,
+      "district"          : this.refs.district.value.split('|')[0],
       "block"             : this.refs.block.value,
       "village"           : this.refs.village.value,
       "dateofIntervention": this.refs.dateofIntervention.value,
@@ -401,7 +301,7 @@ class Activity extends Component{
       "listofBeneficiaries": this.state.selectedBeneficiaries
     };
     let fields                  = {};
-    fields["dist"]              = "";
+    fields["district"]              = "";
     fields["block"]             = "";
     fields["village"]           = "";
     fields["dateofIntervention"]= "";
@@ -424,6 +324,7 @@ class Activity extends Component{
     fields["remark"]             = "";
     axios.patch('/api/activityReport',activityValues)
     .then((response)=>{
+      console.log("update",response);
     this.getData(this.state.startRange, this.state.limitRange);      
       swal({
         title : response.data.message,
@@ -433,7 +334,7 @@ class Activity extends Component{
     .catch(function(error){        
     });
     this.setState({
-      "dist"              : "",
+      "district"              : "",
       "block"             : "",
       "village"           : "",
       "dateofIntervention": "",
@@ -475,7 +376,7 @@ class Activity extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
-      if (!fields["dist"]) {
+      if (!fields["district"]) {
         formIsValid = false;
         errors["dist"] = "This field is required.";
       }     
@@ -594,12 +495,18 @@ class Activity extends Component{
     }).then((response)=> {
       var editData = response.data[0];
       console.log("editData",editData);
+      console.log("stateCode",this.state.stateCode);
+      this.getAvailableCenter(this.state.stateCode);
+      this.getBlock(this.state.stateCode, editData.district);
+      this.getVillages(this.state.stateCode, editData.district, editData.block);
+
       this.getAvailableActivity(editData.sector_ID);
       this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID)
 
       this.setState({
-        // "editId" : id,
-        "dist"              : editData.district,
+        "editData" : editData,
+        // "stateCode"         : editData.stateCode,
+        "district"              : editData.district,
         "block"             : editData.block,
         "village"           : editData.village,
         "date"              : editData.date,
@@ -622,6 +529,9 @@ class Activity extends Component{
         "remark"            : editData.remark,
         "listofBeneficiaries" : editData.listofBeneficiaries,
         "selectedBeneficiaries" : editData.listofBeneficiaries
+      }, ()=>{
+        console.log("edit", this.state.editData)
+      console.log(this.state.stateCode, editData.district, editData.block);
       });      
       let fields = this.state.fields;
       let errors = {};
@@ -830,9 +740,16 @@ class Activity extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
       }).then((response)=> {
-        console.log('response ==========',response.data[0].districtsCovered);
+        function removeDuplicates(data, param){
+            return data.filter(function(item, pos, array){
+                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+            })
+        }
+        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+        console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
-          availableDistInCenter  : response.data[0].districtsCovered,
+          availableDistInCenter  : availableDistInCenter,
+          // availableDistInCenter  : response.data[0].districtsCovered,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
           // districtsCovered : response.data[0].districtsCovered
         },()=>{
@@ -855,29 +772,32 @@ class Activity extends Component{
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
   }
-  getDistrict(stateCode, districtsCovered){
-        // console.log('getD==========', stateCode, districtsCovered);
-   /* axios({
-      method: 'get',
-      url: 'http://locationapi.iassureit.com/api/districts/get/list/MH/IN',
-      url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
-    }).then((response)=> {
-        this.setState({
-          listofDistrict : response.data
-        },()=>{
-        })
-    }).catch(function (error) {
-      console.log('error', error);
-    });*/
+
+  districtChange(event){    
+    event.preventDefault();
+    var district = event.target.value;
+    // console.log('district', district);
+    this.setState({
+      district: district
+    },()=>{
+      var selectedDistrict = this.state.district.split('|')[0];
+      // console.log("selectedDistrict",selectedDistrict);
+      this.setState({
+        selectedDistrict :selectedDistrict
+      },()=>{
+      // console.log('selectedDistrict',this.state.selectedDistrict);
+      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      })
+    });
   }
   distChange(event){    
     event.preventDefault();
-    var dist = event.target.value;
-    // console.log('dist', dist);
+    var district = event.target.value;
+    // console.log('district', district);
     this.setState({
-      dist: dist
+      district: district
     },()=>{
-      var selectedDistrict = this.state.dist.split('|')[0];
+      var selectedDistrict = this.state.district.split('|')[0];
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
@@ -976,16 +896,16 @@ class Activity extends Component{
                         </div>
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">District</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="dist" >
-                              <select className="custom-select form-control inputBox" ref="dist" name="dist" value={this.state.dist} onChange={this.distChange.bind(this)} >
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                              <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
                                 <option  className="hidden" >--select--</option>
                                   
                                 {
                                 this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
                                 this.state.availableDistInCenter.map((data, index)=>{
-                                  console.log('dta', data);
+                                  // console.log('dta', data);
                                   return(
-                                    <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
+                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
                                   );
                                 })
                                 :
@@ -993,7 +913,7 @@ class Activity extends Component{
                               }
                               </select>
                             </div>
-                            <div className="errorMsg">{this.state.errors.dist}</div>
+                            <div className="errorMsg">{this.state.errors.district}</div>
                           </div>
                         <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                           <label className="formLable">Block</label>

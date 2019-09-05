@@ -251,10 +251,10 @@ class Activity extends Component{
       console.log("editData",editData)
       this.setState({
         "sector"        : editData.sector+'|'+editData._id,
-        "activity"      : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName,
+        "activityName"      : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName,
         // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
       },()=>{
-        console.log('this.state', this.state.activity)
+        console.log('this.state', this.state.activityName)
       });      
       let fields = this.state.fields;
       let errors = {};

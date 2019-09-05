@@ -304,14 +304,14 @@ class PlanDetails extends Component{
   Update(event){    
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    // if(this.refs.year.value === "" || this.refs.month.value ==="" || this.refs.sectorName.value==="" || this.refs.activityName.value==="" 
-    //   || this.refs.physicalUnit.value==="" || this.refs.unitCost.value==="" || this.refs.totalBudget.value==="" || this.refs.noOfBeneficiaries.value==="" 
-    //   || this.refs.LHWRF.value==="" || this.refs.NABARD.value==="" || this.refs.bankLoan.value==="" || this.refs.govtscheme.value==="" 
-    //   || this.refs.directCC.value==="" || this.refs.indirectCC.value==="" || this.refs.other.value==="" || this.refs.remark.value==="")
-    //   {
-    //     if (this.validateFormReq() && this.validateForm()){
-    //     }
-    //   }else{
+    if(this.refs.year.value === "" || this.refs.month.value ==="" || this.refs.sectorName.value==="" || this.refs.activityName.value==="" 
+      || this.state.physicalUnit==="" || this.refs.unitCost.value==="" || this.refs.totalBudget.value==="" || this.refs.noOfBeneficiaries.value==="" 
+      || this.refs.LHWRF.value==="" || this.refs.NABARD.value==="" || this.refs.bankLoan.value==="" || this.refs.govtscheme.value==="" 
+      || this.refs.directCC.value==="" || this.refs.indirectCC.value==="" || this.refs.other.value==="" || this.refs.remark.value==="")
+      {
+        if (this.validateFormReq() && this.validateForm()){
+        }
+      }else{
         
       let fields = {};
       fields["year"]              = "";
@@ -417,8 +417,7 @@ class PlanDetails extends Component{
         "shown"               : true,
         "apiCall"             : '/api/annualPlans'
       });
-      // this.props.history.push('/plan-details');
-    // }
+    }
   }
   validateFormReq() {
     let fields = this.state.fields;

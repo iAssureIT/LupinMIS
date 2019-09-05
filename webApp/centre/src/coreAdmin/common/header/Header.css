@@ -1,15 +1,28 @@
-
-#headerid{
+.mailtext{
+  overflow: hidden;
+  position: absolute; 
+  text-overflow: ellipsis;
+}
+/*#headerid{
   position: absolute;
   height: 50px;
   width: 82.5%;
   right: 0px;
   transition: all 0.8s;
-  }
+}*/
+#headerid {
+    position: absolute;
+    width: 82.3%;
+    right: 0;
+    -webkit-transition: all .8s;
+    transition: all .8s;
+}
+
 
 .fontB{
   color: #333;
 }
+
 .fs12{
   font-size: 12px;
 }
@@ -27,7 +40,7 @@
     color: #444;
     cursor: pointer;
 }
-.dropbtn {
+.dropbtn {[]
     color: #666;
     font-size: 16px;
     border: none;
@@ -42,7 +55,10 @@
     margin-bottom: 0px;
 
 }
-
+.dropdownmarTop{
+  top: 52px;
+  right: -50px !important ;
+}
 .dropdown {
     position: relative;
     display: inline-block;
@@ -52,8 +68,8 @@
 .dropdown-content {
     display: none;
     position: absolute;
-    right: 0px;
-    min-width: 160px;
+    
+    min-width: 240px !important;
     box-shadow: 0px 8px 8px 0px #eee;
     z-index: 1;
     border-radius: 5px;

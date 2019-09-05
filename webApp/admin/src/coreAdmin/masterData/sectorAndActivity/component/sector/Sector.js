@@ -179,7 +179,7 @@ class Sector extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-  console.log('componentWillReceiveProps');
+  // console.log('componentWillReceiveProps');
     var editId = nextProps.match.params.sectorId;
     if(nextProps.match.params.sectorId){
       this.setState({
@@ -196,7 +196,7 @@ class Sector extends Component{
   
   componentDidMount(){
   axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-  console.log('componentDidMount', this.state.tableData);
+  // console.log('componentDidMount', this.state.tableData);
     var editId = this.props.match.params.sectorId;
     if(editId){      
       this.edit(editId);
@@ -235,7 +235,7 @@ class Sector extends Component{
     // console.log('data', data);
      axios.post('/api/sectors/list',data)
     .then((response)=>{
-      console.log('tableData', response.data);
+      // console.log('tableData', response.data);
       this.setState({
         tableData : response.data
       })
@@ -251,7 +251,7 @@ class Sector extends Component{
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -275,7 +275,7 @@ class Sector extends Component{
   }
 
   render() {
-  console.log('render');
+  // console.log('render');
     return (
       <div className="container-fluid">
         <div className="row">

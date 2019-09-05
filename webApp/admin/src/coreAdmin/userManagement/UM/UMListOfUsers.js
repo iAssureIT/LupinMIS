@@ -552,8 +552,8 @@ class UMListOfUsers extends Component {
 						                emailId    		: a.emails[0].address,
 						                mobileNumber    : a.profile.mobileNumber, 
 						                status        	: a.profile.status,
-						                centerName 	    : a.profile.centerName,	
 						                roles 			: ((a.roles.map((b, i)=>{return '<p>'+b+'</p>'})).toString()).replace(/,/g, " "),
+						                centerName 	    : a.profile.centerName,	
 									}
 								})
 					          	this.setState({

@@ -236,6 +236,7 @@ class SubActivity extends Component{
         editId : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
+    console.log("edi",this.state.editId , this.state.editSectorId); 
         this.getAvailableActivity(this.state.editSectorId);
         this.edit(this.state.editSectorId);
       })    
@@ -247,9 +248,9 @@ class SubActivity extends Component{
 
   componentDidMount() {
     this.getAvailableSectors();
-    if(this.state.editId){      
+    if(this.state.editId){     
       this.getAvailableActivity(this.state.editSectorId);
-      this.edit(this.state.editId);
+      this.edit(this.state.editSectorId, this.state.editId);
     }
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
@@ -287,33 +288,62 @@ class SubActivity extends Component{
       console.log('error', error);
     });
   }
-  edit(id){
+
+edit(id){
     var activity_id = this.props.match.params.activityId;
     var subactivity_id = this.props.match.params.subactivityId;
+      console.log('this.activity_id',activity_id,subactivity_id);
       axios({
         method: 'get',
         url: '/api/sectors/'+id,
       }).then((response)=> {
+        if(response){
         var editData = response.data[0];
+        // console.log("editData",editData); 
+    
+        var activityName = '';
+        var subActivityName = '';
+        var unit = '';
+        var familyUpgradation = '';
+        if(editData.activity&&editData.activity.length>0){
+          editData.activity.map((a,i)=>{
+        console.log("editData",activity_id, a._id); 
+
+            if(activity_id === a._id){
+              activityName = a.activityName+'|'+a._id;
+              if(a.subActivity&&a.subActivity.length>0){
+                a.subActivity.map((b,j)=>{
+                  if(subactivity_id === b._id){
+                    subActivityName = b.subActivityName;
+                    unit = b.unit;
+                    familyUpgradation = b.familyUpgradation;
+                  }
+                })
+              }
+            }
+          })
+        }
+
         this.setState({
           "sector"                : editData.sector+'|'+editData._id,
-          "activityName"          : ((editData.activity.filter((a)=>{return a._id === activity_id ? a.activityName : ''}))[0]).activityName+'|'+activity_id,
-          "subActivityName"       : (_.flatten(editData.activity.map((a)=>{if(a._id === activity_id) return (a.subActivity).filter((b)=>{ if(b._id === subactivity_id) return b.subActivityName }) })))[0].subActivityName,
-          "unit"                  : (_.flatten(editData.activity.map((a, i)=>{if(a._id === activity_id) return (a.subActivity).filter((b)=>{ if(b._id === subactivity_id) return b.unit }) })))[0].unit,
-          "familyUpgradation"     : (_.flatten(editData.activity.map((a, i)=>{if(a._id === activity_id)  return (a.subActivity).filter((b)=>{if(b._id === subactivity_id) return b.familyUpgradation}) })))[0].familyUpgradation,
+          "activityName"          : activityName,
+          "subActivityName"       : subActivityName,
+          "unit"                  : unit,
+          "familyUpgradation"     : familyUpgradation,
         },()=>{
+          console.log('this.state', this.state);      
         });
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
+      }
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+        this.setState({
+          errors: errors
+        });
       return formIsValid;
       }).catch(function (error) {
     });
   }
-
   getLength(){
     axios.get('/api/sectors/count')
     .then((response)=>{
@@ -321,7 +351,7 @@ class SubActivity extends Component{
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
