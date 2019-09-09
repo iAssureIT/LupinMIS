@@ -83,9 +83,9 @@ class ActivityReportView extends Component{
                           <h5> Activity Report View </h5>
                         </div>
                         <div className="col-lg-3 col-md-3 col-xs-3 col-sm-3 operationContainer">
-                          <div className="col-lg-1 col-md-1 col-xs-1 col-sm-1"><i class="fa fa-print" aria-hidden="true"></i></div>
-                          <div className="col-lg-1 col-md-1 col-xs-1 col-sm-1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
-                          <div className="col-lg-1 col-md-1 col-xs-1 col-sm-1"><i class="fa fa-trash" aria-hidden="true"></i></div>
+                          <div className="col-lg-1 col-lg-offset-2 col-md-1 col-xs-1 col-sm-1"><i class="fa fa-print" aria-hidden="true"></i></div>
+                         {/* <div className="col-lg-1 col-md-1 col-xs-1 col-sm-1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                          <div className="col-lg-1 col-md-1 col-xs-1 col-sm-1"><i class="fa fa-trash" aria-hidden="true"></i></div>*/}
                         </div>
                       </div>
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">

@@ -420,11 +420,12 @@ class CompanyInformation extends Component{
               <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <h4 className="basicinfotxt"><i className="fa fa-info-circle fonticons" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Basic Info</h4>
               </div>
-              {/*<div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                
                 <div className="col-lg-6 col-lg-offset-6 col-md-6 col-sm-12 col-xs-12 csImageWrapper">
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerPhotoWrapper">
-                      {this.CompanyImage() === '../images/CSLogo.png'? <i className="fa fa-camera fonticons" aria-hidden="true" title="First Add Photo."/>
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <img src= "images/logo.png" className=""/ >
+                    {/*  {this.CompanyImage() === '../images/CSLogo.png'? <i className="fa fa-camera fonticons" aria-hidden="true" title="First Add Photo."/>
                       :
                       <i className="fa fa-times fonticons removeprofPhoto" aria-hidden="true" title="Remove Photo." onClick={this.removeCompanyImage.bind(this)} data-link={this.state.companyLogo} id={this.state.companyLogo} data-id={this.state.companyId}></i>
                       }
@@ -441,10 +442,10 @@ class CompanyInformation extends Component{
 
                         {<img className="col-lg-12 col-md-12 col-sm-12 ClientImgWrap1 displayLogoOne" src={this.CompanyImage()?this.CompanyImage() :"/images/preloader.gif"}/>}
                         
-                    
+                    */}
                   </div>
                 </div>
-              </div>*/}
+              </div>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp">
               <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -514,7 +515,7 @@ class CompanyInformation extends Component{
                   )}
                 </div> 
               </div>
-              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              {/*<div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >Default Password</label><span className="astrick">*</span>
                   <input className="form-control areaStaes inputBox-main" title="Please enter valid Password"   data-text="password"  id="defaultPassword" type="text" name="defaultPassword" ref="defaultPassword" value={this.state.defaultPassword} aria-required="true" onChange={this.handleChange.bind(this)} required/>
@@ -522,7 +523,7 @@ class CompanyInformation extends Component{
                       <span className="text-danger">{formerrors.password}</span> 
                   )}
                 </div> 
-              </div>
+              </div>*/}
             </div>
           </div>
           <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">

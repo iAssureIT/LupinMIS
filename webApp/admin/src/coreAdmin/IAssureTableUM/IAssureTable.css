@@ -1,6 +1,8 @@
 
 /*new css*/
-
+.mt100{
+  margin-top: 110px
+}
 
 .my-custom-scrollbar {
 position: relative;

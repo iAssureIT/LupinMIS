@@ -35,8 +35,8 @@ class PlanDetails extends Component{
       "remark"              :"",
       "shown"               : true,
       "uID"                 :"",
-      /*      "month"               :"Annually",*/ 
-      "heading"             :"Monthly Plan",
+      "month"               :"All Months", 
+      "heading"             :"Annual Plan",
       "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
       "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
 
@@ -649,6 +649,11 @@ class PlanDetails extends Component{
 
         this.setState({
           availableSubActivity : _.compact(_.flatten(x))
+        },()=>{
+       /*   swal({
+              title : "abc",
+              text  : "SubActivity is submitted already or not available"
+          });*/
         });
       }
     }).catch(function (error) {

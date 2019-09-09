@@ -939,7 +939,7 @@ class IAssureTableUM extends Component {
 																		 {/*console.log("here modal id",value._id)*/}	
 																		  <div className="modal-dialog" role="document">
 																		    <div className="modal-content  ummodallftmg">
-																		      <div className="modal-header userHeader">
+																		      <div className="modal-header adminModal-header userHeader">
 																		        
 																		        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
 																		        
@@ -953,7 +953,7 @@ class IAssureTableUM extends Component {
 																		             	 <div className="" id={value._id}>
 																				                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 
-																				                <div className="FormWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																				                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																				                    <form id={value._id} >
 																				                       
 
@@ -999,8 +999,8 @@ class IAssureTableUM extends Component {
 																				                      
 
 
-																				                        <div className="submitButtonWrapper pull-right col-lg-4 col-lg-offset-3 col-md-6 col-sm-12 col-xs-12">
-																				                            <button className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 btnSubmit outlinebox" onClick={this.changepassword.bind(this)} id={value._id}>Reset Password</button>
+																				                        <div className="submitButtonWrapper mt100 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																				                            <button className="btn  submit outlinebox pull-right  col-lg-4 col-lg-offset-3 col-md-6 col-sm-12 col-xs-12" onClick={this.changepassword.bind(this)} id={value._id}>Reset Password</button>
 																				                        </div>
 																				                           
 																				                    </form>

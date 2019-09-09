@@ -32,6 +32,7 @@ class PlanDetails extends Component{
       "other"               :"",
       "remark"              :"",
       "shown"               : true,
+      "month"               :"All Months", 
       "uID"                 :"",
       /*      "month"               :"Annually",*/ 
       "heading"             :"Monthly Plan",
@@ -344,7 +345,7 @@ class PlanDetails extends Component{
                           :
 
                             <h5 default="Annual Plan">{this.state.month == "All Months" ? "Annual Plan": "Monthly Plan" || this.state.month !== "All Months" ? "Monthly Plan": "Annual Plan" }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
-                            // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                            // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="--Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>
                     </div>

@@ -1697,6 +1697,7 @@ right: 15px;
 .userHeader{
     /*border-top: 2px solid #dd4b39;*/
   margin-top: 13%;
+  border-radius: 9px 9px 0 0;
   border-bottom: 1px solid #eee;
 }
 .ntdiaplay{
@@ -2955,6 +2956,8 @@ background-size:16px 16px;
 */
 .ummodallftmg{
   /*margin-left: -70px!important;*/
+  border-top-right-radius: 9px;
+  border-top-left-radius: 9px 
 }
 .ummodalmfdrt{
   /*margin-right: -100px;*/

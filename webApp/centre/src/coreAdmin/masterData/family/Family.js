@@ -565,7 +565,7 @@ class Family extends Component{
                         <div className=" col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
                           <label className="formLable">Family ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="familyID" >
-                            <input type="text" className="form-control inputBox nameParts" ref="familyID" name="familyID" value={this.state.familyID} onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox " ref="familyID" name="familyID" value={this.state.familyID} onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.familyID}</div>
                         </div>
@@ -579,7 +579,7 @@ class Family extends Component{
                         <div className="col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
                           <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uID" >
-                            <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="uID" name="uID" value={this.state.uID} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox "  placeholder=""ref="uID" name="uID" value={this.state.uID} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.uID}</div>
                         </div>
@@ -589,7 +589,7 @@ class Family extends Component{
                         <div className=" col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
                           <label className="formLable">Contact Number </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contact" >
-                            <input type="text" className="form-control inputBox nameParts"  placeholder=""ref="contact" name="contact" value={this.state.contact} onKeyDown={this.isNumberKey.bind(this)} maxLength="10" onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox "  placeholder=""ref="contact" name="contact" value={this.state.contact} onKeyDown={this.isNumberKey.bind(this)} maxLength="10" onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.contact}</div>
                         </div>  

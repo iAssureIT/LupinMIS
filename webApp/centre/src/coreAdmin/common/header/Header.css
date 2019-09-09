@@ -1,3 +1,167 @@
+.dropmailtext{
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+.colorbox{
+  background: #039BE5;
+  height: 50px
+}
+.headicon{
+    font-size: 1.1vw;
+    font-weight: bold;
+    padding-top: 20px;
+    color: #fff;
+    cursor: pointer;
+}
+.fntC:hover {
+  color: #333;
+}
+.fntC {
+  font-size: 12px;
+  color: #333;
+}
+.LogoTitle{
+  font-family: Montserrat-SemiBold;
+  color:transparent;
+  margin-top: 14px;
+}
+.headiconName{
+   font-size: 1.1vw;
+    font-weight: bold;
+    padding-top: 15px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Montserrat-Regular;
+}
+.hover:hover{
+    background-color: #2c1910;
+    height: 50px;
+}
+.img{
+    position: absolute;
+    top: 15px;
+    height: 25px;
+}
+.labelhead{
+   position: absolute;
+    top: 9px;
+    /* text-align: center; */
+    font-size: 0.9vw;
+    padding: 2px 2px;
+    /* line-height: .9; */
+    margin-left: -5px
+
+}
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 3;
+  top: 50px;
+  right: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 0px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  /*font-size: 18px;*/
+  color: #333;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+  background-color: #303F9F;
+  border-left: 3px solid #CC0000;
+}
+
+#mySidenav .closebtn:hover {
+  background-color: #fff;
+  border:0px;
+  color: #333;
+}
+#mySidenav .closebtn i:hover {
+
+  box-shadow: 0px 0px 10px #aaa;
+}
+#mySidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 14px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  /*.sidenav {padding-top: 15px;}*/
+  /*.sidenav a {font-size: 18px;}*/
+}
+
+#mysidenav{
+  transition: all 0.8s ease 0s;
+  z-index: 100;
+}
+.closeSidebr {
+  margin-right: -20px;
+}
+
+#headerid{
+  position: absolute;
+  width: 82%;
+  right: 0px;
+  transition: all 0.8s;
+}
+
+.showme{ 
+  display: none;
+}
+.showhim{
+  display : block;
+}
+.logoutAct{
+  z-index: 999;
+}
+
+.user-footer{
+    border: 1px solid #ccc;
+    margin-top: 0px;
+    padding:6px 20px;
+    background: #fff;
+    box-shadow: 0px 0px 10px #aaa;
+
+}
+.profile-btn{
+  float: right;
+}
+.profile-img{
+/*  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 0px !important;*/
+      width: 30px;
+    height: 25px;
+    border-radius: 50%;
+    margin: 0px !important;
+}
+.arrow-up {
+    margin-left: 84%;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #1b1c20;
+    margin-top: 50px;
+}
+.logoutDiv{
+  margin-bottom: 35px;
+}
+
 .mailtext{
   overflow: hidden;
   position: absolute; 
@@ -79,7 +243,7 @@
 
 .dropdown-content .deleteNotif:hover {background-color: #f1f1f1;
     cursor:pointer;}
-.dropdown:hover .dropdown-content {display: block;}
+/*.dropdown:hover .dropdown-content {display: block;}*/
 .dropdown:hover .dropbtn {background-color: #fff; color:#666;}
 
 .dropdown-content .deleteNotif:hover { 
@@ -90,7 +254,7 @@
     text-decoration: none;
     display: block;
     border-radius: 3px;}
-.dropdown:hover .dropdown-content {display: block; background: #fff;}
+/*.dropdown:hover .dropdown-content {display: block; background: #fff;}*/
 .dropdown:hover .dropbtn {background-color: #fff; color:#666;}
 
 .pageHeader{
@@ -170,6 +334,7 @@ padding: 5px 5px !important;
 }
 .profilebtn{
   background: #0689ca;
+  color: #fff;
 }
 .profilebtn:hover{
   background: #0689ca;

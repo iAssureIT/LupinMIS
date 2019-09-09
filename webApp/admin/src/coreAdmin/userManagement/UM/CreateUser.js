@@ -248,6 +248,13 @@ class CreateUser extends Component {
     });
   }
 
+  camelCase(str){
+    return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  }
   render() {
     const {formerrors} = this.state;
     return (
@@ -349,7 +356,7 @@ class CreateUser extends Component {
                                     this.state.adminRolesListData.map((data, index)=>{
                                       // console.log(data);
                                       return(
-                                        <option key={index} value={data.role}>{data.role}</option>
+                                        <option key={index} value={this.camelCase(data.role)}>{this.camelCase(data.role)}</option>
                                       );
                                     })
                                     :

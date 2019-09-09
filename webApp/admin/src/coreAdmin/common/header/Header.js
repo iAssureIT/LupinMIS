@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 // import TrackerReact from 'meteor/ultimatejs:tracker-react';
+import $              from 'jquery';
 import { render } from 'react-dom';
 import { Route , withRouter} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -72,6 +73,11 @@ logout(){
   }
 
 
+  LogoutSectionHover(event){
+     $(".colorboxbefore").toggleClass("colorbox");
+    $('.showme').toggle(); 
+  }
+
   render(){
 
     return(
@@ -85,71 +91,47 @@ logout(){
                   </div>
                   </div>
                 </div>
-                <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 padd0">
+                <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 padd0 pull-right">
                   <div className="">
                    { <div onClick={this.toggleNav.bind(this)}className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
                     <i className="fa fa-cogs headicon "></i>
                   </div>}
-
-                  <div className="hover col-lg-5 col-md-6 col-sm-6 col-xs-6 pull-right">
-                    <div className="col-lg-2 col-md-1 col-sm-1 col-xs-1 pull-right  paddLeft5">
-                      <button className="dropbtn arrowbtn">
-                        <span className="hidden-xs angleright"><i className="fa fa-angle-down" aria-hidden="true"></i></span>
-                      </button>
-                    </div>
-                    <div className="col-lg-10 col-md-10 col-xs-10 col-sm-10 pull-right noPadding">
-                       { /*<div className="col-lg-2 col-md-2 col-sm-6 col-xs-6 ">
-                        <img src="image/person.png" className="img "/>
-                        </div>*/}
-                        <div className="col-lg-12 col-md-10 col-xs-6 col-sm-12 dropdown ">
-                          <span className=" topmargin pull-right">
-                            
-                            <div className="dropdown-content col-lg-12 col-md-10 col-xs-6 col-sm-6   dropdownmarTop" >
-                                <ul className="paddleft nomargin">
-                                  <li className="user-header">
-                                    <ul className="menu paddleft">
-                                      <li>
-                                        <a className="noneAtag">
-                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 padd0 " > 
-                                              <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-left padd0 marTop ">
-                                                <img src="images/person.png" height="50px" className=" marLeft "/>
-                                              </div>
-                                              <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12 pull-right padd0 marTop">
-                                               <h5 className="fontB fs12 nomargin ">
-                                                  {this.state.fullName ? this.state.fullName : ""}
-                                               {/*   Super Admin*/}
-                                               </h5>
-                                                <h6 className="fontB fs12 mailtext">{/*superAdmin@gmail.com*/} {this.state.emailId ? this.state.emailId : ""}</h6>
-                                              </div>
-                                          </div>
-                                        </a>
-                                       <hr className="borderline marTop"/>
-                                        <div className="profilefoot"> 
-                                        <div>                                     
-                                          <span className="pull-left">
-                                            <a  className=" profileTitle btnpadd " >
-                                             <button type="button" className="profilebtn btn">Profile</button></a>
-                                          </span>
-                                          <span className="pull-right">
-                                            <a  className="profileTitle btnpadd" href="/login">
-                                            {/* <button type="button" className="profilebtn">Logout</button>*/}
-                                          <button type="button" className="btn  profilebtn" onClick={this.logout.bind(this)}>Sign Out</button>
-                                            </a>
-
-                                         </span>  
-                                        </div>
-                                        </div>
-                                      </li>
-                                    </ul>
-                                  </li>                                        
-                                </ul>
+                  <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 pull-right padd0">
+                    <div className="col-lg-12 col-md-7 col-sm-9 col-xs-12  hover pull-right logoutAct">
+                      <div className="row hover" onClick={this.LogoutSectionHover.bind(this)}>
+                        <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText mailtext">{/*superAdmin@gmail.com*/}  {this.state.emailId ? this.state.emailId : ""} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i className="fa fa-angle-down"></i> </span>  
+                        <div className="arrow-up showme"></div>
+                        <div className="col-lg-12 user-footer showme">
+                          <div className=" " > 
+                            <p className="pull-right fntC" style={{"cursor":"pointer"}} title="Close">X</p><br/>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-left padd0 ">
+                              <img src="images/person.png" height="50px" className=" marLeft "/>
                             </div>
-                          </span>
-                          <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12  hoverText mailtext">{/*superAdmin@gmail.com*/}  {this.state.emailId ? this.state.emailId : ""} </span>  
-
+                            <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12 pull-right  padd0 ">
+                             <h5 className="fontB fs12 nomargin ">
+                                {this.state.fullName ? this.state.fullName : ""}
+                             {/*   Super Admin*/}
+                             </h5>
+                              <h6 className="fontB fs12 dropmailtext">{/*superAdmin@gmail.com*/} {this.state.emailId ? this.state.emailId : ""}</h6>
+                            </div>
+                          </div>
+                          <hr className="borderline marTop"/>
+                          <div className="logoutDiv marTop">
+                            <span className="pull-left">
+                              <a  className=" profileTitle btnpadd " >
+                               <button type="button" className="profilebtn btn">Profile</button></a>
+                            </span>
+                            <span className="pull-right">
+                              <a  className="profileTitle btnpadd" href="/login">
+                              {/* <button type="button" className="profilebtn">Logout</button>*/}
+                                 <button type="button" className="btn  profilebtn" onClick={this.logout.bind(this)}>Sign Out</button>
+                              </a>
+                           </span>  
+                          </div>
                         </div>
+                      </div>
                     </div>
-                  </div>  
+                  </div>
                   <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover paddLeft5">
                     <i className="fa fa-bell  headicon "><span className="label label-warning labelhead ">10</span></i>
                   </div>
