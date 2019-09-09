@@ -34,6 +34,7 @@ import UMRolesList                                from '../userManagement/Roles/
 // import CompanySettingG                            from '../companysettingG/Components/CompanySetting.js';
 import CompanySetting                             from '../companysetting/Components/CompanySetting.js';
 import ViewTemplates                              from '../NotificationManagement/ViewTemplates.jsx';
+// import horizontalBar                              from '../srcchart/components/horizontalBar.js';
 
 /**************************/
 
@@ -149,6 +150,7 @@ componentDidMount(){
                     <div id="dashbordid" className="">
                       <Router>
                         <Switch>
+{/*                          <Route path="/horizontalBar" component={horizontalBar} exact />*/}
                           <Route path="/Chart" component={Chart} exact />
                           <Route path="/" component={Dashboard} exact />
                           <Route path="/dashboard" component={Dashboard} exact />

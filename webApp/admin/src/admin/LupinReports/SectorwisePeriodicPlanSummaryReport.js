@@ -56,7 +56,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             "annualPlan_FamilyUpgradation"     : "Families Upgradation",
             "monthlyPlan_TotalBudget"          : 'Total Budget', 
             "monthlyPlan_Reach"                : 'Reach', 
-            "Per_Annuals"                       : 'Proportion to Total %', 
+            "Per_Periodic"                     : 'Proportion to Total %', 
             "monthlyPlan_LHWRF"                : 'LHWRF',
             "monthlyPlan_NABARD"               : 'NABARD',
             "monthlyPlan_Bank_Loan"            : 'Bank Loan',
@@ -190,15 +190,15 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
             return {
-                _id                                       : a._id,            
-                name                                      : a.name,
+                _id                                     : a._id,            
+                name                                    : a.name,
                 annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
-                Per_Annual                                : a.Per_Annual,
+                Per_Annual                              : a.Per_Annual,
                 annualPlan_Reach                        : a.annualPlan_Reach,
                 annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation,                
                 monthlyPlan_TotalBudget                 : a.monthlyPlan_TotalBudget,                
                 monthlyPlan_Reach                       : a.monthlyPlan_Reach,
-                Per_Annuals                              : a.Per_Annuals,
+                Per_Periodic                            : a.Per_Periodic,
                 monthlyPlan_LHWRF                       : a.monthlyPlan_LHWRF,
                 monthlyPlan_NABARD                      : a.monthlyPlan_NABARD,
                 monthlyPlan_Bank_Loan                   : a.monthlyPlan_Bank_Loan,

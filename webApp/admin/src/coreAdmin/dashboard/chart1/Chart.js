@@ -9,7 +9,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import html2canvas from 'html2canvas';
 import Chart from 'chart.js';
-import './Chart.css';import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
+import BarChart from './BarChart.js';
+import './Chart.css';
+import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 
 
 // import {StudentMaster} from '/imports/admin/forms/student/api/studentMaster.js';
@@ -21,11 +23,14 @@ export default class Charts extends Component{
   constructor(props) {
    super(props);
     this.state = {
-       "tableHeading"                : {
+      'year'              : "FY 2019 - 2020",
+      "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],      
+      "tableHeading"                : {
+        name                                    : "Sector",
         annualPlan_Reach                        : "annualPlan_Reach",
         annualPlan_FamilyUpgradation            : "annualPlan_FamilyUpgradation",    
-        achievement_Reach : "achievement_Reach",
-        achievement_FamilyUpgradation : "achievement_FamilyUpgradation",            
+        achievement_Reach                       : "achievement_Reach",
+        achievement_FamilyUpgradation           : "achievement_FamilyUpgradation",            
                
       },
     }
@@ -41,19 +46,13 @@ export default class Charts extends Component{
             */
   componentDidMount(){
     this.getAvailableCenters();
-    this.getAvailableSectors();
-    this.currentFromDate();
-    this.currentToDate();
+    this.getData(this.state.year, this.state.center_ID);
     this.setState({
       // "center"  : this.state.center[0],
       // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
     })
-    this.handleFromChange = this.handleFromChange.bind(this);
-    this.handleToChange = this.handleToChange.bind(this);
     var ctx = document.getElementById('myChart');
     var data = {
       datasets: [{
@@ -158,12 +157,8 @@ export default class Charts extends Component{
 
   
     componentWillReceiveProps(nextProps){
-        this.getAvailableCenters();
-        this.getAvailableSectors();
-        this.currentFromDate();
-        this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-        console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+      this.getAvailableCenters();
+      this.getData(this.state.year, this.state.center_ID);
     }
     handleChange(event){
         event.preventDefault();
@@ -187,7 +182,7 @@ export default class Charts extends Component{
             this.setState({
               center_ID        : center_ID
             },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            this.getData(this.state.year, this.state.center_ID);
             })
           })
         }).catch(function (error) {
@@ -200,63 +195,75 @@ export default class Charts extends Component{
           [event.target.name] : event.target.value,
           selectedCenter : selectedCenter,
         },()=>{
-          var center = this.state.selectedCenter.split('|')[1];
-          console.log('center', center);
+          var center_ID = this.state.selectedCenter.split('|')[1];
+          console.log('center_ID', center_ID);
           this.setState({
-            center_ID :center,            
+            center_ID :center_ID,            
           },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            this.getData(this.state.year, this.state.center_ID);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
     } 
-    getAvailableSectors(){
-        axios({
-          method: 'get',
-          url: '/api/sectors/list',
-        }).then((response)=> {
-            
-            this.setState({
-              availableSectors : response.data,
-              sector           : response.data[0].sector+'|'+response.data[0]._id
-            },()=>{
-            var sector_ID = this.state.sector.split('|')[1]
-            this.setState({
-              sector_ID        : sector_ID
-            },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-            })
-            // console.log('sector', this.state.sector);
-          })
-        }).catch(function (error) {
-          console.log('error', error);
-        });
-    }
-    selectSector(event){
-        event.preventDefault();
+
+/*
+  getData(year, center_ID){
+    if(year, center_ID){
+      axios.get('/api/report/sector/:startDate/:endDate/:center_ID')
+      .then((response)=>{
+        console.log("resp",response);
         this.setState({
-          [event.target.name]:event.target.value
-        });
-        var sector_id = event.target.value.split('|')[1];
-        // console.log('sector_id',sector_id);
-        this.setState({
-          sector_ID : sector_id,
+          tableDatas : response.data
         },()=>{
-        // console.log('availableSectors', this.state.availableSectors);
-        // console.log('sector_ID', this.state.sector_ID);
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+          console.log("resp",this.state.tableDatas)
+        })
       })
+      .catch(function(error){        
+      });
     }
-    getData(startDate, endDate,center_ID){
-        console.log(startDate, endDate, center_ID);
-        // axios.get('http://qalmisapi.iassureit.com/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
-        axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
+  }*/
+  getData(year, center_ID){
+    console.log('year', year, 'center_ID', center_ID);
+    var startDate = year.substring(3, 7)+"-04-01";
+    var endDate = year.substring(10, 15)+"-03-31";
+    // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
+    if(startDate, endDate, center_ID){
+        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
-          console.log("resp",response);
+          console.log("respgetData",response)
+
+          var sector = [];
+          var annualPlanReach = [];
+          var annualPlanFamilyUpgradation = [];
+          var achievementReach = [];
+          var achievementFamilyUpgradation = [];
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{
+              sector.push(data.name);
+              annualPlanReach.push(data.annualPlan_Reach);
+              annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
+              achievementReach.push(data.achievement_Reach);
+              achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
+            })
+          this.setState({
+            "sector" : sector,
+            "annualPlanReach" : annualPlanReach,
+            "annualPlanFamilyUpgradation" : annualPlanFamilyUpgradation,
+            "achievementReach" : achievementReach,
+            "achievementFamilyUpgradation" : achievementFamilyUpgradation,
+          },()=>{
+          console.log("this.state.sector",sector);
+           console.log("this.state.annualPlanFamilyUpgradation",annualPlanFamilyUpgradation);
+          console.log("this.state.achievementReach",achievementReach);
+          console.log("this.state.achievementFamilyUpgradation",achievementFamilyUpgradation);
+          
+          })
+        }
+    
+         console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
             return {
-                _id                                     : a._id,
+                name                                    : a.name,
                 annualPlan_Reach                        : a.annualPlan_Reach,
                 annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation, 
                 achievement_Reach                       : a.achievement_Reach,
@@ -271,76 +278,15 @@ export default class Charts extends Component{
         })
         .catch(function(error){        
         });
-    }
-    handleFromChange(event){
-        event.preventDefault();
-       const target = event.target;
-       const name = target.name;
-       var dateVal = event.target.value;
-       var dateUpdate = new Date(dateVal);
-       var startDate = moment(dateUpdate).format('YYYY-MM-DD');
-       this.setState({
-           [name] : event.target.value,
-           startDate:startDate
-       },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-       console.log("dateUpdate",this.state.startDate);
-       });
-    }
-    handleToChange(event){
-        event.preventDefault();
-        const target = event.target;
-        const name = target.name;
-
-        var dateVal = event.target.value;
-        var dateUpdate = new Date(dateVal);
-        var endDate = moment(dateUpdate).format('YYYY-MM-DD');
-        this.setState({
-           [name] : event.target.value,
-           endDate : endDate
-        },()=>{
-        console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-       });
+      }
     }
 
-    currentFromDate(){
-        if(this.state.startDate){
-            var today = this.state.startDate;
-            // console.log("localStoragetoday",today);
-        }else {
-            var today = moment(new Date()).format('YYYY-MM-DD');
-        // console.log("today",today);
-        }
-        console.log("nowfrom",today)
-        this.setState({
-           startDate :today
-        },()=>{
-        });
-        return today;
-    }
-
-    currentToDate(){
-        if(this.state.endDate){
-            var today = this.state.endDate;
-            // console.log("newToDate",today);
-        }else {
-            var today =  moment(new Date()).format('YYYY-MM-DD');
-        }
-        // console.log("nowto",today)
-        this.setState({
-           endDate :today
-        },()=>{
-        });
-        return today;
-    }
-  
   render(){ 
     return(
       <div>
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
+            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <label className="formLable">Center</label><span className="asterix"></span>
                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                     <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
@@ -358,26 +304,31 @@ export default class Charts extends Component{
                     </select>
                 </div>
             </div>
-            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                <label className="formLable">From</label><span className="asterix"></span>
-                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                    <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                </div>
-            </div>
-            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                <label className="formLable">To</label><span className="asterix"></span>
-                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                    <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                </div>
+            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <label className="formLable">Year</label><span className="asterix"></span>
+              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                 <option className="hidden" >-- Select Year --</option>
+                 {
+                  this.state.years.map((data, i)=>{
+                    return <option key={i}>{data}</option>
+                  })
+                 }
+                </select>
+              </div>
+              {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
             </div>  
         </div>  
+        <div className="col-lg-12">
+          <BarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
+        </div>
         <div className="col-lg-12">
         <IAssureTable 
          
           getData={this.getData.bind(this)} 
           tableHeading={this.state.tableHeading} 
           tableData={this.state.tableData} 
-          tableObjects={this.state.tableObjects}
+          // tableObjects={this.state.tableObjects}
           />
   
         </div>
@@ -406,7 +357,7 @@ export default class Charts extends Component{
             <div className="col-lg-6" style={{paddingLeft:'0px'}}>
               <div className="box2">
                   <div className="box1a">
-                    <h4>Payment Model - Distribution</h4>
+                    <h4>Payment Model - tDistribution</h4>
                     <canvas id="myChart2"></canvas>
                   </div>
               </div>

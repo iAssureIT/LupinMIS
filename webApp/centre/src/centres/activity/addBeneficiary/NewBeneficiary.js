@@ -16,12 +16,12 @@ class NewBeneficiary extends Component{
     super(props);
 
     this.state = {
-      "familyID"            :"",
-      "beneficiaryID"       :"",
-      "nameofbeneficiaries" :"",
+      "familyID"            : "",
+      "beneficiaryID"       : "",
+      "nameofbeneficiaries" : "",
       "fields"              : {},
       "errors"              : {},
-      "uID"                 :"",
+      "uID"                 : "",
       "shown"               : true,
       "twoLevelHeader"      : {
         apply               : false,
@@ -179,7 +179,19 @@ class NewBeneficiary extends Component{
     }
     this.getAvailableFamilyId();
     this.getData(this.state.startRange, this.state.limitRange);
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    // console.log("localStorage =",localStorage);
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+    this.getAvailableCenter(this.state.center_ID);
+    console.log("center_ID =",this.state.center_ID);
+    });
   }
+
   componentWillReceiveProps(nextProps){
     if(nextProps){
       this.setState({
@@ -234,6 +246,132 @@ class NewBeneficiary extends Component{
     });
     console.log("availableFamilies", this.state.availableFamilies)
   }
+  getAvailableCenter(center_ID){
+    // console.log("CID"  ,center_ID);
+    axios({
+      method: 'get',
+      url: '/api/centers/'+center_ID,
+      }).then((response)=> {
+        function removeDuplicates(data, param){
+            return data.filter(function(item, pos, array){
+                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+            })
+        }
+        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+        console.log('availableDistInCenter ==========',availableDistInCenter);
+        this.setState({
+          availableDistInCenter  : availableDistInCenter,
+          // availableDistInCenter  : response.data[0].districtsCovered,
+          address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+          // districtsCovered : response.data[0].districtsCovered
+        },()=>{
+        var stateCode =this.state.address.split('|')[0];
+         this.setState({
+          stateCode  : stateCode,
+
+        },()=>{
+        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
+        });
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  camelCase(str){
+    return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  }
+
+  districtChange(event){    
+    event.preventDefault();
+    var district = event.target.value;
+    // console.log('district', district);
+    this.setState({
+      district: district
+    },()=>{
+      var selectedDistrict = this.state.district.split('|')[0];
+      // console.log("selectedDistrict",selectedDistrict);
+      this.setState({
+        selectedDistrict :selectedDistrict
+      },()=>{
+      console.log('selectedDistrict',this.state.selectedDistrict);
+      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      })
+    });
+  }
+  distChange(event){    
+    event.preventDefault();
+    var district = event.target.value;
+    // console.log('district', district);
+    this.setState({
+      district: district
+    },()=>{
+      var selectedDistrict = this.state.district.split('|')[0];
+      // console.log("selectedDistrict",selectedDistrict);
+      this.setState({
+        selectedDistrict :selectedDistrict
+      },()=>{
+      // console.log('selectedDistrict',this.state.selectedDistrict);
+      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      })
+    });
+  }
+  getBlock(stateCode, selectedDistrict){
+    axios({
+      method: 'get',
+      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
+      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+    }).then((response)=> {
+        console.log('response ==========', response.data);
+        this.setState({
+          listofBlocks : response.data
+        },()=>{
+        console.log('listofBlocks', this.state.listofBlocks);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectBlock(event){
+    event.preventDefault();
+    var block = event.target.value;
+    this.setState({
+      block : block
+    },()=>{
+      // console.log("block",block);
+      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+    });
+  }
+  getVillages(stateCode, selectedDistrict, block){
+    console.log(stateCode, selectedDistrict, block);
+    axios({
+      method: 'get',
+      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
+      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
+    }).then((response)=> {
+        // console.log('response ==========', response.data);
+        this.setState({
+          listofVillages : response.data
+        },()=>{
+        // console.log('listofVillages', this.state.listofVillages);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectVillage(event){
+    event.preventDefault();
+    var village = event.target.value;
+    this.setState({
+      village : village
+    },()=>{
+      // console.log("village",village);
+    });
+  }
+
 
   render() {
      var shown = {
@@ -266,33 +404,64 @@ class NewBeneficiary extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                             <div className=" col-lg-3  col-lg-offset-1 col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">District</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                                <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                  <option>Pune</option>
-                                  <option>Thane</option>
+                                  {
+                                    this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                    this.state.availableDistInCenter.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
+                                  {/*<option>Pune</option>
+                                  <option>Thane</option>*/}
                                 </select>
                               </div>
                             </div>
                             <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Block</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                                <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                  <option>Pimpari</option>
+                                  {
+                                    this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                    this.state.listofBlocks.map((data, index)=>{
+                                      console.log('dta', data);
+                                      return(
+                                        <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
+                                  {/*<option>Pimpari</option>
                                   <option>Haveli</option>
-                                  <option>Chinchwad</option>
+                                  <option>Chinchwad</option>*/}
                                 </select>
                               </div>
                             </div>
                             <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                               <label className="formLable">Village</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="QualificationLevel" >
-                                <select className="custom-select form-control inputBox" ref="QualificationLevel" name="QualificationLevel" onChange={this.handleChange.bind(this)} >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                                <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
                                   <option  className="hidden" >--select--</option>
-                                  <option>Shivne</option>
+                                  {
+                                    this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                    this.state.listofVillages.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
+                                  {/*<option>Shivne</option>
                                   <option>Hadapsar</option>
-                                  <option>Manjari</option>
+                                  <option>Manjari</option>*/}
                                 </select>
                               </div>
                             </div>

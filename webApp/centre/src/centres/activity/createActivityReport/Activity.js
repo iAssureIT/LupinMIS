@@ -496,7 +496,8 @@ class Activity extends Component{
       var editData = response.data[0];
       console.log("editData",editData);
       console.log("stateCode",this.state.stateCode);
-      this.getAvailableCenter(this.state.stateCode);
+        // getAvailableCenter(center_ID)
+      this.getAvailableCenter(this.state.center_ID);
       this.getBlock(this.state.stateCode, editData.district);
       this.getVillages(this.state.stateCode, editData.district, editData.block);
 
@@ -505,7 +506,7 @@ class Activity extends Component{
 
       this.setState({
         "editData" : editData,
-        // "stateCode"         : editData.stateCode,
+        "stateCode"         : editData.stateCode,
         "district"              : editData.district,
         "block"             : editData.block,
         "village"           : editData.village,
@@ -531,7 +532,7 @@ class Activity extends Component{
         "selectedBeneficiaries" : editData.listofBeneficiaries
       }, ()=>{
         console.log("edit", this.state.editData)
-      console.log(this.state.stateCode, editData.district, editData.block);
+      console.log(this.state.stateCode, editData.district,this.state.district ,editData.block);
       });      
       let fields = this.state.fields;
       let errors = {};
@@ -623,6 +624,7 @@ class Activity extends Component{
     })
     this.getLength();
     
+    this.getBlock(this.state.stateCode, this.state.selectedDistrict);
     this.getData(this.state.startRange, this.state.limitRange);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
@@ -632,7 +634,7 @@ class Activity extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    this.getAvailableCenter(this.state.center_ID);
+    this.getAvailableCenter(this.state.center_ID, this.state.stateCode);
     console.log("center_ID =",this.state.center_ID);
     });
   }
@@ -640,7 +642,8 @@ class Activity extends Component{
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
     this.getAvailableSectors();      
-    this.getAvailableCenter();      
+    this.getAvailableCenter(this.state.center_ID, this.state.stateCode);      
+    this.getBlock(this.state.stateCode, this.state.selectedDistrict);
     this.setState({
       "editId" : editId,
     },()=>{
@@ -758,6 +761,7 @@ class Activity extends Component{
           stateCode  : stateCode,
 
         },()=>{
+          console.log("stateCode", this.state.stateCode)
         // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
         });
         })
@@ -793,7 +797,7 @@ class Activity extends Component{
   distChange(event){    
     event.preventDefault();
     var district = event.target.value;
-    // console.log('district', district);
+     // console.log('district=', district);
     this.setState({
       district: district
     },()=>{
@@ -808,6 +812,7 @@ class Activity extends Component{
     });
   }
   getBlock(stateCode, selectedDistrict){
+    console.log("stateCode",stateCode);
     axios({
       method: 'get',
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
@@ -897,20 +902,20 @@ class Activity extends Component{
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">District</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                            {console.log(this.state.district)}
                               <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
                                 <option  className="hidden" >--select--</option>
-                                  
                                 {
-                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                this.state.availableDistInCenter.map((data, index)=>{
-                                  // console.log('dta', data);
-                                  return(
-                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
+                                  this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                  this.state.availableDistInCenter.map((data, index)=>{
+                                    console.log('dta', data);
+                                    return(
+                                      <option key={index} value={(data.district)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.district}</div>
