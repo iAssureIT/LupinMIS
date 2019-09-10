@@ -209,6 +209,8 @@ input, select{
   color: #979797 !important;
   background-color: #ffffff !important;
   border: none !important;
+  
+    border-right: 1px solid #979797 !important;
 }
 .fa-calendar{
   font-size: 12px;

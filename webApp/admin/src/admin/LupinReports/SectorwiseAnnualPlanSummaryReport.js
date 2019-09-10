@@ -293,62 +293,71 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     })
   }
   render(){
-    return(     
-        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-            <div className="row">
-                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                    <hr className="hr-map"/>
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                        Sector wise Annual Plan Summary Report              
-                    </div>
-                </div>
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                    <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                        <label className="formLable">Center</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                            <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                                <option className="hidden" >-- Select --</option>
-                                {
-                                  this.state.availableCenters && this.state.availableCenters.length >0 ?
-                                  this.state.availableCenters.map((data, index)=>{
-                                    return(
-                                      <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                }
-                            </select>
+    return(
+      <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <div className="row">
+          <div className="formWrapper"> 
+            <section className="content">
+              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
+                    <div className="row">
+                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                                Sector wise Annual Plan Summary Report              
+                            </div>
                         </div>
+                            <hr className="hr-head"/>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+                            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <label className="formLable">Center</label><span className="asterix"></span>
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                                    <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                                        <option className="hidden" >-- Select --</option>
+                                        {
+                                          this.state.availableCenters && this.state.availableCenters.length >0 ?
+                                          this.state.availableCenters.map((data, index)=>{
+                                            return(
+                                              <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                                            );
+                                          })
+                                          :
+                                          null
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                <label className="formLable">From</label><span className="asterix"></span>
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                    <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                                </div>
+                            </div>
+                            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                <label className="formLable">To</label><span className="asterix"></span>
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                    <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                                </div>
+                            </div>  
+                        </div>  
+                        <div className="marginTop11">
+                            <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <IAssureTable 
+                                    completeDataCount={this.state.tableDatas.length}
+                                    twoLevelHeader={this.state.twoLevelHeader} 
+                                    editId={this.state.editSubId} 
+                                    getData={this.getData.bind(this)} 
+                                    tableHeading={this.state.tableHeading} 
+                                    tableData={this.state.tableData} 
+                                    tableObjects={this.state.tableObjects}
+                                    getSearchText={this.getSearchText.bind(this)}/>
+                            </div>
+                        </div>  
                     </div>
-                    <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                        <label className="formLable">From</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                        </div>
-                    </div>
-                    <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                        <label className="formLable">To</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                        </div>
-                    </div>  
-                </div>  
-                <div className="marginTop11">
-                    <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <IAssureTable 
-                            completeDataCount={this.state.tableDatas.length}
-                            twoLevelHeader={this.state.twoLevelHeader} 
-                            editId={this.state.editSubId} 
-                            getData={this.getData.bind(this)} 
-                            tableHeading={this.state.tableHeading} 
-                            tableData={this.state.tableData} 
-                            tableObjects={this.state.tableObjects}
-                            getSearchText={this.getSearchText.bind(this)}/>
-                    </div>
-                </div>  
-            </div>
+              </div>
+            </section>
+          </div>
         </div>
+      </div>
+
     );
   }
 }

@@ -36,10 +36,10 @@ export default class Dashboard extends Component{
             </div>
           </div>
           <div className="">
-            <StatusComponent stats={{color:"#2FC0EF", icon:"cog",heading:"CPU TRAFFIC",value:"90%"}} />
-            <StatusComponent stats={{color:"#DD4B39", icon:"thumbs-o-up",heading:"LIKES",value:"41,410"}} />
-            <StatusComponent stats={{color:"#4CA75A", icon:"shopping-cart",heading:"SALES",value:"760"}} />
-            <StatusComponent stats={{color:"#F39C2F", icon:"users",heading:"NEW MEMBERS",value:"2,000"}} /> 
+            <StatusComponent stats={{color:"#2FC0EF", icon:"building",heading1:"CSR Center",value1:"18", heading2:"Development",value2:"7"}} />
+            <StatusComponent stats={{color:"#DD4B39", icon:"users",heading1:"Families",value1:"5160", heading2:"Beneficiaries",value2:"3,60,363"}} />
+            <StatusComponent stats={{color:"#4CA75A", icon:"shopping-cart",heading1:"Budget",value1:"15.6 Cr", heading2:"Expenditure",value2:"12.3 Cr"}} />
+            <StatusComponent stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:"12", heading2:"Activities",value2:"66"}} /> 
           </div>
           <UpdateComponent />
           <Visitorreport />

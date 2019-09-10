@@ -363,112 +363,120 @@ class ActivityWisePeriodicVarianceReport extends Component{
     })
   }
   render(){
-    return( 
-        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+    return(  
+        <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
             <div className="row">
-                <hr className="hr-map"/>
-                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                        Activity wise Periodic Variance Report (Physical & Financial)                   
-                    </div>
-                </div>
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                  <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                    <label className="formLable">Center</label><span className="asterix"></span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                      <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                        <option className="hidden" >-- Select --</option>
-                        {
-                          this.state.availableCenters && this.state.availableCenters.length >0 ?
-                          this.state.availableCenters.map((data, index)=>{
-                            return(
-                              <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                            );
-                          })
-                          :
-                          null
-                        }
-                      </select>
-                    </div>
-                    {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
-                  </div>
-                  <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
-                    <label className="formLable">Sector</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                      <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
-                        <option  className="hidden" >--Select Sector--</option>
-                        {
-                        this.state.availableSectors && this.state.availableSectors.length >0 ?
-                        this.state.availableSectors.map((data, index)=>{
-                          return(
-                            <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                          );
-                        })
-                        :
-                        null
-                      }
-                      </select>
-                    </div>
-                   {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
-                  </div>
-                    <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
-                        <label className="formLable">From</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                        </div>
-                    </div>
-                    <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
-                        <label className="formLable">To</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                        </div>
-                    </div>
-                </div>  
-                <div className="marginTop11">
-                    <div className="">
-                        <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <IAssureTable 
-                                completeDataCount={this.state.tableDatas.length}
-                                twoLevelHeader={this.state.twoLevelHeader} 
-                                editId={this.state.editSubId} 
-                                getData={this.getData.bind(this)} 
-                                tableHeading={this.state.tableHeading} 
-                                tableData={this.state.tableData} 
-                                tableObjects={this.state.tableObjects}
-                                getSearchText={this.getSearchText.bind(this)}/>
-                        </div>
-                   {/*   {
-                        <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading}  year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas} />  
-                      }*/}
-                       {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div className="sales-report-main-class">
-                                <div className="reports-select-date-boxmain">
-                                    <div className="reports-select-date-boxsec">
-                                        
-                                            <div className="reports-select-date-from1">
-                                                <div className="reports-select-date-from2">
-                                                    From
-                                                </div>
-                                                <div className="reports-select-date-from3">
-                                                    <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="reportsDateRef form-control" placeholder=""  />
-                                                </div>
-                                            </div>
-                                            <div className="reports-select-date-to1">
-                                                <div className="reports-select-date-to2">
-                                                    To
-                                                </div>
-                                                <div className="reports-select-date-to3">
-                                                    <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="reportsDateRef form-control" placeholder=""   />
-                                                </div>
-                                            </div>
+                <div className="formWrapper"> 
+                    <section className="content">
+                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
+                            <div className="row">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                                        Activity wise Periodic Variance Report (Physical & Financial)                   
                                     </div>
-                                </div>                           
-                            </div>
-                        </div>*/}
-                    </div>
+                                </div>
+                                <hr className="hr-head"/>
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+                                  <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                                    <label className="formLable">Center</label><span className="asterix"></span>
+                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                                      <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                                        <option className="hidden" >-- Select --</option>
+                                        {
+                                          this.state.availableCenters && this.state.availableCenters.length >0 ?
+                                          this.state.availableCenters.map((data, index)=>{
+                                            return(
+                                              <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                                            );
+                                          })
+                                          :
+                                          null
+                                        }
+                                      </select>
+                                    </div>
+                                    {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
+                                  </div>
+                                  <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                                    <label className="formLable">Sector</label><span className="asterix">*</span>
+                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                      <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                                        <option  className="hidden" >--Select Sector--</option>
+                                        {
+                                        this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                        this.state.availableSectors.map((data, index)=>{
+                                          return(
+                                            <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }
+                                      </select>
+                                    </div>
+                                   {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+                                  </div>
+                                    <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                                        <label className="formLable">From</label><span className="asterix"></span>
+                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                            <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                                        </div>
+                                    </div>
+                                    <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                                        <label className="formLable">To</label><span className="asterix"></span>
+                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                            <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div className="marginTop11">
+                                    <div className="">
+                                        <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <IAssureTable 
+                                                completeDataCount={this.state.tableDatas.length}
+                                                twoLevelHeader={this.state.twoLevelHeader} 
+                                                editId={this.state.editSubId} 
+                                                getData={this.getData.bind(this)} 
+                                                tableHeading={this.state.tableHeading} 
+                                                tableData={this.state.tableData} 
+                                                tableObjects={this.state.tableObjects}
+                                                getSearchText={this.getSearchText.bind(this)}/>
+                                        </div>
+                                   {/*   {
+                                        <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading}  year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas} />  
+                                      }*/}
+                                       {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div className="sales-report-main-class">
+                                                <div className="reports-select-date-boxmain">
+                                                    <div className="reports-select-date-boxsec">
+                                                        
+                                                            <div className="reports-select-date-from1">
+                                                                <div className="reports-select-date-from2">
+                                                                    From
+                                                                </div>
+                                                                <div className="reports-select-date-from3">
+                                                                    <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="reportsDateRef form-control" placeholder=""  />
+                                                                </div>
+                                                            </div>
+                                                            <div className="reports-select-date-to1">
+                                                                <div className="reports-select-date-to2">
+                                                                    To
+                                                                </div>
+                                                                <div className="reports-select-date-to3">
+                                                                    <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="reportsDateRef form-control" placeholder=""   />
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>                           
+                                            </div>
+                                        </div>*/}
+                                    </div>
+                                </div>
+                            </div>   
+                        </div>
+                    </section>
                 </div>
-            </div>    
-        </div>    
+            </div>
+        </div>
     );
   }
 }

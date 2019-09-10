@@ -95,7 +95,15 @@ logout(){
                 <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 padd0">
                   <div className="col-lg-6 col-md-7 col-sm-9 col-xs-12 pull-right hover logoutAct">
                     <div className="row hover" onClick={this.LogoutSectionHover.bind(this)}>
-                      <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText mailtext">{/*superAdmin@gmail.com*/}  {this.state.emailId ? this.state.emailId : ""}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i className="fa fa-angle-down"></i>  </span>  
+{/*                      <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText mailtext"> {this.state.emailId ? this.state.emailId : ""}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i className="fa fa-angle-down"></i>  </span>  */}
+                      <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText "> 
+                        <span className="col-lg-10 ">
+                          <label className="mailtext" >{this.state.emailId ? this.state.emailId : ""}</label>
+                        </span>  
+                        <span className="col-lg-2">
+                          <i className="fa fa-angle-down"></i> 
+                        </span>  
+                      </span>  
                       <div className="arrow-up showme"></div>
                       <div className="col-lg-12 user-footer showme">
                         <div className=" " > 

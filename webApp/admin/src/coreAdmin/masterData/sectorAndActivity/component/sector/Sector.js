@@ -2,8 +2,8 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
-import {Route, withRouter}    from 'react-router-dom';
-import _                      from 'underscore';
+import {withRouter}    from 'react-router-dom';
+// import _                      from 'underscore';
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./Sector.css";
 
@@ -59,7 +59,7 @@ class Sector extends Component{
 
   isTextKey(evt) {
    var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -109,7 +109,7 @@ class Sector extends Component{
 
   updateSector(event){
     event.preventDefault();
-    if(this.refs.sector.value =="") {
+    if(this.refs.sector.value ==="") {
       // console.log('state validation');
       if (this.validateFormReq() && this.validateForm()) {
       }

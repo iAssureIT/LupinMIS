@@ -47,12 +47,8 @@ export default class Charts extends Component{
   componentDidMount(){
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID);
-    this.setState({
-      // "center"  : this.state.center[0],
-      // "sector"  : this.state.sector[0],
-      tableData : this.state.tableData,
-    },()=>{
-    })
+
+  
     var ctx = document.getElementById('myChart');
     var data = {
       datasets: [{

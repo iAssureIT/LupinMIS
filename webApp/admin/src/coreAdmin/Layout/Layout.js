@@ -22,6 +22,7 @@ import Chart                                  from '../dashboard/chart1/Chart.js
 import Header                                     from '../common/header/Header.js'
 import Footer                                     from '../common/footer/Footer.js'
 import Dashboard                                  from '../dashboard/Dashboard.js'
+import DashboardNew                                  from '../dashboard/DashboardNew.js'
 import Leftsidebar                                from '../common/leftSidebar/Leftsidebar.js'
 import Rightsidebar                               from '../common/rightSidebar/Rightsidebar.js'
 // import UMListOfUsers                              from '../global/userManagementG/UM/UMListOfUsers.js';
@@ -64,6 +65,9 @@ import report10                                   from "../../admin/LupinReports
 import report11                                   from "../../admin/LupinReports/ADPReport.js";
 import report12                                   from "../../admin/LupinReports/EMPReport.js";
 import report13                                   from "../../admin/LupinReports/ActivitywiseAnnualPlanReport.js";
+import report14                                   from "../../admin/LupinReports/ActivitywisePeriodicPlanReport.js";
+import report15                                   from "../../admin/LupinReports/SectorwisePeriodicPlanSummaryReport.js";
+import report16                                   from "../../admin/LupinReports/SectorwiseAnnualPlanSummaryReport.js";
 
  class Layout extends Component{
   
@@ -153,6 +157,7 @@ componentDidMount(){
 {/*                          <Route path="/horizontalBar" component={horizontalBar} exact />*/}
                           <Route path="/Chart" component={Chart} exact />
                           <Route path="/" component={Dashboard} exact />
+                          <Route path="/DashboardNew" component={DashboardNew} exact />
                           <Route path="/dashboard" component={Dashboard} exact />
                           <Route path="/umlistofusers" component={UMListOfUsers} exact />
                         {/* <Route path="/umlistofemp" component={UMListOfEmp} exact />*/}
@@ -199,7 +204,10 @@ componentDidMount(){
                           <Route path="/SDG-report"                                                   exact strict component={ report10 } />
                           <Route path="/ADP-report"                                                   exact strict component={ report11 } />
                           <Route path="/EMP-report"                                                   exact strict component={ report12 } />
-                          <Route path="/activitywise-annual-plan-report"                                  exact strict component={ report13 } />
+                          <Route path="/activitywise-annual-plan-report"                              exact strict component={ report13 } />
+                          <Route path="/activity-wise-periodic-plan-report"                           exact strict component={ report14 } />
+                          <Route path="/sector-wise-periodic-plan-summary-report"                     exact strict component={ report15 } />
+                          <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
                           <Route path="/Report"                                                       exact strict component={ report } />
                           <Route path="/Report/:id"                                                   exact strict component={ report } />
                         </Switch>        

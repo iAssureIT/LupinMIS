@@ -147,60 +147,69 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
   }
   render(){
     return(
-      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+      <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
-          <hr className="hr-map"/>
-          <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-            <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-              Sector Wise Annual Completion Summary Report                   
-            </div>
-           {/* <div className="col-lg-1 col-lg-offset-5 col-md-12 col-xs-12 col-sm-12 backBtn">
-              <Link to="/report">Back to Reports</Link>                 
-            </div>*/}
-          </div>
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <label className="formLable">Center</label><span className="asterix"></span>
-              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                  <option className="hidden" >-- Select --</option>
+          <div className="formWrapper"> 
+            <section className="content">
+              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
+                <div className="row">
+                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                    <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                      Sector Wise Annual Completion Summary Report                   
+                    </div>
+                   {/* <div className="col-lg-1 col-lg-offset-5 col-md-12 col-xs-12 col-sm-12 backBtn">
+                      <Link to="/report">Back to Reports</Link>                 
+                    </div>*/}
+                  </div>
+                  <hr className="hr-head"/>
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+                    <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                      <label className="formLable">Center</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                        <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                          <option className="hidden" >-- Select --</option>
+                          {
+                            this.state.availableCenters && this.state.availableCenters.length >0 ?
+                            this.state.availableCenters.map((data, index)=>{
+                              return(
+                                <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                              );
+                            })
+                            :
+                            null
+                          }
+                        </select>
+                      </div>
+                      {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
+                    </div>
+                    <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                      <label className="formLable">Year</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                        <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                         <option className="hidden" >-- Select Year --</option>
+                         {
+                          this.state.years.map((data, i)=>{
+                            return <option key={i}>{data}</option>
+                          })
+                         }
+                        </select>
+                      </div>
+                      {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+                    </div>  
+                  </div>  
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                   {
-                    this.state.availableCenters && this.state.availableCenters.length >0 ?
-                    this.state.availableCenters.map((data, index)=>{
-                      return(
-                        <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                      );
-                    })
-                    :
-                    null
+                    <SectorwiseAnnualCompletionSummaryYearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} tableDatas={this.state.tableDatas}/> 
                   }
-                </select>
+                    
+                  </div>        
+                </div>
               </div>
-              {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
-            </div>
-            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <label className="formLable">Year</label><span className="asterix"></span>
-              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                 <option className="hidden" >-- Select Year --</option>
-                 {
-                  this.state.years.map((data, i)=>{
-                    return <option key={i}>{data}</option>
-                  })
-                 }
-                </select>
-              </div>
-              {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
-            </div>  
-          </div>  
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-          {
-            <SectorwiseAnnualCompletionSummaryYearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} tableDatas={this.state.tableDatas}/> 
-          }
-            
-          </div>        
+            </section>
+          </div>
         </div>
       </div>
+
     );
   }
 }

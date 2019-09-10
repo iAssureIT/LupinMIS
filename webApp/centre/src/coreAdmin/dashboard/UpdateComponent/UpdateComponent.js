@@ -45,7 +45,7 @@ export default class UpdateComponent extends Component{
                 <div className="col-lg-12 emptybox2"></div>
                 <div className="col-lg-8 ">
                     <div className="text-center" ><strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong></div>
-                  <div className="col-lg-12 ">
+                  <div className="">
                     <div className="row">
                     <img src="/images/g1.png"/>
                     </div>
