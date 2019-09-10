@@ -140,9 +140,9 @@ logout(){
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover paddLeft5">
+             {  /*   <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover paddLeft5">
                     <i className="fa fa-bell  headicon "><span className="label label-warning labelhead ">10</span></i>
-                  </div>
+                  </div>*/}
                 </div>
               </div>
             </div>

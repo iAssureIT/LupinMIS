@@ -392,7 +392,7 @@ class CreateUser extends Component {
                           </div>
                         </div>
                         <div className=" col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                          <button className="col-lg-2 col-md-2 col-xs-12 col-sm-12 col-xs-12 pull-right btn btnSubmit topMargin outlinebox" type="submit" onClick={this.createUser.bind(this)} id="CreateUserModal" >Register</button>
+                          <button className="col-lg-2 col-md-2 col-xs-12 col-sm-12 col-xs-12 pull-right btn btnSubmit topMargin outlinebox" type="submit" onClick={this.createUser.bind(this)} id="CreateUserModal" >Register User</button>
                         </div>    
                       </form>
                                 {/*<form id="signUpUser" onSubmit={this.createUser.bind(this)}>

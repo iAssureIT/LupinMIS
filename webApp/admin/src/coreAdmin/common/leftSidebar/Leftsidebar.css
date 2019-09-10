@@ -1,3 +1,31 @@
+.sidebarMenuText> a[aria-expanded=true]:after i{
+/*content:"\2212";*/
+}
+.openContent  .pull-right-container i{
+  transform: rotate(-90deg);
+}
+.menuContent  a:before {
+   font-family: 'Glyphicons Halflings';
+   content: "\e114";
+   float: right;
+   transition: all 0.5s;
+}
+.menuContent.active a:before {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  transform: rotate(180deg);
+} 
+
+
+.pull-right-container i{
+  font-size: 15px;
+  margin-top: 2px
+}
+.pull-right-container{
+      padding-left: 25px;
+}
+
+
 /*.leftsidebar{
 	height: 500px;
 }

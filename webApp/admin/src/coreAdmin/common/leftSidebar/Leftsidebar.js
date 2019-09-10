@@ -23,7 +23,18 @@ export default class Leftsidebar extends Component{
          $('#sidebar').toggleClass('active');
      });
   });*/
+
   }    
+
+  
+  Addclass(event){
+     // $(".menuContent").toggleClass("openContent");
+   /*   if ($('menuContent').attr('aria-expanded') === true) {
+      $(this).find(".menuContent").toggleClass("openContent");
+  }*/
+    $("pull-right-container").children('i').css({"transform": "rotate(-90deg)"});
+
+  }   
 
   render(){
     return(
@@ -148,9 +159,10 @@ export default class Leftsidebar extends Component{
                   </ul>
                 </li> */}
                 <li className="sidebarMenuText">
-                  <a href="#planreport" data-toggle="collapse" aria-expanded="false">
+                  <a href="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent" onClick={this.Addclass.bind(this)}>
                     <i className="fa fa-file" />
                     Plan Related Reports
+{/*                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>*/}
                   </a>
                   <ul className="collapse list-unstyled" id="planreport">
                     <li>
