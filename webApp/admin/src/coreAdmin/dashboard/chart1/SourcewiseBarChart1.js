@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import html2canvas from 'html2canvas';
 import Chart from 'chart.js';
-import BarChart from './BarChart.js';
+import SourcewiseBarChart from './SourcewiseBarChart.js';
 import './Chart.css';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 
@@ -18,7 +18,7 @@ import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 // import { FranchiseDetails }  from '/imports/admin/companySetting/api/CompanySettingMaster.js';
 // import { FlowRouter }   from 'meteor/ostrio:flow-router-extra';
 
-export default class Charts extends Component{
+export default class SourcewiseBarChart1 extends Component{
   
   constructor(props) {
    super(props);
@@ -31,11 +31,14 @@ export default class Charts extends Component{
       "annualPlan"             : [],
       "source"                      : [],
       "tableHeading"                : {
-        name                                    : "source",
-        annualPlan_Reach                        : "annPlan_Reach",
-        annualPlan_FamilyUpgradation            : "anPlan_FamilyUpg",    
-        achievement_Reach                       : "achie_Reach",
-        achievement_FamilyUpgradation           : "achie_FamilyUpg",            
+        source       : "source",
+        annualPlan   : "annualPlan",
+        cum_monthly  : "cum_monthly",
+        cum_achi     : "cum_achi",
+        per_cum_achi : "per_cum_achi",
+        monthlyPlan  : "monthlyPlan",
+        achi_month   : "achi_month",
+        per_achi     : "per_achi",  
                
       },
 
@@ -55,69 +58,7 @@ export default class Charts extends Component{
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID);
 
-  
-    var ctx = document.getElementById('myChart');
-    var data = {
-      datasets: [{
-          data: [30, 40, 20, 10],
-          backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-            ],
-           hoverBackgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                ],
-
-           
-      }],
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-          'New',
-          'Dispatched',
-          'Pending',
-          'Returned'
-      ]
-    };
-    var myPieChart = new Chart(ctx, {
-      type: 'pie',
-      data: data,
-    });
-
-
-    var ctx4 = document.getElementById('myBarChart2');
-    var data4 = {
-      datasets: [
-                {
-                    data: [20, 40, 30, 80],
-
-          backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-            ],
-                }
-                ],
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-          'Area 1',
-          'Area 2',
-          'Area 3',
-          'Area 4'
-      ]
-    };
-
-    var myBarChart2 = new Chart(ctx4, {
-        type: 'horizontalBar',
-        data: data4,  
-    });
   }
-
   
     componentWillReceiveProps(nextProps){
       this.getAvailableCenters();
@@ -182,7 +123,7 @@ export default class Charts extends Component{
          console.log("resp",response);
         
         this.setState({
-          sourceData : response.data
+          tableData : response.data
         },()=>{
           console.log("resp",this.state.sourceData)
         })
@@ -206,14 +147,14 @@ export default class Charts extends Component{
               per_achi.push(data.per_achi);
             })
           this.setState({
-            "source" : source.splice(-2),
-            "annualPlan1" : annualPlan.splice(-2),
-            "cum_monthly1" : cum_monthly.splice(-2),
-            "cum_achi1" : cum_achi.splice(-2),
-            "per_cum_achi1" : per_cum_achi.splice(-2),
-            "monthlyPlan1" : monthlyPlan.splice(-2),
-            "achi_month1" : achi_month.splice(-2),
-            "per_achi1" : per_achi.splice(-2),
+            "source" : source.splice(-1),
+            "annualPlan1" : annualPlan.splice(-1),
+            "cum_monthly1" : cum_monthly.splice(-1),
+            "cum_achi1" : cum_achi.splice(-1),
+            "per_cum_achi1" : per_cum_achi.splice(-1),
+            "monthlyPlan1" : monthlyPlan.splice(-1),
+            "achi_month1" : achi_month.splice(-1),
+            "per_achi1" : per_achi.splice(-1),
           },()=>{
           console.log("this.state.per_cum_achi1",per_cum_achi);
                     console.log("per_cum_achi",per_cum_achi);
@@ -230,7 +171,23 @@ export default class Charts extends Component{
         
           })
         }
-    
+        var tableData = response.data.map((a, i)=>{
+            return {
+              source       : a.source,
+              annualPlan   : a.annualPlan,
+              cum_monthly  : a.cum_monthly,
+              cum_achi     : a.cum_achi,
+              per_cum_achi : a.per_cum_achi,
+              monthlyPlan  : a.monthlyPlan,
+              achi_month   : a.achi_month,
+              per_achi     : a.per_achi,            
+            } 
+        })  
+        this.setState({
+          tableData : tableData
+        },()=>{
+          // console.log("resp",this.state.tableData)
+        })
       })
       .catch(function(error){        
       });
@@ -281,7 +238,7 @@ export default class Charts extends Component{
             </div>  
         </div>  
         <div className="col-lg-6">
-          <BarChart annualPlan={this.state.annualPlan} source={this.state.source} cum_monthly={this.state.cum_monthly} cum_achi={this.state.cum_achi} per_cum_achi={this.state.per_cum_achi}/>
+          <SourcewiseBarChart per_achi={this.state.per_achi} achi_month={this.state.achi_month} monthlyPlan={this.state.monthlyPlan} annualPlan={this.state.annualPlan} source={this.state.source} cum_monthly={this.state.cum_monthly} cum_achi={this.state.cum_achi} per_cum_achi={this.state.per_cum_achi}/>
         </div>
         <div className="col-lg-6">
           <IAssureTable 

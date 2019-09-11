@@ -17,6 +17,8 @@ import SignUp                                     from '../systemSecurity/SignUp
 import VerifyAccount                              from '../systemSecurity/VerifyAccount.js';
 // import CommonPage                              from './components/layouts/CommonLayout.js';
 
+import CenterwiseBarChart                                  from '../dashboard/chart1/CenterwiseBarChart1.js'
+import SourcewiseBarChart                                  from '../dashboard/chart1/SourcewiseBarChart1.js'
 import Chart                                  from '../dashboard/chart1/Chart.js'
 
 import Header                                     from '../common/header/Header.js'
@@ -155,6 +157,8 @@ componentDidMount(){
                       <Router>
                         <Switch>
 {/*                          <Route path="/horizontalBar" component={horizontalBar} exact />*/}
+                          <Route path="/CenterwiseBarChart" component={CenterwiseBarChart} exact />
+                          <Route path="/SourcewiseBarChart" component={SourcewiseBarChart} exact />
                           <Route path="/Chart" component={Chart} exact />
                           <Route path="/" component={Dashboard} exact />
                           <Route path="/DashboardNew" component={DashboardNew} exact />

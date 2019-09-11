@@ -212,7 +212,7 @@ export default class Leftsidebar extends Component{
                     <li>
                       <a href="/sector-wise-annual-completion-summary-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sectorwise Annual Completion</span>
+                        <span className="sidebarMenuSubText">Sectorwise Annual Report</span>
                       </a>
                     </li>
                    <li>

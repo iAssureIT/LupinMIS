@@ -258,7 +258,7 @@ export default class Charts extends Component{
         axios.get('/api/report/source/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
           console.log("respgetData",response);
-         console.log("resp",response);
+         // console.log("resp",response);
         
         this.setState({
           sourceData : response.data
