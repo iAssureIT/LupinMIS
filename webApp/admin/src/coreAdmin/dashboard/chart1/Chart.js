@@ -23,19 +23,26 @@ export default class Charts extends Component{
   constructor(props) {
    super(props);
     this.state = {
-      'year'              : "FY 2019 - 2020",
-      "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],      
+      'year'                        : "FY 2019 - 2020",
+      "years"                       :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],      
+      "achievementFamilyUpgradation": [],
+      "achievementReach"            : [],
+      "annualPlanFamilyUpgradation" : [],
+      "annualPlanReach"             : [],
+      "sector"                      : [],
       "tableHeading"                : {
         name                                    : "Sector",
-        annualPlan_Reach                        : "annualPlan_Reach",
-        annualPlan_FamilyUpgradation            : "annualPlan_FamilyUpgradation",    
-        achievement_Reach                       : "achievement_Reach",
-        achievement_FamilyUpgradation           : "achievement_FamilyUpgradation",            
+        annualPlan_Reach                        : "annPlan_Reach",
+        annualPlan_FamilyUpgradation            : "anPlan_FamilyUpg",    
+        achievement_Reach                       : "achie_Reach",
+        achievement_FamilyUpgradation           : "achie_FamilyUpg",            
                
       },
+
+
     }
   }
-   
+   3
       /*3 
   Family Coverage         
   Cumulative          
@@ -47,6 +54,7 @@ export default class Charts extends Component{
   componentDidMount(){
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID);
+    this.getSourceData(this.state.year, this.state.center_ID);
 
   
     var ctx = document.getElementById('myChart');
@@ -79,46 +87,6 @@ export default class Charts extends Component{
     var myPieChart = new Chart(ctx, {
       type: 'pie',
       data: data,
-    });
-
-    var ctx2 = document.getElementById('myChart2');
-    var data2 = {
-      datasets: [
-                {
-                    data: [20, 40, 30, 10],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.5)',
-                        'rgba(54, 162, 235, 0.5)',
-                        'rgba(255, 206, 86, 0.5)',
-                        'rgba(75, 192, 192, 0.5)',
-                    ],
-           hoverBackgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                ],
-                }
-                ],
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-          'Credit Card',
-          'Debit Card',
-          'COD',
-          'Pending'
-      ]
-    };
-    var myPieChart2 = new Chart(ctx2, {
-      type: 'pie',
-      data: data2,
-      options:{
-        color: [
-                    ['red',    // color for data at index 0
-                    'blue',   // color for data at index 1
-                    'green',  // color for data at index 2
-                    'black',],  // color for data at index 3
-                    //...
-                ]}
     });
 
 
@@ -155,13 +123,14 @@ export default class Charts extends Component{
     componentWillReceiveProps(nextProps){
       this.getAvailableCenters();
       this.getData(this.state.year, this.state.center_ID);
+      this.getSourceData(this.state.year, this.state.center_ID);
     }
     handleChange(event){
         event.preventDefault();
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-          console.log('name', this.state)
+          // console.log('name', this.state)
         });
     }
     getAvailableCenters(){
@@ -179,6 +148,7 @@ export default class Charts extends Component{
               center_ID        : center_ID
             },()=>{
             this.getData(this.state.year, this.state.center_ID);
+            this.getSourceData(this.state.year, this.state.center_ID);
             })
           })
         }).catch(function (error) {
@@ -197,6 +167,7 @@ export default class Charts extends Component{
             center_ID :center_ID,            
           },()=>{
             this.getData(this.state.year, this.state.center_ID);
+            this.getSourceData(this.state.year, this.state.center_ID);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
@@ -226,7 +197,7 @@ export default class Charts extends Component{
     if(startDate, endDate, center_ID){
         axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
-          console.log("respgetData",response)
+          // console.log("respgetData",response)
 
           var sector = [];
           var annualPlanReach = [];
@@ -242,21 +213,24 @@ export default class Charts extends Component{
               achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
             })
           this.setState({
+            "sector" : sector.splice(-2),
+            "annualPlanReach1" : annualPlanReach.splice(-2),
+            "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
+            "achievementReach1" : achievementReach.splice(-2),
+            "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
+          },()=>{
+         /* console.log("this.state.achievementFamilyUpgradation1",achievementFamilyUpgradation);
+                    console.log("achievementFamilyUpgradation",achievementFamilyUpgradation);*/
+             this.setState({
             "sector" : sector,
             "annualPlanReach" : annualPlanReach,
             "annualPlanFamilyUpgradation" : annualPlanFamilyUpgradation,
             "achievementReach" : achievementReach,
             "achievementFamilyUpgradation" : achievementFamilyUpgradation,
-          },()=>{
-          console.log("this.state.sector",sector);
-           console.log("this.state.annualPlanFamilyUpgradation",annualPlanFamilyUpgradation);
-          console.log("this.state.achievementReach",achievementReach);
-          console.log("this.state.achievementFamilyUpgradation",achievementFamilyUpgradation);
-          
+          });
+        
           })
-        }
-    
-         console.log("resp",response);
+        }    
           var tableData = response.data.map((a, i)=>{
             return {
                 name                                    : a.name,
@@ -266,18 +240,78 @@ export default class Charts extends Component{
                 achievement_FamilyUpgradation           : a.achievement_FamilyUpgradation,            
             } 
         })  
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
-          })
+        this.setState({
+          tableData : tableData
+        },()=>{
+          // console.log("resp",this.state.tableData)
         })
-        .catch(function(error){        
-        });
-      }
+      })
+      .catch(function(error){        
+      });
     }
+  }
+  getSourceData(year, center_ID){
+    console.log('year', year, 'center_ID', center_ID);
+    var startDate = year.substring(3, 7)+"-04-01";
+    var endDate = year.substring(10, 15)+"-03-31";
+    if(startDate, endDate, center_ID){
+        axios.get('/api/report/source/'+startDate+'/'+endDate+'/'+center_ID)
+        .then((response)=>{
+          console.log("respgetData",response);
+         console.log("resp",response);
+        
+        this.setState({
+          sourceData : response.data
+        },()=>{
+          console.log("resp",this.state.sourceData)
+        })
+        /*
+
+          var sector = [];
+          var annualPlanReach = [];
+          var annualPlanFamilyUpgradation = [];
+          var achievementReach = [];
+          var achievementFamilyUpgradation = [];
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{
+              sector.push(data.name);
+              annualPlanReach.push(data.annualPlan_Reach);
+              annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
+              achievementReach.push(data.achievement_Reach);
+              achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
+            })
+          this.setState({
+            "sector" : sector.splice(-2),
+            "annualPlanReach1" : annualPlanReach.splice(-2),
+            "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
+            "achievementReach1" : achievementReach.splice(-2),
+            "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
+          },()=>{
+          console.log("this.state.achievementFamilyUpgradation1",achievementFamilyUpgradation);
+                    console.log("achievementFamilyUpgradation",achievementFamilyUpgradation);
+             this.setState({
+            "sector" : sector,
+            "annualPlanReach" : annualPlanReach,
+            "annualPlanFamilyUpgradation" : annualPlanFamilyUpgradation,
+            "achievementReach" : achievementReach,
+            "achievementFamilyUpgradation" : achievementFamilyUpgradation,
+          });
+        
+          })
+        }
+    
+      */})
+      .catch(function(error){        
+      });
+    }
+  }
 
   render(){ 
+     /* {console.log("this.state.sector",this.state.sector);
+                     console.log("this.state.annualPlanFamilyUpgradation",this.state.annualPlanFamilyUpgradation);
+                    console.log("this.state.achievementReach",this.state.achievementReach);
+                    console.log("this.state.achievementFamilyUpgradation",this.state.achievementFamilyUpgradation);
+                }    */
     return(
       <div>
       <div className="row">
@@ -315,10 +349,10 @@ export default class Charts extends Component{
               {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
             </div>  
         </div>  
-        <div className="col-lg-12">
+        <div className="col-lg-6">
           <BarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
         </div>
-        <div className="col-lg-12">
+        <div className="col-lg-6">
         <IAssureTable 
          
           getData={this.getData.bind(this)} 
@@ -328,19 +362,50 @@ export default class Charts extends Component{
           />
   
         </div>
-        <div className="col-lg-12">
-          
-          <div className="col-lg-6" style={{paddingLeft:'0px'}}>
-            <div className="box2">
-                <div className="box1a">
-                  <h4>Areawise Customer Distribution (IN NOS) </h4>
-                  <canvas id="myBarChart2"></canvas>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="row">
+        <div className="col-lg-12">     
+          <table className="table table-striped  table-hover" >
+                  <thead>
+                    <tr className="tableHeader tableHeader20">
+                      {/*<th> SR.No. </th>*/}
+                      <th> source </th>
+                      <th> annualPlan</th>
+                      <th> cum_monthly </th>
+                      <th>cum_achi </th>
+                      <th> per_cum_achi </th>
+                      <th> monthlyPlan</th>
+                      <th> achi_month</th>
+                      <th> per_achi</th>
+                    </tr>                    
+                  </thead>
+                  {/*
+                  <tbody className="myTableData tableHeader20">
+                   {this.state.sourceData.map((source, index)=>{
+                    return <tr key={index}>
+                   
+                          <td>{source.source}</td>
+                          <td>{source.annualPlan}</td>
+                          <td>{source.cum_monthly}</td>
+                          <td>{source.cum_achi}</td>
+                          <td>{source.per_cum_achi}</td>
+                          <td>{source.monthlyPlan}</td>
+                          <td>{source.achi_month}</td>
+                          <td>{source.per_achi}</td>
+                        </tr>
+                  })}
+                  </tbody>
+                */}
+            {/*    {
+                  this.state.sourceData.length>0 ?
+                  {console.log(this.state.sourceData.length>0 )}
+                :
+                null 
+              }*/}
+                </table>
+                  </div>
+              </div>
+
+        <div className="row">
         <div className="col-lg-12">
             <div className="col-lg-6">
               <div className="box2">
@@ -349,28 +414,7 @@ export default class Charts extends Component{
                     <canvas id="myChart"></canvas>
                   </div>
               </div>
-            </div>
-            <div className="col-lg-6" style={{paddingLeft:'0px'}}>
-              <div className="box2">
-                  <div className="box1a">
-                    <h4>Payment Model - tDistribution</h4>
-                    <canvas id="myChart2"></canvas>
-                  </div>
-              </div>
-            </div>
-        </div>
-      </div>  
-        <br/>
-      <div className="row">
-        <div className="col-lg-12">
-          <div className="col-lg-6">
-            <div className="box2">
-                <div className="box1a">
-                  <h4> Productwise - Dispatch Status (IN NOS)</h4>
-                  <canvas id="myBarChart"></canvas>
-                </div>
-            </div>
-          </div>
+            </div> 
           <div className="col-lg-6" style={{paddingLeft:'0px'}}>
             <div className="box2">
                 <div className="box1a">
@@ -380,7 +424,9 @@ export default class Charts extends Component{
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </div>  
+        <br/>
         
       </div>
       );

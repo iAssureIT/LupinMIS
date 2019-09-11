@@ -186,7 +186,7 @@ input, select{
 
 /*Add this class next to input-group*/
 .inputBox-main{
-  border: 1px solid #979797 !important;
+  border: 1.5px solid #979797 !important;
   border-radius: 3px !important;
   height: 30px !important;
   font-size: 12px !important;
@@ -209,8 +209,7 @@ input, select{
   color: #979797 !important;
   background-color: #ffffff !important;
   border: none !important;
-  
-    border-right: 1px solid #979797 !important;
+  border-right: 1.5px solid #979797 !important;
 }
 .fa-calendar{
   font-size: 12px;
