@@ -96,7 +96,7 @@ logout(){
                    { <div onClick={this.toggleNav.bind(this)}className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
                     <i className="fa fa-cogs headicon "></i>
                   </div>}
-                  <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 pull-right padd0">
+                  <div className="col-lg-5 col-md-8 col-sm-8 col-xs-8 pull-right padd0">
                     <div className="col-lg-12 col-md-7 col-sm-9 col-xs-12  hover pull-right logoutAct">
                       <div className="row hover" onClick={this.LogoutSectionHover.bind(this)}>
 {/*                        <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText mailtext"> {this.state.emailId ? this.state.emailId : ""} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i className="fa fa-angle-down"></i> </span>  */}

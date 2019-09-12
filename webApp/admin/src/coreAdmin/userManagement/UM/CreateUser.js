@@ -356,7 +356,7 @@ class CreateUser extends Component {
                                     this.state.adminRolesListData.map((data, index)=>{
                                       // console.log(data);
                                       return(
-                                        <option key={index} value={this.camelCase(data.role)}>{this.camelCase(data.role)}</option>
+                                        <option key={index} value={data.role}>{data.role}</option>
                                       );
                                     })
                                     :

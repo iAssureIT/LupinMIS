@@ -46,50 +46,50 @@ export default class CenterwiseBarChart extends Component{
           {
             label: 'cum_achi',
             backgroundColor:'rgba(255, 206, 86, 1)',
-            borderColor: 'rgba(255, 206, 86, 0.5)',
+            borderColor: '#e58b03',
             borderWidth: 1,
-            hoverBackgroundColor:'rgba(255, 206, 86, 0.5)',
-            hoverBorderColor:'rgba(255, 206, 86, 0.5)',
+            hoverBackgroundColor:'#e58b03',
+            hoverBorderColor:'#e58b03',
             stack: '1',
             data: []
           },
           {
             label: 'cum_monthly',
             backgroundColor: 'rgba(75, 192, 192, 1)',
-            borderColor:  'rgba(75, 192, 192, 0.5)',
+            borderColor:  '#d01d19',
             borderWidth: 1,
-            hoverBackgroundColor:  'rgba(75, 192, 192, 0.5)',
-            hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
+            hoverBackgroundColor:  '#d01d19',
+            hoverBorderColor:  '#d01d19',
             stack: '1',
             data: []
           },
           {
             label: 'monthlyPlan',
-            backgroundColor:'rgba(54, 162, 235, 1)',
-            borderColor: 'rgba(54, 162, 235, 0.5)',
+            backgroundColor:'#10a923',
+            borderColor: '#10a923',
             borderWidth: 1,
-            hoverBackgroundColor: 'rgba(54, 162, 235, 0.5)',
-            hoverBorderColor: 'rgba(54, 162, 235, 0.5)',
+            hoverBackgroundColor: '#10a923',
+            hoverBorderColor: '#10a923',
             stack: '1',
             data: []
           },
           {
             label: 'per_achi',
-            backgroundColor:'rgba(255, 206, 86, 1)',
-            borderColor: 'rgba(255, 206, 86, 0.5)',
+            backgroundColor:'#e58b03',
+            borderColor: '#e58b03',
             borderWidth: 1,
-            hoverBackgroundColor:'rgba(255, 206, 86, 0.5)',
-            hoverBorderColor:'rgba(255, 206, 86, 0.5)',
+            hoverBackgroundColor:'#e58b03',
+            hoverBorderColor:'#e58b03',
             stack: '1',
             data: []
           },
           {
             label: 'per_cum_achi',
-            backgroundColor: 'rgba(75, 192, 192, 1)',
-            borderColor:  'rgba(75, 192, 192, 0.5)',
+            backgroundColor: '#d01d19',
+            borderColor:  '#d01d19',
             borderWidth: 1,
-            hoverBackgroundColor:  'rgba(75, 192, 192, 0.5)',
-            hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
+            hoverBackgroundColor:  '#d01d19',
+            hoverBorderColor:  '#d01d19',
             stack: '1',
             data: []
           }
@@ -117,28 +117,17 @@ export default class CenterwiseBarChart extends Component{
      console.log("props",props);
     if (data) {
       /*
-     Per_Periodic: ["-"]
-achievement_FamilyUpgradation: [0]
-achievement_Reach: [0]
-achievement_Total: [0]
-achievement_TotalBudget: [0]
-annualPlan_FamilyUpgradation: [5]
-annualPlan_Reach: [10]
-annualPlan_TotalBudget: [1200]
-center: ["Pune"]
-monthlyPlan_Total: [undefined]
-monthlyPlan_TotalBudget: [0]
+      data.labels = props.center;
+      data.datasets[2].data = props.annualPlan_Reach;
+      data.datasets[4].data = props.annualPlan_FamilyUpgradation;
       data.datasets[0].data = props.Per_Periodic;
       data.datasets[1].data = props.achievement_FamilyUpgradation;
       data.datasets[3].data = props.achievement_Reach;
       data.datasets[6].data = props.achievement_Total;
       data.datasets[6].data = props.achievement_TotalBudget;
-      data.datasets[4].data = props.annualPlan_FamilyUpgradation;
-      data.datasets[2].data = props.annualPlan_Reach;
       data.datasets[5].data = props.annualPlan_TotalBudget;
       data.datasets[6].data = props.monthlyPlan_Total;
       data.datasets[6].data = props.monthlyPlan_TotalBudget;
-      data.labels = props.center;
       */
       return{
          data : data

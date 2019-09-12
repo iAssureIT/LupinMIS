@@ -729,11 +729,11 @@ render(){
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="active_selected" name="userListDDOption">Active Selected</option>
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="cancel_selected" name="userListDDOption">Delete Selected Acccounts</option>	
 													{ 	adminRolesListDataList.map( (rolesData,index)=>{
-															return <UMAddRolRow key={index} roleDataVales={this.camelCase(rolesData.role)}/>
+															return <UMAddRolRow key={index} roleDataVales={rolesData.role}/>
 													  	})
 													}
 													{ adminRolesListDataList.map( (rolesData,index)=>{
-														return <UMDelRolRow key={index} roleDataVales={this.camelCase(rolesData.role)}/>
+														return <UMDelRolRow key={index} roleDataVales={rolesData.role}/>
 														  })
 													}
 												</select>
@@ -745,7 +745,7 @@ render(){
 													<option value="all" name="roleListDDOption">Show All</option>		
 													
 													{ adminRolesListDataList.map( (rolesData,index)=>{
-														return <UMSelectRoleUsers  key={index} roleDataVales={this.camelCase(rolesData.role)}/>
+														return <UMSelectRoleUsers  key={index} roleDataVales={rolesData.role}/>
 													  }) 
 													}
 												</select>
