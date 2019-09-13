@@ -71,7 +71,7 @@ class SignUp extends Component {
 	                emailId         : this.refs.signupEmail.value,
 	                pwd        		: this.refs.signupPassword.value,
 	                signupPassword  : this.refs.signupConfirmPassword.value,
-	                roles 			: 'users',
+	                roles 			: 'MIS Coordinator',
 	                status			: "Active",
 	                centerName		: this.refs.centerName.value.split('|')[0],
 	                center_ID		: this.refs.centerName.value.split('|')[1],

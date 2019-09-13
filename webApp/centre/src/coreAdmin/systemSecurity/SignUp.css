@@ -138,7 +138,10 @@
   margin-right: -15px !important;
 }
 .signupPadding{
-  padding-top:4%;
+  padding-top:2%;
+}
+.mb35 {
+    margin-bottom: 35px;
 }
 .signUpFormWrap, .forgetpassFormWrap, .confirmModalFormWrap{
   border-radius: 10px;

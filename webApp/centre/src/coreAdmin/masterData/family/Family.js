@@ -630,7 +630,7 @@ class Family extends Component{
                           <label className="formLable">District</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                             <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                              <option  className="hidden" >--select--</option>
+                              <option  className="hidden" >-- Select --</option>
                                   
                                 {
                                 this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 

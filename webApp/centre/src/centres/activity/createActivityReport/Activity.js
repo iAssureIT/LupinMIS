@@ -904,7 +904,7 @@ class Activity extends Component{
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                             {console.log(this.state.district)}
                               <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
-                                <option  className="hidden" >--select--</option>
+                                <option  className="hidden" >-- Select --</option>
                                 {
                                   this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
                                   this.state.availableDistInCenter.map((data, index)=>{
@@ -924,7 +924,7 @@ class Activity extends Component{
                           <label className="formLable">Block</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                             <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                              <option  className="hidden" >--select--</option>
+                              <option  className="hidden" >-- Select --</option>
                               {
                                 this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                 this.state.listofBlocks.map((data, index)=>{
@@ -943,7 +943,7 @@ class Activity extends Component{
                           <label className="formLable">Village</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                             <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                              <option  className="hidden" >--select--</option>
+                              <option  className="hidden" >-- Select --</option>
                               {
                                 this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                 this.state.listofVillages.map((data, index)=>{
@@ -966,7 +966,7 @@ class Activity extends Component{
                           <label className="formLable">Sector </label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                             <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                              <option  className="hidden" >--select--</option>
+                              <option  className="hidden" >-- Select --</option>
                               {
                                 this.state.availableSectors && this.state.availableSectors.length >0 ?
                                 this.state.availableSectors.map((data, index)=>{
@@ -985,7 +985,7 @@ class Activity extends Component{
                           <label className="formLable">Type of Activity</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                             <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                              <option  className="hidden" >--select--</option>
+                              <option  className="hidden" >-- Select --</option>
                               <option>Common Level Activity</option>
                                <option>Family Level Activity</option>
                             </select>
@@ -996,7 +996,7 @@ class Activity extends Component{
                           <label className="formLable">Activity</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                             <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                              <option  className="hidden" >--select--</option>
+                              <option  className="hidden" >-- Select --</option>
                               {
                                 this.state.availableActivity && this.state.availableActivity.length >0 ?
                                 this.state.availableActivity.map((data, index)=>{
@@ -1017,7 +1017,7 @@ class Activity extends Component{
                           <label className="formLable">Sub-Activity</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                             <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                              <option  className="hidden" >--select--</option>
+                              <option  className="hidden" >-- Select --</option>
                                 {
                                   this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
                                   this.state.availableSubActivity.map((data, index)=>{

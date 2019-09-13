@@ -37,9 +37,9 @@ export default class CenterwiseBarChart1 extends Component{
         achievement_Reach              : "achievement_Reach",
         achievement_FamilyUpgradation  : "achievement_FamilyUpgradation",
         annualPlan_TotalBudget         : "annualPlan_TotalBudget",
-        monthlyPlan_Total              : "monthlyPlan_Total",
-        achievement_TotalBudget        : "achievement_TotalBudget",
         monthlyPlan_TotalBudget        : "monthlyPlan_TotalBudget",  
+        achievement_TotalBudget        : "achievement_TotalBudget",
+        monthlyPlan_Total              : "monthlyPlan_Total",
         achievement_Total              : "achievement_Total",  
         Per_Periodic
                            : "Per_Periodic", 
@@ -119,7 +119,7 @@ export default class CenterwiseBarChart1 extends Component{
   getData(year, center_ID){
     console.log('year', year, 'center_ID', center_ID);
     var startDate = year.substring(3, 7)+"-04-01";
-    var endDate = year.substring(10, 15)+"-03-31";
+    var endDate = moment(new Date()).format("YYYY-MM-DD");
     if(startDate, endDate, center_ID){
         axios.get('/api/report/center/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
@@ -190,9 +190,9 @@ export default class CenterwiseBarChart1 extends Component{
               achievement_Reach              : a.achievement_Reach,
               achievement_FamilyUpgradation  : a.achievement_FamilyUpgradation,
               annualPlan_TotalBudget         : a.annualPlan_TotalBudget,
-              monthlyPlan_Total              : a.monthlyPlan_Total,
-              achievement_TotalBudget        : a.achievement_TotalBudget,
               monthlyPlan_TotalBudget        : a.monthlyPlan_TotalBudget,
+              achievement_TotalBudget        : a.achievement_TotalBudget,
+              monthlyPlan_Total              : a.monthlyPlan_Total,
               achievement_Total              : a.achievement_Total,
               Per_Periodic                   : a.Per_Periodic,
             } 

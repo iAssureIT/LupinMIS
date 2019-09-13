@@ -30,7 +30,7 @@ class CreateUser extends Component {
       office            : null,
       allPosts          : null,
       firstname         : "",
-      role              : "--select--",
+      role              : "-- Select --",
       lastname          :"",
       signupEmail       : "",
       mobileNumber         : "",

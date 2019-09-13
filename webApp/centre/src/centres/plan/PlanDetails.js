@@ -312,25 +312,6 @@ class PlanDetails extends Component{
         if (this.validateFormReq() && this.validateForm()){
         }
       }else{
-        
-      let fields = {};
-      fields["year"]              = "";
-      fields["month"]             = "";
-      fields["sectorName"]        = "";
-      fields["activityName"]      = "";
-      fields["physicalUnit"]      = "";
-      fields["unitCost"]          = "";
-      fields["totalBudget"]       = "";
-      fields["noOfBeneficiaries"] = "";
-      fields["noOfFamilies"]      = "";
-      fields["LHWRF"]             = "";
-      fields["NABARD"]            = "";
-      fields["bankLoan"]          = "";
-      fields["govtscheme"]        = "";
-      fields["directCC"]          = "";
-      fields["indirectCC"]        = "";
-      fields["other"]             = "";
-      fields["remark"]            = "";
       if(subActivityDetails.length > 0){
         for(var i=0; i<subActivityDetails.length; i++){
           var planValues = {
@@ -361,18 +342,66 @@ class PlanDetails extends Component{
             "other"               : subActivityDetails[i].other,
             "remark"              : subActivityDetails[i].remark,
           };
-          
+                  
+          let fields = {};
+          fields["year"]              = "";
+          fields["month"]             = "";
+          fields["sectorName"]        = "";
+          fields["activityName"]      = "";
+          fields["physicalUnit"]      = "";
+          fields["unitCost"]          = "";
+          fields["totalBudget"]       = "";
+          fields["noOfBeneficiaries"] = "";
+          fields["noOfFamilies"]      = "";
+          fields["LHWRF"]             = "";
+          fields["NABARD"]            = "";
+          fields["bankLoan"]          = "";
+          fields["govtscheme"]        = "";
+          fields["directCC"]          = "";
+          fields["indirectCC"]        = "";
+          fields["other"]             = "";
+          fields["remark"]            = "";
+        
           axios.patch(this.state.apiCall+'/update', planValues)
             .then((response)=>{
               swal({
                 title : response.data.message,
                 text  : response.data.message
               });
-              this.props.history.push('/plan-details');
               this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
             })
             .catch(function(error){
               console.log("error"+error);
+          }); 
+          this.setState({
+            "year"                : this.refs.year.value,
+            "month"               : this.refs.month.value,
+            "center"              :"",
+            "sector_id"           :"",
+            "sectorName"          :"",
+            "activityName"        :"",
+            "physicalUnit"        :"",
+            "unitCost"            :"",
+            "totalBudget"         :"",
+            "noOfBeneficiaries"   :"",
+            "noOfFamilies"        :"",
+            "LHWRF"               :"",
+            "NABARD"              :"",
+            "bankLoan"            :"",
+            "govtscheme"          :"",
+            "directCC"            :"",
+            "indirectCC"          :"",
+            "other"               :"",
+            "remark"              :"",
+            "fields"              :fields,
+            "editId"              :"",
+            "subActivityDetails"  :[],
+            "availableSubActivity":[],
+            "subActivityDetails[i][name]":"",
+            "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
+            "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+            "shown"               : true,
+            "apiCall"             : '/api/annualPlans'
           });
           Object.entries(planValues).map( 
             ([key, value], i)=> {
@@ -384,40 +413,12 @@ class PlanDetails extends Component{
 
         }
       }
-      
-      this.setState({
-        "year"                : this.refs.year.value,
-        "month"               : this.refs.month.value,
-      /*  "year"                :"",
-        "month"               :"All Months",*/
-        "center"              :"",
-        "sector_id"           :"",
-        "sectorName"          :"",
-        "activityName"        :"",
-        "physicalUnit"        :"",
-        "unitCost"            :"",
-        "totalBudget"         :"",
-        "noOfBeneficiaries"   :"",
-        "noOfFamilies"        :"",
-        "LHWRF"               :"",
-        "NABARD"              :"",
-        "bankLoan"            :"",
-        "govtscheme"          :"",
-        "directCC"            :"",
-        "indirectCC"          :"",
-        "other"               :"",
-        "remark"              :"",
-        "fields"              :fields,
-        "editId"              :"",
-        "subActivityDetails"  :[],
-        "availableSubActivity":[],
-        "subActivityDetails[i][name]":"",
-        "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
-        "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-        "shown"               : true,
-        "apiCall"             : '/api/annualPlans'
-      });
+     
     }
+    this.props.history.push('/plan-details');
+    this.setState({
+      "editId"              : "",
+    });
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -844,7 +845,7 @@ class PlanDetails extends Component{
                               <label className="formLable">Sector</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
                                 <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
-                                  <option  className="hidden" >--Select--</option>
+                                  <option  className="hidden" >-- Select --</option>
                                   {
                                     this.state.availableSectors && this.state.availableSectors.length >0 ?
                                     this.state.availableSectors.map((data, index)=>{
@@ -863,7 +864,7 @@ class PlanDetails extends Component{
                               <label className="formLable">Activity</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
                                 <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
-                                  <option  className="hidden" >-- Select--</option>
+                                  <option  className="hidden" >-- Select --</option>
                                   {
                                   this.state.availableActivity && this.state.availableActivity.length >0 ?
                                   this.state.availableActivity.map((data, index)=>{

@@ -84,7 +84,7 @@ class Login extends Component {
       return $('.inputTextPass').attr('type', 'password');
   }
   render(){
-    var y = 430;
+    var y = 360;
     var h = y + 'px';
 
     var x = $(window).height();   
@@ -130,16 +130,16 @@ class Login extends Component {
 {/*                  <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{"height": divHeight}}>
 */}                    <div className="divLoginInWrap">
 
-                      <div className="col-lg-4 col-lg-offset-4  ">
-                        <img className="logoImage" src="images/logo.png" height="70px"/>
+                     {/* <div className="col-lg-4 col-lg-offset-4  ">
+                        <img className="logoImage" src="images/lupin.png" height="70px"/>
                         </div>
-
+*/}
                       <form id="login" className="" onSubmit={this.userlogin.bind(this)}>
                         <br/>
                         <div className="col-lg-4 col-lg-offset-4 ">
                        {/* <h3> hhhh</h3>*/}
                      {/*blue, white top new pink skyblue redyellow jerkin new jaket*/}
-                        {<h4 className="signInNameTitle mb20"><span className="bordbt">SIGN IN</span></h4>
+                        {<h4 className="signInNameTitle mb35"><span className="bordbt">SIGN IN</span></h4>
                         }</div>
                         <div className="col-lg-12 col-md-12 col-sm-12 ">
                           <div className="inputContent">
@@ -173,9 +173,9 @@ class Login extends Component {
                             <Link to='/signup' className="UMGreyy UMGreyy_l pull-left"> <u>Sign Up</u></Link>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-6 ">
-                            <Link to='/forgot-pwd' className="UMGreyy UMGreyy_l pull-right">
+                          {/*  <Link to='/forgot-pwd' className="UMGreyy UMGreyy_l pull-right">
                               <u>Forgot Password?</u>
-                            </Link>
+                            </Link>*/}
                           </div>
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 pdcls btn">

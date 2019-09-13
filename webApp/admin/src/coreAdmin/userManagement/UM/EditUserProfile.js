@@ -16,6 +16,7 @@ class EditUserProfile extends Component{
 	  		userProfile : "",
 	  		firstName : "",
 	  		lastName  : "",
+	  		centerName  : "",
 			}	  	
 			 this.handleChange = this.handleChange.bind(this);
 	  }
@@ -29,6 +30,7 @@ class EditUserProfile extends Component{
 			"lastName" 		: this.refs.lastName.value,
 			"emailId"  		: this.refs.username.value,
 			"mobileNumber"  : this.state.mobNumber,
+			"centerName" 	: this.state.centerName,
 		}
 		console.log("formvalues",formvalues);
 				axios.patch('/api/users/'+userid, formvalues)
@@ -57,6 +59,7 @@ class EditUserProfile extends Component{
 					                mobNumber       : a.mobNumber, 
 					                status        	: a.status,	
 					                roles 			: a.roles,
+					                centerName 		: a.centerName,
 								}
 							})
 							this.setState({
@@ -85,11 +88,12 @@ class EditUserProfile extends Component{
           this.setState({ 
 	      [name]:target
 	    },()=>{
-	    	// console.log('this state', this.state);
+	    	console.log('this state', this.state);
 	    })
 	}
 	
 	componentDidMount(){
+ 		this.getCenters();
 		console.log("here edit view");
 		var userid = this.state.UserId;
 		console.log("userid-----------------------------------------",userid);
@@ -101,8 +105,9 @@ class EditUserProfile extends Component{
 	        var LastName = FName[1];
 	        var Email = res.data.profile.emailId ? res.data.profile.emailId : null;
 	        var Mnob  = res.data.profile.mobileNumber ? res.data.profile.mobileNumber : null;
+	        var centerName  = res.data.profile.centerName ? res.data.profile.centerName : null;
 
-	        console.log("Mnob", Mnob);
+	        console.log("centerName", centerName);
 	        // console.log("L name", LastName);
 
 	      this.refs.firstName.value = FirstName;
@@ -111,102 +116,151 @@ class EditUserProfile extends Component{
 		  this.refs.username.value = Email;
 		  this.setState({
 		  	mobNumber : Mnob,
+		  	centerName : centerName,
+		  },()=>{
+		  	console.log(this.state.centerName)
 		  });
-		  
-
-		 
 	      })
 	      .catch((error)=>{
 	        console.log("error = ",error);
 	        alert("Something went wrong! Please check Get URL.");
 	      });
 	}
+
+  	getCenters(){
+	    axios({
+	      method: 'get',
+	      url: '/api/centers/list',
+	    }).then((response)=> {
+	        // console.log('response ==========', response.data);
+	        this.setState({
+	          listofCenters : response.data
+	        },()=>{
+	        console.log('listofCenters', this.state.listofCenters);
+	        })
+	    }).catch(function (error) {
+	      console.log('error', error);
+	    });
+	 }
   	
 	render(){      
 		return (
-				<div>
-					<div>					        
-					    <div className="">					        
-					         <section className="content-header">
-					          {/*  <h3 className="contentTitle">Edit User</h3>*/}
-					         </section>					         
-					          <section className="content viewContent">
-					            <div className="row">
-					              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-					                <div className="box">					                 
-					                  <div className="box-header with-border boxMinHeight">
-								            <div className="box-header with-border">
-								            <h4 className="reportTitle">Edit User Data</h4>
-								            </div>										
-											<div className="box-body">												
-												<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12  EditUserProfileWrap">
-													<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12">
-														<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 btmmargin inputContent">
-                                                          <label className="formLable">First Name <label className="requiredsign">*</label></label>
-                                                          <span className="blocking-span">
-                                                           <div className="input-group inputBox-main  new_inputbx " >
-                                                             <div className="input-group-addon remove_brdr inputIcon">
-                                                             <i className="fa fa-user-circle fa "></i>
-                                                            </div>  
-                                                              <input type="text" style={{textTransform:'capitalize'}}
-                                                               className="form-control UMname inputText form-control  has-content"
-                                                                id="firstName" ref="firstName" name="firstName" onChange={this.handleChange}  placeholder="First Name"/>
-                                                           </div>   
-                                                          </span>
-                                                      	</div>
-														<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 btmmargin inputContent">
-															<label className="formLable">Last Name <label className="requiredsign">*</label></label>
-															<span className="blocking-span row">
-																<div className="input-group inputBox-main  new_inputbx " >
-																	<div className="input-group-addon remove_brdr inputIcon">
-																	  <i className="fa fa-user-circle fa "></i>
-																	</div>  
-																	<input type="text"className="form-control UMname inputText form-control  has-content indexcls" 
-																	 id="lastName" ref="lastName" name="lastName" onChange={this.handleChange}  placeholder="Last Name" />
-																</div>   
-															</span>
-														</div>
-
-
-														<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12 group btmmargin inputContent">
-															<label className="formLable">Username/Email <label className="requiredsign">*</label></label>
-                                                          	<input type="text" disabled  onChange={this.handleChange} className="disableInput inputMaterial form-control inputText" ref="username" name="username" required/>
-														</div>
-														<div className="col-lg-6 col-sm-6 col-xs-6 col-md-6 group btmmargin inputContent">
-															<label className="formLable">Mobile Number <label className="requiredsign">*</label></label>
-	                                                          <span className="blocking-span">
-	                                                           <div className="input-group inputBox-main  new_inputbx " >
-	                                                             <div className="input-group-addon remove_brdr inputIcon">
-	                                                            <i className="fa fa-mobile"></i>
-	                                                            </div>  
-	                                                              <InputMask  mask="9999999999"  type="text" style={{textTransform:'capitalize'}}
-	                                                               className="form-control UMname inputText form-control  has-content"
-	                                                                id="mobNumber" ref="mobNumber" name="mobNumber" value={this.state.mobNumber} onChange={this.handleChange} placeholder="mobile number"/>
-	                                                           </div>   
-	                                                          </span>
-														</div>	
-													</div>
-													<br/>
-														<div className="col-lg-6 col-sm-12 col-xs-12 col-md-12 pull-right btmmargin userProfileEditBtn">
-																<button onClick={this.handleSubmit.bind(this)} className="btn btn-primary pull-right">&nbsp; &nbsp;Update Profile&nbsp; &nbsp;</button>
-														</div>
-													</div>
-												</div>	
+     	<div className="container-fluid">
+	        <div className="row">
+		        <div className="formWrapper">
+		            <section className="content">
+		                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
+			                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
+			            		Edit User Data
+			                </div>
+			                <hr className="hr-head container-fluid row"/>
+							<div className="box-body">												
+									<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+										<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 btmmargin inputContent">
+                                          <label className="formLable">First Name <label className="requiredsign">*</label></label>
+                                          <span className="blocking-span">
+                                           <div className="input-group inputBox-main  new_inputbx " >
+                                             <div className="input-group-addon remove_brdr inputIcon">
+                                             <i className="fa fa-user-circle fa "></i>
+                                            </div>  
+                                              <input type="text" style={{textTransform:'capitalize'}}
+                                               className="form-control UMname inputBox  has-content"
+                                                id="firstName" ref="firstName" name="firstName" onChange={this.handleChange}  placeholder="First Name"/>
+                                           </div>   
+                                          </span>
+                                      	</div>
+										<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 btmmargin inputContent">
+											<label className="formLable">Last Name <label className="requiredsign">*</label></label>
+											<span className="blocking-span ">
+												<div className="input-group inputBox-main  new_inputbx " >
+													<div className="input-group-addon remove_brdr inputIcon">
+													  <i className="fa fa-user-circle fa "></i>
+													</div>  
+													<input type="text"className="form-control UMname inputBox  has-content indexcls" 
+													 id="lastName" ref="lastName" name="lastName" onChange={this.handleChange}  placeholder="Last Name" />
+												</div>   
+											</span>
 										</div>
-									  </div>
+										<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12 group btmmargin inputContent">
+											<label className="formLable">Username/Email <label className="requiredsign">*</label></label>
+                                          	<input type="text" disabled  onChange={this.handleChange} className="disableInput inputMaterial form-control inputBox" ref="username" name="username" required/>
+										</div>
+										<div className="col-lg-6 col-sm-6 col-xs-6 col-md-6 group btmmargin inputContent">
+											<label className="formLable">Mobile Number <label className="requiredsign">*</label></label>
+                                              <span className="blocking-span">
+                                               <div className="input-group inputBox-main  new_inputbx " >
+                                                 <div className="input-group-addon remove_brdr inputIcon">
+                                                <i className="fa fa-mobile"></i>
+                                                </div>  
+                                                  <InputMask  mask="9999999999"  type="text" style={{textTransform:'capitalize'}}
+                                                   className="form-control UMname inputBox  has-content"
+                                                    id="mobNumber" ref="mobNumber" name="mobNumber" value={this.state.mobNumber} onChange={this.handleChange} placeholder="mobile number"/>
+                                               </div>   
+                                              </span>
+										</div>
+										{/*<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 group btmmargin inputContent">
+				                            <div className="formLable ">Center Name<span className="requiredsign">*</span></div>
+											<span className="blocking-span ">
+												<div className="input-group inputBox-main  new_inputbx " >
+													<div className="input-group-addon remove_brdr inputIcon">
+													  <i className="fa fa-user-circle fa "></i>
+													</div>  
+													<select className="form-control inputBox UMname" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName" onChange={this.handleChange} >
+				                                <option hidden> --Select-- </option>
+												{console.log("centerName",this.state.centerName)}
+
+				                                  {
+				                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
+				                                    this.state.listofCenters.map((data, index)=>{
+				                                      // console.log(data);
+				                                      return(
+				                                        <option key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+				                                      );
+				                                    })
+				                                    :
+				                                    null
+				                                  }  
+				                              </select>
+												</div>   
+											</span>
+										</div>	
+										<div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box " >
+				                            <div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
+				                            <div className="input-group inputBox-main" id="centerName">
+				                              <span className="input-group-addon inputIcon">
+				                                 <i className="fa fa-crosshairs InputAddOn fa"></i>
+				                              </span> 
+				                              <select className="form-control inputBox" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName" onChange={this.handleChange} >
+				                                <option hidden> --Select-- </option>
+		{console.log("centerName",this.state.centerName)}
+
+				                                  {
+				                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
+				                                    this.state.listofCenters.map((data, index)=>{
+				                                      // console.log(data);
+				                                      return(
+				                                        <option key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+				                                      );
+				                                    })
+				                                    :
+				                                    null
+				                                  }  
+				                              </select>
+				                            </div>
+				                        </div>*/}
 									</div>
-								  </div>
-							    </section>
-							  </div>
-							</div>
-					     		
+									<br/>
+									<div className="col-lg-6 col-sm-12 col-xs-12 col-md-12 pull-right btmmargin userProfileEditBtn">
+											<button onClick={this.handleSubmit.bind(this)} className="btn submit pull-right">&nbsp; &nbsp;Update Profile&nbsp; &nbsp;</button>
+									</div>
+							</div>	
 						</div>
-					);
-					
-				
-
+				    </section>
+				</div>
+			</div>
+		</div>
+	);
 	} 
-
 }
 
 export default EditUserProfile;

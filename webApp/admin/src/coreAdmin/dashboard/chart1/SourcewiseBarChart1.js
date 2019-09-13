@@ -115,7 +115,7 @@ export default class SourcewiseBarChart1 extends Component{
   getData(year, center_ID){
     console.log('year', year, 'center_ID', center_ID);
     var startDate = year.substring(3, 7)+"-04-01";
-    var endDate = year.substring(10, 15)+"-03-31";
+    var endDate = moment(new Date()).format("YYYY-MM-DD");
     if(startDate, endDate, center_ID){
         axios.get('/api/report/source/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
