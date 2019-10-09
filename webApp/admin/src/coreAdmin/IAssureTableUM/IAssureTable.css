@@ -1,3 +1,68 @@
+.uMDetailContainer input {
+    position: relative;
+    opacity: 0;
+    z-index: 1;
+    cursor: pointer;
+    height: 17px;
+    width: 17px;
+    /* right: 10px; */
+    margin-top: 2px;
+}
+.uMDetailContainer {
+    position: relative;
+    align-content: center;
+    cursor: pointer;
+    font-size: 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    text-align: center;
+    /* left: 3px; */
+}
+.uMDetailCheck {
+    position: absolute;
+    /* top: 2px; */
+    vertical-align: center !important;
+    /* align-content: center; */
+    height: 17px;
+    width: 17px;
+    background-color: #ffffff;
+    border-radius: 3px;
+    border: 2px solid #ddd;
+    z-index: 0;
+    left: 35%;
+}
+
+.uMDetailContainer:hover input ~ .uMDetailCheck{
+  background-color: #eee;
+}
+/* When the checkbox is checked, add a blue background */
+.uMDetailContainer input:checked ~ .uMDetailCheck {
+  background-color: #2196F3;
+  border:1px solid #efefef;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.uMDetailCheck:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+/* Show the checkmark when checked */
+.uMDetailContainer input:checked ~ .uMDetailCheck:after {
+  display: block;
+}
+/* Style the checkmark/indicator */
+.uMDetailContainer .uMDetailCheck:after {
+  left: 5px;
+  top: 01px;
+  width: 6px;
+  height: 10px;
+  align-content: center;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
 
 /*new css*/
 .mt100{

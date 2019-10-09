@@ -16,6 +16,8 @@ class Family extends Component{
     super(props);
    
     this.state = {
+      "center_ID"            : "",
+      "centerName"           : "",
       "familyID"             :"",
       "nameOfFamilyHead"     :"",
       "uID"                  :"",
@@ -157,6 +159,8 @@ class Family extends Component{
     }else{
     var familyValues= 
       {
+        "center_ID"            : this.state.center_ID,
+        "centerName"           : this.state.centerName,
         "familyID"             :this.refs.familyID.value, 
         "familyHead"           :this.refs.nameOfFamilyHead.value, 
         "contactNumber"        :this.refs.contact.value, 
@@ -219,6 +223,8 @@ class Family extends Component{
     }else{
       var familyValues = {
         "family_ID"            :this.state.editId, 
+        "center_ID"            :this.state.center_ID,
+        "centerName"           :this.state.centerName,
         "familyID"             :this.refs.familyID.value,
         "familyHead"           :this.refs.nameOfFamilyHead.value, 
         "contactNumber"        :this.refs.contact.value, 

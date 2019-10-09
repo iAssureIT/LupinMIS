@@ -20,7 +20,7 @@ class Activity extends Component{
   constructor(props){
     super(props);
     this.state = {
-      "center_id"         : "",
+      "center_ID`"         : "",
       "centerName"        : "",
       "district"          : "",
       "block"             : "",

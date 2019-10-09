@@ -18,12 +18,14 @@ class Beneficiary extends Component{
       "familyID"            :"",
       "beneficiaryID"       :"",
       "nameofbeneficiaries" :"",
+      "relation"            :"",
       "fields"              : {},
       "errors"              : {},
       "tableHeading"        : {
         familyID            : "Family ID",
         beneficiaryID       : "Beneficiary ID",
         nameofbeneficiaries : "Name of Beneficiary",
+        relation            : "Relation with Family Head",
         actions             : 'Action',
       },
       "tableObjects"        : {
@@ -45,6 +47,7 @@ class Beneficiary extends Component{
       "familyID"              : this.refs.familyID.value,          
       "beneficiaryID"         : this.refs.beneficiaryID.value,          
       "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
+      "relation"              : this.refs.relation.value,
     });
     let fields                = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -83,16 +86,19 @@ class Beneficiary extends Component{
       "familyID"              : this.refs.familyID.value.split('|')[0],          
       "beneficiaryID"         : this.refs.beneficiaryID.value,          
       "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
+      "relation"              : this.refs.relation.value,
     };
     let fields                    = {};
     fields["familyID"]            = "";
     fields["beneficiaryID"]       = "";
+    fields["relation"]            = "";
     fields["nameofbeneficiaries"] = "";
 
     this.setState({
       "familyID"                 :"",
       "beneficiaryID"            :"",
       "nameofbeneficiaries"      :"",   
+      "relation"                 :"",   
       fields:fields
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
@@ -111,7 +117,7 @@ class Beneficiary extends Component{
 
   Update(event){
     event.preventDefault();
-      if(this.refs.familyID.value === "" || this.refs.beneficiaryID.value ==="" || this.refs.nameofbeneficiaries.value==="")
+      if(this.refs.familyID.value === "" || this.refs.beneficiaryID.value ==="" || this.refs.relation.value===""|| this.refs.nameofbeneficiaries.value==="")
       {
         if (this.validateFormReq() && this.validateForm()){
         }
@@ -124,12 +130,14 @@ class Beneficiary extends Component{
         "familyID"              : this.refs.familyID.value.split('|')[0],          
         "beneficiaryID"         : this.refs.beneficiaryID.value,          
         "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
+        "relation"              : this.refs.relation.value,
       };
 
       let fields                    = {};
       fields["familyID"]            = "";
       fields["beneficiaryID"]       = "";
       fields["nameofbeneficiaries"] = "";      
+      fields["relation"]            = "";      
       console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
@@ -147,6 +155,7 @@ class Beneficiary extends Component{
         "familyID"                 :"",
         "beneficiaryID"            :"",
         "nameofbeneficiaries"      :"",   
+        "relation"                 :"",
         fields:fields
       });
       this.props.history.push('/beneficiary');
@@ -171,6 +180,10 @@ class Beneficiary extends Component{
        if (!fields["nameofbeneficiaries"]) {
         formIsValid = false;
         errors["nameofbeneficiaries"] = "This field is required.";
+      }       
+       if (!fields["relation"]) {
+        formIsValid = false;
+        errors["relation"] = "This field is required.";
       }     
       this.setState({
         errors: errors
@@ -240,6 +253,7 @@ class Beneficiary extends Component{
         "familyID"              : editData.familyID+"|"+editData.family_ID,          
         "beneficiaryID"         : editData.beneficiaryID,          
         "nameofbeneficiaries"   : editData.nameofbeneficiaries,
+        "relation"              : editData.relation,          
       });      
       let fields = this.state.fields;
       let errors = {};
@@ -317,8 +331,8 @@ class Beneficiary extends Component{
                        <h4 className="pageSubHeader">Create New Beneficiary</h4>
                     </div>
                     <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                      <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Family ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
                             <select className="custom-select form-control inputBox" value={this.state.familyID} ref="familyID" name="familyID" onChange={this.handleChange.bind(this)} >
@@ -342,7 +356,7 @@ class Beneficiary extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.familyID}</div>
                         </div>
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
                           <label className="formLable">Beneficiary ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficiaryID" >
                             {/*<div className="input-group-addon inputIcon">
@@ -352,7 +366,7 @@ class Beneficiary extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
                         </div>
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
                           <label className="formLable">Name of Beneficiary</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="nameofbeneficiaries" >
                             {/*<div className="input-group-addon inputIcon">
@@ -361,6 +375,16 @@ class Beneficiary extends Component{
                             <input type="text" className="form-control inputBox"  placeholder="" value={this.state.nameofbeneficiaries} ref="nameofbeneficiaries" name="nameofbeneficiaries" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.nameofbeneficiaries}</div>
+                        </div>
+                        <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
+                          <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relation" >
+                            {/*<div className="input-group-addon inputIcon">
+                              <i className="fa fa-graduation-cap fa"></i>
+                            </div>*/}
+                            <input type="text" className="form-control inputBox"  placeholder="" value={this.state.relation} ref="relation" name="relation" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
+                          </div>
+                          <div className="errorMsg">{this.state.errors.relation}</div>
                         </div>
                       </div> 
                     </div><br/>

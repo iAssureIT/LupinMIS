@@ -32,8 +32,8 @@ export default class Leftsidebar extends Component{
           <div className="wrapper">
             <nav id="sidebar">
               <div className="sidebar-header">
-                <h4 className="text-center"><b>Lupin MIS</b></h4>
-                <strong>LFMIS</strong>
+                <h4 className="text-center"><b>Center Lupin MIS</b></h4>
+                <strong className="logoName">LFMIS <p>Center</p></strong>
               </div>
               <ul className="list-unstyled sidebar-menu components">
                 <li className="active sidebarMenuText">
@@ -83,10 +83,22 @@ export default class Leftsidebar extends Component{
                     Reports
                   </a>
                 </li>*/}
-               <li className="sidebarMenuText">
+                <li className="sidebarMenuText">
                   <a href="/centerList" >
                     <i className="fa fa-th" />
                     Center List
+                  </a>
+                </li>
+                <li className="sidebarMenuText">
+                  <a href="/caseStudy" >
+                    <i className="fa fa-th" />
+                    Case Study
+                  </a>
+                </li>
+                <li className="sidebarMenuText">
+                  <a href="/highlight" >
+                    <i className="fa fa-th" />
+                    Highlights
                   </a>
                 </li>
                 <li className="sidebarMenuText">

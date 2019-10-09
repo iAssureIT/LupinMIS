@@ -8,10 +8,7 @@ import 'bootstrap/js/tab.js';
 
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./centerDetail.css";
-
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-      
+ 
 var centerDetailArray  = [];
 class centerDetail extends Component{
   
@@ -85,7 +82,7 @@ class centerDetail extends Component{
   }
 
   handleclick(event){
-  /*  let fields = {};
+    /*  let fields = {};
     let errors={};
     if(this.refs.district.value===""){ 
       console.log("state", this.state.state);
@@ -158,7 +155,7 @@ class centerDetail extends Component{
       var id2 = this.state.uID;
       var centerDetail= 
       {
-        "type"                      : this.refs.typeOfCenter.value,
+        "type_ID"                   : this.refs.typeOfCenter.value,
         "centerName"                : this.refs.nameOfCenter.value,
         "address"                   : {
             "addressLine"           : this.refs.address.value,
@@ -178,7 +175,7 @@ class centerDetail extends Component{
         "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
       };
 
-      // console.log("centerDetail",centerDetail);
+      console.log("centerDetail",centerDetail);
       let fields = {};
       fields["typeOfCenter"]           = "";
       fields["nameOfCenter"]           = "";
@@ -195,9 +192,9 @@ class centerDetail extends Component{
       fields["districtCovered"]        = "";
       fields["blocksCovered"]          = "";
 
-      // console.log('centerDetail',centerDetail);
       axios.post('/api/centers',centerDetail)
       .then((response)=>{
+      console.log('response',response);
         this.getData(this.state.startRange, this.state.limitRange);
         swal({
           title : response.data.message,
@@ -255,7 +252,7 @@ class centerDetail extends Component{
         var centerDetail = {
           "center_ID"                : this.state.editId,
           "centerName"                : this.refs.nameOfCenter.value,
-          "type"                      : this.refs.typeOfCenter.value,
+          "type_ID"                      : this.refs.typeOfCenter.value,
           "address"                   : {
               "addressLine"           : this.refs.address.value,
               "state"                 : this.refs.state.value.split('|')[0],
@@ -469,6 +466,7 @@ class centerDetail extends Component{
     }
     this.getLength();
     this.getState();
+    this.getTypeOfCenter();
     this.getData(this.state.startRange, this.state.limitRange);
   }
   componentWillReceiveProps(nextProps){
@@ -501,7 +499,7 @@ class centerDetail extends Component{
       console.log(editData.address.stateCode, editData.address.district, editData.blocksCovered);
       this.getVillages(editData.address.stateCode, editData.address.district, editData.blocksCovered);
       this.setState({
-        "typeOfCenter"             : editData.type,
+        "typeOfCenter"             : editData.type_ID,
         "nameOfCenter"             : editData.centerName,
         "address"                  : editData.address.addressLine, 
         "state"                    : editData.address.state+'|'+editData.address.stateCode,
@@ -545,41 +543,62 @@ class centerDetail extends Component{
   }
 
   getData(startRange, limitRange){
-    var data = {
-      limitRange : limitRange,
-      startRange : startRange,
+        // console.log('/api/centers/list/'+startRange+'/'+limitRange);
+    axios.get('/api/centers/list/'+startRange+'/'+limitRange)
+    .then((response)=>{
+    console.log('response', response.data);
+    var tableData = response.data.map((a, i)=>{
+    return {
+      _id                       : a._id,
+      type                      : a.type,
+      centerName                : a.centerName,
+      places                    : a.address,
+      centerInchargeDetail      : a.centerInchargeDetail,
+      misCoordinatorDetail      : a.misCoordinatorDetail,
+      numberofVillage           : a.numberofVillage,
     }
-       axios.post('/api/centers/list',data)
-      .then((response)=>{
-        // console.log('response', response.data);
-        var tableData = response.data.map((a, i)=>{
-        return {
-          _id                       : a._id,
-          type                      : a.type,
-          centerName                : a.centerName,
-          places                    : a.address,
-          centerInchargeDetail      : a.centerInchargeDetail,
-          misCoordinatorDetail      : a.misCoordinatorDetail,
-          numberofVillage           : a.numberofVillage,
-        }
-      })
-        this.setState({
-          tableData : tableData
-        })
-      })
-      .catch(function(error){
-        
-      });
-/*
-      var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];
-      this.setState({
-        listofStates : listofStates
-      })*/
+    })
+    this.setState({
+      tableData : tableData
+    })
+    })
+    .catch(function(error){
+
+    });
   }
   componentWillMount(){
         // window.location.reload(true);
   }
   
+  getTypeOfCenter(){
+    axios({
+      method: 'get',
+      url: '/api/typeofcenters/list',
+    }).then((response)=> {
+        this.setState({
+          listofTypes : response.data
+        },()=>{
+        console.log('listofTypes', this.state.listofTypes);
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectType(event){
+    event.preventDefault();
+    var selectedType = event.target.value;
+    this.setState({
+      typeOfCenter : selectedType,
+    },()=>{
+      var typeOfCenterID = this.state.typeOfCenter.split('|')[1];
+      this.setState({
+        typeOfCenterID :typeOfCenterID
+      },()=>{
+      console.log('typeOfCenterID',this.state.typeOfCenterID);
+      })
+    });
+    this.handleChange(event);
+  }
   getState(){
     axios({
       method: 'get',
@@ -802,11 +821,21 @@ class centerDetail extends Component{
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
                               <label className="formLable">Select Type of Center</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeOfCenter" >
-                                <select className="custom-select form-control inputBox" value={this.state.typeOfCenter} ref="typeOfCenter" name="typeOfCenter" onChange={this.handleChange.bind(this)} >
+                                <select className="custom-select form-control inputBox" value={this.state.typeOfCenter} ref="typeOfCenter" name="typeOfCenter" onChange={this.selectType.bind(this)} >
                                   <option  className="hidden" >--Select Center--</option>
-                                  <option  className="" >Development Center</option>
-                                  <option  className="" >CSR Center</option>
-                                  <option  className="" >ADP</option>
+                                  {/*<option  className="" >Development Center</option>
+                                      <option  className="" >CSR Center</option>
+                                      <option  className="" >ADP</option>*/}
+                                  {
+                                    this.state.listofTypes ?
+                                    this.state.listofTypes.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={data._id}>{data.typeofCenter}</option> 
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
                                 </select>
                               </div>
                               <div className="errorMsg">{this.state.errors.typeOfCenter}</div>
@@ -814,7 +843,7 @@ class centerDetail extends Component{
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                               <label className="formLable">Name of Center</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="nameOfCenter" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.nameOfCenter}  name="nameOfCenter" placeholder="" ref="nameOfCenter"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox "  value={this.state.nameOfCenter}  name="nameOfCenter" placeholder="" ref="nameOfCenter"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.nameOfCenter}</div>
                             </div>
@@ -825,7 +854,7 @@ class centerDetail extends Component{
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                              <label className="formLable">Address</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="address" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.address}  name="address" placeholder="" ref="address" onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox "  value={this.state.address}  name="address" placeholder="" ref="address" onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.address}</div>
                             </div>
@@ -883,7 +912,7 @@ class centerDetail extends Component{
                             <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                               <label className="formLable">Name of Center Incharge</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centerInchargeName" >
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.centerInchargeName} name="centerInchargeName" placeholder="" ref="centerInchargeName"  onKeyDown={this.isTextKey.bind(this)}   onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox "  value={this.state.centerInchargeName} name="centerInchargeName" placeholder="" ref="centerInchargeName"  onKeyDown={this.isTextKey.bind(this)}   onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.centerInchargeName}</div>
                             </div>
@@ -893,7 +922,7 @@ class centerDetail extends Component{
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts"   value={this.state.centerInchargeContact} name="centerInchargeContact" placeholder="" ref="centerInchargeContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox "   value={this.state.centerInchargeContact} name="centerInchargeContact" placeholder="" ref="centerInchargeContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.centerInchargeContact}</div>
                             </div>
@@ -918,7 +947,7 @@ class centerDetail extends Component{
                                 {/*<div className="input-group-addon inputIcon">
                                  <i className="fa fa-building fa iconSize14"></i>
                                 </div>*/}
-                                <input type="text"   className="form-control inputBox nameParts"  value={this.state.MISCoordinatorName}  name="MISCoordinatorName" placeholder="" ref="MISCoordinatorName"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                <input type="text"   className="form-control inputBox "  value={this.state.MISCoordinatorName}  name="MISCoordinatorName" placeholder="" ref="MISCoordinatorName"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>
                               <div className="errorMsg">{this.state.errors.MISCoordinatorName}</div>
                             </div>

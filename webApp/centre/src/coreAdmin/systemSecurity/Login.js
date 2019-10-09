@@ -29,18 +29,18 @@ class Login extends Component {
   }
   userlogin(event){
     event.preventDefault();
-    console.log("in login mode",this.state.auth);
+    // console.log("in login mode",this.state.auth);
         var auth= {
           email       : this.refs.loginusername.value,
           password    : this.refs.loginpassword.value,
         }
 
-        console.log("auth value",auth);
+        // console.log("auth value",auth);
 
     axios
       .post('/api/users/login',auth)
       .then((response)=> {
-        console.log("-------userData------>>",response);
+        // console.log("-------userData------>>",response);
         // this.setState({
         //   token : response.data.token
         // });
@@ -50,20 +50,38 @@ class Login extends Component {
         localStorage.setItem("center_ID",response.data.center_ID);
         localStorage.setItem("centerName",response.data.centerName);
         localStorage.setItem("fullName",response.data.fullName);
+        localStorage.setItem("status",response.data.status);
+        const Token     = localStorage.getItem("token");
+        const status    = localStorage.getItem("status");
+
         // console.log("localStorage =",response.data.emailId,localStorage.getItem('emailId'));
         // console.log("localStorage =",localStorage);
+
         // browserHistory.replace('/');
         this.props.history.push("/dashboard");
-        window.location.reload(); 
         // direct.setState({loggedIn:response.data.token})
         if(localStorage==null){
           swal("Invalid Email or Password","Please Enter valid email and password");
         }else{
-          this.setState({
-              loggedIn  :   true
-          },()=>{
-            console.log("loggedIn", this.state.loggedIn);
-          })
+        // console.log("status",status);
+          if(status==="Active"){
+            this.setState({
+                loggedIn  :   true
+            },()=>{
+              // console.log("loggedIn", this.state.loggedIn);
+            })
+          window.location.reload(); 
+          }else{
+            var token = localStorage.removeItem("token");
+            if(token!==null){
+              // console.log("Header Token = ",token);
+              this.setState({
+                loggedIn : false
+              })
+            }
+            swal("Abc","User status is blocked, Please contact with Admin.");
+            this.props.history.push("/login");
+          }
         }
       })
       .catch(function (error) {
@@ -91,16 +109,16 @@ class Login extends Component {
     var z = 0;
     var winHeight =(x-z) + 'px';
     var winHeight1 =(x-z) ;
-    console.log('x',$(window).height());
-    console.log('winHeight',winHeight1);
+    // console.log('x',$(window).height());
+    // console.log('winHeight',winHeight1);
 
     var innerheight = winHeight1-60 + 'px';
     var innerheight1 = winHeight1-100 ;
    
     var margin = parseInt( innerheight1-y );
     var margint = (margin/2);
-    console.log('margint',margint);
-    console.log('margin',margin);
+    // console.log('margint',margint);
+    // console.log('margin',margin);
     var windowWidth = $(window).width();
     // console.log('ww',windowWidth);
     if(windowWidth>=320&&windowWidth<=992){
@@ -173,9 +191,9 @@ class Login extends Component {
                             <Link to='/signup' className="UMGreyy UMGreyy_l pull-left"> <u>Sign Up</u></Link>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-6 ">
-                          {/*  <Link to='/forgot-pwd' className="UMGreyy UMGreyy_l pull-right">
+                            <Link to='/forgot-pwd' className="UMGreyy UMGreyy_l pull-right">
                               <u>Forgot Password?</u>
-                            </Link>*/}
+                            </Link>
                           </div>
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 pdcls btn">

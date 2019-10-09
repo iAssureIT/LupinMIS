@@ -410,7 +410,7 @@ tr.odd {
 .locNavTab{
   position: absolute;
   left: -67px;
-  z-index: 2;
+  z-index: 0;
   border: none; 
   margin-top: -42px;
 }
@@ -983,8 +983,7 @@ margin-left: 15px;
 .can-toggleSA label .can-toggleSA__switch:after {
   content: attr(data-unchecked);
   position: absolute;
-  z-index: 5;
-
+  z-index: 0 !important;
   text-align: center;
   background: white;
   transform: translate3d(0, 0, 0);

@@ -138,6 +138,7 @@ input, select{
   height: 30px !important;
   border: none !important;
   font-size: 12px !important;
+  z-index: 0 !important;
 }
 .inputBoxAP{
   font-family:'Montserrat',sans-serif;

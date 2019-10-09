@@ -92,7 +92,7 @@ class SectorMapping extends Component{
         var mappingValues= 
         {     
           "goal"   : this.refs.goalName.value,          
-          "type"   : this.refs.goalType.value,          
+          "type_ID": this.refs.goalType.value,          
           "sector" : this.state.selectedActivities,                  
         };
         let fields = {};
@@ -137,7 +137,7 @@ class SectorMapping extends Component{
     {     
       "sectorMapping_ID"    : this.state.editId,
       "goal"                : this.refs.goalName.value,
-      "type"                : this.refs.goalType.value,          
+      "type_ID"             : this.refs.goalType.value,          
       "sector"              : this.state.selectedActivities,                  
     };
     let fields = {};
@@ -229,6 +229,7 @@ class SectorMapping extends Component{
       this.edit(this.state.editId);
     }
     this.getLength();
+    this.getTypeOfGoal();
     this.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableSector(this.state.editSectorId);  
   }
@@ -246,9 +247,9 @@ class SectorMapping extends Component{
         })
       })
       this.setState({
-        "goalName"                :editData.goal,        
-        "goalType"                :editData.type,      
-        "selectedActivities"      :editData.sector, 
+        "goalName"                : editData.goal,        
+        "goalType"                : editData.type_ID,      
+        "selectedActivities"      : editData.sector, 
       });
       let fields = this.state.fields;
       let errors = {};
@@ -268,7 +269,7 @@ class SectorMapping extends Component{
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -277,18 +278,17 @@ class SectorMapping extends Component{
   }
   
   getData(startRange, limitRange){
-     var data = {
-      limitRange : limitRange,
-      startRange : startRange,
-      }
-       axios.post('/api/sectorMappings/edit/list',data)
-      .then((response)=>{
-        this.setState({
-          tableData : response.data
-        })
+    console.log('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange);
+    axios.get('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange)
+    .then((response)=>{
+      this.setState({
+        tableData : response.data
+      },()=>{
+        console.log("tableData",this.state.tableData);
       })
-      .catch(function(error){        
-      });
+    })
+    .catch(function(error){        
+    });
   }
 
   selectActivity(event){
@@ -324,7 +324,6 @@ class SectorMapping extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {   
-    console.log("sector",response.data);     
       this.setState({
         availableSectors : response.data
       })
@@ -337,6 +336,28 @@ class SectorMapping extends Component{
       tableData : []
     })
   }
+  getTypeOfGoal(){
+    axios({
+      method: 'get',
+      url: '/api/typeofgoals/list',
+    }).then((response)=> {
+        this.setState({
+          listofTypes : response.data
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+
+  selectType(event){
+    event.preventDefault();
+    var selectedType = event.target.value;
+    this.setState({
+      goalType : selectedType,
+    });
+    this.handleChange(event);
+  }
+
   render() {
     return(
       <div className="container-fluid">
@@ -360,12 +381,22 @@ class SectorMapping extends Component{
                         <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
                           <label className="formLable">Type of Goal/Project</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
-                            <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.handleChange.bind(this)}>
+                            <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
                               <option  className="hidden" >-- Select --</option>
-                              <option>SDG Goal</option>
+                              {/*<option>SDG Goal</option>
                               <option>ADP Goal</option>
                               <option>Empowerment Line Goal</option>
-                              <option>Project Name</option>
+                              <option>Project Name</option>*/}
+                              {
+                                this.state.listofTypes ?
+                                this.state.listofTypes.map((data, index)=>{
+                                  return(
+                                    <option key={index} value={data._id}>{data.typeofGoal}</option> 
+                                  );
+                                })
+                                :
+                                null
+                              }
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.goalType}</div>
@@ -385,7 +416,7 @@ class SectorMapping extends Component{
                         </div>
                       </div> 
                     </div><br/>
-                    <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above {this.state.goalType}</label></div>
+                    <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above goal</label></div>
                     <div className="">
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable">
                         <div >
@@ -426,12 +457,12 @@ class SectorMapping extends Component{
                               this.state.availableSectors ?
                               this.state.availableSectors.map((data, index)=>{
                                 return(
-                                  <div>
+                                  <div  key={index} >
                                   { data.activity.length > 0?
-                                  <div key={index} className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 blockheight noPadding">
+                                  <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 blockheight noPadding">
                                     <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding">
                                       <label  className="formLable faintColor">{data.sector}</label>
-                                      {console.log("activity",data.activity)}
+                                      {/*console.log("activity",data.activity)*/}
                                     </div>
                                  
                                     {

@@ -82,8 +82,8 @@ logout(){
 
     return(
     <div>
-            <header className="pageHeader">
-              <div className="col-lg-12 padd0">
+            <header className="">
+              <div className="col-lg-12 padd0 pageHeader">
                 <div className="col-lg-6 col-md-4 col-sm-4 col-xs-4 padd0">
                   <div className="">
                     <div id="sidebarCollapse" className="col-lg-1 col-md-1 col-sm-1 col-xs-1 hover ">

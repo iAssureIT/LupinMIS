@@ -127,7 +127,7 @@ class CreateUser extends Component {
                                     _id             : a._id,
                                     fullName        : a.fullName,
                                     emailId         : a.emailId,
-                                    mobileNumber       : a.mobileNumber, 
+                                    mobileNumber    : a.mobileNumber, 
                                     status          : a.status, 
                                     roles           : a.roles,
                                     centerName      : a.centerName, 
@@ -266,7 +266,7 @@ class CreateUser extends Component {
                 <button type="button" className="close " data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 className="modal-title" id="exampleModalLabel">Add New User</h4>
+                <h4 className="modal-title row userTitle" id="exampleModalLabel">Add New User</h4>
               </div>
               <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="hideModal">
@@ -392,7 +392,7 @@ class CreateUser extends Component {
                           </div>
                         </div>
                         <div className=" col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                          <button className="col-lg-2 col-md-2 col-xs-12 col-sm-12 col-xs-12 pull-right btn btnSubmit topMargin outlinebox" type="submit" onClick={this.createUser.bind(this)} id="CreateUserModal" >Register User</button>
+                          <button className="col-lg-2 col-md-2 col-xs-12 col-sm-12 col-xs-12 pull-right btn submit topMargin outlinebox" type="submit" onClick={this.createUser.bind(this)} id="CreateUserModal" >Register User</button>
                         </div>    
                       </form>
                                 {/*<form id="signUpUser" onSubmit={this.createUser.bind(this)}>

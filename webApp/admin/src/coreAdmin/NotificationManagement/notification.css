@@ -922,9 +922,9 @@ display: block;
       border: none;
   }
   .adminModal-body {
-      margin-top: 0px;
+      margin-top: 0px !important;
       margin-bottom: 50px;
-      background: #fff;
+      background: #fff !important;
   }
   .adminModal-footer {
       border-radius: 0 0 9px 9px;

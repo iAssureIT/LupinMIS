@@ -44,6 +44,7 @@ class SignUp extends Component {
                 pwd       		: '',
                 signupPassword  : '',
                 role 			: '',
+                status 			: '',
                 centerName		: '',
                 center_ID		: '',
                
@@ -72,7 +73,7 @@ class SignUp extends Component {
 	                pwd        		: this.refs.signupPassword.value,
 	                signupPassword  : this.refs.signupConfirmPassword.value,
 	                roles 			: 'MIS Coordinator',
-	                status			: "Active",
+	                status			: "Blocked",
 	                centerName		: this.refs.centerName.value.split('|')[0],
 	                center_ID		: this.refs.centerName.value.split('|')[1],
 	            }
@@ -194,6 +195,7 @@ class SignUp extends Component {
     }
     componentDidMount(){
     	this.getCenters();
+    	
     }
 
 	showSignPass(){
@@ -212,11 +214,11 @@ class SignUp extends Component {
 	      method: 'get',
 	      url: '/api/centers/list',
 	    }).then((response)=> {
-	        console.log('response ==========', response.data);
+	        // console.log('response ==========', response.data);
 	        this.setState({
 	          listofCenters : response.data
 	        },()=>{
-	        console.log('listofCenters', this.state.listofCenters);
+	        // console.log('listofCenters', this.state.listofCenters);
 	        })
 	    }).catch(function (error) {
 	      console.log('error', error);

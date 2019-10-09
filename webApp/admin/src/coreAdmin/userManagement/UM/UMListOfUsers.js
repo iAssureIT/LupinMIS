@@ -330,7 +330,7 @@ class UMListOfUsers extends Component {
 										}
 										axios.post('/api/users/userslist', data)
 										.then( (res)=>{      
-											// console.log("herer",res);
+											console.log("herer",res);
 											var tableData = res.data.map((a, i)=>{
 												return {
 													_id 			: a._id,
@@ -346,7 +346,7 @@ class UMListOfUsers extends Component {
 									          completeDataCount : res.data.length,
 									          tableData 		: tableData,          
 									        },()=>{
-									        	// console.log('tableData', this.state.tableData);
+									        	console.log('tableData', this.state.tableData);
 									        })
 										})
 										.catch((error)=>{
@@ -667,7 +667,7 @@ class UMListOfUsers extends Component {
 		  method: 'get',
 		  url: '/api/roles/list',
 		}).then((response)=> {
-		    console.log('response ==========', response.data);
+		    // console.log('response ==========', response.data);
 		    this.setState({
 		      adminRolesListData : response.data
 		    },()=>{

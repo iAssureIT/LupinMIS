@@ -43,8 +43,8 @@ export default class Leftsidebar extends Component{
           <div className="wrapper">
             <nav id="sidebar">
               <div className="sidebar-header">
-                <h4 className="text-center"><b>Lupin MIS</b></h4>
-                <strong>LFMIS</strong>
+                <h4 className="text-center"><b>Admin Lupin MIS</b></h4>
+                <strong className="logoName">LFMIS <p>Admin</p></strong>
               </div>
               <ul className="list-unstyled components">
                 <li className=" sidebarMenuText">
@@ -292,11 +292,17 @@ export default class Leftsidebar extends Component{
                   </a>
                   <ul className="collapse list-unstyled" id="MasterData">
                     <li>
-                        <a href="/center-details">
-                          <i className="fa fa-circle-o" /> 
-                          <span className="sidebarMenuSubText">Center Details</span>
-                        </a>
-                      </li>
+                      <a href="/type-center">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Type of Center</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/center-details">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Center Details</span>
+                      </a>
+                    </li> 
 
                     <li>
                       <a href="/sector-and-activity">
@@ -305,11 +311,23 @@ export default class Leftsidebar extends Component{
                       </a>
                     </li>
                     <li>
+                      <a href="/type-goal">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Type of Goal</span>
+                      </a>
+                    </li>
+                    <li>
                       <a href="/sector-mapping">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector Mapping</span>
                       </a>
                     </li>
+                  {/*  <li>
+                      <a href="/project-mapping">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Project Mapping</span>
+                      </a>
+                    </li>*/}
                   </ul>
                 </li> 
                 <li className="sidebarMenuText">
@@ -324,12 +342,12 @@ export default class Leftsidebar extends Component{
                     Highlights
                   </a>
                 </li>
-                <li className="sidebarMenuText">
+             {/*   <li className="sidebarMenuText">
                   <a href="/dashboard" >
                     <i className="fa fa-map-marker" />
                     Training Center
                   </a>
-                </li>
+                </li>*/}
                 
                {/* <li className="sidebarMenuText">
                   <a href="#Access" data-toggle="collapse" aria-expanded="false">

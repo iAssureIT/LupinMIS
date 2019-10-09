@@ -19,7 +19,7 @@ import VerifyAccount                              from '../systemSecurity/Verify
 
 import CenterwiseBarChart                                  from '../dashboard/chart1/CenterwiseBarChart1.js'
 import SourcewiseBarChart                                  from '../dashboard/chart1/SourcewiseBarChart1.js'
-import Chart                                  from '../dashboard/chart1/Chart.js'
+import Chart                                      from '../dashboard/chart1/Chart.js'
 
 import Header                                     from '../common/header/Header.js'
 import Footer                                     from '../common/footer/Footer.js'
@@ -47,7 +47,10 @@ import AssignPermissionToModules                  from '../accessManagement/Assi
 import SectorAndActivity                          from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
 import BulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/BulkUpload/BulkUpload.js';
 import centerDetail                               from '../../coreAdmin/masterData/centerDetail/centerDetail.js';
+import Type_Center                                from '../../coreAdmin/masterData/typeOfCenter/typeOfCenter.js';
+import Type_Goal                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoal.js';
 
+import ProjectMapping                             from '../../coreAdmin/masterData/projectMapping/ProjectMapping.js';
 import SectorMapping                              from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
 
 import plan                                       from '../../admin/annualPlan/PlanDetails.js';
@@ -178,6 +181,12 @@ componentDidMount(){
                           <Route path="/admin/AddModuleFacility"                                      exact strict component={ AddModuleFacility } />
                           <Route path="/admin/AssignPermissionToModule"                               exact strict component={ AssignPermissionToModules } />
                          {/*Master Data*/}
+                          <Route path="/type-center"                                                  exact strict component={ Type_Center } />
+                          <Route path="/type-center/"                                                  exact strict component={ Type_Center } />
+                          <Route path="/type-center/:typeofCenterId"                                                  exact strict component={ Type_Center } />
+                          <Route path="/type-goal"                                                    exact strict component={ Type_Goal } />
+                          <Route path="/type-goal/"                                                    exact strict component={ Type_Goal } />
+                          <Route path="/type-goal/:typeofGoalId"                                                    exact strict component={ Type_Goal } />
                           <Route path="/center-details"                                               exact strict component={ centerDetail } />
                           <Route path="/center-details/"                                              exact strict component={ centerDetail } />
                           <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />
@@ -186,6 +195,9 @@ componentDidMount(){
                           <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
+                          <Route path="/project-mapping"                                              exact strict component={ ProjectMapping } />
+                          <Route path="/project-mapping/"                                              exact strict component={ ProjectMapping } />
+                          <Route path="/project-mapping/:projectMappingId"                                              exact strict component={ ProjectMapping } />
                           <Route path="/sector-mapping"                                               exact strict component={ SectorMapping } />
                           <Route path="/sector-mapping/"                                              exact strict component={ SectorMapping } />
                           <Route path="/sector-mapping/:sectorMappingId"                              exact strict component={ SectorMapping } />

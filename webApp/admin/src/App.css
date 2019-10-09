@@ -166,6 +166,7 @@ input, select{
 
 /*add this class next to form-control*/
 .inputBox{
+  z-index: 0 !important;
   font-family:'Montserrat',sans-serif;
   height: 30px !important;
   border: none !important;

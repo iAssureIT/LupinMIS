@@ -1,3 +1,9 @@
+.logoName{
+  top: 0px;
+  position: absolute;
+  padding: 4px 2px;
+  font-size: 17px !important;
+}
 /*
   .sidebarMenuText > li > a > .pull-right-container > .fa-plus,
   .treeview-menu > li > a > .pull-right-container > .fa-minus,

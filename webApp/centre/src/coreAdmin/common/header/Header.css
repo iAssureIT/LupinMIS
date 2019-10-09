@@ -110,13 +110,13 @@
 .closeSidebr {
   margin-right: -20px;
 }
-
+/*
 #headerid{
   position: absolute;
   width: 82%;
   right: 0px;
   transition: all 0.8s;
-}
+}*/
 
 .showme{ 
   display: none;
@@ -162,6 +162,9 @@
   margin-bottom: 35px;
 }
 
+.mailtext:hover{
+  color: #fff;
+}
 .mailtext{
   overflow: hidden;
   position: absolute; 
@@ -175,12 +178,14 @@
   transition: all 0.8s;
 }*/
 #headerid {
-    position: absolute;
-    width: 82.3%;
-    right: 0;
-    -webkit-transition: all .8s;
-    transition: all .8s;
-}
+  position: fixed;
+  width: 82.3%;
+  z-index: 1;
+  right: 0;
+  transition: all .8s;
+  box-shadow: 0 10px 14px rgba(92,141,255,.2);
+  transition-duration: 0.8s;
+  }
 
 
 .fontB{

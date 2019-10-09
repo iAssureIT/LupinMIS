@@ -31,6 +31,9 @@ import ViewActivity                               from "../../centres/activity/v
 import ActivityReportView                         from "../../centres/activityReportView/ActivityReportView.js";
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import Plan                                       from "../../centres/plan/PlanDetails.js";
+import CaseStudy                                  from "../../centres/caseStudy/CaseStudy.js";
+import CaseStudyy                                  from "../../centres/addFile/CaseStudyy.js";
+import Highlight                                  from "../../centres/highLight/Highlight.js";
 /*import Monthwise                                       from "../../centres/plan/Monthwise.js";*/
 import CenterList                                 from "../../centres/centerList/centerList.js";
 
@@ -110,21 +113,29 @@ class Layout extends Component{
 
                             {/*Master Data*/}
                               <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
-                              <Route path="/beneficiary/"                         exact strict component={ Beneficiary } />
+                              <Route path="/beneficiary/"                        exact strict component={ Beneficiary } />
                               <Route path="/beneficiary/:id"                     exact strict component={ Beneficiary } />
                               <Route path="/family"                              exact strict component={ Family } />
-                              <Route path="/family/"                              exact strict component={ Family } />
+                              <Route path="/family/"                             exact strict component={ Family } />
                               <Route path="/family/:id"                          exact strict component={ Family } />
                              {/*Plans Routes*/}
-                              <Route path="/plan-details"                         exact strict component={ Plan } />
-                              <Route path="/plan-details/"                         exact strict component={ Plan } />
-                              <Route path="/plan-details/:id"                         exact strict component={ Plan } />
-                {/*                    <Route path="/table"                               exact strict component={ table } />*/}                    <Route path="/activity"                            exact strict component={ Activity } />
-                              <Route path="/activity/"                            exact strict component={ Activity } />
+                              <Route path="/plan-details"                        exact strict component={ Plan } />
+                              <Route path="/plan-details/"                       exact strict component={ Plan } />
+                              <Route path="/plan-details/:id"                    exact strict component={ Plan } />
+                {/*                    <Route path="/table"                               exact strict component={ table } />*/}                
+                              <Route path="/activity"                            exact strict component={ Activity } />
+                              <Route path="/activity/"                           exact strict component={ Activity } />
                               <Route path="/activity/:id"                        exact strict component={ Activity } />
                               <Route path="/viewActivity"                        exact strict component={ ViewActivity } />
                               <Route path="/activityReportView"                  exact strict component={ ActivityReportView } />
                               <Route path="/centerList"                          exact strict component={ CenterList } />
+                              <Route path="/caseStudy"                           exact strict component={ CaseStudy } />
+                              <Route path="/caseStudy/"                          exact strict component={ CaseStudy } />
+                              <Route path="/caseStudy/:id"                       exact strict component={ CaseStudy } />
+                              <Route path="/caseStudyy"                          exact strict component={ CaseStudyy } />
+                              <Route path="/highlight"                           exact strict component={ Highlight } />
+                              <Route path="/highlight/"                          exact strict component={ Highlight } />
+                              <Route path="/highlight/:id"                       exact strict component={ Highlight } />
                 {/*                    <Route path="/monthwise"                         exact strict component={ Monthwise } />
                 */}                                              
                               </Switch>        

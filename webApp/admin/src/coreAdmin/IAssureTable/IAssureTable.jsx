@@ -17,6 +17,7 @@ class IAssureTable extends Component {
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
 		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
 		    "tableObjects" 				: props && props.tableObjects ? props.tableObjects : {},		    
+		    "searchData" 				: props && props.searchData ? props.searchData : {},		    
 		    "reA" 						: /[^a-zA-Z]/g,
 		    "reN" 						: /[^0-9]/g,
 		    "sort" 	  					: true,
@@ -73,12 +74,12 @@ class IAssureTable extends Component {
 		let id = e.target.id;
 		axios({
 	        method: tableObjects.deleteMethod,
-	        url: tableObjects.apiLink+id
+	        url   : tableObjects.apiLink+id
 	    }).then((response)=> {
 	    	this.props.getData(this.state.startRange, this.state.limitRange);
 	    	// this.props.history.push(tableObjects.editUrl);
 	        swal({
-	        	text : response.data.message,
+	        	text  : response.data.message,
 	        	title : response.data.message
 	        });
 	        this.props.history.push(tableObjects.editUrl);

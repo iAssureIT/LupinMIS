@@ -390,8 +390,9 @@ class IAssureTableUM extends Component {
 								return {
 									_id 			: a._id,
 									fullName        : a.profile.fullName,
+									centerName      : a.profile.centerName,
 					                emailId    		: a.emails[0].address,
-					                mobileNumber       : a.profile.mobileNumber, 
+					                mobileNumber    : a.profile.mobileNumber, 
 					                status        	: a.profile.status,	
 					                roles 			: ((a.roles.map((b, i)=>{return '<p>'+b+'</p>'})).toString()).replace(/,/g, " "),
 								}
@@ -608,9 +609,10 @@ class IAssureTableUM extends Component {
 								_id 			: a._id,
 								fullName        : a.fullName,
 				                emailId    		: a.emailId,
-				                mobileNumber       : a.mobileNumber, 
+				                mobileNumber    : a.mobileNumber, 
 				                status        	: a.status,	
 				                roles 			: a.roles,
+				                centerName 		: a.centerName,
 							}
 						})
 						this.setState({
@@ -846,8 +848,10 @@ class IAssureTableUM extends Component {
 	                      {/*      <input type="checkbox" className="allSelector col-lg-1 col-md-1 col-sm-3 col-xs-1 umchksett" name="allSelector" />
 	                           
 // -------------------------------------------------*/}
-
-								<input type="checkbox" className="allSelector col-lg-1 col-md-1 col-sm-3 col-xs-1 umchksett" name="allSelector" onChange={this.checkAll.bind(this)}/> 
+								<div className="uMDetailContainer">
+									<input type="checkbox" className="allSelector col-lg-1 col-md-1 col-sm-3 col-xs-1 umchksett" name="allSelector" onChange={this.checkAll.bind(this)}/> 
+	                                <span className="uMDetailCheck"></span>
+                              	</div>
 
 
 	                            </th>
@@ -881,7 +885,12 @@ class IAssureTableUM extends Component {
 											return(
 												<tr key={i} className="">
 													{/*console.log("values",value)*/}
-													<td className="textAlignCenter"><input type="checkbox" ref="userCheckbox" name="userCheckbox" className="userCheckbox" checked={this.state[value._id]}  id={value._id} onChange={this.selectedId.bind(this)}/></td>
+													<td className="textAlignCenter">
+														<div className="uMDetailContainer">
+															<input type="checkbox" ref="userCheckbox" name="userCheckbox" className="userCheckbox" checked={this.state[value._id]}  id={value._id} onChange={this.selectedId.bind(this)}/>
+							                                <span className="uMDetailCheck"></span>
+						                              	</div>
+													</td>
 													
 													{/*<td>{value._id}</td>*/}
 													{/*<td className="textAlignCenter">{this.state.startRange+1+i}</td>*/}

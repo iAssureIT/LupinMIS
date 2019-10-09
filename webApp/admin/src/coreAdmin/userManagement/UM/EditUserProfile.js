@@ -30,16 +30,17 @@ class EditUserProfile extends Component{
 			"lastName" 		: this.refs.lastName.value,
 			"emailId"  		: this.refs.username.value,
 			"mobileNumber"  : this.state.mobNumber,
-			"centerName" 	: this.state.centerName,
+			"centerName" 	: this.state.centerName.split("|")[0],
+			"center_ID" 	: this.state.centerName.split("|")[1]
 		}
 		console.log("formvalues",formvalues);
 				axios.patch('/api/users/'+userid, formvalues)
 				.then((response)=> {		
 					
 					swal({
-										title: "User updated successfully",
-										text: "User updated successfully",
-									});
+							title: "User updated successfully",
+							text: "User updated successfully",
+						});
 					 this.props.history.push('/umlistofusers');	
 					console.log('response --====================',response);
 
@@ -60,6 +61,7 @@ class EditUserProfile extends Component{
 					                status        	: a.status,	
 					                roles 			: a.roles,
 					                centerName 		: a.centerName,
+					                center_ID 		: a.center_ID,
 								}
 							})
 							this.setState({
@@ -86,7 +88,7 @@ class EditUserProfile extends Component{
         const name   = event.target.name;
         console.log('target',name, target);
           this.setState({ 
-	      [name]:target
+	      [name]:target,
 	    },()=>{
 	    	console.log('this state', this.state);
 	    })
@@ -100,25 +102,29 @@ class EditUserProfile extends Component{
 		 axios.get('/api/users/'+ userid)
 	      .then( (res)=>{
 	        console.log("here data_______________",res.data);
+	       
 	        var FName = res.data.profile.fullName.split(' ');
 	        var FirstName = FName[0];
 	        var LastName = FName[1];
 	        var Email = res.data.profile.emailId ? res.data.profile.emailId : null;
 	        var Mnob  = res.data.profile.mobileNumber ? res.data.profile.mobileNumber : null;
 	        var centerName  = res.data.profile.centerName ? res.data.profile.centerName : null;
+	        var center_ID   = res.data.profile.center_ID ? res.data.profile.center_ID : null;
 
-	        console.log("centerName", centerName);
+	        console.log("centerName", res.data.profile.centerName);
 	        // console.log("L name", LastName);
 
 	      this.refs.firstName.value = FirstName;
 	      this.refs.lastName.value = LastName;
 	     /* this.refs.fullname.value = FName */
 		  this.refs.username.value = Email;
+		  this.refs.mobNumber.value = Mnob;
+		  this.refs.centerName.value = centerName;
 		  this.setState({
 		  	mobNumber : Mnob,
-		  	centerName : centerName,
+		  	centerName : centerName+"|"+center_ID,
 		  },()=>{
-		  	console.log(this.state.centerName)
+		  	console.log('edit',this.state.centerName)
 		  });
 	      })
 	      .catch((error)=>{
@@ -126,7 +132,15 @@ class EditUserProfile extends Component{
 	        alert("Something went wrong! Please check Get URL.");
 	      });
 	}
-
+	handleChangeCenter(event){
+		event.preventDefault();
+		this.setState({
+			centerName : event.target.value,
+			// center_ID : event.target.value.split('|')[1],
+		},()=>{
+			console.log('centerName',this.state.centerName);
+		})
+	}
   	getCenters(){
 	    axios({
 	      method: 'get',
@@ -155,6 +169,7 @@ class EditUserProfile extends Component{
 			                </div>
 			                <hr className="hr-head container-fluid row"/>
 							<div className="box-body">												
+								<div className="row">												
 									<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12">
 										<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 btmmargin inputContent">
                                           <label className="formLable">First Name <label className="requiredsign">*</label></label>
@@ -181,9 +196,16 @@ class EditUserProfile extends Component{
 												</div>   
 											</span>
 										</div>
-										<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12 group btmmargin inputContent">
+										<div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 group btmmargin inputContent">
 											<label className="formLable">Username/Email <label className="requiredsign">*</label></label>
-                                          	<input type="text" disabled  onChange={this.handleChange} className="disableInput inputMaterial form-control inputBox" ref="username" name="username" required/>
+                                          	<span className="blocking-span ">
+												<div className="input-group inputBox-main  new_inputbx " >
+													<div className="input-group-addon remove_brdr inputIcon">
+													  <i className="fa fa-user-circle fa "></i>
+													</div>  
+                                          			<input type="text" disabled  onChange={this.handleChange} className="disableInput inputMaterial form-control inputBox" ref="username" name="username" required/>
+												</div>   
+											</span>
 										</div>
 										<div className="col-lg-6 col-sm-6 col-xs-6 col-md-6 group btmmargin inputContent">
 											<label className="formLable">Mobile Number <label className="requiredsign">*</label></label>
@@ -198,14 +220,14 @@ class EditUserProfile extends Component{
                                                </div>   
                                               </span>
 										</div>
-										{/*<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 group btmmargin inputContent">
+										<div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 group btmmargin inputContent">
 				                            <div className="formLable ">Center Name<span className="requiredsign">*</span></div>
-											<span className="blocking-span ">
+											<span className="blocking-span">
 												<div className="input-group inputBox-main  new_inputbx " >
 													<div className="input-group-addon remove_brdr inputIcon">
-													  <i className="fa fa-user-circle fa "></i>
+													  <i className="fa fa-crosshairs fa "></i>
 													</div>  
-													<select className="form-control inputBox UMname" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName" onChange={this.handleChange} >
+													<select className="form-control inputBox UMname" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName" onChange={this.handleChangeCenter.bind(this)} >
 				                                <option hidden> --Select-- </option>
 												{console.log("centerName",this.state.centerName)}
 
@@ -224,34 +246,11 @@ class EditUserProfile extends Component{
 												</div>   
 											</span>
 										</div>	
-										<div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box " >
-				                            <div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
-				                            <div className="input-group inputBox-main" id="centerName">
-				                              <span className="input-group-addon inputIcon">
-				                                 <i className="fa fa-crosshairs InputAddOn fa"></i>
-				                              </span> 
-				                              <select className="form-control inputBox" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName" onChange={this.handleChange} >
-				                                <option hidden> --Select-- </option>
-		{console.log("centerName",this.state.centerName)}
-
-				                                  {
-				                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
-				                                    this.state.listofCenters.map((data, index)=>{
-				                                      // console.log(data);
-				                                      return(
-				                                        <option key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-				                                      );
-				                                    })
-				                                    :
-				                                    null
-				                                  }  
-				                              </select>
-				                            </div>
-				                        </div>*/}
 									</div>
 									<br/>
-									<div className="col-lg-6 col-sm-12 col-xs-12 col-md-12 pull-right btmmargin userProfileEditBtn">
-											<button onClick={this.handleSubmit.bind(this)} className="btn submit pull-right">&nbsp; &nbsp;Update Profile&nbsp; &nbsp;</button>
+								</div>	
+									<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12 pull-right btmmargin userProfileEditBtn">
+											<button onClick={this.handleSubmit.bind(this)} className="col-lg-2 col-sm-2 col-xs-2 col-md-2 btn submit pull-right">Update Profile</button>
 									</div>
 							</div>	
 						</div>
