@@ -68,11 +68,12 @@ class Highlight extends Component{
     // console.log('editId componentDidMount', this.state.editId);
     this.getWorkspaceList();
     axios
-      .get('http://cofficapi.iassureit.com/api/projectSettings/get/one/S3')
+    /*  .get('http://cofficapi.iassureit.com/api/projectSettings/get/one/S3')*/
+      .get('/api/projectSettings/get/one/S3')
       .then((response)=>{
         const config = {
                           bucketName      : response.data.bucket,
-                          dirName         : 'test',
+                          dirName         : 'lupiniassureit',
                           region          : response.data.region,
                           accessKeyId     : response.data.key,
                           secretAccessKey : response.data.secret,
@@ -326,7 +327,7 @@ class Highlight extends Component{
     }
     axios.get('/api/highlights/list',data)
     .then((response)=>{
-      console.log('response', response);
+      // console.log('response', response);
       this.setState({
         tableData : response.data
       })
@@ -374,16 +375,16 @@ class Highlight extends Component{
       var file = event.currentTarget.files[0];
       var newFileName = JSON.parse(JSON.stringify(new Date()))+"_"+file.name;
       var newFile = new File([file],newFileName);
-      console.log("file",newFile);
+      // console.log("file",newFile);
       if (newFile) {
-      console.log("config--------------->",this.state.config);
+      // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
         if(ext=="jpg" || ext=="png" || ext=="jpeg" || ext=="JPG" || ext=="PNG" || ext=="JPEG"){ 
           if (newFile) {
             S3FileUpload
               .uploadFile(newFile,this.state.config)
               .then((Data)=>{
-                console.log("Data = ",Data);
+                // console.log("Data = ",Data);
                   var obj1={
                     imgPath : Data.location,
                   }
@@ -396,7 +397,7 @@ class Highlight extends Component{
               })
               .catch((error)=>{
                 console.log("formErrors");
-                console.log(error);
+                // console.log(error);
               })
           }else{         
             swal("Image not uploaded","Something went wrong"); 
