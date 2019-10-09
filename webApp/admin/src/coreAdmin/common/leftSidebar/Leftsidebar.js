@@ -322,12 +322,12 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Sector Mapping</span>
                       </a>
                     </li>
-                  {/*  <li>
+                    <li>
                       <a href="/project-mapping">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Project Mapping</span>
                       </a>
-                    </li>*/}
+                    </li>
                   </ul>
                 </li> 
                 <li className="sidebarMenuText">
