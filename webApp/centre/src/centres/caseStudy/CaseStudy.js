@@ -86,7 +86,7 @@ class CaseStudy extends Component{
         })
       })
       .catch(function(error){
-        console.log(error);
+        // console.log(error);
           if(error.message === "Request failed with status code 401")
               {
                    swal("Your session is expired! Please login again.","", "error");
@@ -387,7 +387,7 @@ class CaseStudy extends Component{
       }  
     })
     .catch(function (error) {
-      console.log(error);
+      // console.log(error);
     if(error.message === "Request failed with status code 401")
           {
             swal("Your session is expired! Please login again.","", "error");
@@ -425,7 +425,7 @@ class CaseStudy extends Component{
               })
               .catch((error)=>{
                 console.log("formErrors");
-                console.log(error);
+                // console.log(error);
               })
           }else{         
             swal("Image not uploaded","Something went wrong"); 
@@ -493,7 +493,7 @@ class CaseStudy extends Component{
                 }
               })
               .catch(function (error) {
-                  console.log(error);
+                  // console.log(error);
                     if(error.message === "Request failed with status code 401")
                       {
                            swal("Your session is expired! Please login again.","", "error");
@@ -524,7 +524,7 @@ class CaseStudy extends Component{
             S3FileUpload
               .uploadFile(newFile,this.state.config)
               .then((Data)=>{
-                console.log("Data = ",Data);
+                // console.log("Data = ",Data);
                   var obj1={
                     filePath : Data.location,
                   }
@@ -536,7 +536,7 @@ class CaseStudy extends Component{
               })
               .catch((error)=>{
                 console.log("formErrors");
-                console.log(error);
+                // console.log(error);
               })
           }else{         
             swal("File not uploaded","Something went wrong"); 

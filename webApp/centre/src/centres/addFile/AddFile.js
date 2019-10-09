@@ -34,7 +34,7 @@ class AddFile extends Component{
     var fileType = configData.fileType;
     this.setState({
       fileType : fileType
-    // },()=>{console.log("fileType",this.state.fileType)})
+    },()=>{console.log("fileType",this.state.fileType)})
     axios
       .get('http://cofficapi.iassureit.com/api/projectSettings/get/one/S3')
       .then((response)=>{
