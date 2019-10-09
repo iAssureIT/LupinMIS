@@ -34,11 +34,11 @@ class AddFile extends Component{
     var fileType = configData.fileType;
     this.setState({
       fileType : fileType
-    },()=>{console.log("fileType",this.state.fileType)})
+    // },()=>{console.log("fileType",this.state.fileType)})
     axios
       .get('http://cofficapi.iassureit.com/api/projectSettings/get/one/S3')
       .then((response)=>{
-          console.log("response",response);
+          // console.log("response",response);
        
         const config = {
                           bucketName      : response.data.bucket,
@@ -50,7 +50,7 @@ class AddFile extends Component{
         this.setState({
           config : config
         },()=>{
-          console.log("config",this.state.config)
+          // console.log("config",this.state.config)
         })
       })
       .catch(function(error){
@@ -124,7 +124,7 @@ class AddFile extends Component{
             S3FileUpload
               .uploadFile(newFile,this.state.config)
               .then((Data)=>{
-                console.log("Data = ",Data);
+                // console.log("Data = ",Data);
                   var obj1={
                     filePath : Data.location,
                   }
@@ -154,7 +154,7 @@ class AddFile extends Component{
     var filePath = e.target.getAttribute('data-id');
     var data = filePath.split("/");
     var imageName = data[4];
-    console.log("imageName==",imageName);
+    // console.log("imageName==",imageName);
     if(index){
       swal({
         title: "Are you sure you want to delete this image?",
@@ -180,7 +180,7 @@ class AddFile extends Component{
 
   deleteItem(event){
     event.preventDefault();
-    console.log('innnnn.....');
+    // console.log('innnnn.....');
     var configData =  this.props.configData;
     var id = event.target.getAttribute('data-id');
     if(id){

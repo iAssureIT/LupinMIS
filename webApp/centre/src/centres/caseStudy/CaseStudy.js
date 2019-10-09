@@ -369,7 +369,7 @@ class CaseStudy extends Component{
     var array = [];
     axios.get('/api/caseStudies/list')
     .then((response)=> {
-      console.log("Response 1 =",response.data);
+      // console.log("Response 1 =",response.data);
         this.setState({
           dataArray : response.data
         },()=>{
@@ -403,16 +403,16 @@ class CaseStudy extends Component{
       var file = event.currentTarget.files[0];
       var newFileName = JSON.parse(JSON.stringify(new Date()))+"_"+file.name;
       var newFile = new File([file],newFileName);
-      console.log("file",newFile);
+      // console.log("file",newFile);
       if (newFile) {
-      console.log("config--------------->",this.state.config);
+      // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
         if(ext=="jpg" || ext=="png" || ext=="jpeg" || ext=="JPG" || ext=="PNG" || ext=="JPEG"){ 
           if (newFile) {
             S3FileUpload
               .uploadFile(newFile,this.state.config)
               .then((Data)=>{
-                console.log("Data = ",Data);
+                // console.log("Data = ",Data);
                   var obj1={
                     imgPath : Data.location,
                   }
@@ -443,7 +443,7 @@ class CaseStudy extends Component{
     var filePath = e.target.getAttribute('data-id');
     var data = filePath.split("/");
     var imageName = data[4];
-    console.log("imageName==",imageName);
+    // console.log("imageName==",imageName);
     if(index){
       swal({
         title: "Are you sure you want to delete this image?",
@@ -469,7 +469,7 @@ class CaseStudy extends Component{
 
   deleteItem(event){
     event.preventDefault();
-    console.log('innnnn.....')
+    // console.log('innnnn.....')
     var id = event.target.getAttribute('data-id');
     if(id){
       swal({
