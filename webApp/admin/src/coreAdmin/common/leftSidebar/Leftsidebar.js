@@ -44,7 +44,7 @@ export default class Leftsidebar extends Component{
             <nav id="sidebar">
               <div className="sidebar-header">
                 <h4 className="text-center"><b>Admin Lupin MIS</b></h4>
-                <strong className="logoName">LFMIS <p>Admin</p></strong>
+                <strong className="sidebarLogoName">LFMIS <p>Admin</p></strong>
               </div>
               <ul className="list-unstyled components">
                 <li className=" sidebarMenuText">

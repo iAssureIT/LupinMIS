@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "aws-sdk": "^2.550.0",
     "axios": "^0.19.0",
     "bootstrap": "^3.4.1",
     "chart.js": "^2.8.0",
@@ -12,6 +13,9 @@
     "jquery-validation": "^1.19.1",
     "jspdf": "^1.5.3",
     "moment": "^2.24.0",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "path": "^0.12.7",
     "react": "^16.8.6",
     "react-ckeditor-component": "^1.1.0",
     "react-dom": "^16.8.6",
@@ -25,6 +29,7 @@
     "simple-react-validator": "^1.2.0",
     "sweetalert": "^2.1.2",
     "underscore": "^1.9.1",
+    "url": "^0.11.0",
     "validator": "^11.0.0"
   },
   "scripts": {

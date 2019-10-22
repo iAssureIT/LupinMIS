@@ -25,7 +25,7 @@ class Login extends Component {
         }
   }
   componentDidMount(){
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    // axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
   }
   userlogin(event){
     event.preventDefault();
@@ -40,32 +40,6 @@ class Login extends Component {
     axios
       .post('/api/users/login',auth)
       .then((response)=> {
-        // this.setState({
-        //   token : response.data.token
-        // });
-      /*  axios.defaults.headers.common['Authorization'] = response.data.token;
-*/
-      /*  localStorage.setItem("token",response.data.token);
-        localStorage.setItem("emailId",response.data.emailId);
-        localStorage.setItem("center_ID",response.data.center_ID);
-        localStorage.setItem("centerName",response.data.centerName);
-        localStorage.setItem("fullName",response.data.fullName);
-        console.log("localStorage =",localStorage.getItem('token'));
-        console.log("localStorage =",localStorage);
-        // browserHistory.replace('/');
-        this.props.history.push("/dashboard");
-        window.location.reload(); 
-        // direct.setState({loggedIn:response.data.token})
-        if(localStorage==null){
-          swal("Invalid Email or Password","Please Enter valid email and password");
-        }else{
-          this.setState({
-              loggedIn  :   true
-          },()=>{
-            console.log("loggedIn", this.state.loggedIn);
-          })
-        }*/
-
         console.log("-------userData------>>",response);
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token;
 
@@ -108,7 +82,7 @@ class Login extends Component {
       return $('.inputTextPass').attr('type', 'password');
   }
   render(){
-    var y = 410;
+    var y = 340;
     var h = y + 'px';
 
     var x = $(window).height();   
@@ -153,17 +127,16 @@ class Login extends Component {
                   
 {/*                  <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{"height": divHeight}}>
 */}                    <div className="divLoginInWrap">
-
+{/*
                       <div className="col-lg-4 col-lg-offset-4  ">
                         <img className="logoImage" src="images/logo.png" height="70px"/>
-                        </div>
+                      </div>*/}
 
                       <form id="login" className="" onSubmit={this.userlogin.bind(this)}>
-                        <br/>
                         <div className="col-lg-4 col-lg-offset-4 ">
                        {/* <h3> hhhh</h3>*/}
                      
-                        {<h4 className="signInNameTitle mb20"><span className="bordbt">SIGN IN</span></h4>
+                        {<h4 className="signInNameTitle mb35"><span className="bordbt">SIGN IN</span></h4>
                         }</div>
                         <div className="col-lg-12 col-md-12 col-sm-12 ">
                           <div className="inputContent">
@@ -191,7 +164,7 @@ class Login extends Component {
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 btn">
                           <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 UMloginbutton hvr-sweep-to-right" value="Sign In"/>
-                        </div>0
+                        </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  customFl pdcls ">
                           {/*<div className="col-lg-6 col-md-6 col-sm-6">
                             <Link to='/signup' className="UMGreyy UMGreyy_l pull-left"> <u>Sign Up</u></Link>

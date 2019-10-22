@@ -46,8 +46,8 @@ class CaseStudy extends Component{
         author            : "Author of Case Study",
         actions           : 'Action',
       },            
-      configData : {
-        dirName         : 'test',
+      "configData" : {
+        dirName         : 'lupiniassureit',
         deleteMethod    : 'delete',
         apiLink         : '/api/caseStudies/delete/',
         pageURL         : '/caseStudyy',
@@ -76,6 +76,7 @@ class CaseStudy extends Component{
   }
   
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     // console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
@@ -177,7 +178,7 @@ class CaseStudy extends Component{
       fields["caseStudy_File"]        = "";
       axios.post('/api/caseStudies', caseStudyValues)
         .then((response)=>{
-        console.log('response', response);
+        // console.log('response', response);
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
@@ -317,7 +318,7 @@ class CaseStudy extends Component{
   }
 
   getLength(){
-    axios.get('/api/caseStudies/count')
+/*    axios.get('/api/caseStudies/count')
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -328,7 +329,7 @@ class CaseStudy extends Component{
     })
     .catch(function(error){
       
-    });
+    });*/
   }
 
   getData(startRange, limitRange){ 

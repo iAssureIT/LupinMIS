@@ -12,6 +12,9 @@
   background: #0D47A1;
   /*background: #0275cf;*/
 }
+.mb35{
+  margin-bottom: 35px !important;
+}
 .logoName{
   color: #fff;
   font-size: 24px;
@@ -1782,6 +1785,7 @@ input[type="radio"]:checked:before {
   text-transform: uppercase;
   font-size: 15px;
   font-weight: bold;
+  margin-top: 10px;
   margin-bottom: 20px;
   border-radius: 4px !important; 
   font-family:'Roboto', sans-serif !important;

@@ -1,5 +1,6 @@
-import React,{Component} from 'react';
-import {HorizontalBar} from 'react-chartjs-2';
+import React,{Component}      from 'react';
+import axios                  from 'axios';
+import {HorizontalBar}        from 'react-chartjs-2';
 const options = {
     scales: {
       xAxes: [{
@@ -96,7 +97,8 @@ export default class SourcewiseBarChart extends Component{
       }
     }
   }
-  // componentDidMount(){
+  componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
   //   var data = {...this.state.data};
   //   if (data) {
   //     data.labels = this.props.userNames;
@@ -109,7 +111,7 @@ export default class SourcewiseBarChart extends Component{
   //     })
   //   }
 
-  // }
+  }
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
      console.log("data",data);

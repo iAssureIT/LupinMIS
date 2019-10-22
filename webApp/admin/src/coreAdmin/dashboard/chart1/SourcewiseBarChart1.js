@@ -55,71 +55,84 @@ export default class SourcewiseBarChart1 extends Component{
     Reach Upgradation   Reach Upgradation   
             */
   componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    var token= localStorage.getItem("token");
+    this.setState({
+      token : token
+    },()=>{
+      console.log("token",this.state.token)
+    })
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID);
-
+  }  
+  componentWillReceiveProps(nextProps){
+    this.getAvailableCenters();
+    this.getData(this.state.year, this.state.center_ID);
   }
-  
-    componentWillReceiveProps(nextProps){
-      this.getAvailableCenters();
-      this.getData(this.state.year, this.state.center_ID);
-    }
-    handleChange(event){
-        event.preventDefault();
+  handleChange(event){
+      event.preventDefault();
+      this.setState({
+        [event.target.name] : event.target.value
+      },()=>{
+        // console.log('name', this.state)
+      });
+  }
+  getAvailableCenters(){
+      axios({
+        method: 'get',
+        url: '/api/centers/list',
+      }).then((response)=> {
         this.setState({
-          [event.target.name] : event.target.value
+          availableCenters : response.data,
+          center           : response.data[0].centerName+'|'+response.data[0]._id
         },()=>{
-          // console.log('name', this.state)
-        });
-    }
-    getAvailableCenters(){
-        axios({
-          method: 'get',
-          url: '/api/centers/list',
-        }).then((response)=> {
+          // console.log('center', this.state.center);
+          var center_ID = this.state.center.split('|')[1];
           this.setState({
-            availableCenters : response.data,
-            center           : response.data[0].centerName+'|'+response.data[0]._id
+            center_ID        : center_ID
           },()=>{
-            // console.log('center', this.state.center);
-            var center_ID = this.state.center.split('|')[1];
-            this.setState({
-              center_ID        : center_ID
-            },()=>{
-            this.getData(this.state.year, this.state.center_ID);
-            })
+          this.getData(this.state.year, this.state.center_ID);
           })
-        }).catch(function (error) {
-          console.log('error', error);
-        });
-    } 
-    selectCenter(event){
-        var selectedCenter = event.target.value;
+        })
+      }).catch(function (error) {
+        console.log('error', error);
+      });
+  } 
+  selectCenter(event){
+      var selectedCenter = event.target.value;
+      this.setState({
+        [event.target.name] : event.target.value,
+        selectedCenter : selectedCenter,
+      },()=>{
+        var center_ID = this.state.selectedCenter.split('|')[1];
+        console.log('center_ID', center_ID);
         this.setState({
-          [event.target.name] : event.target.value,
-          selectedCenter : selectedCenter,
+          center_ID :center_ID,            
         },()=>{
-          var center_ID = this.state.selectedCenter.split('|')[1];
-          console.log('center_ID', center_ID);
-          this.setState({
-            center_ID :center_ID,            
-          },()=>{
-            this.getData(this.state.year, this.state.center_ID);
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'source_ID', this.state.source_ID)
-          })
-        });
-    } 
+          this.getData(this.state.year, this.state.center_ID);
+          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'source_ID', this.state.source_ID)
+        })
+      });
+  } 
 
-
- 
   getData(year, center_ID){
     console.log('year', year, 'center_ID', center_ID);
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = moment(new Date()).format("YYYY-MM-DD");
-    if(startDate, endDate, center_ID){
-        axios.get('/api/report/source/'+startDate+'/'+endDate+'/'+center_ID)
+    var token = this.state.token;
+    if(startDate, endDate, center_ID, token){
+    console.log("token",token);
+    console.log("url=========",'/api/report/source/'+startDate+'/'+endDate+'/'+center_ID, token);
+        axios({
+          method  : 'get',
+          url     : 'http://localhost:3054/api/report/source/'+startDate+'/'+endDate+'/'+center_ID,
+          auth  : {
+                     'bearer': token
+                    },
+          token : token
+        })
+        // axios.get('/api/report/source/'+startDate+'/'+endDate+'/'+center_ID, token)
         .then((response)=>{
-          console.log("respgetData",response);
          console.log("resp",response);
         
         this.setState({

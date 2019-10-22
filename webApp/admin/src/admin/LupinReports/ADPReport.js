@@ -61,6 +61,7 @@ class ADPReport extends Component{
   }
 
     componentDidMount(){
+      axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.getAvailableCenters();        
         this.currentFromDate();
         this.currentToDate();

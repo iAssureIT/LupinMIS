@@ -32,7 +32,8 @@ import ActivityReportView                         from "../../centres/activityRe
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import Plan                                       from "../../centres/plan/PlanDetails.js";
 import CaseStudy                                  from "../../centres/caseStudy/CaseStudy.js";
-import CaseStudyy                                  from "../../centres/addFile/CaseStudyy.js";
+import CaseStudyy                                 from "../../centres/addFile/CaseStudyy.js";
+import AddFile                                    from "../../centres/addFile/AddFile.js";
 import Highlight                                  from "../../centres/highLight/Highlight.js";
 /*import Monthwise                                       from "../../centres/plan/Monthwise.js";*/
 import CenterList                                 from "../../centres/centerList/centerList.js";
@@ -133,6 +134,7 @@ class Layout extends Component{
                               <Route path="/caseStudy/"                          exact strict component={ CaseStudy } />
                               <Route path="/caseStudy/:id"                       exact strict component={ CaseStudy } />
                               <Route path="/caseStudyy"                          exact strict component={ CaseStudyy } />
+                              <Route path="/addFile"                          exact strict component={ AddFile } />
                               <Route path="/highlight"                           exact strict component={ Highlight } />
                               <Route path="/highlight/"                          exact strict component={ Highlight } />
                               <Route path="/highlight/:id"                       exact strict component={ Highlight } />

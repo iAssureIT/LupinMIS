@@ -1,5 +1,6 @@
-import React,{Component} from 'react';
-import {HorizontalBar} from 'react-chartjs-2';
+import React,{Component}      from 'react';
+import axios                  from 'axios';
+import {HorizontalBar}        from 'react-chartjs-2';
 const options = {
     scales: {
       xAxes: [{
@@ -97,23 +98,23 @@ export default class CenterwiseBarChart extends Component{
       }
     }
   }
-  // componentDidMount(){
-  //   var data = {...this.state.data};
-  //   if (data) {
-  //     data.labels = this.props.userNames;
-  //     data.datasets[0].data = this.props.openCount;
-  //     data.datasets[1].data = this.props.closeCount;
-  //     this.setState({
-  //       data : data
-  //     },()=>{
-  //       console.log("componentDidMount data",this.state.data);
-  //     })
-  //   }
+  componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+/*    var data = {...this.state.data};
+    if (data) {
+      data.labels = this.props.userNames;
+      data.datasets[0].data = this.props.openCount;
+      data.datasets[1].data = this.props.closeCount;
+      this.setState({
+        data : data
+      },()=>{
+        console.log("componentDidMount data",this.state.data);
+      })
+    }*/
 
-  // }
+  }
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
-     console.log("data",data);
      console.log("props",props);
     if (data) {
       /*
@@ -132,6 +133,7 @@ export default class CenterwiseBarChart extends Component{
       return{
          data : data
       }
+     console.log("data",data);
 
       /* console.log("this.state.sector",sector);
       /* console.log("this.state.annualPlanReach",annualPlanReach);

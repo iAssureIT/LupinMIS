@@ -23,6 +23,7 @@ export default class YearlyReport extends Component{
     }
 
     componentDidMount(){
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.getData(this.state.year, this.state.center);
         this.handleChange = this.handleChange.bind(this);
         

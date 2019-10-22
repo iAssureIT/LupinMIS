@@ -37,8 +37,8 @@ class NewBeneficiary extends Component{
                               ]
       },
       "tableHeading"        : {
-        familyID            : "Family ID",
         beneficiaryID       : "Beneficiary ID",
+        familyID            : "Family ID",
         nameofbeneficiaries : "Name of Beneficiary",
         // actions             : 'Action',
       },
@@ -121,6 +121,12 @@ class NewBeneficiary extends Component{
       })
       .catch((error)=>{
         console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
     }
   }
@@ -174,6 +180,7 @@ class NewBeneficiary extends Component{
   }
 
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     if(this.state.editId){      
       this.edit(this.state.editId);
     }

@@ -84,6 +84,7 @@ class ActivitywisePeriodicPlanReport extends Component{
     }
 
     componentDidMount(){
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.getAvailableCenters();
         this.getAvailableSectors();
         this.currentFromDate();

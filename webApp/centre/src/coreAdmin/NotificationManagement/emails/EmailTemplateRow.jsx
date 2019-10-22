@@ -2,7 +2,7 @@ import React, { Component }    from 'react';
 import EditNotificationModal   from '../EditNotificationModal.jsx';
 import axios 				   from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:3006';
+// axios.defaults.baseURL = 'http://localhost:3006';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 class EmailTemplateRow extends Component{

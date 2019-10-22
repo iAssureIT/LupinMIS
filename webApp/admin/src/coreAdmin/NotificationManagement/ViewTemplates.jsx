@@ -73,6 +73,7 @@ class ViewTemplates extends Component{
 
 
 	componentDidMount() {	
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
 	    $("html,body").scrollTop(0);	
 	   this.getData();
 	    /*$.validator.addMethod("regxsubject", function(value, element, arg){          

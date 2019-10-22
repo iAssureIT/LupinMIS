@@ -213,6 +213,7 @@ class PlanDetails extends Component{
     this.getAvailableCenters();
   }
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.setState({
       "year"  : this.state.years[0],
       apiCall : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',

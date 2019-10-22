@@ -108,6 +108,12 @@ class SectorMapping extends Component{
           })
           .catch(function(error){
             console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
           });
         selectedActivities.map((a, index)=>{
           this.setState({
@@ -224,6 +230,7 @@ class SectorMapping extends Component{
   }
 
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     var editId = this.props.match.params.sectorMappingId;
     if(this.state.editId){      
       this.edit(this.state.editId);
@@ -323,7 +330,11 @@ class SectorMapping extends Component{
     axios({
       method: 'get',
       url: '/api/sectors/list',
-    }).then((response)=> {   
+    }).then((response)=> { 
+      console.log("sectors",response.data);
+      var sortArray= (response.data).sort(function(a,b){
+        return( (a.activity).length - (b.activity).length); //ASC, For Descending order use: b - a
+      });  
       this.setState({
         availableSectors : response.data
       })
@@ -383,10 +394,6 @@ class SectorMapping extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
                             <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
                               <option  className="hidden" >-- Select --</option>
-                              {/*<option>SDG Goal</option>
-                              <option>ADP Goal</option>
-                              <option>Empowerment Line Goal</option>
-                              <option>Project Name</option>*/}
                               {
                                 this.state.listofTypes ?
                                 this.state.listofTypes.map((data, index)=>{
@@ -404,9 +411,6 @@ class SectorMapping extends Component{
                         <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                           <label className="formLable">Enter Goal / Project Name</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="goalName" >
-                            {/*<div className="input-group-addon inputIcon">
-                              <i className="fa fa-graduation-cap fa"></i>
-                            </div>*/}
                             <input type="text" className="form-control inputBox" value={this.state.goalName} onChange={this.handleChange.bind(this)} onKeyDown={this.isTextKey.bind(this)}  placeholder="" name="goalName" ref="goalName" />
                           </div>
                           <div className="errorMsg">{this.state.errors.goalName}</div>
@@ -417,87 +421,38 @@ class SectorMapping extends Component{
                       </div> 
                     </div><br/>
                     <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above goal</label></div>
-                    <div className="">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable">
-                        <div >
-                      {/*    <div >
-                            {
-                              this.state.availableSectors ?
-                              this.state.availableSectors.map((data, index)=>{
-                                return(
-                                  <div key={index} className=" col-md-4  col-lg-4 col-sm-12 col-xs-12 blockheight noPadding">
-                                    <label  className="formLable faintColor">{data.sector}</label>
-                                    {
-                                      data.activity.map((a, i)=>{
-                                        return(
-                                          <div key ={i} className="col-lg-12 col-sm-12 col-xs-12 ">
-                                            <div className="row"> 
-                                              <div className="actionDiv" id="activityName">
-                                                <div className="SDGContainer col-lg-1">
-                                                  <input type="checkbox" name="activityName" className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={this.state[data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName]?true:false} onChange={this.selectActivity.bind(this)} />
-                                                  <span className="SDGCheck"></span>
-                                                </div>
-                                              </div>                            
-                                              <label className="listItem">{a.activityName}</label>
-                                            </div>  
-                                          </div>
-                                        );
-                                      })
-                                    }
-                                  </div>
-                               
-                                );
-                              })
-                              :
-                              null
-                            }
-                          </div> */}
-                          <div >
-                            {
-                              this.state.availableSectors ?
-                              this.state.availableSectors.map((data, index)=>{
-                                return(
-                                  <div  key={index} >
-                                  { data.activity.length > 0?
-                                  <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 blockheight noPadding">
-                                    <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding">
-                                      <label  className="formLable faintColor">{data.sector}</label>
-                                      {/*console.log("activity",data.activity)*/}
-                                    </div>
-                                 
-                                    {
-                                      data.activity.map((a, i)=>{
-                                        return(
-                                          <div key ={i} className="col-lg-4 col-md-4 col-sm-6 col-xs-6 ">
-                                            <div className="row"> 
-                                              <div className="actionDiv" id="activityName">
-                                                <div className="SDGContainer col-lg-1">
-                                                  <input type="checkbox" name="activityName" className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={this.state[data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName]?true:false} onChange={this.selectActivity.bind(this)} />
-                                                  <span className="SDGCheck"></span>
-                                                </div>
-                                              </div>                            
-                                              <label className="listItem">{a.activityName}</label>
-                                            </div>  
-                                          </div>
-                                        );
-                                      })
-                                    }
-                                    <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding" >
-                                      <hr className="hr-map"/>
-                                    </div> 
-                                  </div>
-                                  : null
-                                  }
-                                  </div>
-                                );
-                              })
-                              :
-                              null
-                            }
-                          </div>                          
-                        </div>
-                      </div> 
-                    </div><br/>
+                      <div className=" col-lg-12 col-sm-12 col-xs-12 ">
+                        {
+                          this.state.availableSectors ?
+                          this.state.availableSectors.map((data, index)=>{
+                            return(
+                              <div key={index} className="col-md-4  col-lg-4 col-sm-12 col-xs-12 blockheight noPadding">
+                                <label  className="formLable faintColor">{data.sector}</label>
+                                {
+                                  data.activity.map((a, i)=>{
+                                    return(
+                                      <div key ={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                        <div className="row"> 
+                                          <div className="actionDiv" id="activityName">
+                                            <div className="SDGContainer col-lg-1 ">
+                                              <input type="checkbox" name="activityName" className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={this.state[data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName]?true:false} onChange={this.selectActivity.bind(this)} />
+                                              <span className="SDGCheck"></span>
+                                            </div>
+                                          </div>                            
+                                          <label className="listItem">{a.activityName}</label>
+                                        </div>  
+                                      </div>
+                                    );
+                                  })
+                                }
+                              </div>
+                           
+                            );
+                          })
+                          :
+                          null
+                        }
+                      </div>  
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       {
                         this.state.editId ? 

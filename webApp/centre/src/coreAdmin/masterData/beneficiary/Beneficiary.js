@@ -45,7 +45,6 @@ class Beneficiary extends Component{
     event.preventDefault();
     this.setState({
       "familyID"              : this.refs.familyID.value,          
-      "beneficiaryID"         : this.refs.beneficiaryID.value,          
       "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
       "relation"              : this.refs.relation.value,
     });
@@ -82,9 +81,10 @@ class Beneficiary extends Component{
     if (this.validateFormReq() && this.validateForm()){
     var beneficiaryValue= 
     {
+      "center_ID"             : this.state.center_ID,
+      "center"                : this.state.centerName,
       "family_ID"             : this.refs.familyID.value.split('|')[1],          
       "familyID"              : this.refs.familyID.value.split('|')[0],          
-      "beneficiaryID"         : this.refs.beneficiaryID.value,          
       "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
       "relation"              : this.refs.relation.value,
     };
@@ -111,13 +111,19 @@ class Beneficiary extends Component{
       })
       .catch((error)=>{
         console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
     }
   }
 
   Update(event){
     event.preventDefault();
-      if(this.refs.familyID.value === "" || this.refs.beneficiaryID.value ==="" || this.refs.relation.value===""|| this.refs.nameofbeneficiaries.value==="")
+      if(this.refs.familyID.value === "" ||  this.refs.relation.value===""|| this.refs.nameofbeneficiaries.value==="")
       {
         if (this.validateFormReq() && this.validateForm()){
         }
@@ -125,17 +131,18 @@ class Beneficiary extends Component{
      
       var beneficiaryValue= 
       {
+        "center_ID"             : this.state.center_ID,
+        "center"                : this.state.centerName,
         "beneficiary_ID"        : this.state.editId,          
+        "beneficiaryID"         : this.state.beneficiaryID,          
         "family_ID"             : this.refs.familyID.value.split('|')[1],          
         "familyID"              : this.refs.familyID.value.split('|')[0],          
-        "beneficiaryID"         : this.refs.beneficiaryID.value,          
         "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
         "relation"              : this.refs.relation.value,
       };
 
       let fields                    = {};
       fields["familyID"]            = "";
-      fields["beneficiaryID"]       = "";
       fields["nameofbeneficiaries"] = "";      
       fields["relation"]            = "";      
       console.log('beneficiaryValue', beneficiaryValue);
@@ -153,7 +160,6 @@ class Beneficiary extends Component{
         });
       this.setState({
         "familyID"                 :"",
-        "beneficiaryID"            :"",
         "nameofbeneficiaries"      :"",   
         "relation"                 :"",
         fields:fields
@@ -172,10 +178,6 @@ class Beneficiary extends Component{
       if (!fields["familyID"]) {
         formIsValid = false;
         errors["familyID"] = "This field is required.";
-      }     
-       if (!fields["beneficiaryID"]) {
-        formIsValid = false;
-        errors["beneficiaryID"] = "This field is required.";
       }     
        if (!fields["nameofbeneficiaries"]) {
         formIsValid = false;
@@ -196,20 +198,14 @@ class Beneficiary extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
-    if (typeof fields["beneficiaryID"] !== "undefined") {
-      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["beneficiaryID"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
-        formIsValid = false;
-        errors["beneficiaryID"] = "Please enter valid Beneficiary ID.";
-      }
-    }
-    if (typeof fields["nameofbeneficiaries"] !== "undefined") {
-      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["nameofbeneficiaries"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-        formIsValid = false;
-        errors["nameofbeneficiaries"] = "Please enter valid Name.";
-      }
-    }
+   
+    // if (typeof fields["nameofbeneficiaries"] !== "undefined") {
+    //   // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+    //   if (!fields["nameofbeneficiaries"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+    //     formIsValid = false;
+    //     errors["nameofbeneficiaries"] = "Please enter valid Name.";
+    //   }
+    // }
 
       this.setState({
         errors: errors
@@ -231,6 +227,7 @@ class Beneficiary extends Component{
   }
 
   componentDidMount() {
+  axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     // console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
@@ -238,6 +235,15 @@ class Beneficiary extends Component{
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableFamilyId();
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    // console.log("localStorage =",localStorage);
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+    });    
   }
 
   edit(id){
@@ -251,8 +257,8 @@ class Beneficiary extends Component{
       
       this.setState({
         "familyID"              : editData.familyID+"|"+editData.family_ID,          
-        "beneficiaryID"         : editData.beneficiaryID,          
         "nameofbeneficiaries"   : editData.nameofbeneficiaries,
+        "beneficiaryID"         : editData.beneficiaryID,
         "relation"              : editData.relation,          
       });      
       let fields = this.state.fields;
@@ -332,16 +338,11 @@ class Beneficiary extends Component{
                     </div>
                     <div className="row">
                       <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box ">
+                        <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Family ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
                             <select className="custom-select form-control inputBox" value={this.state.familyID} ref="familyID" name="familyID" onChange={this.handleChange.bind(this)} >
                               <option value="" className="hidden" >-- Select --</option>
-                             {/* <option value={"PL00001"+"|"+"id"}>PL00001</option>
-                              <option value={"PL00002"+"|"+"id"}>PL00002</option>
-                              <option value={"PL00003"+"|"+"id"}>PL00003</option>
-                              <option value={"PL00004"+"|"+"id"}>PL00004</option>
-                              <option value={"PL00005"+"|"+"id"}>PL00005</option>*/}
                               {
                                 this.state.availableFamilies ? this.state.availableFamilies.map((data, index)=>{
                                   return(
@@ -351,22 +352,18 @@ class Beneficiary extends Component{
                                 : 
                                 null                            
                               }
-                              
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.familyID}</div>
                         </div>
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
+                       {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
                           <label className="formLable">Beneficiary ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficiaryID" >
-                            {/*<div className="input-group-addon inputIcon">
-                              <i className="fa fa-graduation-cap fa"></i>
-                            </div>*/}
                             <input type="text" className="form-control inputBox"  placeholder=""value={this.state.beneficiaryID} ref="beneficiaryID" name="beneficiaryID" onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
-                        </div>
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
+                        </div>*/}
+                        <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12  valid_box">
                           <label className="formLable">Name of Beneficiary</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="nameofbeneficiaries" >
                             {/*<div className="input-group-addon inputIcon">
@@ -376,7 +373,7 @@ class Beneficiary extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.nameofbeneficiaries}</div>
                         </div>
-                        <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
+                        <div className=" col-lg-4 col-md-6 col-sm-6 col-xs-12  valid_box">
                           <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relation" >
                             {/*<div className="input-group-addon inputIcon">

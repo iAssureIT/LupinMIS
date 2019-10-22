@@ -59,6 +59,7 @@ export default class CenterwiseBarChart1 extends Component{
     Reach Upgradation   Reach Upgradation   
             */
   componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID);
 
@@ -200,7 +201,7 @@ export default class CenterwiseBarChart1 extends Component{
         this.setState({
           tableData : tableData
         },()=>{
-          // console.log("resp",this.state.tableData)
+          console.log("resp",this.state.tableData)
         })
       })
       .catch(function(error){        
@@ -209,11 +210,11 @@ export default class CenterwiseBarChart1 extends Component{
   }
 
   render(){ 
-     /* {console.log("this.state.source",this.state.source);
+      {console.log("this.state.source",this.state.source);
                      console.log("this.state.cum_monthly",this.state.cum_monthly);
                     console.log("this.state.cum_achi",this.state.cum_achi);
                     console.log("this.state.per_cum_achi",this.state.per_cum_achi);
-                }    */
+                }    
     return(
       <div>
       <div className="row">
@@ -253,7 +254,7 @@ export default class CenterwiseBarChart1 extends Component{
         </div>  
         <div className="col-lg-6">
           <CenterwiseBarChart 
-            center                           ={this.state.name}
+            center                         ={this.state.name}
             annualPlan_Reach               ={this.state.annualPlan_Reach}
             annualPlan_FamilyUpgradation   ={this.state.annualPlan_FamilyUpgradation}
             achievement_Reach              ={this.state.achievement_Reach}

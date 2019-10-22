@@ -112,6 +112,12 @@ class Activity extends Component{
       })
       .catch(function(error){
         console.log("error ============== ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
     }
   }
@@ -219,6 +225,7 @@ class Activity extends Component{
   }
 
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableSectors();
     if(this.state.editId){      
       this.edit(this.state.editSectorId);

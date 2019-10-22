@@ -77,6 +77,7 @@ class Family extends Component{
   }
   
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     // console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
@@ -91,15 +92,13 @@ class Family extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    this.getAvailableCenter(this.state.center_ID);
-    console.log("center_ID =",this.state.center_ID);
-    });
+      this.getAvailableCenter(this.state.center_ID);
+    });    
   }
  
   handleChange(event){
     event.preventDefault();
     this.setState({
-      "familyID"             :this.refs.familyID.value, 
       "nameOfFamilyHead"     :this.refs.nameOfFamilyHead.value, 
       "uID"                  :this.refs.uID.value, 
       "caste"                :this.refs.caste.value, 
@@ -150,7 +149,7 @@ class Family extends Component{
 
   SubmitFamily(event){
     event.preventDefault();
-    if(this.refs.familyID.value === "" || this.refs.nameOfFamilyHead.value ==="" || this.refs.contact.value===""
+    if(this.refs.nameOfFamilyHead.value ==="" || this.refs.contact.value===""
      || this.refs.uID.value==="" || this.refs.caste.value==="" || this.refs.category.value==="" 
      || this.refs.district.value==="" || this.refs.block.value==="" || this.refs.village.value==="" )
     {
@@ -160,21 +159,18 @@ class Family extends Component{
     var familyValues= 
       {
         "center_ID"            : this.state.center_ID,
-        "centerName"           : this.state.centerName,
-        "familyID"             :this.refs.familyID.value, 
+        "center"               : this.state.centerName,
         "familyHead"           :this.refs.nameOfFamilyHead.value, 
         "contactNumber"        :this.refs.contact.value, 
         "uidNumber"            :this.refs.uID.value, 
         "caste"                :this.refs.caste.value, 
         "familyCategory"       :this.refs.category.value, 
-        // "center"               :this.refs.LHWRFCentre.value, 
         // "state"                :this.state.state, 
         "dist"                 :this.refs.district.value.split('|')[0], 
         "block"                :this.refs.block.value, 
         "village"              :this.refs.village.value, 
       };
       let fields = {};
-      fields["familyID"]          = "";
       fields["nameOfFamilyHead"]  = "";
       fields["uID"]               = "";
       fields["contact"]           = "";
@@ -194,6 +190,12 @@ class Family extends Component{
         })
         .catch(function(error){
           console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
       this.setState({
         "familyID"             :"",
@@ -214,7 +216,7 @@ class Family extends Component{
 
   UpdateFamily(event){
     event.preventDefault();
-    if(this.refs.familyID.value === "" || this.refs.nameOfFamilyHead.value ==="" || this.refs.contact.value===""
+    if(this.refs.nameOfFamilyHead.value ==="" || this.refs.contact.value===""
      || this.refs.uID.value==="" || this.refs.caste.value==="" || this.refs.category.value==="" 
      || this.refs.district.value==="" || this.refs.block.value==="" || this.refs.village.value==="" )
     {
@@ -224,8 +226,8 @@ class Family extends Component{
       var familyValues = {
         "family_ID"            :this.state.editId, 
         "center_ID"            :this.state.center_ID,
-        "centerName"           :this.state.centerName,
-        "familyID"             :this.refs.familyID.value,
+        "center"               :this.state.centerName,
+        "familyID"             :this.state.familyID,
         "familyHead"           :this.refs.nameOfFamilyHead.value, 
         "contactNumber"        :this.refs.contact.value, 
         "uidNumber"            :this.refs.uID.value, 
@@ -236,7 +238,6 @@ class Family extends Component{
         "village"              :this.refs.village.value, 
       };
       let fields = {};
-      fields["familyID"]          = "";
       fields["nameOfFamilyHead"]  = "";
       fields["uID"]               = "";
       fields["contact"]           = "";
@@ -284,10 +285,10 @@ class Family extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
-    if (!fields["familyID"]) {
+  /*  if (!fields["familyID"]) {
       formIsValid = false;
       errors["familyID"] = "This field is required.";
-    }     
+    }    */ 
     if (!fields["nameOfFamilyHead"]) {
       formIsValid = false;
       errors["nameOfFamilyHead"] = "This field is required.";
@@ -307,11 +308,7 @@ class Family extends Component{
     if (!fields["contact"]) {
       formIsValid = false;
       errors["contact"] = "This field is required.";
-    }          
-   /* if (!fields["state"]) {
-      formIsValid = false;
-      errors["state"] = "This field is required.";
-    }    */      
+    }       
     if (!fields["district"]) {
       formIsValid = false;
       errors["district"] = "This field is required.";
@@ -324,6 +321,11 @@ class Family extends Component{
       formIsValid = false;
       errors["village"] = "This field is required.";
     }          
+       
+   /* if (!fields["state"]) {
+      formIsValid = false;
+      errors["state"] = "This field is required.";
+    }    */      
     this.setState({
       errors: errors
     });
@@ -334,7 +336,7 @@ class Family extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
-
+/*
     if (typeof fields["contact"] !== "undefined") {
       if (!fields["contact"].match(/^[0-9]{10}$|^$/)) {
         formIsValid = false;
@@ -362,7 +364,7 @@ class Family extends Component{
         errors["nameOfFamilyHead"] = "Please enter valid Name.";
       }
     }
-    this.setState({
+*/    this.setState({
       errors: errors
     });
     return formIsValid;
@@ -567,39 +569,38 @@ class Family extends Component{
                        <h4 className="pageSubHeader">Create New Family</h4>
                     </div>
                     <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                        <div className=" col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
+                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable ">
+                    
+                        {/*<div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Family ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="familyID" >
-                            <input type="text" className="form-control inputBox " ref="familyID" name="familyID" value={this.state.familyID} onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox " ref="familyID" name="familyID" value={this.state.familyID } onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.familyID}</div>
-                        </div>
-                        <div className="col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
+                        </div>*/}
+                        <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Name of Family Head </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="nameOfFamilyHead" >
                             <input type="text" className="form-control inputBox" ref="nameOfFamilyHead" name="nameOfFamilyHead" value={this.state.nameOfFamilyHead} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.nameOfFamilyHead}</div>
                         </div>
-                        <div className="col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
+                        <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uID" >
                             <input type="text" className="form-control inputBox "  placeholder=""ref="uID" name="uID" value={this.state.uID} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.uID}</div>
                         </div>
-                                              
-                      </div><br/>
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                        <div className=" col-lg-4 col-md-3 col-sm-6 col-xs-12 ">
+                               
+                        <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Contact Number </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contact" >
                             <input type="text" className="form-control inputBox "  placeholder=""ref="contact" name="contact" value={this.state.contact} onKeyDown={this.isNumberKey.bind(this)} maxLength="10" onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.contact}</div>
                         </div>  
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Caste</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="caste" >
                             <select className="custom-select form-control inputBox" ref="caste" name="caste" value={this.state.caste} onChange={this.handleChange.bind(this)}>
@@ -613,7 +614,7 @@ class Family extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.caste}</div>
                         </div>                      
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Family Category   </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="category" >
                             <select className="custom-select form-control inputBox"ref="category" name="category" value={this.state.category} onChange={this.handleChange.bind(this)}  >
@@ -628,11 +629,8 @@ class Family extends Component{
                             </select>
                           </div>
                           <div className="errorMsg">{this.state.errors.category}</div>
-                        </div>
-                        
-                      </div>
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">                        
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        </div>            
+                        <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">District</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                             <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
@@ -655,7 +653,7 @@ class Family extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.district}</div>
                         </div>
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Block</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                             <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
@@ -674,7 +672,7 @@ class Family extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.block}</div>
                         </div>
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Village</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                             <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
@@ -694,8 +692,9 @@ class Family extends Component{
                           <div className="errorMsg">{this.state.errors.village}</div>
                         </div>
                       </div> 
-                    </div><br/>
-                    <div className="col-lg-12">
+                    </div>
+                    <br/>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <br/>
                       {
                           this.state.editId ? 

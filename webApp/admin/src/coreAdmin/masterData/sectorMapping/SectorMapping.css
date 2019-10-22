@@ -1,7 +1,8 @@
 /*.blockheight{
-	height: 40vh;
-}
-*/
+	min-height: 200px;
+	max-height: auto;
+}*/
+
 /*
 .sectMap:nth-child(3n+4) {
   float: none;

@@ -75,6 +75,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     window.scrollTo(0, 0);
   }
   componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableCenters();
     this.getData();
   }

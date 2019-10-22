@@ -6,7 +6,7 @@ import './userManagement.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/js/modal.js';
-axios.defaults.baseURL = 'http://localhost:3006';
+// axios.defaults.baseURL = 'http://localhost:3006';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 

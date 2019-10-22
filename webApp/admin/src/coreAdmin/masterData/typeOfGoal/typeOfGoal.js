@@ -80,7 +80,7 @@ class typeOfGoal extends Component{
     axios.post('/api/typeofgoals',typeofGoalValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
-    console.log("typeofGoalValues",response );
+        console.log("typeofGoalValues",response );
         swal({
           title : response.data.message,
           text  : response.data.message
@@ -262,9 +262,9 @@ class typeOfGoal extends Component{
     this.getLength();
   }
   getSearchText(searchText, startRange, limitRange){
-      this.setState({
-          tableData : []
-      });
+    this.setState({
+        tableData : []
+    });
   }
   componentWillUnmount(){
     this.setState({

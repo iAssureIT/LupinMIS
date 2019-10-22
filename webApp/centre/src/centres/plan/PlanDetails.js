@@ -255,6 +255,12 @@ class PlanDetails extends Component{
             })
             .catch(function(error){
               console.log("error"+error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
           });
           Object.entries(planValues).map( 
             ([key, value], i)=> {
@@ -556,6 +562,7 @@ class PlanDetails extends Component{
     }
   }
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableSectors();
     if(this.state.editId){     
       this.edit(this.state.editId);       

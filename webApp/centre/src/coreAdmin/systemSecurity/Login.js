@@ -25,11 +25,12 @@ class Login extends Component {
         }
   }
   componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     
   }
   userlogin(event){
     event.preventDefault();
-    // console.log("in login mode",this.state.auth);
+    console.log("in login mode",this.state.auth);
         var auth= {
           email       : this.refs.loginusername.value,
           password    : this.refs.loginpassword.value,
@@ -40,47 +41,27 @@ class Login extends Component {
     axios
       .post('/api/users/login',auth)
       .then((response)=> {
-        // console.log("-------userData------>>",response);
-        // this.setState({
-        //   token : response.data.token
-        // });
-        // axios.defaults.headers.common['Authorization'] = response.data.token;
+        console.log("-------userData------>>",response);
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token;
+
         localStorage.setItem("token",response.data.token);
         localStorage.setItem("emailId",response.data.emailId);
         localStorage.setItem("center_ID",response.data.center_ID);
         localStorage.setItem("centerName",response.data.centerName);
         localStorage.setItem("fullName",response.data.fullName);
-        localStorage.setItem("status",response.data.status);
-        const Token     = localStorage.getItem("token");
-        const status    = localStorage.getItem("status");
-
-        // console.log("localStorage =",response.data.emailId,localStorage.getItem('emailId'));
-        // console.log("localStorage =",localStorage);
-
-        // browserHistory.replace('/');
-        this.props.history.push("/dashboard");
-        // direct.setState({loggedIn:response.data.token})
-        if(localStorage==null){
-          swal("Invalid Email or Password","Please Enter valid email and password");
-        }else{
-        // console.log("status",status);
-          if(status==="Active"){
+        if(axios.defaults.headers.common.Authorization){
+          console.log("axios.defaults.headers.common.Authorization",axios.defaults.headers.common.Authorization);
+         /* alert("Authorization check ",);*/
+          this.props.history.push("/dashboard");
+          window.location.reload();
+          if(localStorage==null){
+            swal("Invalid Email or Password","Please Enter valid email and password");
+          }else{
             this.setState({
                 loggedIn  :   true
             },()=>{
-              // console.log("loggedIn", this.state.loggedIn);
+              console.log("loggedIn", this.state.loggedIn);
             })
-          window.location.reload(); 
-          }else{
-            var token = localStorage.removeItem("token");
-            if(token!==null){
-              // console.log("Header Token = ",token);
-              this.setState({
-                loggedIn : false
-              })
-            }
-            swal("Abc","User status is blocked, Please contact with Admin.");
-            this.props.history.push("/login");
           }
         }
       })

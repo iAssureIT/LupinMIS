@@ -8,6 +8,7 @@ import _                      from 'underscore';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./ProjectMapping.css";
 
+var sectorData = [];
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -25,7 +26,9 @@ class ProjectMapping extends Component{
       "activity"           : "",
       "uID"                : "",
       "activityName"       : "",
+      "selectedSector"     : [],
       "selectedActivities" : [],
+      "selectedSubActivities" : [],
       fields               : {},
       errors               : {},
       "tableHeading"       : {
@@ -34,7 +37,9 @@ class ProjectMapping extends Component{
         projectName        : "Project Name",
         startDate          : "Start Date",
         endDate            : "End Date",
+        sectorName         : "Sector",
         activityName       : "Activity", 
+        // subActivityName    : "Subactivity", 
         actions            : 'Action',
       },
       "tableObjects"       : {
@@ -53,12 +58,15 @@ class ProjectMapping extends Component{
  
   handleChange(event){
     event.preventDefault();
+    console.log("this",$("input:checkbox:checked").data('typechecked'));
     this.setState({
       "projectName"               : this.refs.projectName.value,          
       "projectType"               : this.refs.projectType.value,          
       "startDate"                 : this.refs.startDate.value,          
       "endDate"                   : this.refs.endDate.value,          
+      "selectedSector"            : this.state.selectedSector,
       "selectedActivities"        : this.state.selectedActivities,          
+      "selectedSubActivities"     : this.state.selectedSubActivities,          
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -119,11 +127,14 @@ class ProjectMapping extends Component{
       return true;
     } 
   }
+ 
   Submit(event){
     event.preventDefault();
-    var selectedActivities = this.state.selectedActivities;
+    var selectedSector        = this.state.selectedSector;
+    var selectedActivities    = this.state.selectedActivities;
+    var selectedSubActivities = this.state.selectedSubActivities;
     if (this.validateFormReq() && this.validateForm()) {
-      if (this.state.selectedActivities==""){      
+      if (this.state.selectedActivities===""){      
         swal({
           title: 'abc',
           text: "Please select any Activity",
@@ -136,8 +147,9 @@ class ProjectMapping extends Component{
           "type_ID"      : this.refs.projectType.value,           
           "startDate"    : this.refs.startDate.value,          
           "endDate"      : this.refs.endDate.value,              
-          "sector"       : this.state.selectedActivities,                  
+          "sector"       : this.state.availableSectors                
         };
+        console.log("mappingValues",mappingValues);
         let fields = {};
         fields["projectName"]  = "";
         fields["projectType"]  = "";
@@ -153,11 +165,28 @@ class ProjectMapping extends Component{
             this.getData(this.state.startRange, this.state.limitRange);
           })
           .catch(function(error){
-            console.log("error = ",error);
+            console.log('error',error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
           });
+
+        selectedSector.map((a, index)=>{
+          this.setState({
+            [a.sector_ID +"|"+a.sectorName] : false
+          })
+        })
         selectedActivities.map((a, index)=>{
           this.setState({
             [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : false
+          })
+        })
+        selectedSubActivities.map((a, b, index)=>{
+          this.setState({
+            [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName+"|"+b.subActivity_ID+"|"+b.subActivityName] : false
           })
         })
         this.setState({
@@ -166,6 +195,7 @@ class ProjectMapping extends Component{
           "startDate"             :"",
           "endDate"               :"",
           "selectedActivities"    :[],
+          "selectedSubActivities" :[],
           fields                  :fields
         });
         
@@ -174,8 +204,10 @@ class ProjectMapping extends Component{
   }
   Update(event){
     event.preventDefault();
-    var selectedActivities = this.state.selectedActivities;
-    if(this.refs.projectName.value == "" || this.refs.projectType.value =="")
+    var selectedSector        = this.state.selectedSector;
+    var selectedActivities    = this.state.selectedActivities;
+    var selectedSubActivities = this.state.selectedSubActivities;
+    if(this.refs.projectName.value === "" || this.refs.projectType.value ==="")
    {
       if (this.validateFormReq() && this.validateForm()){
       }
@@ -187,8 +219,8 @@ class ProjectMapping extends Component{
       "startDate"           : this.refs.startDate.value,          
       "endDate"             : this.refs.endDate.value,              
       "projectName"         : this.refs.projectName.value,
-      "type_ID"             : this.refs.projectType.value,          
-      "sector"              : this.state.selectedActivities,                  
+      "type_ID"             : this.refs.projectType.value,           
+      "sector"              : this.state.availableSectors             
     };
     let fields = {};
     fields["projectName"]  = "";
@@ -208,9 +240,19 @@ class ProjectMapping extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
+      selectedSector.map((a, index)=>{
+        this.setState({
+          [a.sector_ID +"|"+a.sectorName] : false
+        })
+      })
       selectedActivities.map((a, index)=>{
         this.setState({
           [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : false
+        })
+      })
+      selectedSubActivities.map((a, b, index)=>{
+        this.setState({
+          [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName+"|"+b.subActivity_ID+"|"+b.subActivityName] : false
         })
       })
       this.setState({
@@ -219,6 +261,7 @@ class ProjectMapping extends Component{
         "startDate"             :"",
         "endDate"               :"",
         "selectedActivities"    :[],
+        "selectedSubActivities" :[],
         fields                  : fields
       });
       
@@ -290,6 +333,7 @@ class ProjectMapping extends Component{
   }
 
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.currentFromDate();
     this.currentToDate();
     this.getTypeOfGoal();
@@ -300,6 +344,15 @@ class ProjectMapping extends Component{
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableSector(this.state.editSectorId);  
+
+   /* $(document).ready(function(){
+      var data = [];
+      $('.activityName').each(function(){
+        data.push($(this).text());
+      });
+
+      console.log(data);
+    }); */
   }
 
   edit(id){
@@ -339,7 +392,7 @@ class ProjectMapping extends Component{
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -348,32 +401,240 @@ class ProjectMapping extends Component{
   }
   
   getData(startRange, limitRange){
-    console.log('/api/projectMappings/list/'+startRange+'/'+limitRange);
+    // console.log('/api/projectMappings/list/'+startRange+'/'+limitRange);
     axios.get('/api/projectMappings/list/'+startRange+'/'+limitRange)
     .then((response)=>{
       this.setState({
         tableData : response.data
       },()=>{
-        console.log("tableData",this.state.tableData);
+        // console.log("tableData",this.state.tableData);
       })
     })
     .catch(function(error){        
     });
   }
-  selectActivity(event){
-    var selectedActivities = this.state.selectedActivities;
+
+
+
+  selectCCMCheckBox(e){
+    var checkedValue = e.target.value;
+    var index     = e.target.getAttribute('data-index');
+    var array = this.state.fetchedUserPrescribedByCcmMedicationsData;
+    var data;
+    if(index && array){
+      data = this.state.fetchedUserPrescribedByCcmMedicationsData[index];             
+      data.checked=checkedValue     
+    }
+    array[index] = data;
+    this.setState({
+      fetchedUserPrescribedByCcmMedicationsData : array,
+    })
+  }
+
+  selectSector(event){
+    var checkedValue = event.target.value;
+    var index     = event.target.getAttribute('data-index');
+    var name     = event.target.getAttribute('data-typechecked');
+    var array = this.state.availableSectors;
+    var data;
+    if(index && array){
+      data = this.state.availableSectors[index];             
+      data.checked=checkedValue;
+      var activityData =  data.activity.map((blockone)=>{
+        console.log("blockone",blockone)
+                            if(checkedValue==="Y"){
+                            blockone.checked = "Y"
+                              return blockone;
+                              var sectorData = sectorData.push({
+                                  "sector_ID": index,
+                                  "sectorName": name,
+                                  "activity_ID": blockone._id,
+                                  "activityName": blockone.activityName,
+                                  "subActivity_ID": "5d6e304a44387358f476ec3d",
+                                  "subActivityName": "Dairy development"
+                              })
+
+                            }else{
+                              blockone.checked = "N"
+                              return blockone;
+                            }
+                          })
+
+      // console.log("activityData",activityData);
+      // var activityDatas =   data.activity;
+
+      var activData =  activityData.map((element)=>{
+
+                     var subActivityData = element.subActivity.map((blocktwo)=>{
+      // console.log("ActivityData",blocktwo.checked);
+                            if(checkedValue==="Y"){
+                            blocktwo.checked = "Y"
+
+                              return blocktwo;
+                            }else{
+                              blocktwo.checked = "N"
+                              return blocktwo;
+                            }                     
+                          })
+
+                     element.subActivity = subActivityData;
+                     return element
+
+      // console.log("element",element);
+      })
+      // var subActivityData =  subActivityData;
+
+      console.log("activData",activData);
+                            // return  block;                                           
+    }
+    array[index] = data;
+    this.setState({
+      availableSectors : array,
+    },()=>{
+      // console.log("availableSectors",this.state.availableSectors)
+    })
+    var availableSectors = this.state.availableSectors;
+        availableSectors.map((a, index)=>{
+            if(checkedValue==="Y"){
+             /* this.setState({
+                a.checked = "Y"
+              })*/
+            }else{
+             /* this.setState({
+                a.checked = "N"
+              })*/
+            }
+          // console.log("a",a,index);
+        })
+
+/*
+    var selectedSector = this.state.selectedSector;
     var value = event.target.checked;
     var id    = event.target.id;
+    var sectorcheck = event.target.getAttribute('data-text');   
+    console.log("sectorcheck",sectorcheck);
+    var sectorID = $(event.target).attr('id');
+
+    var info = this.state.availableSectors;
+    var arr = info.filter((item)=>{
+      return item._id==sectorcheck
+    })
+
+    console.log("arr",arr);
+    if(arr){
+
+      arr.map((element,index)=>{
+        element.activity.map((a,index)=>{
+          var sId = (sectorID+"|"+a._id+'|'+a.activityName);
+          // console.log("(sectorID++a._id+'|'+a.activityName)",);
+          // console.log("sid",document.getElementsById('5d77778a6daf6492941377c5|Educational Sector|5d7777b96daf6492941377c6|Teaching in School'));
+          // $("#"+sId).prop("checked",true);
+          console.log("aaaa",$(document.getElementsByClassName(sectorID)));
+        })  
+      })
+    }*/ 
+
+
+
+
+    // console.log("sssss",$(document.getElementsByClassName(sectorID)).find('.subActivityName'));
+
+    // var sectordata = $(document.getElementsByClassName(sectorID)).find(".activityName");
+    // sectordata.map((index,data)=>{
+       
+    //    // $(data).prop("checked",true);
+    //    $(data).attr('checked',true);
+    //    // console.log("selectedSectordata",$(data).attr('checked'));
+    //    // console.log("sectordata",sectordata);
+    //    //data.checked = true;
+    // })
+  /*  var subdata = $(document.getElementsByClassName(sectorID)).find('.subActivityName');
+    subdata.map((index,data)=>{
+       
+       $(data).prop("checked",true);
+       $(data).attr('checked',true);
+       console.log("selectedSubdata",$(data).attr('checked'));
+       //data.checked = true;
+    })
+      */
+
+
+   /* this.setState({
+      [id] : value
+    },()=>{
+      if(this.state[id] === true){
+        selectedSector.push({
+          "sector_ID"      : id.split("|")[0],
+          "sectorName"     : id.split("|")[1]
+        });
+        this.setState({
+          selectedSector   : selectedSector,
+        });
+      }else{
+        var index = selectedSector.findIndex(v => v.activityName === id);
+        selectedSector.splice(selectedSector.findIndex(v => v.activityName === id), 1);
+        this.setState({
+          selectedSector : selectedSector
+        },()=>{
+          console.log("selectedSector",selectedSector)
+        });
+      }
+    });      */
+  }
+  selectActivity(event){
+
+    var checkedValue = event.target.value;
+    var activityIndex     = event.target.getAttribute('data-index');
+    var sectorIndex     = event.target.getAttribute('data-txt');
+
+    var array = this.state.availableSectors;
+    var data;
+    if(sectorIndex && array){
+      data = this.state.availableSectors[sectorIndex]; 
+      var activitySelected = data.activity[activityIndex];
+      // console.log("activitySelected",activitySelected);
+      activitySelected.checked=checkedValue;
+
+      var subaActivityData =  activitySelected.subActivity.map((blockone)=>{
+                            if(checkedValue==="Y"){
+                            blockone.checked = "Y"
+                              return blockone;
+                            }else{
+                              blockone.checked = "N"
+                              return blockone;
+                            }
+                          })
+
+      activitySelected.subActivity = subaActivityData;
+      data.activity[activityIndex] = activitySelected
+      console.log("data---",data);
+                            // return  block;                                           
+    }
+    array[sectorIndex] = data;
+    this.setState({
+      availableSectors : array,
+    })
+
+  /*  var selectedActivities = this.state.selectedActivities;
+    var value = event.target.checked;
+    var id    = event.target.id;
+    var activitycheck = event.target.getAttribute('data-typechecked');   
+    console.log("activitycheck",activitycheck);
+    console.log("id",id);
+    // console.log("this",$("input:checkbox:checked").attr('data-typechecked'));
+    console.log("selectedActivities",selectedActivities);
 
     this.setState({
       [id] : value
     },()=>{
-      if(this.state[id] == true){
+      console.log("this.state[id]",this.state[id]);
+      if(this.state[id] === true){
+       
         selectedActivities.push({
           "sector_ID"      : id.split("|")[0],
           "sectorName"     : id.split("|")[1],
           "activity_ID"    : id.split("|")[2],
-          "activityName"   : id.split("|")[3]
+          "activityName"   : id.split("|")[3],
         });
         this.setState({
           selectedActivities   : selectedActivities,
@@ -385,22 +646,116 @@ class ProjectMapping extends Component{
           selectedActivities : selectedActivities
         });
       }
-    });      
+    });      */
   }
+  selectSubactivity(event){
 
+    var checkedValue = event.target.value;
+    var subActivityIndex     = event.target.getAttribute('data-index');
+    var sectorIndex          = event.target.getAttribute('data-txt');
+    var activityIndex        = event.target.getAttribute('data-actindex');
+    var array = this.state.availableSectors;
+    var data;
+      console.log("subActivityIndex",subActivityIndex);
+    if(sectorIndex && array){
+      data = this.state.availableSectors[sectorIndex]; 
+      var activitySelected = data.activity[activityIndex];
+      
+      var subActivitySelected = activitySelected.subActivity[subActivityIndex];
+
+      subActivitySelected.checked=checkedValue;
+      activitySelected.subActivity[subActivityIndex] = subActivitySelected;
+      data.activity[activityIndex] = activitySelected
+      console.log("subActivitySelected",subActivitySelected);
+      console.log("data---",data);
+                            // return  block;                                           
+    }
+    array[sectorIndex] = data;
+    this.setState({
+      availableSectors : array,
+    })
+/*    var selectedSubActivities = this.state.selectedSubActivities;
+    var value = event.target.checked;
+    var id    = event.target.id;
+    var subactivitycheck = event.target.getAttribute('data-typechecked');   
+    console.log("subactivitycheck",subactivitycheck);
+    console.log("this",$("input:checkbox:checked").attr('data-typechecked'));   
+    console.log("selectedSubActivities",selectedSubActivities);
+    console.log("value",value);
+    console.log("id",id);
+
+    this.setState({
+      [id] : value
+    },()=>{
+      console.log("this.state[id]",this.state[id]);
+      if(this.state[id] === true){
+        selectedSubActivities.push({
+          "sector_ID"         : id.split("|")[0],
+          "sectorName"        : id.split("|")[1],
+          "activity_ID"       : id.split("|")[2],
+          "activityName"      : id.split("|")[3],
+          "subActivity_ID"    : id.split("|")[4],
+          "subActivityName"   : id.split("|")[5]
+        });
+        this.setState({
+          selectedSubActivities   : selectedSubActivities,
+        },()=>{
+            console.log("selectedSubActivities",this.state.selectedSubActivities);
+        });
+      }else{
+        var index = selectedSubActivities.findIndex(v => v.activityName === id);
+        selectedSubActivities.splice(selectedSubActivities.findIndex(v => v.activityName === id), 1);
+        this.setState({
+          selectedSubActivities : selectedSubActivities
+        });
+      }
+    });*/
+  }
   getAvailableSector(){
     axios({
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {   
-    console.log("sector",response.data);     
+      console.log("sectors",response.data);
+      var sortArray= (response.data).sort(function(a,b){
+        return( (a.activity).length - (b.activity).length); //ASC, For Descending order use: b - a
+      });  
+
+      var availableSectorData = (response.data).map((block)=>{
+              block.checked = "N";
+            return block;
+           })
+
+
+      var activityData = availableSectorData.filter((block)=>{                                          
+                            block.activity.map((blockone)=>{
+                                blockone.checked = "N";
+                                  return blockone;
+                              })
+                            return  block;                                           
+                           })
+       var subActivityData = availableSectorData.filter((block)=>{                                          
+                            block.activity.map((blockone)=>{
+                                blockone.subActivity.map((blocktwo)=>{
+                                  blocktwo.checked = "N"
+                                  return blocktwo;
+                                })
+                                  return blockone;
+                              })
+                            return  block;                                           
+                           })
+      console.log("subActivityData",subActivityData);
+   
       this.setState({
-        availableSectors : response.data
+        availableSectors : response.data,
+
       })
     }).catch(function (error) {
       console.log('error', error);
     });
   }
+
+
   getSearchText(searchText, startRange, limitRange){
     this.setState({
       tableData : []
@@ -497,7 +852,7 @@ class ProjectMapping extends Component{
                                 this.state.listofTypes ?
                                 this.state.listofTypes.map((data, index)=>{
                                   return(
-                                    <option key={index} value={data._id}>{data.typeofGoal}</option> 
+                                    <option key={index} value={data._id}>{data.typeofGoal}</option>   
                                   );
                                 })
                                 :
@@ -535,55 +890,69 @@ class ProjectMapping extends Component{
                       </div> 
                     </div><br/>
                     <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above{/* {this.state.projectType}*/}</label></div>
-                    <div className="">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable">
-                        <div >
-                          <div >
-                            {
-                              this.state.availableSectors ?
-                              this.state.availableSectors.map((data, index)=>{
-                                return(
-                                  <div key={index}>
-                                  { data.activity.length > 0?
-                                  <div  className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 blockheight noPadding">
-                                    <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding">
-                                      <label  className="formLable faintColor">{data.sector}</label>
-                                      {console.log("activity",data.activity)}
-                                    </div>
-                                 
+                      <div className=" col-lg-12 col-sm-12 col-xs-12 ">
+                        <div className=" col-md-12  col-lg-12 col-sm-12 col-xs-12">
+                          {
+                            this.state.availableSectors ?
+                            this.state.availableSectors.map((data, index)=>{
+                              return(
+                                <div key={index} className="col-md-4  col-lg-4 col-sm-12 col-xs-12 blockheight noPadding">
+                                  <div className="row"> 
+                                    <div className="actionDiv" id="sector">
+                                      <div className="sectorContainer col-lg-1 ">
+                                        <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} value={data.checked=="N"?"Y":"N"} id={data._id +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
+                                        <span className="sectorCheck"></span>
+                                      </div>
+                                    </div>                            
+                                    <label  className="fz14 faintColor">{data.sector}</label>                                   
                                     {
                                       data.activity.map((a, i)=>{
+
                                         return(
-                                          <div key ={i} className="col-lg-4 col-md-4 col-sm-6 col-xs-6 ">
-                                            <div className="row"> 
+                                          <div key ={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                            <div className={data._id +"|"+data.sector}> 
                                               <div className="actionDiv" id="activityName">
-                                                <div className="SDGContainer col-lg-1">
-                                                  <input type="checkbox" name="activityName" className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={this.state[data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName]?true:false} onChange={this.selectActivity.bind(this)} />
+                                                <div className="SDGContainer col-lg-1 ">
+                                                  <input type="checkbox" name="activityName"  data-typechecked={a.activityName} data-index={i} data-txt={index} value={a.checked=="N"?"Y":"N"} className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={a.checked==="Y"?true:false} onChange={this.selectActivity.bind(this)} />
                                                   <span className="SDGCheck"></span>
                                                 </div>
                                               </div>                            
-                                              <label className="listItem">{a.activityName}</label>
+                                              <label className="actListItem">{a.activityName}</label>
                                             </div>  
+                                              {
+                                                a.subActivity.length>0?
+                                                a.subActivity.map((b,j)=>{
+                                                  return(
+                                                    <div key ={j} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                                      <div className={data._id +"|"+data.sector} id="subactivityDiv"> 
+                                                        <div className="actionDiv" id="subActivityName">
+                                                          <div className="subContainer col-lg-1">                                                         
+                                                            <input type="checkbox" name="subActivityName" className ="subActivityName" data-typechecked={a.subActivityName}  data-index={j} data-actindex={i} data-txt={index} value={b.checked=="N"?"Y":"N"}  data-typechecked="subActivityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName+"|"+b._id+"|"+b.subActivityName}  checked={b.checked==="Y"?true:false} onChange={this.selectSubactivity.bind(this)} />
+                                                            <span className="subCheck"></span>
+                                                          </div>
+                                                        </div>                            
+                                                        <label className="subActivitylistItem">{b.subActivityName}</label>
+                                                      </div>   
+                                                    </div>
+                                                  );
+                                                })
+                                                :
+                                                null
+                                              }
                                           </div>
                                         );
                                       })
                                     }
-                                    <div className=" col-md-12 col-lg-12 col-sm-12 col-xs-12 noPadding" >
-                                      <hr className="hr-map"/>
-                                    </div> 
-                                  </div>
-                                  : null
-                                  }
-                                  </div>
-                                );
-                              })
-                              :
-                              null
-                            }
-                          </div>                          
-                        </div>
-                      </div> 
-                    </div><br/>
+                                  </div> 
+                                </div>                             
+                              );
+                            })
+                            :
+                            null
+                          }
+                        </div>  
+                      </div>                                      
+                    <br/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       {
                         this.state.editId ? 

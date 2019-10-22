@@ -14,7 +14,7 @@ import './notification.css';
 import Form from 'react-validation/build/form';
 import Input from 'react-validation/build/input';
 import Select from 'react-validation/build/input';
-axios.defaults.baseURL = 'http://localhost:3006';
+// axios.defaults.baseURL = 'http://localhost:3006';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 class ViewTemplates extends Component{

@@ -70,20 +70,21 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
   }
 
     componentDidMount(){
-        this.getAvailableCenters();
-        this.getAvailableSectors();
-        this.currentFromDate();
-        this.currentToDate();
-        this.setState({
-          // "center"  : this.state.center[0],
-          // "sector"  : this.state.sector[0],
-          tableData : this.state.tableData,
-        },()=>{
-        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-        })
-        this.handleFromChange = this.handleFromChange.bind(this);
-        this.handleToChange = this.handleToChange.bind(this);
+      axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+      this.getAvailableCenters();
+      this.getAvailableSectors();
+      this.currentFromDate();
+      this.currentToDate();
+      this.setState({
+        // "center"  : this.state.center[0],
+        // "sector"  : this.state.sector[0],
+        tableData : this.state.tableData,
+      },()=>{
+      console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+      })
+      this.handleFromChange = this.handleFromChange.bind(this);
+      this.handleToChange = this.handleToChange.bind(this);
     }   
     componentWillReceiveProps(nextProps){
         this.getAvailableCenters();

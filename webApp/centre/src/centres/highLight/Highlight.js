@@ -65,6 +65,7 @@ class Highlight extends Component{
   }
   
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     // console.log('editId componentDidMount', this.state.editId);
     this.getWorkspaceList();
     axios
@@ -84,11 +85,7 @@ class Highlight extends Component{
       })
       .catch(function(error){
         console.log(error);
-          if(error.message === "Request failed with status code 401")
-              {
-                   swal("Your session is expired! Please login again.","", "error");
-                   this.props.history.push("/");
-              }
+          
       })
 
     if(this.state.editId){      
@@ -194,6 +191,12 @@ class Highlight extends Component{
         })
         .catch(function(error){
           console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
       this.setState({
         "dateofsubmission"  :"",
@@ -348,7 +351,7 @@ class Highlight extends Component{
           // this.getseats();
         })
       // console.log("get---------response",response.data);
-      if(response.data=="Workspace Details not found" || response.data==[]){
+      if(response.data==="Workspace Details not found" || response.data===[]){
         this.setState({
           workSpaceList : []
         })
@@ -360,11 +363,7 @@ class Highlight extends Component{
     })
     .catch(function (error) {
       console.log(error);
-    if(error.message === "Request failed with status code 401")
-          {
-            swal("Your session is expired! Please login again.","", "error");
-            this.props.history.push("/");
-          }
+   
     })
   }
 
@@ -379,7 +378,7 @@ class Highlight extends Component{
       if (newFile) {
       // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
-        if(ext=="jpg" || ext=="png" || ext=="jpeg" || ext=="JPG" || ext=="PNG" || ext=="JPEG"){ 
+        if(ext==="jpg" || ext==="png" || ext==="jpeg" || ext==="JPG" || ext==="PNG" || ext==="JPEG"){ 
           if (newFile) {
             S3FileUpload
               .uploadFile(newFile,this.state.config)
@@ -415,7 +414,7 @@ class Highlight extends Component{
     var filePath = e.target.getAttribute('data-id');
     var data = filePath.split("/");
     var imageName = data[4];
-    console.log("imageName==",imageName);
+    console.log("imageName===",imageName);
     if(index){
       swal({
         title: "Are you sure you want to delete this image?",
@@ -456,7 +455,7 @@ class Highlight extends Component{
             axios
               .delete('/api/workspaceDetails/delete/'+id)
               .then((response)=> {
-                if(response.data=='workspace deleted'){
+                if(response.data==='workspace deleted'){
                   swal("Workspace deleted successfully");
                   this.props.history.push('/addWorkspace');
                   window.location.reload();
@@ -466,11 +465,7 @@ class Highlight extends Component{
               })
               .catch(function (error) {
                   console.log(error);
-                    if(error.message === "Request failed with status code 401")
-                      {
-                           swal("Your session is expired! Please login again.","", "error");
-                           this.props.history.push("/");
-                      }
+                    
               });
         } else {
           swal("Your information is safe!");
@@ -491,8 +486,8 @@ class Highlight extends Component{
       if (newFile) {
       // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
-        if(ext=="DOC" || ext=="DOCX" || ext=="PDF" || ext=="XLS" || ext=="XLSX"  || ext=="PPT" || ext=="PPTX" || ext=="TXT"|| 
-          ext=="doc" || ext=="docx" || ext=="pdf" || ext=="xls" || ext=="xlsx" || ext=="ppt" || ext=="pptx" || ext=="txt"){ 
+        if(ext==="DOC" || ext==="DOCX" || ext==="PDF" || ext==="XLS" || ext==="XLSX"  || ext==="PPT" || ext==="PPTX" || ext==="TXT"|| 
+          ext==="doc" || ext==="docx" || ext==="pdf" || ext==="xls" || ext==="xlsx" || ext==="ppt" || ext==="pptx" || ext==="txt"){ 
           if (newFile) {
             S3FileUpload
               .uploadFile(newFile,this.state.config)
@@ -527,7 +522,7 @@ class Highlight extends Component{
     var filePath = e.target.getAttribute('data-id');
     var data = filePath.split("/");
     var imageName = data[4];
-    console.log("imageName==",imageName);
+    console.log("imageName===",imageName);
     if(index){
       swal({
         title: "Are you sure you want to delete this File?",
@@ -586,7 +581,7 @@ class Highlight extends Component{
 
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp ">
                         {
-                            this.state.imgArrayWSaws==null?
+                            this.state.imgArrayWSaws===null?
                             null
                           :
                             this.state.imgArrayWSaws.map((data,index)=>{
@@ -647,7 +642,7 @@ class Highlight extends Component{
                       </div>
                     {/*  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp ">
                         {
-                            this.state.fileArray==null?
+                            this.state.fileArray===null?
                             null
                           :
                             this.state.fileArray.map((data,index)=>{
