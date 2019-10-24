@@ -19,9 +19,11 @@ class AddFile extends Component{
       "caseStudy_Image"   :"",
       "caseStudy_File"    :"",
       "configData"        : props && props.configData ? props.configData : {},        
+      "fileArray"         : props && props.fileArray ? props.fileArray : {},        
+      "fileType"          : props && props.fileType ? props.fileType : {},        
+      filenames            : [],
       fileArray           : [],
     }
-    // console.log('editId' , this.state.editId);
   }
   
   componentWillReceiveProps(nextProps){
@@ -29,16 +31,17 @@ class AddFile extends Component{
   }
   
   componentDidMount() {
-    // console.log('editId componentDidMount', this.state.editId);
+    localStorage.setItem("fileArray",this.state.fileArray);
     var configData =  this.props.configData;
-    var fileType = configData.fileType;
+    var fileType   =  this.props.fileType;
     this.setState({
       fileType : fileType
     },()=>{console.log("fileType",this.state.fileType)})
     axios
+      // .get('http://cofficapi.iassureit.com/api/projectSettings/single/S3')
       .get('http://qalmisapi.iassureit.com/api/projectSettings/get/one/S3')
       .then((response)=>{
-          console.log("response",response);
+          // console.log("response",response);
        
         const config = {
                           bucketName      : response.data.bucket,
@@ -50,7 +53,7 @@ class AddFile extends Component{
         this.setState({
           config : config
         },()=>{
-          console.log("config",this.state.config)
+          // console.log("config",this.state.config)
         })
       })
       .catch(function(error){
@@ -91,6 +94,10 @@ class AddFile extends Component{
                   fileArray.push(obj1);
                   this.setState({
                     fileArray : fileArray
+                  },()=>{
+                    var ImageLocation = JSON.stringify(this.state.fileArray);
+                    localStorage.setItem("ImageLocation",ImageLocation);
+                    // console.log("fileArray",this.state.fileArray)
                   })
               })
               .catch((error)=>{
@@ -107,14 +114,14 @@ class AddFile extends Component{
     }
   }
 
-  uploadFile(event){
+  uploadFiles(event){
    event.preventDefault();
    let self = this;
    if (event.currentTarget.files && event.currentTarget.files[0]) {
       var file        = event.currentTarget.files[0];
       var newFileName = JSON.parse(JSON.stringify(new Date()))+"_"+file.name;
       var newFile     = new File([file],newFileName);
-      // console.log("file",newFile);
+      
       if (newFile) {
       // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
@@ -125,13 +132,26 @@ class AddFile extends Component{
               .uploadFile(newFile,this.state.config)
               .then((Data)=>{
                 // console.log("Data = ",Data);
+                // console.log("newFile = ",newFile.name);
+                  var fileName = file.name;
+                  var obj2={
+                      fileName : fileName
+                  }
                   var obj1={
                     filePath : Data.location,
                   }
+                  var filenames =this.state.filenames;
                   var fileArray = this.state.fileArray;
+                  filenames.push(obj2);
                   fileArray.push(obj1);
                   this.setState({
+                    filenames : filenames,
                     fileArray : fileArray
+                  },()=>{
+                    // console.log("filenames",this.state.filenames);
+                    // console.log("fileArray",this.state.fileArray)
+                    var fileLocation = JSON.stringify(this.state.fileArray);
+                    localStorage.setItem("fileLocation",fileLocation);
                   })
               })
               .catch((error)=>{
@@ -224,31 +244,9 @@ class AddFile extends Component{
     return (
       <div className="">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp ">
-          {
-              this.state.fileArray==null?
-              null
-            :
-              this.state.fileArray.map((data,index)=>{
-                return(
-                        <div key={index} className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row">
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                            <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12"> Image {index+1}</h5>
-                          </div>
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                            <div className="imgcss" >
-                              <label id={index} className="pull-right custFaTimes" title="Delete image" data-id={data.imgPath} onClick={this.deleteImage.bind(this)}>X</label>
-                              <img className="img-responsive" src={data.imgPath}/>
-                            </div>
-                          </div>
-                        </div>
-                      )
-              })
-          }
-          {this.state.fileArray.length<=0?
-            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
+            <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 row padTopC">
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add  Images <span className="astrick">*</span></h5>
-               
+                <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add {this.state.fileType} <span className="astrick">*</span></h5>
               </div>
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                 <div className="clr_k ">
@@ -257,34 +255,68 @@ class AddFile extends Component{
                   </div>
                   <div  className= "col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center below_text">
                    <b className="text_k11"></b>
-                   <span className="under_ln"><h6>Choose  Images</h6></span>
+                   <span className="under_ln"><h6>Choose  {this.state.fileType}</h6></span>
                   </div>     
-                  <input  type="file" title="Click to attach file" multiple name="userPic" onChange={this.state.fileType === "Image" ? this.uploadImage.bind(this) : this.uploadFile.bind(this)} ref="workspaceImg"  className="form-control click_input" id="upload-file2" />
+                  <input  type="file" title="Click to attach file" multiple name="userPic" onChange={this.state.fileType === "Image" ? this.uploadImage.bind(this) : this.uploadFiles.bind(this)} ref="workspaceImg"  className="form-control click_input" id="upload-file2" />
                 </div>
               </div>
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imgdetails">(max size: 1 Mb, Format: JPEG, jpg, png)</div>
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imgdetails">{this.state.fileType=== "Image" ? "(Max size: 1 Mb, Format: JPEG, PNG)" : "(Max size: 1 Mb, Format: DOC, PDF, XLS)"} </div>
             </div>
-          :
-            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add Images <span className="astrick">*</span></h5>
-              </div>
-              <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
-                <div className="clr_k" style={{height:"120px"}}>
-                  <div className="col-lg-offset-1 col-lg-2 col-md-12 col-sm-12 col-xs-12 hand_icon1">
-                    <img src="/images/Upload-Icon.png"/>
+            {
+              this.state.fileArray==null?
+              null
+              :
+              this.state.fileArray.map((data,index)=>{
+                return(
+                  <div >
+                    {
+                      this.state.fileType==="Image" ? 
+                      <div  key={index} className="col-lg-3 col-md-4 col-sm-12 col-xs-12" >
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
+                          <h5 className="h5Title col-lg-10 col-md-10 col-sm-12 col-xs-12"> Image {index+1}</h5>
+                          <label id={index} className="pull-right custFaTimes crossLabel" title="Delete image" data-id={data.imgPath} onClick={this.deleteImage.bind(this)}>X</label>
+                        </div>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                          <div className="imgcss" >
+                            <img className="img-responsive imgheight" src={data.imgPath}/>
+                          </div>
+                        </div>
+                      </div>
+                    : ""
+                    }
                   </div>
-                  <div  className= "col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10 below_text">
-                   <b className="text_k11"></b>
-                   <span className="text-center under_ln">Choose another image</span>
-                  </div>     
-                  <input  type="file" title="Click to attach file" multiple name="userPic" onChange={this.uploadImage.bind(this)} ref="workspaceImg"  className="form-control click_input" id="upload-file2" />
-                </div>
+                )
+              })
+            }
+            {
+              this.state.fileArray.length<=0?
+              null          
+              :
+              <div>
+                {
+                  this.state.fileType ==="File" ? 
+                  <div  className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
+                    <p className="fileName">File Uploaded</p>
+                    {
+                      this.state.filenames && this.state.filenames.length > 0 ? 
+                      this.state.filenames.map((a, index)=>{
+                        return(
+                          <div>
+                            <p  key={index} className="">{a.fileName}</p>
+                          </div>
+                        )
+                      }) 
+                    :
+                      null
+                    }
+                  </div>
+                :
+                  null
+                }
               </div>
-            </div>
-          }
+            }
         </div>
-      </div>    
+      </div>   
     );
   }
 }

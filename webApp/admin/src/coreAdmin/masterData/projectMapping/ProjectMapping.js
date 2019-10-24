@@ -434,6 +434,7 @@ class ProjectMapping extends Component{
   selectSector(event){
     var checkedValue = event.target.value;
     var index     = event.target.getAttribute('data-index');
+    var indexSector     = event.target.getAttribute('data-txt');
     var name     = event.target.getAttribute('data-typechecked');
     var array = this.state.availableSectors;
     var data;
@@ -441,50 +442,69 @@ class ProjectMapping extends Component{
       data = this.state.availableSectors[index];             
       data.checked=checkedValue;
       var activityData =  data.activity.map((blockone)=>{
-        console.log("blockone",blockone)
                             if(checkedValue==="Y"){
                             blockone.checked = "Y"
-                              return blockone;
-                              var sectorData = sectorData.push({
-                                  "sector_ID": index,
-                                  "sectorName": name,
-                                  "activity_ID": blockone._id,
-                                  "activityName": blockone.activityName,
-                                  "subActivity_ID": "5d6e304a44387358f476ec3d",
-                                  "subActivityName": "Dairy development"
-                              })
-
+                            // sectorData.push({
+                            //   "sector_ID": indexSector,
+                            //   "sectorName": name,
+                            //   "activity_ID": blockone._id,
+                            //   "activityName": blockone.activityName,
+                            // /*  "subActivity_ID": blockone.subActivity._id,
+                            //   "subActivityName": blockone.subActivity.subActivityName*/
+                            // })
+                            // console.log("sectorData",sectorData);
+                            return blockone;
                             }else{
                               blockone.checked = "N"
                               return blockone;
                             }
                           })
-
       // console.log("activityData",activityData);
-      // var activityDatas =   data.activity;
-
       var activData =  activityData.map((element)=>{
+        sectorData.push({
+                "sector_ID": indexSector,
+                "sectorName": name,
+                "activity_ID": element._id,
+                "activityName": element.activityName,
+                "subActivity_ID":"",
+                "subActivityName": "",
+        })
+        if(element.subActivity){
+            var subActivityData = element.subActivity.map((blocktwo)=>{
+              if(checkedValue==="Y"){
+              blocktwo.checked = "Y";
+              var dataexist = sectorData.filter((item)=>{return item.sector_ID==indexSector});
+              var selectIndexData =  sectorData.filter((item)=>{return item.activity_ID==element._id});
+              // var dt = selectIndexData[0];                
+              //     dt.subActivity_ID=blocktwo._id;
+              //     dt.subActivityName=blocktwo.subActivityName;
+              //     sectorData.push(dt);
+              sectorData.push({
+                              "sector_ID": indexSector,
+                              "sectorName": name,
+                              "activity_ID": element._id,
+                              "activityName": element.activityName,
+                              "subActivity_ID": blocktwo._id,
+                              "subActivityName": blocktwo.subActivityName
+                            })             
 
-                     var subActivityData = element.subActivity.map((blocktwo)=>{
-      // console.log("ActivityData",blocktwo.checked);
-                            if(checkedValue==="Y"){
-                            blocktwo.checked = "Y"
+                
 
-                              return blocktwo;
-                            }else{
-                              blocktwo.checked = "N"
-                              return blocktwo;
-                            }                     
-                          })
-
-                     element.subActivity = subActivityData;
-                     return element
+                return blocktwo;
+              }else{
+                blocktwo.checked = "N"
+                return blocktwo;
+              }                     
+            })
+        }
+            element.subActivity = subActivityData;
+            return element
 
       // console.log("element",element);
       })
       // var subActivityData =  subActivityData;
 
-      console.log("activData",activData);
+      // console.log("activData",activData);
                             // return  block;                                           
     }
     array[index] = data;
@@ -507,79 +527,8 @@ class ProjectMapping extends Component{
           // console.log("a",a,index);
         })
 
-/*
-    var selectedSector = this.state.selectedSector;
-    var value = event.target.checked;
-    var id    = event.target.id;
-    var sectorcheck = event.target.getAttribute('data-text');   
-    console.log("sectorcheck",sectorcheck);
-    var sectorID = $(event.target).attr('id');
 
-    var info = this.state.availableSectors;
-    var arr = info.filter((item)=>{
-      return item._id==sectorcheck
-    })
-
-    console.log("arr",arr);
-    if(arr){
-
-      arr.map((element,index)=>{
-        element.activity.map((a,index)=>{
-          var sId = (sectorID+"|"+a._id+'|'+a.activityName);
-          // console.log("(sectorID++a._id+'|'+a.activityName)",);
-          // console.log("sid",document.getElementsById('5d77778a6daf6492941377c5|Educational Sector|5d7777b96daf6492941377c6|Teaching in School'));
-          // $("#"+sId).prop("checked",true);
-          console.log("aaaa",$(document.getElementsByClassName(sectorID)));
-        })  
-      })
-    }*/ 
-
-
-
-
-    // console.log("sssss",$(document.getElementsByClassName(sectorID)).find('.subActivityName'));
-
-    // var sectordata = $(document.getElementsByClassName(sectorID)).find(".activityName");
-    // sectordata.map((index,data)=>{
-       
-    //    // $(data).prop("checked",true);
-    //    $(data).attr('checked',true);
-    //    // console.log("selectedSectordata",$(data).attr('checked'));
-    //    // console.log("sectordata",sectordata);
-    //    //data.checked = true;
-    // })
-  /*  var subdata = $(document.getElementsByClassName(sectorID)).find('.subActivityName');
-    subdata.map((index,data)=>{
-       
-       $(data).prop("checked",true);
-       $(data).attr('checked',true);
-       console.log("selectedSubdata",$(data).attr('checked'));
-       //data.checked = true;
-    })
-      */
-
-
-   /* this.setState({
-      [id] : value
-    },()=>{
-      if(this.state[id] === true){
-        selectedSector.push({
-          "sector_ID"      : id.split("|")[0],
-          "sectorName"     : id.split("|")[1]
-        });
-        this.setState({
-          selectedSector   : selectedSector,
-        });
-      }else{
-        var index = selectedSector.findIndex(v => v.activityName === id);
-        selectedSector.splice(selectedSector.findIndex(v => v.activityName === id), 1);
-        this.setState({
-          selectedSector : selectedSector
-        },()=>{
-          console.log("selectedSector",selectedSector)
-        });
-      }
-    });      */
+    console.log("sectorData",sectorData);
   }
   selectActivity(event){
 
@@ -615,38 +564,7 @@ class ProjectMapping extends Component{
       availableSectors : array,
     })
 
-  /*  var selectedActivities = this.state.selectedActivities;
-    var value = event.target.checked;
-    var id    = event.target.id;
-    var activitycheck = event.target.getAttribute('data-typechecked');   
-    console.log("activitycheck",activitycheck);
-    console.log("id",id);
-    // console.log("this",$("input:checkbox:checked").attr('data-typechecked'));
-    console.log("selectedActivities",selectedActivities);
 
-    this.setState({
-      [id] : value
-    },()=>{
-      console.log("this.state[id]",this.state[id]);
-      if(this.state[id] === true){
-       
-        selectedActivities.push({
-          "sector_ID"      : id.split("|")[0],
-          "sectorName"     : id.split("|")[1],
-          "activity_ID"    : id.split("|")[2],
-          "activityName"   : id.split("|")[3],
-        });
-        this.setState({
-          selectedActivities   : selectedActivities,
-        });
-      }else{
-        var index = selectedActivities.findIndex(v => v.activityName === id);
-        selectedActivities.splice(selectedActivities.findIndex(v => v.activityName === id), 1);
-        this.setState({
-          selectedActivities : selectedActivities
-        });
-      }
-    });      */
   }
   selectSubactivity(event){
 
@@ -674,42 +592,6 @@ class ProjectMapping extends Component{
     this.setState({
       availableSectors : array,
     })
-/*    var selectedSubActivities = this.state.selectedSubActivities;
-    var value = event.target.checked;
-    var id    = event.target.id;
-    var subactivitycheck = event.target.getAttribute('data-typechecked');   
-    console.log("subactivitycheck",subactivitycheck);
-    console.log("this",$("input:checkbox:checked").attr('data-typechecked'));   
-    console.log("selectedSubActivities",selectedSubActivities);
-    console.log("value",value);
-    console.log("id",id);
-
-    this.setState({
-      [id] : value
-    },()=>{
-      console.log("this.state[id]",this.state[id]);
-      if(this.state[id] === true){
-        selectedSubActivities.push({
-          "sector_ID"         : id.split("|")[0],
-          "sectorName"        : id.split("|")[1],
-          "activity_ID"       : id.split("|")[2],
-          "activityName"      : id.split("|")[3],
-          "subActivity_ID"    : id.split("|")[4],
-          "subActivityName"   : id.split("|")[5]
-        });
-        this.setState({
-          selectedSubActivities   : selectedSubActivities,
-        },()=>{
-            console.log("selectedSubActivities",this.state.selectedSubActivities);
-        });
-      }else{
-        var index = selectedSubActivities.findIndex(v => v.activityName === id);
-        selectedSubActivities.splice(selectedSubActivities.findIndex(v => v.activityName === id), 1);
-        this.setState({
-          selectedSubActivities : selectedSubActivities
-        });
-      }
-    });*/
   }
   getAvailableSector(){
     axios({
@@ -900,7 +782,7 @@ class ProjectMapping extends Component{
                                   <div className="row"> 
                                     <div className="actionDiv" id="sector">
                                       <div className="sectorContainer col-lg-1 ">
-                                        <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} value={data.checked=="N"?"Y":"N"} id={data._id +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
+                                        <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} data-txt={data._id} value={data.checked=="N"?"Y":"N"} id={data._id +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
                                         <span className="sectorCheck"></span>
                                       </div>
                                     </div>                            

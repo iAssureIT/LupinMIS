@@ -6,7 +6,7 @@ import swal                   from 'sweetalert';
 import S3FileUpload           from 'react-s3';
 import { deleteFile }         from 'react-s3';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
-import AddFile                from "../addFile/AddFile.js";
+import AddFilePublic          from "../addFile/AddFilePublic.js";
 
 import 'react-table/react-table.css';
 // import "./CaseStudy.css";
@@ -51,8 +51,8 @@ class CaseStudy extends Component{
         deleteMethod    : 'delete',
         apiLink         : '/api/caseStudies/delete/',
         pageURL         : '/caseStudyy',
-        fileType        : 'Image',
       },
+      // "fileType"          : 'Image',
       "startRange"        : 0,
       "limitRange"        : 10,
       "editId"            : this.props.match.params ? this.props.match.params.id : '',
@@ -60,6 +60,12 @@ class CaseStudy extends Component{
   }
   
   componentWillReceiveProps(nextProps){
+    const fileArray = localStorage.getItem("fileArray");
+    this.setState({
+      fileArray : fileArray
+    },()=>{
+      console.log("fileArray====props",this.state.fileArray)
+    })
     var editId = nextProps.match.params.id;
     // console.log('editId' , editId);
     if(nextProps.match.params.id){
@@ -81,17 +87,24 @@ class CaseStudy extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
+    this.getAvailableSectors();
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
+    var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
+    var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
+    // console.log("fileLocation ===============================",fileLocation);
+    // console.log("ImageLocation ===============================",ImageLocation);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
+    // console.log("fileArray ===============================",localStorage.getItem('fileArray'));
     // console.log("localStorage =",localStorage);
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
+      fileLocation : fileLocation,
+      ImageLocation   : ImageLocation,
     },()=>{
-      console.log("center_ID =",this.state.center_ID);
+      // console.log("fileArray =",this.state.fileArray);
     });
     var dateObj = new Date();
     var momentObj = moment(dateObj);
@@ -108,7 +121,7 @@ class CaseStudy extends Component{
         [event.target.name]: event.target.value,
         "dateofsubmission" :this.refs.dateofsubmission.value,
         "title"            :this.refs.title.value, 
-        "sectorName"       :this.refs.sectorName.value, 
+        "sectorName"       :this.refs.sector.value, 
         "author"           :this.refs.author.value, 
        /* "caseStudy_Image"  :this.refs.caseStudy_Image.value,
         "caseStudy_File"   :this.refs.caseStudy_File.value,*/
@@ -127,47 +140,36 @@ class CaseStudy extends Component{
     }
   }
 
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-
-  isTextKey(evt){
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    } 
-  }
-
   Submit(event){
+    var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
+    var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
+    console.log("fileLocation ===============================",fileLocation);
+    console.log("ImageLocation ===============================",ImageLocation);
     event.preventDefault();
-    if(this.refs.dateofsubmission.value === "" || this.refs.title.value ==="" || this.refs.sectorName.value===""
+    if(this.refs.dateofsubmission.value === "" || this.refs.title.value ==="" || this.refs.sector.value===""
      || this.refs.author.value==="" )
     {
     if (this.validateFormReq() && this.validateForm()){
      }
     }else{
       var caseStudyValues = {
+                   /* center_ID           : req.body.center_ID,
+                    date                : req.body.date,
+                    sector_ID           : req.body.sector_ID,
+                    sectorName          : req.body.sectorName,
+                    title               : req.body.title,
+                    author              : req.body.author,
+                    caseStudy_Image     : req.body.caseStudy_Image,
+                    caseStudy_File      : req.body.caseStudy_File,*/
         "center_ID"        :this.state.center_ID,
         "centerName"       :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
+        "sector_ID"        :this.refs.sector.value.split('|')[1],
+        "sectorName"       :this.refs.sector.value.split('|')[0],
         "title"            :this.refs.title.value, 
-        "sectorName"       :this.refs.sectorName.value, 
         "author"           :this.refs.author.value, 
-      /*  "caseStudy_Image"  :this.refs.caseStudy_Image.value,
-        "caseStudy_File"   :this.refs.caseStudy_File.value,*/
+        "caseStudy_Image"  :ImageLocation,
+        "caseStudy_File"   :fileLocation,
       };
       let fields = {};
       fields["dateofsubmission"]      = "";
@@ -202,7 +204,7 @@ class CaseStudy extends Component{
 
   Update(event){
     event.preventDefault();
-    if(this.refs.dateofsubmission.value === "" || this.refs.title.value ==="" || this.refs.sectorName.value===""
+    if(this.refs.dateofsubmission.value === "" || this.refs.title.value ==="" || this.refs.sector.value===""
      || this.refs.author.value==="" )
     {
     if (this.validateFormReq() && this.validateForm()){
@@ -213,8 +215,8 @@ class CaseStudy extends Component{
         "center_ID"        :this.state.center_ID,
         "centerName"       :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
-        "title"            :this.refs.title.value, 
-        "sectorName"       :this.refs.sectorName.value, 
+        "projectName"      :this.refs.title.value, 
+        "sector"           :this.refs.sector.value, 
         "author"           :this.refs.author.value, 
       /*  "caseStudy_Image"  :this.refs.caseStudy_Image.value,
         "caseStudy_File"   :this.refs.caseStudy_File.value,*/
@@ -331,6 +333,30 @@ class CaseStudy extends Component{
       
     });*/
   }
+  getAvailableSectors(){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        
+        this.setState({
+          availableSectors : response.data
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectSector(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    var sector_ID = event.target.value.split('|')[1];
+    this.setState({
+      sector_ID          : sector_ID,
+      subActivityDetails : ""
+    })
+    this.handleChange(event);
+    this.getAvailableActivity(sector_ID);
+  }
 
   getData(startRange, limitRange){ 
     var data = {
@@ -339,7 +365,7 @@ class CaseStudy extends Component{
     }
     axios.get('/api/caseStudies/list',data)
     .then((response)=>{
-      console.log('response', response);
+      // console.log('response', response);
       this.setState({
         tableData : response.data
       })
@@ -379,13 +405,32 @@ class CaseStudy extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.title}</div>
                         </div>
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
+                        <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                          <label className="formLable">Sector </label>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                            <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
+                              <option  className="hidden" >-- Select --</option>
+                              {
+                                this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                this.state.availableSectors.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
+                          </div>
+                          <div className="errorMsg">{this.state.errors.sector}</div>
+                        </div>
+                       {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">Sector</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorName" >
                             <input type="text" className="form-control inputBox " ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.handleChange.bind(this)} />
                           </div>
                           <div className="errorMsg">{this.state.errors.sectorName}</div>
-                        </div>
+                        </div>*/}
                         <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">Author</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="author" >
@@ -395,8 +440,17 @@ class CaseStudy extends Component{
                         </div>
                       </div><br/>
 
-                      <AddFile
-                        configData={this.state.configData}
+                      <AddFilePublic
+                        configData = {this.state.configData} 
+                        fileArray  = {this.state.fileArray} 
+                        fileType   = "Image" 
+
+                      />      
+                      <AddFilePublic
+                        configData = {this.state.configData} 
+                        fileArray  = {this.state.fileArray} 
+                        fileType   = "File"
+
                       />                     
                       
                     </div><br/>

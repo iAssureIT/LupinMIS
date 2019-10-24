@@ -6,7 +6,7 @@
     border: 2px dotted #ccc;
 }
 .hand_icon {
-    margin-left: 38%;
+    margin-left: 32%;
     margin-top: 10px;
 }
 .click_input {
@@ -19,4 +19,21 @@
 }
 .imgdetails{
 	font-size: 12px;
+}
+.imgcss{
+    height: 100px;
+}
+.imgheight{
+    height: 100%;
+    width: 100%;
+}
+.fileName{
+    margin-top: 5px;
+    text-decoration: double;
+    font-weight: 600;
+    font-size: 14px;
+}
+.crossLabel{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

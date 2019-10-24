@@ -31,9 +31,9 @@ import ViewActivity                               from "../../centres/activity/v
 import ActivityReportView                         from "../../centres/activityReportView/ActivityReportView.js";
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import Plan                                       from "../../centres/plan/PlanDetails.js";
-import CaseStudy                                  from "../../centres/caseStudy/CaseStudy.js";
-import CaseStudyy                                 from "../../centres/addFile/CaseStudyy.js";
-import AddFile                                    from "../../centres/addFile/AddFile.js";
+import CaseStudyy                                  from "../../centres/caseStudy/CaseStudy.js";
+import CaseStudy                                 from "../../centres/addFile/CaseStudy.js";
+import AddFilePrivate                             from "../../centres/addFile/AddFilePrivate.js";
 import Highlight                                  from "../../centres/highLight/Highlight.js";
 /*import Monthwise                                       from "../../centres/plan/Monthwise.js";*/
 import CenterList                                 from "../../centres/centerList/centerList.js";
@@ -134,7 +134,7 @@ class Layout extends Component{
                               <Route path="/caseStudy/"                          exact strict component={ CaseStudy } />
                               <Route path="/caseStudy/:id"                       exact strict component={ CaseStudy } />
                               <Route path="/caseStudyy"                          exact strict component={ CaseStudyy } />
-                              <Route path="/addFile"                          exact strict component={ AddFile } />
+                              <Route path="/addFile"                          exact strict component={ AddFilePrivate } />
                               <Route path="/highlight"                           exact strict component={ Highlight } />
                               <Route path="/highlight/"                          exact strict component={ Highlight } />
                               <Route path="/highlight/:id"                       exact strict component={ Highlight } />
