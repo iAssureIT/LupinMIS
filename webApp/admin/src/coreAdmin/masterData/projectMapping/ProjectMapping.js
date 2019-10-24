@@ -475,10 +475,6 @@ class ProjectMapping extends Component{
               blocktwo.checked = "Y";
               var dataexist = sectorData.filter((item)=>{return item.sector_ID==indexSector});
               var selectIndexData =  sectorData.filter((item)=>{return item.activity_ID==element._id});
-              // var dt = selectIndexData[0];                
-              //     dt.subActivity_ID=blocktwo._id;
-              //     dt.subActivityName=blocktwo.subActivityName;
-              //     sectorData.push(dt);
               sectorData.push({
                               "sector_ID": indexSector,
                               "sectorName": name,
@@ -487,6 +483,10 @@ class ProjectMapping extends Component{
                               "subActivity_ID": blocktwo._id,
                               "subActivityName": blocktwo.subActivityName
                             })             
+              var dt = selectIndexData[0];                
+                  dt.subActivity_ID=blocktwo._id;
+                  dt.subActivityName=blocktwo.subActivityName;
+                  sectorData.push(dt);
 
                 
 

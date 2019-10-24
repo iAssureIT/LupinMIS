@@ -47,7 +47,7 @@ class CaseStudy extends Component{
         actions           : 'Action',
       },            
       "configData" : {
-        dirName         : 'lupiniassureit',
+        dirName         : 'caseStudy5',
         deleteMethod    : 'delete',
         apiLink         : '/api/caseStudies/delete/',
         pageURL         : '/caseStudyy',
@@ -64,7 +64,7 @@ class CaseStudy extends Component{
     this.setState({
       fileArray : fileArray
     },()=>{
-      console.log("fileArray====props",this.state.fileArray)
+      // console.log("fileArray====props",this.state.fileArray)
     })
     var editId = nextProps.match.params.id;
     // console.log('editId' , editId);
@@ -141,10 +141,10 @@ class CaseStudy extends Component{
   }
 
   Submit(event){
-    var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
-    var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
-    console.log("fileLocation ===============================",fileLocation);
-    console.log("ImageLocation ===============================",ImageLocation);
+    // var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
+    // var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
+    // console.log("fileLocation ===============================",fileLocation);
+    // console.log("ImageLocation ===============================",ImageLocation);
     event.preventDefault();
     if(this.refs.dateofsubmission.value === "" || this.refs.title.value ==="" || this.refs.sector.value===""
      || this.refs.author.value==="" )
@@ -153,23 +153,15 @@ class CaseStudy extends Component{
      }
     }else{
       var caseStudyValues = {
-                   /* center_ID           : req.body.center_ID,
-                    date                : req.body.date,
-                    sector_ID           : req.body.sector_ID,
-                    sectorName          : req.body.sectorName,
-                    title               : req.body.title,
-                    author              : req.body.author,
-                    caseStudy_Image     : req.body.caseStudy_Image,
-                    caseStudy_File      : req.body.caseStudy_File,*/
         "center_ID"        :this.state.center_ID,
-        "centerName"       :this.state.centerName,
+        // "centerName"       :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
         "sector_ID"        :this.refs.sector.value.split('|')[1],
         "sectorName"       :this.refs.sector.value.split('|')[0],
         "title"            :this.refs.title.value, 
         "author"           :this.refs.author.value, 
-        "caseStudy_Image"  :ImageLocation,
-        "caseStudy_File"   :fileLocation,
+        "caseStudy_Image"  :this.state.ImageLocation,
+        "caseStudy_File"   :this.state.fileLocation,
       };
       let fields = {};
       fields["dateofsubmission"]      = "";
@@ -178,6 +170,7 @@ class CaseStudy extends Component{
       fields["author"]                = "";
       fields["caseStudy_Image"]       = "";
       fields["caseStudy_File"]        = "";
+        // console.log('caseStudyValues', caseStudyValues);
       axios.post('/api/caseStudies', caseStudyValues)
         .then((response)=>{
         // console.log('response', response);
@@ -186,19 +179,20 @@ class CaseStudy extends Component{
             title : response.data.message,
             text  : response.data.message
           });
+          this.setState({
+            "title"             :"",
+            "dateofsubmission"  :"",
+            "sector"            :"",
+            "author"            :"",
+            "ImageLocation"     :"",
+            "fileLocation"      :"",
+            fields              :fields
+          });
         })
         .catch(function(error){
           console.log("error = ",error);
         });
-      this.setState({
-        "title"             :"",
-        "dateofsubmission"  :"",
-        "sectorName"        :"",
-        "author"            :"",
-        "caseStudy_Image"   :"",
-        "caseStudy_File"    :"",
-        fields              :fields
-      });
+      
     }    
   }
 
@@ -215,7 +209,7 @@ class CaseStudy extends Component{
         "center_ID"        :this.state.center_ID,
         "centerName"       :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
-        "projectName"      :this.refs.title.value, 
+        "title"            :this.refs.title.value, 
         "sector"           :this.refs.sector.value, 
         "author"           :this.refs.author.value, 
       /*  "caseStudy_Image"  :this.refs.caseStudy_Image.value,
@@ -227,7 +221,7 @@ class CaseStudy extends Component{
       fields["sectorName"]          = "";
       fields["author"]              = "";
 
-      console.log('caseStudyValues', caseStudyValues);
+      // console.log('caseStudyValues', caseStudyValues);
 
       axios.patch('/api/caseStudies/update', caseStudyValues)
         .then((response)=>{
@@ -300,7 +294,7 @@ class CaseStudy extends Component{
       url: '/api/caseStudies/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log("editData",editData);
+      // console.log("editData",editData);
       this.setState({
         "dateofsubmission"  : editData.date,
         "title"             : editData.title, 
@@ -355,7 +349,6 @@ class CaseStudy extends Component{
       subActivityDetails : ""
     })
     this.handleChange(event);
-    this.getAvailableActivity(sector_ID);
   }
 
   getData(startRange, limitRange){ 
@@ -450,7 +443,6 @@ class CaseStudy extends Component{
                         configData = {this.state.configData} 
                         fileArray  = {this.state.fileArray} 
                         fileType   = "File"
-
                       />                     
                       
                     </div><br/>

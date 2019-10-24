@@ -121,10 +121,13 @@ class AddFile extends Component{
       var file        = event.currentTarget.files[0];
       var newFileName = JSON.parse(JSON.stringify(new Date()))+"_"+file.name;
       var newFile     = new File([file],newFileName);
-      
+      this.setState({
+                    newFile : newFile,
+                  })
       if (newFile) {
       // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
+
         if(ext=="DOC" || ext=="DOCX" || ext=="PDF" || ext=="XLS" || ext=="XLSX"  || ext=="PPT" || ext=="PPTX" || ext=="TXT"|| 
           ext=="doc" || ext=="docx" || ext=="pdf" || ext=="xls" || ext=="xlsx" || ext=="ppt" || ext=="pptx" || ext=="txt"){ 
           if (newFile) {
@@ -145,6 +148,7 @@ class AddFile extends Component{
                   filenames.push(obj2);
                   fileArray.push(obj1);
                   this.setState({
+                    ext       :ext,
                     filenames : filenames,
                     fileArray : fileArray
                   },()=>{
@@ -240,7 +244,8 @@ class AddFile extends Component{
     }
   }
 
-  render() {     
+  render() {
+
     return (
       <div className="">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp ">
@@ -268,10 +273,10 @@ class AddFile extends Component{
               :
               this.state.fileArray.map((data,index)=>{
                 return(
-                  <div >
+                  <div  key={index} >
                     {
                       this.state.fileType==="Image" ? 
-                      <div  key={index} className="col-lg-3 col-md-4 col-sm-12 col-xs-12" >
+                      <div  className="col-lg-3 col-md-4 col-sm-12 col-xs-12" >
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
                           <h5 className="h5Title col-lg-10 col-md-10 col-sm-12 col-xs-12"> Image {index+1}</h5>
                           <label id={index} className="pull-right custFaTimes crossLabel" title="Delete image" data-id={data.imgPath} onClick={this.deleteImage.bind(this)}>X</label>
@@ -293,26 +298,45 @@ class AddFile extends Component{
               null          
               :
               <div>
-                {
-                  this.state.fileType ==="File" ? 
-                  <div  className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
-                    <p className="fileName">File Uploaded</p>
-                    {
-                      this.state.filenames && this.state.filenames.length > 0 ? 
-                      this.state.filenames.map((a, index)=>{
-                        return(
-                          <div>
-                            <p  key={index} className="">{a.fileName}</p>
-                          </div>
-                        )
-                      }) 
-                    :
-                      null
-                    }
-                  </div>
-                :
-                  null
-                }
+              
+                    <div>
+                      {
+                        this.state.fileType ==="File" ? 
+                        <div  className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
+                          <p className="fileName">File Uploaded</p>
+                          {
+                            this.state.filenames && this.state.filenames.length > 0 ? 
+                            this.state.filenames.map((a, index)=>{
+                              return(
+                                <div  key={index}>
+                                  <p  className="">{a.fileName}</p>
+                                    {     console.log("ext",this.state.ext)}
+                                  {
+                                   ( this.state.ext==="XLS" || "XLSX"||"xls" || "xlsx") ? 
+                                    <img className="fileExt" src="/images/exel2.png"/> : null
+                                  
+                                   ( this.state.ext==="PPT" || "PPTX" || "ppt" || "pptx") ? 
+                                    <img className="fileExt" src="/images/powerpoint.jpeg"/> :null
+                                 
+                                    (this.state.ext==="pdf" || "PDF") ? 
+                                    <img className="fileExt" src="/images/pdf.png"/> :null
+                                 
+                                    (this.state.ext==="doc" || "docx" || "DOC" || "DOCX"|| "txt" || "TXT") ? 
+                                    <img className="fileExt" src="/images/docs.png"/> :null
+                                  }
+                                
+                                </div>
+                              )
+                            }) 
+                          :
+                            null
+                          }
+                        </div>
+                      :
+                        null
+                      }
+                    </div>
+              
               </div>
             }
         </div>

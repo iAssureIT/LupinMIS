@@ -5,6 +5,7 @@ import swal                   from 'sweetalert';
 import S3FileUpload           from 'react-s3';
 import { deleteFile }         from 'react-s3';
 import moment                 from "moment";
+import AddFilePublic          from "../addFile/AddFilePublic.js";
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 
 import 'react-table/react-table.css';
@@ -39,12 +40,17 @@ class Highlight extends Component{
         date              : "Date",
         userName          : "User Name",
         actions           : 'Action',
-      },            
+      },                     
+      "configData" : {
+        dirName         : 'Highlight',
+        deleteMethod    : 'delete',
+        apiLink         : '/api/caseStudies/delete/',
+        pageURL         : '/caseStudyy',
+      }, 
       "startRange"        : 0,
       "limitRange"        : 10,
       "editId"            : this.props.match.params ? this.props.match.params.id : '',
     }
-    this.getWorkspaceList   = this.getWorkspaceList.bind(this);
     // console.log('editId' , this.state.editId);
   }
   
@@ -67,32 +73,16 @@ class Highlight extends Component{
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     // console.log('editId componentDidMount', this.state.editId);
-    this.getWorkspaceList();
-    axios
-    /*  .get('http://cofficapi.iassureit.com/api/projectSettings/get/one/S3')*/
-      .get('/api/projectSettings/get/one/S3')
-      .then((response)=>{
-        const config = {
-                          bucketName      : response.data.bucket,
-                          dirName         : 'lupiniassureit',
-                          region          : response.data.region,
-                          accessKeyId     : response.data.key,
-                          secretAccessKey : response.data.secret,
-                       }
-        this.setState({
-          config : config
-        })
-      })
-      .catch(function(error){
-        console.log(error);
-          
-      })
-
+   
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
+    var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
+    var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
+    // console.log("fileLocation ===============================",fileLocation);
+    // console.log("ImageLocation ===============================",ImageLocation);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -100,6 +90,8 @@ class Highlight extends Component{
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
+      fileLocation : fileLocation,
+      ImageLocation   : ImageLocation,
     },()=>{
       console.log("center_ID =",this.state.center_ID);
     });
@@ -161,6 +153,10 @@ class Highlight extends Component{
   }
 
   Submit(event){
+    // var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
+    // var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
+    // console.log("fileLocation ===============================",fileLocation);
+    // console.log("ImageLocation ===============================",ImageLocation);
     event.preventDefault();
     if(this.refs.dateofsubmission.value === ""  || this.refs.userName.value==="" )
     {
@@ -172,8 +168,8 @@ class Highlight extends Component{
         "centerName"       :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
         "userName"         :this.refs.userName.value, 
-      /*  "highlight_Image"  :this.refs.highlight_Image.value,
-        "highlight_File"   :this.refs.highlight_File.value,*/
+        "highlight_Image"  :this.state.ImageLocation,
+        "highlight_File"   :this.state.fileLocation,
       };
       let fields = {};
       fields["dateofsubmission"]      = "";
@@ -182,7 +178,7 @@ class Highlight extends Component{
       fields["highlight_File"]        = "";
       axios.post('/api/highlights', highlightValues)
         .then((response)=>{
-        console.log('response', response);
+        // console.log('response', response);
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
@@ -201,8 +197,8 @@ class Highlight extends Component{
       this.setState({
         "dateofsubmission"  :"",
         "userName"          :"",
-        "highlight_Image"   :"",
-        "highlight_File"    :"",
+        "ImageLocation"     :"",
+        "fileLocation"      :"",
         fields              :fields
       });
     }    
@@ -339,213 +335,6 @@ class Highlight extends Component{
     });
   }
 
-  getWorkspaceList(){
-    // var object;
-    var array = [];
-    axios.get('/api/highlights/list')
-    .then((response)=> {
-      console.log("Response 1 =",response.data);
-        this.setState({
-          dataArray : response.data
-        },()=>{
-          // this.getseats();
-        })
-      // console.log("get---------response",response.data);
-      if(response.data==="Workspace Details not found" || response.data===[]){
-        this.setState({
-          workSpaceList : []
-        })
-      }else{
-        this.setState({
-          workSpaceList : response.data
-        })
-      }  
-    })
-    .catch(function (error) {
-      console.log(error);
-   
-    })
-  }
-
-  uploadworkspaceImage(event){
-    event.preventDefault();
-    let self = this;
-    if (event.currentTarget.files && event.currentTarget.files[0]) {
-      var file = event.currentTarget.files[0];
-      var newFileName = JSON.parse(JSON.stringify(new Date()))+"_"+file.name;
-      var newFile = new File([file],newFileName);
-      // console.log("file",newFile);
-      if (newFile) {
-      // console.log("config--------------->",this.state.config);
-        var ext = newFile.name.split('.').pop();
-        if(ext==="jpg" || ext==="png" || ext==="jpeg" || ext==="JPG" || ext==="PNG" || ext==="JPEG"){ 
-          if (newFile) {
-            S3FileUpload
-              .uploadFile(newFile,this.state.config)
-              .then((Data)=>{
-                // console.log("Data = ",Data);
-                  var obj1={
-                    imgPath : Data.location,
-                  }
-                  var imgArrayWSaws = this.state.imgArrayWSaws;
-                  imgArrayWSaws.push(obj1);
-                  this.setState({
-                    // workspaceImages : imgArrayWSaws
-                    imgArrayWSaws : imgArrayWSaws
-                  })
-              })
-              .catch((error)=>{
-                console.log("formErrors");
-                // console.log(error);
-              })
-          }else{         
-            swal("Image not uploaded","Something went wrong"); 
-          }
-        }else{
-          swal("Please upload Image","Only Upload Images format (jpg,png,jpeg)");  
-        }
-      }
-    }
-  }
-
-  deleteimageWS(e){
-    e.preventDefault();
-    var index = e.target.getAttribute('id');
-    var filePath = e.target.getAttribute('data-id');
-    var data = filePath.split("/");
-    var imageName = data[4];
-    console.log("imageName===",imageName);
-    if(index){
-      swal({
-        title: "Are you sure you want to delete this image?",
-        text: "Once deleted, you will not be able to recover this image!",
-       /* icon: "warning",*/
-        buttons: true,
-        dangerMode: true,
-      })
-      .then((willDelete) => {
-        if (willDelete) {
-          var array = this.state.imgArrayWSaws; // make a separate copy of the array
-          array.splice(index, 1);
-          swal("abc", "Image deleted successfully");
-          this.setState({
-            imgArrayWSaws: array
-          });
-        }else {
-          swal("Are you sure you want to delete this image?","Your image is safe!");
-        }
-      });
-    }
-  }
-
-  deleteItem(event){
-    event.preventDefault();
-    console.log('innnnn.....')
-    var id = event.target.getAttribute('data-id');
-    if(id){
-      swal({
-        title: "Are you sure you want to delete this workspace?",
-        text: "Once deleted, you will not be able to recover this Image!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      })
-      .then((willDelete) => {
-          if (willDelete) {
-            axios
-              .delete('/api/workspaceDetails/delete/'+id)
-              .then((response)=> {
-                if(response.data==='workspace deleted'){
-                  swal("Workspace deleted successfully");
-                  this.props.history.push('/addWorkspace');
-                  window.location.reload();
-                  this.getWorkspaceList();
-                  // $('#myModal'+this.state.deleteId).css('display','none');                  
-                }
-              })
-              .catch(function (error) {
-                  console.log(error);
-                    
-              });
-        } else {
-          swal("Your information is safe!");
-        }
-      });
-    }
-  }
-
-
-  uploadFile(event){
-   event.preventDefault();
-   let self = this;
-   if (event.currentTarget.files && event.currentTarget.files[0]) {
-      var file = event.currentTarget.files[0];
-      var newFileName = JSON.parse(JSON.stringify(new Date()))+"_"+file.name;
-      var newFile = new File([file],newFileName);
-      // console.log("file",newFile);
-      if (newFile) {
-      // console.log("config--------------->",this.state.config);
-        var ext = newFile.name.split('.').pop();
-        if(ext==="DOC" || ext==="DOCX" || ext==="PDF" || ext==="XLS" || ext==="XLSX"  || ext==="PPT" || ext==="PPTX" || ext==="TXT"|| 
-          ext==="doc" || ext==="docx" || ext==="pdf" || ext==="xls" || ext==="xlsx" || ext==="ppt" || ext==="pptx" || ext==="txt"){ 
-          if (newFile) {
-            S3FileUpload
-              .uploadFile(newFile,this.state.config)
-              .then((Data)=>{
-                console.log("Data = ",Data);
-                  var obj1={
-                    filePath : Data.location,
-                  }
-                  var fileArray = this.state.fileArray;
-                  fileArray.push(obj1);
-                  this.setState({
-                    fileArray : fileArray
-                  })
-              })
-              .catch((error)=>{
-                console.log("formErrors");
-                console.log(error);
-              })
-          }else{         
-            swal("File not uploaded","Something went wrong"); 
-          }
-        }else{
-          swal("Please upload file","Only Upload  File format (jpg,png,jpeg)");  
-        }
-      }
-    }
-  }
-
-  deletefile(e){
-    e.preventDefault();
-    var index = e.target.getAttribute('id');
-    var filePath = e.target.getAttribute('data-id');
-    var data = filePath.split("/");
-    var imageName = data[4];
-    console.log("imageName===",imageName);
-    if(index){
-      swal({
-        title: "Are you sure you want to delete this File?",
-        text: "Once deleted, you will not be able to recover this File!",
-        // icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      })
-      .then((willDelete) => {
-        if (willDelete) {
-          var array = this.state.fileArray; // make a separate copy of the array
-          array.splice(index, 1);
-          swal("Image deleted successfully");
-          this.setState({
-            fileArray: array
-          });
-        }else {
-          swal("Your File is safe!");
-        }
-      });
-    }
-  }
-
   render() {     
     return (
       <div className="container-fluid">
@@ -578,131 +367,21 @@ class Highlight extends Component{
                           <div className="errorMsg">{this.state.errors.userName}</div>
                         </div>
                       </div><br/>
+                      <AddFilePublic
+                        configData = {this.state.configData} 
+                        fileArray  = {this.state.fileArray} 
+                        fileType   = "Image" 
 
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp ">
-                        {
-                            this.state.imgArrayWSaws===null?
-                            null
-                          :
-                            this.state.imgArrayWSaws.map((data,index)=>{
-                              return(
-                                      <div key={index} className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row">
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                                          <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12"> Image {index+1}</h5>
-                                        </div>
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                          <div className="imgcss" >
-                                            <label id={index} className="pull-right custFaTimes" title="Delete image" data-id={data.imgPath} onClick={this.deleteimageWS.bind(this)}>X</label>
-                                            <img className="img-responsive" src={data.imgPath}/>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )
-                            })
-                        }
-                        {this.state.imgArrayWSaws.length<=0?
-                          <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                              <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add  Images <span className="astrick">*</span></h5>
-                             
-                            </div>
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                              <div className="clr_k ">
-                                <div className="col-lg-offset-1 col-lg-2 col-md-12 col-sm-12 col-xs-12 hand_icon">
-                                  <img src="/images/Upload-Icon.png"/>
-                                </div>
-                                <div  className= "col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center below_text">
-                                 <b className="text_k11"></b>
-                                 <span className="under_ln"><h6>Choose  Images</h6></span>
-                                </div>     
-                                <input  type="file" title="Click to attach file" multiple name="userPic" onChange={this.uploadworkspaceImage.bind(this)} ref="workspaceImg"  className="form-control click_input" id="upload-file2" />
-                              </div>
-                            </div>
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imgdetails">(max size: 1 Mb, Format: JPEG, jpg, png)</div>
-                          </div>
-                        :
-                          <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                              <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add Images <span className="astrick">*</span></h5>
-                            </div>
-                            <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
-                              <div className="clr_k" style={{height:"120px"}}>
-                                <div className="col-lg-offset-1 col-lg-2 col-md-12 col-sm-12 col-xs-12 hand_icon1">
-                                  <img src="/images/Upload-Icon.png"/>
-                                </div>
-                                <div  className= "col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10 below_text">
-                                 <b className="text_k11"></b>
-                                 <span className="text-center under_ln">Choose another image</span>
-                                </div>     
-                                <input  type="file" title="Click to attach file" multiple name="userPic" onChange={this.uploadworkspaceImage.bind(this)} ref="workspaceImg"  className="form-control click_input" id="upload-file2" />
-                              </div>
-                            </div>
-                          </div>
-                        }
-                      </div>
-                    {/*  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp ">
-                        {
-                            this.state.fileArray===null?
-                            null
-                          :
-                            this.state.fileArray.map((data,index)=>{
-                              return(
-                                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row">
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                                          <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12"> Image {index+1}</h5>
-                                        </div>
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                          <div className="imgcss" key={index}>
-                                            <label id={index} className="pull-right custFaTimes" title="Delete image" data-id={data.filePath} onClick={this.deletefile.bind(this)}>X</label>
-                                            <img className="img-responsive" src={data.filePath}/>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )
-                            })
-                        }
-                        {this.state.fileArray.length<=0?
-                          <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                              <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add  File <span className="astrick">*</span></h5>
-                             
-                            </div>
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                              <div className="clr_k ">
-                                <div className="col-lg-offset-1 col-lg-2 col-md-12 col-sm-12 col-xs-12 hand_icon">
-                                  <img src="/images/Upload-Icon.png"/>
-                                </div>
-                                <div  className= "col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center below_text">
-                                 <b className="text_k11"></b>
-                                 <span className="under_ln"><h6>Choose File</h6></span>
-                                </div>     
-                                <input  type="file" title="Click to attach file" multiple name="userFile" onChange={this.uploadFile.bind(this)} ref="caseFile"  className="form-control click_input" id="upload-file" />
-                              </div>
-                            </div>
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imgdetails">(max size: 1 Mb, Format: JPEG, jpg, png)</div>
-                          </div>
-                        :
-                          <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                              <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add Files <span className="astrick">*</span></h5>
-                            </div>
-                            <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
-                              <div className="clr_k" style={{height:"120px"}}>
-                                <div className="col-lg-offset-1 col-lg-2 col-md-12 col-sm-12 col-xs-12 hand_icon1">
-                                  <img src="/images/Upload-Icon.png"/>
-                                </div>
-                                <div  className= "col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10 below_text">
-                                 <b className="text_k11"></b>
-                                 <span className="text-center under_ln">Choose another File</span>
-                                </div>     
-                                <input  type="file" title="Click to attach file" multiple name="userFile" onChange={this.uploadFile.bind(this)} ref="caseFile"  className="form-control click_input" id="upload-file" />
-                              </div>
-                            </div>
-                          </div>
-                        }
-                      </div>
-                                   */}
-                      
+                      />      
+                      <AddFilePublic
+                        configData = {this.state.configData} 
+                        fileArray  = {this.state.fileArray} 
+                        fileType   = "File"
+
+                      />      
+
+                        
+               
                     </div><br/>
                     <div className="col-lg-12">
                       <br/>
