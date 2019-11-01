@@ -194,6 +194,7 @@ class SignUp extends Component {
         $(".modalbg").css("display","none");
     }
     componentDidMount(){
+    	axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     	this.getCenters();
     	
     }

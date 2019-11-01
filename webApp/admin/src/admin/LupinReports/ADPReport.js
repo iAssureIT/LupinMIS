@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
+import swal                 from 'sweetalert';
 import axios                from 'axios';
 import moment               from 'moment';
 import DailyReport          from '../Reports/DailyReport.js';
@@ -51,6 +52,10 @@ class ADPReport extends Component{
             "Community"       : 'Community',
             "Other"           : 'Other',
         },
+        "tableObjects"        : {
+            paginationApply     : false,
+            searchApply         : false,
+        },   
     }
     window.scrollTo(0, 0); 
     this.handleFromChange    = this.handleFromChange.bind(this);
@@ -108,7 +113,13 @@ class ADPReport extends Component{
             })
           })
         }).catch(function (error) {
-          console.log('error', error);
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
         });
     } 
     selectCenter(event){
@@ -155,7 +166,14 @@ class ADPReport extends Component{
             console.log("resp",this.state.tableData)
           })
         })
-        .catch(function(error){        
+        .catch(function(error){
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
         });
     }
     handleFromChange(event){

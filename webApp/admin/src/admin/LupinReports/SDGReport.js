@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
+import swal                 from 'sweetalert';
 import axios                from 'axios';
 import moment               from 'moment';
 import DailyReport          from '../Reports/DailyReport.js';
@@ -52,6 +53,10 @@ class SDGReport extends Component{
             "Other"           : 'Other',
         
         },
+        "tableObjects"        : {
+            paginationApply     : false,
+            searchApply         : false,
+        },   
     }
     window.scrollTo(0, 0); 
     this.handleFromChange    = this.handleFromChange.bind(this);
@@ -108,8 +113,14 @@ class SDGReport extends Component{
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
             })
           })
-        }).catch(function (error) {
-          console.log('error', error);
+        }).catch(function (error) { 
+           // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
     } 
     selectCenter(event){
@@ -156,83 +167,90 @@ class SDGReport extends Component{
             console.log("resp",this.state.tableData)
           })
         })
-        .catch(function(error){        
+        .catch(function(error){  
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
     }
     handleFromChange(event){
-        event.preventDefault();
-       const target = event.target;
-       const name = target.name;
-       var dateVal = event.target.value;
-       var dateUpdate = new Date(dateVal);
-       var startDate = moment(dateUpdate).format('YYYY-MM-DD');
-       this.setState({
-           [name] : event.target.value,
-           startDate:startDate
-       },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
-       console.log("dateUpdate",this.state.startDate);
-       });
-       // localStorage.setItem('newFromDate',dateUpdate);
+      event.preventDefault();
+      const target = event.target;
+      const name = target.name;
+      var dateVal = event.target.value;
+      var dateUpdate = new Date(dateVal);
+      var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+      this.setState({
+         [name] : event.target.value,
+         startDate:startDate
+      },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      console.log("dateUpdate",this.state.startDate);
+      });
+      // localStorage.setItem('newFromDate',dateUpdate);
     }
     handleToChange(event){
-        event.preventDefault();
-        const target = event.target;
-        const name = target.name;
+      event.preventDefault();
+      const target = event.target;
+      const name = target.name;
 
-        var dateVal = event.target.value;
-        var dateUpdate = new Date(dateVal);
-        var endDate = moment(dateUpdate).format('YYYY-MM-DD');
-        this.setState({
-           [name] : event.target.value,
-           endDate : endDate
-        },()=>{
-        console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
-       });
-       // localStorage.setItem('newToDate',dateUpdate);
+      var dateVal = event.target.value;
+      var dateUpdate = new Date(dateVal);
+      var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+      this.setState({
+         [name] : event.target.value,
+         endDate : endDate
+      },()=>{
+      console.log("dateUpdate",this.state.endDate);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+     });
+     // localStorage.setItem('newToDate',dateUpdate);
     }
 
     currentFromDate(){
-       /* if(localStorage.getItem('newFromDate')){
-            var today = localStorage.getItem('newFromDate');
-            console.log("localStoragetoday",today);
-        }*/
-        if(this.state.startDate){
-            var today = this.state.startDate;
-            // console.log("localStoragetoday",today);
-        }else {
-            var today = moment(new Date()).format('YYYY-MM-DD');
-        // console.log("today",today);
-        }
-        console.log("nowfrom",today)
-        this.setState({
-           startDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleFromChange()
+     /* if(localStorage.getItem('newFromDate')){
+          var today = localStorage.getItem('newFromDate');
+          console.log("localStoragetoday",today);
+      }*/
+      if(this.state.startDate){
+          var today = this.state.startDate;
+          // console.log("localStoragetoday",today);
+      }else {
+          var today = moment(new Date()).format('YYYY-MM-DD');
+      // console.log("today",today);
+      }
+      console.log("nowfrom",today)
+      this.setState({
+         startDate :today
+      },()=>{
+      });
+      return today;
+      // this.handleFromChange()
     }
 
     currentToDate(){
-        if(this.state.endDate){
-            var today = this.state.endDate;
-            // console.log("newToDate",today);
-        }else {
-            var today =  moment(new Date()).format('YYYY-MM-DD');
-        }
-        this.setState({
-           endDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleToChange();
+      if(this.state.endDate){
+          var today = this.state.endDate;
+          // console.log("newToDate",today);
+      }else {
+          var today =  moment(new Date()).format('YYYY-MM-DD');
+      }
+      this.setState({
+         endDate :today
+      },()=>{
+      });
+      return today;
+      // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
-        this.setState({
-            tableData : []
-        });
+      console.log(searchText, startRange, limitRange);
+      this.setState({
+          tableData : []
+      });
     }
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');

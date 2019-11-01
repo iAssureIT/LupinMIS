@@ -45,8 +45,8 @@ class ProjectMapping extends Component{
       "tableObjects"       : {
         deleteMethod       : 'delete',
         apiLink            : '/api/projectMappings/',
-        paginationApply    : true,
-        searchApply        : true,
+        paginationApply    : false,
+        searchApply        : false,
         editUrl            : '/project-mapping/'
       },
       "startRange"         : 0,
@@ -239,6 +239,12 @@ class ProjectMapping extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
       selectedSector.map((a, index)=>{
         this.setState({
@@ -382,6 +388,13 @@ class ProjectMapping extends Component{
       });
       return formIsValid;
     }).catch(function (error) {
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   
@@ -396,7 +409,13 @@ class ProjectMapping extends Component{
       })
     })
     .catch(function(error){
-      
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   
@@ -410,7 +429,14 @@ class ProjectMapping extends Component{
         // console.log("tableData",this.state.tableData);
       })
     })
-    .catch(function(error){        
+    .catch(function(error){
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
 
@@ -633,7 +659,13 @@ class ProjectMapping extends Component{
 
       })
     }).catch(function (error) {
-      console.log('error', error);
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
 
@@ -688,7 +720,13 @@ class ProjectMapping extends Component{
           listofTypes : response.data
         })
     }).catch(function (error) {
-      console.log('error', error);
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
 

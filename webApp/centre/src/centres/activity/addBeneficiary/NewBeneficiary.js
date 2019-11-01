@@ -5,7 +5,7 @@ import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 
 import IAssureTable           from "./IAssureTable.jsx";
-// import "./Activity.css";
+import "./NewBeneficiary.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -47,8 +47,11 @@ class NewBeneficiary extends Component{
       errors: {},
       " tableObjects"       : {
         apiLink             : '/api/activityReport/',
+        paginationApply     : false,
+        searchApply         : false,
         editUrl             : '/activity/'
       },
+     
       // selectedBeneficiaries : [],
       "startRange"          : 0,
       "limitRange"          : 10,
@@ -62,8 +65,8 @@ class NewBeneficiary extends Component{
     event.preventDefault();
     this.setState({
       "familyID"              : this.refs.familyID.value,          
-      "beneficiaryID"         : this.refs.beneficiaryID.value,          
       "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
+      "relation"              : this.refs.relation.value,
     });
     let fields                = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -214,13 +217,21 @@ class NewBeneficiary extends Component{
       startRange : startRange,
     }
     axios.get('/api/beneficiaries/list',data)
+    // axios.get('/get/beneficiary/list/:centerID/:district/:blocks/:village',data)
     .then((response)=>{
       
       this.setState({
         tableData : response.data
       })
     })
-    .catch(function(error){      
+    .catch(function(error){ 
+      console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }     
     });
   }
 
@@ -236,7 +247,14 @@ class NewBeneficiary extends Component{
   }
   addBeneficiaries(event){
     event.preventDefault();
-    this.props.listofBeneficiaries(this.state.selectedBeneficiaries);
+    if(this.state.selectedBeneficiaries){
+      this.props.listofBeneficiaries(this.state.selectedBeneficiaries);
+    }else{
+      swal({
+            title : "abc",
+            text  : "Please select atleast one Beneficiary."
+      });
+    }
   }
 
   getAvailableFamilyId(){
@@ -249,9 +267,15 @@ class NewBeneficiary extends Component{
           availableFamilies : response.data
         })
     }).catch(function (error) {
-      console.log('error', error);
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
-    console.log("availableFamilies", this.state.availableFamilies)
+    // console.log("availableFamilies", this.state.availableFamilies)
   }
   getAvailableCenter(center_ID){
     // console.log("CID"  ,center_ID);
@@ -265,7 +289,7 @@ class NewBeneficiary extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        console.log('availableDistInCenter ==========',availableDistInCenter);
+        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
           // availableDistInCenter  : response.data[0].districtsCovered,
@@ -281,7 +305,13 @@ class NewBeneficiary extends Component{
         });
         })
     }).catch(function (error) {
-      console.log('error', error);
+      console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
     });
   }
   camelCase(str){
@@ -304,25 +334,27 @@ class NewBeneficiary extends Component{
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      console.log('selectedDistrict',this.state.selectedDistrict);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
-      })
-    });
-  }
-  distChange(event){    
-    event.preventDefault();
-    var district = event.target.value;
-    // console.log('district', district);
-    this.setState({
-      district: district
-    },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
-      // console.log("selectedDistrict",selectedDistrict);
-      this.setState({
-        selectedDistrict :selectedDistrict
-      },()=>{
       // console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      var district = this.state.selectedDistrict;
+      var centerID = this.state.center_ID;
+        axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/all/all")
+        .then((response)=>{
+          console.log('response.district',response.data);
+          
+          this.setState({
+            tableData : response.data
+          })
+        })
+        .catch(function(error){ 
+          console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }     
+        });
       })
     });
   }
@@ -332,11 +364,11 @@ class NewBeneficiary extends Component{
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-        console.log('response ==========', response.data);
+        // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
-        console.log('listofBlocks', this.state.listofBlocks);
+        // console.log('listofBlocks', this.state.listofBlocks);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -348,12 +380,32 @@ class NewBeneficiary extends Component{
     this.setState({
       block : block
     },()=>{
-      // console.log("block",block);
+      console.log("block",this.state.block);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      
+      var block = this.state.block;
+      var district = this.state.selectedDistrict;
+      var centerID = this.state.center_ID;
+        axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/"+block+"/all")
+        .then((response)=>{
+          console.log('response.block',response.data);
+          this.setState({
+            tableData : response.data
+          })
+        })
+        .catch(function(error){ 
+          console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }     
+        });
     });
   }
   getVillages(stateCode, selectedDistrict, block){
-    console.log(stateCode, selectedDistrict, block);
+    // console.log(stateCode, selectedDistrict, block);
     axios({
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
@@ -375,7 +427,27 @@ class NewBeneficiary extends Component{
     this.setState({
       village : village
     },()=>{
-      // console.log("village",village);
+      console.log("village",this.state.village);
+      var village = this.state.village;
+      var block = this.state.block;
+      var district = this.state.selectedDistrict;
+      var centerID = this.state.center_ID;
+        axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/"+block+"/"+village)
+        .then((response)=>{
+          console.log('response.block',response.data);
+          this.setState({
+            tableData : response.data
+          })
+        })
+        .catch(function(error){ 
+          console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }     
+        });
     });
   }
 
@@ -405,97 +477,26 @@ class NewBeneficiary extends Component{
                     <div className="col-lg-12  col-md-10 pageContent margTop">
                       <button type="button" className="close" data-dismiss="modal"> <i className="fa fa-times"></i></button>
                         <div className="col-lg-12 ">
-                          <h4 className="pageSubHeader">Add Beneficiary</h4>
-                        </div>
-                        <div className="row"> 
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                            <div className=" col-lg-3  col-lg-offset-1 col-md-4 col-sm-6 col-xs-12 ">
-                              <label className="formLable">District</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                                <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)} >
-                                  <option  className="hidden" >-- Select --</option>
-                                  {
-                                    this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                    this.state.availableDistInCenter.map((data, index)=>{
-                                      return(
-                                        <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }
-                                  {/*<option>Pune</option>
-                                  <option>Thane</option>*/}
-                                </select>
-                              </div>
-                            </div>
-                            <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Block</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                                <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                  <option  className="hidden" >-- Select --</option>
-                                  {
-                                    this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                    this.state.listofBlocks.map((data, index)=>{
-                                      console.log('dta', data);
-                                      return(
-                                        <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }
-                                  {/*<option>Pimpari</option>
-                                  <option>Haveli</option>
-                                  <option>Chinchwad</option>*/}
-                                </select>
-                              </div>
-                            </div>
-                            <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Village</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                                <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                  <option  className="hidden" >-- Select --</option>
-                                  {
-                                    this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                                    this.state.listofVillages.map((data, index)=>{
-                                      return(
-                                        <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }
-                                  {/*<option>Shivne</option>
-                                  <option>Hadapsar</option>
-                                  <option>Manjari</option>*/}
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight row">
-                            <div className=" col-lg-6 col-sm-12 col-xs-12 col-lg-offset-3 formLable boxHeightother ">
-                              <label className="formLable">Search</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
-                              </div>
-                            </div>
-                             <div className=" col-lg-2 col-md-1 col-sm-1 col-xs-1  boxHeightother">
-                              <div className="col-lg-12 col-sm-12 col-xs-12 mt23" >
+                          <div className="row">
+                            <h4 className="pageSubHeader col-lg-10 col-md-11 col-sm-11 col-xs-11 ">Add Beneficiary</h4>
+                            <div className=" col-lg-2 col-md-1 col-sm-1 col-xs-1">
+                              <div className="col-lg-12 col-sm-12 col-xs-12 mt5" >
                                 <div className="text-center addform" id="click_advance"  onClick={this.toglehidden.bind(this)}>
                                   Create 
                                 </div>
-                                {/*<div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i className="fa fa-plus" aria-hidden="true" id="click"></i></div>
-                                </div>*/}
                               </div>
                             </div>
-                          </div> 
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight boxHeightother" style={hidden}>
-                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Family ID </label>
+                          </div>
+                        </div>
+                       
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style={hidden}>
+                          <h4 className="pageSubHeader col-lg-12 col-md-12 col-sm-12 col-xs-12">Create Beneficiary</h4>
+                          <div className="borderBox ">
+                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Family ID</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
-                                <select className="custom-select form-control inputBox" ref="familyID" name="familyID"  onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >-- Select --</option>
+                                <select className="custom-select form-control inputBox" value={this.state.familyID} ref="familyID" name="familyID" onChange={this.handleChange.bind(this)} >
+                                  <option value="" className="hidden" >-- Select --</option>
                                   {
                                     this.state.availableFamilies ? this.state.availableFamilies.map((data, index)=>{
                                       return(
@@ -509,17 +510,14 @@ class NewBeneficiary extends Component{
                               </div>
                               <div className="errorMsg">{this.state.errors.familyID}</div>
                             </div>
-                            <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                           {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
                               <label className="formLable">Beneficiary ID</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficiaryID" >
-                                {/*<div className="input-group-addon inputIcon">
-                                  <i className="fa fa-graduation-cap fa"></i>
-                                </div>*/}
                                 <input type="text" className="form-control inputBox"  placeholder=""value={this.state.beneficiaryID} ref="beneficiaryID" name="beneficiaryID" onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
-                            </div>
-                            <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                            </div>*/}
+                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12  valid_box">
                               <label className="formLable">Name of Beneficiary</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="nameofbeneficiaries" >
                                 {/*<div className="input-group-addon inputIcon">
@@ -528,12 +526,104 @@ class NewBeneficiary extends Component{
                                 <input type="text" className="form-control inputBox"  placeholder="" value={this.state.nameofbeneficiaries} ref="nameofbeneficiaries" name="nameofbeneficiaries" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.nameofbeneficiaries}</div>
-                            </div>    
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt23">
-                              <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
-                            </div>                      
-                          </div>
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt formLable boxHeightother " >
+                            </div>
+                            <div className=" col-lg-4 col-md-6 col-sm-6 col-xs-12  valid_box">
+                              <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relation" >
+                                {/*<div className="input-group-addon inputIcon">
+                                  <i className="fa fa-graduation-cap fa"></i>
+                                </div>*/}
+                                <input type="text" className="form-control inputBox"  placeholder="" value={this.state.relation} ref="relation" name="relation" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
+                              </div>
+                              <div className="errorMsg">{this.state.errors.relation}</div>
+                            </div>
+                          </div> 
+                        </div><br/>
+
+                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable  boxHeight ">
+                          <div className="borderBoxHeight"> 
+                            <div className="row"> 
+                              <div className=" col-lg-3  col-lg-offset-1 col-md-4 col-sm-6 col-xs-12 ">
+                                <label className="formLable">District</label>
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                                  <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)} >
+                                    <option  className="hidden" >-- Select --</option>
+                                    {
+                                      this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                      this.state.availableDistInCenter.map((data, index)=>{
+                                        return(
+                                          <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                        );
+                                      })
+                                      :
+                                      null
+                                    }
+                                    {/*<option>Pune</option>
+                                    <option>Thane</option>*/}
+                                  </select>
+                                </div>
+                              </div>
+                              <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
+                                <label className="formLable">Block</label>
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                                  <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                                    <option  className="hidden" >-- Select --</option>
+                                    {
+                                      this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                      this.state.listofBlocks.map((data, index)=>{
+                                        // console.log('dta', data);
+                                        return(
+                                          <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                        );
+                                      })
+                                      :
+                                      null
+                                    }
+                                   
+                                  </select>
+                                </div>
+                              </div>
+                              <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
+                                <label className="formLable">Village</label>
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                                  <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
+                                    <option  className="hidden" >-- Select --</option>
+                                    {
+                                      this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                      this.state.listofVillages.map((data, index)=>{
+                                        return(
+                                          <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                        );
+                                      })
+                                      :
+                                      null
+                                    }
+                                   
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight row">
+                              <div className=" col-lg-6 col-sm-12 col-xs-12 col-lg-offset-3 formLable boxHeightother ">
+                                <label className="formLable">Search</label>
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
+                                  <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
+                                </div>
+                              </div>
+                               <div className=" col-lg-2 col-md-1 col-sm-1 col-xs-1  boxHeightother">
+                                <div className="col-lg-12 col-sm-12 col-xs-12 mt23" >
+                                  <div className="text-center addform" id="" >
+                                    Search 
+                                  </div>
+                                  {/*<div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i className="fa fa-plus" aria-hidden="true" id="click"></i></div>
+                                  </div>*/}
+                                </div>
+                              </div>
+                            </div> 
+                          </div> 
+                        </div>
+                         
+                          <div className="mt formLable boxHeightother " >
                             <div className="">  
                               <IAssureTable 
                                 tableHeading={this.state.tableHeading}
@@ -547,7 +637,6 @@ class NewBeneficiary extends Component{
                               />
                             </div>
                           </div> 
-                        </div>
                         <div className="col-lg-12">
                             <br/><button className=" col-lg-2 btn submit pull-right" data-dismiss="modal" onClick={this.addBeneficiaries.bind(this)}> Add</button>
                         </div>

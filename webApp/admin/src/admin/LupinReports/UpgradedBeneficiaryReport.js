@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
 import axios                from 'axios';
+import swal                 from 'sweetalert';
 import moment               from 'moment';
 import DailyReport          from '../Reports/DailyReport.js';
 import WeeklyReport         from '../Reports/WeeklyReport.js';
@@ -61,8 +62,11 @@ class UpgradedBeneficiaryReport extends Component{
             "govtscheme"         : 'Govt',
             "other"              : 'Others',
             "total"              : 'Total "Rs"',
-         
-        },
+        },        
+        "tableObjects"        : {
+            paginationApply     : false,
+            searchApply         : false,
+        },   
     }
       window.scrollTo(0, 0);
       this.handleFromChange    = this.handleFromChange.bind(this);
@@ -123,9 +127,15 @@ class UpgradedBeneficiaryReport extends Component{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
         })
       })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    }).catch(function (error) {  
+        // console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   }
   selectCenter(event){
     var selectedCenter = event.target.value;
@@ -166,9 +176,15 @@ class UpgradedBeneficiaryReport extends Component{
         console.log("address",this.state.stateCode, this.state.availableDistInCenter);
         });
         })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    }).catch(function (error) {  
+        // console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   } 
   getAvailableSectors(){
       axios({
@@ -188,9 +204,15 @@ class UpgradedBeneficiaryReport extends Component{
           })
           // console.log('sector', this.state.sector);
         })
-      }).catch(function (error) {
-        console.log('error', error);
-      });
+      }).catch(function (error) {  
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
+        });
   }
   selectSector(event){
     event.preventDefault();
@@ -239,9 +261,15 @@ class UpgradedBeneficiaryReport extends Component{
         },()=>{
         // console.log('listofBlocks', this.state.listofBlocks);
         })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    }).catch(function (error) {  
+        // console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   }
   selectBlock(event){
     event.preventDefault();
@@ -267,8 +295,14 @@ class UpgradedBeneficiaryReport extends Component{
         },()=>{
         // console.log('listofVillages', this.state.listofVillages);
         })
-    }).catch(function (error) {
-      console.log('error', error);
+    }).catch(function (error) {  
+      // console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   selectVillage(event){
@@ -327,7 +361,14 @@ class UpgradedBeneficiaryReport extends Component{
           console.log("resp",this.state.tableData)
         })
       })
-      .catch(function(error){        
+      .catch(function(error){  
+        // console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
     }
   }

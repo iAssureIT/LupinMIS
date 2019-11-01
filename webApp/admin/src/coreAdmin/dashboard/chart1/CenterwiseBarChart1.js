@@ -25,11 +25,11 @@ export default class CenterwiseBarChart1 extends Component{
     this.state = {
       'year'                        : "FY 2019 - 2020",
       "years"                       :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],      
-      "per_cum_achi": [],
+      "per_cum_achi"        : [],
       "cum_achi"            : [],
-      "cum_monthly" : [],
-      "annualPlan"             : [],
-      "source"                      : [],
+      "cum_monthly"         : [],
+      "annualPlan"          : [],
+      "source"              : [],
       "tableHeading"                : {
         name                           : "Center",
         annualPlan_Reach               : "annualPlan_Reach",
@@ -41,8 +41,7 @@ export default class CenterwiseBarChart1 extends Component{
         achievement_TotalBudget        : "achievement_TotalBudget",
         monthlyPlan_Total              : "monthlyPlan_Total",
         achievement_Total              : "achievement_Total",  
-        Per_Periodic
-                           : "Per_Periodic", 
+        Per_Periodic  : "Per_Periodic", 
                
       },
 
@@ -210,10 +209,10 @@ export default class CenterwiseBarChart1 extends Component{
   }
 
   render(){ 
-      {console.log("this.state.source",this.state.source);
-                     console.log("this.state.cum_monthly",this.state.cum_monthly);
-                    console.log("this.state.cum_achi",this.state.cum_achi);
-                    console.log("this.state.per_cum_achi",this.state.per_cum_achi);
+      {console.log("this.state.name",this.state.name);
+                     console.log("this.state.annualPlan_Reach",this.state.annualPlan_Reach);
+                    console.log("this.state.annualPlan_FamilyUpgradation",this.state.annualPlan_FamilyUpgradation);
+                    console.log("this.state.achievement_Reach",this.state.achievement_Reach);
                 }    
     return(
       <div>

@@ -44,24 +44,30 @@ class Login extends Component {
         console.log("-------userData------>>",response);
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token;
 
-        localStorage.setItem("token",response.data.token);
-        localStorage.setItem("emailId",response.data.emailId);
-        localStorage.setItem("center_ID",response.data.center_ID);
-        localStorage.setItem("centerName",response.data.centerName);
-        localStorage.setItem("fullName",response.data.fullName);
+      
         if(axios.defaults.headers.common.Authorization){
           console.log("axios.defaults.headers.common.Authorization",axios.defaults.headers.common.Authorization);
          /* alert("Authorization check ",);*/
-          this.props.history.push("/dashboard");
-          window.location.reload();
-          if(localStorage==null){
-            swal("Invalid Email or Password","Please Enter valid email and password");
+          if(response.data.status==="Blocked"){
+              swal("Invalid Email or Password","User is Blocked, Please contact with Admin");
+              console.log("blocked user")
           }else{
-            this.setState({
-                loggedIn  :   true
-            },()=>{
-              console.log("loggedIn", this.state.loggedIn);
-            })
+             this.props.history.push("/dashboard");
+            if(localStorage==null){
+              swal("Invalid Email or Password","Please Enter valid email and password");
+            }else{
+              localStorage.setItem("token",response.data.token);
+              localStorage.setItem("emailId",response.data.emailId);
+              localStorage.setItem("center_ID",response.data.center_ID);
+              localStorage.setItem("centerName",response.data.centerName);
+              localStorage.setItem("fullName",response.data.fullName);
+              window.location.reload();
+              this.setState({
+                  loggedIn  :   true
+              },()=>{
+                console.log("loggedIn", this.state.loggedIn);
+              })
+            }
           }
         }
       })

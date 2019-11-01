@@ -36,8 +36,8 @@ class SubActivity extends Component{
       "tableObjects"        : {
         deleteMethod        : 'patch',
         apiLink             : '/api/sectors/subactivity/delete/',
-        paginationApply     : true,
-        searchApply         : true,
+        paginationApply     : false,
+        searchApply         : false,
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
@@ -180,6 +180,12 @@ class SubActivity extends Component{
         })
         .catch(function(error){
           console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
     }     
   }
@@ -272,8 +278,14 @@ class SubActivity extends Component{
           availableSectors : response.data
         })
     }).catch(function (error) {
-      console.log('error', error);
-    });
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   }
   selectSector(event){
     event.preventDefault();
@@ -292,8 +304,14 @@ class SubActivity extends Component{
           availableActivity : response.data[0].activity
         },()=>{})
     }).catch(function (error) {
-      console.log('error', error);
-    });
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   }
 
 edit(id){
@@ -349,7 +367,14 @@ edit(id){
         });
       return formIsValid;
       }).catch(function (error) {
-    });
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   }
   getLength(){
     axios.get('/api/sectors/count')
@@ -362,7 +387,13 @@ edit(id){
       })
     })
     .catch(function(error){
-      
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
     
@@ -379,6 +410,12 @@ edit(id){
     })
     .catch(function(error){
       console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   

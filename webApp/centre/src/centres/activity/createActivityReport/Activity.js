@@ -96,8 +96,8 @@ class Activity extends Component{
       "tableObjects"               : {
         deleteMethod               : 'delete',
         apiLink                    : '/api/activityReport/',
-        paginationApply            : true,
-        searchApply                : true,
+        paginationApply            : false,
+        searchApply                : false,
         editUrl                    : '/activity/'
       },
       "selectedBeneficiaries"      : [],
@@ -337,7 +337,14 @@ class Activity extends Component{
         text  : response.data.message,
       });
     })
-    .catch(function(error){        
+    .catch(function(error){ 
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }          
     });
     this.setState({
       "district"              : "",
@@ -549,6 +556,13 @@ class Activity extends Component{
       return formIsValid;
     })
     .catch(function (error) {
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });
     // this.setState({
     //   "editId"              : "",
@@ -567,6 +581,7 @@ class Activity extends Component{
       })
     })
     .catch(function(error){
+
       
     });
   }
@@ -608,6 +623,13 @@ class Activity extends Component{
       })
     })
     .catch(function(error){      
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });
   }
 
@@ -676,6 +698,12 @@ class Activity extends Component{
         })
     }).catch(function (error) {
       console.log('error', error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });
   }
   selectSector(event){
@@ -700,7 +728,13 @@ class Activity extends Component{
         },()=>{
         })
     }).catch(function (error) {
-      console.log('error', error);
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });
   }
 
@@ -728,7 +762,13 @@ class Activity extends Component{
       },()=>{
       });
     }).catch(function (error) {
-      console.log('error', error);
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });    
   }
   selectSubActivity(event){
@@ -773,7 +813,13 @@ class Activity extends Component{
         });
         })
     }).catch(function (error) {
-      console.log('error', error);
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });
   }
   camelCase(str){
@@ -915,7 +961,7 @@ class Activity extends Component{
                                 {
                                   this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
                                   this.state.availableDistInCenter.map((data, index)=>{
-                                    console.log('dta', data);
+                                    // console.log('dta', data);
                                     return(
                                       <option key={index} value={(data.district)}>{this.camelCase(data.district.split('|')[0])}</option>
                                     );

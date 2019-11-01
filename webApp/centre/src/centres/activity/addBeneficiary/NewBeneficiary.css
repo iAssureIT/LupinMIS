@@ -1,0 +1,15 @@
+.mt5{
+	margin-top: 5px;
+}
+.borderBox{
+	border: 1px solid #999;
+	height: 140px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.borderBoxHeight{
+	border: 1px solid #999;
+	height: 150px;
+    padding: 10px;
+    margin-bottom: 10px;
+}

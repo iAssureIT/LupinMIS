@@ -79,8 +79,8 @@ class PlanDetails extends Component{
       "tableObjects"        : {
         deleteMethod        : 'delete',
         apiLink             : '/api/annualPlans/',
-        paginationApply     : true,
-        searchApply         : true,
+        paginationApply     : false,
+        searchApply         : false,
         editUrl             : '/plan-details/',
       },   
       "startRange"          : 0,
@@ -180,7 +180,13 @@ class PlanDetails extends Component{
         });
       })
       .catch(function(error){
-        console.log("error = ",error);
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
       });
   }
   componentWillReceiveProps(nextProps){
@@ -234,8 +240,14 @@ class PlanDetails extends Component{
           availableCenters : response.data
         })
     }).catch(function (error) {
-      console.log('error', error);
-    });
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
+      });
   }
   selectCenter(event){
     var selectedCenter = event.target.value;

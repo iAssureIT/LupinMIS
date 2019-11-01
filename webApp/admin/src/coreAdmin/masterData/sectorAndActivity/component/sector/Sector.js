@@ -28,8 +28,8 @@ class Sector extends Component{
         deleteMethod        : 'delete',
         apiLink             : '/api/sectors/delete/',
         editUrl             : '/sector-and-activity/',
-        paginationApply     : true,
-        searchApply         : true,
+        paginationApply     : false,
+        searchApply         : false,
       },
       "dataCount"           : 0,
       "startRange"          : 0,
@@ -135,6 +135,12 @@ class Sector extends Component{
         })
         .catch(function(error){
           console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
         let fields = {};
         fields["sector"] = "";
@@ -224,7 +230,14 @@ class Sector extends Component{
       });
       return formIsValid;
     }).catch(function (error) {
-    });
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   }
   
   getData(startRange, limitRange){
@@ -241,7 +254,13 @@ class Sector extends Component{
       })
     })
     .catch(function(error){
-      
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   getLength(){
@@ -255,7 +274,13 @@ class Sector extends Component{
       })
     })
     .catch(function(error){
-      
+      console.log("error = ",error);
+      // if(error.message === "Request failed with status code 401"){
+      //   swal({
+      //       title : "abc",
+      //       text  : "Session is Expired. Kindly Sign In again."
+      //   });
+      // }
     });
   }
   componentWillMount(){

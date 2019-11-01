@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
 import axios                from 'axios';
+import swal                 from 'sweetalert';
 import moment               from 'moment';
 import DailyReport          from '../Reports/DailyReport.js';
 import WeeklyReport         from '../Reports/WeeklyReport.js';
@@ -51,6 +52,10 @@ class EMPReport extends Component{
             "Community"       : 'Community',
             "Other"           : 'Other',
         },
+        "tableObjects"        : {
+            paginationApply     : false,
+            searchApply         : false,
+        },   
     }
     window.scrollTo(0, 0); 
     this.handleFromChange    = this.handleFromChange.bind(this);
@@ -108,7 +113,13 @@ class EMPReport extends Component{
             })
           })
         }).catch(function (error) {
-          console.log('error', error);
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
     } 
     selectCenter(event){
@@ -155,7 +166,14 @@ class EMPReport extends Component{
             console.log("resp",this.state.tableData)
           })
         })
-        .catch(function(error){        
+        .catch(function(error){
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
     }
     handleFromChange(event){

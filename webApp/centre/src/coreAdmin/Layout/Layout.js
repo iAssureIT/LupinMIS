@@ -109,7 +109,7 @@ class Layout extends Component{
                          {/* <button className="btn btn-primary pull-right" onClick={this.logout.bind(this)}>Logout</button>
                           */} <Router>
                               <Switch>
-                              <Route path="/" component={Dashboard} exact />           
+                              // <Route path="/" component={Dashboard} exact />           
                               <Route path="/dashboard" component={Dashboard} exact />           
 
                             {/*Master Data*/}

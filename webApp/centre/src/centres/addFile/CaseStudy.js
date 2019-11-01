@@ -47,7 +47,7 @@ class CaseStudy extends Component{
         actions           : 'Action',
       },            
       "configData" : {
-        dirName         : 'caseStudy5',
+        dirName         : 'caseStudy',
         deleteMethod    : 'delete',
         apiLink         : '/api/caseStudies/delete/',
         pageURL         : '/caseStudyy',
@@ -99,9 +99,9 @@ class CaseStudy extends Component{
     // console.log("fileArray ===============================",localStorage.getItem('fileArray'));
     // console.log("localStorage =",localStorage);
     this.setState({
-      center_ID    : center_ID,
-      centerName   : centerName,
-      fileLocation : fileLocation,
+      center_ID       : center_ID,
+      centerName      : centerName,
+      fileLocation    : fileLocation,
       ImageLocation   : ImageLocation,
     },()=>{
       // console.log("fileArray =",this.state.fileArray);
@@ -191,7 +191,13 @@ class CaseStudy extends Component{
         })
         .catch(function(error){
           console.log("error = ",error);
-        });
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
+    });
       
     }    
   }
@@ -233,7 +239,13 @@ class CaseStudy extends Component{
         })
         .catch(function(error){
           console.log("error = ",error);
-        });
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
+    });
       this.setState({
         "dateofsubmission"     :"",
         "title"                :"",
@@ -309,7 +321,14 @@ class CaseStudy extends Component{
       });
       return formIsValid;
     })
-    .catch(function(error){      
+    .catch(function(error){
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }      
     });
   }
 
@@ -337,7 +356,13 @@ class CaseStudy extends Component{
           availableSectors : response.data
         })
     }).catch(function (error) {
-      console.log('error', error);
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
     });
   }
   selectSector(event){
@@ -358,12 +383,28 @@ class CaseStudy extends Component{
     }
     axios.get('/api/caseStudies/list',data)
     .then((response)=>{
-      // console.log('response', response);
+      console.log("response",response);
+      var tableData = response.data.map((a, i)=>{
+        return {
+          _id          : a._id,
+          date         : a.date,
+          title        : a.title,
+          sectorName   : a.sectorName,
+          author       : a.author,
+        }
+      })
       this.setState({
-        tableData : response.data
+        tableData : tableData
       })
     })
     .catch(function(error){      
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
 

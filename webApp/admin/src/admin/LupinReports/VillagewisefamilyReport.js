@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
+import swal                 from 'sweetalert';
 import axios                from 'axios';
 import moment               from 'moment';
 import DailyReport          from '../Reports/DailyReport.js';
@@ -54,9 +55,12 @@ class VillagewisefamilyReport extends Component{
             "IndirectCC"     : 'Indirect Community  Contribution',
             "Govt"           : 'Govt',
             "Other"          : 'Others',
-            "total"          : 'Total',
-        
+            "total"          : 'Total',        
         },
+        "tableObjects"        : {
+            paginationApply     : false,
+            searchApply         : false,
+        },   
     }
    
       window.scrollTo(0, 0);
@@ -118,8 +122,14 @@ class VillagewisefamilyReport extends Component{
         this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
         })
       })
-    }).catch(function (error) {
-      console.log('error', error);
+    }).catch(function (error) {  
+      // console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   selectCenter(event){
@@ -161,9 +171,15 @@ class VillagewisefamilyReport extends Component{
         console.log("address",this.state.stateCode, this.state.availableDistInCenter);
         });
         })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    }).catch(function (error) {  
+        // console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   } 
   getAvailableSectors(){
       axios({
@@ -183,8 +199,14 @@ class VillagewisefamilyReport extends Component{
           })
           // console.log('sector', this.state.sector);
         })
-      }).catch(function (error) {
-        console.log('error', error);
+      }).catch(function (error) {  
+        // console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
   }
   selectSector(event){
@@ -319,7 +341,14 @@ class VillagewisefamilyReport extends Component{
           console.log("resp",this.state.tableData)
         })
       })
-      .catch(function(error){        
+      .catch(function(error){  
+        // console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
     }
   }

@@ -16,7 +16,7 @@ import Leftsidebar from '../common/leftSidebar/Leftsidebar.js'
 		          loggedIn : false,
 		    }
 		}
-		   
+		  
 		componentDidMount(){
 		    $(document).ready(function () {
 		       $('#sidebarCollapse').on('click', function () {

@@ -1,4 +1,5 @@
 import React, { Component }                        from 'react';
+import swal                                        from 'sweetalert';
 import $                                           from 'jquery';
 import axios                                       from 'axios';
 import { Link }                                    from 'react-router-dom'
@@ -70,6 +71,10 @@ class ActivitywiseAnnualCompletionReport extends Component{
             "achievement_Other"             : 'Others',
             // "yiyi"                          : 'Remarks',
         },
+      "tableObjects"        : {
+        paginationApply     : false,
+        searchApply         : false,
+      },   
 
     }
     window.scrollTo(0, 0);
@@ -107,8 +112,14 @@ class ActivitywiseAnnualCompletionReport extends Component{
         // console.log('center', this.state.center);
       })
     }).catch(function (error) {
-      console.log('error', error);
-    });
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   } 
   selectCenter(event){
     var selectedCenter = event.target.value;
@@ -138,8 +149,14 @@ class ActivitywiseAnnualCompletionReport extends Component{
         // console.log('sector', this.state.sector);
       })
     }).catch(function (error) {
-      console.log('error', error);
-    });
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   }
   selectSector(event){
     event.preventDefault();
@@ -164,10 +181,17 @@ class ActivitywiseAnnualCompletionReport extends Component{
           console.log("resp",this.state.tableDatas)
         })
       })
-      .catch(function(error){        
+      .catch(function(error){
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
     }
-  }
+  } 
 
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');

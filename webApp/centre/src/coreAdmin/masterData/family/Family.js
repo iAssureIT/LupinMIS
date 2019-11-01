@@ -39,8 +39,8 @@ class Family extends Component{
      
         apiLink               : '/api/families/',
         editUrl               : '/family/',      
-        paginationApply           : true,
-        searchApply               : true,
+        paginationApply       : false,
+        searchApply           : false,
       },
       "tableHeading"          : {
         familyID              : "Family ID",
@@ -258,7 +258,13 @@ class Family extends Component{
           });
         })
         .catch(function(error){
-          console.log("error = ",error);
+          console.log("error"+error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
       this.setState({
         "familyID"             :"",
@@ -407,7 +413,14 @@ class Family extends Component{
       });
       return formIsValid;
     })
-    .catch(function(error){      
+    .catch(function(error){ 
+      console.log("error"+error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }     
     });
   }
 
@@ -422,7 +435,13 @@ class Family extends Component{
       })
     })
     .catch(function(error){
-      
+      console.log("error"+error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      } 
     });
   }
   getData(startRange, limitRange){ 
@@ -438,6 +457,13 @@ class Family extends Component{
       })
     })
     .catch(function(error){      
+      console.log("error"+error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      } 
     });
   }
 
@@ -469,7 +495,13 @@ class Family extends Component{
         });
         })
     }).catch(function (error) {
-      console.log('error', error);
+      console.log("error"+error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      } 
     });
   }
   

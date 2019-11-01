@@ -22,8 +22,8 @@ class Beneficiary extends Component{
       "fields"              : {},
       "errors"              : {},
       "tableHeading"        : {
-        familyID            : "Family ID",
         beneficiaryID       : "Beneficiary ID",
+        familyID            : "Family ID",
         nameofbeneficiaries : "Name of Beneficiary",
         relation            : "Relation with Family Head",
         actions             : 'Action',
@@ -31,8 +31,8 @@ class Beneficiary extends Component{
       "tableObjects"        : {
         apiLink             : '/api/beneficiaries/',
         editUrl             : '/beneficiary/',        
-        paginationApply           : true,
-        searchApply               : true,
+        paginationApply     : false,
+        searchApply         : false,
       },
       "startRange"          : 0,
       "limitRange"          : 10,
@@ -157,6 +157,12 @@ class Beneficiary extends Component{
         })
         .catch((error)=>{
           console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }   
         });
       this.setState({
         "familyID"                 :"",
@@ -233,16 +239,19 @@ class Beneficiary extends Component{
       this.edit(this.state.editId);
     }
     this.getLength();
+    // this.getData();
     this.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableFamilyId();
     const center_ID = localStorage.getItem("center_ID");
+    // const token = localStorage.getItem("token");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
-    // console.log("localStorage =",localStorage);
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
+    console.log("center_ID =",this.state.center_ID);
+
     });    
   }
 
@@ -270,6 +279,13 @@ class Beneficiary extends Component{
       return formIsValid;
     })
     .catch(function (error) {
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });
   }
   
@@ -292,15 +308,36 @@ class Beneficiary extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
+  
+    var centerID = this.state.center_ID;
     axios.post('/api/beneficiaries/list',data)
+      // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
+    // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
     .then((response)=>{
       console.log('response', response.data);
+      var tableData = response.data.map((a, i)=>{
+        return {
+          _id                       : a._id,
+          familyID                  : a.familyID,
+          beneficiaryID             : a.beneficiaryID,
+          nameofbeneficiaries       : a.nameofbeneficiaries,
+          relation                  : a.relation,
+        }
+      })
       this.setState({
-        tableData : response.data
+        tableData : tableData
+      },()=>{
+        console.log("tableData",this.state.tableData)
       })
     })
     .catch(function(error){
-
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });
   }
   getAvailableFamilyId(){
@@ -313,7 +350,13 @@ class Beneficiary extends Component{
           availableFamilies : response.data
         })
     }).catch(function (error) {
-      console.log('error', error);
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });
     console.log("availableFamilies", this.state.availableFamilies)
   }

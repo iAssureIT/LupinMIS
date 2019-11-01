@@ -1,5 +1,6 @@
 import React, { Component }   from 'react';
 import axios                  from 'axios';
+import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
@@ -65,8 +66,8 @@ class centerList extends Component{
       "tableObjects"              : {
         deleteMethod              : 'delete',
         apiLink                   : '/api/centers/',
-        paginationApply           : true,
-        searchApply               : true,
+        paginationApply           : false,
+        searchApply               : false,
         editUrl                   : '/center-detail/'
       },
       "startRange"                : 0,
@@ -79,7 +80,7 @@ class centerList extends Component{
     limitRange : limitRange,
     startRange : startRange,
   }
-     axios.post('/api/centers/list',data)
+    axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
       console.log('response', response.data);
       var tableData = response.data.map((a, i)=>{
@@ -100,7 +101,13 @@ class centerList extends Component{
       })
     })
     .catch(function(error){
-      
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
     });
 
     var listofStates = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh','Maharashtra'];
@@ -111,6 +118,7 @@ class centerList extends Component{
 
   
   componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getData(this.state.startRange, this.state.limitRange);
   }
 

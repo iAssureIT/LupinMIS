@@ -35,8 +35,8 @@ class SectorMapping extends Component{
       "tableObjects"       : {
         deleteMethod       : 'delete',
         apiLink            : '/api/sectorMappings/',
-        paginationApply    : true,
-        searchApply        : true,
+        paginationApply    : false,
+        searchApply        : false,
         editUrl            : '/sector-mapping/'
       },
       "startRange"         : 0,
@@ -160,6 +160,12 @@ class SectorMapping extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
       selectedActivities.map((a, index)=>{
         this.setState({
@@ -266,6 +272,13 @@ class SectorMapping extends Component{
       });
       return formIsValid;
     }).catch(function (error) {
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   
@@ -280,7 +293,13 @@ class SectorMapping extends Component{
       })
     })
     .catch(function(error){
-      
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   
@@ -294,7 +313,14 @@ class SectorMapping extends Component{
         console.log("tableData",this.state.tableData);
       })
     })
-    .catch(function(error){        
+    .catch(function(error){
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
 
@@ -339,7 +365,13 @@ class SectorMapping extends Component{
         availableSectors : response.data
       })
     }).catch(function (error) {
-      console.log('error', error);
+      // console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   getSearchText(searchText, startRange, limitRange){
@@ -356,7 +388,13 @@ class SectorMapping extends Component{
           listofTypes : response.data
         })
     }).catch(function (error) {
-      console.log('error', error);
+      // console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
 

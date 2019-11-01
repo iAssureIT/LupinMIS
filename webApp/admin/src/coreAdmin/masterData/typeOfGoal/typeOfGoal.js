@@ -134,6 +134,12 @@ class typeOfGoal extends Component{
         })
         .catch(function(error){
           console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
         let fields            = {};
         fields["typeofGoal"] = "";
@@ -223,7 +229,14 @@ class typeOfGoal extends Component{
       });
       return formIsValid;
     }).catch(function (error) {
-    });
+        console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   }
   
   getData(startRange, limitRange){
@@ -240,7 +253,13 @@ class typeOfGoal extends Component{
       })
     })
     .catch(function(error){
-      
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
     });
   }
   getLength(){

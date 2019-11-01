@@ -10,6 +10,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import html2canvas from 'html2canvas';
 import Chart from 'chart.js';
 import BarChart from './BarChart.js';
+import PieChart from './PieChart.js';
 import './Chart.css';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 
@@ -52,74 +53,11 @@ export default class Charts extends Component{
     Reach Upgradation   Reach Upgradation   
             */
   componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID);
-    this.getSourceData(this.state.year, this.state.center_ID);
-
-  
-    var ctx = document.getElementById('myChart');
-    var data = {
-      datasets: [{
-          data: [30, 40, 20, 10],
-          backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-            ],
-           hoverBackgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                ],
-
-           
-      }],
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-          'New',
-          'Dispatched',
-          'Pending',
-          'Returned'
-      ]
-    };
-    var myPieChart = new Chart(ctx, {
-      type: 'pie',
-      data: data,
-    });
-
-
-    var ctx4 = document.getElementById('myBarChart2');
-    var data4 = {
-      datasets: [
-                {
-                    data: [20, 40, 30, 80],
-
-          backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-            ],
-                }
-                ],
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-          'Area 1',
-          'Area 2',
-          'Area 3',
-          'Area 4'
-      ]
-    };
-
-    var myBarChart2 = new Chart(ctx4, {
-        type: 'horizontalBar',
-        data: data4,  
-    });
+    this.getSourceData(this.state.year, this.state.center_ID);  
   }
-
-  
     componentWillReceiveProps(nextProps){
       this.getAvailableCenters();
       this.getData(this.state.year, this.state.center_ID);
@@ -353,6 +291,9 @@ export default class Charts extends Component{
           <BarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
         </div>
         <div className="col-lg-6">
+          <PieChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
+        </div>
+        <div className="col-lg-6">
         <IAssureTable 
          
           getData={this.getData.bind(this)} 
@@ -361,69 +302,6 @@ export default class Charts extends Component{
           // tableObjects={this.state.tableObjects}
           />
   
-        </div>
-      <div className="row">
-        <div className="col-lg-12">     
-          <table className="table table-striped  table-hover" >
-                  <thead>
-                    <tr className="tableHeader tableHeader20">
-                      {/*<th> SR.No. </th>*/}
-                      <th> source </th>
-                      <th> annualPlan</th>
-                      <th> cum_monthly </th>
-                      <th>cum_achi </th>
-                      <th> per_cum_achi </th>
-                      <th> monthlyPlan</th>
-                      <th> achi_month</th>
-                      <th> per_achi</th>
-                    </tr>                    
-                  </thead>
-                  {/*
-                  <tbody className="myTableData tableHeader20">
-                   {this.state.sourceData.map((source, index)=>{
-                    return <tr key={index}>
-                   
-                          <td>{source.source}</td>
-                          <td>{source.annualPlan}</td>
-                          <td>{source.cum_monthly}</td>
-                          <td>{source.cum_achi}</td>
-                          <td>{source.per_cum_achi}</td>
-                          <td>{source.monthlyPlan}</td>
-                          <td>{source.achi_month}</td>
-                          <td>{source.per_achi}</td>
-                        </tr>
-                  })}
-                  </tbody>
-                */}
-            {/*    {
-                  this.state.sourceData.length>0 ?
-                  {console.log(this.state.sourceData.length>0 )}
-                :
-                null 
-              }*/}
-                </table>
-                  </div>
-              </div>
-
-        <div className="row">
-        <div className="col-lg-12">
-            <div className="col-lg-6">
-              <div className="box2">
-                  <div className="box1a">
-                    <h4>Order Dispatch Summary</h4>
-                    <canvas id="myChart"></canvas>
-                  </div>
-              </div>
-            </div> 
-          <div className="col-lg-6" style={{paddingLeft:'0px'}}>
-            <div className="box2">
-                <div className="box1a">
-                  <h4>Areawise Customer Distribution (IN NOS) </h4>
-                  <canvas id="myBarChart2"></canvas>
-                </div>
-            </div>
-          </div>
-        </div>
         </div>
       </div>  
         <br/>

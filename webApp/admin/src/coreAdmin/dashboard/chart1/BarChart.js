@@ -22,8 +22,18 @@ export default class BarChart extends Component{
       "data" : {
         labels: [],
         datasets: [
+          // {
+          //   label: 'Achievement Reach',
+          //   backgroundColor: 'rgba(75, 192, 192, 1)',
+          //   borderColor:  'rgba(75, 192, 192, 0.5)',
+          //   borderWidth: 1,
+          //   hoverBackgroundColor:  'rgba(75, 192, 192, 0.5)',
+          //   hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
+          //   stack: '1',
+          //   data: []
+          // },          
           {
-            label: 'Achievement Reach',
+            label: 'Achievement Family Upgradation',
             backgroundColor:'rgba(255, 206, 86, 1)',
             borderColor: 'rgba(255, 206, 86, 0.5)',
             borderWidth: 1,
@@ -32,16 +42,6 @@ export default class BarChart extends Component{
             stack: '1',
             data: []
           },
-          {
-            label: 'Achievement Family Upgradation',
-            backgroundColor: 'rgba(75, 192, 192, 1)',
-            borderColor:  'rgba(75, 192, 192, 0.5)',
-            borderWidth: 1,
-            hoverBackgroundColor:  'rgba(75, 192, 192, 0.5)',
-            hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
-            stack: '1',
-            data: []
-          },          
           {
             label: 'Annual Family Upgradation',
             backgroundColor:'rgba(54, 162, 235, 1)',
@@ -52,16 +52,16 @@ export default class BarChart extends Component{
             stack: '1',
             data: []
           },
-          {
-            label: 'AnnualReach',
-            backgroundColor: 'rgba(255, 99, 132, 1)',
-            borderColor: 'rgba(255, 99, 132, 0.5)',
-            borderWidth: 1,
-            hoverBackgroundColor: 'rgba(255, 99, 132, 0.5)',
-            hoverBorderColor: 'rgba(255, 99, 132, 0.5)',
-            stack: '2',
-            data: []
-          },
+          // {
+          //   label: 'AnnualReach',
+          //   backgroundColor: 'rgba(255, 99, 132, 1)',
+          //   borderColor: 'rgba(255, 99, 132, 0.5)',
+          //   borderWidth: 1,
+          //   hoverBackgroundColor: 'rgba(255, 99, 132, 0.5)',
+          //   hoverBorderColor: 'rgba(255, 99, 132, 0.5)',
+          //   stack: '2',
+          //   data: []
+          // },
         ]
       }
     }
@@ -85,10 +85,13 @@ export default class BarChart extends Component{
      console.log("data",data);
      console.log("props",props);
     if (data) {
-     data.datasets[0].data = props.achievementFamilyUpgradation;
+      data.datasets[0].data = props.achievementFamilyUpgradation;
+      data.datasets[1].data = props.annualPlanFamilyUpgradation;
+      /*data.datasets[0].data = props.achievementFamilyUpgradation;
       data.datasets[1].data = props.achievementReach;
       data.datasets[2].data = props.annualPlanFamilyUpgradation;
       data.datasets[3].data = props.annualPlanReach;
+      */
       data.labels = props.sector;
       return{
          data : data

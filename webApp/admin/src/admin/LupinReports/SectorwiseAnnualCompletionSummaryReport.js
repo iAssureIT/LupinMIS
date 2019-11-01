@@ -1,4 +1,5 @@
 import React, { Component }                                  from 'react';
+import swal                                                  from 'sweetalert';
 import $                                                     from 'jquery';
 import axios                                                 from 'axios';
 import { Link }                                              from 'react-router-dom'
@@ -71,6 +72,10 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             "achievement_Other"                 : 'Others',/*
             "aaaa"                             : 'Remarks',   */        
         },
+        "tableObjects"        : {
+            paginationApply     : false,
+            searchApply         : false,
+        },   
     }
     window.scrollTo(0, 0);
   }
@@ -103,9 +108,15 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         // console.log('availableCenters', this.state.availableCenters);
         console.log('center', this.state.center);
       })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    }).catch(function (error) {  
+        // console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
+      });
   } 
   selectCenter(event){
     var selectedCenter = event.target.value;
@@ -117,7 +128,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
       console.log('center', center);
       this.setState({
         // center :center,
-        
       })
     });
   } 
@@ -134,7 +144,14 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
           console.log("resp",this.state.tableDatas)
         })
       })
-      .catch(function(error){        
+      .catch(function(error){  
+        // console.log("error = ",error);
+        if(error.message === "Request failed with status code 401"){
+          swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+          });
+        }
       });
     }
   }

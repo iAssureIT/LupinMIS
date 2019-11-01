@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
 import axios                from 'axios';
+import swal                 from 'sweetalert';
 import moment               from 'moment';
 import DailyReport          from '../Reports/DailyReport.js';
 import WeeklyReport         from '../Reports/WeeklyReport.js';
@@ -85,6 +86,10 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             "variance_monthlyPlan_Govt_L"        : 'Govt',
             "variance_monthlyPlan_Other_L"       : 'Others',           
         },
+        "tableObjects"        : {
+            paginationApply     : false,
+            searchApply         : false,
+        },   
     }
     window.scrollTo(0, 0); 
     this.handleFromChange    = this.handleFromChange.bind(this);
@@ -145,8 +150,14 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
             })
           })
-        }).catch(function (error) {
-          console.log('error', error);
+        }).catch(function (error) {  
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
     } 
     selectCenter(event){
@@ -183,8 +194,14 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             })
             // console.log('sector', this.state.sector);
           })
-        }).catch(function (error) {
-          console.log('error', error);
+        }).catch(function (error) {  
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
     }
     selectSector(event){
@@ -247,7 +264,14 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             console.log("resp",this.state.tableData)
           })
         })
-        .catch(function(error){        
+        .catch(function(error){  
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
         });
     }
     handleFromChange(event){

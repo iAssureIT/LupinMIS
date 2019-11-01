@@ -31,6 +31,10 @@ class ListOfBeneficiaries extends Component{
         nameofbeneficiary           : "Name of Beneficiary",
         // actions                     : 'Action',
       },
+      "tableObjects"        : {
+          paginationApply     : false,
+          searchApply         : false,
+      },   
       "startRange"                  : 0,
       "limitRange"                  : 10,
       "editId"                      : "",/*this.props.match.params ? this.props.match.params.id : ''*/

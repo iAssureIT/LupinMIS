@@ -60,7 +60,7 @@ export default class SourcewiseBarChart1 extends Component{
     this.setState({
       token : token
     },()=>{
-      console.log("token",this.state.token)
+      // console.log("token",this.state.token)
     })
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID);

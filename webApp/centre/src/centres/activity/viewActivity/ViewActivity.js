@@ -1,14 +1,11 @@
 import React, { Component }   from 'react';
+import swal                   from 'sweetalert';
 import axios                  from 'axios';
-
-
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import moment                 from "moment";
-
-
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "./ViewActivity.css";
 
 axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
@@ -88,8 +85,8 @@ class ViewActivity extends Component{
       "tableObjects"               : {
         deleteMethod               : 'delete',
         apiLink                    : '/api/activityReport/',
-        paginationApply            : true,
-        searchApply                : true,
+        paginationApply            : false,
+        searchApply                : false,
         editUrl                    : '/activity/'
       },
       "selectedBeneficiaries"      : [],
@@ -150,11 +147,19 @@ class ViewActivity extends Component{
         tableData : tableData
       })
     })
-    .catch(function(error){      
+    .catch(function(error){  
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }       
     });
   }
 
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     var dateObj = new Date();
     var momentObj = moment(dateObj);
     var momentString = momentObj.format('YYYY-MM-DD');

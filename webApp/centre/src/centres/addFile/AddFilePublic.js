@@ -311,20 +311,21 @@ class AddFile extends Component{
                                 <div  key={index}>
                                   <p  className="">{a.fileName}</p>
                                     {     console.log("ext",this.state.ext)}
+                                  <div>
                                   {
                                    ( this.state.ext==="XLS" || "XLSX"||"xls" || "xlsx") ? 
-                                    <img className="fileExt" src="/images/exel2.png"/> : null
+                                    <img className="fileExt" src="/images/exel2.png"/> : ""
                                   
                                    ( this.state.ext==="PPT" || "PPTX" || "ppt" || "pptx") ? 
-                                    <img className="fileExt" src="/images/powerpoint.jpeg"/> :null
+                                    <img className="fileExt" src="/images/powerpoint.jpeg"/> :""
                                  
                                     (this.state.ext==="pdf" || "PDF") ? 
-                                    <img className="fileExt" src="/images/pdf.png"/> :null
+                                    <img className="fileExt" src="/images/pdf.png"/> :""
                                  
                                     (this.state.ext==="doc" || "docx" || "DOC" || "DOCX"|| "txt" || "TXT") ? 
-                                    <img className="fileExt" src="/images/docs.png"/> :null
+                                    <img className="fileExt" src="/images/docs.png"/> : ""
                                   }
-                                
+                                  </div>
                                 </div>
                               )
                             }) 
