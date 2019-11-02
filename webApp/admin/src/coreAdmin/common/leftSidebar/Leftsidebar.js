@@ -162,7 +162,7 @@ export default class Leftsidebar extends Component{
                   <a href="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent" onClick={this.Addclass.bind(this)}>
                     <i className="fa fa-file" />
                     Plan Related Reports
-{/*                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>*/}
+                  {/*      <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>*/}
                   </a>
                   <ul className="collapse list-unstyled" id="planreport">
                     <li>

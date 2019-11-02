@@ -209,8 +209,7 @@ componentDidMount(){
                           <Route path="/plan-details"                                                 exact strict component={ plan } />
                           <Route path="/plan-details/"                                                exact strict component={ plan } />
                           <Route path="/plan-details/:id"                                             exact strict component={ plan } />
-                          <Route path="/report/activitywise-annual-completion-report"                                                       exact strict component={ report } />
-                          <Route path="/report/"                                                      exact strict component={ report } />
+{/*                          <Route path="/report/activitywise-annual-completion-report"                 exact strict component={ report } />*/}                          <Route path="/report/"                                                      exact strict component={ report } />
                           <Route path="/report/:url"                                                  exact strict component={ report } />
                           <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
                           <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />

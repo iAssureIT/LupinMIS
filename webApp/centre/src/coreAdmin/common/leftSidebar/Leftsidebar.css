@@ -1,3 +1,7 @@
+
+.down{
+  transform: rotate(-90deg);
+}
 .sidebarLogoName p{
   font-size: 14px;
 }
