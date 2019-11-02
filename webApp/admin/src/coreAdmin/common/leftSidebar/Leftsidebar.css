@@ -1,4 +1,6 @@
-
+.sidebarLogoName p{
+  font-size: 14px;
+}
 
 .sidebarLogoName{
   top: 0px;

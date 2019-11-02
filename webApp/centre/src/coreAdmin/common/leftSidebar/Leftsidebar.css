@@ -1,26 +1,45 @@
+.sidebarLogoName p{
+  font-size: 14px;
+}
+
 .sidebarLogoName{
   top: 0px;
   position: absolute;
   padding: 4px 2px;
   font-size: 17px !important;
 }
-/*
-  .sidebarMenuText > li > a > .pull-right-container > .fa-plus,
-  .treeview-menu > li > a > .pull-right-container > .fa-minus,
-  .sidebarMenuText > li > a > .fa-plus,
-  .sidebarMenuText > li > a > .fa-minus {
-    width: auto;
-  }
-  .sidebar-menu li > a > .fa-plus,
-  .sidebar-menu li > a > .pull-right-container > .menu-icon-toggle {
-    width: auto;
-    height: auto;
-    padding: 0;
-    margin-right: 10px;
-    -webkit-transition: transform 0.5s ease;
-    -o-transition: transform 0.5s ease;
-    transition: transform 0.5s ease;
-  }*/
+.sidebarMenuText> a[aria-expanded=true]:after i{
+/*content:"\2212";*/
+}
+.openContent  .pull-right-container i{
+  transform: rotate(-90deg);
+}
+.menuContent  a:before {
+   font-family: 'Glyphicons Halflings';
+   content: "\e114";
+   float: right;
+   transition: all 0.5s;
+}
+.menuContent.active a:before {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  transform: rotate(180deg);
+} 
+
+
+.pull-right-container i{
+  font-size: 15px;
+  margin-top: 2px
+}
+.pull-right-container{
+      padding-left: 25px;
+}
+
+
+/*.leftsidebar{
+  height: 500px;
+}
+*/
 a, a:hover, a:focus {
     color: inherit;
     text-decoration: none;
@@ -69,33 +88,22 @@ i, span {
     display: flex;
     align-items: stretch;
 }
-/*
+
 #sidebar {
-    min-width: 240px;
-    max-width: 250px;
+    height: 100vh!important;
+}
+#sidebar {
+    min-width: 228px;
+    max-width: 250px ;
     background: #333;
     color: #fff;
     transition: all 0.80s;
 }
-*/
-#sidebar {
-    height: 100vh!important;
-}
-
-#sidebar {
-    min-width: 228px;
-    max-width: 250px;
-    background: #333;
-    color: #fff;
-    -webkit-transition: all .8s;
-    transition: all .8s;
-}
-
 
 #sidebar.active {
     min-width: 80px;
     max-width: 80px;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 #sidebar.active .sidebar-header h4,  #sidebar.active .CTAs {
@@ -153,8 +161,8 @@ i, span {
 }
 
 #sidebar ul li a {
-    padding: 15px;
-    font-size: 1.1em;
+    padding: 10px 15px 10px 15px ;
+    font-size: 1em;
     display: block;
 }
 #sidebar ul li a:hover {
@@ -190,7 +198,7 @@ a[aria-expanded="true"]::before {
 
 ul ul a {
     font-size: 0.9em !important;
-    padding-left: 30px !important;
+    padding-left: 15px !important;
     background: #222;
 }
 
@@ -1752,9 +1760,9 @@ a.article, a.article:hover {
     float: right;
   }
   /* Remove margins from progress bars when put in a table */
-  .table tr > td .progress {
+  /*.table tr > td .progress {
     margin: 0;
-  }
+  }*/
   .progress-bar-light-blue,
   .progress-bar-primary {
     background-color: #3c8dbc;
@@ -2860,7 +2868,7 @@ a.article, a.article:hover {
    * Component: Table
    * ----------------
    */
-  .table > thead > tr > th,
+  /*.table > thead > tr > th,
   .table > tbody > tr > th,
   .table > tfoot > tr > th,
   .table > thead > tr > td,
@@ -2894,7 +2902,7 @@ a.article, a.article:hover {
   .table.no-border th {
     border: 0;
   }
-  /* .text-center in tables */
+ 
   table.text-center,
   table.text-center td,
   table.text-center th {
@@ -2905,7 +2913,7 @@ a.article, a.article:hover {
   }
   .table.align td {
     text-align: right;
-  }
+  }*/
   /*
    * Component: Label
    * ----------------
@@ -5188,13 +5196,13 @@ a.article, a.article:hover {
       float: left;
       width: 33.3333333%;
     }
-    .table-responsive {
+   /* .table-responsive {
       overflow: auto;
     }
     .table-responsive > .table tr th,
     .table-responsive > .table tr td {
       white-space: normal !important;
-    }
+    }*/
   }
   /*
    * Skin: Blue

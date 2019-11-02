@@ -17,7 +17,8 @@ import TableComponent  from './TableComponent/TableComponent.js'
 import Productlist     from './productlist/Productlist.js'
 import Visitorreport   from './Visitorreport/Visitorreport.js'
 import Infocomponent   from './Infocomponent/Infocomponent.js'
-import dummyBarChart   from './chart1/dummyBarChart.js'
+import DummyBarChart   from './chart1/DummyBarChart.js'
+import MonthBarChartbudget   from './chart1/MonthBarChartbudget.js'
 import {HorizontalBar} from 'react-chartjs-2';
 import './Dashboard.css';
 import {Bar} from 'react-chartjs-2';
@@ -55,9 +56,14 @@ export default class Dashboard extends Component{
   constructor(props) {
    super(props);
     this.state = {
-      'year'                        : "FY 2019 - 2020",
-      "years"                       :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"], 
-      "data1" : {
+      'year'                : "FY 2019 - 2020",
+      'months'              : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      'PlannedBeneficiaries': ['2000', '3500', '2000', '2100', '3000', '2300', '2500', '3100', '1800', '1600', '3000', '2000'],
+      'ActualBeneficiaries' : ['1800', '3000', '1900', '2100', '2900', '2200', '2450', '3000', '1800', '1500', '2900', '2000'],
+      'expenditure'         : ['18000', '30000', '19000', '21000', '29000', '20200', '24500', '30000', '18000', '15000', '20900', '20000'],
+      'budget'              : ['20000', '35000', '20000', '21000', '30000', '23000', '25000', '31000', '19800', '16500', '30000', '20000'],
+      "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"], 
+    /*  "data1"               : {
         labels: [],
         datasets: [
           // {
@@ -101,7 +107,7 @@ export default class Dashboard extends Component{
           //   data: []
           // },
         ]
-      }
+      }*/
     }
   }
    
@@ -114,14 +120,14 @@ export default class Dashboard extends Component{
     var data = {
       datasets: [{
           data: [300000, 400000, 200000, 100000, 153000],
-          backgroundColor: [
+          hoverBackgroundColor: [
                 'rgba(255, 99, 132, 0.5)',
                 'rgba(54, 162, 235, 0.5)',
                 'rgba(255, 206, 86, 0.5)',
                 'rgba(75, 192, 192, 0.5)',
                 'rgba(100, 180, 100, 0.5)',
             ],
-           hoverBackgroundColor: [
+          backgroundColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
@@ -149,7 +155,7 @@ export default class Dashboard extends Component{
     var data = {
       datasets: [{
           data: [280000, 170000, 390000, 138000, 35000,200000],
-          backgroundColor: [
+          hoverBackgroundColor: [
                 'rgba(255, 99, 132, 0.5)',
                 'rgba(54, 162, 235, 0.5)',
                 'rgba(255, 206, 86, 0.5)',
@@ -157,7 +163,7 @@ export default class Dashboard extends Component{
                 'rgba(100, 180, 100, 0.5)',
                 'rgba(200, 150, 70, 0.5)',
             ],
-           hoverBackgroundColor: [
+          backgroundColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
@@ -184,33 +190,7 @@ export default class Dashboard extends Component{
     });
 
 
-    var ctx4 = document.getElementById('mydummyBarChart2');
-    var data4 = {
-      datasets: [
-                {
-                    data: [20, 40, 30, 80],
 
-          backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-            ],
-                }
-                ],
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-          'Area 1',
-          'Area 2',
-          'Area 3',
-          'Area 4'
-      ]
-    };
-
-    var mydummyBarChart2 = new Chart(ctx4, {
-        type: 'horizontalBar',
-        data: data4,  
-    });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableCenters();
   }
@@ -339,27 +319,23 @@ export default class Dashboard extends Component{
                                     </div>
                                 </div>
                               </div>
-                              <div className="col-lg-6" style={{paddingLeft:'0px'}}>
-                                <div>
-                                 <Bar data={this.state.data} height={350}  options={options} />
+                              <div className="col-lg-6 " >
+                                <div className="horibox mb15">
+                                  <h4 className="text-center">Month wise Goal Completion</h4>
+                                  <DummyBarChart months={this.state.months} ActualBeneficiaries={this.state.ActualBeneficiaries} PlannedBeneficiaries={this.state.PlannedBeneficiaries}/>
                                 </div>
-                                  <dummyBarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
                               </div>
-                              <div className="col-lg-6" style={{paddingLeft:'0px'}}>
-                                <div className="box2">
-                                    <div className="">
-                                      <h4>Areawise Customer Distribution (IN NOS) </h4>
-                                      <canvas id="mydummyBarChart2"></canvas>
-                                    </div>
+                              <div className="col-lg-6" >
+                                <div className="horibox mb15">
+                                  <h4 className="text-center">Month wise Expenditure V/s Budget</h4>
+                                  <MonthBarChartbudget months={this.state.months} expenditure={this.state.expenditure} budget={this.state.budget}/>
                                 </div>
+                                   
                               </div>
                            
                           </div>
                         </div> 
-                          <br/>
-                        <div className="row">
-                         
-                          </div>
+                        
                         </div>
                          
                         </div>

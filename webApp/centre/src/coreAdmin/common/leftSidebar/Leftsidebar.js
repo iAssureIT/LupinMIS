@@ -33,10 +33,10 @@ export default class Leftsidebar extends Component{
             <nav id="sidebar">
               <div className="sidebar-header">
                 <h4 className="text-center"><b>Center Lupin MIS</b></h4>
-                <strong className="sidebarLogoName">LFMIS <p>Center</p></strong>
+                <strong className="sidebarLogoName">LFMIS <p className="fz14">Center</p></strong>
               </div>
               <ul className="list-unstyled sidebar-menu components">
-                <li className="active sidebarMenuText">
+                <li className=" sidebarMenuText">
                   <a href="/">
                     <i className="glyphicon glyphicon-briefcase"></i>
                     Dashboard

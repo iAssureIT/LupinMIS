@@ -8,16 +8,18 @@
 .dashContent{
     background: #f5f2f2;
     padding-bottom: 15px;
-    margin-bottom: 15px;
-    min-height: 900px !important;
+    /*margin-bottom: 15px;*/
+    min-height: 990px !important;
 }
 .mainicon{
     height: 85px;
-    border-radius: 2px 2px 2px 2px;
+    /*border-radius: 2px 2px 2px 2px;*/
     background-color: #fff;
     margin-bottom: 15px;
-  /*  border: 1px solid #ccc;
-    box-shadow: 2px 2px 1px #eee;*/
+    border: 1px solid #eee;
+     -webkit-box-shadow: 0 0 10px #eee; 
+    box-shadow: 0 0 10px #eee;  
+    border-radius: 5px;
 }
 .ccon1{
     height: 83px;
@@ -135,9 +137,21 @@
 .box2{
     height: 305px;
     background-color: #ffffff;
-    border: 1px solid #979797; 
-    border-radius: 2px 2px 2px 2px;
+    border: 1px solid #eee;
+     -webkit-box-shadow: 0 0 10px #eee; 
+    box-shadow: 0 0 10px #eee;  
+    border-radius: 5px;
     
+}
+.horibox{
+    height: 420px;
+    background-color: #ffffff;
+    border: 1px solid #eee;
+     -webkit-box-shadow: 0 0 10px #eee; 
+    box-shadow: 0 0 10px #eee;  
+    border-radius: 5px;
+    margin-top: 15px;
+
 }
 .bggreen
 {

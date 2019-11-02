@@ -17,6 +17,7 @@
     "multer-s3": "^2.9.0",
     "path": "^0.12.7",
     "react": "^16.8.6",
+    "react-chartjs-2": "^2.8.0",
     "react-ckeditor-component": "^1.1.0",
     "react-dom": "^16.8.6",
     "react-input-mask": "^2.0.4",
