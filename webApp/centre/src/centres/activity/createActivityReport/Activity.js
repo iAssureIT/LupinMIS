@@ -102,7 +102,7 @@ class Activity extends Component{
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
-      "limitRange"                 : 10,
+      "limitRange"                 : 10000,
       "editId"                     : this.props.match.params ? this.props.match.params.id : ''
     }
   }

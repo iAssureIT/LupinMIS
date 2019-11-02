@@ -71,7 +71,7 @@ class centerList extends Component{
         editUrl                   : '/center-detail/'
       },
       "startRange"                : 0,
-      "limitRange"                : 10,
+      "limitRange"                : 10000,
     }
   }
 

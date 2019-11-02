@@ -59,14 +59,10 @@ export default class Charts extends Component{
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID);
-    this.getCenterwiseData(this.state.year, this.state.center_ID);
-    // this.getSourceData(this.state.year, this.state.center_ID);  
   }
     componentWillReceiveProps(nextProps){
       this.getAvailableCenters();
       this.getData(this.state.year, this.state.center_ID);
-      this.getCenterwiseData(this.state.year, this.state.center_ID);
-      // this.getSourceData(this.state.year, this.state.center_ID);
     }
     handleChange(event){
         event.preventDefault();
@@ -91,8 +87,6 @@ export default class Charts extends Component{
               center_ID        : center_ID
             },()=>{
             this.getData(this.state.year, this.state.center_ID);
-            this.getCenterwiseData(this.state.year, this.state.center_ID);
-            // this.getSourceData(this.state.year, this.state.center_ID);
             })
           })
         }).catch(function (error) {
@@ -111,8 +105,6 @@ export default class Charts extends Component{
             center_ID :center_ID,            
           },()=>{
             this.getData(this.state.year, this.state.center_ID);
-            this.getCenterwiseData(this.state.year, this.state.center_ID);
-            // this.getSourceData(this.state.year, this.state.center_ID);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
@@ -125,7 +117,7 @@ export default class Charts extends Component{
     var endDate = year.substring(10, 15)+"-03-31";
     // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
     if(startDate, endDate, center_ID){
-        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all')
+        axios.get('/api/report/center/'+startDate+'/'+endDate+'/all')
         .then((response)=>{
           console.log("respgetData",response)
 
@@ -146,7 +138,7 @@ export default class Charts extends Component{
               annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
               piechartcolor.push(this.getRandomColor());
             })
-                    console.log("annualPlanTotalBudget",annualPlanTotalBudget);
+                    // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
 
           this.setState({
             "sector" : sector.splice(-2),
@@ -194,47 +186,7 @@ export default class Charts extends Component{
     }
   }
 
-  getCenterwiseData(year, center_ID){
-    // console.log('year', year, 'center_ID', center_ID);
-    // var startDate = year.substring(3, 7)+"-04-01";
-    // var endDate = year.substring(10, 15)+"-03-31";
-    // // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
-    // if(startDate, endDate, center_ID){
-    //     axios.get('/api/report/center/'+startDate+'/'+endDate+'/'+center_ID)
-    //     .then((response)=>{
-    //       console.log("respCenterData",response)
 
-    //       var center = [];
-    //       var centerwisePlanTotalBudget = [];
-    //       var piechartcolor =[];
-    //      if(response.data&&response.data.length >0){
-    //         response.data.map((data,index)=>{
-    //           center.push(data.name);
-    //           centerwisePlanTotalBudget.push(data.annualPlan_TotalBudget);
-    //           piechartcolor.push(this.getRandomColor());
-    //         })
-    //                 console.log("centerwisePlanTotalBudget",centerwisePlanTotalBudget);
-
-    //       this.setState({
-    //         "center" : center.splice(-2),
-    //         "centerwisePlanTotalBudget1" : centerwisePlanTotalBudget.splice(-2),
-    //       },()=>{
-    //       // console.log("this.state.centerwisePlanTotalBudget1",this.state.centerwisePlanTotalBudget1);
-    //          this.setState({
-    //           "center"                       : center,
-    //           "centerwisePlanTotalBudget"    : centerwisePlanTotalBudget,
-    //           "piechartcolor"                  : piechartcolor
-    //         },()=>{
-                    
-    //         });
-          
-    //       })
-    //     }    
-    //   })
-    //   .catch(function(error){        
-    //   });
-    // }
-  }
   getRandomColor(){
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -243,64 +195,9 @@ export default class Charts extends Component{
     }
     return color;
   }
-// getSourceData(year, center_ID){
-  //   console.log('year', year, 'center_ID', center_ID);
-  //   var startDate = year.substring(3, 7)+"-04-01";
-  //   var endDate = year.substring(10, 15)+"-03-31";
-  //   if(startDate, endDate, center_ID){
-  //       axios.get('/api/report/source/'+startDate+'/'+endDate+'/'+center_ID)
-  //       .then((response)=>{
-  //         console.log("respgetData",response);
-  //        // console.log("resp",response);
-        
-  //       this.setState({
-  //         sourceData : response.data
-  //       },()=>{
-  //         console.log("resp",this.state.sourceData)
-  //       })
-        
-
-  //         var sector = [];
-  //         var annualPlanReach = [];
-  //         var annualPlanFamilyUpgradation = [];
-  //         var achievementReach = [];
-  //         var achievementFamilyUpgradation = [];
-  //        if(response.data&&response.data.length >0){
-  //           response.data.map((data,index)=>{
-  //             sector.push(data.name);
-  //             annualPlanReach.push(data.annualPlan_Reach);
-  //             annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
-  //             achievementReach.push(data.achievement_Reach);
-  //             achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
-  //           })
-  //         this.setState({
-  //           "sector" : sector.splice(-2),
-  //           "annualPlanReach1" : annualPlanReach.splice(-2),
-  //           "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
-  //           "achievementReach1" : achievementReach.splice(-2),
-  //           "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
-  //         },()=>{
-  //         console.log("this.state.achievementFamilyUpgradation1",achievementFamilyUpgradation);
-  //                   console.log("achievementFamilyUpgradation",achievementFamilyUpgradation);
-  //            this.setState({
-  //           "sector" : sector,
-  //           "annualPlanReach" : annualPlanReach,
-  //           "annualPlanFamilyUpgradation" : annualPlanFamilyUpgradation,
-  //           "achievementReach" : achievementReach,
-  //           "achievementFamilyUpgradation" : achievementFamilyUpgradation,
-  //         });
-        
-  //         })
-  //       }
-    
-  //     })
-  //     .catch(function(error){        
-  //     });
-  //   }
-  // }
 
   render(){ 
-{                    console.log("this.state.centerwisePlanTotalBudget",this.state.centerwisePlanTotalBudget)}  
+{                    console.log("this.state.annualPlanTotalBudget",this.state.annualPlanTotalBudget)}  
    /* {
                      console.log("this.state.annualPlanFamilyUpgradation",this.state.annualPlanFamilyUpgradation);
                     console.log("this.state.achievementReach",this.state.achievementReach);
@@ -343,16 +240,10 @@ export default class Charts extends Component{
               {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
             </div>  
         </div>  
-        <div className="col-lg-6">
-          <BarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
-        </div>
-        <div className="col-lg-6">
-          <h3>Sector wise Budget</h3>
-          <PieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget} piechartcolor={this.state.piechartcolor}  sector={this.state.sector}/>
-        </div>
+      
        <div className="col-lg-6">
           <h3>Center wise Budget</h3>
-          <CenterWisePieChart centerwisePlanTotalBudget={this.state.centerwisePlanTotalBudget} piechartcolor={this.state.piechartcolor}  sector={this.state.sector}/>
+          <CenterWisePieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget} piechartcolor={this.state.piechartcolor}  sector={this.state.sector}/>
         </div>
         <div className="col-lg-6">
         <IAssureTable 

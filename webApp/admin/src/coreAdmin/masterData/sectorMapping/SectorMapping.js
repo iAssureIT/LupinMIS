@@ -40,7 +40,7 @@ class SectorMapping extends Component{
         editUrl            : '/sector-mapping/'
       },
       "startRange"         : 0,
-      "limitRange"         : 10,
+      "limitRange"         : 10000,
       "editId"             : this.props.match.params ? this.props.match.params.sectorMappingId : '',
     }
   }

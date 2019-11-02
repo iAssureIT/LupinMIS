@@ -1,32 +1,20 @@
-.mb15{
-    margin-bottom: 15px
-}
 .content{
     /*height: 2000px;*/
-    background-color: #e5e2e2 !important;
-}
-.dashContent{
-    background: #f5f2f2;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
-    min-height: 900px !important;
+    background-color: #ecf0f5;
 }
 .mainicon{
     height: 85px;
-    border-radius: 2px 2px 2px 2px;
-    background-color: #fff;
-    margin-bottom: 15px;
-  /*  border: 1px solid #ccc;
-    box-shadow: 2px 2px 1px #eee;*/
+border-radius: 2px 2px 2px 2px;
+    background-color: #eee;
 }
 .ccon1{
-    height: 83px;
+    height: 85px;
     background-color: #00c0ef;
     font-size: 38px;
     padding-top: 16px;
     padding-left: 37px;
     color: #fff;
-    border-radius: 2px 0px 0px 2px;
+border-radius: 2px 0px 0px 2px;
 }
 .ccon2{
    height: 85px;
@@ -56,13 +44,7 @@
     border-radius: 2px 0px 0px 2px;
 }
 .per{
-    font-size: 14px;
-}
-.dashboardHeading{
-    font-size: 13px;
-}
-.statusBox{
-    padding-top: 5px;
+    font-size: 18px;
 }
 .emptybox1{
     height: 15px;
@@ -133,9 +115,9 @@
 
 
 .box2{
-    height: 305px;
+    height: 392px;
     background-color: #ffffff;
-    border: 1px solid #979797; 
+    border-top: 3px solid #00a65a; 
     border-radius: 2px 2px 2px 2px;
     
 }
@@ -314,10 +296,26 @@
 }
 
 #dashbordid{
-  position: absolute;
-  width: 82%;
-  right: 0px;
-  transition: all 0.8s;
-  top:50px;
-  /* background-color: #eee; */
-  }
+    position: absolute;
+    width: 82%;
+    right: 0px;
+    transition: all 0.8s;
+    top:50px;
+    background-color: #eee; 
+}
+.newCssBar{
+    /*padding: 35px 12.5px;*/
+    background: #fff;
+    /*width: 110%;*/
+    height: 300px;
+}
+.newCssPie{
+    padding: 35px 12.5px;
+    background: #fff;
+    width: 110%;
+    height: 300px;
+}
+.tableClrPdg{
+    background: #ffffff;
+    margin-top: 30px;
+}

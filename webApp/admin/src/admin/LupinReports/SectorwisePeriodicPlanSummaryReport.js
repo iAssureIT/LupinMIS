@@ -20,7 +20,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         'reportData'        : {},
         'tableData'         : [],
         "startRange"        : 0,
-        "limitRange"        : 10,
+        "limitRange"        : 10000,
         "startDate"         : "",
         "endDate"           : "",
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",

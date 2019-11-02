@@ -55,7 +55,7 @@ class Family extends Component{
         actions               : 'Action',
       },            
       "startRange"            : 0,
-      "limitRange"            : 10,
+      "limitRange"            : 10000,
       "editId"                : this.props.match.params ? this.props.match.params.id : ''    
     }
     // console.log('editId' , this.state.editId);

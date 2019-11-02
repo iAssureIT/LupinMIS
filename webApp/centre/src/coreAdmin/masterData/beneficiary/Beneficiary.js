@@ -35,7 +35,7 @@ class Beneficiary extends Component{
         searchApply         : false,
       },
       "startRange"          : 0,
-      "limitRange"          : 10,
+      "limitRange"          : 10000,
       "editId"              : this.props.match.params ? this.props.match.params.id : ''
     }
     console.log('params', this.props.match.params);

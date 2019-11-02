@@ -15,7 +15,7 @@ export default class YearlyReport extends Component{
             "year"              : props.year,
             "center"            : props.center,
             "startRange"        : 0,
-            "limitRange"        : 10
+            "limitRange"        : 10000
             
         }
         console.log("tableData", this.state.tableData);

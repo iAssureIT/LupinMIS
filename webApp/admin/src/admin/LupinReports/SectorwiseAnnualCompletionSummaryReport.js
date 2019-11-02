@@ -26,7 +26,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         'sector'            : "",
          "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],      
         "startRange"        : 0,
-        "limitRange"        : 10,
+        "limitRange"        : 10000,
         "dataApiUrl"        : "http://qalmisadmin.iassureit.com/api/masternotifications/list",
 
         "twoLevelHeader"    : {

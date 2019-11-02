@@ -84,7 +84,7 @@ class PlanDetails extends Component{
         editUrl             : '/plan-details/',
       },   
       "startRange"          : 0,
-      "limitRange"          : 10,
+      "limitRange"          : 1000,
       "editId"              : this.props.match.params ? this.props.match.params.id : '',
       fields                : {},
       errors                : {},

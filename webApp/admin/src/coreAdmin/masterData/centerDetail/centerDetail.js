@@ -75,7 +75,7 @@ class centerDetail extends Component{
         editUrl                   : '/center-details/'
       },
       "startRange"                : 0,
-      "limitRange"                : 10,
+      "limitRange"                : 10000,
       "editId"                    : this.props.match.params ? this.props.match.params.id : ''
     }
     this.changeTab = this.changeTab.bind(this); 

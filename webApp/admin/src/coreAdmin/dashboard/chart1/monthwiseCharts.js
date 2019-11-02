@@ -31,7 +31,7 @@ export default class Charts extends Component{
       "achievementReach"            : [],
       "annualPlanFamilyUpgradation" : [],
       "annualPlanReach"             : [],
-      "sector"                      : [],
+      "month"                      : [],
       piechartcolor                 : [],
       "tableHeading"                : {
         name                                    : "Sector",
@@ -113,7 +113,7 @@ export default class Charts extends Component{
             this.getData(this.state.year, this.state.center_ID);
             this.getCenterwiseData(this.state.year, this.state.center_ID);
             // this.getSourceData(this.state.year, this.state.center_ID);
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+            // console.log('startYear', this.state.startYear, 'center_ID', this.state.center_ID,'month_ID', this.state.month_ID)
           })
         });
     } 
@@ -121,52 +121,44 @@ export default class Charts extends Component{
 
   getData(year, center_ID){
     console.log('year', year, 'center_ID', center_ID);
-    var startDate = year.substring(3, 7)+"-04-01";
-    var endDate = year.substring(10, 15)+"-03-31";
-    // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
-    if(startDate, endDate, center_ID){
-        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all')
+    var startYear = year.substring(3, 7);
+    var endYear = year.substring(10, 15);
+    // axios.get('/api/report/annual_completion_month/'+year+'/'+centerID)
+    if(startYear, endYear, center_ID){
+        axios.get('/api/report/dashboard/'+startYear+'/'+endYear)
         .then((response)=>{
           console.log("respgetData",response)
 
-          var sector = [];
+          var month = [];
           var annualPlanReach = [];
-          var annualPlanFamilyUpgradation = [];
           var achievementReach = [];
-          var achievementFamilyUpgradation = [];
           var annualPlanTotalBudget = [];
           var piechartcolor =[];
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
-              sector.push(data.name);
+              month.push(data.name);
               annualPlanReach.push(data.annualPlan_Reach);
-              annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
               achievementReach.push(data.achievement_Reach);
-              achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
               annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
               piechartcolor.push(this.getRandomColor());
             })
                     console.log("annualPlanTotalBudget",annualPlanTotalBudget);
 
           this.setState({
-            "sector" : sector.splice(-2),
+            "month" : month.splice(-2),
             "annualPlanReach1" : annualPlanReach.splice(-2),
-            "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
             "achievementReach1" : achievementReach.splice(-2),
-            "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
             "annualPlan_TotalBudget1" : annualPlanTotalBudget.splice(-2),
           },()=>{
           // console.log("this.state.achievementFamilyUpgradation1",this.state.achievementFamilyUpgradation1);
           // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
           // console.log("this.state.annualPlan_TotalBudget1",this.state.annualPlan_TotalBudget1);
              this.setState({
-              "sector"                       : sector,
+              "month"                       : month,
               "annualPlanReach"              : annualPlanReach,
-              "annualPlanFamilyUpgradation"  : annualPlanFamilyUpgradation,
               "achievementReach"             : achievementReach,
-              "achievementFamilyUpgradation" : achievementFamilyUpgradation,
               "annualPlanTotalBudget"       : annualPlanTotalBudget,
-              piechartcolor                 : piechartcolor
+              "piechartcolor"                 : piechartcolor
             },()=>{
                     
             });
@@ -177,9 +169,7 @@ export default class Charts extends Component{
             return {
                 name                                    : a.name,
                 annualPlan_Reach                        : a.annualPlan_Reach,
-                annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation, 
                 achievement_Reach                       : a.achievement_Reach,
-                achievement_FamilyUpgradation           : a.achievement_FamilyUpgradation,            
                 annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,            
             } 
         })  
@@ -196,11 +186,11 @@ export default class Charts extends Component{
 
   getCenterwiseData(year, center_ID){
     // console.log('year', year, 'center_ID', center_ID);
-    // var startDate = year.substring(3, 7)+"-04-01";
-    // var endDate = year.substring(10, 15)+"-03-31";
-    // // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
-    // if(startDate, endDate, center_ID){
-    //     axios.get('/api/report/center/'+startDate+'/'+endDate+'/'+center_ID)
+    // var startYear = year.substring(3, 7)+"-04-01";
+    // var endYear = year.substring(10, 15)+"-03-31";
+    // // axios.get('/api/report/annual_completion_month/'+year+'/'+centerID)
+    // if(startYear, endYear, center_ID){
+    //     axios.get('/api/report/center/'+startYear+'/'+endYear+'/'+center_ID)
     //     .then((response)=>{
     //       console.log("respCenterData",response)
 
@@ -245,10 +235,10 @@ export default class Charts extends Component{
   }
 // getSourceData(year, center_ID){
   //   console.log('year', year, 'center_ID', center_ID);
-  //   var startDate = year.substring(3, 7)+"-04-01";
-  //   var endDate = year.substring(10, 15)+"-03-31";
-  //   if(startDate, endDate, center_ID){
-  //       axios.get('/api/report/source/'+startDate+'/'+endDate+'/'+center_ID)
+  //   var startYear = year.substring(3, 7)+"-04-01";
+  //   var endYear = year.substring(10, 15)+"-03-31";
+  //   if(startYear, endYear, center_ID){
+  //       axios.get('/api/report/source/'+startYear+'/'+endYear+'/'+center_ID)
   //       .then((response)=>{
   //         console.log("respgetData",response);
   //        // console.log("resp",response);
@@ -260,21 +250,21 @@ export default class Charts extends Component{
   //       })
         
 
-  //         var sector = [];
+  //         var month = [];
   //         var annualPlanReach = [];
   //         var annualPlanFamilyUpgradation = [];
   //         var achievementReach = [];
   //         var achievementFamilyUpgradation = [];
   //        if(response.data&&response.data.length >0){
   //           response.data.map((data,index)=>{
-  //             sector.push(data.name);
+  //             month.push(data.name);
   //             annualPlanReach.push(data.annualPlan_Reach);
   //             annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
   //             achievementReach.push(data.achievement_Reach);
   //             achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
   //           })
   //         this.setState({
-  //           "sector" : sector.splice(-2),
+  //           "month" : month.splice(-2),
   //           "annualPlanReach1" : annualPlanReach.splice(-2),
   //           "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
   //           "achievementReach1" : achievementReach.splice(-2),
@@ -283,7 +273,7 @@ export default class Charts extends Component{
   //         console.log("this.state.achievementFamilyUpgradation1",achievementFamilyUpgradation);
   //                   console.log("achievementFamilyUpgradation",achievementFamilyUpgradation);
   //            this.setState({
-  //           "sector" : sector,
+  //           "month" : month,
   //           "annualPlanReach" : annualPlanReach,
   //           "annualPlanFamilyUpgradation" : annualPlanFamilyUpgradation,
   //           "achievementReach" : achievementReach,
@@ -343,17 +333,14 @@ export default class Charts extends Component{
               {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
             </div>  
         </div>  
-        <div className="col-lg-6">
-          <BarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
-        </div>
-        <div className="col-lg-6">
-          <h3>Sector wise Budget</h3>
-          <PieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget} piechartcolor={this.state.piechartcolor}  sector={this.state.sector}/>
-        </div>
-       <div className="col-lg-6">
-          <h3>Center wise Budget</h3>
-          <CenterWisePieChart centerwisePlanTotalBudget={this.state.centerwisePlanTotalBudget} piechartcolor={this.state.piechartcolor}  sector={this.state.sector}/>
-        </div>
+      {/*  <div className="col-lg-6">
+                <BarChart annualPlanReach={this.state.annualPlanReach} month={this.state.month} achievementReach={this.state.achievementReach} />
+              </div>
+              <div className="col-lg-6">
+                <h3>Sector wise Budget</h3>
+                <PieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget} piechartcolor={this.state.piechartcolor}  month={this.state.month}/>
+              </div>*/}
+      
         <div className="col-lg-6">
         <IAssureTable 
          

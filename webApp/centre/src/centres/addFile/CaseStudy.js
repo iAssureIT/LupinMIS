@@ -54,7 +54,7 @@ class CaseStudy extends Component{
       },
       // "fileType"          : 'Image',
       "startRange"        : 0,
-      "limitRange"        : 10,
+      "limitRange"        : 10000,
       "editId"            : this.props.match.params ? this.props.match.params.id : '',
     }
   }

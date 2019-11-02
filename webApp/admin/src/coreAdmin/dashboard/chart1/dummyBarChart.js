@@ -82,7 +82,7 @@ export default class BarChart extends Component{
   // }
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
-     console.log("data",data);
+     // console.log("data",data);
      console.log("props",props);
     if (data) {
       data.datasets[0].data = props.achievementFamilyUpgradation;
@@ -92,6 +92,7 @@ export default class BarChart extends Component{
       data.datasets[2].data = props.annualPlanFamilyUpgradation;
       data.datasets[3].data = props.annualPlanReach;
       */
+  // data.labels=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       data.labels = props.sector;
       return{
          data : data

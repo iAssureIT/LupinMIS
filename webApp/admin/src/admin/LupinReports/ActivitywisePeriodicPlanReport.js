@@ -20,7 +20,7 @@ class ActivitywisePeriodicPlanReport extends Component{
             'reportData'        : {},
             'tableData'         : [],
             "startRange"        : 0,
-            "limitRange"        : 10,
+            "limitRange"        : 10000,
             "startDate"         : "",
             "endDate"           : "",
             // "sector"            : "",

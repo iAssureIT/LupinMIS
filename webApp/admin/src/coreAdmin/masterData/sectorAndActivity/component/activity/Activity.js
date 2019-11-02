@@ -39,7 +39,7 @@ class Activity extends Component{
         editUrl             : '/sector-and-activity/'
       },
       "startRange"          : 0,
-      "limitRange"          : 10,
+      "limitRange"          : 10000,
       "editId"              : props.match.params ? props.match.params.activityId : '',
       "editSectorId"        : props.match.params ? props.match.params.sectorId : '',
     }

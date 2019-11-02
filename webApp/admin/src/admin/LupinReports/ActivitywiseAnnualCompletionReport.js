@@ -24,7 +24,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
          "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       
         "startRange"        : 0,
-        "limitRange"        : 10,
+        "limitRange"        : 10000,
         // "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID/:sector_ID",
         "twoLevelHeader"    : {
             apply           : true,
