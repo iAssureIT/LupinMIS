@@ -22,7 +22,7 @@ class CaseStudy extends Component{
       "centerName"        :"",
       "title"             :"",
       "dateofsubmission"  :"",
-      "sector"            :"",
+      "sectorName"        :"",
       "config"            :"",
       "author"            :"",
       "caseStudy_Image"   :"",

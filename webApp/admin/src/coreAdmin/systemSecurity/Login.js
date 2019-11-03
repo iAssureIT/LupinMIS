@@ -119,7 +119,7 @@ class Login extends Component {
                     <img className="lupinImage" src="images/lupin.png" height="70px"/>
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
-                    Management Information System
+                    Admin <br/>Management Information System
                   </div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">   

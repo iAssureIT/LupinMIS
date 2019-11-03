@@ -24,7 +24,7 @@ class Activity extends Component{
       "centerName"        : "",
       "district"          : "",
       "block"             : "",
-      "dateofIntervention": "",
+      "dateofIntervention": moment(new Date()).format('YYYY-MM-DD'),
       "village"           : "",
       "date"              : "",
       "sector"            : "",
@@ -109,11 +109,13 @@ class Activity extends Component{
 
   handleChange(event){
     event.preventDefault(); 
-    this.setState({      
+    this.setState({      /*
       "district"          : this.refs.district.value,
       "block"             : this.refs.block.value,
       "village"           : this.refs.village.value,
-      [event.target.name]: event.target.value
+*/      [event.target.name]: event.target.value
+    },()=>{
+      console.log(this.state);
     });
  
     let fields = this.state.fields;
@@ -159,10 +161,13 @@ class Activity extends Component{
   }
     SubmitActivity(event){
     event.preventDefault();
-   /* if(this.refs.dateofIntervention.value == "" ){
+    var dateObj = new Date();
+    var momentObj = moment(dateObj);
+    var momentString = momentObj.format('YYYY-MM-DD');
+    // if(this.refs.dateofIntervention.value == "" ){
         if (this.validateFormReq() && this.validateForm()){
-        }
-    }else{*/
+    //     }
+    // }else{
             // console.log("date",this.state.dateofIntervention);
       var activityValues= {
         "center_ID"         : this.state.center_ID,
@@ -172,7 +177,7 @@ class Activity extends Component{
         "district"          : this.refs.district.value.split('|')[0],
         "block"             : this.refs.block.value,
         "village"           : this.refs.village.value,
-        "dateofIntervention": this.refs.dateofIntervention.value,
+        // "dateofIntervention": this.refs.dateofIntervention.value,
         "sector_ID"         : this.refs.sector.value.split('|')[1],
         "sectorName"        : this.refs.sector.value.split('|')[0],
         "typeofactivity"    : this.refs.typeofactivity.value,
@@ -196,7 +201,7 @@ class Activity extends Component{
         "listofBeneficiaries": this.state.selectedBeneficiaries
       };
       let fields                  = {};
-      fields["district"]              = "";
+      fields["district"]          = "";
       fields["block"]             = "";
       fields["village"]           = "";
       fields["dateofIntervention"]= "";
@@ -239,10 +244,10 @@ class Activity extends Component{
           }
         });
       this.setState({
-        "district"                   : "",
+        "district"               : "",
         "block"                  : "",
         "village"                : "",
-        "dateofIntervention"     : "",
+        "dateofIntervention"     : momentString,
         "sector"                 : "",
         "typeofactivity"         : "",
         "nameofactivity"         : "",
@@ -268,11 +273,14 @@ class Activity extends Component{
         "availableActivity"      : [],
         "availableSubActivity"   : []
       });
-   /* }*/
+    }
   }
   Update(event){
     event.preventDefault();
     // if (this.validateFormReq() && this.validateForm()) {
+    var dateObj = new Date();
+    var momentObj = moment(dateObj);
+    var momentString = momentObj.format('YYYY-MM-DD');
 
     var activityValues= {
       "activityReport_ID" : this.state.editId,
@@ -283,7 +291,7 @@ class Activity extends Component{
       "district"          : this.refs.district.value.split('|')[0],
       "block"             : this.refs.block.value,
       "village"           : this.refs.village.value,
-      "dateofIntervention": this.refs.dateofIntervention.value,
+      // "dateofIntervention": this.refs.dateofIntervention.value,
       "sector_ID"         : this.refs.sector.value.split('|')[1],
       "sectorName"        : this.refs.sector.value.split('|')[0],
       "typeofactivity"    : this.refs.typeofactivity.value,
@@ -347,10 +355,10 @@ class Activity extends Component{
       }          
     });
     this.setState({
-      "district"              : "",
+      "district"          : "",
       "block"             : "",
       "village"           : "",
-      "dateofIntervention": "",
+      "dateofIntervention": momentString,
       "sector"            : "",
       "typeofactivity"    : "",
       "nameofactivity"    : "",
@@ -391,7 +399,7 @@ class Activity extends Component{
     $("html,body").scrollTop(0);
       if (!fields["district"]) {
         formIsValid = false;
-        errors["dist"] = "This field is required.";
+        errors["district"] = "This field is required.";
       }     
        if (!fields["block"]) {
         formIsValid = false;
@@ -401,10 +409,10 @@ class Activity extends Component{
         formIsValid = false;
         errors["village"] = "This field is required.";
       }
-      if (!fields["dateofIntervention"]) {
+    /*  if (!fields["dateofIntervention"]) {
         formIsValid = false;
         errors["dateofIntervention"] = "This field is required.";
-      }
+      }*/
       if (!fields["sector"]) {
         formIsValid = false;
         errors["sector"] = "This field is required.";
@@ -644,13 +652,13 @@ class Activity extends Component{
     this.setState({
       editId : editId
     })
-    var dateObj = new Date();
-    var momentObj = moment(dateObj);
-    var momentString = momentObj.format('YYYY-MM-DD');
+    // var dateObj = new Date();
+    // var momentObj = moment(dateObj);
+    // var momentString = momentObj.format('YYYY-MM-DD');
 
-    this.setState({
-      dateofIntervention :momentString,
-    })
+    // this.setState({
+    //   dateofIntervention :momentString,
+    // })
     this.getLength();
     
     this.getBlock(this.state.stateCode, this.state.selectedDistrict);
@@ -846,6 +854,7 @@ class Activity extends Component{
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
+    this.handleChange(event);
   }
   distChange(event){    
     event.preventDefault();
@@ -863,6 +872,7 @@ class Activity extends Component{
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
+    this.handleChange(event);
   }
   getBlock(stateCode, selectedDistrict){
     console.log("stateCode",stateCode);
@@ -890,6 +900,7 @@ class Activity extends Component{
       // console.log("block",block);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
+    this.handleChange(event);
   }
   getVillages(stateCode, selectedDistrict, block){
     console.log(stateCode, selectedDistrict, block);
@@ -916,6 +927,7 @@ class Activity extends Component{
     },()=>{
       // console.log("village",village);
     });
+    this.handleChange(event);
   }
 
   render() {

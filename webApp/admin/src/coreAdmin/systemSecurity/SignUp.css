@@ -1,4 +1,7 @@
 
+.mb15{
+  margin-bottom: 15px;
+}
 /*****SignUp.css*****/
 @font-face{
   font-family: 'Roboto', sans-serif !important;
@@ -9,16 +12,13 @@
   src: url("/fonts/Roboto-Regular.ttf");
 }
 .systemHeader{
-  background: #0D47A1;
-  /*background: #0275cf;*/
-}
-.mb35{
-  margin-bottom: 35px !important;
+  background: #0d47a159;
+  /*background: #0D47A1;*/
 }
 .logoName{
   color: #fff;
   font-size: 24px;
-  padding: 35px 10px;
+  padding: 20px 10px;
   font-weight: 900
 }
 /* Create a custom checkbox */
@@ -107,8 +107,8 @@
   float: left;
 }
 .signUpBackground{
-  background: #0275cf !important;
-  /*background-image: url("/images/TGK.png");*/
+  /*background: #0275cf !important;*/
+  background-image: url("/images/login.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
@@ -141,7 +141,10 @@
   margin-right: -15px !important;
 }
 .signupPadding{
-  padding-top:4%;
+  padding-top:2%;
+}
+.mb35 {
+    margin-bottom: 35px;
 }
 .signUpFormWrap, .forgetpassFormWrap, .confirmModalFormWrap{
   border-radius: 10px;
@@ -1036,11 +1039,10 @@ input[type=radio]:checked ~ span{
   color: #333333;
   padding: 4px;
   background: #fff;
-  margin-top: 12px !important;
+  margin-top: 05px !important;
   border-radius: 4px;
   /* margin-left: 5%; */
   font-weight: bold;
-  margin-top: 15px;
 }
 .signuppd1{
   padding: 3px;
@@ -1785,7 +1787,6 @@ input[type="radio"]:checked:before {
   text-transform: uppercase;
   font-size: 15px;
   font-weight: bold;
-  margin-top: 10px;
   margin-bottom: 20px;
   border-radius: 4px !important; 
   font-family:'Roboto', sans-serif !important;
@@ -2242,7 +2243,7 @@ input[type=radio]:checked ~ span{
  /*color: #fff;*/
   /*padding: 4px;*/
   /*background: #d8d8d8;*/
-  margin-top: 12px !important;
+  /*margin-top: 12px !important;*/
   /*border-radius: 4px;*/
   /* margin-left: 5%; */
   font-weight: bold;

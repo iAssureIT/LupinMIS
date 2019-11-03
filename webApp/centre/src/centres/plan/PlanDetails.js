@@ -169,7 +169,7 @@ class PlanDetails extends Component{
   SubmitAnnualPlan(event){
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    // if (this.validateFormReq() &&this.validateForm()) {
+    if (this.validateFormReq() &&this.validateForm()) {
     
       let fields = {};
       fields["year"]              = "";
@@ -278,7 +278,7 @@ class PlanDetails extends Component{
         "subActivityDetails[i][name]":"",
         shown                 : !this.state.shown
       });
-    // }
+    }
   }
   Update(event){    
     event.preventDefault();
@@ -418,10 +418,10 @@ class PlanDetails extends Component{
         formIsValid = false;
         errors["activityName"] = "This field is required.";
       }  
-      if (!fields["year"]) {
+     /* if (!fields["year"]) {
         formIsValid = false;
         errors["year"] = "This field is required.";
-      }      
+      }      */
       /*if (!fields["month"]) {
         formIsValid = false;
         errors["month"] = "This field is required.";

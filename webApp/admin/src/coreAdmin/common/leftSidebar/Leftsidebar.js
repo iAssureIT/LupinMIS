@@ -330,18 +330,18 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li> 
-                <li className="sidebarMenuText">
-                  <a href="/dashboard" >
-                    <i className="fa fa-list" />
-                    Case Studies
-                  </a>
-                </li>
-                <li className="sidebarMenuText">
-                  <a href="/dashboard" >
-                    <i className="fa fa-hand-o-right " />
-                    Highlights
-                  </a>
-                </li>
+                {/*<li className="sidebarMenuText">
+                    <a href="/dashboard" >
+                      <i className="fa fa-list" />
+                      Case Studies
+                    </a>
+                  </li>
+                  <li className="sidebarMenuText">
+                    <a href="/dashboard" >
+                      <i className="fa fa-hand-o-right " />
+                      Highlights
+                    </a>
+                  </li>*/}
              {/*   <li className="sidebarMenuText">
                   <a href="/dashboard" >
                     <i className="fa fa-map-marker" />

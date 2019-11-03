@@ -120,8 +120,9 @@ class CaseStudy extends Component{
     this.setState({
         [event.target.name]: event.target.value,
         "dateofsubmission" :this.refs.dateofsubmission.value,
+        // "sectorName"       :this.refs.sector.value, 
+        "sectorName"       : this.refs.sector.value.split('|')[0],
         "title"            :this.refs.title.value, 
-        "sectorName"       :this.refs.sector.value, 
         "author"           :this.refs.author.value, 
        /* "caseStudy_Image"  :this.refs.caseStudy_Image.value,
         "caseStudy_File"   :this.refs.caseStudy_File.value,*/
@@ -166,7 +167,7 @@ class CaseStudy extends Component{
       let fields = {};
       fields["dateofsubmission"]      = "";
       fields["title"]                 = "";
-      fields["sectorName"]            = "";
+      fields["sector"]                = "";
       fields["author"]                = "";
       fields["caseStudy_Image"]       = "";
       fields["caseStudy_File"]        = "";
@@ -213,18 +214,20 @@ class CaseStudy extends Component{
       var caseStudyValues = {
         "caseStudy_ID"     :this.state.editId, 
         "center_ID"        :this.state.center_ID,
-        "centerName"       :this.state.centerName,
+        // "centerName"       :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
         "title"            :this.refs.title.value, 
-        "sector"           :this.refs.sector.value, 
+        "sector_ID"        : this.refs.sector.value.split('|')[1],
+        "sectorName"       : this.refs.sector.value.split('|')[0],
+        // "sectorName"       :this.refs.sector.value, 
         "author"           :this.refs.author.value, 
-      /*  "caseStudy_Image"  :this.refs.caseStudy_Image.value,
-        "caseStudy_File"   :this.refs.caseStudy_File.value,*/
+        "caseStudy_Image"  :this.state.ImageLocation,
+        "caseStudy_File"   :this.state.fileLocation,
       };
       let fields = {};
       fields["dateofsubmission"]    = "";
       fields["title"]               = "";
-      fields["sectorName"]          = "";
+      fields["sector"]              = "";
       fields["author"]              = "";
 
       // console.log('caseStudyValues', caseStudyValues);
@@ -249,10 +252,10 @@ class CaseStudy extends Component{
       this.setState({
         "dateofsubmission"     :"",
         "title"                :"",
-        "sectorName"           :"",
+        "sector"               :"",
         "author"               :"",
-        "caseStudy_Image"      :"",
-        "caseStudy_File"       :"",
+        "ImageLocation"        :"",
+        "fileLocation"         :"",
         fields                 :fields
       });
       this.props.history.push('/caseStudy');
@@ -275,9 +278,9 @@ class CaseStudy extends Component{
       formIsValid = false;
       errors["title"] = "This field is required.";
     }
-    if (!fields["sectorName"]) {
+    if (!fields["sector"]) {
       formIsValid = false;
-      errors["sectorName"] = "This field is required.";
+      errors["sector"] = "This field is required.";
     }
     if (!fields["author"]) {
       formIsValid = false;
@@ -306,11 +309,12 @@ class CaseStudy extends Component{
       url: '/api/caseStudies/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      // console.log("editData",editData);
+      console.log("editData",editData);
       this.setState({
         "dateofsubmission"  : editData.date,
         "title"             : editData.title, 
         "sectorName"        : editData.sectorName,
+        "sector_ID"         : editData.sector_ID,
         "author"            : editData.author,
       });
       let fields = this.state.fields;
