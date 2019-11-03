@@ -3,13 +3,14 @@
 }
 .borderBox{
 	border: 1px solid #999;
-	height: 140px;
+	height: 170px;
     padding: 10px;
     margin-bottom: 15px;
 }
 .borderBoxHeight{
 	border: 1px solid #999;
-	height: 150px;
+	height: 120px;
+	/*height: 150px;*/
     padding: 10px;
     margin-bottom: 10px;
 }

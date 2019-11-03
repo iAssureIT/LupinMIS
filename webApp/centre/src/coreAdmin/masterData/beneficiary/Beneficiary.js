@@ -233,7 +233,7 @@ class Beneficiary extends Component{
   }
 
   componentDidMount() {
-  axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     // console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);

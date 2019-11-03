@@ -35,9 +35,9 @@ class PlanDetails extends Component{
       "remark"              :"",
       "shown"               : true,
       "uID"                 :"",
-      "month"               :"All Months", 
+      "month"               :"Annual Plan", 
       "heading"             :"Annual Plan",
-      "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
+      "months"              :["Annual Plan","All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
       "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
 
       "shown"               : true,
@@ -110,34 +110,7 @@ class PlanDetails extends Component{
       });
     }
   }
-  selectMonth(event){
-    event.preventDefault();
-    var tableObjects = this.state.tableObjects;
-    tableObjects["apiLink"] = this.refs.month.value === 'All Months' ? '/api/annualPlans/' : '/api/monthlyPlans/';
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      "years"               : this.refs.month.value === 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-      "month"               : this.refs.month.value,        
-      "apiCall"             : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
-      "sectorName"          : "",
-      "activityName"        : "",
-      "availableSubActivity": "",
-      tableObjects,
-      fields
-    },()=>{
-      console.log('month =====================================', this.state.month, this.state.year)
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-    });
-
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
-  }
+  
   subActivityDetails(event){
     // console.log("subActivityDetails",subActivityDetails);
     event.preventDefault();
@@ -196,7 +169,7 @@ class PlanDetails extends Component{
   SubmitAnnualPlan(event){
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    if (this.validateFormReq() &&this.validateForm()) {
+    // if (this.validateFormReq() &&this.validateForm()) {
     
       let fields = {};
       fields["year"]              = "";
@@ -305,7 +278,7 @@ class PlanDetails extends Component{
         "subActivityDetails[i][name]":"",
         shown                 : !this.state.shown
       });
-    }
+    // }
   }
   Update(event){    
     event.preventDefault();
@@ -315,8 +288,8 @@ class PlanDetails extends Component{
       || this.refs.LHWRF.value==="" || this.refs.NABARD.value==="" || this.refs.bankLoan.value==="" || this.refs.govtscheme.value==="" 
       || this.refs.directCC.value==="" || this.refs.indirectCC.value==="" || this.refs.other.value==="" || this.refs.remark.value==="")
       {
-        if (this.validateFormReq() && this.validateForm()){
-        }
+    /*    if (this.validateFormReq() && this.validateForm()){
+        }*/
       }else{
       if(subActivityDetails.length > 0){
         for(var i=0; i<subActivityDetails.length; i++){
@@ -410,7 +383,7 @@ class PlanDetails extends Component{
             "subActivityDetails"  :[],
             "availableSubActivity":[],
             "subActivityDetails[i][name]":"",
-            "months"              :["All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
+            "months"              :["Annual Plan","All Months", "April","May","June","July","August","September","October","November","December","January","February","March"],
             "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
             "shown"               : true,
             "apiCall"             : '/api/annualPlans'
@@ -488,6 +461,34 @@ class PlanDetails extends Component{
     .catch(function(error){      
     });
   }
+  selectMonth(event){
+    event.preventDefault();
+    var tableObjects = this.state.tableObjects;
+    tableObjects["apiLink"] = this.refs.month.value === 'Annual Plan' ? '/api/annualPlans/' : '/api/monthlyPlans/';
+    let fields = this.state.fields;
+    fields[event.target.name] = event.target.value;
+    this.setState({
+      "years"               : this.refs.month.value === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+      "month"               : this.refs.month.value,        
+      "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
+      "sectorName"          : "",
+      "activityName"        : "",
+      "availableSubActivity": "",
+      tableObjects,
+      fields
+    },()=>{
+      console.log('month =====================================', this.state.month, this.state.year)
+      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+    });
+
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
+  }
   getData(center_ID, month, year, startRange, limitRange ){
     var data = {
     center_ID  : center_ID,
@@ -550,17 +551,17 @@ class PlanDetails extends Component{
         editId : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
-        if(this.state.editId && this.state.month === 'All Months'){
+        if(this.state.editId && this.state.month === 'Annual Plan'){
           this.setState({
-            "months"              :["All Months"],
-            "years"               : this.refs.month.value === 'All Months' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+            "months"              :["Annual Plan"],
+            "years"               : this.refs.month.value === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+            "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
           })
-        }else if(this.state.editId && this.state.month !== 'All Months'){
+        }else if(this.state.editId && this.state.month !== 'Annual Plan'){
           this.setState({
-            "months"              :["April","May","June","July","August","September","October","November","December","January","February","March"],
+            "months"              :["All Months", "April","May","June","July","August","September","October","November","December","January","February","March"],
             "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+            "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
           })
         }
         this.getAvailableActivity(this.state.editSectorId);
@@ -581,7 +582,7 @@ class PlanDetails extends Component{
     }
     this.setState({
       "year"  : this.state.years[0],
-      apiCall : this.refs.month.value === 'All Months' ? '/api/annualPlans' : '/api/monthlyPlans',
+      apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
     },()=>{
       console.log('year', this.state.year)
        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
@@ -1079,7 +1080,7 @@ class PlanDetails extends Component{
                           ?
                             <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-                            <h5 defaultValue="Annual Plan">{this.state.month === "All Months" ? "Annual Plan": "Monthly Plan" || this.state.month !== "All Months" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                            <h5 defaultValue="Annual Plan">{this.state.month === "Annual Plan" ? "Annual Plan": "Monthly Plan" || this.state.month !== "Annual Plan" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                             // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>

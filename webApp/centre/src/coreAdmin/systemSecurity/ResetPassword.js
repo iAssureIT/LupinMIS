@@ -40,7 +40,7 @@ class ResetPassword extends Component {
 
   render(){
    
-    var y = 430;
+    var y = 320;
     var h = y + 'px';
 
     var x = $(window).height();   
@@ -50,8 +50,8 @@ class ResetPassword extends Component {
     console.log('x',$(window).height());
     console.log('winHeight',winHeight1);
 
-    var innerheight = winHeight1-60 + 'px';
-    var innerheight1 = winHeight1-60 ;
+    var innerheight = winHeight1-160 + 'px';
+    var innerheight1 = winHeight1-160 ;
    
     var margin = parseInt( innerheight1-y );
     var margint = (margin/2);
@@ -73,12 +73,20 @@ class ResetPassword extends Component {
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-right" id="contentsroll" style={{"height": innerheight}}>
           <div className="row">
             <div id="scrollcont" className={backImage} style={{"height": winHeight}}>
+                <div className="col-lg-12 systemHeader   ">
+                  <div className="col-lg-6 col-md-6 col-sm-6 ">
+                    <img className="lupinImage" src="images/lupin.png" height="70px"/>
+                  </div>
+                  <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
+                    Center <br/>Management Information System
+                  </div>
+                </div>
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">   
-                <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{ "marginTop": margint , "height": h}}>
+                <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap " style={{ "marginTop": margint , "height": h}}>
                   <div className="divLoginInWrap">
-                    <div className="col-lg-4 col-lg-offset-4  ">
+                    {/*<div className="col-lg-4 col-lg-offset-4  ">
                       <img className="logoImage" src="images/logo.png" height="70px"/>
-                    </div>      
+                    </div>    */}  
                     <h3 className="signInNameTitle"> <span className="bordbt">RESET PASSWORD</span></h3>
                     <div className="FormWrapper1 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <form id="resetPassword" /*onSubmit={this.changepassword.bind(this)}*/>

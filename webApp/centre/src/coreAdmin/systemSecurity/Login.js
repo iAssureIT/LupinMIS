@@ -99,8 +99,8 @@ class Login extends Component {
     // console.log('x',$(window).height());
     // console.log('winHeight',winHeight1);
 
-    var innerheight = winHeight1-60 + 'px';
-    var innerheight1 = winHeight1-100 ;
+    var innerheight = winHeight1-160 + 'px';
+    var innerheight1 = winHeight1-160 ;
    
     var margin = parseInt( innerheight1-y );
     var margint = (margin/2);
@@ -126,11 +126,11 @@ class Login extends Component {
                     <img className="lupinImage" src="images/lupin.png" height="70px"/>
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
-                    Management Information System
+                    Center <br/>Management Information System
                   </div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">   
-                  <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{ "marginTop": margint , "height": h}}>
+                  <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap " style={{ "marginTop": margint , "height": h}}>
                   
 {/*                  <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{"height": divHeight}}>
 */}                    <div className="divLoginInWrap">

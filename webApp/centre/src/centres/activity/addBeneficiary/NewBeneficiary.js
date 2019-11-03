@@ -19,6 +19,7 @@ class NewBeneficiary extends Component{
       "familyID"            : "",
       "beneficiaryID"       : "",
       "nameofbeneficiaries" : "",
+      "relation"            : "",
       "fields"              : {},
       "errors"              : {},
       "uID"                 : "",
@@ -40,6 +41,7 @@ class NewBeneficiary extends Component{
         beneficiaryID       : "Beneficiary ID",
         familyID            : "Family ID",
         nameofbeneficiaries : "Name of Beneficiary",
+        relation            : "Relation with Family Head",
         // actions             : 'Action',
       },
       shown                 : true,
@@ -95,26 +97,31 @@ class NewBeneficiary extends Component{
 
   SubmitBeneficiary(event){
     event.preventDefault();
+    var beneficaryArray=[];
+    var id2 = this.state.uID;
     if (this.validateFormReq() && this.validateForm()){
-      var beneficiaryValue= 
-      {
-        "family_ID"             : this.refs.familyID.value.split('|')[1],          
-        "familyID"              : this.refs.familyID.value.split('|')[0],          
-        "beneficiaryID"         : this.refs.beneficiaryID.value,          
-        "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
-      };
-      let fields                    = {};
-      fields["familyID"]            = "";
-      fields["beneficiaryID"]       = "";
-      fields["nameofbeneficiaries"] = "";
+    var beneficiaryValue= 
+    {
+      "center_ID"             : this.state.center_ID,
+      "center"                : this.state.centerName,
+      "family_ID"             : this.refs.familyID.value.split('|')[1],          
+      "familyID"              : this.refs.familyID.value.split('|')[0],          
+      "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
+      "relation"              : this.refs.relation.value,
+    };
+    let fields                    = {};
+    fields["familyID"]            = "";
+    fields["relation"]            = "";
+    fields["nameofbeneficiaries"] = "";
 
-      this.setState({
-        "familyID"                 :"",
-        "beneficiaryID"            :"",
-        "nameofbeneficiaries"      :"",   
-        fields:fields
-      });
-      axios.post('/api/beneficiaries',beneficiaryValue)
+    this.setState({
+      "familyID"                 :"",
+      "beneficiaryID"            :"",
+      "nameofbeneficiaries"      :"",   
+      "relation"                 :"",   
+      fields:fields
+    });
+    axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
         swal({
@@ -142,9 +149,9 @@ class NewBeneficiary extends Component{
         formIsValid = false;
         errors["familyID"] = "This field is required.";
       }     
-       if (!fields["beneficiaryID"]) {
+       if (!fields["relation"]) {
         formIsValid = false;
-        errors["beneficiaryID"] = "This field is required.";
+        errors["relation"] = "This field is required.";
       }     
        if (!fields["nameofbeneficiaries"]) {
         formIsValid = false;
@@ -161,20 +168,20 @@ class NewBeneficiary extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
-    if (typeof fields["beneficiaryID"] !== "undefined") {
-      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["beneficiaryID"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
-        formIsValid = false;
-        errors["beneficiaryID"] = "Please enter valid Beneficiary ID.";
-      }
-    }
-    if (typeof fields["nameofbeneficiaries"] !== "undefined") {
-      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["nameofbeneficiaries"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-        formIsValid = false;
-        errors["nameofbeneficiaries"] = "Please enter valid Name.";
-      }
-    }
+    // if (typeof fields["beneficiaryID"] !== "undefined") {
+    //   // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+    //   if (!fields["beneficiaryID"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
+    //     formIsValid = false;
+    //     errors["beneficiaryID"] = "Please enter valid Beneficiary ID.";
+    //   }
+    // }
+    // if (typeof fields["nameofbeneficiaries"] !== "undefined") {
+    //   // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+    //   if (!fields["nameofbeneficiaries"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+    //     formIsValid = false;
+    //     errors["nameofbeneficiaries"] = "Please enter valid Name.";
+    //   }
+    // }
 
       this.setState({
         errors: errors
@@ -211,27 +218,41 @@ class NewBeneficiary extends Component{
       })
     }
   }
-  getData(startRange, limitRange){ 
-   var data = {
+  getData(startRange, limitRange){
+    var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    axios.get('/api/beneficiaries/list',data)
-    // axios.get('/get/beneficiary/list/:centerID/:district/:blocks/:village',data)
+  
+    var centerID = this.state.center_ID;
+    axios.post('/api/beneficiaries/list',data)
+      // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
+    // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
     .then((response)=>{
-      
+      console.log('response', response.data);
+      var tableData = response.data.map((a, i)=>{
+        return {
+          _id                       : a._id,
+          familyID                  : a.familyID,
+          beneficiaryID             : a.beneficiaryID,
+          nameofbeneficiaries       : a.nameofbeneficiaries,
+          relation                  : a.relation,
+        }
+      })
       this.setState({
-        tableData : response.data
+        tableData : tableData
+      },()=>{
+        console.log("tableData",this.state.tableData)
       })
     })
-    .catch(function(error){ 
+    .catch(function(error){
       console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }     
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
     });
   }
 
@@ -492,6 +513,7 @@ class NewBeneficiary extends Component{
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style={hidden}>
                           <h4 className="pageSubHeader col-lg-12 col-md-12 col-sm-12 col-xs-12">Create Beneficiary</h4>
                           <div className="borderBox ">
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                             <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Family ID</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
@@ -537,6 +559,13 @@ class NewBeneficiary extends Component{
                               </div>
                               <div className="errorMsg">{this.state.errors.relation}</div>
                             </div>
+                          </div> 
+                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
+                              <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
+                            </div>       
+                        {/*  <div className="row col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                              <button className=" col-lg-2 btn addform pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
+                          </div>  */}
                           </div> 
                         </div><br/>
 
@@ -603,7 +632,7 @@ class NewBeneficiary extends Component{
                                 </div>
                               </div>
                             </div>
-                            <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight row">
+                            {/*<div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight row">
                               <div className=" col-lg-6 col-sm-12 col-xs-12 col-lg-offset-3 formLable boxHeightother ">
                                 <label className="formLable">Search</label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
@@ -615,11 +644,9 @@ class NewBeneficiary extends Component{
                                   <div className="text-center addform" id="" >
                                     Search 
                                   </div>
-                                  {/*<div className="addContainerAct col-lg-6 pull-right" id="click_advance"  onClick={this.toglehidden.bind(this)}><div className="display_advance" id="display_advance"><i className="fa fa-plus" aria-hidden="true" id="click"></i></div>
-                                  </div>*/}
                                 </div>
                               </div>
-                            </div> 
+                            </div> */}
                           </div> 
                         </div>
                          

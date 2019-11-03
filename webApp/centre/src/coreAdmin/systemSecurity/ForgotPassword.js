@@ -95,7 +95,7 @@ class ForgotPassword extends Component {
 
   render(){
     
-    var y = 400;
+    var y = 325;
     var h = y + 'px';
 
     var x = $(window).height();   
@@ -105,8 +105,8 @@ class ForgotPassword extends Component {
     console.log('x',$(window).height());
     console.log('winHeight',winHeight1);
 
-    var innerheight = winHeight1-60 + 'px';
-    var innerheight1 = winHeight1-60 ;
+    var innerheight = winHeight1-130 + 'px';
+    var innerheight1 = winHeight1-130 ;
    
     var margin = parseInt( innerheight1-y );
     var margint = (margin/2);
@@ -124,8 +124,16 @@ class ForgotPassword extends Component {
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 middlepo middlebord pull-right" id="contentsroll" style={{"height": innerheight}}>
         <div className="row">
           <div id="scrollcont" className={backImage} style={{"height": winHeight}}>
+            <div className="col-lg-12 systemHeader   ">
+              <div className="col-lg-6 col-md-6 col-sm-6 ">
+                <img className="lupinImage" src="images/lupin.png" height="70px"/>
+              </div>
+              <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
+                Center <br/>Management Information System
+              </div>
+            </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">   
-              <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{"marginTop": margint , "height": h}}>
+              <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap " style={{"marginTop": margint , "height": h}}>
                 <div className="divForgotPasswordWrap">
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  verifypd">
                     <h3 className="signInNameTitle"><span className="bordbt">VERIFY EMAIL</span> </h3>
@@ -161,7 +169,7 @@ class ForgotPassword extends Component {
                           </Link>
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls pull-right">
-                          <Link to='/' className="UMGreyy   col-lg-12 col-md-12 col-sm-12 col-xs-12 "><u>Sign In</u></Link>  
+                          <Link to='/' className="UMGreyy "><u>Sign In</u></Link>  
                         </div>
                       </form>
                     </div>

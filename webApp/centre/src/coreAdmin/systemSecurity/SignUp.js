@@ -226,7 +226,7 @@ class SignUp extends Component {
 	    });
 	}
 	render(){
-		var y = 530;
+		var y = 480;
 	    var h = y + 'px';
 
 	    var x = $(window).height();   
@@ -268,7 +268,7 @@ class SignUp extends Component {
 		                  	</div>
 		                </div>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
-                    	<div className="col-lg-4 col-lg-offset-7 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap loginOesWrap loginforms1 middleblock hght" style={{"marginTop": margint , "height": h}}>
+                    	<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap loginOesWrap loginforms1 middleblock hght" style={{"marginTop": margint , "height": h}}>
 						<div className="divLoginInWrap">
 						<form id="signUpUser" onSubmit={this.usersignup.bind(this)}>
 						<h4 className="signInNameTitle "><span className="bordbt">SIGN UP</span></h4>
