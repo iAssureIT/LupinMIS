@@ -265,9 +265,9 @@ class Beneficiary extends Component{
       console.log('editData',editData);
       
       this.setState({
+        "beneficiaryID"         : editData.beneficiaryID,
         "familyID"              : editData.familyID+"|"+editData.family_ID,          
         "nameofbeneficiaries"   : editData.nameofbeneficiaries,
-        "beneficiaryID"         : editData.beneficiaryID,
         "relation"              : editData.relation,          
       });      
       let fields = this.state.fields;
@@ -318,8 +318,8 @@ class Beneficiary extends Component{
       var tableData = response.data.map((a, i)=>{
         return {
           _id                       : a._id,
-          familyID                  : a.familyID,
           beneficiaryID             : a.beneficiaryID,
+          familyID                  : a.familyID,
           nameofbeneficiaries       : a.nameofbeneficiaries,
           relation                  : a.relation,
         }

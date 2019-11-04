@@ -451,11 +451,28 @@ class Family extends Component{
     }
     axios.get('/api/families/list',data)
     .then((response)=>{
-      console.log('response', response);
+      console.log('response', response.data);
+      var tableData = response.data.map((a, i)=>{
+        return {
+          _id                   : a._id,
+          familyID              : a.familyID,
+          familyHead            : a.familyHead,
+          uidNumber             : a.uidNumber,
+          contactNumber         : a.contactNumber,
+          caste                 : a.caste,
+          familyCategory        : a.familyCategory,
+          dist                  : a.dist,
+          block                 : a.block,
+          village               : a.village,
+        }
+      })
       this.setState({
-        tableData : response.data
+        tableData : tableData
+      },()=>{
+        console.log("tableData",this.state.tableData)
       })
     })
+    
     .catch(function(error){      
       console.log("error"+error);
       if(error.message === "Request failed with status code 401"){
