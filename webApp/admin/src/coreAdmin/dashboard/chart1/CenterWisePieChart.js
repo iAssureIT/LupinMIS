@@ -45,9 +45,9 @@ export default class PieChart extends Component {
      // console.log("props",props);
     if (data) {
      // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);
-      data.datasets[0].data = props.annualPlanTotalBudget ? props.annualPlanTotalBudget : [];
+      data.datasets[0].data = props.center_annualPlanTotalBudget ? props.center_annualPlanTotalBudget : [];
       // data.datas/ets[1].data = props.annualPlanFamilyUpgradation;
-      data.labels = props.sector;
+      data.labels = props.center_sector ? props.center_sector : [];
       // data.labels = props.priorities;
       // data.datasets[0].data = props.count;
       data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];

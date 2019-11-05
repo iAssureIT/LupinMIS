@@ -186,7 +186,6 @@ export default class Charts extends Component{
     }
   }
 
-
   getRandomColor(){
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -241,7 +240,7 @@ export default class Charts extends Component{
             </div>  
         </div>  
       
-       <div className="col-lg-6">
+        <div className="col-lg-6">
           <h3>Center wise Budget</h3>
           <CenterWisePieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget} piechartcolor={this.state.piechartcolor}  sector={this.state.sector}/>
         </div>

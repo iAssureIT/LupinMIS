@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {HorizontalBar} from 'react-chartjs-2';
+import {Bar} from 'react-chartjs-2';
 const options = {
     scales: {
       xAxes: [{
@@ -88,28 +88,19 @@ export default class monthBarChartbudget extends Component{
     if (data) {
       data.datasets[0].data = props.expenditure ? props.expenditure : "";
       data.datasets[1].data = props.budget ? props.budget : "";
-      /*data.datasets[0].data = props.achievementFamilyUpgradation;
-      data.datasets[1].data = props.achievementReach;
-      data.datasets[2].data = props.annualPlanFamilyUpgradation;
-      data.datasets[3].data = props.annualPlanReach;
-      */
+    
       data.labels = props.months;
       return{
          data : data
       }
-      /* console.log("this.state.sector",sector);
-      /* console.log("this.state.annualPlanReach",annualPlanReach);
-           console.log("this.state.annualPlanFamilyUpgradation",annualPlanFamilyUpgradation);
-          console.log("this.state.achievementReach",achievementReach);
-          console.log("this.state.achievementFamilyUpgradation",achievementFamilyUpgradation);
-          */
+  
     }
   }
 
   render() {
     return (
       <div>
-       <HorizontalBar data={this.state.data} height={350}  options={options} />
+       <Bar data={this.state.data} height={350}  options={options} />
       </div>
     );
   }

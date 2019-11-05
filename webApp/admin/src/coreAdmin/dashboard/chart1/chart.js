@@ -350,20 +350,6 @@ export default class Charts extends Component{
           <h3>Sector wise Budget</h3>
           <PieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget} piechartcolor={this.state.piechartcolor}  sector={this.state.sector}/>
         </div>
-       <div className="col-lg-6">
-          <h3>Center wise Budget</h3>
-          <CenterWisePieChart centerwisePlanTotalBudget={this.state.centerwisePlanTotalBudget} piechartcolor={this.state.piechartcolor}  sector={this.state.sector}/>
-        </div>
-        <div className="col-lg-6">
-        <IAssureTable 
-         
-          getData={this.getData.bind(this)} 
-          tableHeading={this.state.tableHeading} 
-          tableData={this.state.tableData} 
-          // tableObjects={this.state.tableObjects}
-          />
-  
-        </div>
       </div>  
         <br/>
         

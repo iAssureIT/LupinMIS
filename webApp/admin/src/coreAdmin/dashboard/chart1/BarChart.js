@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
-import {HorizontalBar} from 'react-chartjs-2';
+import {Bar} from 'react-chartjs-2';
+// import {Radar} from 'react-chartjs-2';
 const options = {
     scales: {
       xAxes: [{
@@ -82,8 +83,8 @@ export default class BarChart extends Component{
   // }
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
-     console.log("data",data);
-     console.log("props",props);
+     // console.log("data",data);
+     // console.log("props",props);
     if (data) {
       data.datasets[0].data = props.achievementFamilyUpgradation;
       data.datasets[1].data = props.annualPlanFamilyUpgradation;
@@ -108,7 +109,8 @@ export default class BarChart extends Component{
   render() {
     return (
       <div>
-       <HorizontalBar data={this.state.data} height={350}  options={options} />
+{/*       <Radar data={this.state.data} height={350}  options={options} />*/}
+       <Bar data={this.state.data} height={350}  options={options} />
       </div>
     );
   }

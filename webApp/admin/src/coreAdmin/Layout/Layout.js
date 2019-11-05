@@ -21,7 +21,8 @@ import CenterwiseBarChart                         from '../dashboard/chart1/Cent
 import SourcewiseBarChart                         from '../dashboard/chart1/SourcewiseBarChart1.js'
 import Chart1                                     from '../dashboard/chart1/chart1.js'
 import Chart                                      from '../dashboard/chart1/chart.js'
-import CenterwiseBudget                                      from '../dashboard/chart1/CenterwiseBudget.js'
+import CenterwiseBudget                           from '../dashboard/chart1/CenterwiseBudget.js'
+import monthwiseCharts                            from '../dashboard/chart1/monthwiseCharts.js'
 
 import Header                                     from '../common/header/Header.js'
 import Footer                                     from '../common/footer/Footer.js'
@@ -165,6 +166,7 @@ componentDidMount(){
                           <Route path="/CenterwiseBarChart" component={CenterwiseBarChart} exact />
                           <Route path="/SourcewiseBarChart" component={SourcewiseBarChart} exact />
                           <Route path="/Chart" component={Chart} exact />
+                          <Route path="/monthwiseCharts" component={monthwiseCharts} exact />
                           <Route path="/CenterwiseBudget" component={CenterwiseBudget} exact />
                           <Route path="/Chart1" component={Chart1} exact />
                           <Route path="/" component={Dashboard} exact />

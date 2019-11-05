@@ -30,7 +30,7 @@ export default class Charts extends Component{
       "achievementFamilyUpgradation": [],
       "achievementReach"            : [],
       "annualPlanFamilyUpgradation" : [],
-      "annualPlanReach"             : [],
+      "monthlyPlanReach"             : [],
       "month"                      : [],
       piechartcolor                 : [],
       "tableHeading"                : {
@@ -128,46 +128,41 @@ export default class Charts extends Component{
         axios.get('/api/report/dashboard/'+startYear+'/'+endYear)
         .then((response)=>{
           console.log("respgetData",response)
-
           var month = [];
-          var annualPlanReach = [];
+          var monthlyPlanReach = [];
           var achievementReach = [];
-          var annualPlanTotalBudget = [];
+          var monthlyPlanTotalBudget = [];
           var piechartcolor =[];
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
-              month.push(data.name);
-              annualPlanReach.push(data.annualPlan_Reach);
-              achievementReach.push(data.achievement_Reach);
-              annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
+              month.push(data.month);
+              monthlyPlanReach.push(data.monthlyPlan_Reach);
+              achievementReach.push(data.curr_achievement_Reach);
+              monthlyPlanTotalBudget.push(data.monthlyPlan_TotalBudget);
+              monthlyPlanTotalBudget.push(data.curr_achievement_TotalBudget);
               piechartcolor.push(this.getRandomColor());
             })
-                    console.log("annualPlanTotalBudget",annualPlanTotalBudget);
-
+            console.log("monthlyPlanTotalBudget",monthlyPlanTotalBudget);
           this.setState({
             "month" : month.splice(-2),
-            "annualPlanReach1" : annualPlanReach.splice(-2),
+            "monthlyPlanReach1" : monthlyPlanReach.splice(-2),
             "achievementReach1" : achievementReach.splice(-2),
-            "annualPlan_TotalBudget1" : annualPlanTotalBudget.splice(-2),
+            "annualPlan_TotalBudget1" : monthlyPlanTotalBudget.splice(-2),
           },()=>{
-          // console.log("this.state.achievementFamilyUpgradation1",this.state.achievementFamilyUpgradation1);
-          // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
-          // console.log("this.state.annualPlan_TotalBudget1",this.state.annualPlan_TotalBudget1);
              this.setState({
               "month"                       : month,
-              "annualPlanReach"              : annualPlanReach,
+              "monthlyPlanReach"              : monthlyPlanReach,
               "achievementReach"             : achievementReach,
-              "annualPlanTotalBudget"       : annualPlanTotalBudget,
+              "monthlyPlanTotalBudget"       : monthlyPlanTotalBudget,
               "piechartcolor"                 : piechartcolor
             },()=>{
-                    
-            });
-          
+                    console.log(this.state)
+            });          
           })
         }    
           var tableData = response.data.map((a, i)=>{
             return {
-                name                                    : a.name,
+                month                                   : a.month,
                 annualPlan_Reach                        : a.annualPlan_Reach,
                 achievement_Reach                       : a.achievement_Reach,
                 annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,            
@@ -251,21 +246,21 @@ export default class Charts extends Component{
         
 
   //         var month = [];
-  //         var annualPlanReach = [];
+  //         var monthlyPlanReach = [];
   //         var annualPlanFamilyUpgradation = [];
   //         var achievementReach = [];
   //         var achievementFamilyUpgradation = [];
   //        if(response.data&&response.data.length >0){
   //           response.data.map((data,index)=>{
   //             month.push(data.name);
-  //             annualPlanReach.push(data.annualPlan_Reach);
+  //             monthlyPlanReach.push(data.annualPlan_Reach);
   //             annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
   //             achievementReach.push(data.achievement_Reach);
   //             achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
   //           })
   //         this.setState({
   //           "month" : month.splice(-2),
-  //           "annualPlanReach1" : annualPlanReach.splice(-2),
+  //           "monthlyPlanReach1" : monthlyPlanReach.splice(-2),
   //           "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
   //           "achievementReach1" : achievementReach.splice(-2),
   //           "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
@@ -274,7 +269,7 @@ export default class Charts extends Component{
   //                   console.log("achievementFamilyUpgradation",achievementFamilyUpgradation);
   //            this.setState({
   //           "month" : month,
-  //           "annualPlanReach" : annualPlanReach,
+  //           "monthlyPlanReach" : monthlyPlanReach,
   //           "annualPlanFamilyUpgradation" : annualPlanFamilyUpgradation,
   //           "achievementReach" : achievementReach,
   //           "achievementFamilyUpgradation" : achievementFamilyUpgradation,
@@ -290,12 +285,6 @@ export default class Charts extends Component{
   // }
 
   render(){ 
-{                    console.log("this.state.centerwisePlanTotalBudget",this.state.centerwisePlanTotalBudget)}  
-   /* {
-                     console.log("this.state.annualPlanFamilyUpgradation",this.state.annualPlanFamilyUpgradation);
-                    console.log("this.state.achievementReach",this.state.achievementReach);
-                    console.log("this.state.achievementFamilyUpgradation",this.state.achievementFamilyUpgradation);
-                }    */
     return(
       <div>
       <div className="row">
@@ -334,11 +323,11 @@ export default class Charts extends Component{
             </div>  
         </div>  
       {/*  <div className="col-lg-6">
-                <BarChart annualPlanReach={this.state.annualPlanReach} month={this.state.month} achievementReach={this.state.achievementReach} />
+                <BarChart monthlyPlanReach={this.state.monthlyPlanReach} month={this.state.month} achievementReach={this.state.achievementReach} />
               </div>
               <div className="col-lg-6">
                 <h3>Sector wise Budget</h3>
-                <PieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget} piechartcolor={this.state.piechartcolor}  month={this.state.month}/>
+                <PieChart monthlyPlanTotalBudget={this.state.monthlyPlanTotalBudget} piechartcolor={this.state.piechartcolor}  month={this.state.month}/>
               </div>*/}
       
         <div className="col-lg-6">
