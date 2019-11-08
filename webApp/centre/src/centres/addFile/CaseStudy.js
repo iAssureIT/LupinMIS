@@ -88,8 +88,6 @@ class CaseStudy extends Component{
       this.edit(this.state.editId);
     }
     this.getAvailableSectors();
-    this.getLength();
-    this.getData(this.state.startRange, this.state.limitRange);
     var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
     var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
     // console.log("fileLocation ===============================",fileLocation);
@@ -105,6 +103,8 @@ class CaseStudy extends Component{
       ImageLocation   : ImageLocation,
     },()=>{
       // console.log("fileArray =",this.state.fileArray);
+    this.getLength(this.state.center_ID);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     });
     var dateObj = new Date();
     var momentObj = moment(dateObj);
@@ -336,8 +336,8 @@ class CaseStudy extends Component{
     });
   }
 
-  getLength(){
-/*    axios.get('/api/caseStudies/count')
+  getLength(center_ID){
+/*    axios.get('/api/caseStudies/count/'+center_ID)
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -380,12 +380,12 @@ class CaseStudy extends Component{
     this.handleChange(event);
   }
 
-  getData(startRange, limitRange){ 
+  getData(startRange, limitRange, center_ID){ 
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    axios.get('/api/caseStudies/list',data)
+    axios.get('/api/caseStudies/list/'+center_ID)
     .then((response)=>{
       console.log("response",response);
       var tableData = response.data.map((a, i)=>{

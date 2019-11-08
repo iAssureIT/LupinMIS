@@ -578,8 +578,8 @@ class Activity extends Component{
 
   }
 
-  getLength(){
-    axios.get('/api/activityReport/count')
+  getLength(center_ID){
+    axios.get('/api/activityReport/count/'+center_ID)
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -593,12 +593,12 @@ class Activity extends Component{
       
     });
   }
-  getData(startRange, limitRange){ 
+  getData(startRange, limitRange, center_ID){ 
    var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    axios.post('/api/activityReport/list', data)
+    axios.post('/api/activityReport/list/'+center_ID, data)
     .then((response)=>{
       console.log("response",response);
       var tableData = response.data.map((a, i)=>{
@@ -662,7 +662,6 @@ class Activity extends Component{
     this.getLength();
     
     this.getBlock(this.state.stateCode, this.state.selectedDistrict);
-    this.getData(this.state.startRange, this.state.limitRange);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -671,7 +670,9 @@ class Activity extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
+    this.getLength(this.state.center_ID);
     this.getAvailableCenter(this.state.center_ID, this.state.stateCode);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     console.log("center_ID =",this.state.center_ID);
     });
   }

@@ -224,7 +224,7 @@ export default class Dashboard extends Component{
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
     if(startDate, endDate){
-        axios.get('/api/report/center/'+startDate+'/'+endDate+'/all')
+        axios.get('/api/report/center/'+startDate+'/'+endDate+'/all/all')
         .then((response)=>{
       /*******************************Dashboard Status Data***************************/
           var centerwiseData = response.data;
@@ -319,7 +319,7 @@ export default class Dashboard extends Component{
               annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
               piechartcolor.push(this.getRandomColor_sector());
             })
-            // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
+            console.log("annualPlanTotalBudget",annualPlanTotalBudget);
           this.setState({
             "sector" : sector.splice(-2),
             "annualPlanReach1" : annualPlanReach.splice(-2),

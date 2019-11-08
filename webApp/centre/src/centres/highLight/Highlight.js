@@ -66,7 +66,7 @@ class Highlight extends Component{
     if(nextProps){
       this.getLength();
     }      
-    this.getData(this.state.startRange, this.state.limitRange);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     }
   }
   
@@ -77,14 +77,14 @@ class Highlight extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-    this.getLength();
-    this.getData(this.state.startRange, this.state.limitRange);
     var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
     var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
     // console.log("fileLocation ===============================",fileLocation);
     // console.log("ImageLocation ===============================",ImageLocation);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
+    this.getLength();
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     // console.log("localStorage =",localStorage.getItem('centerName'));
     // console.log("localStorage =",localStorage);
     this.setState({
@@ -94,6 +94,8 @@ class Highlight extends Component{
       ImageLocation   : ImageLocation,
     },()=>{
       console.log("center_ID =",this.state.center_ID);
+      this.getLength(this.state.center_ID);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     });
 
     var dateObj = new Date();
@@ -317,8 +319,8 @@ class Highlight extends Component{
     });
   }
 
-  getLength(){
-    axios.get('/api/highlights/count')
+  getLength(center_ID){
+    axios.get('/api/highlights/count/'+center_ID)
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -332,18 +334,19 @@ class Highlight extends Component{
     });
   }
 
-  getData(startRange, limitRange){ 
+  getData(startRange, limitRange, center_ID){ 
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    axios.get('/api/highlights/list',data)
-    .then((response)=>{
-      // console.log('response', response);
-      this.setState({
-        tableData : response.data
+    if(center_ID){
+      axios.get('/api/highlights/list/'+center_ID, data)
+      .then((response)=>{
+        // console.log('response', response);
+        this.setState({
+          tableData : response.data
+        })
       })
-    })
     .catch(function(error){
       console.log("error = ",error);
       if(error.message === "Request failed with status code 401"){
@@ -353,6 +356,7 @@ class Highlight extends Component{
         });
       }      
     });
+    }
   }
 
   render() {     

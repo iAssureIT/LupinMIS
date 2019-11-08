@@ -31,6 +31,7 @@ class IAssureTable extends Component {
 		this.delete = this.delete.bind(this);
 	}
 	componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
       $("html,body").scrollTop(0); 
       
       // this.palindrome('Moam');

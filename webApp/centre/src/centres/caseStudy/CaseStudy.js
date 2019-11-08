@@ -98,8 +98,6 @@ class CaseStudy extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-    this.getLength();
-    this.getData(this.state.startRange, this.state.limitRange);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -109,6 +107,8 @@ class CaseStudy extends Component{
       centerName   : centerName,
     },()=>{
       console.log("center_ID =",this.state.center_ID);
+    this.getLength(this.state.center_ID);
+    this.getData(this.state.startRange, this.state.limitRange,this.state.center_ID);
     });
     var dateObj = new Date();
     var momentObj = moment(dateObj);
@@ -402,8 +402,8 @@ class CaseStudy extends Component{
     });
   }
 
-  getLength(){
-    axios.get('/api/caseStudies/count')
+  getLength(center_ID){
+    axios.get('/api/caseStudies/count/'+center_ID)
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -417,12 +417,12 @@ class CaseStudy extends Component{
     });
   }
 
-  getData(startRange, limitRange){ 
+  getData(startRange, limitRange, center_ID){ 
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    axios.get('/api/caseStudies/list',data)
+    axios.get('/api/caseStudies/list'+center_ID,data)
     .then((response)=>{
       console.log('response', response);
       this.setState({

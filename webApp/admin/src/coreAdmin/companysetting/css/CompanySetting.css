@@ -5,6 +5,10 @@
   color: #333333;
   font-weight: normal;
 }
+.companyImage{
+  height: 70px;
+  background-color: #f9f9f9;
+}
 .fixbox{
     height: 65px !important;
   }

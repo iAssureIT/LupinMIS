@@ -42,6 +42,9 @@ class NewBeneficiary extends Component{
         familyID            : "Family ID",
         nameofbeneficiaries : "Name of Beneficiary",
         relation            : "Relation with Family Head",
+        dist                : "District",
+        block               : "Block",
+        village             : "Village",
         // actions             : 'Action',
       },
       shown                 : true,
@@ -194,8 +197,7 @@ class NewBeneficiary extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-    this.getAvailableFamilyId();
-    this.getData(this.state.startRange, this.state.limitRange);
+    this.getAvailableFamilyId(this.state.center_ID);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -204,7 +206,9 @@ class NewBeneficiary extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
+    this.getAvailableFamilyId(this.state.center_ID);
     this.getAvailableCenter(this.state.center_ID);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     console.log("center_ID =",this.state.center_ID);
     });
   }
@@ -218,14 +222,15 @@ class NewBeneficiary extends Component{
       })
     }
   }
-  getData(startRange, limitRange){
+  getData(startRange, limitRange, center_ID){
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
   
     var centerID = this.state.center_ID;
-    axios.post('/api/beneficiaries/list',data)
+    axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
+    // axios.post('/api/beneficiaries/list/'+center_ID,data)
       // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
     // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
     .then((response)=>{
@@ -233,10 +238,13 @@ class NewBeneficiary extends Component{
       var tableData = response.data.map((a, i)=>{
         return {
           _id                       : a._id,
-          familyID                  : a.familyID,
           beneficiaryID             : a.beneficiaryID,
+          familyID                  : a.familyID,
           nameofbeneficiaries       : a.nameofbeneficiaries,
           relation                  : a.relation,
+          dist                      : a.dist,
+          block                     : a.block,
+          village                   : a.village,
         }
       })
       this.setState({
@@ -269,6 +277,7 @@ class NewBeneficiary extends Component{
   addBeneficiaries(event){
     event.preventDefault();
     if(this.state.selectedBeneficiaries){
+      console.log(this.state.selectedBeneficiaries);
       this.props.listofBeneficiaries(this.state.selectedBeneficiaries);
     }else{
       swal({
@@ -278,10 +287,10 @@ class NewBeneficiary extends Component{
     }
   }
 
-  getAvailableFamilyId(){
+  getAvailableFamilyId(center_ID){
     axios({
       method: 'get',
-      url: '/api/families/list',
+      url: '/api/families/list/'+center_ID,
     }).then((response)=> {
         
         this.setState({
@@ -361,10 +370,21 @@ class NewBeneficiary extends Component{
       var centerID = this.state.center_ID;
         axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/all/all")
         .then((response)=>{
-          console.log('response.district',response.data);
-          
+        console.log('response.district',response.data);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                       : a._id,
+            beneficiaryID             : a.beneficiaryID,
+            familyID                  : a.familyID,
+            nameofbeneficiaries       : a.nameofbeneficiaries,
+            relation                  : a.relation,
+            dist                      : a.dist,
+            block                     : a.block,
+            village                   : a.village,
+          }
+        })
           this.setState({
-            tableData : response.data
+            tableData : tableData
           })
         })
         .catch(function(error){ 
@@ -409,9 +429,21 @@ class NewBeneficiary extends Component{
       var centerID = this.state.center_ID;
         axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/"+block+"/all")
         .then((response)=>{
-          console.log('response.block',response.data);
+        console.log('response.block',response.data);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                       : a._id,
+            beneficiaryID             : a.beneficiaryID,
+            familyID                  : a.familyID,
+            nameofbeneficiaries       : a.nameofbeneficiaries,
+            relation                  : a.relation,
+            dist                      : a.dist,
+            block                     : a.block,
+            village                   : a.village,
+          }
+        })
           this.setState({
-            tableData : response.data
+            tableData : tableData
           })
         })
         .catch(function(error){ 
@@ -455,9 +487,21 @@ class NewBeneficiary extends Component{
       var centerID = this.state.center_ID;
         axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/"+block+"/"+village)
         .then((response)=>{
-          console.log('response.block',response.data);
+        console.log('response.block',response.data);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                       : a._id,
+            beneficiaryID             : a.beneficiaryID,
+            familyID                  : a.familyID,
+            nameofbeneficiaries       : a.nameofbeneficiaries,
+            relation                  : a.relation,
+            dist                      : a.dist,
+            block                     : a.block,
+            village                   : a.village,
+          }
+        })
           this.setState({
-            tableData : response.data
+            tableData : tableData
           })
         })
         .catch(function(error){ 

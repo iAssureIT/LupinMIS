@@ -505,7 +505,13 @@ class IAssureTable extends Component {
 		    		family_ID           : id.split('|')[2],
 					familyID            : id.split('|')[3],
 					nameofbeneficiary   : id.split('|')[4],
+					relation            : id.split('|')[5],
+					dist          	    : id.split('|')[6],
+					block               : id.split('|')[7],
+					village             : id.split('|')[8],
+        
 		    	});
+		    	
 		    	this.setState({
 		          selectedBeneficiaries : selectedBeneficiaries
 		        },()=>{
@@ -606,7 +612,7 @@ class IAssureTable extends Component {
 											return(
 												<tr key={i} className="">
 													<td className="textAlignCenter checkboxContainer">
-														<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries]?true:false} id={value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries} onChange={this.selectBeneficiary.bind(this)}/>
+														<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village]?true:false} id={value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village} onChange={this.selectBeneficiary.bind(this)}/>
 														<span className="checkboxMark"></span>
 													</td>
 													<td className="textAlignCenter">{this.state.startRange+1+i}</td>

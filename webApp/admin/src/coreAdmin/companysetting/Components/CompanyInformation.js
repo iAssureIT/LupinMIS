@@ -66,6 +66,7 @@ class CompanyInformation extends Component{
     this.handleChange = this.handleChange.bind(this);
   }
   componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
   var companyId = 1;
     axios.get('/api/companysettings/'+ companyId)
     .then( (res)=>{      
@@ -424,7 +425,7 @@ class CompanyInformation extends Component{
                
                 <div className="col-lg-6 col-lg-offset-6 col-md-6 col-sm-12 col-xs-12 csImageWrapper">
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    <img src= "images/logo.png" className=""/ >
+                    <img src= "images/lupin.png" className="companyImage" / >
                     {/*  {this.CompanyImage() === '../images/CSLogo.png'? <i className="fa fa-camera fonticons" aria-hidden="true" title="First Add Photo."/>
                       :
                       <i className="fa fa-times fonticons removeprofPhoto" aria-hidden="true" title="Remove Photo." onClick={this.removeCompanyImage.bind(this)} data-link={this.state.companyLogo} id={this.state.companyLogo} data-id={this.state.companyId}></i>

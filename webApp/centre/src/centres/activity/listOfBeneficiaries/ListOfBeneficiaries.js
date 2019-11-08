@@ -26,9 +26,13 @@ class ListOfBeneficiaries extends Component{
         apply                     : false,
       },
       "tableHeading"                : {
-        familyID                    : "Family ID",
         beneficiaryID               : "Beneficiary ID",
+        familyID                    : "Family ID",
         nameofbeneficiary           : "Name of Beneficiary",
+        relation                    : "Relation with Family Head",
+        dist                        : "District",
+        block                       : "Block",
+        village                     : "Village",
         // actions                     : 'Action',
       },
       "tableObjects"        : {
@@ -111,24 +115,40 @@ class ListOfBeneficiaries extends Component{
   }
 
   getData(startRange, limitRange){
-    axios({
-      method: 'get',
-      url: '/api/centers/list',
-    }).then((response)=> {
-      var tableData = response.data.map((a, index)=>{return});
+    // axios({
+    //   method: 'get',
+    //   url: '/api/centers/list',
+    // }).then((response)=> {
+    //   var tableData = response.data.map((a, index)=>{return});
 
-      this.setState({
-        tableData : tableData.slice(startRange, limitRange),
-      });
-    }).catch(function (error) {
-      console.log('error', error);
-    });
+    //   this.setState({
+    //     tableData : tableData.slice(startRange, limitRange),
+    //   });
+    // }).catch(function (error) {
+    //   console.log('error', error);
+    // });
   }
   listofBeneficiaries(selectedBeneficiaries){
-   
-    this.setState({
-      tableData : selectedBeneficiaries
-    })
+    var tableData = selectedBeneficiaries.map((a, i)=>{
+        return {
+          _id                       : a._id,
+          beneficiaryID             : a.beneficiaryID,
+          familyID                  : a.familyID,
+          family_ID                 : a.family_ID,
+          nameofbeneficiary         : a.nameofbeneficiary,
+          relation                  : a.relation,
+        }
+      })
+      this.setState({
+        tableData : tableData
+      },()=>{
+        console.log("tableData",this.state.tableData)
+      })
+
+    // console.log(selectedBeneficiaries)
+    // this.setState({
+    //   tableData : selectedBeneficiaries
+    // })
     this.props.getBeneficiaries(selectedBeneficiaries);
   }
     render() {
