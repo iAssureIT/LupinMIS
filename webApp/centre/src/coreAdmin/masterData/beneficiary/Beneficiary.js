@@ -117,7 +117,7 @@ class Beneficiary extends Component{
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
-        this.getData(this.state.startRange, this.state.limitRange);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
         swal({
           title : response.data.message,
           text  : response.data.message,
@@ -171,7 +171,7 @@ class Beneficiary extends Component{
       console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
-          this.getData(this.state.startRange, this.state.limitRange);
+        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
             text  : response.data.message,
@@ -363,7 +363,7 @@ class Beneficiary extends Component{
       startRange : startRange,
     }
     console.log(center_ID);
-    var centerID = this.state.center_ID;
+    // var centerID = this.state.center_ID;
     if (center_ID){
       axios.post('/api/beneficiaries/list/'+center_ID,data)
         // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);

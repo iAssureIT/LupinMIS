@@ -80,7 +80,7 @@ class Family extends Component{
     if(nextProps){
       this.getLength();
     }      
-    this.getData(this.state.startRange, this.state.limitRange);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     }
   }
   
@@ -207,7 +207,7 @@ class Family extends Component{
       axios.post('/api/families',familyValues)
         .then((response)=>{
         console.log('response', response);
-          this.getData(this.state.startRange, this.state.limitRange);
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -290,7 +290,7 @@ class Family extends Component{
 
       axios.patch('/api/families/update', familyValues)
         .then((response)=>{
-          this.getData(this.state.startRange, this.state.limitRange);
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -401,6 +401,13 @@ class Family extends Component{
     let errors = {};
     let formIsValid = true;
     $("html,body").scrollTop(0);
+    if (typeof fields["uID"] !== "undefined") {
+      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+      if (!fields["uID"].match(/^[_0-9]*((-|\s)*[_0-9]){12}$|^$/)) {
+        formIsValid = false;
+        errors["uID"] = "Please enter valid Aadhar No.";
+      }
+    }
 /*
     if (typeof fields["contact"] !== "undefined") {
       if (!fields["contact"].match(/^[0-9]{10}$|^$/)) {
@@ -415,13 +422,7 @@ class Family extends Component{
         errors["familyID"] = "Please enter valid Family ID.";
       }
     }
-    if (typeof fields["uID"] !== "undefined") {
-      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["uID"].match(/^[_0-9]*((-|\s)*[_0-9]){12}$|^$/)) {
-        formIsValid = false;
-        errors["uID"] = "Please enter valid Aadhar No.";
-      }
-    }
+    
     if (typeof fields["nameOfFamilyHead"] !== "undefined") {
       // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
       if (!fields["nameOfFamilyHead"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {

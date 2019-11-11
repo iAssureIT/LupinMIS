@@ -32,7 +32,17 @@ class IAssureTable extends Component {
 	}
 	componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-      $("html,body").scrollTop(0); 
+    $("html,body").scrollTop(0); 
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    // console.log("localStorage =",localStorage);
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+	    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+    }); 
       
       // this.palindrome('Moam');
       this.setState({
@@ -72,7 +82,7 @@ class IAssureTable extends Component {
 	        method: 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
-	    	this.props.getData(this.state.startRange, this.state.limitRange);
+	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        swal({
 	        	text : response.data.message,
 	        	title : response.data.message
