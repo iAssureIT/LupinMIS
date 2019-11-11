@@ -794,14 +794,14 @@ class ProjectMapping extends Component{
                           <div className="errorMsg">{this.state.errors.projectName}</div>
                         </div>
                         <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">From</label><span className="asterix"></span>
+                            <label className="formLable">Start Date</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="startDate" >
                                 <input onChange={this.handleFromChange.bind(this)} name="fromDateCustomised" ref="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                             </div>
                           <div className="errorMsg">{this.state.errors.startDate}</div>
                         </div>
                         <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">To</label><span className="asterix"></span>
+                            <label className="formLable">End Date</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="endDate" >
                                 <input onChange={this.handleToChange.bind(this)} name="toDateCustomised" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                             </div>

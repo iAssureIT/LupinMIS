@@ -682,11 +682,11 @@ class Family extends Component{
                     <hr className="hr-head container-fluid row"/>
                   </div>
                   <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="family">
-                    <div className="col-lg-12 ">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                        <h4 className="pageSubHeader">Create New Family</h4>
                     </div>
-                    <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable ">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div className=" col-lg-12 col-sm-12 col-xs-12 border_Box ">
                     
                         {/*<div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Family ID</label><span className="asterix">*</span>

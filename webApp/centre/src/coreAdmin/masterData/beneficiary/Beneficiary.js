@@ -433,11 +433,11 @@ class Beneficiary extends Component{
                     <hr className="hr-head container-fluid row"/>
                   </div>
                   <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
-                    <div className="col-lg-12 ">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                        <h4 className="pageSubHeader">Create New Beneficiary</h4>
                     </div>
-                    <div className="row">
-                      <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box">
                         <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Family ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
@@ -503,7 +503,7 @@ class Beneficiary extends Component{
                         </div>
                       </div> 
                     </div>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                       {
                         this.state.editId ? 
                         <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
