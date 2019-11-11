@@ -19,8 +19,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
         'reportData'        : {},
         'tableData'         : [],
         'year'              : "FY 2019 - 2020",
-        'center'            : "",
-        'sector'            : "",
+        'center'            : "all",
+        'sector'            : "all",
          "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       
         "startRange"        : 0,
@@ -106,7 +106,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
     }).then((response)=> {
       this.setState({
         availableCenters : response.data,
-        center           : response.data[0].centerName+'|'+response.data[0]._id
+        // center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
         // console.log('availableCenters', this.state.availableCenters);
         // console.log('center', this.state.center);
@@ -143,7 +143,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
         
         this.setState({
           availableSectors : response.data,
-          sector           : response.data[0].sector+'|'+response.data[0]._id
+          // sector           : response.data[0].sector+'|'+response.data[0]._id
         },()=>{
         // console.log('availableSectors', this.state.availableSectors);
         // console.log('sector', this.state.sector);
@@ -222,7 +222,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
                         <label className="formLable">Center</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                            <option className="hidden" >-- Select --</option>
+{/*                            <option className="hidden" >-- Select --</option>*/}
+                            <option value="all">All</option>
                             {
                               this.state.availableCenters && this.state.availableCenters.length >0 ?
                               this.state.availableCenters.map((data, index)=>{
@@ -241,7 +242,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                         <label className="formLable">Year</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                           <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                           <option className="hidden" >-- Select Year --</option>
+                            <option className="hidden" >-- Select Year --</option>
                            {
                             this.state.years.map((data, i)=>{
                               return <option key={i}>{data}</option>
@@ -256,6 +257,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
                             <option  className="hidden" >--Select Sector--</option>
+                            <option value="all">All</option>
                             {
                             this.state.availableSectors && this.state.availableSectors.length >0 ?
                             this.state.availableSectors.map((data, index)=>{

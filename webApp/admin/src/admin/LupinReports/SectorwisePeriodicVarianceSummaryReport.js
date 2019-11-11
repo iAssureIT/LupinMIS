@@ -20,6 +20,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
+        "center_ID"         : "all",
+        "center"            : "all",
         "startDate"         : "",
         "endDate"           : "",
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
@@ -140,15 +142,15 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         }).then((response)=> {
           this.setState({
             availableCenters : response.data,
-            center           : response.data[0].centerName+'|'+response.data[0]._id
+            // center           : response.data[0].centerName+'|'+response.data[0]._id
           },()=>{
             // console.log('center', this.state.center);
-            var center_ID = this.state.center.split('|')[1];
-            this.setState({
-              center_ID        : center_ID
-            },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-            })
+            // var center_ID = this.state.center.split('|')[1];
+            // this.setState({
+            //   center_ID        : center_ID
+            // },()=>{
+            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            // })
           })
         }).catch(function (error) {  
           // console.log("error = ",error);
@@ -166,8 +168,11 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
           [event.target.name] : event.target.value,
           selectedCenter : selectedCenter,
         },()=>{
-          var center = this.state.selectedCenter.split('|')[1];
-          console.log('center', center);
+          if(this.state.selectedCenter==="all"){
+            var center = this.state.selectedCenter;
+          }else{
+            var center = this.state.selectedCenter.split('|')[1];
+          }
           this.setState({
             center_ID :center,            
           },()=>{
@@ -184,14 +189,14 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             
             this.setState({
               availableSectors : response.data,
-              sector           : response.data[0].sector+'|'+response.data[0]._id
+              // sector           : response.data[0].sector+'|'+response.data[0]._id
             },()=>{
-            var sector_ID = this.state.sector.split('|')[1]
-            this.setState({
-              sector_ID        : sector_ID
-            },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-            })
+            // var sector_ID = this.state.sector.split('|')[1]
+            // this.setState({
+            //   sector_ID        : sector_ID
+            // },()=>{
+            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            // })
             // console.log('sector', this.state.sector);
           })
         }).catch(function (error) {  
@@ -209,8 +214,11 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         this.setState({
           [event.target.name]:event.target.value
         });
-        var sector_id = event.target.value.split('|')[1];
-        // console.log('sector_id',sector_id);
+        if(event.target.value==="all"){
+            var sector_id = event.target.value;
+        }else{
+            var sector_id = event.target.value.split('|')[1];
+        }
         this.setState({
           sector_ID : sector_id,
         },()=>{
@@ -223,56 +231,109 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     getData(startDate, endDate,center_ID){
         console.log(startDate, endDate, center_ID);
         // axios.get('http://qalmisapi.iassureit.com/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
-        axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
-        .then((response)=>{
-          console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-                _id                                       : a._id,            
-                name                                      : a.name,
-                annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                
-                monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
-                monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
-                monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
-                monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
-                monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
-                monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
-                monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
-                achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
-                Per_Annual                                : a.Per_Annual,
-                achievement_LHWRF_L                       : a.achievement_LHWRF_L,
-                achievement_NABARD_L                      : a.achievement_NABARD_L,
-                achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,
-                achievement_DirectCC_L                    : a.achievement_DirectCC_L,
-                achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
-                achievement_Govt_L                        : a.achievement_Govt_L,
-                achievement_Other_L                       : a.achievement_Other_L,
-                variance_monthlyPlan_TotalBudget_L        : a.variance_monthlyPlan_TotalBudget_L,
-                variance_monthlyPlan_LHWRF_L              : a.variance_monthlyPlan_LHWRF_L,
-                variance_monthlyPlan_NABARD_L             : a.variance_monthlyPlan_NABARD_L,
-                variance_monthlyPlan_Bank_Loan_L          : a.variance_monthlyPlan_Bank_Loan_L,
-                variance_monthlyPlan_DirectCC_L           : a.variance_monthlyPlan_DirectCC_L,
-                variance_monthlyPlan_IndirectCC_L         : a.variance_monthlyPlan_IndirectCC_L,
-                variance_monthlyPlan_Govt_L               : a.variance_monthlyPlan_Govt_L,
-                variance_monthlyPlan_Other_L              : a.variance_monthlyPlan_Other_L
-            }
-        })  
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
-          })
-        })
-        .catch(function(error){  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
+        if(center_ID==="all"){
+            axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/all')
+            .then((response)=>{
+              console.log("resp",response);
+              var tableData = response.data.map((a, i)=>{
+                return {
+                    _id                                       : a._id,            
+                    name                                      : a.name,
+                    annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                    monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                
+                    monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
+                    monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
+                    monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
+                    monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
+                    monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
+                    monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
+                    monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
+                    achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
+                    Per_Annual                                : a.Per_Annual,
+                    achievement_LHWRF_L                       : a.achievement_LHWRF_L,
+                    achievement_NABARD_L                      : a.achievement_NABARD_L,
+                    achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,
+                    achievement_DirectCC_L                    : a.achievement_DirectCC_L,
+                    achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
+                    achievement_Govt_L                        : a.achievement_Govt_L,
+                    achievement_Other_L                       : a.achievement_Other_L,
+                    variance_monthlyPlan_TotalBudget_L        : a.variance_monthlyPlan_TotalBudget_L,
+                    variance_monthlyPlan_LHWRF_L              : a.variance_monthlyPlan_LHWRF_L,
+                    variance_monthlyPlan_NABARD_L             : a.variance_monthlyPlan_NABARD_L,
+                    variance_monthlyPlan_Bank_Loan_L          : a.variance_monthlyPlan_Bank_Loan_L,
+                    variance_monthlyPlan_DirectCC_L           : a.variance_monthlyPlan_DirectCC_L,
+                    variance_monthlyPlan_IndirectCC_L         : a.variance_monthlyPlan_IndirectCC_L,
+                    variance_monthlyPlan_Govt_L               : a.variance_monthlyPlan_Govt_L,
+                    variance_monthlyPlan_Other_L              : a.variance_monthlyPlan_Other_L
+                }
+            })  
+              this.setState({
+                tableData : tableData
+              },()=>{
+                console.log("resp",this.state.tableData)
+              })
+            })
+            .catch(function(error){  
+              // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
             });
-          }
-        });
+        }else{
+            axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
+            .then((response)=>{
+              console.log("resp",response);
+              var tableData = response.data.map((a, i)=>{
+                return {
+                    _id                                       : a._id,            
+                    name                                      : a.name,
+                    annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                    monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                
+                    monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
+                    monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
+                    monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
+                    monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
+                    monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
+                    monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
+                    monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
+                    achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
+                    Per_Annual                                : a.Per_Annual,
+                    achievement_LHWRF_L                       : a.achievement_LHWRF_L,
+                    achievement_NABARD_L                      : a.achievement_NABARD_L,
+                    achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,
+                    achievement_DirectCC_L                    : a.achievement_DirectCC_L,
+                    achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
+                    achievement_Govt_L                        : a.achievement_Govt_L,
+                    achievement_Other_L                       : a.achievement_Other_L,
+                    variance_monthlyPlan_TotalBudget_L        : a.variance_monthlyPlan_TotalBudget_L,
+                    variance_monthlyPlan_LHWRF_L              : a.variance_monthlyPlan_LHWRF_L,
+                    variance_monthlyPlan_NABARD_L             : a.variance_monthlyPlan_NABARD_L,
+                    variance_monthlyPlan_Bank_Loan_L          : a.variance_monthlyPlan_Bank_Loan_L,
+                    variance_monthlyPlan_DirectCC_L           : a.variance_monthlyPlan_DirectCC_L,
+                    variance_monthlyPlan_IndirectCC_L         : a.variance_monthlyPlan_IndirectCC_L,
+                    variance_monthlyPlan_Govt_L               : a.variance_monthlyPlan_Govt_L,
+                    variance_monthlyPlan_Other_L              : a.variance_monthlyPlan_Other_L
+                }
+            })  
+              this.setState({
+                tableData : tableData
+              },()=>{
+                console.log("resp",this.state.tableData)
+              })
+            })
+            .catch(function(error){  
+              // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
+            });
+        }
     }
     handleFromChange(event){
         event.preventDefault();
@@ -400,6 +461,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                                             <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
                                                 <option className="hidden" >-- Select --</option>
+                                                <option value="all" >All</option>
                                                 {
                                                   this.state.availableCenters && this.state.availableCenters.length >0 ?
                                                   this.state.availableCenters.map((data, index)=>{

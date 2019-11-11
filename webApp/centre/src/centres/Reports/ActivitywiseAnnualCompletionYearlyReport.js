@@ -18,7 +18,6 @@ export default class YearlyReport extends Component{
             "limitRange"        : 10000
             
         }
-        // console.log("tableData", this.state.tableData);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -31,7 +30,7 @@ export default class YearlyReport extends Component{
           center_ID    : center_ID,
           centerName   : centerName,
         },()=>{
-        console.log("center_ID =",this.state.center_ID);
+        console.log("center_ID =",this.state.center_ID,"year", this.state.year);
         this.getData(this.state.year, this.state.center_ID, this.state.sector);
         });
         this.setState({
@@ -39,7 +38,7 @@ export default class YearlyReport extends Component{
           // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector', this.state.sector)
         this.getData(this.state.year, this.state.center_ID, this.state.sector);
         })
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -67,14 +66,15 @@ export default class YearlyReport extends Component{
            [name] : event.target.value,
         });
     }
-    getData(year, centerID, sector){
+    getData(year, center_ID, sector){
         // centerID =this.state.center_ID
         // axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
-        if(year, centerID, sector){
-        console.log('year', year, 'centerID', centerID, 'sector', sector);
+        console.log('year', year,center_ID,sector);
+        if(year, center_ID, sector){
+        console.log('year', year, 'center_ID', center_ID, 'sector', sector);
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";
-            axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
+            axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector)
             .then((response)=>{
                 console.log('response', response.data);
                 var tableData = response.data.map((a, i)=>{

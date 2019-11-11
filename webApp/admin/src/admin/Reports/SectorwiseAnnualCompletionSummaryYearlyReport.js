@@ -29,15 +29,25 @@ export default class YearlyReport extends Component{
         
     }
     componentWillReceiveProps(nextProps){
+
         if(nextProps){
-            this.setState({
+            if(nextProps.center==="all"){
+                this.setState({
                 year   : nextProps.year,
-                center : nextProps.center.split('|')[1],
-            },()=>{
-                console.log('year', this.state.year, 'center', this.state.center)
-                this.getData(this.state.year, this.state.center);
-            });
-        }
+                center : nextProps.center,
+                },()=>{
+                    this.getData(this.state.year, this.state.center);
+                });
+            }else{
+                this.setState({
+                    year   : nextProps.year,
+                    center : nextProps.center.split('|')[1],
+                },()=>{
+                    // console.log('year', this.state.year, 'center', this.state.center,'sector', this.state.sector)
+                    this.getData(this.state.year, this.state.center);
+                });
+            }
+        }    
     }
     handleChange(event){
         event.preventDefault();
@@ -79,7 +89,7 @@ export default class YearlyReport extends Component{
         if(startDate, endDate, centerID){
             axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+centerID)
             .then((response)=>{
-                console.log('response', response.data);
+                console.log('response', response);
                 var tableData = response.data.map((a, i)=>{
                 return {
                     _id                               : a._id,

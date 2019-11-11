@@ -22,7 +22,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         'reportData'        : {},
         'tableData'         : [],
         'year'              : "FY 2019 - 2020",
-        'center'            : "",
+        'center'            : "all",
         'sector'            : "",
          "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],      
         "startRange"        : 0,
@@ -103,7 +103,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     }).then((response)=> {
       this.setState({
         availableCenters : response.data,
-        center           : response.data[0].centerName+'|'+response.data[0]._id
+        // center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
         // console.log('availableCenters', this.state.availableCenters);
         console.log('center', this.state.center);
@@ -141,7 +141,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         this.setState({
           tableDatas : response.data
         },()=>{
-          console.log("resp",this.state.tableDatas)
+          // console.log("resp",this.state.tableDatas)
         })
       })
       .catch(function(error){  
@@ -186,6 +186,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                         <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
                           <option className="hidden" >-- Select --</option>
+                            <option value="all">All</option>
                           {
                             this.state.availableCenters && this.state.availableCenters.length >0 ?
                             this.state.availableCenters.map((data, index)=>{

@@ -21,6 +21,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
+        "center_ID"         : "all",
+        "center"            : "all",
         "startDate"         : "",
         "endDate"           : "",
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
@@ -114,15 +116,15 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         }).then((response)=> {
           this.setState({
             availableCenters : response.data,
-            center           : response.data[0].centerName+'|'+response.data[0]._id
+            // center           : response.data[0].centerName+'|'+response.data[0]._id
           },()=>{
             // console.log('center', this.state.center);
-            var center_ID = this.state.center.split('|')[1];
-            this.setState({
-              center_ID        : center_ID
-            },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-            })
+            // var center_ID = this.state.center.split('|')[1];
+            // this.setState({
+            //   center_ID        : center_ID
+            // },()=>{
+            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            // })
           })
         }).catch(function (error) {  
           // console.log("error = ",error);
@@ -140,7 +142,11 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           [event.target.name] : event.target.value,
           selectedCenter : selectedCenter,
         },()=>{
-          var center = this.state.selectedCenter.split('|')[1];
+          if(this.state.selectedCenter==="all"){
+            var center = this.state.selectedCenter;
+          }else{
+            var center = this.state.selectedCenter.split('|')[1];
+          }
           console.log('center', center);
           this.setState({
             center_ID :center,            
@@ -197,42 +203,81 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     getData(startDate, endDate,center_ID){
         console.log(startDate, endDate, center_ID);
         // axios.get('http://qalmisapi.iassureit.com/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
-        axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
-        .then((response)=>{
-          console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-                _id                                     : a._id,            
-                name                                    : a.name,
-                annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
-                Per_Annual                              : a.Per_Annual,
-                annualPlan_Reach                        : a.annualPlan_Reach,
-                annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation,                
-                monthlyPlan_TotalBudget                 : a.monthlyPlan_TotalBudget,
-                monthlyPlan_LHWRF                       : a.monthlyPlan_LHWRF,
-                monthlyPlan_NABARD                      : a.monthlyPlan_NABARD,
-                monthlyPlan_Bank_Loan                   : a.monthlyPlan_Bank_Loan,
-                monthlyPlan_DirectCC                    : a.monthlyPlan_DirectCC,
-                monthlyPlan_IndirectCC                  : a.monthlyPlan_IndirectCC,
-                monthlyPlan_Govt                        : a.monthlyPlan_Govt,
-                monthlyPlan_Other                       : a.monthlyPlan_Other,
-            } 
-        })  
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
+        if(center_ID==="all"){
+          axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/all')
+          .then((response)=>{
+            console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id                                     : a._id,            
+                  name                                    : a.name,
+                  annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
+                  Per_Annual                              : a.Per_Annual,
+                  annualPlan_Reach                        : a.annualPlan_Reach,
+                  annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation,                
+                  monthlyPlan_TotalBudget                 : a.monthlyPlan_TotalBudget,
+                  monthlyPlan_LHWRF                       : a.monthlyPlan_LHWRF,
+                  monthlyPlan_NABARD                      : a.monthlyPlan_NABARD,
+                  monthlyPlan_Bank_Loan                   : a.monthlyPlan_Bank_Loan,
+                  monthlyPlan_DirectCC                    : a.monthlyPlan_DirectCC,
+                  monthlyPlan_IndirectCC                  : a.monthlyPlan_IndirectCC,
+                  monthlyPlan_Govt                        : a.monthlyPlan_Govt,
+                  monthlyPlan_Other                       : a.monthlyPlan_Other,
+              } 
+          })  
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
           })
-        })
-        .catch(function(error){  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-        });
+          .catch(function(error){  
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
+        }else{
+          axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
+          .then((response)=>{
+            console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id                                     : a._id,            
+                  name                                    : a.name,
+                  annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
+                  Per_Annual                              : a.Per_Annual,
+                  annualPlan_Reach                        : a.annualPlan_Reach,
+                  annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation,                
+                  monthlyPlan_TotalBudget                 : a.monthlyPlan_TotalBudget,
+                  monthlyPlan_LHWRF                       : a.monthlyPlan_LHWRF,
+                  monthlyPlan_NABARD                      : a.monthlyPlan_NABARD,
+                  monthlyPlan_Bank_Loan                   : a.monthlyPlan_Bank_Loan,
+                  monthlyPlan_DirectCC                    : a.monthlyPlan_DirectCC,
+                  monthlyPlan_IndirectCC                  : a.monthlyPlan_IndirectCC,
+                  monthlyPlan_Govt                        : a.monthlyPlan_Govt,
+                  monthlyPlan_Other                       : a.monthlyPlan_Other,
+              } 
+          })  
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){  
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
+        }
     }
     handleFromChange(event){
         event.preventDefault();
@@ -337,6 +382,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                                     <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
                                         <option className="hidden" >-- Select --</option>
+                                        <option value="all" >All</option>
                                         {
                                           this.state.availableCenters && this.state.availableCenters.length >0 ?
                                           this.state.availableCenters.map((data, index)=>{

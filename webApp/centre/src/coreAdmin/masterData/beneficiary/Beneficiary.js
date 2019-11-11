@@ -366,7 +366,7 @@ class Beneficiary extends Component{
         // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
       // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
       .then((response)=>{
-        console.log('response', response.data);
+        console.log('response', response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
