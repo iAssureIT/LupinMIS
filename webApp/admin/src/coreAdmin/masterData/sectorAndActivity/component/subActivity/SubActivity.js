@@ -7,9 +7,6 @@ import {Route, withRouter}    from 'react-router-dom';
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./SubActivity.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 class SubActivity extends Component{
   
   constructor(props){

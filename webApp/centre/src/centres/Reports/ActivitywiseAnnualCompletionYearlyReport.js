@@ -44,6 +44,7 @@ export default class YearlyReport extends Component{
         })
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.handleChange = this.handleChange.bind(this);
+                    {console.log("year",this.state.year)}
         
     }
     componentWillReceiveProps(nextProps){
@@ -52,7 +53,7 @@ export default class YearlyReport extends Component{
                 year   : nextProps.year,
                 sector : nextProps.sector.split('|')[1]
             },()=>{
-                // console.log('year', this.state.year, 'center', this.state.center_ID,'sector', this.state.sector)
+                console.log('year', this.state.year, 'center', this.state.center_ID,'sector', this.state.sector)
                 this.getData(this.state.year, this.state.center_ID, this.state.sector);
             });
         }
@@ -68,11 +69,11 @@ export default class YearlyReport extends Component{
     }
     getData(year, centerID, sector){
         // centerID =this.state.center_ID
+        // axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
+        if(year, centerID, sector){
         console.log('year', year, 'centerID', centerID, 'sector', sector);
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";
-        // axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
-        if(startDate, endDate, centerID, sector){
             axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
             .then((response)=>{
                 console.log('response', response.data);

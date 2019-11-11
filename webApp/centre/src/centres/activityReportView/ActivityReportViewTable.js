@@ -12,8 +12,6 @@ import NewBeneficiary from "../activity/addBeneficiary/NewBeneficiary.js";
 import 'react-table/react-table.css';
 import "./ActivityReportView.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class ActivityReportView extends Component{
   

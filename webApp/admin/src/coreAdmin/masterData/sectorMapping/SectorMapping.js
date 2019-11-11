@@ -7,9 +7,6 @@ import _                      from 'underscore';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./SectorMapping.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 class SectorMapping extends Component{
   
   constructor(props){

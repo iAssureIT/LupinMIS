@@ -228,6 +228,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                   </div>  
                  
                   <div className="">          
+                    {console.log("year",this.state.year)}
                     {
                       /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
                       this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 

@@ -7,10 +7,6 @@ import CKEditor 				  from "react-ckeditor-component";
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap/js/modal.js';
 
-axios.defaults.baseURL = ' http://qatprmapi.iassureit.com/';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 class EditNotificationModal extends Component{
 
 	constructor(props){

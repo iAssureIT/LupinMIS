@@ -6,9 +6,6 @@ import swal                   from 'sweetalert';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./Beneficiary.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 class Beneficiary extends Component{
   
   constructor(props){

@@ -13,9 +13,6 @@ import validator 					from 'validator';
 // import 'jquery-validation';
 import './notification.css';
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com/';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 
   const formValid = formerrors=>{
   console.log("formerrors",formerrors);

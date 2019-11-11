@@ -8,9 +8,6 @@ import 'react-table/react-table.css';
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "./ViewActivity.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 class ViewActivity extends Component{
   
   constructor(props){

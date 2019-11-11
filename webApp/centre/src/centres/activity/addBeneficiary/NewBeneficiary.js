@@ -7,9 +7,6 @@ import 'bootstrap/js/tab.js';
 import IAssureTable           from "./IAssureTable.jsx";
 import "./NewBeneficiary.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 class NewBeneficiary extends Component{
   
   constructor(props){

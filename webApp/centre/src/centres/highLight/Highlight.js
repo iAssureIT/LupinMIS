@@ -11,9 +11,6 @@ import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.js
 import 'react-table/react-table.css';
 import "./Highlight.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 class Highlight extends Component{
 
   constructor(props){

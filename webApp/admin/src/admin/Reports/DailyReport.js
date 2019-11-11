@@ -3,8 +3,6 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import {Route, withRouter}    from 'react-router-dom';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class AnnualPlan extends Component{
   

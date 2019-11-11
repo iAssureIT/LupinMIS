@@ -11,8 +11,6 @@ import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable
 import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 import "./Activity.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 var add = 0;
 
 class Activity extends Component{

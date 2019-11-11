@@ -6,10 +6,7 @@ import {withRouter}           from 'react-router-dom';
 // import _                      from 'underscore';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./typeOfGoal.css";
-
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
+ 
 class typeOfGoal extends Component{
   
   constructor(props){

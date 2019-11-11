@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import $ 					from 'jquery';
 import axios 				from 'axios';
 
-axios.defaults.baseURL = ' http://qatprmapi.iassureit.com/';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 export default class SMSTemplateRow extends Component{
 	constructor(props){
 		super(props);

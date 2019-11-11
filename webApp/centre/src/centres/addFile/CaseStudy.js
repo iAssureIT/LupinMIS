@@ -11,9 +11,6 @@ import AddFilePublic          from "../addFile/AddFilePublic.js";
 import 'react-table/react-table.css';
 // import "./CaseStudy.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 class CaseStudy extends Component{
 
   constructor(props){

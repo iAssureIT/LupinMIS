@@ -9,8 +9,6 @@ import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./ProjectMapping.css";
 
 var sectorData = [];
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class ProjectMapping extends Component{
   

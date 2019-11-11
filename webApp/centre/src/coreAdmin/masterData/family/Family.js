@@ -7,9 +7,6 @@ import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable
 import 'react-table/react-table.css';
 import "./Family.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 class Family extends Component{
   
   constructor(props){

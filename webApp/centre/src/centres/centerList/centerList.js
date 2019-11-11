@@ -4,10 +4,7 @@ import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
-
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-      
+   
 class centerList extends Component{
   
   constructor(props){

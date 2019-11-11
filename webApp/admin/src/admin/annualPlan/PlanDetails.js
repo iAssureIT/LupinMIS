@@ -6,8 +6,6 @@ import _                      from 'underscore';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "./PlanDetails.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 class PlanDetails extends Component{
   
   constructor(props){
