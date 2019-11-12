@@ -58,43 +58,45 @@ export default class YearlyReport extends Component{
    }
 
     getData(year, centerID){
-        // console.log('year', year, 'centerID', centerID);
-        var startDate = year.substring(3, 7)+"-04-01";
-        var endDate = year.substring(10, 15)+"-03-31";
-        // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
-        if(startDate, endDate, centerID){
-            axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+centerID)
-            .then((response)=>{
-                console.log('response', response);
-                var tableData = response.data.map((a, i)=>{
-                return {
-                    _id                               : a._id,
-                    name                              : a.name,
-                    annualPlan_TotalBudget            : a.annualPlan_TotalBudget,
-                    annualPlan_Reach                  : a.annualPlan_Reach, 
-                    annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 
-                    achievement_Reach                 : a.achievement_Reach, 
-                    achievement_FamilyUpgradation     : a.achievement_FamilyUpgradation, 
-                    achievement_TotalBudget           : a.achievement_TotalBudget, 
-                    Per_Annual                        : a.Per_Annual,
-                    achievement_LHWRF                 : a.achievement_LHWRF,
-                    achievement_NABARD                : a.achievement_NABARD,
-                    achievement_Bank_Loan             : a.achievement_Bank_Loan,
-                    achievement_DirectCC              : a.achievement_DirectCC,
-                    achievement_IndirectCC            : a.achievement_IndirectCC,
-                    achievement_Govt                  : a.achievement_Govt,
-                    achievement_Other                 : a.achievement_Other,
-                }
-            })
-                this.setState({
-                    tableData : tableData
-                },()=>{
-                    // console.log("tableData",this.state.tableData);
-                });
-            })
-            .catch((error)=>{
-                console.log('error', error);
-            })
+        if(year){
+            // console.log('year', year, 'centerID', centerID);
+            var startDate = year.substring(3, 7)+"-04-01";
+            var endDate = year.substring(10, 15)+"-03-31";
+            // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
+            if(startDate, endDate, centerID){
+                axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+centerID)
+                .then((response)=>{
+                    console.log('response', response);
+                    var tableData = response.data.map((a, i)=>{
+                    return {
+                        _id                               : a._id,
+                        name                              : a.name,
+                        annualPlan_TotalBudget            : a.annualPlan_TotalBudget,
+                        annualPlan_Reach                  : a.annualPlan_Reach, 
+                        annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 
+                        achievement_Reach                 : a.achievement_Reach, 
+                        achievement_FamilyUpgradation     : a.achievement_FamilyUpgradation, 
+                        achievement_TotalBudget           : a.achievement_TotalBudget, 
+                        Per_Annual                        : a.Per_Annual,
+                        achievement_LHWRF                 : a.achievement_LHWRF,
+                        achievement_NABARD                : a.achievement_NABARD,
+                        achievement_Bank_Loan             : a.achievement_Bank_Loan,
+                        achievement_DirectCC              : a.achievement_DirectCC,
+                        achievement_IndirectCC            : a.achievement_IndirectCC,
+                        achievement_Govt                  : a.achievement_Govt,
+                        achievement_Other                 : a.achievement_Other,
+                    }
+                })
+                    this.setState({
+                        tableData : tableData
+                    },()=>{
+                        // console.log("tableData",this.state.tableData);
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error', error);
+                })
+            }
         }
     }
     getSearchText(searchText, startRange, limitRange){

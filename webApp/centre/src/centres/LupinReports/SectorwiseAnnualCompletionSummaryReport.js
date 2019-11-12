@@ -22,7 +22,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         'reportData'        : {},
         'tableData'         : [],
         'year'              : "FY 2019 - 2020",
-        'center'            : "",
+        'center'            : "all",
         'sector'            : "",
          "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],      
         "startRange"        : 0,
@@ -103,7 +103,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     }).then((response)=> {
       this.setState({
         availableCenters : response.data,
-        center           : response.data[0].centerName+'|'+response.data[0]._id
+        // center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
         // console.log('availableCenters', this.state.availableCenters);
         // console.log('center', this.state.center);
@@ -182,11 +182,11 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                   <hr className="hr-head"/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                     
-                    <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div className=" col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="formLable">Year</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                         <option className="hidden" >-- Select Year --</option>
+                          <option className="hidden" >-- Select Year --</option>
                          {
                           this.state.years.map((data, i)=>{
                             return <option key={i}>{data}</option>

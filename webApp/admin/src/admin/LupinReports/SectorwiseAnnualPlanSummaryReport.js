@@ -23,6 +23,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         "limitRange"        : 10000,
         "center_ID"         : "all",
         "center"            : "all",
+        'year'              : "FY 2019 - 2020",
+        "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
         "startDate"         : "",
         "endDate"           : "",
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
@@ -88,7 +90,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         tableData : this.state.tableData,
       },()=>{
       console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
       })
       this.handleFromChange = this.handleFromChange.bind(this);
       this.handleToChange = this.handleToChange.bind(this);
@@ -98,7 +100,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         this.getAvailableSectors();
         this.currentFromDate();
         this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
         console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
@@ -106,6 +108,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
           console.log('name', this.state)
         });
     }
@@ -151,7 +154,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           this.setState({
             center_ID :center,            
           },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+          this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
@@ -170,7 +173,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             this.setState({
               sector_ID        : sector_ID
             },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
             })
             // console.log('sector', this.state.sector);
           })
@@ -197,13 +200,15 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         // console.log('availableSectors', this.state.availableSectors);
         // console.log('sector_ID', this.state.sector_ID);
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
       })
     }
-    getData(startDate, endDate,center_ID){
-        console.log(startDate, endDate, center_ID);
-        // axios.get('http://qalmisapi.iassureit.com/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
+    getData(year, center_ID){
+      if(year){ 
         if(center_ID==="all"){
+          console.log("year",year);
+          var startDate = year.substring(3, 7)+"-04-01";
+          var endDate = year.substring(10, 15)+"-03-31";    
           axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/all')
           .then((response)=>{
             console.log("resp",response);
@@ -241,6 +246,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             }
           });
         }else{
+          console.log("year",year);
+          var startDate = year.substring(3, 7)+"-04-01";
+          var endDate = year.substring(10, 15)+"-03-31";    
           axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
           .then((response)=>{
             console.log("resp",response);
@@ -278,6 +286,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             }
           });
         }
+      }
     }
     handleFromChange(event){
         event.preventDefault();
@@ -375,28 +384,42 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                                 Sector wise Annual Plan Summary Report              
                             </div>
                         </div>
-                            <hr className="hr-head"/>
+                        <hr className="hr-head"/>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                <label className="formLable">Center</label><span className="asterix"></span>
-                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                                    <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                                        <option className="hidden" >-- Select --</option>
-                                        <option value="all" >All</option>
-                                        {
-                                          this.state.availableCenters && this.state.availableCenters.length >0 ?
-                                          this.state.availableCenters.map((data, index)=>{
-                                            return(
-                                              <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                                            );
-                                          })
-                                          :
-                                          null
-                                        }
-                                    </select>
-                                </div>
+                            <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                              <label className="formLable">Center</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                                  <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                                      <option className="hidden" >-- Select --</option>
+                                      <option value="all" >All</option>
+                                      {
+                                        this.state.availableCenters && this.state.availableCenters.length >0 ?
+                                        this.state.availableCenters.map((data, index)=>{
+                                          return(
+                                            <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }
+                                  </select>
+                              </div>
                             </div>
-                            <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                              <label className="formLable">Year</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                                <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                                 <option className="hidden" >-- Select Year --</option>
+                                 {
+                                  this.state.years.map((data, i)=>{
+                                    return <option key={i}>{data}</option>
+                                  })
+                                 }
+                                </select>
+                              </div>
+                              {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+                            </div>   
+                           {/* <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
                                 <label className="formLable">From</label><span className="asterix"></span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                     <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
@@ -407,7 +430,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                     <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                                 </div>
-                            </div>  
+                            </div>  */}
                         </div>  
                         <div className="marginTop11">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">

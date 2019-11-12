@@ -171,6 +171,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       })
     }
     getData(year,center_ID){ 
+      if(year){
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";    
         // axios.get('http://qalmisapi.iassureit.com/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
@@ -210,6 +211,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             });
           }
         });
+      }
     }
     handleFromChange(event){
         event.preventDefault();
@@ -309,7 +311,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                         </div>
                             <hr className="hr-head"/>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                          <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
                             <label className="formLable">Year</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                               <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >

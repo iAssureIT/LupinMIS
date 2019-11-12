@@ -18,8 +18,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
         'tableDatas'        : [],
         'reportData'        : {},
         'tableData'         : [],
-        'center'            : "",
-        'sector'            : "",
+        'center'            : "all",
+        'sector'            : "all",
         'year'              : "FY 2019 - 2020",
          "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       
@@ -105,6 +105,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
+    this.getData(this.state.center_ID)
       // console.log('name', this.state)
     });
   }
@@ -116,7 +117,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
         
         this.setState({
           availableSectors : response.data,
-          sector           : response.data[0].sector+'|'+response.data[0]._id
+          // sector           : response.data[0].sector+'|'+response.data[0]._id
         },()=>{
         // console.log('availableSectors', this.state.availableSectors);
         // console.log('sector', this.state.sector);
@@ -135,8 +136,11 @@ class ActivitywiseAnnualCompletionReport extends Component{
     event.preventDefault();
     this.setState({
       [event.target.name]:event.target.value
+    },()=>{
+    this.getData(this.state.center_ID)
+      // console.log('name', this.state)
     });
-    var sector_id = event.target.value.split('|')[1];
+    // var sector_id = event.target.value.split('|')[1];
     // console.log('sector_id',sector_id);
   }
 
@@ -210,6 +214,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
                             <option  className="hidden" >--Select Sector--</option>
+                            <option value="all">All</option>
                             {
                             this.state.availableSectors && this.state.availableSectors.length >0 ?
                             this.state.availableSectors.map((data, index)=>{

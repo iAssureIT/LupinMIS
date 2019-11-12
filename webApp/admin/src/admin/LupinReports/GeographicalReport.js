@@ -19,6 +19,10 @@ class GeographicalReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
+        "center"            : "all",
+        "sector"            : "all",
+        "center_ID"         : "all",
+        "sector_ID"         : "all",
         "startDate"         : "",
         "endDate"           : "",
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
@@ -107,7 +111,7 @@ class GeographicalReport extends Component{
     }).then((response)=> {
       this.setState({
         availableCenters : response.data,
-        center           : response.data[0].centerName+'|'+response.data[0]._id
+        // center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
         // console.log('center', this.state.center);
         var center_ID = this.state.center.split('|')[1];
@@ -133,7 +137,11 @@ class GeographicalReport extends Component{
       [event.target.name] : event.target.value,
       selectedCenter : selectedCenter,
     },()=>{
-      var center = this.state.selectedCenter.split('|')[1];
+      if(this.state.selectedCenter==="all"){
+        var center = this.state.selectedCenter;
+      }else{
+        var center = this.state.selectedCenter.split('|')[1];
+      }
       console.log('center', center);
       this.setState({
         center_ID :center,            
@@ -146,35 +154,43 @@ class GeographicalReport extends Component{
   } 
 
   getAvailableCenterData(center_ID){
+    // console.log("CID"  ,center_ID);
     axios({
       method: 'get',
       url: '/api/centers/'+center_ID,
       }).then((response)=> {
-        // console.log('response ==========',response.data[0].districtsCovered);
+        function removeDuplicates(data, param){
+            return data.filter(function(item, pos, array){
+                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+            })
+        }
+        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
-          availableDistInCenter  : response.data[0].districtsCovered,
-          address                : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+          availableDistInCenter  : availableDistInCenter,
+          // availableDistInCenter  : response.data[0].districtsCovered,
+          address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
           // districtsCovered : response.data[0].districtsCovered
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
         var stateCode =this.state.address.split('|')[0];
-        console.log("availableDistInCenter",this.state.availableDistInCenter);
          this.setState({
           stateCode  : stateCode,
 
         },()=>{
-        console.log("address",this.state.stateCode, this.state.availableDistInCenter);
+        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
         });
         })
     }).catch(function (error) {
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
-      });
+      console.log("error"+error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      } 
+    });
+
   } 
   getAvailableSectors(){
       axios({
@@ -184,14 +200,14 @@ class GeographicalReport extends Component{
           
           this.setState({
             availableSectors : response.data,
-            sector           : response.data[0].sector+'|'+response.data[0]._id
+            // sector           : response.data[0].sector+'|'+response.data[0]._id
           },()=>{
-          var sector_ID = this.state.sector.split('|')[1]
-          this.setState({
-            sector_ID        : sector_ID
-          },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-          })
+          // var sector_ID = this.state.sector.split('|')[1]
+          // this.setState({
+          //   sector_ID        : sector_ID
+          // },()=>{
+          // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+          // })
           // console.log('sector', this.state.sector);
         })
       }).catch(function (error) {  // console.log("error = ",error);
@@ -208,13 +224,15 @@ class GeographicalReport extends Component{
     this.setState({
       [event.target.name]:event.target.value
     });
-    var sector_id = event.target.value.split('|')[1];
+    if(event.target.value==="all"){
+      var sector_id = event.target.value;
+    }else{
+      var sector_id = event.target.value.split('|')[1];
+    }
     // console.log('sector_id',sector_id);
     this.setState({
           sector_ID : sector_id,
         },()=>{
-        // console.log('availableSectors', this.state.availableSectors);
-        // console.log('sector_ID', this.state.sector_ID);
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
     })
@@ -314,39 +332,111 @@ class GeographicalReport extends Component{
     console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
     // axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
     if(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){
-      axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-      .then((response)=>{
-        console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-          return {
-            _id                                   : a._id,            
-            name                                  : a.name,
-            achievement_Reach                     : a.achievement_Reach,
-            achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
-            achievement_LHWRF_L                   : a.achievement_LHWRF_L,
-            achievement_NABARD_L                  : a.achievement_NABARD_L,
-            achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
-            achievement_DirectCC_L                : a.achievement_DirectCC_L,
-            achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
-            achievement_Govt_L                    : a.achievement_Govt_L,
-            achievement_Other_L                   : a.achievement_Other_L,
-            achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
+      if(center_ID==="all"){
+        if(sector_ID==="all"){
+        axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/all')
+        .then((response)=>{
+          console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+              _id                                   : a._id,            
+              name                                  : a.name,
+              achievement_Reach                     : a.achievement_Reach,
+              achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
+              achievement_LHWRF_L                   : a.achievement_LHWRF_L,
+              achievement_NABARD_L                  : a.achievement_NABARD_L,
+              achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
+              achievement_DirectCC_L                : a.achievement_DirectCC_L,
+              achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
+              achievement_Govt_L                    : a.achievement_Govt_L,
+              achievement_Other_L                   : a.achievement_Other_L,
+              achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
+            }
+          })
+          this.setState({
+            tableData : tableData
+          },()=>{
+            console.log("resp",this.state.tableData)
+          })
+        })
+        .catch(function(error){  // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
           }
+        });
+      }else{
+        axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+        .then((response)=>{
+          console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+              _id                                   : a._id,            
+              name                                  : a.name,
+              achievement_Reach                     : a.achievement_Reach,
+              achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
+              achievement_LHWRF_L                   : a.achievement_LHWRF_L,
+              achievement_NABARD_L                  : a.achievement_NABARD_L,
+              achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
+              achievement_DirectCC_L                : a.achievement_DirectCC_L,
+              achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
+              achievement_Govt_L                    : a.achievement_Govt_L,
+              achievement_Other_L                   : a.achievement_Other_L,
+              achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
+            }
+          })
+          this.setState({
+            tableData : tableData
+          },()=>{
+            console.log("resp",this.state.tableData)
+          })
         })
-        this.setState({
-          tableData : tableData
-        },()=>{
-          console.log("resp",this.state.tableData)
+        .catch(function(error){  // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
+        });
+      }
+    }else{
+      axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+        .then((response)=>{
+          console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+              _id                                   : a._id,            
+              name                                  : a.name,
+              achievement_Reach                     : a.achievement_Reach,
+              achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
+              achievement_LHWRF_L                   : a.achievement_LHWRF_L,
+              achievement_NABARD_L                  : a.achievement_NABARD_L,
+              achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
+              achievement_DirectCC_L                : a.achievement_DirectCC_L,
+              achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
+              achievement_Govt_L                    : a.achievement_Govt_L,
+              achievement_Other_L                   : a.achievement_Other_L,
+              achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
+            }
+          })
+          this.setState({
+            tableData : tableData
+          },()=>{
+            console.log("resp",this.state.tableData)
+          })
         })
-      })
-      .catch(function(error){  // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
-      });
+        .catch(function(error){  // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
+        });
+    }
     }
   }
   handleFromChange(event){
@@ -446,6 +536,7 @@ class GeographicalReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
                             <option className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
                             {
                               this.state.availableCenters && this.state.availableCenters.length >0 ?
                               this.state.availableCenters.map((data, index)=>{
@@ -465,6 +556,7 @@ class GeographicalReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
                             <option  className="hidden" >--Select Sector--</option>
+                            <option value="all" >All</option>
                             {
                             this.state.availableSectors && this.state.availableSectors.length >0 ?
                             this.state.availableSectors.map((data, index)=>{
@@ -498,18 +590,30 @@ class GeographicalReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                           <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
                             <option  className="hidden" >--select--</option>
-                                
                               {
-                              this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                              this.state.availableDistInCenter.map((data, index)=>{
-                                console.log("data",data)
-                                return(
-                                  <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
-                                );
-                              })
-                              :
-                              null
-                            }                               
+                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                this.state.availableDistInCenter.map((data, index)=>{
+                                  console.log("data",data)
+                                  return(
+                                    /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+
+                                  );
+                                })
+                                :
+                                null
+                              }         
+                            { /* {
+                                                                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                                                                this.state.availableDistInCenter.map((data, index)=>{
+                                                                                  console.log("data",data)
+                                                                                  return(
+                                                                                    <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
+                                                                                  );
+                                                                                })
+                                                                                :
+                                                                                null
+                                                                              }         */}                      
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.district}</div>*/}

@@ -12,7 +12,7 @@ import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx"
 import "../Reports/Reports.css";
 
 class ActivitywiseAnnualPlanReport extends Component{
-	constructor(props){
+  constructor(props){
         super(props);
         this.state = {
             'currentTabView'    : "Monthly",
@@ -21,6 +21,8 @@ class ActivitywiseAnnualPlanReport extends Component{
             'tableData'         : [],
             "startRange"        : 0,
             "limitRange"        : 10000,
+            "sector"            : "all",
+            "sector_ID"         : "all",
             'year'              : "FY 2019 - 2020",
             "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
             "startDate"         : "",
@@ -116,7 +118,9 @@ class ActivitywiseAnnualPlanReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-          console.log('name', this.state)
+          console.log('year', this.state.year)
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
+          
         });
     }
     getAvailableSectors(){
@@ -127,14 +131,14 @@ class ActivitywiseAnnualPlanReport extends Component{
             
             this.setState({
               availableSectors : response.data,
-              sector           : response.data[0].sector+'|'+response.data[0]._id
+              // sector           : response.data[0].sector+'|'+response.data[0]._id
             },()=>{
-            var sector_ID = this.state.sector.split('|')[1]
-            this.setState({
-              sector_ID        : sector_ID
-            },()=>{
-            this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
-            })
+            // var sector_ID = this.state.sector.split('|')[1]
+            // this.setState({
+            //   sector_ID        : sector_ID
+            // },()=>{
+            // this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
+            // })
             // console.log('sector', this.state.sector);
           })
         }).catch(function (error) {
@@ -152,60 +156,112 @@ class ActivitywiseAnnualPlanReport extends Component{
         this.setState({
           [event.target.name]:event.target.value
         });
-        var sector_id = event.target.value.split('|')[1];
+          if(event.target.value==="all"){
+            var sector_id = event.target.value;
+          }else{
+            var sector_id = event.target.value.split('|')[1];
+          }
         // console.log('sector_id',sector_id);
         this.setState({
               sector_ID : sector_id,
             },()=>{
-            // console.log('availableSectors', this.state.availableSectors);
-            // console.log('sector_ID', this.state.sector_ID);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
         })
     }
 
-    getData(year, center_ID, sector_ID){    
-        var startDate = year.substring(3, 7)+"-04-01";
-        var endDate = year.substring(10, 15)+"-03-31";    
-        console.log(startDate, endDate, year, center_ID, sector_ID);
-        axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
-        .then((response)=>{
-          console.log("resp",response);
-            var tableData = response.data.map((a, i)=>{
-            return {
-                _id                                       : a._id,            
-                name                                      : a.name,
-                unit                                      : a.unit,
-                annualPlan_Reach                          : a.annualPlan_Reach,
-                annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
-                annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                annualPlan_UnitCost                       : a.annualPlan_UnitCost,
-                annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
-                annualPlan_LHWRF                          : a.annualPlan_LHWRF,
-                annualPlan_NABARD                         : a.annualPlan_NABARD,
-                annualPlan_Bank_Loan                      : a.annualPlan_Bank_Loan,
-                annualPlan_DirectCC                       : a.annualPlan_DirectCC,
-                annualPlan_IndirectCC                     : a.annualPlan_IndirectCC,
-                annualPlan_Govt                           : a.annualPlan_Govt,
-                annualPlan_Other                          : a.annualPlan_Other,
-                annualPlan_Remark                         : a.annualPlan_Remark,
-                }
-        })
-          this.setState({
-            tableData : tableData
-          },()=>{
-            // console.log("resp",this.state.tableData)
+    getData(year, center_ID, sector_ID){   
+      if(year){ 
+        if(sector_ID==="all"){
+          console.log("year",year);
+          var startDate = year.substring(3, 7)+"-04-01";
+          var endDate = year.substring(10, 15)+"-03-31";    
+         
+          console.log(startDate, endDate, year, center_ID, sector_ID);
+          axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
+          .then((response)=>{
+            console.log("resp",response);
+              var tableData = response.data.map((a, i)=>{
+              return {
+                  _id                                       : a._id,            
+                  name                                      : a.name,
+                  unit                                      : a.unit,
+                  annualPlan_Reach                          : a.annualPlan_Reach,
+                  annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
+                  annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
+                  annualPlan_UnitCost                       : a.annualPlan_UnitCost,
+                  annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
+                  annualPlan_LHWRF                          : a.annualPlan_LHWRF,
+                  annualPlan_NABARD                         : a.annualPlan_NABARD,
+                  annualPlan_Bank_Loan                      : a.annualPlan_Bank_Loan,
+                  annualPlan_DirectCC                       : a.annualPlan_DirectCC,
+                  annualPlan_IndirectCC                     : a.annualPlan_IndirectCC,
+                  annualPlan_Govt                           : a.annualPlan_Govt,
+                  annualPlan_Other                          : a.annualPlan_Other,
+                  annualPlan_Remark                         : a.annualPlan_Remark,
+                  }
           })
-        })
-        .catch(function(error){
-          console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-        });
+            this.setState({
+              tableData : tableData
+            },()=>{
+              // console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){
+            console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
+        }else{
+          console.log("year",year);
+          var startDate = year.substring(3, 7)+"-04-01";
+          var endDate = year.substring(10, 15)+"-03-31";    
+         
+          console.log(startDate, endDate, year, center_ID, sector_ID);
+          axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
+          .then((response)=>{
+            console.log("resp",response);
+              var tableData = response.data.map((a, i)=>{
+              return {
+                  _id                                       : a._id,            
+                  name                                      : a.name,
+                  unit                                      : a.unit,
+                  annualPlan_Reach                          : a.annualPlan_Reach,
+                  annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
+                  annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
+                  annualPlan_UnitCost                       : a.annualPlan_UnitCost,
+                  annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
+                  annualPlan_LHWRF                          : a.annualPlan_LHWRF,
+                  annualPlan_NABARD                         : a.annualPlan_NABARD,
+                  annualPlan_Bank_Loan                      : a.annualPlan_Bank_Loan,
+                  annualPlan_DirectCC                       : a.annualPlan_DirectCC,
+                  annualPlan_IndirectCC                     : a.annualPlan_IndirectCC,
+                  annualPlan_Govt                           : a.annualPlan_Govt,
+                  annualPlan_Other                          : a.annualPlan_Other,
+                  annualPlan_Remark                         : a.annualPlan_Remark,
+                  }
+          })
+            this.setState({
+              tableData : tableData
+            },()=>{
+              // console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){
+            console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
+        }
+      }
     }
     handleFromChange(event){
         event.preventDefault();
@@ -299,7 +355,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                     </div>
                     <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                       <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <label className="formLable">Year</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                           <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
@@ -318,6 +374,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
                             <option  className="hidden" >--Select Sector--</option>
+                            <option value="all" >All</option>
                             {
                             this.state.availableSectors && this.state.availableSectors.length >0 ?
                             this.state.availableSectors.map((data, index)=>{

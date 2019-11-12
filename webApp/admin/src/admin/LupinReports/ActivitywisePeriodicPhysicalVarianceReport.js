@@ -338,7 +338,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                  });
                }
               });
-            }
+          }
     }
     handleFromChange(event){
         event.preventDefault();

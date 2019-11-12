@@ -71,6 +71,8 @@ export default class YearlyReport extends Component{
 
         this.setState({
            [name] : event.target.value,
+        },()=>{
+            this.getData(this.state.year, this.state.center, this.state.sector);
         });
     }
     getData(year, centerID, sector){

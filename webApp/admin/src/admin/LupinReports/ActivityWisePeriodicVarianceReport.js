@@ -136,6 +136,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
           console.log('name', this.state)
         });
     }

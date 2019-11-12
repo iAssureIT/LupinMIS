@@ -25,6 +25,8 @@ class ActivitywiseAnnualPlanReport extends Component{
             "sector"            : "all",
             "center_ID"         : "all",
             "sector_ID"         : "all",
+            'year'              : "FY 2019 - 2020",
+            "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
             "startDate"         : "",
             "endDate"           : "",
             // "sector"            : "",
@@ -97,7 +99,7 @@ class ActivitywiseAnnualPlanReport extends Component{
           tableData : this.state.tableData,
         },()=>{
         console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
@@ -108,7 +110,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         this.getAvailableSectors();
         this.currentFromDate();
         this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
         console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
@@ -116,6 +118,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
           console.log('name', this.state)
         });
     }
@@ -161,7 +164,7 @@ class ActivitywiseAnnualPlanReport extends Component{
           this.setState({
             center_ID :center,            
           },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
@@ -208,14 +211,18 @@ class ActivitywiseAnnualPlanReport extends Component{
         this.setState({
               sector_ID : sector_id,
             },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
         })
     }
 
-    getData(startDate, endDate, center_ID, sector_ID){        
-      console.log(startDate, endDate, center_ID, sector_ID);
+    getData(year, center_ID, sector_ID){  
+      if(year){ 
+        console.log(startDate, endDate, center_ID, sector_ID);
         if(center_ID==="all"){
-          if(sector_ID==="all"){
+          if(sector_ID==="all"){            
+            console.log("year",year);
+            var startDate = year.substring(3, 7)+"-04-01";
+            var endDate = year.substring(10, 15)+"-03-31";    
             axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/all/all')
             .then((response)=>{
               console.log("resp",response);
@@ -255,6 +262,9 @@ class ActivitywiseAnnualPlanReport extends Component{
               }
             });
           }else{
+            console.log("year",year);
+            var startDate = year.substring(3, 7)+"-04-01";
+            var endDate = year.substring(10, 15)+"-03-31";    
             axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID)
             .then((response)=>{
               console.log("resp",response);
@@ -295,6 +305,9 @@ class ActivitywiseAnnualPlanReport extends Component{
             });
           }
         }else{
+          console.log("year",year);
+          var startDate = year.substring(3, 7)+"-04-01";
+          var endDate = year.substring(10, 15)+"-03-31";    
           axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
             .then((response)=>{
               console.log("resp",response);
@@ -334,6 +347,7 @@ class ActivitywiseAnnualPlanReport extends Component{
               }
             });
         }
+      }
     }
     handleFromChange(event){
         event.preventDefault();
@@ -427,7 +441,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                     </div>
                     <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                      <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                      <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
                         <label className="formLable">Center</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
@@ -447,7 +461,21 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                       </div>
-                      <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                      <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                        <label className="formLable">Year</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                          <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                           <option className="hidden" >-- Select Year --</option>
+                           {
+                            this.state.years.map((data, i)=>{
+                              return <option key={i}>{data}</option>
+                            })
+                           }
+                          </select>
+                        </div>
+                        {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+                      </div>   
+                      <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
                         <label className="formLable">Sector</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
@@ -467,7 +495,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                        {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                       </div>
-                        <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                       {/* <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
                             <label className="formLable">From</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                 <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
@@ -478,7 +506,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                 <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                             </div>
-                        </div>
+                        </div>*/}
                     </div>  
                     <div className="marginTop11">
                         <div className="">
