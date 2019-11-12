@@ -33,7 +33,7 @@ class ActivitywiseAnnualPlanReport extends Component{
             // "sector_ID"         : "",
             // "center"            : "",
             // "center_ID"         : "",
-            // "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/masternotifications/list",
+            // "dataApiUrl"        : "/api/masternotifications/list",
             "twoLevelHeader"    : {
                 apply           : true,
                 firstHeaderData : [
@@ -223,7 +223,7 @@ class ActivitywiseAnnualPlanReport extends Component{
             console.log("year",year);
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
-            axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/all/all')
+            axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/all')
             .then((response)=>{
               console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
@@ -265,7 +265,7 @@ class ActivitywiseAnnualPlanReport extends Component{
             console.log("year",year);
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
-            axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID)
+            axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID)
             .then((response)=>{
               console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
@@ -308,7 +308,7 @@ class ActivitywiseAnnualPlanReport extends Component{
           console.log("year",year);
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
-          axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
+          axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
             .then((response)=>{
               console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{

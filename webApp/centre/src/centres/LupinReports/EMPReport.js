@@ -20,7 +20,6 @@ class EMPReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
-        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -105,7 +104,7 @@ class EMPReport extends Component{
     }
     getData(startDate, endDate,center_ID, goal){
         console.log(startDate, endDate, center_ID);
-        axios.get('http://qalmisapi.iassureit.com/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "Empowerment Line Goal")
+        axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "Empowerment Line Goal")
         .then((response)=>{
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{

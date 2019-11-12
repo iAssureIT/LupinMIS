@@ -214,10 +214,9 @@ class ActivityWisePeriodicVarianceReport extends Component{
 
     getData(startDate, endDate, center_ID, sector_ID){        
         console.log(startDate, endDate, center_ID, sector_ID);
-        // axios.get('http://qalmisapi.iassureit.com/api/report/periodic_activity/'+startDate+'/'+endDate+'/'+sector_ID+'/'+center_ID)
           if(center_ID==="all"){
             if(sector_ID==="all"){
-              axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/all/all')
+              axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/all')
               .then((response)=>{
                console.log("resp",response);
                  var tableData = response.data.map((a, i)=>{
@@ -257,7 +256,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                }
               });
             }else{
-              axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID)
+              axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID)
               .then((response)=>{
                console.log("resp",response);
                  var tableData = response.data.map((a, i)=>{
@@ -299,7 +298,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
             }
           }
           else{
-            axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
+            axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
               .then((response)=>{
                console.log("resp",response);
                  var tableData = response.data.map((a, i)=>{

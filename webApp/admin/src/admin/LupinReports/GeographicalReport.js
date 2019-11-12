@@ -23,9 +23,11 @@ class GeographicalReport extends Component{
         "sector"            : "all",
         "center_ID"         : "all",
         "sector_ID"         : "all",
+        "selectedDistrict"  : "all",
+        "block"             : "all",
+        "village"           : "all",
         "startDate"         : "",
         "endDate"           : "",
-        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -144,7 +146,7 @@ class GeographicalReport extends Component{
       }
       console.log('center', center);
       this.setState({
-        center_ID :center,            
+        center_ID :center, 
       },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
         this.getAvailableCenterData(this.state.center_ID);
@@ -154,7 +156,6 @@ class GeographicalReport extends Component{
   } 
 
   getAvailableCenterData(center_ID){
-    // console.log("CID"  ,center_ID);
     axios({
       method: 'get',
       url: '/api/centers/'+center_ID,
@@ -168,21 +169,16 @@ class GeographicalReport extends Component{
         // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
-          // availableDistInCenter  : response.data[0].districtsCovered,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-          // districtsCovered : response.data[0].districtsCovered
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
         var stateCode =this.state.address.split('|')[0];
          this.setState({
-          stateCode  : stateCode,
-
-        },()=>{
-        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
-        });
-        })
+            stateCode  : stateCode,
+          });
+      })
     }).catch(function (error) {
-      console.log("error"+error);
+      console.log("districtError",+error);
       if(error.message === "Request failed with status code 401"){
         swal({
             title : "abc",
@@ -190,7 +186,6 @@ class GeographicalReport extends Component{
         });
       } 
     });
-
   } 
   getAvailableSectors(){
       axios({
@@ -244,13 +239,18 @@ class GeographicalReport extends Component{
     this.setState({
       district: district
     },()=>{
+
+    if(this.state.district==="all"){
+      var selectedDistrict = this.state.district;
+    }else{
       var selectedDistrict = this.state.district.split('|')[0];
+    }
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      // console.log('selectedDistrict',this.state.selectedDistrict);
+      console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
@@ -330,113 +330,115 @@ class GeographicalReport extends Component{
   }
   getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){        
     console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
-    // axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
-    if(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){
-      if(center_ID==="all"){
-        if(sector_ID==="all"){
-        axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/all')
-        .then((response)=>{
-          console.log("resp",response);
-            var tableData = response.data.map((a, i)=>{
-            return {
-              _id                                   : a._id,            
-              name                                  : a.name,
-              achievement_Reach                     : a.achievement_Reach,
-              achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
-              achievement_LHWRF_L                   : a.achievement_LHWRF_L,
-              achievement_NABARD_L                  : a.achievement_NABARD_L,
-              achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
-              achievement_DirectCC_L                : a.achievement_DirectCC_L,
-              achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
-              achievement_Govt_L                    : a.achievement_Govt_L,
-              achievement_Other_L                   : a.achievement_Other_L,
-              achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
-            }
-          })
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
-          })
-        })
-        .catch(function(error){  // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
+    // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
+    if(center_ID){
+      if(startDate, endDate, selectedDistrict, block, village, sector_ID){
+        if(center_ID==="all"){
+          if(sector_ID==="all"){
+            axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/all')
+            .then((response)=>{
+              console.log("resp",response);
+                var tableData = response.data.map((a, i)=>{
+                return {
+                  _id                                   : a._id,            
+                  name                                  : a.name,
+                  achievement_Reach                     : a.achievement_Reach,
+                  achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
+                  achievement_LHWRF_L                   : a.achievement_LHWRF_L,
+                  achievement_NABARD_L                  : a.achievement_NABARD_L,
+                  achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
+                  achievement_DirectCC_L                : a.achievement_DirectCC_L,
+                  achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
+                  achievement_Govt_L                    : a.achievement_Govt_L,
+                  achievement_Other_L                   : a.achievement_Other_L,
+                  achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
+                }
+              })
+              this.setState({
+                tableData : tableData
+              },()=>{
+                // console.log("resp",this.state.tableData)
+              })
+            })
+            .catch(function(error){  // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
+            });
+          }else{
+            axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+            .then((response)=>{
+              console.log("resp",response);
+                var tableData = response.data.map((a, i)=>{
+                return {
+                  _id                                   : a._id,            
+                  name                                  : a.name,
+                  achievement_Reach                     : a.achievement_Reach,
+                  achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
+                  achievement_LHWRF_L                   : a.achievement_LHWRF_L,
+                  achievement_NABARD_L                  : a.achievement_NABARD_L,
+                  achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
+                  achievement_DirectCC_L                : a.achievement_DirectCC_L,
+                  achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
+                  achievement_Govt_L                    : a.achievement_Govt_L,
+                  achievement_Other_L                   : a.achievement_Other_L,
+                  achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
+                }
+              })
+              this.setState({
+                tableData : tableData
+              },()=>{
+                console.log("resp",this.state.tableData)
+              })
+            })
+            .catch(function(error){  // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
             });
           }
-        });
-      }else{
-        axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-        .then((response)=>{
-          console.log("resp",response);
-            var tableData = response.data.map((a, i)=>{
-            return {
-              _id                                   : a._id,            
-              name                                  : a.name,
-              achievement_Reach                     : a.achievement_Reach,
-              achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
-              achievement_LHWRF_L                   : a.achievement_LHWRF_L,
-              achievement_NABARD_L                  : a.achievement_NABARD_L,
-              achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
-              achievement_DirectCC_L                : a.achievement_DirectCC_L,
-              achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
-              achievement_Govt_L                    : a.achievement_Govt_L,
-              achievement_Other_L                   : a.achievement_Other_L,
-              achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
-            }
-          })
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
-          })
-        })
-        .catch(function(error){  // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
+        }else{
+          axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+            .then((response)=>{
+              console.log("resp",response);
+                var tableData = response.data.map((a, i)=>{
+                return {
+                  _id                                   : a._id,            
+                  name                                  : a.name,
+                  achievement_Reach                     : a.achievement_Reach,
+                  achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
+                  achievement_LHWRF_L                   : a.achievement_LHWRF_L,
+                  achievement_NABARD_L                  : a.achievement_NABARD_L,
+                  achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
+                  achievement_DirectCC_L                : a.achievement_DirectCC_L,
+                  achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
+                  achievement_Govt_L                    : a.achievement_Govt_L,
+                  achievement_Other_L                   : a.achievement_Other_L,
+                  achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
+                }
+              })
+              this.setState({
+                tableData : tableData
+              },()=>{
+                console.log("resp",this.state.tableData)
+              })
+            })
+            .catch(function(error){  // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
             });
-          }
-        });
+        }
       }
-    }else{
-      axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-        .then((response)=>{
-          console.log("resp",response);
-            var tableData = response.data.map((a, i)=>{
-            return {
-              _id                                   : a._id,            
-              name                                  : a.name,
-              achievement_Reach                     : a.achievement_Reach,
-              achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
-              achievement_LHWRF_L                   : a.achievement_LHWRF_L,
-              achievement_NABARD_L                  : a.achievement_NABARD_L,
-              achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
-              achievement_DirectCC_L                : a.achievement_DirectCC_L,
-              achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
-              achievement_Govt_L                    : a.achievement_Govt_L,
-              achievement_Other_L                   : a.achievement_Other_L,
-              achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
-            }
-          })
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
-          })
-        })
-        .catch(function(error){  // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-        });
-    }
     }
   }
   handleFromChange(event){
@@ -589,9 +591,10 @@ class GeographicalReport extends Component{
                         <label className="formLable">District</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                           <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                            <option  className="hidden" >--select--</option>
+                           {/* <option  className="hidden" >--select--</option>*/}
+                            <option value="all" >All</option>
                               {
-                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 && this.state.center_ID!=="all" ? 
                                 this.state.availableDistInCenter.map((data, index)=>{
                                   console.log("data",data)
                                   return(
@@ -604,16 +607,16 @@ class GeographicalReport extends Component{
                                 null
                               }         
                             { /* {
-                                                                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                                                                this.state.availableDistInCenter.map((data, index)=>{
-                                                                                  console.log("data",data)
-                                                                                  return(
-                                                                                    <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
-                                                                                  );
-                                                                                })
-                                                                                :
-                                                                                null
-                                                                              }         */}                      
+                                  this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                  this.state.availableDistInCenter.map((data, index)=>{
+                                    console.log("data",data)
+                                    return(
+                                      <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }         */}                      
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.district}</div>*/}
@@ -622,7 +625,8 @@ class GeographicalReport extends Component{
                         <label className="formLable">Block</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                           <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                            <option  className="hidden" >-- Select --</option>
+                           {/* <option  className="hidden" >-- Select --</option>*/}
+                            <option value="all" >All</option>
                             {
                               this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                               this.state.listofBlocks.map((data, index)=>{
@@ -641,7 +645,8 @@ class GeographicalReport extends Component{
                         <label className="formLable">Village</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                           <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
-                            <option  className="hidden" >-- Select --</option>
+                            {/* <option  className="hidden" >-- Select --</option>*/}
+                            <option value="all" >All</option>
                             {
                               this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                               this.state.listofVillages.map((data, index)=>{

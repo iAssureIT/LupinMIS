@@ -20,6 +20,8 @@ class ADPReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
+        "center_ID"         : "all",
+        "center"            : "all",
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
@@ -102,15 +104,15 @@ class ADPReport extends Component{
         }).then((response)=> {
           this.setState({
             availableCenters : response.data,
-            center           : response.data[0].centerName+'|'+response.data[0]._id
+            // center           : response.data[0].centerName+'|'+response.data[0]._id
           },()=>{
             // console.log('center', this.state.center);
-            var center_ID = this.state.center.split('|')[1];
-            this.setState({
-              center_ID        : center_ID
-            },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
-            })
+            // var center_ID = this.state.center.split('|')[1];
+            // this.setState({
+            //   center_ID        : center_ID
+            // },()=>{
+            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+            // })
           })
         }).catch(function (error) {
             // console.log("error = ",error);
@@ -128,7 +130,11 @@ class ADPReport extends Component{
           [event.target.name] : event.target.value,
           selectedCenter : selectedCenter,
         },()=>{
-          var center = this.state.selectedCenter.split('|')[1];
+          if(this.state.selectedCenter==="all"){
+            var center = this.state.selectedCenter;
+          }else{
+            var center = this.state.selectedCenter.split('|')[1];
+          }
           console.log('center', center);
           this.setState({
             center_ID :center,            
@@ -140,41 +146,79 @@ class ADPReport extends Component{
     } 
     getData(startDate, endDate,center_ID, goal){
         console.log(startDate, endDate, center_ID);
-        axios.get('http://qalmisapi.iassureit.com/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "ADP Goal")
-        .then((response)=>{
-          console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-                _id             : a._id,            
-                goalName        : a.goalName,
-                activityName    : a.activityName,
-                unit            : a.unit,
-                Quantity        : a.Quantity,
-                Amount          : a.Amount,
-                Beneficiaries   : a.Beneficiaries,
-                LHWRF           : a.LHWRF,
-                NABARD          : a.NABARD,
-                Govt            : a.Govt,
-                Bank            : a.Bank,
-                Community       : a.Community,
-                Other           : a.Other,
-            }
-        })  
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
+        if(center_ID==="all"){
+          axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/ADP Goal')
+          .then((response)=>{
+            console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id             : a._id,            
+                  goalName        : a.goalName,
+                  activityName    : a.activityName,
+                  unit            : a.unit,
+                  Quantity        : a.Quantity,
+                  Amount          : a.Amount,
+                  Beneficiaries   : a.Beneficiaries,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  Govt            : a.Govt,
+                  Bank            : a.Bank,
+                  Community       : a.Community,
+                  Other           : a.Other,
+              }
+          })  
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
           })
-        })
-        .catch(function(error){
-            // console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
-        });
+          .catch(function(error){
+              // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
+          });
+        }else{
+          axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "ADP Goal")
+          .then((response)=>{
+            console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id             : a._id,            
+                  goalName        : a.goalName,
+                  activityName    : a.activityName,
+                  unit            : a.unit,
+                  Quantity        : a.Quantity,
+                  Amount          : a.Amount,
+                  Beneficiaries   : a.Beneficiaries,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  Govt            : a.Govt,
+                  Bank            : a.Bank,
+                  Community       : a.Community,
+                  Other           : a.Other,
+              }
+          })  
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){
+              // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
+          });
+        }
     }
     handleFromChange(event){
         event.preventDefault();
@@ -278,6 +322,7 @@ class ADPReport extends Component{
                                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
                                               <option className="hidden" >-- Select --</option>
+                                              <option value="all" >All</option>
                                               {
                                                 this.state.availableCenters && this.state.availableCenters.length >0 ?
                                                 this.state.availableCenters.map((data, index)=>{

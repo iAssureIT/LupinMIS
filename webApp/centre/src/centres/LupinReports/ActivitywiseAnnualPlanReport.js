@@ -31,7 +31,7 @@ class ActivitywiseAnnualPlanReport extends Component{
             // "sector_ID"         : "",
             // "center"            : "",
             // "center_ID"         : "",
-            // "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/masternotifications/list",
+            // "dataApiUrl"        : "/api/masternotifications/list",
             "twoLevelHeader"    : {
                 apply           : true,
                 firstHeaderData : [
@@ -178,7 +178,7 @@ class ActivitywiseAnnualPlanReport extends Component{
           var endDate = year.substring(10, 15)+"-03-31";    
          
           console.log(startDate, endDate, year, center_ID, sector_ID);
-          axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
+          axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
           .then((response)=>{
             console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
@@ -222,7 +222,7 @@ class ActivitywiseAnnualPlanReport extends Component{
           var endDate = year.substring(10, 15)+"-03-31";    
          
           console.log(startDate, endDate, year, center_ID, sector_ID);
-          axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
+          axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
           .then((response)=>{
             console.log("resp",response);
               var tableData = response.data.map((a, i)=>{

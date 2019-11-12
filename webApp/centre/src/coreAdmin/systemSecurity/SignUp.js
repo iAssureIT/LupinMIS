@@ -306,7 +306,7 @@ class SignUp extends Component {
 								</div>
 							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
 									<span className="blocking-span noIb">   
-									<select className="form-control inputBox abacusTextbox oesSignUpForm formLable" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName">
+									<select className="form-control abacusTextbox oesSignUpForm formLable" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName">
 		                               	<option hidden> Center Name</option>
 		                                  {
 		                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 

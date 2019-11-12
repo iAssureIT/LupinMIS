@@ -25,7 +25,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
         "startDate"         : "",
         "endDate"           : "",
-        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -174,8 +173,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       if(year){
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";    
-        // axios.get('http://qalmisapi.iassureit.com/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
-        axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
+        // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
+        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{

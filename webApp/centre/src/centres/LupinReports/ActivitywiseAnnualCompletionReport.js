@@ -25,7 +25,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
       
         "startRange"        : 0,
         "limitRange"        : 10000,
-        // "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID/:sector_ID",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -33,10 +32,10 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     heading : 'Activity Details',
                     mergedColoums : 3
                 },
-                {
-                    heading : 'Annual Plan',
-                    mergedColoums : 4
-                },
+                // {
+                //     heading : 'Annual Plan',
+                //     mergedColoums : 4
+                // },
                 {
                     heading : "Annual Financial Achievement 'Lakh'",
                     mergedColoums : 4
@@ -54,10 +53,10 @@ class ActivitywiseAnnualCompletionReport extends Component{
         "tableHeading"      : {
             "name"                          : 'Activity & Sub Activity',
             "unit"                          : 'Unit',
-            "annualPlan_Reach"              : 'Reach', 
-            "annualPlan_FamilyUpgradation"  : 'Families Upgradation', 
-            "annualPlan_PhysicalUnit"       : 'Physical Units', 
-            "annualPlan_TotalBudget"        : "Total Budget 'Rs'",
+            // "annualPlan_Reach"              : 'Reach', 
+            // "annualPlan_FamilyUpgradation"  : 'Families Upgradation', 
+            // "annualPlan_PhysicalUnit"       : 'Physical Units', 
+            // "annualPlan_TotalBudget"        : "Total Budget 'Rs'",
             "achievement_Reach"             : 'Reach', 
             "achievement_FamilyUpgradation" : 'Families Upgradation', 
             "achievement_PhysicalUnit"      : 'Physical Units', 
@@ -148,9 +147,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
   /*
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";*/
-    // axios.get('http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID/:sector_ID')
+    // axios.get('/api/report/annual_completion/:year/:center_ID/:sector_ID')
     if(year, center_ID, sector_ID){
-      axios.get('http://qalmisapi.iassureit.com/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID')
+      axios.get('/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID')
       .then((response)=>{
         console.log("resp",response);
         this.setState({

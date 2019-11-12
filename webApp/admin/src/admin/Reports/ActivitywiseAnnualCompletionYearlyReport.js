@@ -79,10 +79,10 @@ export default class YearlyReport extends Component{
         console.log('year', year, 'centerID', centerID, 'sector', sector);
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";
-        // axios.get('http://qalmisapi.iassureit.com/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)
+        // axios.get('/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)
         if(startDate, endDate, centerID, sector){
           /*  if(centerID==="all"){
-                axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector)
+                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector)
                 .then((response)=>{
                     console.log('response', response.data);
                     var tableData = response.data.map((a, i)=>{
@@ -116,7 +116,7 @@ export default class YearlyReport extends Component{
                     console.log('error', error);
                 })
             }else{*/
-                axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
+                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
                 .then((response)=>{
                     console.log('response', response);
                     var tableData = response.data.map((a, i)=>{

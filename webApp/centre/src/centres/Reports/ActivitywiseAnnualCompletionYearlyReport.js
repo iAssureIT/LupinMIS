@@ -79,7 +79,7 @@ export default class YearlyReport extends Component{
     getData(year, center_ID, sector){
         if(year){
         // centerID =this.state.center_ID
-        // axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
+        // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
             console.log('year', year,center_ID,sector);
             if(center_ID, sector){
                 console.log('year', year, 'center_ID', center_ID, 'sector', sector);
@@ -93,10 +93,10 @@ export default class YearlyReport extends Component{
                       _id                           : a._id,
                       name                          : a.name,
                       unit                          : a.unit,
-                      annualPlan_Reach              : a.annualPlan_Reach,
-                      annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
-                      annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
-                      annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
+                      // annualPlan_Reach              : a.annualPlan_Reach,
+                      // annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
+                      // annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
+                      // annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
                       achievement_Reach             : a.achievement_Reach,
                       achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
                       achievement_PhysicalUnit      : a.achievement_PhysicalUnit,

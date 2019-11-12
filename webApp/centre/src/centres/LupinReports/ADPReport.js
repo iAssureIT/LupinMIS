@@ -106,7 +106,7 @@ class ADPReport extends Component{
    
     getData(startDate, endDate,center_ID, goal){
         console.log(startDate, endDate, center_ID);
-        axios.get('http://qalmisapi.iassureit.com/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "ADP Goal")
+        axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "ADP Goal")
         .then((response)=>{
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{

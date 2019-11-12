@@ -23,7 +23,6 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         "limitRange"        : 10000,
         "startDate"         : "",
         "endDate"           : "",
-        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -168,8 +167,8 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
     }
     getData(startDate, endDate,center_ID){
         console.log(startDate, endDate, center_ID);
-        // axios.get('http://qalmisapi.iassureit.com/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
-        axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
+        // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
+        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{

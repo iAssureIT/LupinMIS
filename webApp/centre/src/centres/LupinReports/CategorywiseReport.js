@@ -321,8 +321,8 @@ class CategorywiseReport extends Component{
   getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){        
     // console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
     if(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){
-      // axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-      axios.get('http://qalmisapi.iassureit.com/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict)
+      // axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+      axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict)
       .then((response)=>{
         console.log("resp",response);
           var tableData = response.data.map((a, i)=>{

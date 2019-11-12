@@ -25,7 +25,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
       
         "startRange"        : 0,
         "limitRange"        : 10000,
-        // "dataApiUrl"        : "http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID/:sector_ID",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -170,9 +169,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
   getData(year, center_ID, sector_ID){/*
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";*/
-    // axios.get('http://qalmisapi.iassureit.com/api/report/annual_completion/:year/:center_ID/:sector_ID')
     if(year, center_ID, sector_ID){
-      axios.get('http://qalmisapi.iassureit.com/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID')
+      axios.get('/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID')
       .then((response)=>{
         console.log("resp",response);
         this.setState({

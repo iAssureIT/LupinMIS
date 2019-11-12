@@ -20,7 +20,13 @@ class VillagewisefamilyReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
-        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
+        "center"            : "all",
+        "sector"            : "all",
+        "center_ID"         : "all",
+        "sector_ID"         : "all",
+        "selectedDistrict"  : "all",
+        "block"             : "all",
+        "village"           : "all",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -112,15 +118,15 @@ class VillagewisefamilyReport extends Component{
     }).then((response)=> {
       this.setState({
         availableCenters : response.data,
-        center           : response.data[0].centerName+'|'+response.data[0]._id
+        // center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
         // console.log('center', this.state.center);
-        var center_ID = this.state.center.split('|')[1];
-        this.setState({
-          center_ID        : center_ID
-        },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-        })
+        // var center_ID = this.state.center.split('|')[1];
+        // this.setState({
+        //   center_ID        : center_ID
+        // },()=>{
+        // this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        // })
       })
     }).catch(function (error) {  
       // console.log("error = ",error);
@@ -138,7 +144,11 @@ class VillagewisefamilyReport extends Component{
       [event.target.name] : event.target.value,
       selectedCenter : selectedCenter,
     },()=>{
-      var center = this.state.selectedCenter.split('|')[1];
+      if(this.state.selectedCenter==="all"){
+        var center = this.state.selectedCenter;
+      }else{
+        var center = this.state.selectedCenter.split('|')[1];
+      }
       console.log('center', center);
       this.setState({
         center_ID :center,            
@@ -155,31 +165,32 @@ class VillagewisefamilyReport extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
       }).then((response)=> {
-        // console.log('response ==========',response.data[0].districtsCovered);
-        this.setState({
-          availableDistInCenter  : response.data[0].districtsCovered,
-          address                : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-          // districtsCovered : response.data[0].districtsCovered
-        },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-        var stateCode =this.state.address.split('|')[0];
-        console.log("availableDistInCenter",this.state.availableDistInCenter);
-         this.setState({
-          stateCode  : stateCode,
-
-        },()=>{
-        console.log("address",this.state.stateCode, this.state.availableDistInCenter);
-        });
-        })
-    }).catch(function (error) {  
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
+        function removeDuplicates(data, param){
+            return data.filter(function(item, pos, array){
+                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+            })
         }
-      });
+        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+        // console.log('availableDistInCenter ==========',availableDistInCenter);
+        this.setState({
+          availableDistInCenter  : availableDistInCenter,
+          address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+        },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        var stateCode =this.state.address.split('|')[0];
+         this.setState({
+            stateCode  : stateCode,
+          });
+      })
+    }).catch(function (error) {
+      console.log("districtError",+error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      } 
+    });
   } 
   getAvailableSectors(){
       axios({
@@ -189,14 +200,14 @@ class VillagewisefamilyReport extends Component{
           
           this.setState({
             availableSectors : response.data,
-            sector           : response.data[0].sector+'|'+response.data[0]._id
+            // sector           : response.data[0].sector+'|'+response.data[0]._id
           },()=>{
-          var sector_ID = this.state.sector.split('|')[1]
-          this.setState({
-            sector_ID        : sector_ID
-          },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-          })
+          // var sector_ID = this.state.sector.split('|')[1]
+          // this.setState({
+          //   sector_ID        : sector_ID
+          // },()=>{
+          // this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+          // })
           // console.log('sector', this.state.sector);
         })
       }).catch(function (error) {  
@@ -214,7 +225,11 @@ class VillagewisefamilyReport extends Component{
     this.setState({
       [event.target.name]:event.target.value
     });
-    var sector_id = event.target.value.split('|')[1];
+    if(event.target.value==="all"){
+      var sector_id = event.target.value;
+    }else{
+      var sector_id = event.target.value.split('|')[1];
+    }
     // console.log('sector_id',sector_id);
     this.setState({
           sector_ID : sector_id,
@@ -309,9 +324,9 @@ class VillagewisefamilyReport extends Component{
   getData(startDate, endDate, selectedDistrict, block, village, sector_ID){        
     console.log(startDate, endDate, selectedDistrict, block, village, sector_ID);
     console.log(selectedDistrict, block , village);
-    // axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
+    // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
     if(startDate, endDate, selectedDistrict, block, village, sector_ID){
-      axios.get('http://qalmisapi.iassureit.com/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+      axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
       .then((response)=>{
         console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
@@ -448,7 +463,7 @@ class VillagewisefamilyReport extends Component{
                         <label className="formLable">Center</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                            <option className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
                             {
                               this.state.availableCenters && this.state.availableCenters.length >0 ?
                               this.state.availableCenters.map((data, index)=>{
@@ -467,7 +482,7 @@ class VillagewisefamilyReport extends Component{
                         <label className="formLable">Sector</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
-                            <option  className="hidden" >--Select Sector--</option>
+                            <option value="all" >All</option>
                             {
                             this.state.availableSectors && this.state.availableSectors.length >0 ?
                             this.state.availableSectors.map((data, index)=>{
@@ -500,19 +515,20 @@ class VillagewisefamilyReport extends Component{
                         <label className="formLable">District</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                           <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                            <option  className="hidden" >--select--</option>
-                                
+                            <option value="all" >All</option>
                               {
-                              this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                              this.state.availableDistInCenter.map((data, index)=>{
-                                console.log("data",data)
-                                return(
-                                  <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
-                                );
-                              })
-                              :
-                              null
-                            }                               
+                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 && this.state.center_ID!=="all" ? 
+                                this.state.availableDistInCenter.map((data, index)=>{
+                                  console.log("data",data)
+                                  return(
+                                    /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+
+                                  );
+                                })
+                                :
+                                null
+                              }                       
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.district}</div>*/}
@@ -521,7 +537,7 @@ class VillagewisefamilyReport extends Component{
                         <label className="formLable">Block</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                           <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
                             {
                               this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                               this.state.listofBlocks.map((data, index)=>{
@@ -540,7 +556,7 @@ class VillagewisefamilyReport extends Component{
                         <label className="formLable">Village</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                           <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
-                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
                             {
                               this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                               this.state.listofVillages.map((data, index)=>{

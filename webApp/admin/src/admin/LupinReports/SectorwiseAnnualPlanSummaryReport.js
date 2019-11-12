@@ -209,7 +209,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           console.log("year",year);
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
-          axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/all')
+          axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all')
           .then((response)=>{
             console.log("resp",response);
             var tableData = response.data.map((a, i)=>{
@@ -249,7 +249,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           console.log("year",year);
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
-          axios.get('http://qalmisapi.iassureit.com/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
+          axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
           .then((response)=>{
             console.log("resp",response);
             var tableData = response.data.map((a, i)=>{

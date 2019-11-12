@@ -39,7 +39,7 @@ class AddFile extends Component{
     },()=>{console.log("fileType",this.state.fileType)})
     axios
       // .get('http://cofficapi.iassureit.com/api/projectSettings/single/S3')
-      .get('http://qalmisapi.iassureit.com/api/projectSettings/get/one/S3')
+      .get('/api/projectSettings/get/one/S3')
       .then((response)=>{
           // console.log("response",response);
        

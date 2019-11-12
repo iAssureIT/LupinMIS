@@ -284,9 +284,9 @@ class GeographicalReport extends Component{
   }
   getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){        
     console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
-    // axios.get('http://qalmisapi.iassureit.com/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
+    // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
     if(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){
-      axios.get('http://qalmisapi.iassureit.com/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+      axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
       .then((response)=>{
         console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
