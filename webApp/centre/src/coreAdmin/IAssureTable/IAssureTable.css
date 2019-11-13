@@ -45,13 +45,17 @@
 }
 .textAlignCenter{
   text-align: center !important;
-}
+}/*
+.textAlignLeft{
+  text-align: left !important;
+  white-space: nowrap;
+}*/
 .tempTableHeader{
   color: #fff;
 }
 
-.umDynamicHeader{
-  white-space: nowrap !important;
+.noWrapText{
+  white-space: nowrap;
 }
 .noPadding{
   padding: 0px;

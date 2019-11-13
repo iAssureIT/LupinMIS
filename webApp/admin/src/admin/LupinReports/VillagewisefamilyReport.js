@@ -47,7 +47,7 @@ class VillagewisefamilyReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "name_family"    : 'Name of Family',
+            "name_family"    : 'Name of Family Head',
             "familyID"       : 'Family ID',
             "activityName"   : 'Activity',
             "subactivityName": 'Subactivity',
@@ -247,8 +247,11 @@ class VillagewisefamilyReport extends Component{
     this.setState({
       district: district
     },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
-      // console.log("selectedDistrict",selectedDistrict);
+      if(this.state.district==="all"){
+        var selectedDistrict = this.state.district;
+      }else{
+        var selectedDistrict = this.state.district.split('|')[0];
+      }
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
@@ -262,14 +265,12 @@ class VillagewisefamilyReport extends Component{
     console.log("sd", stateCode,selectedDistrict);
     axios({
       method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
         // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
-        // console.log('listofBlocks', this.state.listofBlocks);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -281,23 +282,19 @@ class VillagewisefamilyReport extends Component{
     this.setState({
       block : block
     },()=>{
-      // console.log("block",block);
       this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
   getVillages(stateCode, selectedDistrict, block){
-    // console.log(stateCode, selectedDistrict, block);
     axios({
       method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
       url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
     }).then((response)=> {
         // console.log('response ==========', response.data);
         this.setState({
           listofVillages : response.data
         },()=>{
-        // console.log('listofVillages', this.state.listofVillages);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -325,46 +322,88 @@ class VillagewisefamilyReport extends Component{
     console.log(startDate, endDate, selectedDistrict, block, village, sector_ID);
     console.log(selectedDistrict, block , village);
     // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
-    if(startDate, endDate, selectedDistrict, block, village, sector_ID){
-      axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-      .then((response)=>{
-        console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-          return {
-            _id                    : a._id,            
-            name_family            : a.name_family,
-            familyID               : a.familyID,
-            familyID               : a.familyID,
-            activityName           : a.activityName,
-            subactivityName        : a.subactivityName,
-            unit                   : a.unit,
-            UnitCost               : a.UnitCost,
-            quantity               : a.quantity,
-            LHWRF                  : a.LHWRF,
-            NABARD                 : a.NABARD,
-            Bank_Loan              : a.Bank_Loan,
-            DirectCC               : a.DirectCC,
-            IndirectCC             : a.IndirectCC,
-            Govt                   : a.Govt,
-            Other                  : a.Other,
-            total                  : a.total,
+    if(startDate && endDate && selectedDistrict && block && village && sector_ID){
+      if(sector_ID==="all"){
+        axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all')
+        .then((response)=>{
+          console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+              _id                    : a._id,            
+              name_family            : a.name_family,
+              familyID               : a.familyID,
+              familyID               : a.familyID,
+              activityName           : a.activityName,
+              subactivityName        : a.subactivityName,
+              unit                   : a.unit,
+              UnitCost               : a.UnitCost,
+              quantity               : a.quantity,
+              LHWRF                  : a.LHWRF,
+              NABARD                 : a.NABARD,
+              Bank_Loan              : a.Bank_Loan,
+              DirectCC               : a.DirectCC,
+              IndirectCC             : a.IndirectCC,
+              Govt                   : a.Govt,
+              Other                  : a.Other,
+              total                  : a.total,
+            }
+          })
+          this.setState({
+            tableData : tableData
+          },()=>{
+            console.log("resp",this.state.tableData)
+          })
+        })
+        .catch(function(error){  
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
           }
+        });
+      }else{
+        axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+        .then((response)=>{
+          console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+              _id                    : a._id,            
+              name_family            : a.name_family,
+              familyID               : a.familyID,
+              familyID               : a.familyID,
+              activityName           : a.activityName,
+              subactivityName        : a.subactivityName,
+              unit                   : a.unit,
+              UnitCost               : a.UnitCost,
+              quantity               : a.quantity,
+              LHWRF                  : a.LHWRF,
+              NABARD                 : a.NABARD,
+              Bank_Loan              : a.Bank_Loan,
+              DirectCC               : a.DirectCC,
+              IndirectCC             : a.IndirectCC,
+              Govt                   : a.Govt,
+              Other                  : a.Other,
+              total                  : a.total,
+            }
+          })
+          this.setState({
+            tableData : tableData
+          },()=>{
+            console.log("resp",this.state.tableData)
+          })
         })
-        this.setState({
-          tableData : tableData
-        },()=>{
-          console.log("resp",this.state.tableData)
-        })
-      })
-      .catch(function(error){  
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
-      });
+        .catch(function(error){  
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
+        });
+      }
     }
   }
   handleFromChange(event){

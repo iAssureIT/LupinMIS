@@ -71,9 +71,9 @@ export default class YearlyReport extends Component{
                     return {
                         _id                               : a._id,
                         name                              : a.name,
-                        annualPlan_TotalBudget            : a.annualPlan_TotalBudget,
                         annualPlan_Reach                  : a.annualPlan_Reach, 
                         annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 
+                        annualPlan_TotalBudget            : a.annualPlan_TotalBudget,
                         achievement_Reach                 : a.achievement_Reach, 
                         achievement_FamilyUpgradation     : a.achievement_FamilyUpgradation, 
                         achievement_TotalBudget           : a.achievement_TotalBudget, 

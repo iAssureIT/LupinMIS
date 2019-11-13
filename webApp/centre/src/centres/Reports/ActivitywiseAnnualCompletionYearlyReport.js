@@ -81,7 +81,7 @@ export default class YearlyReport extends Component{
         // centerID =this.state.center_ID
         // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
             console.log('year', year,center_ID,sector);
-            if(center_ID, sector){
+            if(center_ID && sector){
                 console.log('year', year, 'center_ID', center_ID, 'sector', sector);
                 var startDate = year.substring(3, 7)+"-04-01";
                 var endDate = year.substring(10, 15)+"-03-31";

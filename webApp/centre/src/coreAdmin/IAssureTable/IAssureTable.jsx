@@ -573,13 +573,13 @@ class IAssureTable extends Component {
 																	var value2 = value1 ? value1.replace(regex,'') : '';
 																	var aN = value2.replace(this.state.reA, "");
 																	if(aN && $.type( aN ) === 'string'){
-																		var textAlign = 'textAlignLeft';
+																		var textAlign = 'textAlignLeft noWrapText';
 																	}else{
 																		var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
 																		if(bN){
 																			var textAlign = 'textAlignRight';
 																		}else{
-																			var textAlign = 'textAlignLeft';
+																			var textAlign = 'textAlignLeft noWrapText';
 																		}
 																	}
 																}else{

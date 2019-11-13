@@ -19,8 +19,8 @@ class GeographicalReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
-        "center"            : "all",
         "sector"            : "all",
+        "center"            : "all",
         "center_ID"         : "all",
         "sector_ID"         : "all",
         "selectedDistrict"  : "all",
@@ -116,12 +116,12 @@ class GeographicalReport extends Component{
         // center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
         // console.log('center', this.state.center);
-        var center_ID = this.state.center.split('|')[1];
-        this.setState({
-          center_ID        : center_ID
-        },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-        })
+        // var center_ID = this.state.center.split('|')[1];
+        // this.setState({
+        //   center_ID        : center_ID
+        // },()=>{
+        // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        // })
       })
     }).catch(function (error) {
         // console.log("error = ",error);
@@ -224,7 +224,6 @@ class GeographicalReport extends Component{
     }else{
       var sector_id = event.target.value.split('|')[1];
     }
-    // console.log('sector_id',sector_id);
     this.setState({
           sector_ID : sector_id,
         },()=>{
@@ -239,12 +238,11 @@ class GeographicalReport extends Component{
     this.setState({
       district: district
     },()=>{
-
-    if(this.state.district==="all"){
-      var selectedDistrict = this.state.district;
-    }else{
-      var selectedDistrict = this.state.district.split('|')[0];
-    }
+      if(this.state.district==="all"){
+        var selectedDistrict = this.state.district;
+      }else{
+        var selectedDistrict = this.state.district.split('|')[0];
+      }
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
@@ -332,7 +330,7 @@ class GeographicalReport extends Component{
     console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
     // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
     if(center_ID){
-      if(startDate, endDate, selectedDistrict, block, village, sector_ID){
+      if(startDate && endDate && selectedDistrict && block && village && sector_ID){
         if(center_ID==="all"){
           if(sector_ID==="all"){
             axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/all')

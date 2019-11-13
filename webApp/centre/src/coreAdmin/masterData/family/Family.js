@@ -680,12 +680,12 @@ class Family extends Component{
                     <hr className="hr-head container-fluid row"/>
                   </div>
                   <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="family">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                       <h4 className="pageSubHeader">Create New Family</h4>
-                    </div>
+                    
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div className=" col-lg-12 col-sm-12 col-xs-12 border_Box ">
-                    
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                          <h4 className="pageSubHeader">Create New Family</h4>
+                        </div>
                         {/*<div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                           <label className="formLable">Family ID</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="familyID" >
@@ -840,18 +840,18 @@ class Family extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.village}</div>
                         </div>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <br/>
+                          {
+                              this.state.editId ? 
+                              <button className=" col-lg-2 btn submit  pull-right" onClick={this.UpdateFamily.bind(this)}> Update </button>
+                              :
+                              <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitFamily.bind(this)}> Submit </button>
+                            }
+                        </div>
                       </div> 
                     </div>
                     <br/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <br/>
-                      {
-                          this.state.editId ? 
-                          <button className=" col-lg-2 btn submit  pull-right" onClick={this.UpdateFamily.bind(this)}> Update </button>
-                          :
-                          <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitFamily.bind(this)}> Submit </button>
-                        }
-                    </div>
                   </form>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                       <IAssureTable 

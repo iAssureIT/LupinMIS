@@ -1,6 +1,6 @@
 .iAssureITtable-bordered > thead > tr > th, .iAssureITtable-bordered > tbody > tr > th, .iAssureITtable-bordered > tfoot > tr > th, .iAssureITtable-bordered > thead > tr > td, .iAssureITtable-bordered > tbody > tr > td, .iAssureITtable-bordered > tfoot > tr > td {
     border: 1px solid #fff6;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 }
 .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #fff;
@@ -121,7 +121,8 @@
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }
-
+/*
 .umDynamicHeader{
   white-space: nowrap !important;
 }
+*/

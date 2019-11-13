@@ -888,7 +888,7 @@ class PlanDetails extends Component{
                         </div> 
                       </div><br/>                      
                       <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" style={hidden} id="Academic_details">
-                        <div className="row">
+                        <div className="row ">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
                             <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                               <label className="formLable">Sector</label><span className="asterix">*</span>

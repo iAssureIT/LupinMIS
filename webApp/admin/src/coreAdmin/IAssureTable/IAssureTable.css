@@ -51,8 +51,12 @@
 }
 
 .umDynamicHeader{
-  white-space: nowrap !important;
+  /*white-space: nowrap !important;*/
 }
 .noPadding{
   padding: 0px;
+}
+
+.noWrapText{
+  white-space: nowrap;
 }

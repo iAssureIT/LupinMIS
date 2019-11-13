@@ -1197,14 +1197,14 @@ class Activity extends Component{
                           <div className="errorMsg">{this.state.errors.govtscheme}</div>
                         </div>
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Direct Beneficiary Contribution</label>
+                          <label className="formLable">Direct Community Contribution</label>
                           <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
                             <input type="text" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  onKeyUp={this.calTotal.bind(this)}  value={this.state.directCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
                           </div>
                           <div className="errorMsg">{this.state.errors.directCC}</div>
                         </div>
                         <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Indirect Beneficiary Contribution</label>
+                          <label className="formLable">Indirect Community Contribution</label>
                           <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
                             <input type="text" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC" onKeyUp={this.calTotal.bind(this)}  value={this.state.indirectCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
                           </div>

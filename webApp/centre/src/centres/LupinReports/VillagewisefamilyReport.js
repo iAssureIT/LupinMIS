@@ -20,7 +20,12 @@ class VillagewisefamilyReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
-        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
+        "sector"            : "all",
+        "sector_ID"         : "all",
+        "district"          : "all",
+        "selectedDistrict"  : "all",
+        "block"             : "all",
+        "village"           : "all",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -41,7 +46,7 @@ class VillagewisefamilyReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "name_family"    : 'Name of Family',
+            "name_family"    : 'Name of Family Head',
             "familyID"       : 'Family ID',
             "activityName"   : 'Activity',
             "subactivityName": 'Subactivity',
@@ -161,15 +166,14 @@ class VillagewisefamilyReport extends Component{
           
           this.setState({
             availableSectors : response.data,
-            sector           : response.data[0].sector+'|'+response.data[0]._id
+            // sector           : response.data[0].sector+'|'+response.data[0]._id
           },()=>{
-          var sector_ID = this.state.sector.split('|')[1]
-          this.setState({
-            sector_ID        : sector_ID
-          },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-          })
-          // console.log('sector', this.state.sector);
+          // var sector_ID = this.state.sector.split('|')[1]
+          // this.setState({
+          //   sector_ID        : sector_ID
+          // },()=>{
+          // this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+          // })
         })
       }).catch(function (error) {  
         // console.log("error = ",error);
@@ -186,13 +190,14 @@ class VillagewisefamilyReport extends Component{
     this.setState({
       [event.target.name]:event.target.value
     });
-    var sector_id = event.target.value.split('|')[1];
-    // console.log('sector_id',sector_id);
+    if(event.target.value==="all"){
+      var sector_id = event.target.value;
+    }else{
+      var sector_id = event.target.value.split('|')[1];
+    }
     this.setState({
           sector_ID : sector_id,
         },()=>{
-        // console.log('availableSectors', this.state.availableSectors);
-        // console.log('sector_ID', this.state.sector_ID);
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
     })
@@ -204,13 +209,15 @@ class VillagewisefamilyReport extends Component{
     this.setState({
       district: district
     },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
-      // console.log("selectedDistrict",selectedDistrict);
+      if(this.state.district==="all"){
+        var selectedDistrict = this.state.district;
+      }else{
+        var selectedDistrict = this.state.district.split('|')[0];
+      }
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      // console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
@@ -219,14 +226,12 @@ class VillagewisefamilyReport extends Component{
     console.log("sd", stateCode,selectedDistrict);
     axios({
       method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
         // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
-        // console.log('listofBlocks', this.state.listofBlocks);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -282,47 +287,89 @@ class VillagewisefamilyReport extends Component{
     console.log(startDate, endDate, selectedDistrict, block, village, sector_ID);
     console.log(selectedDistrict, block , village);
     // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
-    if(startDate, endDate, selectedDistrict, block, village, sector_ID){
-      axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-      .then((response)=>{
-        console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-          return {
-            _id                    : a._id,            
-            name_family            : a.name_family,
-            familyID               : a.familyID,
-            familyID               : a.familyID,
-            activityName           : a.activityName,
-            subactivityName        : a.subactivityName,
-            unit                   : a.unit,
-            UnitCost               : a.UnitCost,
-            quantity               : a.quantity,
-            LHWRF                  : a.LHWRF,
-            NABARD                 : a.NABARD,
-            Bank_Loan              : a.Bank_Loan,
-            DirectCC               : a.DirectCC,
-            IndirectCC             : a.IndirectCC,
-            Govt                   : a.Govt,
-            Other                  : a.Other,
-            total                  : a.total,
-          }
-        })
-        this.setState({
-          tableData : tableData
-        },()=>{
-          console.log("resp",this.state.tableData)
-        })
-      })
-      .catch(function(error){  
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
+      if(startDate && endDate && selectedDistrict && block && village && sector_ID){
+        if(sector_ID==="all"){
+          axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all')
+          .then((response)=>{
+            console.log("resp",response);
+              var tableData = response.data.map((a, i)=>{
+              return {
+                _id                    : a._id,            
+                name_family            : a.name_family,
+                familyID               : a.familyID,
+                familyID               : a.familyID,
+                activityName           : a.activityName,
+                subactivityName        : a.subactivityName,
+                unit                   : a.unit,
+                UnitCost               : a.UnitCost,
+                quantity               : a.quantity,
+                LHWRF                  : a.LHWRF,
+                NABARD                 : a.NABARD,
+                Bank_Loan              : a.Bank_Loan,
+                DirectCC               : a.DirectCC,
+                IndirectCC             : a.IndirectCC,
+                Govt                   : a.Govt,
+                Other                  : a.Other,
+                total                  : a.total,
+              }
+            })
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){  
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
+        }else{
+          axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+          .then((response)=>{
+            console.log("resp",response);
+              var tableData = response.data.map((a, i)=>{
+              return {
+                _id                    : a._id,            
+                name_family            : a.name_family,
+                familyID               : a.familyID,
+                familyID               : a.familyID,
+                activityName           : a.activityName,
+                subactivityName        : a.subactivityName,
+                unit                   : a.unit,
+                UnitCost               : a.UnitCost,
+                quantity               : a.quantity,
+                LHWRF                  : a.LHWRF,
+                NABARD                 : a.NABARD,
+                Bank_Loan              : a.Bank_Loan,
+                DirectCC               : a.DirectCC,
+                IndirectCC             : a.IndirectCC,
+                Govt                   : a.Govt,
+                Other                  : a.Other,
+                total                  : a.total,
+              }
+            })
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){  
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
           });
         }
-      });
-    }
+      }
   }
   handleFromChange(event){
       event.preventDefault();
@@ -421,6 +468,7 @@ class VillagewisefamilyReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
                             <option  className="hidden" >--Select Sector--</option>
+                            <option value="all" >All</option>
                             {
                             this.state.availableSectors && this.state.availableSectors.length >0 ?
                             this.state.availableSectors.map((data, index)=>{
@@ -454,6 +502,7 @@ class VillagewisefamilyReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                           <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
                             <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
                                 
                               {
                               this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
@@ -476,6 +525,7 @@ class VillagewisefamilyReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                           <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
                             <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
                             {
                               this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                               this.state.listofBlocks.map((data, index)=>{
@@ -495,6 +545,7 @@ class VillagewisefamilyReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                           <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
                             <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
                             {
                               this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                               this.state.listofVillages.map((data, index)=>{

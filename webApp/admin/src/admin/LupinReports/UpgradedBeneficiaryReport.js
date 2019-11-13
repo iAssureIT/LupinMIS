@@ -20,6 +20,10 @@ class UpgradedBeneficiaryReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
+        "center"            : "all",
+        "center_ID"         : "all",
+        "sector_ID"         : "all",
+        "selectedDistrict"  : "all",
        "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -29,7 +33,7 @@ class UpgradedBeneficiaryReport extends Component{
                 }, 
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 5
+                    mergedColoums : 6
                 },
                 {
                     heading : 'Cost Sharing "Rs"',
@@ -45,11 +49,12 @@ class UpgradedBeneficiaryReport extends Component{
         "tableHeading"      : {
             "district"           : 'District',
             "block"              : 'Block',
-            "village"    : 'Village',
-            "beneficiaryID"    : 'Name of Beneficiary',
+            "village"            : 'Village',
+            "beneficiaryID"      : 'Name of Beneficiary',
             // "activityName"    : 'Project',
             "sectorName"         : 'Sector',
             "activityName"       : 'Activity',
+            "subactivityName"    : 'Sub-Activity',
             "date"               : 'Date Of Intervention',
             "unit"               : 'Unit',
             "quantity"           : 'Quantity',    
@@ -73,12 +78,10 @@ class UpgradedBeneficiaryReport extends Component{
       this.currentFromDate     = this.currentFromDate.bind(this);
       this.currentToDate       = this.currentToDate.bind(this);
       this.getAvailableCenters = this.getAvailableCenters.bind(this);
-      this.getAvailableSectors = this.getAvailableSectors.bind(this);
   }
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableCenters();
-    this.getAvailableSectors();
     this.currentFromDate();
     this.currentToDate();
     this.setState({
@@ -86,7 +89,7 @@ class UpgradedBeneficiaryReport extends Component{
       // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
@@ -95,11 +98,10 @@ class UpgradedBeneficiaryReport extends Component{
  
   componentWillReceiveProps(nextProps){
       this.getAvailableCenters();
-      this.getAvailableSectors();
       this.currentFromDate();
       this.currentToDate();
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+      // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
     event.preventDefault();
@@ -116,15 +118,15 @@ class UpgradedBeneficiaryReport extends Component{
     }).then((response)=> {
       this.setState({
         availableCenters : response.data,
-        center           : response.data[0].centerName+'|'+response.data[0]._id
+        // center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
         // console.log('center', this.state.center);
-        var center_ID = this.state.center.split('|')[1];
-        this.setState({
-          center_ID        : center_ID
-        },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-        })
+        // var center_ID = this.state.center.split('|')[1];
+        // this.setState({
+        //   center_ID        : center_ID
+        // },()=>{
+        // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        // })
       })
     }).catch(function (error) {  
         // console.log("error = ",error);
@@ -142,8 +144,11 @@ class UpgradedBeneficiaryReport extends Component{
       [event.target.name] : event.target.value,
       selectedCenter : selectedCenter,
     },()=>{
-      var center = this.state.selectedCenter.split('|')[1];
-      console.log('center', center);
+      if(this.state.selectedCenter==="all"){
+        var center = this.state.selectedCenter;
+      }else{
+        var center = this.state.selectedCenter.split('|')[1];
+      }
       this.setState({
         center_ID :center,            
       },()=>{
@@ -159,91 +164,51 @@ class UpgradedBeneficiaryReport extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
       }).then((response)=> {
-        // console.log('response ==========',response.data[0].districtsCovered);
+        function removeDuplicates(data, param){
+            return data.filter(function(item, pos, array){
+                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+            })
+        }
+        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
-          availableDistInCenter  : response.data[0].districtsCovered,
-          address                : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-          // districtsCovered : response.data[0].districtsCovered
+          availableDistInCenter  : availableDistInCenter,
+          address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
         var stateCode =this.state.address.split('|')[0];
-        console.log("availableDistInCenter",this.state.availableDistInCenter);
          this.setState({
-          stateCode  : stateCode,
-
-        },()=>{
-        console.log("address",this.state.stateCode, this.state.availableDistInCenter);
-        });
-        })
-    }).catch(function (error) {  
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
+            stateCode  : stateCode,
           });
-        }
-      });
-  } 
-  getAvailableSectors(){
-      axios({
-        method: 'get',
-        url: '/api/sectors/list',
-      }).then((response)=> {
-          
-          this.setState({
-            availableSectors : response.data,
-            sector           : response.data[0].sector+'|'+response.data[0]._id
-          },()=>{
-          var sector_ID = this.state.sector.split('|')[1]
-          this.setState({
-            sector_ID        : sector_ID
-          },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-          })
-          // console.log('sector', this.state.sector);
-        })
-      }).catch(function (error) {  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
+      })
+    }).catch(function (error) {
+      console.log("districtError",+error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
         });
-  }
-  selectSector(event){
-    event.preventDefault();
-    this.setState({
-      [event.target.name]:event.target.value
+      } 
     });
-    var sector_id = event.target.value.split('|')[1];
-    // console.log('sector_id',sector_id);
-    this.setState({
-          sector_ID : sector_id,
-        },()=>{
-        // console.log('availableSectors', this.state.availableSectors);
-        // console.log('sector_ID', this.state.sector_ID);
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-    })
-  }
+  } 
+ 
   districtChange(event){    
     event.preventDefault();
     var district = event.target.value;
     // console.log('district', district);
     this.setState({
       district: district
-    },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
-      // console.log("selectedDistrict",selectedDistrict);
+    },()=>{},()=>{
+      if(this.state.district==="all"){
+        var selectedDistrict = this.state.district;
+      }else{
+        var selectedDistrict = this.state.district.split('|')[0];
+      }
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      // console.log('selectedDistrict',this.state.selectedDistrict);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
@@ -256,7 +221,7 @@ class UpgradedBeneficiaryReport extends Component{
     }).then((response)=> {
         // console.log('response ==========', response.data);
         this.setState({
-          listofBlocks : response.data
+          listofBlocks : response.data7
         },()=>{
         // console.log('listofBlocks', this.state.listofBlocks);
         })
@@ -324,51 +289,144 @@ class UpgradedBeneficiaryReport extends Component{
   }
   getData(startDate, endDate, center_ID, selectedDistrict){        
     console.log(startDate, endDate, center_ID, selectedDistrict);
-    if(startDate, endDate, center_ID, selectedDistrict){
-      // axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-      axios.get('/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict)
-      .then((response)=>{
-        console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-          return {
-            _id             : a._id,            
-            district        : a.district,
-            block           : a.block,
-            village         : a.village,
-            beneficiaryID   : a.beneficiaryID,
-            date            : a.date,
-            sectorName      : a.sectorName,
-            activityName    : a.activityName,
-            subactivityName : a.subactivityName,
-            unit            : a.unit,
-            quantity        : a.quantity,
-            unitCost        : a.unitCost,
-            totalcost       : a.totalcost,
-            LHWRF           : a.LHWRF,
-            NABARD          : a.NABARD,
-            bankLoan        : a.bankLoan,
-            govtscheme      : a.govtscheme,
-            directCC        : a.directCC,
-            indirectCC      : a.indirectCC,
-            other           : a.other,
-            total           : a.total,
+    if(center_ID){
+      if(startDate && endDate && selectedDistrict){
+        if(center_ID==="all"){
+          if(selectedDistrict==="all"){
+            axios.get('/api/report/upgraded/'+startDate+'/'+endDate+'/all/all')
+            .then((response)=>{
+              console.log("resp",response);
+                var tableData = response.data.map((a, i)=>{
+                return {
+                  _id             : a._id,            
+                  district        : a.district,
+                  block           : a.block,
+                  village         : a.village,
+                  beneficiaryID   : a.beneficiaryID,
+                  sectorName      : a.sectorName,
+                  activityName    : a.activityName,
+                  subactivityName : a.subactivityName,
+                  date            : a.date,
+                  unit            : a.unit,
+                  quantity        : a.quantity,
+                  unitCost        : a.unitCost,
+                  totalcost       : a.totalcost,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  bankLoan        : a.bankLoan,
+                  govtscheme      : a.govtscheme,
+                  directCC        : a.directCC,
+                  indirectCC      : a.indirectCC,
+                  other           : a.other,
+                  total           : a.total,
+                }
+              })
+              this.setState({
+                tableData : tableData
+              },()=>{
+                // console.log("resp",this.state.tableData)
+              })
+            })
+            .catch(function(error){  
+              // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
+            });
+          }else{
+            axios.get('/api/report/upgraded/'+startDate+'/'+endDate+'/all/'+selectedDistrict)
+            .then((response)=>{
+              console.log("resp",response);
+                var tableData = response.data.map((a, i)=>{
+                return {
+                  _id             : a._id,            
+                  district        : a.district,
+                  block           : a.block,
+                  village         : a.village,
+                  beneficiaryID   : a.beneficiaryID,
+                  sectorName      : a.sectorName,
+                  activityName    : a.activityName,
+                  subactivityName : a.subactivityName,
+                  date            : a.date,
+                  unit            : a.unit,
+                  quantity        : a.quantity,
+                  unitCost        : a.unitCost,
+                  totalcost       : a.totalcost,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  bankLoan        : a.bankLoan,
+                  govtscheme      : a.govtscheme,
+                  directCC        : a.directCC,
+                  indirectCC      : a.indirectCC,
+                  other           : a.other,
+                  total           : a.total,
+                }
+              })
+              this.setState({
+                tableData : tableData
+              },()=>{
+                // console.log("resp",this.state.tableData)
+              })
+            })
+            .catch(function(error){  
+              // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
+            });
           }
-        })
-        this.setState({
-          tableData : tableData
-        },()=>{
-          console.log("resp",this.state.tableData)
-        })
-      })
-      .catch(function(error){  
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
+        }else{
+          axios.get('/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict)
+            .then((response)=>{
+              console.log("resp",response);
+                var tableData = response.data.map((a, i)=>{
+                return {
+                  _id             : a._id,            
+                  district        : a.district,
+                  block           : a.block,
+                  village         : a.village,
+                  beneficiaryID   : a.beneficiaryID,
+                  sectorName      : a.sectorName,
+                  activityName    : a.activityName,
+                  subactivityName : a.subactivityName,
+                  date            : a.date,
+                  unit            : a.unit,
+                  quantity        : a.quantity,
+                  unitCost        : a.unitCost,
+                  totalcost       : a.totalcost,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  bankLoan        : a.bankLoan,
+                  govtscheme      : a.govtscheme,
+                  directCC        : a.directCC,
+                  indirectCC      : a.indirectCC,
+                  other           : a.other,
+                  total           : a.total,
+                }
+              })
+              this.setState({
+                tableData : tableData
+              },()=>{
+                // console.log("resp",this.state.tableData)
+              })
+            })
+            .catch(function(error){  
+              // console.log("error = ",error);
+              if(error.message === "Request failed with status code 401"){
+                swal({
+                    title : "abc",
+                    text  : "Session is Expired. Kindly Sign In again."
+                });
+              }
+            });
         }
-      });
+      }
     }
   }
   handleFromChange(event){
@@ -468,6 +526,7 @@ class UpgradedBeneficiaryReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
                             <option className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
                             {
                               this.state.availableCenters && this.state.availableCenters.length >0 ?
                               this.state.availableCenters.map((data, index)=>{
@@ -486,19 +545,20 @@ class UpgradedBeneficiaryReport extends Component{
                         <label className="formLable">District</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                           <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                            <option  className="hidden" >--select--</option>
-                                
+                            <option value="all" >All</option>
                               {
-                              this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                              this.state.availableDistInCenter.map((data, index)=>{
-                                console.log("data",data)
-                                return(
-                                  <option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>
-                                );
-                              })
-                              :
-                              null
-                            }                               
+                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 && this.state.center_ID!=="all" ? 
+                                this.state.availableDistInCenter.map((data, index)=>{
+                                  // console.log("data",data)
+                                  return(
+                                    /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+
+                                  );
+                                })
+                                :
+                                null
+                              }                                        
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.district}</div>*/}

@@ -32,16 +32,16 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     heading : 'Activity Details',
                     mergedColoums : 3
                 },
-                {
-                    heading : 'Annual Plan',
-                    mergedColoums : 4
-                },
+                // {
+                //     heading : 'Annual Plan',
+                //     mergedColoums : 4
+                // },
                 {
                     heading : "Annual Financial Achievement 'Lakh'",
                     mergedColoums : 4
                 },
                 {
-                    heading : "Source OF Financial Achievement",
+                    heading : "Source Of Financial Achievement",
                     mergedColoums : 7
                 },
            /*     {
@@ -53,10 +53,10 @@ class ActivitywiseAnnualCompletionReport extends Component{
         "tableHeading"      : {
             "name"                          : 'Activity & Sub Activity',
             "unit"                          : 'Unit',
-            "annualPlan_Reach"              : 'Reach', 
-            "annualPlan_FamilyUpgradation"  : 'Families Upgradation', 
-            "annualPlan_PhysicalUnit"       : 'Physical Units', 
-            "annualPlan_TotalBudget"        : "Total Budget 'Rs'",
+            // "annualPlan_Reach"              : 'Reach', 
+            // "annualPlan_FamilyUpgradation"  : 'Families Upgradation', 
+            // "annualPlan_PhysicalUnit"       : 'Physical Units', 
+            // "annualPlan_TotalBudget"        : "Total Budget 'Rs'",
             "achievement_Reach"             : 'Reach', 
             "achievement_FamilyUpgradation" : 'Families Upgradation', 
             "achievement_PhysicalUnit"      : 'Physical Units', 
