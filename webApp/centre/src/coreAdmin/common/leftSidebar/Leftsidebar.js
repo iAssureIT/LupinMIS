@@ -24,6 +24,17 @@ export default class Leftsidebar extends Component{
      });
   });*/
   }    
+
+  eventclk1(event){
+    event.preventDefault();
+    $(event.currentTarget).children('.treeview-menu').slideToggle();
+    $(event.currentTarget).addClass('active');
+    $(event.currentTarget).children(Link).children(".rotate").toggleClass("down");
+    $(event.currentTarget).siblings('li').removeClass('active');
+    // $(event.currentTarget).siblings('li').children('.treeview-menu').toggle();
+
+  } 
+
    Addclass(event){
      // $(".menuContent").toggleClass("openContent");
    /*   if ($('menuContent').attr('aria-expanded') === true) {
@@ -44,216 +55,217 @@ export default class Leftsidebar extends Component{
               </div>
               <ul className="list-unstyled sidebar-menu components">
                 <li className=" sidebarMenuText">
-                  <a href="/">
+                  <Link to="/">
                     <i className="glyphicon glyphicon-briefcase"></i>
                     Dashboard
-                  </a>
+                  </Link>
                 </li>
                 <li className="sidebarMenuText">
-                  <a href="/plan-details" >
+                  <Link to="/plan-details" >
                     <i className="fa fa-pie-chart" />
                     Plan Details
-                  </a>
+                  </Link>
                 </li>
-                <li className="sidebarMenuText">
-                  <a href="#Activity" data-toggle="collapse" aria-expanded="false">
+                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
+                  <Link to="#Activity" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-edit" />
                     Activity
-                   {/* <span className="pull-right-container">
-                      <i className="fa fa-angle-left pull-right" />
-                    </span>*/}
-                  </a>
-                  <ul className="collapse list-unstyled" id="Activity">
+                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                  </Link>
+                  <ul className="collapse  list-unstyled" id="Activity">
                     <li>
-                      <a href="/activity">
+                      <Link to="/activity">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Submit Activity</span>
-                      </a>
+                      </Link>
                     </li>                   
                     <li>
-                      <a href="/viewActivity">
+                      <Link to="/viewActivity">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">View all Activities</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/activityReportView">
+                      <Link to="/activityReportView">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activity Report View</span>
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li> 
                 {/*<li className="sidebarMenuText">
-                  <a href="/planDetails" >
+                  <Link to="/planDetails" >
                     <i className="fa fa-book" />
                     Reports
-                  </a>
+                  </Link>
                 </li>*/}
-                <li className="sidebarMenuText">
-                  <a href="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent" onClick={this.Addclass.bind(this)}>
+                <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
+                  <Link to="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent" >
                     <i className="fa fa-file" />
                     Plan Related Reports
-                  {/*      <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>*/}
-                  </a>
+                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                  </Link>
                   <ul className="collapse list-unstyled" id="planreport">
                     <li>
-                      <a href="/activitywise-annual-plan-report">
+                      <Link to="/activitywise-annual-plan-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activitywise Annual Plan</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/activity-wise-periodic-plan-report">
+                      <Link to="/activity-wise-periodic-plan-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activitywise Periodic Plan</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/sector-wise-periodic-plan-summary-report">
+                      <Link to="/sector-wise-periodic-plan-summary-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector wise Periodic Plan</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/sector-wise-annual-plan-summary-report">
+                      <Link to="/sector-wise-annual-plan-summary-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector wise Annual Plan</span>
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li> 
-                <li className="sidebarMenuText">
-                  <a href="#report" data-toggle="collapse" aria-expanded="false">
+                <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
+                  <Link to="#report" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-book" />
                     Reports
-                  </a>
+                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                  </Link>
                   <ul className="collapse list-unstyled" id="report">
                    {/* <li>
-                      <a href="/Report">
+                      <Link to="/Report">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Report</span>
-                      </a>
+                      </Link>
                     </li>*/}
                     <li>
-                      <a href="/activitywise-annual-completion-report">
+                      <Link to="/activitywise-annual-completion-report">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Activitywise Annual Report</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/sector-wise-annual-completion-summary-report">
+                      <Link to="/sector-wise-annual-completion-summary-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sectorwise Annual Report</span>
-                      </a>
+                      </Link>
                     </li>
                    <li>
-                      <a href="/activity-wise-periodic-variance-report">
+                      <Link to="/activity-wise-periodic-variance-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activitywise Periodic Variance</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/sectorwise-periodic-variance-summary-report">
+                      <Link to="/sectorwise-periodic-variance-summary-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sectorwise Periodic Variance</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/activity-wise-periodic-physical-variance-report">
+                      <Link to="/activity-wise-periodic-physical-variance-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activitywise Peri. Physi. Vari.</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/geographical-report">
+                      <Link to="/geographical-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Geographical Report</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/villagewise-family-report">
+                      <Link to="/villagewise-family-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Villagewise Family Report</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/category-wise-report">
+                      <Link to="/category-wise-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Categorywise Report</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/upgraded-beneficiary-report">
+                      <Link to="/upgraded-beneficiary-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Upgraded Beneficiary Report</span>
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li> 
-                <li className="sidebarMenuText">
-                  <a href="#sreport" data-toggle="collapse" aria-expanded="false">
+                <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
+                  <Link to="#sreport" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-bars" />
                     Special Reports
-                  </a>
+                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                  </Link>
                   <ul className="collapse list-unstyled" id="sreport">
                     <li>
-                      <a href="/SDG-report">
+                      <Link to="/SDG-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">SDG Report</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/ADP-report">
+                      <Link to="/ADP-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">ADP Report</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="/EMP-report">
+                      <Link to="/EMP-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">EMP Report</span>
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
-                <li className="sidebarMenuText">
-                  <a href="#MasterData" data-toggle="collapse" aria-expanded="false">
+                <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
+                  <Link to="#MasterData" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-folder" />
                     Beneficiary Management
-                  </a>
+                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                  </Link>
                   <ul className="collapse list-unstyled" id="MasterData">
                     <li>
-                      <a href="/family">
+                      <Link to="/family">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Create Family</span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="beneficiary">
+                      <Link to="beneficiary">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Create Beneficiary</span>
-                      </a>
+                      </Link>
                     </li>             
                   </ul>
                 </li> 
-                <li className="sidebarMenuText">
-                  <a href="/centerList" >
+                <li className="sidebarMenuText" >
+                  <Link to="/centerList" >
                     <i className="fa fa-th" />
                     Center List
-                  </a>
+                  </Link>
                 </li>
                 <li className="sidebarMenuText">
-                  <a href="/caseStudy" >
+                  <Link to="/caseStudy" >
                     <i className="fa fa-th" />
                     Case Study
-                  </a>
+                  </Link>
                 </li>
                 <li className="sidebarMenuText">
-                  <a href="/highlight" >
+                  <Link to="/highlight" >
                     <i className="fa fa-th" />
                     Highlights
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>

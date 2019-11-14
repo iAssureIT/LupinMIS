@@ -1,3 +1,16 @@
+ .collapse.in{
+  height: auto !important;
+} 
+.menuContent .down{
+  transform: rotate(-90deg);
+}
+.rotate{
+  transition: all 0.2s linear;
+}
+.leftarrow{
+  font-size: 10px;
+  margin-top: 7px;
+}
 .sidebarLogoName p{
   font-size: 14px;
 }
@@ -424,9 +437,9 @@ a.article, a.article:hover {
     /*text-align: center;*/
     margin: 0px;
     background: #fff;
-    padding: 15px;
     color: #444;
-    border-top: 1px solid #d2d6de;
+    padding: 20px 0px 10px 0px;
+    color: #444;
   }
   /* Fixed layout */
   .fixed .main-header,
@@ -498,7 +511,6 @@ a.article, a.article:hover {
   /* Content */
   .content {
     min-height: calc(100vh - 50px);
-    background: #f2f2f2;
     padding: 2%;
   /*  margin-right: auto;
     margin-left: auto;

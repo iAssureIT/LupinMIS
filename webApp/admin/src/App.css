@@ -1,3 +1,11 @@
+/*Page content */
+.pageContent{
+
+  background-color: #ffffff !important;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  min-height: 700px !important;
+}
 .App {
 /*  text-align: center;
 */}
@@ -9,7 +17,7 @@
 
 .content {
     min-height: 60vh !important;
-    padding: 20px;
+    /*padding: 20px;*/
     margin-right: auto;
     margin-left: auto;
     padding-left: 15px;
@@ -80,11 +88,13 @@
 
 .headereffect
 {
-    width: 94%!important;
+    /*width: 94%!important;*/
+    width: 93.8%!important;
   }
   .dashboardeffect
 {
-    width: 94.2%!important;
+    width: 93.8%!important;
+    /*width: 94.2%!important;*/
   }
 .leftsidebarbackgroundcolor{
   position: fixed!important;
@@ -361,15 +371,6 @@ input, select{
     font-weight: 500;
 }
 
-
-/*Page content */
-.pageContent{
-
-  background-color: #ffffff !important;
-  padding-bottom: 15px;
-  margin-bottom :15px;
-  min-height: 900px !important;
-}
 
 .asterix{
   color: #ff4444;

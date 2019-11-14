@@ -1,7 +1,4 @@
-.content{
-    /*height: 2000px;*/
-    background-color: #ecf0f5;
-}
+
 .mainicon{
     height: 85px;
 border-radius: 2px 2px 2px 2px;
@@ -292,12 +289,3 @@ border-radius: 2px 0px 0px 2px;
 .breadcrumb{
     background-color: #eee !important;
 }
-
-#dashbordid{
-  position: absolute;
-  width: 82%;
-  right: 10px;
-  transition: all 0.8s;
-  top:50px;
-  /* background-color: #eee; */
-  }

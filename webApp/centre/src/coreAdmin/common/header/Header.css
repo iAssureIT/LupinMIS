@@ -170,13 +170,6 @@
   position: absolute; 
   text-overflow: ellipsis;
 }
-/*#headerid{
-  position: absolute;
-  height: 50px;
-  width: 82.5%;
-  right: 0px;
-  transition: all 0.8s;
-}*/
 #headerid {
   position: fixed;
   width: 82.3%;
@@ -185,9 +178,8 @@
   transition: all .8s;
   box-shadow: 0 10px 14px rgba(92,141,255,.2);
   transition-duration: 0.8s;
-  }
 
-
+}
 .fontB{
   color: #333;
 }

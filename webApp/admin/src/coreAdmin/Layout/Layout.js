@@ -146,23 +146,20 @@ componentDidMount(){
     // {console.log("loggedIn status layput = ", this.state.loggedIn)}
     if(this.state.loggedIn===true){
       return(
+        <Router>
             <div className="App container-fluid">
-               <div className="col-lg-2 row leftsidebarbackgroundcolor">
-                    <div className="row">
-                       <Leftsidebar />
-                    </div>
-                  </div>
-                <div className="row  ">
-                  <div id="headerid" className="headerbackgroundcolor ">
-                    <div className="">
-                      <Header />
-                   </div>
-                  </div>
-                  <div className="content">                  
-                    <div id="dashbordid" className="">
-                      <Router>
-                        <Switch>
-{/*                          <Route path="/horizontalBar" component={horizontalBar} exact />*/}
+              <div className="row">
+                <div id="headerid" className="headerbackgroundcolor">
+                  <div className="">
+                    <Header />
+                 </div>
+                </div>
+                <div id="dashbordid" className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                  <div className="">
+                    <div className=" mainContentBottom">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground">                  
+                      <Switch>
+                           {/*   <Route path="/horizontalBar" component={horizontalBar} exact />*/}
                           <Route path="/CenterwiseBarChart" component={CenterwiseBarChart} exact />
                           <Route path="/SourcewiseBarChart" component={SourcewiseBarChart} exact />
                           <Route path="/Chart" component={Chart} exact />
@@ -173,20 +170,20 @@ componentDidMount(){
                           <Route path="/DashboardNew" component={DashboardNew} exact />
                           <Route path="/dashboard" component={Dashboard} exact />
                           <Route path="/umlistofusers" component={UMListOfUsers} exact />
-                        {/* <Route path="/umlistofemp" component={UMListOfEmp} exact />*/}
+                          {/* <Route path="/umlistofemp" component={UMListOfEmp} exact />*/}
                           <Route path="/umroleslist" component={UMRolesList} exact />
                           <Route path="/edituserprofile/:id" component={EditUserProfile} exact />
 
                           <Route path="/ViewTemplates" component={ViewTemplates} exact />
 
                           <Route path="/companysetting" component={CompanySetting} exact />
-                        {/*      <Route path="/companysettingG" component={CompanySettingG} exact />*/}                              
-                         {/*----------------------------------------------*/}
+                          {/*      <Route path="/companysettingG" component={CompanySettingG} exact />*/}                              
+                          {/*----------------------------------------------*/}
 
-                        {/*Access Management*/}
+                          {/*Access Management*/}
                           <Route path="/admin/AddModuleFacility"                                      exact strict component={ AddModuleFacility } />
                           <Route path="/admin/AssignPermissionToModule"                               exact strict component={ AssignPermissionToModules } />
-                         {/*Master Data*/}
+                           {/*Master Data*/}
                           <Route path="/type-center"                                                  exact strict component={ Type_Center } />
                           <Route path="/type-center/"                                                  exact strict component={ Type_Center } />
                           <Route path="/type-center/:typeofCenterId"                                                  exact strict component={ Type_Center } />
@@ -211,7 +208,7 @@ componentDidMount(){
                           <Route path="/plan-details"                                                 exact strict component={ plan } />
                           <Route path="/plan-details/"                                                exact strict component={ plan } />
                           <Route path="/plan-details/:id"                                             exact strict component={ plan } />
-{/*                          <Route path="/report/activitywise-annual-completion-report"                 exact strict component={ report } />*/}                          <Route path="/report/"                                                      exact strict component={ report } />
+                          {/*<Route path="/report/activitywise-annual-completion-report"                 exact strict component={ report } />*/}                          <Route path="/report/"                                                      exact strict component={ report } />
                           <Route path="/report/:url"                                                  exact strict component={ report } />
                           <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
                           <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
@@ -231,17 +228,23 @@ componentDidMount(){
                           <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
                           <Route path="/Report"                                                       exact strict component={ report } />
                           <Route path="/Report/:id"                                                   exact strict component={ report } />
-                        </Switch>        
-                      </Router>
+                      </Switch>        
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div  id="headerid" className="">
-                    <div className="">
-                    {/*<Footer/>*/}
-                   </div>
+                  <div className="footerCSS col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                    <Footer />
                   </div>
+                </div>
+                <div className="leftsidebarbackgroundcolor">
+                  <div className="row">
+                    <Leftsidebar />
+                  </div>
+                </div>
+              </div>
             </div> 
+          </Router>
+      
         );
     }else{
        return(

@@ -113,20 +113,19 @@ class Layout extends Component{
     // {console.log("loggedIn status layput = ", this.state.loggedIn)}
     if(this.state.loggedIn===true){
       return(
+          <Router>
             <div className="App container-fluid">
-           
-                <div className="row">
-                  <div id="headerid" className="headerbackgroundcolor ">
-                    <div className="">
-                      <Header />
-                   </div>
-                  </div>
-                      <div className="">                  
-                        <div id="dashbordid" className="">
-                         {/* <button className="btn btn-primary pull-right" onClick={this.logout.bind(this)}>Logout</button>
-                          */} <Router>
-                              <Switch>
-                              // <Route path="/" component={Dashboard} exact />           
+              <div className="row">
+                <div id="headerid" className="headerbackgroundcolor">
+                  <div className="">
+                    <Header />
+                 </div>
+                </div>
+                <div id="dashbordid" className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                  <div className="">
+                    <div className=" mainContentBottom">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground">                  
+                        <Switch>
                               <Route path="/dashboard" component={Dashboard} exact />           
 
                             {/*Master Data*/}
@@ -178,20 +177,21 @@ class Layout extends Component{
                 {/*                    <Route path="/monthwise"                         exact strict component={ Monthwise } />
                 */}                                              
                               </Switch>        
-                          </Router>
-                        </div>
                       </div>
-                  <div className="leftsidebarbackgroundcolor">
-                    <div className="row">
-                       <Leftsidebar />
                     </div>
                   </div>
-                  <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-                    <div className="">
-                   </div>
+                  <div className="footerCSS col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                    <Footer />
                   </div>
                 </div>
+                <div className="leftsidebarbackgroundcolor">
+                  <div className="row">
+                    <Leftsidebar />
+                  </div>
+                </div>
+              </div>
             </div> 
+          </Router>
         );
     }else{
        return(
@@ -217,6 +217,4 @@ export default Layout;
 
 
 
-
-// value={data.centerName+'|'+data._id}
 
