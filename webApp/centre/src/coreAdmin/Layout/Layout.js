@@ -126,6 +126,7 @@ class Layout extends Component{
                     <div className=" mainContentBottom">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground">                  
                         <Switch>
+                              <Route path="/" component={Dashboard} exact />           
                               <Route path="/dashboard" component={Dashboard} exact />           
 
                             {/*Master Data*/}
