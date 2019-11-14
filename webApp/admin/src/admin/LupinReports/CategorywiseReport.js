@@ -21,8 +21,8 @@ class CategorywiseReport extends Component{
         "startRange"        : 0,
         "limitRange"        : 10000,
         "center"            : "all",
-        "district"          : "all",
         "center_ID"         : "all",
+        "district"          : "all",
         "selectedDistrict"  : "all",
         "twoLevelHeader"    : {
             apply           : true,
@@ -38,12 +38,11 @@ class CategorywiseReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "incomeCategory"    : 'Income Category',
-            "landCategory"    : 'Land Holding Category',
-            "specialCategory"    : 'Special Category',
-            "Reach"             : 'Reached',
-            "FamilyUpgradation" : 'Upgraded',
-        
+          "incomeCategory"    : 'Income Category',
+          "landCategory"      : 'Land Holding Category',
+          "specialCategory"   : 'Special Category',
+          "Reach"             : 'Reached',
+          "FamilyUpgradation" : 'Upgraded',        
         },
         "tableObjects"        : {
             paginationApply     : false,

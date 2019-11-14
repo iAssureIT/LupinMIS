@@ -20,13 +20,14 @@ class CategorywiseReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
-        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
+        "district"          : "all",
+        "selectedDistrict"  : "all",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
                 {
                     heading : 'Family Details',
-                    mergedColoums : 2
+                    mergedColoums :4 
                 }, 
                 {
                     heading : 'No of Families',
@@ -35,14 +36,15 @@ class CategorywiseReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "FamilyCategory"    : 'Family Category',
-            "Reach"             : 'Reached',
-            "FamilyUpgradation" : 'Upgraded',
-        
+          "incomeCategory"    : 'Income Category',
+          "landCategory"      : 'Land Holding Category',
+          "specialCategory"   : 'Special Category',
+          "Reach"             : 'Reached',
+          "FamilyUpgradation" : 'Upgraded',        
         },
         "tableObjects"        : {
-            paginationApply     : false,
-            searchApply         : false,
+          paginationApply     : false,
+          searchApply         : false,
         },   
     }
       window.scrollTo(0, 0);
@@ -50,8 +52,6 @@ class CategorywiseReport extends Component{
       this.handleToChange      = this.handleToChange.bind(this);
       this.currentFromDate     = this.currentFromDate.bind(this);
       this.currentToDate       = this.currentToDate.bind(this);
-      this.getAvailableCenters = this.getAvailableCenters.bind(this);
-      this.getAvailableSectors = this.getAvailableSectors.bind(this);
   }
   componentDidMount(){
     const center_ID = localStorage.getItem("center_ID");
@@ -67,8 +67,6 @@ class CategorywiseReport extends Component{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    this.getAvailableCenters();
-    this.getAvailableSectors();
     this.currentFromDate();
     this.currentToDate();
     this.setState({
@@ -84,8 +82,6 @@ class CategorywiseReport extends Component{
   }
  
   componentWillReceiveProps(nextProps){
-      this.getAvailableCenters();
-      this.getAvailableSectors();
       this.currentFromDate();
       this.currentToDate();
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
@@ -99,50 +95,6 @@ class CategorywiseReport extends Component{
       // console.log('name', this.state)
     });
   }
-  getAvailableCenters(){
-    axios({
-      method: 'get',
-      url: '/api/centers/list',
-    }).then((response)=> {
-      this.setState({
-        availableCenters : response.data,
-        center           : response.data[0].centerName+'|'+response.data[0]._id
-      },()=>{
-        // console.log('center', this.state.center);
-        var center_ID = this.state.center.split('|')[1];
-        this.setState({
-          center_ID        : center_ID
-        },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-        })
-      })
-    }).catch(function (error) {
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
-    });
-  }
-  selectCenter(event){
-    var selectedCenter = event.target.value;
-    this.setState({
-      [event.target.name] : event.target.value,
-      selectedCenter : selectedCenter,
-    },()=>{
-      var center = this.state.selectedCenter.split('|')[1];
-      // console.log('center', center);
-      this.setState({
-        center_ID :center,            
-      },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-        this.getAvailableCenterData(this.state.center_ID);
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-      })
-    });
-  } 
 
   getAvailableCenterData(center_ID){
     // console.log("CID"  ,center_ID);
@@ -181,50 +133,6 @@ class CategorywiseReport extends Component{
       } 
     });
   } 
-  getAvailableSectors(){
-      axios({
-        method: 'get',
-        url: '/api/sectors/list',
-      }).then((response)=> {
-          
-          this.setState({
-            availableSectors : response.data,
-            sector           : response.data[0].sector+'|'+response.data[0]._id
-          },()=>{
-          var sector_ID = this.state.sector.split('|')[1]
-          this.setState({
-            sector_ID        : sector_ID
-          },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-          })
-          // console.log('sector', this.state.sector);
-        })
-      }).catch(function (error) {
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-      });
-  }
-  selectSector(event){
-    event.preventDefault();
-    this.setState({
-      [event.target.name]:event.target.value
-    });
-    var sector_id = event.target.value.split('|')[1];
-    // console.log('sector_id',sector_id);
-    this.setState({
-          sector_ID : sector_id,
-        },()=>{
-        // console.log('availableSectors', this.state.availableSectors);
-        // console.log('sector_ID', this.state.sector_ID);
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-    })
-  }
   districtChange(event){    
     event.preventDefault();
     var district = event.target.value;
@@ -232,13 +140,15 @@ class CategorywiseReport extends Component{
     this.setState({
       district: district
     },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
-      // console.log("selectedDistrict",selectedDistrict);
+      if(this.state.district==="all"){
+        var selectedDistrict = this.state.district;
+      }else{
+        var selectedDistrict = this.state.district.split('|')[0];
+      }
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      // console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
@@ -247,17 +157,13 @@ class CategorywiseReport extends Component{
     // console.log("sd", stateCode,selectedDistrict);
     axios({
       method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
-        // console.log('listofBlocks', this.state.listofBlocks);
         })
     }).catch(function (error) {
-          // console.log("error = ",error);
           if(error.message === "Request failed with status code 401"){
             swal({
                 title : "abc",
@@ -318,68 +224,71 @@ class CategorywiseReport extends Component{
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
   }
-  getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){        
+  getData(startDate, endDate, center_ID, selectedDistrict){        
     // console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
-    if(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){
-      // axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-      axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict)
-      .then((response)=>{
-        console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-          return {
-            _id                    : a._id,            
-            FamilyCategory         : a.FamilyCategory,
-            Reach                  : a.Reach,
-            FamilyUpgradation      : a.FamilyUpgradation,
-          }
+    if(center_ID){
+      if(startDate && endDate && selectedDistrict){
+        axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict)
+        .then((response)=>{
+          console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+              _id                    : a._id,            
+              incomeCategory         : a.incomeCategory,
+              landCategory           : a.landCategory,
+              specialCategory        : a.specialCategory,
+              Reach                  : a.Reach,
+              FamilyUpgradation      : a.FamilyUpgradation,
+            }
+          })
+          this.setState({
+            tableData : tableData
+          },()=>{
+            // console.log("resp",this.state.tableData)
+          })
         })
-        this.setState({
-          tableData : tableData
-        },()=>{
-          // console.log("resp",this.state.tableData)
-        })
-      })
-      .catch(function(error){
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-      });
+        .catch(function(error){
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+        });
+      }
     }
   }
   handleFromChange(event){
-      event.preventDefault();
-     const target = event.target;
-     const name = target.name;
-     var dateVal = event.target.value;
-     var dateUpdate = new Date(dateVal);
-     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
-     this.setState({
-         [name] : event.target.value,
-         startDate:startDate
-     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-     // console.log("dateUpdate",this.state.startDate);
-     });
+    event.preventDefault();
+    const target = event.target;
+    const name = target.name;
+    var dateVal = event.target.value;
+    var dateUpdate = new Date(dateVal);
+    var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+    this.setState({
+       [name] : event.target.value,
+       startDate:startDate
+    },()=>{
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+    // console.log("dateUpdate",this.state.startDate);
+    });
   }
   handleToChange(event){
-      event.preventDefault();
-      const target = event.target;
-      const name = target.name;
+    event.preventDefault();
+    const target = event.target;
+    const name = target.name;
 
-      var dateVal = event.target.value;
-      var dateUpdate = new Date(dateVal);
-      var endDate = moment(dateUpdate).format('YYYY-MM-DD');
-      this.setState({
-         [name] : event.target.value,
-         endDate : endDate
-      },()=>{
-      // console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-     });
+    var dateVal = event.target.value;
+    var dateUpdate = new Date(dateVal);
+    var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+    this.setState({
+       [name] : event.target.value,
+       endDate : endDate
+    },()=>{
+    // console.log("dateUpdate",this.state.endDate);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+    });
   }
 
   currentFromDate(){
@@ -447,7 +356,7 @@ class CategorywiseReport extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                             <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
                               <option  className="hidden" >-- Select --</option>
-                                  
+                              <option value="all" >All</option>
                                 {
                                 this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
                                 this.state.availableDistInCenter.map((data, index)=>{
