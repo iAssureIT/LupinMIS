@@ -460,30 +460,32 @@ class SectorMapping extends Component{
                         {
                           this.state.availableSectors ?
                           this.state.availableSectors.map((data, index)=>{
-                            return(
-                              <div key={index} className="col-md-4  col-lg-4 col-sm-12 col-xs-12 blockheight noPadding">
-                                <label  className="formLable faintColor">{data.sector}</label>
-                                {
-                                  data.activity.map((a, i)=>{
-                                    return(
-                                      <div key ={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                        <div className="row"> 
-                                          <div className="actionDiv" id="activityName">
-                                            <div className="SDGContainer col-lg-1 ">
-                                              <input type="checkbox" name="activityName" className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={this.state[data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName]?true:false} onChange={this.selectActivity.bind(this)} />
-                                              <span className="SDGCheck"></span>
-                                            </div>
-                                          </div>                            
-                                          <label className="listItem">{a.activityName}</label>
-                                        </div>  
-                                      </div>
-                                    );
-                                  })
-                                }
-                              </div>
-                           
-                            );
-                          })
+                            if(data.activity.length>0){
+                                return(
+                                  <div key={index} className="col-md-4  col-lg-4 col-sm-12 col-xs-12 blockheight noPadding">
+                                    <label  className="formLable faintColor">{data.sector}</label>
+                                    {
+                                      data.activity.map((a, i)=>{
+                                        return(
+                                          <div key ={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                            <div className="row"> 
+                                              <div className="actionDiv" id="activityName">
+                                                <div className="SDGContainer col-lg-1 ">
+                                                  <input type="checkbox" name="activityName" className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={this.state[data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName]?true:false} onChange={this.selectActivity.bind(this)} />
+                                                  <span className="SDGCheck"></span>
+                                                </div>
+                                              </div>                            
+                                              <label className="listItem">{a.activityName}</label>
+                                            </div>  
+                                          </div>
+                                        );
+                                      })
+                                    }
+                                  </div>
+                               
+                                );
+                              }
+                            })
                           :
                           null
                         }
