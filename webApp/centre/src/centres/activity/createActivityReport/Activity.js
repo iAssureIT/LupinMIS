@@ -9,6 +9,7 @@ import 'react-table/react-table.css';
 
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
+import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 import "./Activity.css";
 
 var add = 0;
@@ -103,6 +104,7 @@ class Activity extends Component{
       "limitRange"                 : 10000,
       "editId"                     : this.props.match.params ? this.props.match.params.id : ''
     }
+    this.uploadedData = this.uploadedData.bind(this);
   }
 
   handleChange(event){
@@ -151,6 +153,9 @@ class Activity extends Component{
     else{
       return true;
     }
+  }
+  uploadedData(data){
+    this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
   }
   getBeneficiaries(selectedBeneficiaries){
     this.setState({
@@ -949,32 +954,99 @@ class Activity extends Component{
                      </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-                  <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
-                    <div className="col-lg-12 ">
-                       <h4 className="pageSubHeader">Activity Details</h4>
-                    </div>
-                    <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                        
-                        <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                          <label className="formLable">Date of intervention</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
-                            <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)}/>
+                  <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 NOpadding">
+                    <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
+                    <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkactivity">Bulk Upload</a></li>
+                  </ul>
+                  <div className="tab-content ">
+                    <div id="manualactivity"  className="tab-pane fade in active ">
+                    <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
+                      <div className="col-lg-12 ">
+                         <h4 className="pageSubHeader">Activity Details</h4>
+                      </div>
+                      <div className="row">
+                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
+                          
+                          <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                            <label className="formLable">Date of intervention</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
+                              <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
                           </div>
-                          <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
-                        </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">District</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                            {console.log(this.state.district)}
-                              <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
+                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                              <label className="formLable">District</label>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                              {console.log(this.state.district)}
+                                <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
+                                  <option  className="hidden" >-- Select --</option>
+                                  {
+                                    this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                    this.state.availableDistInCenter.map((data, index)=>{
+                                      // console.log('dta', data);
+                                      return(
+                                        <option key={index} value={(data.district)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
+                                </select>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.district}</div>
+                            </div>
+                          <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                            <label className="formLable">Block</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                              <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
                                 <option  className="hidden" >-- Select --</option>
                                 {
-                                  this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                  this.state.availableDistInCenter.map((data, index)=>{
-                                    // console.log('dta', data);
+                                  this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                  this.state.listofBlocks.map((data, index)=>{
                                     return(
-                                      <option key={index} value={(data.district)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                      <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }  
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.block}</div>
+                          </div>
+                         <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Village</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                              <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
+                                <option  className="hidden" >-- Select --</option>
+                                {
+                                  this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                  this.state.listofVillages.map((data, index)=>{
+                                    return(
+                                      <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                } 
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.village}</div>
+                          </div>
+                        </div> 
+                      </div><br/>
+                      <div className="row">
+                        <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Sector </label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                              <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
+                                <option  className="hidden" >-- Select --</option>
+                                {
+                                  this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                  this.state.availableSectors.map((data, index)=>{
+                                    return(
+                                      <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
                                     );
                                   })
                                   :
@@ -982,287 +1054,231 @@ class Activity extends Component{
                                 }
                               </select>
                             </div>
-                            <div className="errorMsg">{this.state.errors.district}</div>
+                            <div className="errorMsg">{this.state.errors.sector}</div>
                           </div>
-                        <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                          <label className="formLable">Block</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                            <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              {
-                                this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                this.state.listofBlocks.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }  
-                            </select>
+                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                            <label className="formLable">Type of Activity</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
+                              <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
+                                <option  className="hidden" >-- Select --</option>
+                                <option>Common Level Activity</option>
+                                 <option>Family Level Activity</option>
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.typeofactivity}</div>
                           </div>
-                          <div className="errorMsg">{this.state.errors.block}</div>
-                        </div>
-                       <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Village</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                            <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              {
-                                this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                                this.state.listofVillages.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
-                                  );
-                                })
-                                :
-                                null
-                              } 
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.village}</div>
-                        </div>
-                      </div> 
-                    </div><br/>
-                    <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Sector </label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              {
-                                this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                this.state.availableSectors.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.sector}</div>
-                        </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                          <label className="formLable">Type of Activity</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
-                            <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              <option>Common Level Activity</option>
-                               <option>Family Level Activity</option>
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.typeofactivity}</div>
-                        </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                          <label className="formLable">Activity</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
-                            <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              {
-                                this.state.availableActivity && this.state.availableActivity.length >0 ?
-                                this.state.availableActivity.map((data, index)=>{
-                                  if(data.activityName ){
-                                    return(
-                                      <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
-                                    );
-                                  }
-                                })
-                                :
-                                null
-                              }
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.activity}</div>
-                        </div>
-                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                          <label className="formLable">Sub-Activity</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
-                            <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
+                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                            <label className="formLable">Activity</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                              <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
+                                <option  className="hidden" >-- Select --</option>
                                 {
-                                  this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
-                                  this.state.availableSubActivity.map((data, index)=>{
-                                    if(data.subActivityName ){
+                                  this.state.availableActivity && this.state.availableActivity.length >0 ?
+                                  this.state.availableActivity.map((data, index)=>{
+                                    if(data.activityName ){
                                       return(
-                                        <option className="" key={data._id} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                        <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
                                       );
                                     }
                                   })
                                   :
                                   null
                                 }
-                                
-                            </select>
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.activity}</div>
                           </div>
-                          <div className="errorMsg">{this.state.errors.subactivity}</div>
-                        </div>                        
-                      </div> 
-                    </div><br/>
-                    <div className="row ">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                          <div className=""  >
-                            <label className="formLable">Unit :</label>
-                              <div className="form-control inputBox inputBox-main unit">
-                                {this.state.subActivityDetails ? 
-                                    <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
-                                  :
-                                  null
-                                }
-                              </div>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.unit}</div>
-                        </div>
-                        {/*<div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                          <div className=""  >
-                            <label className="formLable">Unit :</label>
-                            <input type="text" className="form-control inputBox inputBox-main" id="unit" name="unit " placeholder="" ref="unit" onKeyDown={this.isNumberKey.bind(this)} value={this.state.subActivityDetails ? this.state.subActivityDetails: ""} disabled />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.unit}</div>
-                        </div>*/}
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Unit Cost</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
-                            <input type="text"   className="form-control inputBox" name="unitCost" placeholder="" onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.unitCost}</div>
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                          <label className="formLable">Quantity</label>
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
-                            <input type="text" className="form-control inputBox" name="quantity" placeholder="" ref="quantity" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.quantity}</div>
-                        </div>
-                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <div className=" " id="PassoutYear" >
-
-                            <label className="formLable">Total Cost of Activity :</label>
-                          
-                            <input type="text" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost" onKeyDown={this.isNumberKey.bind(this)} value={this.state.totalcost ?this.state.totalcost: ""} disabled />
-                            
-                          </div>
-                          <div className="errorMsg">{this.state.errors.totalcost}</div>
-                        </div>
-                      </div> 
-                    </div>
-                    <div className="col-lg-12 boxHeightother">
-                      <label className="formLable">Remark</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
-                            <input type="text"   className="form-control inputBox" name="remark" placeholder="" ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.remark}</div>
-                    </div>
-                    <div className="col-lg-12 ">
-                       <hr className=""/>
-                    </div>
-                    <div className="col-lg-12 ">
-                       <div className="pageSubHeader">Sources of Fund</div>
-                    </div>
-                    <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">LHWRF</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                            <input type="text"   className="form-control inputBox " name="LHWRF" placeholder="" ref="LHWRF" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.LHWRF}</div>
-                        </div>
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">NABARD</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >
-                            
-                            <input type="text" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.NABARD}  onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.NABARD}</div>
-                        </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Bank Loan</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                            <input type="text" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyUp={this.calTotal.bind(this)}  onKeyDown={this.isNumberKey.bind(this)} value={this.state.bankLoan}  onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.bankLoan}</div>
-                        </div>
-                      </div> 
-                    </div><br/>
-                    <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Govt. Schemes</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                            <input type="text"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  onKeyUp={this.calTotal.bind(this)}   value={this.state.govtscheme}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.govtscheme}</div>
-                        </div>
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Direct Community Contribution</label>
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                            <input type="text" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  onKeyUp={this.calTotal.bind(this)}  value={this.state.directCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.directCC}</div>
-                        </div>
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Indirect Community Contribution</label>
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                            <input type="text" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC" onKeyUp={this.calTotal.bind(this)}  value={this.state.indirectCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.indirectCC}</div>
-                        </div>
-                      </div> 
-                    </div><br/>
-                    <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Other</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
-                            <input type="text"   className="form-control inputBox" name="other" placeholder="" ref="other"  onKeyUp={this.calTotal.bind(this)}   value={this.state.other} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.other}</div>
-                        </div>
-                        <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                          <div className="" id="total" >
-                            <label className="formLable">Total :</label>                            
-                             
-                                <div className="form-control inputBox inputBox-main unit">
-                                  {this.state.total ? 
-                                      <label className="formLable" id="total">{this.state.total}</label>
+                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                            <label className="formLable">Sub-Activity</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
+                              <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
+                                <option  className="hidden" >-- Select --</option>
+                                  {
+                                    this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                                    this.state.availableSubActivity.map((data, index)=>{
+                                      if(data.subActivityName ){
+                                        return(
+                                          <option className="" key={data._id} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                        );
+                                      }
+                                    })
                                     :
-                                    0
+                                    null
+                                  }
+                                  
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.subactivity}</div>
+                          </div>                        
+                        </div> 
+                      </div><br/>
+                      <div className="row ">
+                        <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div className=""  >
+                              <label className="formLable">Unit :</label>
+                                <div className="form-control inputBox inputBox-main unit">
+                                  {this.state.subActivityDetails ? 
+                                      <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
+                                    :
+                                    null
                                   }
                                 </div>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.unit}</div>
+                          </div>
+                          {/*<div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div className=""  >
+                              <label className="formLable">Unit :</label>
+                              <input type="text" className="form-control inputBox inputBox-main" id="unit" name="unit " placeholder="" ref="unit" onKeyDown={this.isNumberKey.bind(this)} value={this.state.subActivityDetails ? this.state.subActivityDetails: ""} disabled />
+                            </div>
+                            <div className="errorMsg">{this.state.errors.unit}</div>
+                          </div>*/}
+                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Unit Cost</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
+                              <input type="text"   className="form-control inputBox" name="unitCost" placeholder="" onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.unitCost}</div>
+                          </div>
+                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <label className="formLable">Quantity</label>
+                            <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
+                              <input type="text" className="form-control inputBox" name="quantity" placeholder="" ref="quantity" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.quantity}</div>
+                          </div>
+                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                            <div className=" " id="PassoutYear" >
+
+                              <label className="formLable">Total Cost of Activity :</label>
                             
-                            {/*<label className="formLable">&nbsp;{this.state.total ?  this.state.total : " 0"}</label>
-                      */}    </div>
-                          <div className="errorMsg">{this.state.errors.total}</div>
-                        </div>
+                              <input type="text" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost" onKeyDown={this.isNumberKey.bind(this)} value={this.state.totalcost ?this.state.totalcost: ""} disabled />
+                              
+                            </div>
+                            <div className="errorMsg">{this.state.errors.totalcost}</div>
+                          </div>
+                        </div> 
+                      </div>
+                      <div className="col-lg-12 boxHeightother">
+                        <label className="formLable">Remark</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
+                              <input type="text"   className="form-control inputBox" name="remark" placeholder="" ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.remark}</div>
+                      </div>
+                      <div className="col-lg-12 ">
+                         <hr className=""/>
+                      </div>
+                      <div className="col-lg-12 ">
+                         <div className="pageSubHeader">Sources of Fund</div>
+                      </div>
+                      <div className="row">
+                        <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                          <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                            <label className="formLable">LHWRF</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
+                              <input type="text"   className="form-control inputBox " name="LHWRF" placeholder="" ref="LHWRF" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.LHWRF}</div>
+                          </div>
+                          <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                            <label className="formLable">NABARD</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >
+                              
+                              <input type="text" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.NABARD}  onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.NABARD}</div>
+                          </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
+                            <label className="formLable">Bank Loan</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
+                              <input type="text" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyUp={this.calTotal.bind(this)}  onKeyDown={this.isNumberKey.bind(this)} value={this.state.bankLoan}  onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.bankLoan}</div>
+                          </div>
+                        </div> 
+                      </div><br/>
+                      <div className="row">
+                        <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                          <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                            <label className="formLable">Govt. Schemes</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
+                              <input type="text"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  onKeyUp={this.calTotal.bind(this)}   value={this.state.govtscheme}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.govtscheme}</div>
+                          </div>
+                          <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                            <label className="formLable">Direct Beneficiary Contribution</label>
+                            <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
+                              <input type="text" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  onKeyUp={this.calTotal.bind(this)}  value={this.state.directCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.directCC}</div>
+                          </div>
+                          <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                            <label className="formLable">Indirect Beneficiary Contribution</label>
+                            <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
+                              <input type="text" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC" onKeyUp={this.calTotal.bind(this)}  value={this.state.indirectCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.indirectCC}</div>
+                          </div>
+                        </div> 
+                      </div><br/>
+                      <div className="row">
+                        <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                          <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                            <label className="formLable">Other</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
+                              <input type="text"   className="form-control inputBox" name="other" placeholder="" ref="other"  onKeyUp={this.calTotal.bind(this)}   value={this.state.other} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.other}</div>
+                          </div>
+                          <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                            <div className="" id="total" >
+                              <label className="formLable">Total :</label>                            
+                               
+                                  <div className="form-control inputBox inputBox-main unit">
+                                    {this.state.total ? 
+                                        <label className="formLable" id="total">{this.state.total}</label>
+                                      :
+                                      0
+                                    }
+                                  </div>
+                              
+                              {/*<label className="formLable">&nbsp;{this.state.total ?  this.state.total : " 0"}</label>
+                        */}    </div>
+                            <div className="errorMsg">{this.state.errors.total}</div>
+                          </div>
+                        </div> 
+                      </div><br/>
+                      <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
+                         <hr className=""/>
+                      </div>
+                  
+                      <div className="tableContainrer">
+                        <ListOfBeneficiaries 
+                          getBeneficiaries={this.getBeneficiaries.bind(this)}
+                          selectedValues={this.state.selectedValues}
+                          sendBeneficiary={this.state.selectedBeneficiaries}
+                        />
+                      </div>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <br/>
+                        {
+                          this.state.editId ? 
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
+                          :
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
+                        }
                       </div> 
-                    </div><br/>
-                    <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
                        <hr className=""/>
+                      </div>
+                    </form>
+                  </div>
+                   <div id="bulkactivity" className="tab-pane fade in ">
+                      <BulkUpload url="/api/activityReport/bulk_upload_activities" data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} uploadedData={this.uploadedData}/>
                     </div>
-                
-                    <div className="tableContainrer">
-                      <ListOfBeneficiaries 
-                        getBeneficiaries={this.getBeneficiaries.bind(this)}
-                        selectedValues={this.state.selectedValues}
-                        sendBeneficiary={this.state.selectedBeneficiaries}
-                      />
-                    </div>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <br/>
-                      {
-                        this.state.editId ? 
-                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
-                        :
-                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
-                      }
-                    </div> 
-                    <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
-                     <hr className=""/>
-                    </div>
-                  </form>
+                  </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
                       tableHeading={this.state.tableHeading}

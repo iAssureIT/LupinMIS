@@ -31,7 +31,8 @@
     "sweetalert": "^2.1.2",
     "underscore": "^1.9.1",
     "url": "^0.11.0",
-    "validator": "^11.0.0"
+    "validator": "^11.0.0",
+    "xlsx": "^0.15.1"
   },
   "scripts": {
     "start": "react-scripts start",

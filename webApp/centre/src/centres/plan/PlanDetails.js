@@ -5,6 +5,7 @@ import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "./PlanDetails.css";
+import BulkUpload             from "../bulkupload/BulkUpload.js";
 
 var add=0
 
@@ -90,6 +91,7 @@ class PlanDetails extends Component{
       subActivityDetails    : [],
       apiCall               : '/api/annualPlans'
     }
+    this.uploadedData = this.uploadedData.bind(this);
   }
   handleChange(event){
     let fields = this.state.fields;
@@ -163,7 +165,9 @@ class PlanDetails extends Component{
       console.log("subActivityDetails",this.state.subActivityDetails);
     })
   }
-
+  uploadedData(data){
+     this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+  }
   SubmitAnnualPlan(event){
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
@@ -441,7 +445,7 @@ class PlanDetails extends Component{
     $("html,body").scrollTop(0);
 
       this.setState({
-        errors: errors
+        errors: errors 
       });
       return formIsValid;
   }
@@ -886,190 +890,203 @@ class PlanDetails extends Component{
                             </div>
                           </div>
                         </div> 
-                      </div><br/>                      
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" style={hidden} id="Academic_details">
-                        <div className="row ">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
-                            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Sector</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
-                                <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
-                                  <option  className="hidden" >-- Select --</option>
-                                  {
-                                    this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                    this.state.availableSectors.map((data, index)=>{
+                      </div><br/>
+                      <div style={hidden}>
+                        <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 NOpadding">
+                          <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualplan">Manual</a></li>
+                          <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkplan">Bulk Upload</a></li>
+                        </ul>   
+                        <div className="tab-content ">
+                          <div id="manualplan"  className="tab-pane fade in active ">
+                            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" >
+                              <div className="row">
+                                <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
+                                  <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                                    <label className="formLable">Sector</label><span className="asterix">*</span>
+                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
+                                      <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
+                                        <option  className="hidden" >-- Select --</option>
+                                        {
+                                          this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                          this.state.availableSectors.map((data, index)=>{
+                                            return(
+                                              <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                            );
+                                          })
+                                          :
+                                          null
+                                        }
+                                      </select>
+                                    </div>
+                                    <div className="errorMsg">{this.state.errors.sectorName}</div>
+                                  </div>
+                                  <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                                    <label className="formLable">Activity</label><span className="asterix">*</span>
+                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
+                                      <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
+                                        <option  className="hidden" >-- Select --</option>
+                                        {
+                                        this.state.availableActivity && this.state.availableActivity.length >0 ?
+                                        this.state.availableActivity.map((data, index)=>{
+                                          if(data.activityName ){
+                                            return(
+                                              <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                            );
+                                          }
+                                        })
+                                        :
+                                        null
+                                      }
+                                      </select>
+                                    </div>
+                                    <div className="errorMsg">{this.state.errors.activityName}</div>
+                                  </div>                  
+                                </div> 
+                              </div><br/>  
+                              <div>
+                                {this.state.availableSubActivity ? <hr className=""/> :""}
+                              </div>                     
+                                {
+                                  this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                                  this.state.availableSubActivity.map((data, index)=>{
+                                    if(data.subActivityName ){
                                       return(
-                                        <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                        <div className="subActDiv"  key={data._id}>
+                                          <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 contentDiv  ">
+                                            <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
+                                            <label className="formLable">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
+                                           </div>
+                                          <div className="col-lg-9 col-sm-10 col-xs-10 ">
+                                            <div className="row">
+                                              <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
+                                                <label className="formLable head">Sub-Activity Details</label>
+                                              </div>
+                                            </div>
+                                           
+                                            <div className="row ">
+                                              <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                <label className="formLable">Physical Units</label>
+                                                <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>{/*{console.log("state",this.state)}*/}
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                <label className="formLable">Unit Cost</label>
+                                                <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>
+                                              </div>  
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                <label className="formLable">Total Cost</label>
+                                                <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
+                                                  <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" disabled ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]} />
+                                                </div>
+                                              </div>  
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                <label className="formLable">No.of Beneficiaries</label>
+                                                <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
+                                                </div>
+                                              </div> 
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
+                                                <label className="formLable">No.of Families</label>
+                                                <div className=" input-group inputBox-main" id={"noOfFamilies-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"noOfFamilies-"+data._id} placeholder="" ref={"noOfFamilies-"+data._id} value={this.state["noOfFamilies-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields   ">
+                                                <label className="formLable head">Sources of Fund</label>
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">LHWRF</label>
+                                                <div className=" input-group inputBox-main" id={"LHWRF-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}   onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">NABARD</label>
+                                                <div className=" input-group inputBox-main" id={"NABARD-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Bank Loan</label>
+                                                <div className=" input-group inputBox-main" id={"bankLoan-"+data._id}>
+                                                  <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Govt. Schemes</label>
+                                                <div className=" input-group inputBox-main" id={"govtscheme-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Direct Com. Cont.</label>
+                                                <div className=" input-group inputBox-main" id={"directCC-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Indirect Com. Cont.</label>
+                                                <div className=" input-group inputBox-main" id={"indirectCC-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div className=" row">
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Other</label>
+                                                <div className=" input-group inputBox-main" id={"other-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
+                                                <label className="formLable">Remark</label>
+                                                <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+data._id} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]}   onChange={this.subActivityDetails.bind(this)}/>
+                                                </div>
+                                              </div>
+                                            </div>  
+                                            <div className="row">                            
+                                              <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
+                                                <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
+                                                  <label className="formLable"></label>
+                                                  <div className="errorMsg">{this.state.errors.remark}</div>
+                                                </div>
+                                              </div> 
+                                            </div><br/>
+                                          </div>  <br/>
+                                        </div>
                                       );
-                                    })
-                                    :
-                                    null
-                                  }
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.sectorName}</div>
-                            </div>
-                            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Activity</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
-                                <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
-                                  <option  className="hidden" >-- Select --</option>
-                                  {
-                                  this.state.availableActivity && this.state.availableActivity.length >0 ?
-                                  this.state.availableActivity.map((data, index)=>{
-                                    if(data.activityName ){
-                                      return(
-                                        <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
-                                      );
+                                    }else{
+                                      return <label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity  </label>
                                     }
                                   })
                                   :
                                   null
-                                }
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.activityName}</div>
-                            </div>                  
-                          </div> 
-                        </div><br/>  
-                        <div>
-                          {this.state.availableSubActivity ? <hr className=""/> :""}
-                        </div>                     
-                          {
-                            this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
-                            this.state.availableSubActivity.map((data, index)=>{
-                              if(data.subActivityName ){
-                                return(
-                                  <div className="subActDiv"  key={data._id}>
-                                    <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 contentDiv  ">
-                                      <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
-                                      <label className="formLable">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
-                                     </div>
-                                    <div className="col-lg-9 col-sm-10 col-xs-10 ">
-                                      <div className="row">
-                                        <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
-                                          <label className="formLable head">Sub-Activity Details</label>
-                                        </div>
-                                      </div>
-                                     
-                                      <div className="row ">
-                                        <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                          <label className="formLable">Physical Units</label>
-                                          <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>{/*{console.log("state",this.state)}*/}
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                          <label className="formLable">Unit Cost</label>
-                                          <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>  
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                          <label className="formLable">Total Cost</label>
-                                          <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
-                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" disabled ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]} />
-                                          </div>
-                                        </div>  
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                          <label className="formLable">No.of Beneficiaries</label>
-                                          <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
-                                          </div>
-                                        </div> 
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
-                                          <label className="formLable">No.of Families</label>
-                                          <div className=" input-group inputBox-main" id={"noOfFamilies-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"noOfFamilies-"+data._id} placeholder="" ref={"noOfFamilies-"+data._id} value={this.state["noOfFamilies-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="row">
-                                        <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields   ">
-                                          <label className="formLable head">Sources of Fund</label>
-                                        </div>
-                                      </div>
-                                      <div className="row">
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">LHWRF</label>
-                                          <div className=" input-group inputBox-main" id={"LHWRF-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}   onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">NABARD</label>
-                                          <div className=" input-group inputBox-main" id={"NABARD-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Bank Loan</label>
-                                          <div className=" input-group inputBox-main" id={"bankLoan-"+data._id}>
-                                            <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Govt. Schemes</label>
-                                          <div className=" input-group inputBox-main" id={"govtscheme-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Direct Com. Cont.</label>
-                                          <div className=" input-group inputBox-main" id={"directCC-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Indirect Com. Cont.</label>
-                                          <div className=" input-group inputBox-main" id={"indirectCC-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className=" row">
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Other</label>
-                                          <div className=" input-group inputBox-main" id={"other-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
-                                          <label className="formLable">Remark</label>
-                                          <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]}   onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                      </div>  
-                                      <div className="row">                            
-                                        <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
-                                          <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
-                                            <label className="formLable"></label>
-                                            <div className="errorMsg">{this.state.errors.remark}</div>
-                                          </div>
-                                        </div> 
-                                      </div><br/>
-                                    </div>  <br/>
-                                  </div>
-                                );
-                              }else{
-                                return <label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity  </label>
+                                }                           
+                              <div className="col-lg-12">
+                               <br/>{
+                                this.state.editId ? 
+                                <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
+                                :
+                                <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
                               }
-                            })
-                            :
-                            null
-                          }                           
-                        <div className="col-lg-12">
-                         <br/>{
-                          this.state.editId ? 
-                          <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
-                          :
-                          <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
-                        }
+                              </div>
+                            
+                            </form>
+                          </div>
+                        <div id="bulkplan" className="tab-pane fade in ">
+                          <BulkUpload url={this.state.month == "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,"month":this.state.month,"year":this.state.year}} uploadedData={this.uploadedData}/>
                         </div>
-                      
-                      </form>
-                    </div>
+                      </div>
+                     </div>
+                  </div>
                     
                     <div className="AnnualHeadCont">
                       <div className="annualHead">

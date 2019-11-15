@@ -3,7 +3,7 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
-
+import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 import 'react-table/react-table.css';
 import "./Family.css";
 
@@ -64,6 +64,7 @@ class Family extends Component{
       "editId"                : this.props.match.params ? this.props.match.params.id : ''    
     }
     // console.log('editId' , this.state.editId);
+    this.uploadedData = this.uploadedData.bind(this);
   }
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
@@ -487,6 +488,10 @@ class Family extends Component{
     });
   }
 
+  uploadedData(data){
+    this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
+  }
+
   getLength(center_ID){
     axios.get('/api/families/count/'+center_ID)
     .then((response)=>{
@@ -675,171 +680,181 @@ class Family extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                      Beneficiary Management   
+                      Beneficiary Management    
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-                  <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="family">
-                    
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 border_Box ">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                          <h4 className="pageSubHeader">Create New Family</h4>
-                        </div>
-                        {/*<div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Family ID</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="familyID" >
-                            <input type="text" className="form-control inputBox " ref="familyID" name="familyID" value={this.state.familyID } onChange={this.handleChange.bind(this)} />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.familyID}</div>
-                        </div>*/}
-                        <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Surname of Family Head </label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfFH" >
-                            <input type="text" className="form-control inputBox" ref="surnameOfFH" name="surnameOfFH" value={this.state.surnameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.surnameOfFH}</div>
-                        </div>
-                        <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">First Name of Family Head </label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfFH" >
-                            <input type="text" className="form-control inputBox" ref="firstNameOfFH" name="firstNameOfFH" value={this.state.firstNameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.firstNameOfFH}</div>
-                        </div>
-                        <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Middle Name of Family Head </label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfFH" >
-                            <input type="text" className="form-control inputBox" ref="middleNameOfFH" name="middleNameOfFH" value={this.state.middleNameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.middleNameOfFH}</div>
-                        </div>
-                        <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uID" >
-                            <input type="text" className="form-control inputBox "  placeholder=""ref="uID" name="uID" value={this.state.uID} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.uID}</div>
-                        </div>
-                               
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Contact Number </label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contact" >
-                            <input type="text" className="form-control inputBox "  placeholder=""ref="contact" name="contact" value={this.state.contact} onKeyDown={this.isNumberKey.bind(this)} maxLength="10" onChange={this.handleChange.bind(this)} />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.contact}</div>
-                        </div>  
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Caste</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="caste" >
-                            <select className="custom-select form-control inputBox" ref="caste" name="caste" value={this.state.caste} onChange={this.handleChange.bind(this)}>
-                              <option  className="hidden" >-- Select --</option>
-                              <option>General</option>
-                              <option>SC</option>
-                              <option>ST</option>
-                              <option>NT</option>
-                              <option>Other</option>                              
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.caste}</div>
-                        </div>                      
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Land holding Category</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
-                            <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option>Big Farmer</option>
-                              <option>Landless</option>
-                              <option>Marginal Farmer</option>
-                              <option>Small Farmer</option>
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.landCategory}</div>
-                        </div>                          
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Income Category </label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
-                            <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option>APL</option>
-                              <option>BPL</option>
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.incomeCategory}</div>
-                        </div>                          
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Special Category</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
-                            <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option>Differently Abled</option>
-                              <option>Veerangana</option>
-                              <option>Widow Headed</option>
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.specialCategory}</div>
-                        </div>            
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">District</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                            <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                                  
-                                {
-                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                this.state.availableDistInCenter.map((data, index)=>{
-                                  console.log("data",data)
-                                  return(
-                                    /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+                  <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 NOpadding">
+                    <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manual">Manual</a></li>
+                    <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulk">Bulk Upload</a></li>
+                  </ul>
 
-                                  );
-                                })
-                                :
-                                null
-                              }                               
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.district}</div>
+                  <div className="tab-content ">
+                    <div id="manual"  className="tab-pane fade in active ">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="family">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                           <h4 className="pageSubHeader">Create New Family</h4>
                         </div>
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Block</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                            <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              {
-                                this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                this.state.listofBlocks.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }                              
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.block}</div>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div className=" col-lg-12 col-sm-12 col-xs-12 border_Box ">
+                        
+                            {/*<div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Family ID</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="familyID" >
+                                <input type="text" className="form-control inputBox " ref="familyID" name="familyID" value={this.state.familyID } onChange={this.handleChange.bind(this)} />
+                              </div>
+                              <div className="errorMsg">{this.state.errors.familyID}</div>
+                            </div>*/}
+                            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Surname of Family Head </label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfFH" >
+                                <input type="text" className="form-control inputBox" ref="surnameOfFH" name="surnameOfFH" value={this.state.surnameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                              </div>
+                              <div className="errorMsg">{this.state.errors.surnameOfFH}</div>
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">First Name of Family Head </label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfFH" >
+                                <input type="text" className="form-control inputBox" ref="firstNameOfFH" name="firstNameOfFH" value={this.state.firstNameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                              </div>
+                              <div className="errorMsg">{this.state.errors.firstNameOfFH}</div>
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Middle Name of Family Head </label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfFH" >
+                                <input type="text" className="form-control inputBox" ref="middleNameOfFH" name="middleNameOfFH" value={this.state.middleNameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                              </div>
+                              <div className="errorMsg">{this.state.errors.middleNameOfFH}</div>
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uID" >
+                                <input type="text" className="form-control inputBox "  placeholder=""ref="uID" name="uID" value={this.state.uID} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
+                              </div>
+                              <div className="errorMsg">{this.state.errors.uID}</div>
+                            </div>
+                                   
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Contact Number </label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contact" >
+                                <input type="text" className="form-control inputBox "  placeholder=""ref="contact" name="contact" value={this.state.contact} onKeyDown={this.isNumberKey.bind(this)} maxLength="10" onChange={this.handleChange.bind(this)} />
+                              </div>
+                              <div className="errorMsg">{this.state.errors.contact}</div>
+                            </div>  
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Caste</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="caste" >
+                                <select className="custom-select form-control inputBox" ref="caste" name="caste" value={this.state.caste} onChange={this.handleChange.bind(this)}>
+                                  <option  className="hidden" >-- Select --</option>
+                                  <option>General</option>
+                                  <option>SC</option>
+                                  <option>ST</option>
+                                  <option>NT</option>
+                                  <option>Other</option>                              
+                                </select>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.caste}</div>
+                            </div>                      
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Land holding Category</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
+                                <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
+                                  <option  className="hidden" >-- Select --</option>
+                                  <option>Big Farmer</option>
+                                  <option>Landless</option>
+                                  <option>Marginal Farmer</option>
+                                  <option>Small Farmer</option>
+                                </select>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.landCategory}</div>
+                            </div>                          
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Income Category </label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
+                                <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
+                                  <option  className="hidden" >-- Select --</option>
+                                  <option>APL</option>
+                                  <option>BPL</option>
+                                </select>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.incomeCategory}</div>
+                            </div>                          
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Special Category</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
+                                <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
+                                  <option  className="hidden" >-- Select --</option>
+                                  <option>Differently Abled</option>
+                                  <option>Veerangana</option>
+                                  <option>Widow Headed</option>
+                                </select>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.specialCategory}</div>
+                            </div>            
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">District</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                                <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
+                                  <option  className="hidden" >-- Select --</option>
+                                      
+                                    {
+                                    this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                                    this.state.availableDistInCenter.map((data, index)=>{
+                                      console.log("data",data)
+                                      return(
+                                        /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                        <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }                               
+                                </select>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.district}</div>
+                            </div>
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Block</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                                <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                                  <option  className="hidden" >-- Select --</option>
+                                  {
+                                    this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                    this.state.listofBlocks.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }                              
+                                </select>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.block}</div>
+                            </div>
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Village</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                                <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
+                                  <option  className="hidden" >-- Select --</option>
+                                  {
+                                    this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                    this.state.listofVillages.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  } 
+                                </select>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.village}</div>
+                            </div>
+                          </div> 
                         </div>
-                        <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                          <label className="formLable">Village</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                            <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              {
-                                this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                                this.state.listofVillages.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
-                                  );
-                                })
-                                :
-                                null
-                              } 
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.village}</div>
-                        </div>
+                        <br/>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <br/>
                           {
@@ -849,10 +864,12 @@ class Family extends Component{
                               <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitFamily.bind(this)}> Submit </button>
                             }
                         </div>
-                      </div> 
+                      </form>
                     </div>
-                    <br/>
-                  </form>
+                    <div id="bulk" className="tab-pane fade in ">
+                      <BulkUpload url="/api/families/bulk_upload_families" data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} uploadedData={this.uploadedData}/>
+                    </div>
+                  </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                       <IAssureTable 
                         tableHeading={this.state.tableHeading}
