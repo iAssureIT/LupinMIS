@@ -43,6 +43,7 @@ class IAssureTable extends Component {
       
 	}
 	componentWillReceiveProps(nextProps) {
+		// console.log('tableData',nextProps.tableData);
         this.setState({
             tableData	    : nextProps.tableData,
             dataCount 		: nextProps.dataCount,

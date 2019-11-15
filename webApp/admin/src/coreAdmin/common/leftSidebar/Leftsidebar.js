@@ -242,7 +242,7 @@ export default class Leftsidebar extends Component{
                     <li>
                       <Link to="/project-mapping">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Project Mapping</span>
+                        <span className="sidebarMenuSubText">Project Definition</span>
                       </Link>
                     </li>
                   </ul>
