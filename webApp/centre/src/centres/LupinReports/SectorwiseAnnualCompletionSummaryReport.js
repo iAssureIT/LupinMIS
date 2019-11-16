@@ -75,6 +75,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         "tableObjects"        : {
             paginationApply     : false,
             searchApply         : false,
+            downloadApply       : true,
         },   
     }
     window.scrollTo(0, 0);
@@ -199,7 +200,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                   </div>  
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                   {
-                    <SectorwiseAnnualCompletionSummaryYearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year}  tableDatas={this.state.tableDatas}/> 
+                    <SectorwiseAnnualCompletionSummaryYearlyReport  tableObjects={this.state.tableObjects} twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year}  tableDatas={this.state.tableDatas}/> 
                   }
                     
                   </div>        

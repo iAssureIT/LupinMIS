@@ -64,8 +64,9 @@ class VillagewisefamilyReport extends Component{
             "total"          : 'Total',        
         },
         "tableObjects"        : {
-            paginationApply     : false,
-            searchApply         : false,
+          paginationApply     : false,
+          searchApply         : false,
+          downloadApply       : true,
         },   
     }
    
@@ -615,6 +616,8 @@ class VillagewisefamilyReport extends Component{
                         <div className="">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <IAssureTable 
+                                    tableName = "Villagewise Family Report"
+                                    id = "VillagewisefamilyReport"
                                     completeDataCount={this.state.tableDatas.length}
                                     twoLevelHeader={this.state.twoLevelHeader} 
                                     editId={this.state.editSubId} 
@@ -624,34 +627,6 @@ class VillagewisefamilyReport extends Component{
                                     tableObjects={this.state.tableObjects}
                                     getSearchText={this.getSearchText.bind(this)}/>
                             </div>
-                       {/*   {
-                            <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading}  year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas} />  
-                          }*/}
-                           {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div className="sales-report-main-class">
-                                    <div className="reports-select-date-boxmain">
-                                        <div className="reports-select-date-boxsec">
-                                            
-                                                <div className="reports-select-date-from1">
-                                                    <div className="reports-select-date-from2">
-                                                        From
-                                                    </div>
-                                                    <div className="reports-select-date-from3">
-                                                        <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="reportsDateRef form-control" placeholder=""  />
-                                                    </div>
-                                                </div>
-                                                <div className="reports-select-date-to1">
-                                                    <div className="reports-select-date-to2">
-                                                        To
-                                                    </div>
-                                                    <div className="reports-select-date-to3">
-                                                        <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="reportsDateRef form-control" placeholder=""   />
-                                                    </div>
-                                                </div>
-                                        </div>
-                                    </div>                           
-                                </div>
-                            </div>*/}
                         </div>
                     </div>
                 </div>   

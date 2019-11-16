@@ -1035,7 +1035,7 @@ class centerDetail extends Component{
                            <hr />
                         </div>
                         <div className="col-lg-12">
-                           <h5 className="pageSubHeader">Villages Covered</h5>
+                           <h5 className="pageSubHeader">Area Covered</h5>
                         </div>
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight">

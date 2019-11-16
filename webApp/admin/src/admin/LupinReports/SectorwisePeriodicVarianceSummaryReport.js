@@ -88,8 +88,9 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             "variance_monthlyPlan_Other_L"       : 'Others',           
         },
         "tableObjects"        : {
-            paginationApply     : false,
-            searchApply         : false,
+          paginationApply     : false,
+          searchApply         : false,
+          downloadApply       : true,
         },   
     }
     window.scrollTo(0, 0); 
@@ -490,6 +491,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                                 <div className="marginTop11">
                                     <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <IAssureTable 
+                                            tableName = "Sectorwise Periodic Variance Summary Report"
+                                            id = "SectorwisePeriodicVarianceSummaryReport"
                                             completeDataCount={this.state.tableDatas.length}
                                             twoLevelHeader={this.state.twoLevelHeader} 
                                             editId={this.state.editSubId} 

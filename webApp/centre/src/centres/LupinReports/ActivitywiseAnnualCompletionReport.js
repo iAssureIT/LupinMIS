@@ -72,6 +72,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
         },
       "tableObjects"        : {
         paginationApply     : false,
+        downloadApply       : true,
         searchApply         : false,
       },   
 
@@ -237,7 +238,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                       this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
                       this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : */
 
-                      <ActivitywiseAnnualCompletionYearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} sector={this.state.sector} tableDatas={this.state.tableDatas}/> 
+                      <ActivitywiseAnnualCompletionYearlyReport   tableObjects={this.state.tableObjects} twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} sector={this.state.sector} tableDatas={this.state.tableDatas}/> 
                     }                   
                   </div>
                 </div>

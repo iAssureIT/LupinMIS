@@ -20,6 +20,7 @@
     "react-chartjs-2": "^2.8.0",
     "react-ckeditor-component": "^1.1.0",
     "react-dom": "^16.8.6",
+    "react-html-table-to-excel": "^2.0.0",
     "react-input-mask": "^2.0.4",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
@@ -32,7 +33,7 @@
     "underscore": "^1.9.1",
     "url": "^0.11.0",
     "validator": "^11.0.0",
-    "xlsx": "^0.15.1"
+    "xlsx": "^0.15.2"
   },
   "scripts": {
     "start": "react-scripts start",

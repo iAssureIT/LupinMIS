@@ -638,7 +638,7 @@ class ProjectMapping extends Component{
         // var sortArray1= (block.activity).sort(function(a,b){
         //   return((a.subActivity.length) - (b.subActivity.length)); //ASC, For Descending order use: b - a
         // });   
-        console.log("sortArray1",sortArray1);
+        // console.log("sortArray1",sortArray1);
         block.activity.map((blockone)=>{
           blockone.subActivity.map((blocktwo)=>{
             blocktwo.checked = "N"

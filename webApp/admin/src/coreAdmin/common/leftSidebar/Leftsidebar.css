@@ -10,6 +10,7 @@
 .leftarrow{
   font-size: 10px;
   margin-top: 7px;
+  margin-right: 0px !important;
 }
 .sidebarLogoName p{
   font-size: 14px;

@@ -45,8 +45,9 @@ class CategorywiseReport extends Component{
           "FamilyUpgradation" : 'Upgraded',        
         },
         "tableObjects"        : {
-            paginationApply     : false,
-            searchApply         : false,
+          paginationApply     : false,
+          searchApply         : false,
+          downloadApply       : true,
         },   
     }
       window.scrollTo(0, 0);
@@ -483,6 +484,8 @@ class CategorywiseReport extends Component{
                         <div className="">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <IAssureTable 
+                                    tableName = "Categorywise Report"
+                                    id = "categorywiseReport"
                                     completeDataCount={this.state.tableDatas.length}
                                     twoLevelHeader={this.state.twoLevelHeader} 
                                     editId={this.state.editSubId} 

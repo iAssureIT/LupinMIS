@@ -98,6 +98,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
             },
             "tableObjects"        : {
                 paginationApply     : false,
+                downloadApply       : true,
                 searchApply         : false,
             },   
         }
@@ -476,6 +477,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                                     <div className="">
                                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <IAssureTable 
+                                                tableName = "ActivityWise Periodic Variance Report"
+                                                id = "ActivityWisePeriodicVarianceReport"
                                                 completeDataCount={this.state.tableDatas.length}
                                                 twoLevelHeader={this.state.twoLevelHeader} 
                                                 editId={this.state.editSubId} 

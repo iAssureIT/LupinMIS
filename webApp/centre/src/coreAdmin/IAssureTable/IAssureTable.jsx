@@ -4,6 +4,8 @@ import swal                     	from 'sweetalert';
 import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
+import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
+
 import './IAssureTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
@@ -14,9 +16,11 @@ class IAssureTable extends Component {
 		this.state = {
 			"dataCount" 				: props && props.dataCount ? props.dataCount : [],
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
+		    "tableName" 				: props && props.tableName ? props.tableName : [],
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
 		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
 		    "tableObjects" 				: props && props.tableObjects ? props.tableObjects : {},		    
+		    "id" 			      	    : props && props.id ? props.id : {},		    
 		    "reA" 						: /[^a-zA-Z]/g,
 		    "reN" 						: /[^0-9]/g,
 		    "sort" 	  					: true,
@@ -48,13 +52,17 @@ class IAssureTable extends Component {
       this.setState({
       	tableHeading	: this.props.tableHeading,
       	tableData 		: this.props.tableData,
+      	tableName 		: this.props.tableName,
       	dataCount 		: this.props.dataCount,
+      	id 				: this.props.id,
       });
       // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
         this.setState({
+            id	            : nextProps.id,
             tableData	    : nextProps.tableData,
+            tableName	    : nextProps.tableName,
             dataCount 		: nextProps.dataCount,
         },()=>{
         	this.paginationFunction();
@@ -491,26 +499,8 @@ class IAssureTable extends Component {
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       	{
-	       		this.state.tableObjects.paginationApply === true ?
-		       		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding">
-						<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding formLable">Data Per Page</label>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding  input-group inputBox-main">
-							<select onChange={this.setLimit.bind(this)} value={this.state.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12 inputBox noPadding  form-control">
-								<option value="Not Selected" disabled>Select Limit</option>
-								<option value={10}>10</option>
-								<option value={25}>25</option>
-								<option value={50}>50</option>
-								<option value={100}>100</option>
-								<option value={500}>500</option>
-							</select>
-						</div>
-					</div>
-				:
-				null        
-	       	}
-	       	{
 	       		this.state.tableObjects.searchApply === true ? 
-		       		<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding pull-right">
+		       		<div className="col-lg-4 col-md-4  col-xs-12 col-sm-12 marginTop8 NOpadding pull-left">
 		        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding formLable">Search</label>
 		        		<div className="input-group inputBox-main">
 					        <input type="text" onChange={this.tableSearch.bind(this)} className="NOpadding-right form-control inputBox" ref="tableSearch" id="tableSearch" name="tableSearch"/>
@@ -520,10 +510,50 @@ class IAssureTable extends Component {
 	        	:
 	        	null
 	       	}
+	       	{ this.state.tableObjects.downloadApply === true ?
+            	this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 ?
+                	
+		       	<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right	">
+			       	<div className="col-lg-6  col-md-6 col-xs-12 col-sm-12 NOpadding  pull-right" title="Download Table">
+	                	<ReactHTMLTableToExcel
+		                    id="table-to-xls"		                    
+		                    className="download-table-xls-button fa fa-download tableDwld "
+		                    table={this.state.id}
+		                    sheet="tablexls"
+		                    filename={this.state.tableName}
+		                    buttonText=""/>
+	                </div>
+                </div>
+	                : null
+                
+                : null
+            }
+	       	{
+	       		this.state.tableObjects.paginationApply === true ?
+		       		<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding pull-right">
+			       		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+							<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop8 NOpadding formLable">Data Per Page</label>
+							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding  input-group inputBox-main">
+								<select onChange={this.setLimit.bind(this)} value={this.state.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12 inputBox noPadding  form-control">
+									<option value="Not Selected" disabled>Select Limit</option>
+									<option value={10}>10</option>
+									<option value={25}>25</option>
+									<option value={50}>50</option>
+									<option value={100}>100</option>
+									<option value={500}>500</option>
+								</select>
+							</div>
+						</div>						
+					</div>
+				:
+				null        
+	       	}
+	       
 					
-	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop17">			            	        
+           
+	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
 	                <div className="table-responsive">
-						<table className="table iAssureITtable-bordered table-striped table-hover">
+						<table className="table iAssureITtable-bordered table-striped table-hover" id={this.state.id}>
 	                        <thead className="tempTableHeader">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?

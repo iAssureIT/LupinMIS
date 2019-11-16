@@ -78,6 +78,7 @@ class PlanDetails extends Component{
       "tableObjects"        : {
         deleteMethod        : 'delete',
         apiLink             : '/api/annualPlans/',
+        downloadApply       : true,
         paginationApply     : false,
         searchApply         : false,
         editUrl             : '/plan-details/',
@@ -1150,6 +1151,8 @@ class PlanDetails extends Component{
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  formLable " >
                       <div className="row">  
                        <IAssureTable 
+                          tableName = "Plan Details"
+                          id = "PlanDetails"
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}

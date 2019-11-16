@@ -3,7 +3,7 @@ import $                    from 'jquery';
 import axios                from 'axios';
 import moment               from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
-export default class YearlyReport extends Component{
+export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -76,6 +76,7 @@ export default class YearlyReport extends Component{
         });
     }
     getData(year, centerID, sector){
+      if(year){
         console.log('year', year, 'centerID', centerID, 'sector', sector);
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";
@@ -151,7 +152,7 @@ export default class YearlyReport extends Component{
                 })
             // }   
         }
-        
+      }        
     }
     getSearchText(searchText, startRange, limitRange){
         // console.log(searchText, startRange, limitRange);
@@ -160,41 +161,24 @@ export default class YearlyReport extends Component{
         });
     }
    
-    render(){
-        if(!this.props.loading){
-            return( 
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="sales-report-main-class">
-                        <div className="reports-select-date-boxmain">
-                            <div className="reports-select-date-boxsec">
-                               {/* <div className="reports-select-date-Title">Yearly Reports</div>
-                                <div className="input-group">
-                                    <span onClick={this.previousYear.bind(this)} className="commonReportArrowPoiner input-group-addon" id="basic-addon1"><i className="fa fa-chevron-circle-left" aria-hidden="true"></i></span>
-                                    <input onChange={this.handleChange} value={this.currentyear()} name="inputyearlyValue" type="text" className="inputyearlyValue reportsDateRef form-control" placeholder="" aria-label="Brand" aria-describedby="basic-addon1" ref="inputyearlyValue"  />
-                                    <span onClick={this.nextYear.bind(this)} className="commonReportArrowPoiner input-group-addon" id="basic-addon1"><i className="fa fa-chevron-circle-right" aria-hidden="true"></i></span>
-                                </div>*/}
-                            </div>
-                        </div>
-
-                        <div className="report-list-downloadMain row">
-                            <IAssureTable 
-                                // completeDataCount={this.state.tableDatas.length}
-                                twoLevelHeader={this.state.twoLevelHeader} 
-                                editId={this.state.editSubId} 
-                                getData={this.getData.bind(this)} 
-                                tableHeading={this.state.tableHeading} 
-                                tableData={this.state.tableData} 
-                                tableObjects={this.state.tableObjects}
-                                getSearchText={this.getSearchText.bind(this)}/>
-                        </div>
-                    </div>                
-                    
-                </div>
-            );
-        }else{
-            return(
-                <div className="col-sm-12 col-xs-12 col-lg-8 col-lg-offset-4 col-md-12 loadingImg loaderDiv"><img className="ldrImageforbulk" src="/images/loadersglms.gif" alt="loading"/></div>
-            );
-        } 
-    }
+  render(){
+    return( 
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div className="report-list-downloadMain row">
+          <IAssureTable 
+              tableName = "Activitywise Annual Completion Report"
+              id = "activitywiseAnnualCompletionReport"
+              // completeDataCount={this.state.tableDatas.length}
+              twoLevelHeader={this.state.twoLevelHeader} 
+              editId={this.state.editSubId} 
+              getData={this.getData.bind(this)} 
+              tableHeading={this.state.tableHeading} 
+              tableData={this.state.tableData} 
+              tableObjects={this.state.tableObjects}
+              getSearchText={this.getSearchText.bind(this)}/>
+        </div>
+      </div>
+    );
+         
+  }
 }

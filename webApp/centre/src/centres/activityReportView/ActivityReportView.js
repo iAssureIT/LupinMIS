@@ -1,6 +1,7 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
+import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
 import ReactTable             from "react-table";
 
 import 'react-table/react-table.css';
@@ -83,16 +84,23 @@ class ActivityReportView extends Component{
                           <h5> Activity Report View </h5>
                         </div>
                         <div className="col-lg-3 col-md-3 col-xs-3 col-sm-3 operationContainer">
-                          <div className="col-lg-1 col-lg-offset-2 col-md-1 col-xs-1 col-sm-1"><i class="fa fa-print" aria-hidden="true"></i></div>
-                         {/* <div className="col-lg-1 col-md-1 col-xs-1 col-sm-1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
-                          <div className="col-lg-1 col-md-1 col-xs-1 col-sm-1"><i class="fa fa-trash" aria-hidden="true"></i></div>*/}
+                          <div className="col-lg-1 col-lg-offset-2 col-md-1 col-xs-1 col-sm-1"><i className="fa fa-print" aria-hidden="true"></i></div>
+                         {/* <div className="col-lg-1 col-md-1 col-xs-1 col-sm-1"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                          <div className="col-lg-1 col-md-1 col-xs-1 col-sm-1"><i className="fa fa-trash" aria-hidden="true"></i></div>*/}
                         </div>
                       </div>
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
                         <h5>Activity Details</h5>
                       </div>
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
-                        <table id="table-to-xls" className="table customTable table-bordered table-hover table-responsive table-striped valign">
+                        <ReactHTMLTableToExcel
+                          id="table1"
+                          className="download-table-xls-button"
+                          table="table-to-xls"
+                          filename="tablexls"
+                          sheet="tablexls"
+                          buttonText="Download as XLS"/>
+                        <table id="table1" className="table customTable table-bordered table-hover table-responsive table-striped valign">
                           <thead>
                             <tr> 
                               <th className="text-center"> Date </th> 

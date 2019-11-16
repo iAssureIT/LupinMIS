@@ -72,6 +72,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
         },
       "tableObjects"        : {
         paginationApply     : false,
+        downloadApply       : true,
         searchApply         : false,
       },   
 
@@ -273,13 +274,13 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     </div>  
                   </div>  
                  
-                  <div className="">          
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">          
                     {
                       /*this.state.currentTabView === "Daily"   ? <DailyReport   twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} dataApiUrl={this.state.dataApiUrl} /> :
                       this.state.currentTabView === "Weekly"  ? <WeeklyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : 
                       this.state.currentTabView === "Monthly" ? <MonthlyReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} tableDatas={this.state.tableDatas} /> : */
 
-                      <ActivitywiseAnnualCompletionYearlyReport  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas}/> 
+                      <ActivitywiseAnnualCompletionYearlyReport   tableObjects={this.state.tableObjects}  twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas}/> 
                     }                   
                   </div>
                 </div>

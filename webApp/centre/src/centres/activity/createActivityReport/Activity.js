@@ -96,6 +96,7 @@ class Activity extends Component{
         deleteMethod               : 'delete',
         apiLink                    : '/api/activityReport/',
         paginationApply            : false,
+        downloadApply              : true,
         searchApply                : false,
         editUrl                    : '/activity/'
       },
@@ -1281,6 +1282,8 @@ class Activity extends Component{
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
+                      tableName = "Activity Report"
+                      id = "activityReport"
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.dataCount}

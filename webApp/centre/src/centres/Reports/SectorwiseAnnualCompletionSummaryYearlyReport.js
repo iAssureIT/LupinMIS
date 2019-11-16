@@ -124,6 +124,8 @@ export default class YearlyReport extends Component{
 
                         <div className="report-list-downloadMain">
                             <IAssureTable 
+                                tableName = "Sectorwise Annual Completion Report"
+                                id = "SectorwiseAnnualCompletionReport"
                                 // completeDataCount={this.state.tableDatas.length}
                                 twoLevelHeader={this.state.twoLevelHeader} 
                                 editId={this.state.editSubId} 

@@ -60,8 +60,9 @@ class GeographicalReport extends Component{
           "achievement_TotalBudget_L"        : 'Total',           
         },
         "tableObjects"        : {
-            paginationApply     : false,
-            searchApply         : false,
+          paginationApply     : false,
+          searchApply         : false,
+          downloadApply       : true,
         },   
     }
       window.scrollTo(0, 0);
@@ -559,6 +560,8 @@ class GeographicalReport extends Component{
                         <div className="">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <IAssureTable 
+                                    tableName = "Geographical Report"
+                                    id = "GeographicalReport"
                                     completeDataCount={this.state.tableDatas.length}
                                     twoLevelHeader={this.state.twoLevelHeader} 
                                     editId={this.state.editSubId} 
