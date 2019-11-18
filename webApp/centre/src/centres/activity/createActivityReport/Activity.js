@@ -30,6 +30,8 @@ class Activity extends Component{
       "typeofactivity"    : "",
       "nameofactivity"    : "",
       "activity"          : "",
+      "projectName"       : "LHWRF Grant",
+      "projectCategoryType" : "LHWRF Grant",
       "subactivity"       : "",
       "unit"              : "",
       "unitCost"          : 0,
@@ -116,7 +118,7 @@ class Activity extends Component{
       "village"           : this.refs.village.value,
 */      [event.target.name]: event.target.value
     },()=>{
-      console.log(this.state);
+      // console.log(this.state);
     });
  
     let fields = this.state.fields;
@@ -202,7 +204,9 @@ class Activity extends Component{
         "other"             : this.refs.other.value,
         "total"             : this.state.total,
         "remark"            : this.refs.remark.value,
-        "listofBeneficiaries": this.state.selectedBeneficiaries
+        "listofBeneficiaries" : this.state.selectedBeneficiaries,
+        "projectName"         : this.state.projectName,
+        "projectCategoryType" : this.state.projectCategoryType,
       };
       let fields                  = {};
       fields["district"]          = "";
@@ -225,7 +229,10 @@ class Activity extends Component{
       fields["directCC"]          = "";
       fields["indirectCC"]        = "";
       fields["other"]             = "";
+      fields["projectName"]       = "";
+      fields["projectCategoryType"]= "";
       
+          console.log("activityValues", activityValues);
       axios.post('/api/activityReport',activityValues)
         .then((response)=>{
           console.log("response", response);
@@ -248,6 +255,8 @@ class Activity extends Component{
           }
         });
       this.setState({
+        "projectName"            : "",
+        "projectCategoryType" : "LHWRF Grant",
         "district"               : "",
         "block"                  : "",
         "village"                : "",
@@ -288,6 +297,7 @@ class Activity extends Component{
 
     var activityValues= {
       "activityReport_ID" : this.state.editId,
+      "categoryType"      : this.state.categoryType,
       "center_ID"         : this.state.center_ID,
       "centerName"        : this.state.centerName,
       "date"              : this.refs.dateofIntervention.value,
@@ -316,10 +326,14 @@ class Activity extends Component{
       "other"             : this.refs.other.value,
       "total"             : this.state.total,
       "remark"            : this.refs.remark.value,
-      "listofBeneficiaries": this.state.selectedBeneficiaries
+      "listofBeneficiaries" : this.state.selectedBeneficiaries,
+      "projectName"         : this.state.projectName,
+      "projectCategoryType" : this.state.projectCategoryType,
     };
     let fields                  = {};
-    fields["district"]              = "";
+    fields["projectName"]       = "";
+    fields["projectCategoryType"]= "";
+    fields["district"]          = "";
     fields["block"]             = "";
     fields["village"]           = "";
     fields["dateofIntervention"]= "";
@@ -342,7 +356,7 @@ class Activity extends Component{
     fields["remark"]             = "";
     axios.patch('/api/activityReport',activityValues)
     .then((response)=>{
-      console.log("update",response);
+      // console.log("update",response);
     this.getData(this.state.startRange, this.state.limitRange);      
       swal({
         title : response.data.message,
@@ -359,6 +373,8 @@ class Activity extends Component{
       }          
     });
     this.setState({
+      "projectName"        : "",
+      "projectCategoryType" : "LHWRF Grant",
       "district"          : "",
       "block"             : "",
       "village"           : "",
@@ -400,8 +416,10 @@ class Activity extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-    $("html,body").scrollTop(0);
+       
+
       if (!fields["district"]) {
+        $("html,body").scrollTop(0);
         formIsValid = false;
         errors["district"] = "This field is required.";
       }     
@@ -479,7 +497,7 @@ class Activity extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-    $("html,body").scrollTop(0);
+    // $("html,body").scrollTop(0);
     this.setState({
       errors: errors
     });
@@ -519,8 +537,8 @@ class Activity extends Component{
       url: '/api/activityReport/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log("editData",editData);
-      console.log("stateCode",this.state.stateCode);
+      // console.log("editData",editData);
+      // console.log("stateCode",this.state.stateCode);
         // getAvailableCenter(center_ID)
       this.getAvailableCenter(this.state.center_ID);
       this.getBlock(this.state.stateCode, editData.district);
@@ -556,8 +574,8 @@ class Activity extends Component{
         "listofBeneficiaries" : editData.listofBeneficiaries,
         "selectedBeneficiaries" : editData.listofBeneficiaries
       }, ()=>{
-        console.log("edit", this.state.editData)
-      console.log(this.state.stateCode, editData.district,this.state.district ,editData.block);
+        // console.log("edit", this.state.editData)
+      // console.log(this.state.stateCode, editData.district,this.state.district ,editData.block);
       });      
       let fields = this.state.fields;
       let errors = {};
@@ -589,7 +607,7 @@ class Activity extends Component{
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -675,9 +693,10 @@ class Activity extends Component{
       centerName   : centerName,
     },()=>{
     this.getLength(this.state.center_ID);
+    this.getAvailableProjectName();
     this.getAvailableCenter(this.state.center_ID, this.state.stateCode);
     this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-    console.log("center_ID =",this.state.center_ID);
+    // console.log("center_ID =",this.state.center_ID);
     });
   }
 
@@ -689,7 +708,7 @@ class Activity extends Component{
     this.setState({
       "editId" : editId,
     },()=>{
-      console.log('editId componentWillReceiveProps', this.state.editId);
+      // console.log('editId componentWillReceiveProps', this.state.editId);
       // this.getAvailableActivity(this.state.editSectorId);
       // this.getAvailableSubActivity(this.state.editSectorId);
       
@@ -809,7 +828,7 @@ class Activity extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        console.log('availableDistInCenter ==========',availableDistInCenter);
+        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
           // availableDistInCenter  : response.data[0].districtsCovered,
@@ -821,7 +840,7 @@ class Activity extends Component{
           stateCode  : stateCode,
 
         },()=>{
-          console.log("stateCode", this.state.stateCode)
+          // console.log("stateCode", this.state.stateCode)
         // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
         });
         })
@@ -886,7 +905,7 @@ class Activity extends Component{
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-        console.log('response ==========', response.data);
+        // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
@@ -934,12 +953,68 @@ class Activity extends Component{
     });
     this.handleChange(event);
   }
+  getToggleValue(event){
+    if(this.state.projectCategoryType === "LHWRF Grant"){
+      this.setState({
+        // projectCategoryType : "LHWRF Grant",
+        shown: !this.state.shown
+      },()=>{
+        this.setState({
+          projectName : "LHWRF Grant",
+        })
+        console.log("shown",this.state.shown, this.state.projectName)
+      })
+    }else/* if(this.state.projectCategoryType === "Project Fund")*/{
+      this.setState({
+        projectCategoryType : "Project Fund",
+      },()=>{
+        console.log("shown",this.state.shown, this.state.projectName)
+      })
+    }
 
+  }
+/*  getToggleValue(event){
+    if(this.state.projectCategoryType === "LHWRF Grant"){
+      this.setState({
+        // projectCategoryType : "LHWRF Grant",
+        shown: !this.state.shown
+      },()=>{
+        this.setState({
+          projectName : "LHWRF Grant",
+        })
+        console.log("shown",this.state.shown, this.state.projectName)
+      })
+    }else{
+      this.setState({
+        projectCategoryType : "Project Fund",
+      },()=>{
+        console.log("shown",this.state.shown, this.state.projectName)
+      })
+    }
+
+  }*/
+  getAvailableProjectName(){
+    axios({
+      method: 'get',
+      url: '/api/projectMappings/list',
+    }).then((response)=> {
+      console.log('responseP', response);
+        
+        this.setState({
+          availableProjects : response.data
+        })
+    }).catch(function (error) {
+      console.log('error', error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
+    });
+  }
   render() {
-    var shown = {
-      display: this.state.shown ? "block" : "none"
-    };    
-    var hidden = {
+     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
     return (
@@ -962,6 +1037,36 @@ class Activity extends Component{
                   <div className="tab-content ">
                     <div id="manualactivity"  className="tab-pane fade in active ">
                     <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
+
+                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
+                      <label className="formLable">Category Type</label><span className="asterix">*</span>
+                       <div className="can-toggle genderbtn demo-rebrand-2 " onChange={this.getToggleValue.bind(this)}>
+                          <input id="d" type="checkbox"/>
+                          <label className="formLable" htmlFor="d">
+                          <div className="can-toggle__switch" data-checked="Project Fund"  data-unchecked="LHWRF Grant" ></div>
+                            <div className="can-toggle__label-text"></div>
+                          </label>
+                        </div>
+                    </div>
+                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " style={hidden}>
+                      <label className="formLable">Project Name</label>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                          <select className="custom-select form-control inputBox" ref="projectName" name="projectName"  value={this.state.projectName} onChange={this.handleChange.bind(this)} >
+                            <option  className="hidden" >-- Select --</option>
+                            {
+                              this.state.availableProjects && this.state.availableProjects.length > 0  ? 
+                              this.state.availableProjects.map((data, index)=>{
+                                return(
+                                  <option key={index} value={(data.projectName)}>{(data.projectName)}</option>
+                                );
+                              })
+                              :
+                              null
+                            }  
+                          </select>
+                        </div>
+                        <div className="errorMsg">{this.state.errors.block}</div>
+                    </div>
                       <div className="col-lg-12 ">
                          <h4 className="pageSubHeader">Activity Details</h4>
                       </div>
@@ -978,7 +1083,6 @@ class Activity extends Component{
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">District</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                              {console.log(this.state.district)}
                                 <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
                                   <option  className="hidden" >-- Select --</option>
                                   {

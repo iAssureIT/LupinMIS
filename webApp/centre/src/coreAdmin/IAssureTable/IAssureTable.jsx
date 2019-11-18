@@ -5,7 +5,7 @@ import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
-
+ 
 import './IAssureTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
@@ -548,8 +548,8 @@ class IAssureTable extends Component {
 				:
 				null        
 	       	}
-	       
-					
+		    
+		  
            
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
 	                <div className="table-responsive">
@@ -726,3 +726,22 @@ class IAssureTable extends Component {
 }
 
 export default withRouter(IAssureTable);
+
+
+
+// const Example = () => {
+//   const componentRef = Component();
+//   return (
+//     <div>
+//       <ReactToPrint
+//         trigger={() => <button className="submit">Print this out!</button>}
+//         content={() => componentRef.current}
+//       />
+//       <IAssureTable ref={componentRef} />
+//     </div>
+//   );
+// };
+
+
+
+        
