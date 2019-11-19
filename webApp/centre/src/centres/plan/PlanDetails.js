@@ -893,7 +893,7 @@ class PlanDetails extends Component{
                         </div> 
                       </div><br/>
                       <div style={hidden}>
-                        <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 NOpadding">
+                        <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12">
                           <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualplan">Manual</a></li>
                           <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkplan">Bulk Upload</a></li>
                         </ul>   

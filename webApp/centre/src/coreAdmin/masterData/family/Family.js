@@ -684,7 +684,7 @@ class Family extends Component{
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-                  <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 NOpadding">
+                  <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12">
                     <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manual">Manual</a></li>
                     <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulk">Bulk Upload</a></li>
                   </ul>
@@ -784,6 +784,7 @@ class Family extends Component{
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
                                 <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
                                   <option  className="hidden" >-- Select --</option>
+                                  <option>Normal</option>
                                   <option>Differently Abled</option>
                                   <option>Veerangana</option>
                                   <option>Widow Headed</option>

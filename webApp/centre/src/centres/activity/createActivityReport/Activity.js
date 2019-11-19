@@ -46,6 +46,7 @@ class Activity extends Component{
       "other"             : 0,
       "total"             : 0,
       "remark"            : "",
+      type               : true,      
       shown               : true,      
       "listofDistrict"    :"",
       "listofBlocks"      :"",
@@ -693,7 +694,7 @@ class Activity extends Component{
       centerName   : centerName,
     },()=>{
     this.getLength(this.state.center_ID);
-    this.getToggleValue();
+    // this.getToggleValue();
     this.getAvailableProjectName();
     this.getAvailableCenter(this.state.center_ID, this.state.stateCode);
     this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
@@ -954,7 +955,7 @@ class Activity extends Component{
     });
     this.handleChange(event);
   }
-  getToggleValue(event){
+/*  getToggleValue(event){
     console.log("this.state.projectCategoryType",this.state.projectCategoryType);
     if(this.state.projectCategoryType === "LHWRF Grant"){
       this.setState({
@@ -962,18 +963,18 @@ class Activity extends Component{
       },()=>{
         console.log("shown", this.state.projectCategoryType)
       })
-    }else/* if(this.state.projectCategoryType === "Project Fund")*/{
+    }else{
       this.setState({
         projectCategoryType : "Project Fund",
       },()=>{
-      /*  this.setState({
+        this.setState({
           projectName : "LHWRF Grant",
         })
-      */  console.log("shown",this.state.shown, this.state.projectCategoryType)
+        console.log("shown",this.state.shown, this.state.projectCategoryType)
       })
     }
 
-  }
+  }*/
   
   getAvailableProjectName(){
     axios({
@@ -995,6 +996,29 @@ class Activity extends Component{
       }   
     });
   }
+
+  handleToggle(event){
+       event.preventDefault();
+      console.log("this.state.type",this.state.type)
+    if (this.state.type===true){
+      this.setState({
+        type: false,
+        projectCategoryType:"Project Fund"
+      },()=>{
+      console.log("this.state.type",this.state.type)
+
+      })
+    }
+    else{
+      this.setState({
+        type: true,
+        projectCategoryType:"LHWRF Grant"
+
+      },()=>{
+      console.log("this.state.type",this.state.type)
+      })
+    }  
+  }
   render() {
      var hidden = {
       display: this.state.shown ? "none" : "block"
@@ -1010,54 +1034,72 @@ class Activity extends Component{
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
                         Activity Reporting                                     
                      </div>
-                    <hr className="hr-head container-fluid row"/>
+                    <hr className="hr-head container-flui7d row"/>
+                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                      <h4 className="col-lg-6 col-md-6 col-xs-12 col-sm-12 pageSubHeader NOpadding">Activity Details</h4>
+                      <ul className="nav nav-pills col-lg-3 col-lg-offset-3 col-md-3 col-md-offset-3 col-sm-12 col-xs-12">
+                        <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
+                        <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkactivity">Bulk Upload</a></li>
+                      </ul>
+                    </div>
                   </div>
-                  <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 NOpadding">
-                    <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
-                    <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkactivity">Bulk Upload</a></li>
-                  </ul>
                   <div className="tab-content ">
                     <div id="manualactivity"  className="tab-pane fade in active ">
                     <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
 
-                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
-                      <label className="formLable">Category Type</label><span className="asterix">*</span>
-                       <div className="can-toggle genderbtn demo-rebrand-2 " onClick={this.getToggleValue.bind(this)}>
-                          <input id="d" type="checkbox"/>
-                          <label className="formLable" htmlFor="d">
-                          <div className="can-toggle__switch" data-checked="Project Fund"  data-unchecked="LHWRF Grant" ></div>
-                            <div className="can-toggle__label-text"></div>
-                          </label>
-                        </div>
-                    </div>
-                      {console.log("projectCategoryType",this.state.projectCategoryType)}
-                    {
-                      this.state.projectCategoryType =="Project Fund" ? 
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
+                        <div className="" id="projectCategoryType" >
+                          <label className=" formLable">Category Type<span className="asterix">*</span></label>
+                          {this.state.type===true ?
 
-                      <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
-                        <label className="formLable">Project Name</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName"  value={this.state.projectName} onChange={this.handleChange.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              {
-                                this.state.availableProjects && this.state.availableProjects.length > 0  ? 
-                                this.state.availableProjects.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={(data.projectName)}>{(data.projectName)}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }  
-                            </select>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.block}</div>
+                           <div className="switch" onClick={this.handleToggle.bind(this)} >
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
+                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
+                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                              <span className="switch-selection"></span>
+                            </div>
+
+                            :
+
+                             <div className="switch" onClick={this.handleToggle.bind(this)} >
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
+                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                              <span className="switch-selection" ></span>
+                            </div>
+                        
+                          }
+                        </div>
                       </div>
-                      : ""
-                    }
-                      <div className="col-lg-12 ">
-                         <h4 className="pageSubHeader">Activity Details</h4>
-                      </div>
+                        {console.log("projectCategoryType",this.state.projectCategoryType)}
+                      {
+                        this.state.projectCategoryType =="Project Fund" ? 
+
+                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
+                          <label className="formLable">Project Name</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName"  value={this.state.projectName} onChange={this.handleChange.bind(this)} >
+                                <option  className="hidden" >-- Select --</option>
+                                {
+                                  this.state.availableProjects && this.state.availableProjects.length > 0  ? 
+                                  this.state.availableProjects.map((data, index)=>{
+                                    return(
+                                      <option key={index} value={(data.projectName)}>{(data.projectName)}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }  
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.block}</div>
+                        </div>
+                        : ""
+                      } 
+                      <br/>
+                      
                       <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                           
@@ -1364,7 +1406,7 @@ class Activity extends Component{
                         }
                       </div> 
                       <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
-                       <hr className=""/>
+                        <hr className=""/>
                       </div>
                     </form>
                   </div>
