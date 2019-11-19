@@ -853,9 +853,6 @@ class Family extends Component{
                               </div>
                               <div className="errorMsg">{this.state.errors.village}</div>
                             </div>
-                          </div> 
-                        </div>
-                        <br/>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <br/>
                           {
@@ -864,6 +861,8 @@ class Family extends Component{
                               :
                               <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitFamily.bind(this)}> Submit </button>
                             }
+                          </div> 
+                        </div>
                         </div>
                       </form>
                     </div>
