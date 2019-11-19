@@ -493,7 +493,6 @@ class IAssureTable extends Component {
     	var selectedBeneficiaries = this.state.selectedBeneficiaries;
     	var value = event.target.checked;
 	    var id    = event.target.id;
-	    console.log("value",value, "id0",id);
 	    this.setState({
 	      [id] : value
 	    },()=>{
@@ -528,7 +527,6 @@ class IAssureTable extends Component {
 		    	this.setState({
 		          selectedBeneficiaries : selectedBeneficiaries
 		        },()=>{
-		        	console.log(this.state.selectedBeneficiaries)
 		          this.props.getBeneficiaries(this.state.selectedBeneficiaries);
 		        });
 			}else{
@@ -623,7 +621,6 @@ class IAssureTable extends Component {
 	                           { this.state.tableData && this.state.tableData.length > 0 ?
 	                           		this.state.tableData.map( 
 										(value, i)=> {			
-										// console.log("value", this.state.tableData);										
 											return(
 												<tr key={i} className="">
 													<td className="textAlignCenter checkboxContainer">

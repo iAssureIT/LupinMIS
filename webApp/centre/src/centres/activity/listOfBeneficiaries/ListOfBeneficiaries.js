@@ -24,7 +24,7 @@ class ListOfBeneficiaries extends Component{
       "tableHeading"                : {
         beneficiaryID               : "Beneficiary ID",
         familyID                    : "Family ID",
-        nameofbeneficiary           : "Name of Beneficiary",
+        nameofbeneficiaries           : "Name of Beneficiary",
         relation                    : "Relation with Family Head",
         dist                        : "District",
         block                       : "Block",

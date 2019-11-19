@@ -336,7 +336,7 @@ class Beneficiary extends Component{
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){

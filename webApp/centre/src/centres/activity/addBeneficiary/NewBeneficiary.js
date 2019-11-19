@@ -228,11 +228,8 @@ class NewBeneficiary extends Component{
   
     var centerID = this.state.center_ID;
     axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
-    // axios.post('/api/beneficiaries/list/'+center_ID,data)
-      // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
-    // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
     .then((response)=>{
-      console.log('bbbbbbbbbbbbbbbbbbbresponse', response);
+      // console.log('bbbbbbbbbbbbbbbbbbbresponse', response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                       : a._id,
@@ -305,10 +302,8 @@ class NewBeneficiary extends Component{
         });
       }
     });
-    // console.log("availableFamilies", this.state.availableFamilies)
   }
   getAvailableCenter(center_ID){
-    // console.log("CID"  ,center_ID);
     axios({
       method: 'get',
       url: '/api/centers/'+center_ID,
@@ -319,12 +314,9 @@ class NewBeneficiary extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
-          // availableDistInCenter  : response.data[0].districtsCovered,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-          // districtsCovered : response.data[0].districtsCovered
         },()=>{
         var stateCode =this.state.address.split('|')[0];
          this.setState({
@@ -355,22 +347,19 @@ class NewBeneficiary extends Component{
   districtChange(event){    
     event.preventDefault();
     var district = event.target.value;
-    // console.log('district', district);
     this.setState({
       district: district
     },()=>{
       var selectedDistrict = this.state.district.split('|')[0];
-      // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      // console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       var district = this.state.selectedDistrict;
       var centerID = this.state.center_ID;
         axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/all/all")
         .then((response)=>{
-        console.log('response.district',response.data);
+        // console.log('response.district',response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
@@ -404,14 +393,11 @@ class NewBeneficiary extends Component{
   getBlock(stateCode, selectedDistrict){
     axios({
       method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
-        // console.log('listofBlocks', this.state.listofBlocks);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -423,7 +409,6 @@ class NewBeneficiary extends Component{
     this.setState({
       block : block
     },()=>{
-      // console.log("block",this.state.block);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
       
       var block = this.state.block;
@@ -431,7 +416,6 @@ class NewBeneficiary extends Component{
       var centerID = this.state.center_ID;
         axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/"+block+"/all")
         .then((response)=>{
-        // console.log('response.block',response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
@@ -462,17 +446,13 @@ class NewBeneficiary extends Component{
     });
   }
   getVillages(stateCode, selectedDistrict, block){
-    // console.log(stateCode, selectedDistrict, block);
     axios({
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
-      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
-        // console.log('response ==========', response.data);
         this.setState({
           listofVillages : response.data
         },()=>{
-        // console.log('listofVillages', this.state.listofVillages);
         })
     }).catch(function (error) {
       console.log('error', error);
@@ -484,14 +464,12 @@ class NewBeneficiary extends Component{
     this.setState({
       village : village
     },()=>{
-      // console.log("village",this.state.village);
       var village = this.state.village;
       var block = this.state.block;
       var district = this.state.selectedDistrict;
       var centerID = this.state.center_ID;
         axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/"+block+"/"+village)
         .then((response)=>{
-        console.log('response.block',response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,

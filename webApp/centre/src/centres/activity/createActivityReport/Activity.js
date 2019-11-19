@@ -57,7 +57,7 @@ class Activity extends Component{
         firstHeaderData   : [
                             {
                               heading : 'Activity Details',
-                              mergedColoums : 11
+                              mergedColoums : 13
                             },
                             {
                               heading : 'Source of Fund',
@@ -73,6 +73,9 @@ class Activity extends Component{
                             },]
       },
       "tableHeading"      : {
+
+        projectCategoryType        : "Category",
+        projectName                : "Project Name",
         date                       : "Date",
         place                      : "Place",
         sectorName                 : "Sector",
@@ -180,7 +183,7 @@ class Activity extends Component{
         "centerName"        : this.state.centerName,
         "date"              : this.refs.dateofIntervention.value,
         "stateCode"         : this.state.stateCode,
-        "district"          : this.refs.district.value.split('|')[0],
+        "district"          : this.refs.district.value,
         "block"             : this.refs.block.value,
         "village"           : this.refs.village.value,
         // "dateofIntervention": this.refs.dateofIntervention.value,
@@ -302,10 +305,9 @@ class Activity extends Component{
       "centerName"        : this.state.centerName,
       "date"              : this.refs.dateofIntervention.value,
       "stateCode"         : this.state.stateCode,
-      "district"          : this.refs.district.value.split('|')[0],
+      "district"          : this.refs.district.value,
       "block"             : this.refs.block.value,
       "village"           : this.refs.village.value,
-      // "dateofIntervention": this.refs.dateofIntervention.value,
       "sector_ID"         : this.refs.sector.value.split('|')[1],
       "sectorName"        : this.refs.sector.value.split('|')[0],
       "typeofactivity"    : this.refs.typeofactivity.value,
@@ -531,8 +533,8 @@ class Activity extends Component{
       url: '/api/activityReport/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      // console.log("editData",editData);
-      // console.log("stateCode",this.state.stateCode);
+      console.log("editData",editData);
+      console.log("editData",editData.district);
         // getAvailableCenter(center_ID)
       this.getAvailableCenter(this.state.center_ID);
       this.getBlock(this.state.stateCode, editData.district);
@@ -540,11 +542,12 @@ class Activity extends Component{
 
       this.getAvailableActivity(editData.sector_ID);
       this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID)
+      console.log( editData.district,editData.village,editData.block);
 
       this.setState({
-        "editData" : editData,
+        "editData"          : editData,
         "stateCode"         : editData.stateCode,
-        "district"              : editData.district,
+        "district"          : editData.district,
         "block"             : editData.block,
         "village"           : editData.village,
         "date"              : editData.date,
@@ -566,10 +569,11 @@ class Activity extends Component{
         "total"             : editData.sourceofFund.total,
         "remark"            : editData.remark,
         "listofBeneficiaries" : editData.listofBeneficiaries,
-        "selectedBeneficiaries" : editData.listofBeneficiaries
+        "selectedBeneficiaries" : editData.listofBeneficiaries,
+        "projectCategoryType"   : editData.projectCategoryType,
+        "projectName"           : editData.projectName,
       }, ()=>{
-        // console.log("edit", this.state.editData)
-      // console.log(this.state.stateCode, editData.district,this.state.district ,editData.block);
+        console.log("edit", this.state.editData)
       });      
       let fields = this.state.fields;
       let errors = {};
@@ -620,6 +624,8 @@ class Activity extends Component{
       var tableData = response.data.map((a, i)=>{
         return {
           _id                        : a._id,
+          projectCategoryType        : a.projectCategoryType,
+          projectName                : a.projectName,
           date                       : moment(a.date).format('YYYY-MM-DD'),
           place                      : a.place,
           sectorName                 : a.sectorName,
@@ -687,6 +693,7 @@ class Activity extends Component{
       centerName   : centerName,
     },()=>{
     this.getLength(this.state.center_ID);
+    this.getToggleValue();
     this.getAvailableProjectName();
     this.getAvailableCenter(this.state.center_ID, this.state.stateCode);
     this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
@@ -863,7 +870,7 @@ class Activity extends Component{
     this.setState({
       district: district
     },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
+      var selectedDistrict = this.state.district;
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
@@ -881,7 +888,7 @@ class Activity extends Component{
     this.setState({
       district: district
     },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
+      var selectedDistrict = this.state.district;
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
@@ -948,51 +955,32 @@ class Activity extends Component{
     this.handleChange(event);
   }
   getToggleValue(event){
+    console.log("this.state.projectCategoryType",this.state.projectCategoryType);
     if(this.state.projectCategoryType === "LHWRF Grant"){
       this.setState({
-        // projectCategoryType : "LHWRF Grant",
-        shown: !this.state.shown
+        projectCategoryType : "Project Fund",
       },()=>{
-        this.setState({
-          projectName : "LHWRF Grant",
-        })
-        console.log("shown",this.state.shown, this.state.projectName)
+        console.log("shown", this.state.projectCategoryType)
       })
     }else/* if(this.state.projectCategoryType === "Project Fund")*/{
       this.setState({
         projectCategoryType : "Project Fund",
       },()=>{
-        console.log("shown",this.state.shown, this.state.projectName)
+      /*  this.setState({
+          projectName : "LHWRF Grant",
+        })
+      */  console.log("shown",this.state.shown, this.state.projectCategoryType)
       })
     }
 
   }
-/*  getToggleValue(event){
-    if(this.state.projectCategoryType === "LHWRF Grant"){
-      this.setState({
-        // projectCategoryType : "LHWRF Grant",
-        shown: !this.state.shown
-      },()=>{
-        this.setState({
-          projectName : "LHWRF Grant",
-        })
-        console.log("shown",this.state.shown, this.state.projectName)
-      })
-    }else{
-      this.setState({
-        projectCategoryType : "Project Fund",
-      },()=>{
-        console.log("shown",this.state.shown, this.state.projectName)
-      })
-    }
-
-  }*/
+  
   getAvailableProjectName(){
     axios({
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
+      // console.log('responseP', response);
         
         this.setState({
           availableProjects : response.data
@@ -1034,7 +1022,7 @@ class Activity extends Component{
 
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
                       <label className="formLable">Category Type</label><span className="asterix">*</span>
-                       <div className="can-toggle genderbtn demo-rebrand-2 " onChange={this.getToggleValue.bind(this)}>
+                       <div className="can-toggle genderbtn demo-rebrand-2 " onClick={this.getToggleValue.bind(this)}>
                           <input id="d" type="checkbox"/>
                           <label className="formLable" htmlFor="d">
                           <div className="can-toggle__switch" data-checked="Project Fund"  data-unchecked="LHWRF Grant" ></div>
@@ -1042,25 +1030,31 @@ class Activity extends Component{
                           </label>
                         </div>
                     </div>
-                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " style={hidden}>
-                      <label className="formLable">Project Name</label>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                          <select className="custom-select form-control inputBox" ref="projectName" name="projectName"  value={this.state.projectName} onChange={this.handleChange.bind(this)} >
-                            <option  className="hidden" >-- Select --</option>
-                            {
-                              this.state.availableProjects && this.state.availableProjects.length > 0  ? 
-                              this.state.availableProjects.map((data, index)=>{
-                                return(
-                                  <option key={index} value={(data.projectName)}>{(data.projectName)}</option>
-                                );
-                              })
-                              :
-                              null
-                            }  
-                          </select>
-                        </div>
-                        <div className="errorMsg">{this.state.errors.block}</div>
-                    </div>
+                      {console.log("projectCategoryType",this.state.projectCategoryType)}
+                    {
+                      this.state.projectCategoryType =="Project Fund" ? 
+
+                      <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <label className="formLable">Project Name</label>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName"  value={this.state.projectName} onChange={this.handleChange.bind(this)} >
+                              <option  className="hidden" >-- Select --</option>
+                              {
+                                this.state.availableProjects && this.state.availableProjects.length > 0  ? 
+                                this.state.availableProjects.map((data, index)=>{
+                                  return(
+                                    <option key={index} value={(data.projectName)}>{(data.projectName)}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }  
+                            </select>
+                          </div>
+                          <div className="errorMsg">{this.state.errors.block}</div>
+                      </div>
+                      : ""
+                    }
                       <div className="col-lg-12 ">
                          <h4 className="pageSubHeader">Activity Details</h4>
                       </div>
@@ -1084,7 +1078,7 @@ class Activity extends Component{
                                     this.state.availableDistInCenter.map((data, index)=>{
                                       // console.log('dta', data);
                                       return(
-                                        <option key={index} value={(data.district)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                        <option key={index} value={(data.district.split('|')[0])}>{this.camelCase(data.district.split('|')[0])}</option>
                                       );
                                     })
                                     :

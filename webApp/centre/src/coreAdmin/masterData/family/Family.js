@@ -185,7 +185,7 @@ class Family extends Component{
         "landCategory"         :this.refs.landCategory.value, 
         "incomeCategory"       :this.refs.incomeCategory.value, 
         "specialCategory"      :this.refs.specialCategory.value, 
-        "dist"                 :this.refs.district.value.split('|')[0], 
+        "dist"                 :this.refs.district.value, 
         "block"                :this.refs.block.value, 
         "village"              :this.refs.village.value, 
       };
@@ -266,7 +266,7 @@ class Family extends Component{
         "landCategory"         :this.refs.landCategory.value, 
         "incomeCategory"       :this.refs.incomeCategory.value, 
         "specialCategory"      :this.refs.specialCategory.value, 
-        "dist"                 :this.refs.district.value.split('|')[0], 
+        "dist"                 :this.refs.district.value, 
         "block"                :this.refs.block.value, 
         "village"              :this.refs.village.value, 
       };
@@ -607,7 +607,7 @@ class Family extends Component{
     this.setState({
       district: district
     },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
+      var selectedDistrict = this.state.district;
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
@@ -803,7 +803,7 @@ class Family extends Component{
                                       console.log("data",data)
                                       return(
                                         /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                        <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                        <option key={index} value={(data.district.split('|')[0])}>{this.camelCase(data.district.split('|')[0])}</option>
 
                                       );
                                     })
