@@ -285,6 +285,7 @@ class Activity extends Component{
         "remark"                 : "",
         "fields"                 : fields,
         "selectedBeneficiaries"  : [],
+        "selectedValues"         : [],
         "listofBeneficiaries"    : [],
         "subActivityDetails"     : [],
         "availableActivity"      : [],
@@ -402,6 +403,7 @@ class Activity extends Component{
       "remark"            : "",
       "fields"            : fields,
       "selectedBeneficiaries" :[],
+      "selectedValues"         : [],    
       "listofBeneficiaries": [],      
       "subActivityDetails" : [],
       "availableSectors"   : [],
@@ -1012,7 +1014,8 @@ class Activity extends Component{
     else{
       this.setState({
         type: true,
-        projectCategoryType:"LHWRF Grant"
+        projectCategoryType:"LHWRF Grant",
+        projectName:"LHWRF Grant",
 
       },()=>{
       console.log("this.state.type",this.state.type)
