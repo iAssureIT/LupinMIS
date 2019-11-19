@@ -22,6 +22,7 @@
     "react-google-charts": "^3.0.15",
     "react-html-table-to-excel": "^2.0.0",
     "react-input-mask": "^2.0.4",
+    "react-print-component": "^0.1.8",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-table": "^6.10.0",

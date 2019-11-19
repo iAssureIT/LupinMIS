@@ -1,3 +1,6 @@
+ .collapse.in{
+  height: auto !important;
+} 
 .menuContent .down{
   transform: rotate(-90deg);
 }
@@ -5,8 +8,8 @@
   transition: all 0.2s linear;
 }
 .leftarrow{
-  font-size: 10px;
-  margin-top: 7px;
+  font-size: 14px;
+  margin-top: 0px;
   margin-right: 0px !important;
 }
 .sidebarLogoName p{
@@ -76,9 +79,11 @@ a, a:hover, a:focus {
     outline: none !important;
     border: none;
 }
- .collapse.in{
-  height: auto !important;
-} 
+/* .collapse.in:hover{
+display : block;
+position: absolute;
+left: 100px;
+} */
 .line {
     width: 100%;
     height: 1px;
@@ -131,13 +136,18 @@ i, span {
     padding: 20px 10px;
     text-align: center;
     font-size: 0.85em;
+    overflow-x: auto;
 }
 
 #sidebar.active ul li a i {
     margin-right:  0;
     display: block;
-    font-size: 1.8em;
+    /*font-size: 1.8em;*/
     margin-bottom: 5px;
+}
+
+#sidebar.active .sidebarMenuText .leftarrow{
+   display: none;
 }
 
 #sidebar.active ul ul a {
@@ -165,10 +175,40 @@ i, span {
 }
 
 #sidebar ul.components {
-    padding: 0px 0;
+    padding: 0;
     border-bottom: 1px solid #333;
+    overflow-y: scroll;
+}
+.scrollBox::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border: 1px solid #333;
 }
 
+
+.scrollBox::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.scrollBox::-webkit-scrollbar-track {
+  background: #333; 
+    border: 1px solid #333;
+
+}
+ 
+/* Handle */
+.scrollBox::-webkit-scrollbar-thumb {
+  background: #333; 
+}
+
+/* Handle on hover */
+.scrollBox::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.scrollBox::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+}
 #sidebar ul li a {
     padding: 10px 15px 10px 15px ;
     font-size: 1em;
@@ -429,15 +469,14 @@ a.article, a.article:hover {
     background-color: #f2f2f2 !important;
     z-index: 800;
   }
-
   .main-footer {
-    /* text-align: center; */
+    /*text-align: center;*/
     margin: 0px;
     background: #fff;
     color: #444;
     padding: 20px 0px 10px 0px;
     color: #444;
-}
+  }
   /* Fixed layout */
   .fixed .main-header,
   .fixed .main-sidebar,
@@ -508,7 +547,6 @@ a.article, a.article:hover {
   /* Content */
   .content {
     min-height: calc(100vh - 50px);
-    background: #f2f2f2;
     padding: 2%;
   /*  margin-right: auto;
     margin-left: auto;

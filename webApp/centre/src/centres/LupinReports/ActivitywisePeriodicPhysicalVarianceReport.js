@@ -94,6 +94,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
         });
       axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+        this.getAvailableProjects();
         this.getAvailableSectors();
         this.currentFromDate();
         this.currentToDate();
@@ -153,30 +154,87 @@ class ActivityWisePeriodicVarianceReport extends Component{
         }
       });
     }
-    selectSector(event){
-        event.preventDefault();
-        this.setState({
-          [event.target.name]:event.target.value
-        });
-        if(event.target.value==="all"){
-            var sector_id = event.target.value;
-        }else{
-            var sector_id = event.target.value.split('|')[1];
-        }
-        // console.log('sector_id',sector_id);
-        this.setState({
-              sector_ID : sector_id,
-            },()=>{
-            // console.log('availableSectors', this.state.availableSectors);
-            // console.log('sector_ID', this.state.sector_ID);
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-        })
-    }
+  selectSector(event){
+      event.preventDefault();
+      this.setState({
+        [event.target.name]:event.target.value
+      });
+      if(event.target.value==="all"){
+          var sector_id = event.target.value;
+      }else{
+          var sector_id = event.target.value.split('|')[1];
+      }
+      // console.log('sector_id',sector_id);
+      this.setState({
+            sector_ID : sector_id,
+          },()=>{
+          // console.log('availableSectors', this.state.availableSectors);
+          // console.log('sector_ID', this.state.sector_ID);
+          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+      })
+  }
 
-    getData(startDate, endDate, center_ID, sector_ID){        
-        console.log(startDate, endDate, center_ID, sector_ID);
-        // axios.get('/api/report/periodic_activity/'+startDate+'/'+endDate+'/'+sector_ID+'/'+center_ID)
+  selectprojectCategoryType(event){
+    event.preventDefault();
+    console.log(event.target.value)
+    var projectCategoryType = event.target.value;
+    this.setState({
+          projectCategoryType : projectCategoryType,
+        },()=>{
+        if(this.state.projectCategoryType === "LHWRF Grant"){
+          this.setState({
+            projectName : "LHWRF Grant",
+          })          
+        }else if (this.state.projectCategoryType=== "all"){
+          this.setState({
+            projectName : "all",
+          })    
+        }
+        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      
+    },()=>{
+    })
+
+  }
+  getAvailableProjects(){
+    axios({
+      method: 'get',
+      url: '/api/projectMappings/list',
+    }).then((response)=> {
+      console.log('responseP', response);
+      this.setState({
+        availableProjects : response.data
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
+    });
+  }
+  selectprojectName(event){
+      event.preventDefault();
+      var projectName = event.target.value;
+      this.setState({
+            projectName : projectName,
+          },()=>{
+          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+          this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      })
+  }
+
+
+  getData(startDate, endDate, center_ID, sector_ID){        
+    console.log(startDate, endDate, center_ID, sector_ID);
+    // if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
+    //   if(sector_ID==="all" && projectCategoryType==="all" && projectName==="all" && beneficiaryType==="all"){
+        // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all')
       if(sector_ID==="all"){
         axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
         .then((response)=>{
@@ -216,6 +274,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
           }
         });
       }else{
+        // axios.get('http://localhost:3054/api/activity/:startDate/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
         axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
         .then((response)=>{
           console.log("resp",response);
@@ -377,8 +436,19 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         </div>
                     </div>
                     <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                      
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
+                      <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                          <label className="formLable">From</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                              <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                          </div>
+                      </div>
+                      <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                          <label className="formLable">To</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                              <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                          </div>
+                      </div>  
                       <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
                         <label className="formLable">Sector</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
@@ -398,19 +468,59 @@ class ActivityWisePeriodicVarianceReport extends Component{
                           </select>
                         </div>
                        {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+                      </div>                     
+                    </div> 
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                        <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                          <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="withUID" >With UID</option>
+                            <option value="withoutUID" >Without UID</option>
+                            
+                          </select>
+                        </div>
+                      </div> 
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                        <label className="formLable">Project Category</label><span className="asterix">*</span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                          <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="LHWRF Grant" >LHWRF Grant</option>
+                            <option value="Project Fund">Project Fund</option>
+                            
+                          </select>
+                        </div>
                       </div>
-                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                            <label className="formLable">From</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                            </div>
+                      {
+                        this.state.projectCategoryType === "Project Fund" ?
+
+                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                          <label className="formLable">Project Name</label><span className="asterix">*</span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                              <option  className="hidden" >--Select--</option>
+                            {/*  <option value="all" >All</option>
+                              <option value="LHWRF Grant" >LHWRF Grant</option>*/}
+                              {
+                                this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                this.state.availableProjects.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.projectName+'|'+data._id}>{data.projectName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
+                          </div>
                         </div>
-                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                            <label className="formLable">To</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                            </div>
-                        </div>
+                      : 
+                      ""
+                      } 
                     </div>  
                     <div className="marginTop11">
                         <div className="">
@@ -430,8 +540,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                       
                         </div>
                     </div>
+                  </div>     
                 </div>     
-              </div>
             </section>
           </div>
         </div>

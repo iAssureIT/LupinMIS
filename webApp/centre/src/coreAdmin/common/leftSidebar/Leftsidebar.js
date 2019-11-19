@@ -26,12 +26,11 @@ export default class Leftsidebar extends Component{
   }    
 
   eventclk1(event){
-    event.preventDefault();
-    $(event.currentTarget).children('.treeview-menu').slideToggle();
-    $(event.currentTarget).addClass('active');
-    $(event.currentTarget).children(Link).children(".rotate").toggleClass("down");
-    $(event.currentTarget).siblings('li').removeClass('active');
-    // $(event.currentTarget).siblings('li').children('.treeview-menu').toggle();
+    // event.preventDefault();
+    // $(event.currentTarget).children('.treeview-menu').slideToggle();
+    // $(event.currentTarget).addClass('active');
+    // $(event.currentTarget).children(Link).children(".rotate").toggleClass("down");
+    // $(event.currentTarget).siblings('li').removeClass('active');
 
   } 
 
@@ -41,9 +40,11 @@ export default class Leftsidebar extends Component{
       $(this).find(".menuContent").toggleClass("openContent");
   }*/
     $("pull-right-container").children('i').css({"transform": "rotate(-90deg)"});
-
+ 
   }   
   render(){
+    console.log('nkhjh',  window.screen.height );  
+    var sidebarHeight = window.screen.height - 185;
     return(
       <div>
         <aside className="leftsidebar">
@@ -53,7 +54,7 @@ export default class Leftsidebar extends Component{
                 <h4 className="text-center"><b>Center Lupin MIS</b></h4>
                 <strong className="sidebarLogoName">LFMIS <p className="fz14">Center</p></strong>
               </div>
-              <ul className="list-unstyled sidebar-menu components">
+              <ul className="list-unstyled sidebar-menu components scrollBox" style={{height:  sidebarHeight+"px"}}>
                 <li className=" sidebarMenuText">
                   <Link to="/">
                     <i className="glyphicon glyphicon-briefcase"></i>
@@ -70,7 +71,7 @@ export default class Leftsidebar extends Component{
                   <Link to="#Activity" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-edit" />
                     Activity
-                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
                   <ul className="collapse  list-unstyled" id="Activity">
                     <li>
@@ -103,7 +104,7 @@ export default class Leftsidebar extends Component{
                   <Link to="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent" >
                     <i className="fa fa-file" />
                     Plan Related Reports
-                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
                   <ul className="collapse list-unstyled" id="planreport">
                     <li>
@@ -115,13 +116,13 @@ export default class Leftsidebar extends Component{
                     <li>
                       <Link to="/activity-wise-periodic-plan-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activitywise Periodic Plan</span>
+                        <span className="sidebarMenuSubText">Activitywise Peri. Plan</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/sector-wise-periodic-plan-summary-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector wise Periodic Plan</span>
+                        <span className="sidebarMenuSubText">Sector wise Peri. Plan</span>
                       </Link>
                     </li>
                     <li>
@@ -136,7 +137,7 @@ export default class Leftsidebar extends Component{
                   <Link to="#report" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-book" />
                     Reports
-                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
                   <ul className="collapse list-unstyled" id="report">
                    {/* <li>
@@ -160,13 +161,13 @@ export default class Leftsidebar extends Component{
                    <li>
                       <Link to="/activity-wise-periodic-variance-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activitywise Periodic Variance</span>
+                        <span className="sidebarMenuSubText">Activitywise Peri. Variance</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/sectorwise-periodic-variance-summary-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sectorwise Periodic Variance</span>
+                        <span className="sidebarMenuSubText">Sectorwise Peri. Variance</span>
                       </Link>
                     </li>
                     <li>
@@ -205,7 +206,7 @@ export default class Leftsidebar extends Component{
                   <Link to="#sreport" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-bars" />
                     Special Reports
-                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
                   <ul className="collapse list-unstyled" id="sreport">
                     <li>
@@ -232,7 +233,7 @@ export default class Leftsidebar extends Component{
                   <Link to="#MasterData" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-folder" />
                     Beneficiary Management
-                    <i className="leftarrow fa fa-chevron-left rotate pull-right"></i>
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
                   <ul className="collapse list-unstyled" id="MasterData">
                     <li>

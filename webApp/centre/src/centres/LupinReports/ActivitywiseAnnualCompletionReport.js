@@ -70,11 +70,11 @@ class ActivitywiseAnnualCompletionReport extends Component{
             "achievement_Other"             : 'Others',
             // "yiyi"                          : 'Remarks',
         },
-      "tableObjects"        : {
-        paginationApply     : false,
-        downloadApply       : true,
-        searchApply         : false,
-      },   
+            "tableObjects"        : {
+              paginationApply     : false,
+              searchApply         : false,
+              downloadApply       : true,
+            },  
 
     }
     window.scrollTo(0, 0);

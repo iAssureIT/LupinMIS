@@ -125,15 +125,20 @@ class ListOfBeneficiaries extends Component{
     // });
   }
   listofBeneficiaries(selectedBeneficiaries){
+    console.log(selectedBeneficiaries)
     var tableData = selectedBeneficiaries.map((a, i)=>{
         return {
-          _id                       : a._id,
-          beneficiaryID             : a.beneficiaryID,
-          familyID                  : a.familyID,
-          family_ID                 : a.family_ID,
-          nameofbeneficiary         : a.nameofbeneficiary,
-          relation                  : a.relation,
-        }
+            _id                       : a._id,
+            beneficiary_ID            : a.beneficiary_ID,
+            beneficiaryID             : a.beneficiaryID,
+            family_ID                 : a.family_ID,
+            familyID                  : a.familyID,
+            nameofbeneficiaries       : a.nameofbeneficiaries,
+            relation                  : a.relation,
+            dist                      : a.dist,
+            block                     : a.block,
+            village                   : a.village,
+          }
       })
       this.setState({
         tableData : tableData

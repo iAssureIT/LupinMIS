@@ -110,14 +110,6 @@
 .closeSidebr {
   margin-right: -20px;
 }
-/*
-#headerid{
-  position: absolute;
-  width: 82%;
-  right: 0px;
-  transition: all 0.8s;
-}*/
-
 .showme{ 
   display: none;
 }
@@ -172,7 +164,7 @@
 }
 #headerid {
   position: fixed;
-  width: 82.3%;
+  width: 82.1%;
   z-index: 1;
   right: 0;
   transition: all .8s;

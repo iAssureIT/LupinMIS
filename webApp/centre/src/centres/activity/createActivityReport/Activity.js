@@ -240,7 +240,7 @@ class Activity extends Component{
             title : response.data.message,
             text  : response.data.message,
           });
-            this.getData(this.state.startRange, this.state.limitRange);  
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);  
             this.setState({
               selectedValues : this.state.selectedBeneficiaries 
             })    
@@ -357,7 +357,7 @@ class Activity extends Component{
     axios.patch('/api/activityReport',activityValues)
     .then((response)=>{
       // console.log("update",response);
-    this.getData(this.state.startRange, this.state.limitRange);      
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
       swal({
         title : response.data.message,
         text  : response.data.message,
@@ -523,12 +523,6 @@ class Activity extends Component{
     this.setState({
       "totalcost" : total
     })
-  }
-
-  toglehidden(){
-   this.setState({
-     shown: !this.state.shown
-    });
   }
 
   edit(id){

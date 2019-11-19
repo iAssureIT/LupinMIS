@@ -5,7 +5,7 @@ import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
- 
+ import PrintComponent from 'react-print-component';
 import './IAssureTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
@@ -34,6 +34,21 @@ class IAssureTable extends Component {
 		}
 		this.delete = this.delete.bind(this);
 	}
+
+
+    onPrintButtonClick() {
+        //Replace components added
+        PrintComponent.SetPrintContent(this.render());
+        //Add components to list
+        PrintComponent.AddPrintContent(this.render());
+        PrintComponent.AddPrintContent(<div>{"Mulit element"}</div>);
+        //Clear all added components in list
+        PrintComponent.ClearComponent();
+    
+        //Call this method to print
+        PrintComponent.Print();
+    }
+ 
 	componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     $("html,body").scrollTop(0); 
@@ -528,6 +543,12 @@ class IAssureTable extends Component {
                 
                 : null
             }
+		       {/*	<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right	">
+		       		<div>
+                        <PrintComponent />
+                    </div>
+		       		<button className="submit" onClick={this.onPrintButtonClick.bind(this)}></button>
+		       	</div>*/}
 	       	{
 	       		this.state.tableObjects.paginationApply === true ?
 		       		<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding pull-right">
@@ -726,22 +747,3 @@ class IAssureTable extends Component {
 }
 
 export default withRouter(IAssureTable);
-
-
-
-// const Example = () => {
-//   const componentRef = Component();
-//   return (
-//     <div>
-//       <ReactToPrint
-//         trigger={() => <button className="submit">Print this out!</button>}
-//         content={() => componentRef.current}
-//       />
-//       <IAssureTable ref={componentRef} />
-//     </div>
-//   );
-// };
-
-
-
-        

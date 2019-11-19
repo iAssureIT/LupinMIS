@@ -54,14 +54,14 @@ class IAssureTable extends Component {
         	if(this.state.selectedValues){
 	        	this.state.selectedValues.map((a, i)=>{
 	        		this.setState({
-	        			[a.beneficiary_ID+'|'+a.beneficiaryID+'|'+a.family_ID+'|'+a.familyID+'|'+a.nameofbeneficiary] : false
+	        			[a.beneficiary_ID+'|'+a.beneficiaryID+'|'+a.family_ID+'|'+a.familyID+'|'+a.nameofbeneficiaries] : false
 	        		})
 	        	})
         	}
         	if(this.state.selectedBeneficiaries){
         		this.state.selectedBeneficiaries.map((a, i)=>{
         			this.setState({
-	        			[a.beneficiary_ID+'|'+a.beneficiaryID+'|'+a.family_ID+'|'+a.familyID+'|'+a.nameofbeneficiary] : true
+	        			[a.beneficiary_ID+'|'+a.beneficiaryID+'|'+a.family_ID+'|'+a.familyID+'|'+a.nameofbeneficiaries] : true
 	        		})
         		})
         	}
@@ -493,28 +493,42 @@ class IAssureTable extends Component {
     	var selectedBeneficiaries = this.state.selectedBeneficiaries;
     	var value = event.target.checked;
 	    var id    = event.target.id;
-	    
+	    console.log("value",value, "id0",id);
 	    this.setState({
 	      [id] : value
 	    },()=>{
 	    	
 	    	if(this.state[id] == true){
 			    selectedBeneficiaries.push({
-		    		beneficiary_ID      : id.split('|')[0],
-					beneficiaryID       : id.split('|')[1],
-		    		family_ID           : id.split('|')[2],
-					familyID            : id.split('|')[3],
-					nameofbeneficiary   : id.split('|')[4],
-					relation            : id.split('|')[5],
-					dist          	    : id.split('|')[6],
-					block               : id.split('|')[7],
-					village             : id.split('|')[8],
+
+            // _id                       : a._id,
+            // beneficiary_ID            : a.beneficiary_ID,
+            // beneficiaryID             : a.beneficiaryID,
+            // family_ID                 : a.family_ID,
+            // familyID                  : a.familyID,
+            // nameofbeneficiaries       : a.nameofbeneficiaries,
+            // relation                  : a.relation,
+            // dist                      : a.dist,
+            // block                     : a.block,
+            // village                   : a.village,
+          
+		    		_id     		    : id.split('|')[0],
+		    		beneficiary_ID      : id.split('|')[1],
+					beneficiaryID       : id.split('|')[2],
+		    		family_ID           : id.split('|')[3],
+					familyID            : id.split('|')[4],
+					nameofbeneficiaries   : id.split('|')[5],
+					relation            : id.split('|')[6],
+					dist          	    : id.split('|')[7],
+					block               : id.split('|')[8],
+					village             : id.split('|')[9],
         
 		    	});
 		    	
 		    	this.setState({
 		          selectedBeneficiaries : selectedBeneficiaries
 		        },()=>{
+		        	console.log(this.state.selectedBeneficiaries)
 		          this.props.getBeneficiaries(this.state.selectedBeneficiaries);
 		        });
 			}else{
@@ -608,11 +622,12 @@ class IAssureTable extends Component {
 	                        <tbody>
 	                           { this.state.tableData && this.state.tableData.length > 0 ?
 	                           		this.state.tableData.map( 
-										(value, i)=> {													
+										(value, i)=> {			
+										// console.log("value", this.state.tableData);										
 											return(
 												<tr key={i} className="">
 													<td className="textAlignCenter checkboxContainer">
-														<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village]?true:false} id={value._id+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village} onChange={this.selectBeneficiary.bind(this)}/>
+														<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village]?true:false} id={value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village} onChange={this.selectBeneficiary.bind(this)}/>
 														<span className="checkboxMark"></span>
 													</td>
 													<td className="textAlignCenter">{this.state.startRange+1+i}</td>

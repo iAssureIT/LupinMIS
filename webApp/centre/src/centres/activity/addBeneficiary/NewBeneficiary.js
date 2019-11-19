@@ -232,11 +232,13 @@ class NewBeneficiary extends Component{
       // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
     // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
     .then((response)=>{
-      // console.log('response', response.data);
+      console.log('bbbbbbbbbbbbbbbbbbbresponse', response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                       : a._id,
+          beneficiary_ID            : a.beneficiary_ID,
           beneficiaryID             : a.beneficiaryID,
+          family_ID                 : a.family_ID,
           familyID                  : a.familyID,
           nameofbeneficiaries       : a.nameofbeneficiaries,
           relation                  : a.relation,
@@ -368,11 +370,13 @@ class NewBeneficiary extends Component{
       var centerID = this.state.center_ID;
         axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/all/all")
         .then((response)=>{
-        // console.log('response.district',response.data);
+        console.log('response.district',response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
+            beneficiary_ID            : a.beneficiary_ID,
             beneficiaryID             : a.beneficiaryID,
+            family_ID                 : a.family_ID,
             familyID                  : a.familyID,
             nameofbeneficiaries       : a.nameofbeneficiaries,
             relation                  : a.relation,
@@ -431,7 +435,9 @@ class NewBeneficiary extends Component{
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
+            beneficiary_ID            : a.beneficiary_ID,
             beneficiaryID             : a.beneficiaryID,
+            family_ID                 : a.family_ID,
             familyID                  : a.familyID,
             nameofbeneficiaries       : a.nameofbeneficiaries,
             relation                  : a.relation,
@@ -485,11 +491,13 @@ class NewBeneficiary extends Component{
       var centerID = this.state.center_ID;
         axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/"+block+"/"+village)
         .then((response)=>{
-        // console.log('response.block',response.data);
+        console.log('response.block',response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
+            beneficiary_ID            : a.beneficiary_ID,
             beneficiaryID             : a.beneficiaryID,
+            family_ID                 : a.family_ID,
             familyID                  : a.familyID,
             nameofbeneficiaries       : a.nameofbeneficiaries,
             relation                  : a.relation,

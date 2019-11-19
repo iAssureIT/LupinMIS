@@ -220,6 +220,7 @@
   border-radius: 30px;
   width: 58px;
   line-height: 25px;
+  z-index: auto;
   font-size: 13px;
 }
 
