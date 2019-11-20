@@ -22,6 +22,9 @@ class CategorywiseReport extends Component{
         "limitRange"        : 10000,
         "district"          : "all",
         "selectedDistrict"  : "all",
+        "projectCategoryType": "all",
+        "beneficiaryType"    : "all",
+        "projectName"        : "all",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -69,6 +72,7 @@ class CategorywiseReport extends Component{
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.currentFromDate();
+    this.getAvailableProjects();
     this.currentToDate();
     this.setState({
       // "center"  : this.state.center[0],
@@ -76,23 +80,25 @@ class CategorywiseReport extends Component{
       tableData : this.state.tableData,
     },()=>{
     console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }
  
   componentWillReceiveProps(nextProps){
-      this.currentFromDate();
-      this.currentToDate();
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    this.getAvailableProjects();
+    this.currentFromDate();
+    this.currentToDate();
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
     event.preventDefault();
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       // console.log('name', this.state)
     });
   }
@@ -149,74 +155,10 @@ class CategorywiseReport extends Component{
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
     });
   }
-  getBlock(stateCode, selectedDistrict){
-    // console.log("sd", stateCode,selectedDistrict);
-    axios({
-      method: 'get',
-      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-    }).then((response)=> {
-        this.setState({
-          listofBlocks : response.data
-        },()=>{
-        })
-    }).catch(function (error) {
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-      });
-  }
-  selectBlock(event){
-    event.preventDefault();
-    var block = event.target.value;
-    this.setState({
-      block : block
-    },()=>{
-      // console.log("block",block);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
-    });
-  }
-  getVillages(stateCode, selectedDistrict, block){
-    // console.log(stateCode, selectedDistrict, block);
-    axios({
-      method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
-        this.setState({
-          listofVillages : response.data
-        },()=>{
-        // console.log('listofVillages', this.state.listofVillages);
-        })
-    }).catch(function (error) {
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-      });
-  }
-  selectVillage(event){
-    event.preventDefault();
-    var village = event.target.value;
-    this.setState({
-      village : village
-    },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      // console.log("village",village);
-    });  
-  }  
 
   camelCase(str){
     return str
@@ -225,11 +167,62 @@ class CategorywiseReport extends Component{
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
   }
-  getData(startDate, endDate, center_ID, selectedDistrict){        
-    // console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
+
+  selectprojectCategoryType(event){
+    event.preventDefault();
+    console.log(event.target.value)
+    var projectCategoryType = event.target.value;
+    this.setState({
+      projectCategoryType : projectCategoryType,
+    },()=>{
+        if(this.state.projectCategoryType === "LHWRF Grant"){
+          this.setState({
+            projectName : "LHWRF Grant",
+          })          
+        }else if (this.state.projectCategoryType=== "all"){
+          this.setState({
+            projectName : "all",
+          })    
+        }
+        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      },()=>{
+    })
+  }
+  getAvailableProjects(){
+    axios({
+      method: 'get',
+      url: '/api/projectMappings/list',
+    }).then((response)=> {
+      console.log('responseP', response);
+      this.setState({
+        availableProjects : response.data
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
+    });
+  }
+  selectprojectName(event){
+    event.preventDefault();
+    var projectName = event.target.value;
+    this.setState({
+          projectName : projectName,
+        },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    })
+  }
+  getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType){        
     if(center_ID){
-      if(startDate && endDate && selectedDistrict){
-        axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict)
+      if( startDate && endDate && center_ID && selectedDistrict && projectCategoryType  && beneficiaryType){
+        axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
         .then((response)=>{
           console.log("resp",response);
             var tableData = response.data.map((a, i)=>{
@@ -249,7 +242,7 @@ class CategorywiseReport extends Component{
           })
         })
         .catch(function(error){
-            // console.log("error = ",error);
+            console.log("error = ",error);
             if(error.message === "Request failed with status code 401"){
               swal({
                   title : "abc",
@@ -271,7 +264,7 @@ class CategorywiseReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     // console.log("dateUpdate",this.state.startDate);
     });
   }
@@ -288,7 +281,7 @@ class CategorywiseReport extends Component{
        endDate : endDate
     },()=>{
     // console.log("dateUpdate",this.state.endDate);
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
 
@@ -352,7 +345,19 @@ class CategorywiseReport extends Component{
                     </div>
                     <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 validBox">
-                      <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 valid_box ">
+                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">From</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                <input onChange={this.handleFromChange.bind(this)} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                            </div>
+                        </div>
+                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">To</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                <input onChange={this.handleToChange.bind(this)} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                            </div>
+                        </div>
+                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 valid_box ">
                           <label className="formLable">District</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                             <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
@@ -374,20 +379,59 @@ class CategorywiseReport extends Component{
                             </select>
                           </div>
                         </div>
-
-                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                            <label className="formLable">From</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleFromChange.bind(this)} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                            </div>
-                        </div>
-                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                            <label className="formLable">To</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleToChange.bind(this)} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                            </div>
-                        </div>
                     </div> 
+
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                              <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                <option value="all" >All</option>
+                                <option value="withUID" >With UID</option>
+                                <option value="withoutUID" >Without UID</option>
+                                
+                              </select>
+                            </div>
+                        </div> 
+                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Project Category</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                              <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                <option value="all" >All</option>
+                                <option value="LHWRF Grant" >LHWRF Grant</option>
+                                <option value="Project Fund">Project Fund</option>
+                                
+                              </select>
+                            </div>
+                        </div>
+                        {
+                            this.state.projectCategoryType === "Project Fund" ?
+
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                              <label className="formLable">Project Name</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                  <option  className="hidden" >--Select--</option>
+                                   <option value="all" >All</option>
+                                  {
+                                    this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                    this.state.availableProjects.map((data, index)=>{
+                                      return(
+                                        <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
+                                </select>
+                              </div>
+                            </div>
+                        : 
+                        ""
+                        } 
+                    </div>  
                     <div className="marginTop11">
                         <div className="">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">

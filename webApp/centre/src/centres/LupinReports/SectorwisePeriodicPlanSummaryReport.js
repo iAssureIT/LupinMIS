@@ -409,16 +409,14 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                                       <label className="formLable">Project Name</label><span className="asterix">*</span>
                                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
                                         <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                          <option  className="hidden" >--Select--</option>
-                                        {/*  <option value="all" >All</option>
-                                          <option value="LHWRF Grant" >LHWRF Grant</option>*/}
-                                          {
-                                            this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                            this.state.availableProjects.map((data, index)=>{
-                                              return(
-                                                <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                              );
-                                            })
+                                            <option value="all" >All</option>
+                                            {
+                                                this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                                this.state.availableProjects.map((data, index)=>{
+                                                  return(
+                                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                                  );
+                                                })
                                             :
                                             null
                                           }

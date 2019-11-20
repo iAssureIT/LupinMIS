@@ -15,6 +15,9 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
             "year"              : props.year,
             "center"            : props.center,
             "sector"            : props.sector,
+            "beneficiaryType"   : props.beneficiaryType,
+            "projectCategoryType": props.projectCategoryType,
+            "projectName"       : props.projectName,
             "startRange"        : 0,
             "limitRange"        : 10000
             
@@ -25,7 +28,7 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
 
     componentDidMount(){
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-        this.getData(this.state.year, this.state.center, this.state.sector);
+        this.getData(this.state.year, this.state.center, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         this.handleChange = this.handleChange.bind(this);
         
     }
@@ -35,31 +38,43 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                 this.setState({
                 year   : nextProps.year,
                 sector : nextProps.sector,
+                projectName         : nextProps.projectName,
+                projectCategoryType : nextProps.projectCategoryType,
+                beneficiaryType     : nextProps.beneficiaryType,
                 },()=>{
-                    this.getData(this.state.year, this.state.center, this.state.sector);
+                    this.getData(this.state.year, this.state.center, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
                 });
             }else{
                 this.setState({
                 year   : nextProps.year,
                 sector : nextProps.sector.split('|')[1],
+                projectName         : nextProps.projectName,
+                projectCategoryType : nextProps.projectCategoryType,
+                beneficiaryType     : nextProps.beneficiaryType,
                 },()=>{
-                    this.getData(this.state.year, this.state.center, this.state.sector);
+                    this.getData(this.state.year, this.state.center, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
                 });                
             }
             if(nextProps.center==="all"){
                 this.setState({
                 year   : nextProps.year,
                 center : nextProps.center,
+                projectName         : nextProps.projectName,
+                projectCategoryType : nextProps.projectCategoryType,
+                beneficiaryType     : nextProps.beneficiaryType,
                 },()=>{
-                    this.getData(this.state.year, this.state.center, this.state.sector);
+                    this.getData(this.state.year, this.state.center, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
                 });
             }else{
                 this.setState({
-                    year   : nextProps.year,
-                    center : nextProps.center.split('|')[1],
+                year   : nextProps.year,
+                center : nextProps.center.split('|')[1],
+                projectName         : nextProps.projectName,
+                projectCategoryType : nextProps.projectCategoryType,
+                beneficiaryType     : nextProps.beneficiaryType,
                 },()=>{
                     // console.log('year', this.state.year, 'center', this.state.center,'sector', this.state.sector)
-                    this.getData(this.state.year, this.state.center, this.state.sector);
+                    this.getData(this.state.year, this.state.center, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
                 });
             }
         }
@@ -72,18 +87,20 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
         this.setState({
            [name] : event.target.value,
         },()=>{
-            this.getData(this.state.year, this.state.center, this.state.sector);
+            this.getData(this.state.year, this.state.center, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
     }
-    getData(year, centerID, sector){
+
+    getData(year, center, sector, projectCategoryType, projectName, beneficiaryType){        
       if(year){
-        console.log('year', year, 'centerID', centerID, 'sector', sector);
+        console.log( center, sector, projectCategoryType, projectName, beneficiaryType);
+        console.log('year', year, 'center', center, 'sector', sector);
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";
-        // axios.get('/api/report/annual_completion/'+year+'/'+centerID+'/'+sector)
-        if(startDate, endDate, centerID, sector){
-          /*  if(centerID==="all"){
-                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector)
+        if( startDate && endDate && center && sector && projectCategoryType  && beneficiaryType){ 
+        console.log(startDate, endDate, center, sector, projectCategoryType, projectName, beneficiaryType);
+            if(center==="all"){
+              axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                     console.log('response', response.data);
                     var tableData = response.data.map((a, i)=>{
@@ -116,8 +133,8 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                 .catch((error)=>{
                     console.log('error', error);
                 })
-            }else{*/
-                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
+            }else{
+                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center+'/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                     console.log('response', response);
                     var tableData = response.data.map((a, i)=>{
@@ -151,8 +168,9 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                     console.log('error', error);
                 })
             // }   
-        }
-      }        
+            }
+        }  
+        }      
     }
     getSearchText(searchText, startRange, limitRange){
         // console.log(searchText, startRange, limitRange);

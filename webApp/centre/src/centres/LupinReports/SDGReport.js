@@ -20,6 +20,9 @@ class SDGReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
+        "projectCategoryType": "all",
+        "beneficiaryType"    : "all",
+        "projectName"        : "all",
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
@@ -87,7 +90,7 @@ class SDGReport extends Component{
       tableData : this.state.tableData,
     },()=>{
     console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
@@ -95,19 +98,20 @@ class SDGReport extends Component{
     componentWillReceiveProps(nextProps){
         this.currentFromDate();
         this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
     }
     handleChange(event){
         event.preventDefault();
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
           console.log('name', this.state)
         });
     }
-    getData(startDate, endDate,center_ID, goal){
+    getData(startDate, endDate,center_ID, goal, beneficiaryType){
         console.log(startDate, endDate, center_ID);
-        axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "SDG Goal")
+        axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "SDG Goal/"+beneficiaryType)
         .then((response)=>{
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
@@ -154,7 +158,7 @@ class SDGReport extends Component{
          [name] : event.target.value,
          startDate:startDate
       },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
       console.log("dateUpdate",this.state.startDate);
       });
       // localStorage.setItem('newFromDate',dateUpdate);
@@ -172,7 +176,7 @@ class SDGReport extends Component{
          endDate : endDate
       },()=>{
       console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
      });
      // localStorage.setItem('newToDate',dateUpdate);
     }
@@ -240,18 +244,30 @@ class SDGReport extends Component{
                     </div>
                         <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                        <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
                             <label className="formLable">From</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                 <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                             </div>
                         </div>
-                        <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
                             <label className="formLable">To</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                 <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                             </div>
                         </div>  
+                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                              <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                <option value="all" >All</option>
+                                <option value="withUID" >With UID</option>
+                                <option value="withoutUID" >Without UID</option>
+                                
+                              </select>
+                            </div>
+                        </div> 
                     </div>  
                     <div className="marginTop11">
                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
