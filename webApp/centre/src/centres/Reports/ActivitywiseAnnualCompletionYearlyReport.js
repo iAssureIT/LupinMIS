@@ -10,10 +10,13 @@ export default class YearlyReport extends Component{
             "reportData"        : [],
             "twoLevelHeader"    : props.twoLevelHeader,
             "tableHeading"      : props.tableHeading,
-            "tableObjects"      : props.tableObjects ? props.tableObjects : "",
+            "tableObjects"      : props.tableObjects ,
             "tableData"         : props.tableData,
             "year"              : props.year,
             "sector"            : props.sector,
+            "beneficiaryType"   : props.beneficiaryType,
+            "projectCategoryType": props.projectCategoryType,
+            "projectName"       : props.projectName,
             "startRange"        : 0,
             "limitRange"        : 10000
             
@@ -31,7 +34,8 @@ export default class YearlyReport extends Component{
           centerName   : centerName,
         },()=>{
         console.log("center_ID =",this.state.center_ID,"year", this.state.year);
-        this.getData(this.state.year, this.state.center_ID, this.state.sector);
+        this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+
         });
         this.setState({
           // "center"  : this.state.center[0],
@@ -39,7 +43,8 @@ export default class YearlyReport extends Component{
           tableData : this.state.tableData,
         },()=>{
         // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector', this.state.sector)
-        this.getData(this.state.year, this.state.center_ID, this.state.sector);
+        this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+
         })
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.handleChange = this.handleChange.bind(this);
@@ -50,17 +55,23 @@ export default class YearlyReport extends Component{
         if(nextProps){
             if(nextProps.sector==="all"){
                 this.setState({
-                year   : nextProps.year,
-                sector : nextProps.sector,
+                year                : nextProps.year,
+                sector              : nextProps.sector,
+                projectName         : nextProps.projectName,
+                projectCategoryType : nextProps.projectCategoryType,
+                beneficiaryType     : nextProps.beneficiaryType,
                 },()=>{
-                    this.getData(this.state.year, this.state.center, this.state.sector);
+                    this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
                 });
             }else{
                 this.setState({
                 year   : nextProps.year,
                 sector : nextProps.sector.split('|')[1],
+                projectName         : nextProps.projectName,
+                projectCategoryType : nextProps.projectCategoryType,
+                beneficiaryType     : nextProps.beneficiaryType,
                 },()=>{
-                    this.getData(this.state.year, this.state.center, this.state.sector);
+                    this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
                 });                
             }
         }
@@ -73,53 +84,53 @@ export default class YearlyReport extends Component{
         this.setState({
            [name] : event.target.value,
         },()=>{
-                this.getData(this.state.year, this.state.center_ID, this.state.sector);
+                this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+
         });
     }
-    getData(year, center_ID, sector){
-        if(year){
-        // centerID =this.state.center_ID
-        // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+centerID+'/'+sector)
-            console.log('year', year,center_ID,sector);
-            if(center_ID && sector){
-                console.log('year', year, 'center_ID', center_ID, 'sector', sector);
-                var startDate = year.substring(3, 7)+"-04-01";
-                var endDate = year.substring(10, 15)+"-03-31";
-                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector)
-                .then((response)=>{
-                    console.log('response', response);
-                    var tableData = response.data.map((a, i)=>{
-                    return {
-                      _id                           : a._id,
-                      name                          : a.name,
-                      unit                          : a.unit,
-                      // annualPlan_Reach              : a.annualPlan_Reach,
-                      // annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
-                      // annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
-                      // annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
-                      achievement_Reach             : a.achievement_Reach,
-                      achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
-                      achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
-                      achievement_TotalBudget_L     : a.achievement_TotalBudget_L,
-                      achievement_LHWRF             : a.achievement_LHWRF,
-                      achievement_NABARD            : a.achievement_NABARD,
-                      achievement_Bank_Loan         : a.achievement_Bank_Loan,
-                      achievement_DirectCC          : a.achievement_DirectCC,
-                      achievement_IndirectCC        : a.achievement_IndirectCC,
-                      achievement_Govt              : a.achievement_Govt,
-                      achievement_Other             : a.achievement_Other,
-                      remark                        : a.remark,
-                    }
-                  })
-                    this.setState({
-                        tableData : tableData
-                    })
-                })
-                .catch((error)=>{
-                    console.log('error', error);
-                })   
-            }
+    getData(year, center_ID, sector, projectCategoryType, projectName, beneficiaryType){        
+      if(year){
+        if( center_ID && sector && projectCategoryType  && beneficiaryType){ 
+          console.log('year', year, 'center_ID', center_ID, 'sector', sector);
+          var startDate = year.substring(3, 7)+"-04-01";
+          var endDate = year.substring(10, 15)+"-03-31";
+          console.log(startDate, endDate, center_ID, sector, projectCategoryType, projectName, beneficiaryType);
+          axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+          // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector)
+          .then((response)=>{
+              console.log('response', response);
+              var tableData = response.data.map((a, i)=>{
+              return {
+                _id                           : a._id,
+                name                          : a.name,
+                unit                          : a.unit,
+                // annualPlan_Reach              : a.annualPlan_Reach,
+                // annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
+                // annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
+                // annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
+                achievement_Reach             : a.achievement_Reach,
+                achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
+                achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
+                achievement_TotalBudget_L     : a.achievement_TotalBudget_L,
+                achievement_LHWRF             : a.achievement_LHWRF,
+                achievement_NABARD            : a.achievement_NABARD,
+                achievement_Bank_Loan         : a.achievement_Bank_Loan,
+                achievement_DirectCC          : a.achievement_DirectCC,
+                achievement_IndirectCC        : a.achievement_IndirectCC,
+                achievement_Govt              : a.achievement_Govt,
+                achievement_Other             : a.achievement_Other,
+                remark                        : a.remark,
+              }
+            })
+              this.setState({
+                  tableData : tableData
+              })
+          })
+          .catch((error)=>{
+              console.log('error', error);
+          })   
         }
+      }
     }
     getSearchText(searchText, startRange, limitRange){
         // console.log(searchText, startRange, limitRange);

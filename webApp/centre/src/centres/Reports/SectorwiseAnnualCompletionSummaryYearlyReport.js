@@ -13,6 +13,9 @@ export default class YearlyReport extends Component{
             "tableObjects"      : props.tableObjects,
             "tableData"         : props.tableData,
             "year"              : props.year,
+            "projectCategoryType": props.projectCategoryType,
+            "projectName"       : props.projectName,
+            "beneficiaryType"   : props.beneficiaryType,
             "startRange"        : 0,
             "limitRange"        : 10000
             
@@ -31,7 +34,7 @@ export default class YearlyReport extends Component{
           centerName   : centerName,
         },()=>{
         // console.log("center_ID =",this.state.center_ID);
-        this.getData(this.state.year, this.state.center_ID);
+        this.getData(this.state.year, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.handleChange = this.handleChange.bind(this);
@@ -40,10 +43,13 @@ export default class YearlyReport extends Component{
     componentWillReceiveProps(nextProps){
         if(nextProps){
             this.setState({
-                year   : nextProps.year,
+                year                  :  nextProps.year,
+                projectName           : nextProps.projectName,
+                projectCategoryType   : nextProps.projectCategoryType,
+                beneficiaryType       : nextProps.beneficiaryType,
             },()=>{
                 // console.log('year', this.state.year, 'center_ID', this.state.center_ID)
-                this.getData(this.state.year, this.state.center_ID);
+                this.getData(this.state.year, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
             });
         }
     }
@@ -55,16 +61,13 @@ export default class YearlyReport extends Component{
         this.setState({
            [name] : event.target.value,
         });
-   }
-
-    getData(year, centerID){
+    }
+    getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        
         if(year){
-            // console.log('year', year, 'centerID', centerID);
             var startDate = year.substring(3, 7)+"-04-01";
-            var endDate = year.substring(10, 15)+"-03-31";
-            // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
-            if(startDate, endDate, centerID){
-                axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+centerID)
+            var endDate = year.substring(10, 15)+"-03-31";    
+            if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
+                axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                     console.log('response', response);
                     var tableData = response.data.map((a, i)=>{

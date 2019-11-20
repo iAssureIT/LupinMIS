@@ -21,6 +21,11 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
+        "sector"            : "all",
+        "sector_ID"         : "all",
+        "projectCategoryType": "all",
+        "beneficiaryType"    : "all",
+        "projectName"        : "all",
         'year'              : "FY 2019 - 2020",
         "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
         "startDate"         : "",
@@ -75,7 +80,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.getAvailableSectors = this.getAvailableSectors.bind(this);
   }
 
-    componentDidMount(){
+  componentDidMount(){
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -85,10 +90,11 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       centerName   : centerName,
     },()=>{
     // console.log("center_ID =",this.state.center_ID);
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
+    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
       axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
       this.getAvailableSectors();
+      this.getAvailableProjects();
       this.currentFromDate();
       this.currentToDate();
       this.setState({
@@ -96,86 +102,139 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         // "sector"  : this.state.sector[0],
         tableData : this.state.tableData,
       },()=>{
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
       this.handleFromChange = this.handleFromChange.bind(this);
       this.handleToChange = this.handleToChange.bind(this);
-    }   
-    componentWillReceiveProps(nextProps, event){
-        if(nextProps){
-            this.setState({
-              [event.target.name] : event.target.value
-            },()=>{
-              console.log('name', this.state)
-                    this.getData(this.state.year, this.state.center_ID);
-            });
-        }
-
-        this.getAvailableSectors();
-        this.currentFromDate();
-        this.currentToDate();
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
-    }
-
-   
-    handleChange(event){
-        event.preventDefault();
+  }   
+  componentWillReceiveProps(nextProps, event){
+    if(nextProps){
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
           console.log('name', this.state)
+                this.getData(this.state.year, this.state.center_ID);
         });
     }
-    getAvailableSectors(){
-        axios({
-          method: 'get',
-          url: '/api/sectors/list',
-        }).then((response)=> {
-            
-            this.setState({
-              availableSectors : response.data,
-              sector           : response.data[0].sector+'|'+response.data[0]._id
-            },()=>{
-            var sector_ID = this.state.sector.split('|')[1]
-            this.setState({
-              sector_ID        : sector_ID
-            },()=>{
-            this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
-            })
-            // console.log('sector', this.state.sector);
-          })
-        }).catch(function (error) {  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-        });
-    }
-    selectSector(event){
-        event.preventDefault();
+    this.getAvailableProjects();
+    this.getAvailableSectors();
+    this.currentFromDate();
+    this.currentToDate();
+    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+  }
+
+   
+  handleChange(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name] : event.target.value
+    },()=>{
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      console.log('name', this.state)
+    });
+  }
+  getAvailableSectors(){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        
         this.setState({
-          [event.target.name]:event.target.value
-        });
-        var sector_id = event.target.value.split('|')[1];
-        // console.log('sector_id',sector_id);
-        this.setState({
-          sector_ID : sector_id,
+          availableSectors : response.data,
+          sector           : response.data[0].sector+'|'+response.data[0]._id
         },()=>{
-        // console.log('availableSectors', this.state.availableSectors);
-        // console.log('sector_ID', this.state.sector_ID);
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID);
+        var sector_ID = this.state.sector.split('|')[1]
+        this.setState({
+          sector_ID        : sector_ID
+        },()=>{
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        })
+        // console.log('sector', this.state.sector);
       })
-    }
-    getData(year,center_ID){ 
-      if(year){
-        var startDate = year.substring(3, 7)+"-04-01";
-        var endDate = year.substring(10, 15)+"-03-31";    
-        // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
-        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
+    }).catch(function (error) {  
+      // console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
+    });
+  }
+  selectSector(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name]:event.target.value
+    });
+    var sector_id = event.target.value.split('|')[1];
+    // console.log('sector_id',sector_id);
+    this.setState({
+      sector_ID : sector_id,
+    },()=>{
+    // console.log('availableSectors', this.state.availableSectors);
+    // console.log('sector_ID', this.state.sector_ID);
+    // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    })
+  }
+  selectprojectCategoryType(event){
+    event.preventDefault();
+    console.log(event.target.value)
+    var projectCategoryType = event.target.value;
+    this.setState({
+      projectCategoryType : projectCategoryType,
+    },()=>{
+        if(this.state.projectCategoryType === "LHWRF Grant"){
+          this.setState({
+            projectName : "LHWRF Grant",
+          })          
+        }else if (this.state.projectCategoryType=== "all"){
+          this.setState({
+            projectName : "all",
+          })    
+        }
+        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      },()=>{
+    })
+  }
+  getAvailableProjects(){
+    axios({
+      method: 'get',
+      url: '/api/projectMappings/list',
+    }).then((response)=> {
+      console.log('responseP', response);
+      this.setState({
+        availableProjects : response.data
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
+    });
+  }
+  selectprojectName(event){
+    event.preventDefault();
+    var projectName = event.target.value;
+    this.setState({
+          projectName : projectName,
+        },()=>{
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    })
+  }
+  getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        
+    if(year){
+      var startDate = year.substring(3, 7)+"-04-01";
+      var endDate = year.substring(10, 15)+"-03-31";    
+      if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
+          axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+       // axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
@@ -213,82 +272,83 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         });
       }
     }
-    handleFromChange(event){
-        event.preventDefault();
-       const target = event.target;
-       const name = target.name;
-       var dateVal = event.target.value;
-       var dateUpdate = new Date(dateVal);
-       var startDate = moment(dateUpdate).format('YYYY-MM-DD');
-       this.setState({
-           [name] : event.target.value,
-           startDate:startDate
-       },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-       console.log("dateUpdate",this.state.startDate);
-       });
-       // localStorage.setItem('newFromDate',dateUpdate);
-    }
-    handleToChange(event){
-        event.preventDefault();
-        const target = event.target;
-        const name = target.name;
+  }
+  handleFromChange(event){
+      event.preventDefault();
+     const target = event.target;
+     const name = target.name;
+     var dateVal = event.target.value;
+     var dateUpdate = new Date(dateVal);
+     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+     this.setState({
+         [name] : event.target.value,
+         startDate:startDate
+     },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+     console.log("dateUpdate",this.state.startDate);
+     });
+     // localStorage.setItem('newFromDate',dateUpdate);
+  }
+  handleToChange(event){
+      event.preventDefault();
+      const target = event.target;
+      const name = target.name;
 
-        var dateVal = event.target.value;
-        var dateUpdate = new Date(dateVal);
-        var endDate = moment(dateUpdate).format('YYYY-MM-DD');
-        this.setState({
-           [name] : event.target.value,
-           endDate : endDate
-        },()=>{
-        console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-       });
-       // localStorage.setItem('newToDate',dateUpdate);
-    }
+      var dateVal = event.target.value;
+      var dateUpdate = new Date(dateVal);
+      var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+      this.setState({
+         [name] : event.target.value,
+         endDate : endDate
+      },()=>{
+      console.log("dateUpdate",this.state.endDate);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+     });
+     // localStorage.setItem('newToDate',dateUpdate);
+  }
 
-    currentFromDate(){
-       /* if(localStorage.getItem('newFromDate')){
-            var today = localStorage.getItem('newFromDate');
-            console.log("localStoragetoday",today);
-        }*/
-        if(this.state.startDate){
-            var today = this.state.startDate;
-            // console.log("localStoragetoday",today);
-        }else {
-            var today = moment(new Date()).format('YYYY-MM-DD');
-        // console.log("today",today);
-        }
-        console.log("nowfrom",today)
-        this.setState({
-           startDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleFromChange()
-    }
+  currentFromDate(){
+     /* if(localStorage.getItem('newFromDate')){
+          var today = localStorage.getItem('newFromDate');
+          console.log("localStoragetoday",today);
+      }*/
+      if(this.state.startDate){
+          var today = this.state.startDate;
+          // console.log("localStoragetoday",today);
+      }else {
+          var today = moment(new Date()).format('YYYY-MM-DD');
+      // console.log("today",today);
+      }
+      console.log("nowfrom",today)
+      this.setState({
+         startDate :today
+      },()=>{
+      });
+      return today;
+      // this.handleFromChange()
+  }
 
-    currentToDate(){
-        if(this.state.endDate){
-            var today = this.state.endDate;
-            // console.log("newToDate",today);
-        }else {
-            var today =  moment(new Date()).format('YYYY-MM-DD');
-        }
-        // console.log("nowto",today)
-        this.setState({
-           endDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleToChange();
-    }
-    getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
-        this.setState({
-            tableData : []
-        });
-    }
+  currentToDate(){
+      if(this.state.endDate){
+          var today = this.state.endDate;
+          // console.log("newToDate",today);
+      }else {
+          var today =  moment(new Date()).format('YYYY-MM-DD');
+      }
+      // console.log("nowto",today)
+      this.setState({
+         endDate :today
+      },()=>{
+      });
+      return today;
+      // this.handleToChange();
+  }
+  getSearchText(searchText, startRange, limitRange){
+      console.log(searchText, startRange, limitRange);
+      this.setState({
+          tableData : []
+      });
+  }
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
 
@@ -310,7 +370,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                             </div>
                         </div>
                             <hr className="hr-head"/>
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
                           <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
                             <label className="formLable">Year</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
@@ -323,21 +383,60 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                                }
                               </select>
                             </div>
-                            {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
-                          </div>   
-                           {/* <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                                 <label className="formLable">From</label><span className="asterix"></span>
-                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                     <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                                 </div>
-                             </div>
-                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                                 <label className="formLable">To</label><span className="asterix"></span>
-                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                     <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                                 </div>
-                           </div>  */}
-                        </div>  
+                          </div>
+                          <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                              <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                <option value="all" >All</option>
+                                <option value="withUID" >With UID</option>
+                                <option value="withoutUID" >Without UID</option>
+                                
+                              </select>
+                            </div>
+                          </div> 
+                          <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Project Category</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                              <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                <option value="all" >All</option>
+                                <option value="LHWRF Grant" >LHWRF Grant</option>
+                                <option value="Project Fund">Project Fund</option>
+                                
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        {
+                          this.state.projectCategoryType === "Project Fund" ?
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                              <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <label className="formLable">Project Name</label><span className="asterix">*</span>
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                  <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                    <option  className="hidden" >--Select--</option>
+                                  {/*  <option value="all" >All</option>
+                                    <option value="LHWRF Grant" >LHWRF Grant</option>*/}
+                                    {
+                                      this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                      this.state.availableProjects.map((data, index)=>{
+                                        return(
+                                          <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                        );
+                                      })
+                                      :
+                                      null
+                                    }
+                                  </select>
+                                </div>
+                              </div>
+                            </div>  
+                          : 
+                          ""
+                        } 
                         <div className="marginTop11">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <IAssureTable 
