@@ -90,7 +90,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       centerName   : centerName,
     },()=>{
     // console.log("center_ID =",this.state.center_ID);
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
       axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
       this.getAvailableSectors();
@@ -102,7 +102,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         // "sector"  : this.state.sector[0],
         tableData : this.state.tableData,
       },()=>{
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
       this.handleFromChange = this.handleFromChange.bind(this);
       this.handleToChange = this.handleToChange.bind(this);
@@ -120,7 +120,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.getAvailableSectors();
     this.currentFromDate();
     this.currentToDate();
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
   }
 
    
@@ -129,7 +129,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       console.log('name', this.state)
     });
   }
@@ -147,7 +147,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         this.setState({
           sector_ID        : sector_ID
         },()=>{
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
         // console.log('sector', this.state.sector);
       })
@@ -174,7 +174,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     // console.log('availableSectors', this.state.availableSectors);
     // console.log('sector_ID', this.state.sector_ID);
     // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
   selectprojectCategoryType(event){
@@ -195,7 +195,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         }
         console.log("shown",this.state.shown, this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
   }
@@ -225,7 +225,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           projectName : projectName,
         },()=>{
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
   getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        

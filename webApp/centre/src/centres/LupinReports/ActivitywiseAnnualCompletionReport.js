@@ -295,7 +295,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                           </div>
                         </div>                      
                       </div>  
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         
                         <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
                           <label className="formLable">Project Category</label><span className="asterix">*</span>

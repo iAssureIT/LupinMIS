@@ -95,7 +95,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         centerName   : centerName,
       },()=>{
       // console.log("center_ID =",this.state.center_ID);
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       });
       axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.getAvailableProjects();
@@ -133,13 +133,6 @@ class ActivitywiseAnnualPlanReport extends Component{
               availableSectors : response.data,
               // sector           : response.data[0].sector+'|'+response.data[0]._id
             },()=>{
-            // var sector_ID = this.state.sector.split('|')[1]
-            // this.setState({
-            //   sector_ID        : sector_ID
-            // },()=>{
-            // this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-            // })
-            // console.log('sector', this.state.sector);
           })
         }).catch(function (error) {
         console.log("error = ",error);
@@ -227,7 +220,7 @@ class ActivitywiseAnnualPlanReport extends Component{
       // if(center_ID && sector_ID){ 
       //   if(sector_ID==="all"){
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
-    console.log(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
+        console.log(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(sector_ID==="all"){
           console.log("year",year);
           var startDate = year.substring(3, 7)+"-04-01";
@@ -391,7 +384,6 @@ class ActivitywiseAnnualPlanReport extends Component{
                       </div> 
                     </div> 
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-
                       <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                         <label className="formLable">Project Category</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
@@ -427,8 +419,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                       : 
                       ""
-                      }
-                      
+                      }                      
                     </div>  
                     <div className="marginTop11">
                     

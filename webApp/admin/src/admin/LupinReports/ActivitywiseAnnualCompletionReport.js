@@ -88,11 +88,11 @@ class ActivitywiseAnnualCompletionReport extends Component{
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableCenters();
     this.getAvailableSectors();
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.year, this.state.center, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
 
   }
   componentWillReceiveProps(nextProps){
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.year, this.state.center, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     this.getAvailableCenters();
     this.getAvailableSectors();
   }
@@ -103,7 +103,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
       [event.target.name] : event.target.value
     },()=>{
       // console.log('name', this.state)
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.year, this.state.center, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
   getAvailableCenters(){
@@ -136,9 +136,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
     },()=>{
       var center = this.state.selectedCenter.split('|')[1];
       // console.log('center', center);
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.year, this.state.center, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       this.setState({
-        center :center,
+        // center :center,
       })
     });
   } 
@@ -191,8 +191,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
           })    
         }
         console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        // console.log('startDate', this.state.startDate, 'center', this.state.center,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.year, this.state.center, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
   }
@@ -221,14 +221,15 @@ class ActivitywiseAnnualCompletionReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        // console.log('startDate', this.state.startDate, 'center', this.state.center,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.year, this.state.center, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
 
-  getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-    // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
-      axios.get('/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID/:projectCategoryType/:projectName/:beneficiaryType')
+  getData(year, center, sector_ID, projectCategoryType, projectName, beneficiaryType){        
+    console.log(center, sector_ID, projectCategoryType, projectName, beneficiaryType);
+      // axios.get('/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID')
+      axios.get('/api/report/activity/:startDate/:endDate/:center/:sector_ID/:projectCategoryType/:projectName/:beneficiaryType')
       .then((response)=>{
         console.log("resp",response);
         this.setState({
@@ -246,7 +247,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
           });
         }
       });
-    }
+    
+  } 
+
 
   render(){
     return(
@@ -317,7 +320,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                      {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                     </div>
                   </div>  
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
                       <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >

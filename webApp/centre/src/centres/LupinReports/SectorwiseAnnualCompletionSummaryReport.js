@@ -131,6 +131,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
       selectedCenter : selectedCenter,
     },()=>{
       var center = this.state.selectedCenter.split('|')[1];
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       // console.log('center', center);
       this.setState({
         // center :center,
@@ -214,14 +215,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         });
       }
     }
-  }
-  
-  changeReportComponent(event){
-    var currentComp = $(event.currentTarget).attr('id');
-
-    this.setState({
-      'currentTabView': currentComp,
-    })
   }
 
   render(){

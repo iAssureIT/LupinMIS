@@ -25,6 +25,9 @@ class ActivityWisePeriodicVarianceReport extends Component{
             "sector"            : "all",
             "center_ID"         : "all",
             "sector_ID"         : "all",
+            "projectCategoryType": "all",
+            "beneficiaryType"    : "all",
+            "projectName"        : "all",
             "startDate"         : "",
             "endDate"           : "",
             "twoLevelHeader"    : {
@@ -86,6 +89,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
 
     componentDidMount(){
       axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+        this.getAvailableProjects();
         this.getAvailableCenters();
         this.getAvailableSectors();
         this.currentFromDate();
@@ -96,18 +100,19 @@ class ActivityWisePeriodicVarianceReport extends Component{
           tableData : this.state.tableData,
         },()=>{
         console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
     }
    
     componentWillReceiveProps(nextProps){
+        this.getAvailableProjects();
         this.getAvailableCenters();
         this.getAvailableSectors();
         this.currentFromDate();
         this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
@@ -115,6 +120,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
           console.log('name', this.state)
         });
     }
@@ -127,12 +133,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
             availableCenters : response.data,
             // center           : response.data[0].centerName+'|'+response.data[0]._id
           },()=>{
-            // var center_ID = this.state.center.split('|')[1];
-            // this.setState({
-            //   center_ID        : center_ID
-            // },()=>{
-            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-            // })
           })
         }).catch(function (error) {
           console.log("error = ",error);
@@ -159,7 +159,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
           this.setState({
             center_ID :center,            
           },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
@@ -178,7 +178,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
             // this.setState({
             //   sector_ID        : sector_ID
             // },()=>{
-            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
             // })
             // console.log('sector', this.state.sector);
           })
@@ -209,242 +209,278 @@ class ActivityWisePeriodicVarianceReport extends Component{
             // console.log('availableSectors', this.state.availableSectors);
             // console.log('sector_ID', this.state.sector_ID);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
     }
 
-    getData(startDate, endDate, center_ID, sector_ID){        
-        console.log(startDate, endDate, center_ID, sector_ID);
-          if(center_ID==="all"){
-            if(sector_ID==="all"){
-              axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/all')
-              .then((response)=>{
-               console.log("resp",response);
-                 var tableData = response.data.map((a, i)=>{
-                 return {
-                     _id                                       : a._id,            
-                     name                      : a.name,
-                     unit                                      : a.unit,
-                     annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                     annualPlan_Reach                          : a.annualPlan_Reach,
-                     annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
-                     monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
-                     monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                     monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
-                     achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
-                     achievement_Reach                         : a.achievement_Reach,
-                     achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
-                     variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
-                     variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
-                     variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
-                     
-                 }
-                 
-              })
-               this.setState({
-                 tableData : tableData
-               },()=>{
-                 console.log("resp",this.state.tableData)
-               })
-              })
-              .catch(function(error){
-               console.log("error = ",error);
-               if(error.message === "Request failed with status code 401"){
-                 swal({
-                     title : "abc",
-                     text  : "Session is Expired. Kindly Sign In again."
-                 });
-               }
-              });
-            }else{
-              axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID)
-              .then((response)=>{
-               console.log("resp",response);
-                 var tableData = response.data.map((a, i)=>{
-                 return {
-                     _id                                       : a._id,            
-                     name                      : a.name,
-                     unit                                      : a.unit,
-                     annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                     annualPlan_Reach                          : a.annualPlan_Reach,
-                     annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
-                     monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
-                     monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                     monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
-                     achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
-                     achievement_Reach                         : a.achievement_Reach,
-                     achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
-                     variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
-                     variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
-                     variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
-                     
-                 }
-                 
-              })
-               this.setState({
-                 tableData : tableData
-               },()=>{
-                 console.log("resp",this.state.tableData)
-               })
-              })
-              .catch(function(error){
-               console.log("error = ",error);
-               if(error.message === "Request failed with status code 401"){
-                 swal({
-                     title : "abc",
-                     text  : "Session is Expired. Kindly Sign In again."
-                 });
-               }
-              });
-            }
-          }
-          else{
-            axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
-              .then((response)=>{
-               console.log("resp",response);
-                 var tableData = response.data.map((a, i)=>{
-                 return {
-                     _id                                       : a._id,            
-                     name                      : a.name,
-                     unit                                      : a.unit,
-                     annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                     annualPlan_Reach                          : a.annualPlan_Reach,
-                     annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
-                     monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
-                     monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                     monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
-                     achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
-                     achievement_Reach                         : a.achievement_Reach,
-                     achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
-                     variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
-                     variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
-                     variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
-                     
-                 }
-                 
-              })
-               this.setState({
-                 tableData : tableData
-               },()=>{
-                 console.log("resp",this.state.tableData)
-               })
-              })
-              .catch(function(error){
-               console.log("error = ",error);
-               if(error.message === "Request failed with status code 401"){
-                 swal({
-                     title : "abc",
-                     text  : "Session is Expired. Kindly Sign In again."
-                 });
-               }
-              });
-          }
-    }
-    handleFromChange(event){
-        event.preventDefault();
-       const target = event.target;
-       const name = target.name;
-       var dateVal = event.target.value;
-       var dateUpdate = new Date(dateVal);
-       var startDate = moment(dateUpdate).format('YYYY-MM-DD');
-       this.setState({
-           [name] : event.target.value,
-           startDate:startDate
-       },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-       console.log("dateUpdate",this.state.startDate);
-       });
-       // localStorage.setItem('newFromDate',dateUpdate);
-    }
-    handleToChange(event){
-        event.preventDefault();
-        const target = event.target;
-        const name = target.name;
-
-        var dateVal = event.target.value;
-        var dateUpdate = new Date(dateVal);
-        var endDate = moment(dateUpdate).format('YYYY-MM-DD');
-        this.setState({
-           [name] : event.target.value,
-           endDate : endDate
-        },()=>{
-        console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-       });
-       // localStorage.setItem('newToDate',dateUpdate);
-    }
-
-    currentFromDate(){
-       /* if(localStorage.getItem('newFromDate')){
-            var today = localStorage.getItem('newFromDate');
-            console.log("localStoragetoday",today);
-        }*/
-        if(this.state.startDate){
-            var today = this.state.startDate;
-            // console.log("localStoragetoday",today);
-        }else {
-            var today = moment(new Date()).format('YYYY-MM-DD');
-        // console.log("today",today);
-        }
-        // var dd = today.getDate();
-        // var mm = today.getMonth()+1; //January is 0!
-        // var yyyy = today.getFullYear();
-        // if(dd<10){
-        //     dd='0'+dd;
-        // }
-        // if(mm<10){
-        //     mm='0'+mm;
-        // }
-        // var today = yyyy+'-'+mm+'-'+dd;
-        // var today = yyyy+'-'+mm+'-'+dd;
-
-        console.log("nowfrom",today)
-        this.setState({
-           startDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleFromChange()
-    }
-
-    currentToDate(){
-        if(this.state.endDate){
-            var today = this.state.endDate;
-            // console.log("newToDate",today);
-        }else {
-            var today =  moment(new Date()).format('YYYY-MM-DD');
-        }
-        // var dd = today.getDate();
-        // var mm = today.getMonth()+1; //January is 0!
-        // var yyyy = today.getFullYear();
-        // if(dd<10){
-        //     dd='0'+dd;
-        // }
-        // if(mm<10){
-        //     mm='0'+mm;
-        // }
-        // var today = yyyy+'-'+mm+'-'+dd;
-        // var today = yyyy+'-'+mm+'-'+dd;
-        // console.log("nowto",today)
-        this.setState({
-           endDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleToChange();
-    }
-    getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
-        this.setState({
-            tableData : []
-        });
-    }
-  changeReportComponent(event){
-    var currentComp = $(event.currentTarget).attr('id');
-
+  selectprojectCategoryType(event){
+    event.preventDefault();
+    console.log(event.target.value)
+    var projectCategoryType = event.target.value;
     this.setState({
-      'currentTabView': currentComp,
+      projectCategoryType : projectCategoryType,
+    },()=>{
+        if(this.state.projectCategoryType === "LHWRF Grant"){
+          this.setState({
+            projectName : "LHWRF Grant",
+          })          
+        }else if (this.state.projectCategoryType=== "all"){
+          this.setState({
+            projectName : "all",
+          })    
+        }
+        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      },()=>{
     })
+  }
+  getAvailableProjects(){
+    axios({
+      method: 'get',
+      url: '/api/projectMappings/list',
+    }).then((response)=> {
+      // console.log('responseP', response);
+      this.setState({
+        availableProjects : response.data
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
+    });
+  }
+  selectprojectName(event){
+    event.preventDefault();
+    var projectName = event.target.value;
+    this.setState({
+          projectName : projectName,
+        },()=>{
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    })
+  }
+
+  getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
+    console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
+    if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
+      if(center_ID==="all"){
+        if(sector_ID==="all"){
+          axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+            .then((response)=>{
+             console.log("resp",response);
+               var tableData = response.data.map((a, i)=>{
+               return {
+                   _id                                       : a._id,            
+                   name                      : a.name,
+                   unit                                      : a.unit,
+                   annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
+                   annualPlan_Reach                          : a.annualPlan_Reach,
+                   annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
+                   monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
+                   monthlyPlan_Reach                         : a.monthlyPlan_Reach,
+                   monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
+                   achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
+                   achievement_Reach                         : a.achievement_Reach,
+                   achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
+                   variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
+                   variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
+                   variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
+                   
+               }
+               
+            })
+             this.setState({
+               tableData : tableData
+             },()=>{
+               console.log("resp",this.state.tableData)
+             })
+            })
+            .catch(function(error){
+             console.log("error = ",error);
+             if(error.message === "Request failed with status code 401"){
+               swal({
+                   title : "abc",
+                   text  : "Session is Expired. Kindly Sign In again."
+               });
+             }
+            });
+          }else{
+            axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+            // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID)
+            .then((response)=>{
+             console.log("resp",response);
+               var tableData = response.data.map((a, i)=>{
+               return {
+                   _id                                       : a._id,            
+                   name                      : a.name,
+                   unit                                      : a.unit,
+                   annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
+                   annualPlan_Reach                          : a.annualPlan_Reach,
+                   annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
+                   monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
+                   monthlyPlan_Reach                         : a.monthlyPlan_Reach,
+                   monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
+                   achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
+                   achievement_Reach                         : a.achievement_Reach,
+                   achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
+                   variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
+                   variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
+                   variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
+                   
+               }
+               
+            })
+             this.setState({
+               tableData : tableData
+             },()=>{
+               console.log("resp",this.state.tableData)
+             })
+            })
+            .catch(function(error){
+             console.log("error = ",error);
+             if(error.message === "Request failed with status code 401"){
+               swal({
+                   title : "abc",
+                   text  : "Session is Expired. Kindly Sign In again."
+               });
+             }
+            });
+          }
+        }
+        else{
+          axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+            .then((response)=>{
+             console.log("resp",response);
+               var tableData = response.data.map((a, i)=>{
+               return {
+                   _id                                       : a._id,            
+                   name                      : a.name,
+                   unit                                      : a.unit,
+                   annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
+                   annualPlan_Reach                          : a.annualPlan_Reach,
+                   annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
+                   monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
+                   monthlyPlan_Reach                         : a.monthlyPlan_Reach,
+                   monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
+                   achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
+                   achievement_Reach                         : a.achievement_Reach,
+                   achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
+                   variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
+                   variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
+                   variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
+                   
+               }
+               
+            })
+             this.setState({
+               tableData : tableData
+             },()=>{
+               console.log("resp",this.state.tableData)
+             })
+            })
+            .catch(function(error){
+             console.log("error = ",error);
+             if(error.message === "Request failed with status code 401"){
+               swal({
+                   title : "abc",
+                   text  : "Session is Expired. Kindly Sign In again."
+               });
+             }
+            });
+        }
+      }
+  }
+  handleFromChange(event){
+      event.preventDefault();
+     const target = event.target;
+     const name = target.name;
+     var dateVal = event.target.value;
+     var dateUpdate = new Date(dateVal);
+     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+     this.setState({
+         [name] : event.target.value,
+         startDate:startDate
+     },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+     console.log("dateUpdate",this.state.startDate);
+     });
+     // localStorage.setItem('newFromDate',dateUpdate);
+  }
+  handleToChange(event){
+      event.preventDefault();
+      const target = event.target;
+      const name = target.name;
+
+      var dateVal = event.target.value;
+      var dateUpdate = new Date(dateVal);
+      var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+      this.setState({
+         [name] : event.target.value,
+         endDate : endDate
+      },()=>{
+      console.log("dateUpdate",this.state.endDate);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+     });
+     // localStorage.setItem('newToDate',dateUpdate);
+  }
+
+  currentFromDate(){
+     /* if(localStorage.getItem('newFromDate')){
+          var today = localStorage.getItem('newFromDate');
+          console.log("localStoragetoday",today);
+      }*/
+      if(this.state.startDate){
+          var today = this.state.startDate;
+          // console.log("localStoragetoday",today);
+      }else {
+          var today = moment(new Date()).format('YYYY-MM-DD');
+      // console.log("today",today);
+      }
+      // var dd = today.getDate();
+      // var mm = today.getMonth()+1; //January is 0!
+      // var yyyy = today.getFullYear();
+      // if(dd<10){
+      //     dd='0'+dd;
+      // }
+      // if(mm<10){
+      //     mm='0'+mm;
+      // }
+      // var today = yyyy+'-'+mm+'-'+dd;
+      // var today = yyyy+'-'+mm+'-'+dd;
+
+      console.log("nowfrom",today)
+      this.setState({
+         startDate :today
+      },()=>{
+      });
+      return today;
+      // this.handleFromChange()
+  }
+
+  currentToDate(){
+    if(this.state.endDate){
+        var today = this.state.endDate;
+        // console.log("newToDate",today);
+    }else {
+        var today =  moment(new Date()).format('YYYY-MM-DD');
+    }
+    this.setState({
+       endDate :today
+    },()=>{
+    });
+    return today;
+    // this.handleToChange();
+  }
+  getSearchText(searchText, startRange, limitRange){
+      console.log(searchText, startRange, limitRange);
+      this.setState({
+          tableData : []
+      });
   }
   render(){
     return( 
@@ -460,7 +496,19 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         </div>
                     </div>
                     <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
+                      <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                          <label className="formLable">From</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                              <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                          </div>
+                      </div>
+                      <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                          <label className="formLable">To</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                              <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                          </div>
+                      </div>
                       <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12">
                         <label className="formLable">Center</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
@@ -501,18 +549,56 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         </div>
                        {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                       </div>
-                        <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
-                            <label className="formLable">From</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                            </div>
+                    </div>  
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                        <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                          <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="withUID" >With UID</option>
+                            <option value="withoutUID" >Without UID</option>
+                            
+                          </select>
                         </div>
-                        <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
-                            <label className="formLable">To</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                            </div>
+                      </div> 
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
+                        <label className="formLable">Project Category</label><span className="asterix">*</span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                          <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="LHWRF Grant" >LHWRF Grant</option>
+                            <option value="Project Fund">Project Fund</option>
+                            
+                          </select>
                         </div>
+                      </div>
+                      {
+                        this.state.projectCategoryType === "Project Fund" ?
+
+                        <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
+                          <label className="formLable">Project Name</label><span className="asterix">*</span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                              <option value="all" >All</option>
+                              {
+                                this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                this.state.availableProjects.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
+                          </div>
+                        </div>
+                      : 
+                      ""
+                      }                      
                     </div>  
                     <div className="marginTop11">
                         <div className="">
