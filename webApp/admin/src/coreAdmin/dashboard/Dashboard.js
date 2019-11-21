@@ -12,11 +12,6 @@ import 'font-awesome/css/font-awesome.min.css';
 import html2canvas from 'html2canvas';
 import Chart from 'chart.js';
 import StatusComponent from './StatusComponent/StatusComponent.js'
-import UpdateComponent from './UpdateComponent/UpdateComponent.js'
-import TableComponent  from './TableComponent/TableComponent.js'
-import Productlist     from './productlist/Productlist.js'
-import Visitorreport   from './Visitorreport/Visitorreport.js'
-import Infocomponent   from './Infocomponent/Infocomponent.js'
 import DummyBarChart   from './chart1/DummyBarChart.js'
 import MonthBarChartbudget   from './chart1/MonthBarChartbudget.js'
 
@@ -181,7 +176,7 @@ export default class Dashboard extends Component{
       selectedCenter : selectedCenter,
     },()=>{
       var center_ID = this.state.selectedCenter.split('|')[1];
-      console.log('center_ID', center_ID);
+      // console.log('center_ID', center_ID);
       this.setState({
         center_ID :center_ID,            
       },()=>{
@@ -218,7 +213,7 @@ export default class Dashboard extends Component{
       console.log('error', error);
     });
   } 
-
+ 
   getCenterwiseData(year, center_ID){
     console.log('year', year);
     var startDate = year.substring(3, 7)+"-04-01";
@@ -299,9 +294,9 @@ export default class Dashboard extends Component{
     var endDate = year.substring(10, 15)+"-03-31";
     // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
     if(startDate, endDate){
-        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all')
+        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
         .then((response)=>{
-          // console.log("respgetData",response);
+          console.log("respgetData",response);
           var sector = [];
           var annualPlanReach = [];
           var annualPlanFamilyUpgradation = [];
@@ -386,7 +381,7 @@ export default class Dashboard extends Component{
     if(startYear, endYear){
         axios.get('/api/report/dashboard/'+startYear+'/'+endYear)
         .then((response)=>{
-          console.log("respgetData",response)
+          // console.log("respgetData",response)
           var month = [];
           var monthlyPlanReach = [];
           var monthlyAchievementReach = [];
@@ -408,8 +403,8 @@ export default class Dashboard extends Component{
             "monthlyPlanTotalBudget"       : monthlyPlanTotalBudget,
             "achievementTotalBudget"       : achievementTotalBudget,
           },()=>{
-                  console.log(this.state.month)
-                         { console.log("this.state",this.state.monthlyAchievementReach , this.state.month, this.state.monthlyAchievementReach)}
+                  // console.log(this.state.month)
+                         // { console.log("this.state",this.state.monthlyAchievementReach , this.state.month, this.state.monthlyAchievementReach)}
 
           });          
         }    
@@ -436,13 +431,13 @@ export default class Dashboard extends Component{
                     stats={{color:"#2FC0EF", icon:"building",heading1:"CSR Center",value1:"18", heading2:"Development",value2:"7"}} 
                   />
                   <StatusComponent 
-                    stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach, heading2:"Beneficiaries",value2:this.state.achievement_Reach}} 
+                    stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Beneficiaries",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0}} 
                   />
                   <StatusComponent 
-                    stats={{color:"#4CA75A", icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget, heading2:"Expenditure",value2:this.state.achievement_TotalBudget}} 
+                    stats={{color:"#4CA75A", icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget ? this.state.annualPlan_TotalBudget : 0, heading2:"Expenditure",value2:this.state.achievement_TotalBudget ? this.state.achievement_TotalBudget : 0}} 
                   />
                   <StatusComponent 
-                    stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:this.state.sectorCount, heading2:"Activities",value2:this.state.activityCount}}
+                    stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:this.state.sectorCount ? this.state.sectorCount : 0, heading2:"Activities",value2:this.state.activityCount ? this.state.activityCount : 0}}
                   /> 
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

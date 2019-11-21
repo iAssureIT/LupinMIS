@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Bar} from 'react-chartjs-2';
+import {HorizontalBar} from 'react-chartjs-2';
 const options = {
     scales: {
       xAxes: [{
@@ -109,7 +109,7 @@ export default class BarChart extends Component{
   render() {
     return (
       <div>
-       <Bar data={this.state.data} height={350}  options={options} />
+       <HorizontalBar data={this.state.data} height={350}  options={options} />
       </div>
     );
   }

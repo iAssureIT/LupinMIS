@@ -26,6 +26,9 @@ class GeographicalReport extends Component{
         "selectedDistrict"  : "all",
         "block"             : "all",
         "village"           : "all",
+        "projectCategoryType": "all",
+        "beneficiaryType"    : "all",
+        "projectName"        : "all",
         "startDate"         : "",
         "endDate"           : "",
         "twoLevelHeader"    : {
@@ -75,29 +78,32 @@ class GeographicalReport extends Component{
   }
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.getAvailableProjects();
     this.getAvailableCenters();
     this.getAvailableSectors();
     this.currentFromDate();
     this.currentToDate();
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     this.setState({
       // "center"  : this.state.center[0],
       // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
     console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }
  
   componentWillReceiveProps(nextProps){
-      this.getAvailableCenters();
-      this.getAvailableSectors();
-      this.currentFromDate();
-      this.currentToDate();
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-      console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    this.getAvailableProjects();
+    this.getAvailableCenters();
+    this.getAvailableSectors();
+    this.currentFromDate();
+    this.currentToDate();
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
     event.preventDefault();
@@ -105,6 +111,7 @@ class GeographicalReport extends Component{
       [event.target.name] : event.target.value
     },()=>{
       console.log('name', this.state)
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
   getAvailableCenters(){
@@ -116,13 +123,6 @@ class GeographicalReport extends Component{
         availableCenters : response.data,
         // center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
-        // console.log('center', this.state.center);
-        // var center_ID = this.state.center.split('|')[1];
-        // this.setState({
-        //   center_ID        : center_ID
-        // },()=>{
-        // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-        // })
       })
     }).catch(function (error) {
         // console.log("error = ",error);
@@ -149,7 +149,7 @@ class GeographicalReport extends Component{
       this.setState({
         center_ID :center, 
       },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         this.getAvailableCenterData(this.state.center_ID);
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
       })
@@ -172,7 +172,7 @@ class GeographicalReport extends Component{
           availableDistInCenter  : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         var stateCode =this.state.address.split('|')[0];
          this.setState({
             stateCode  : stateCode,
@@ -189,31 +189,24 @@ class GeographicalReport extends Component{
     });
   } 
   getAvailableSectors(){
-      axios({
-        method: 'get',
-        url: '/api/sectors/list',
-      }).then((response)=> {
-          
-          this.setState({
-            availableSectors : response.data,
-            // sector           : response.data[0].sector+'|'+response.data[0]._id
-          },()=>{
-          // var sector_ID = this.state.sector.split('|')[1]
-          // this.setState({
-          //   sector_ID        : sector_ID
-          // },()=>{
-          // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
-          // })
-          // console.log('sector', this.state.sector);
-        })
-      }).catch(function (error) {  // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
-      });
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        
+        this.setState({
+          availableSectors : response.data,
+          // sector           : response.data[0].sector+'|'+response.data[0]._id
+        },()=>{ 
+      })
+    }).catch(function (error) {  // console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
+    });
   }
   selectSector(event){
     event.preventDefault();
@@ -229,7 +222,7 @@ class GeographicalReport extends Component{
           sector_ID : sector_id,
         },()=>{
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
   districtChange(event){    
@@ -248,7 +241,7 @@ class GeographicalReport extends Component{
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
@@ -283,7 +276,7 @@ class GeographicalReport extends Component{
       block : block
     },()=>{
       // console.log("block",block);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
@@ -315,7 +308,7 @@ class GeographicalReport extends Component{
     this.setState({
       village : village
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       console.log("village",village);
     });  
   }  
@@ -327,14 +320,65 @@ class GeographicalReport extends Component{
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
   }
-  getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID){        
-    console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID);
-    // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
+
+  selectprojectCategoryType(event){
+    event.preventDefault();
+    console.log(event.target.value)
+    var projectCategoryType = event.target.value;
+    this.setState({
+      projectCategoryType : projectCategoryType,
+    },()=>{
+        if(this.state.projectCategoryType === "LHWRF Grant"){
+          this.setState({
+            projectName : "LHWRF Grant",
+          })          
+        }else if (this.state.projectCategoryType=== "all"){
+          this.setState({
+            projectName : "all",
+          })    
+        }
+        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      },()=>{
+    })
+  }
+  getAvailableProjects(){
+    axios({
+      method: 'get',
+      url: '/api/projectMappings/list',
+    }).then((response)=> {
+      console.log('responseP', response);
+      this.setState({
+        availableProjects : response.data
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }   
+    });
+  }
+  selectprojectName(event){
+    event.preventDefault();
+    var projectName = event.target.value;
+    this.setState({
+          projectName : projectName,
+        },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    })
+  }
+  getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType){        
+    console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType);
     if(center_ID){
-      if(startDate && endDate && selectedDistrict && block && village && sector_ID){
+      if( startDate && endDate && center_ID && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType){
         if(center_ID==="all"){
-          if(sector_ID==="all"){
-            axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/all')
+        if(sector_ID==="all"){
+          axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
               console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
@@ -359,7 +403,8 @@ class GeographicalReport extends Component{
                 // console.log("resp",this.state.tableData)
               })
             })
-            .catch(function(error){  // console.log("error = ",error);
+            .catch(function(error){ 
+             // console.log("error = ",error);
               if(error.message === "Request failed with status code 401"){
                 swal({
                     title : "abc",
@@ -368,7 +413,7 @@ class GeographicalReport extends Component{
               }
             });
           }else{
-            axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+          axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
               console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
@@ -403,7 +448,7 @@ class GeographicalReport extends Component{
             });
           }
         }else{
-          axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
+          axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
               console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
@@ -451,7 +496,7 @@ class GeographicalReport extends Component{
          [name] : event.target.value,
          startDate:startDate
      },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
      console.log("dateUpdate",this.state.startDate);
      });
   }
@@ -468,7 +513,7 @@ class GeographicalReport extends Component{
          endDate : endDate
       },()=>{
       console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
      });
   }
 
@@ -531,7 +576,7 @@ class GeographicalReport extends Component{
                         </div>
                     </div>
                     <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 validBox">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
                       <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12">
                         <label className="formLable">Center</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
@@ -585,7 +630,7 @@ class GeographicalReport extends Component{
                             </div>
                         </div>
                     </div>  
-                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable validBox  ">                        
+                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box  ">                        
                       <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                         <label className="formLable">District</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
@@ -660,7 +705,58 @@ class GeographicalReport extends Component{
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
                       </div>
-                    </div> 
+                    </div>                     
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                              <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                <option value="all" >All</option>
+                                <option value="withUID" >With UID</option>
+                                <option value="withoutUID" >Without UID</option>
+                                
+                              </select>
+                            </div>
+                        </div> 
+                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Project Category</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                              <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                <option value="all" >All</option>
+                                <option value="LHWRF Grant" >LHWRF Grant</option>
+                                <option value="Project Fund">Project Fund</option>
+                                
+                              </select>
+                            </div>
+                        </div>
+                        {
+                            this.state.projectCategoryType === "Project Fund" ?
+
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                              <label className="formLable">Project Name</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                  <option  className="hidden" >--Select--</option>
+                                   <option value="all" >All</option>
+                                  {
+                                    this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                    this.state.availableProjects.map((data, index)=>{
+                                      return(
+                                        <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
+                                </select>
+                              </div>
+                            </div>
+                        : 
+                        ""
+                        } 
+                    </div>  
                     <div className="marginTop11">
                         <div className="">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">

@@ -21,6 +21,7 @@ class EMPReport extends Component{
         "startRange"        : 0,
         "limitRange"        : 10000,
         "center_ID"         : "all",
+        "beneficiaryType"   : "all",
         "center"            : "all",
         "twoLevelHeader"    : {
             apply           : true,
@@ -78,8 +79,9 @@ class EMPReport extends Component{
         tableData : this.state.tableData,
       },()=>{
       console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
       })
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
       this.handleFromChange = this.handleFromChange.bind(this);
       this.handleToChange = this.handleToChange.bind(this);
     }   
@@ -87,13 +89,14 @@ class EMPReport extends Component{
         this.getAvailableCenters();        
         this.currentFromDate();
         this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
     }
     handleChange(event){
         event.preventDefault();
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
           console.log('name', this.state)
         });
     }
@@ -106,13 +109,6 @@ class EMPReport extends Component{
             availableCenters : response.data,
             // center           : response.data[0].centerName+'|'+response.data[0]._id
           },()=>{
-            // console.log('center', this.state.center);
-            // var center_ID = this.state.center.split('|')[1];
-            // this.setState({
-            //   center_ID        : center_ID
-            // },()=>{
-            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
-            // })
           })
         }).catch(function (error) {
           // console.log("error = ",error);
@@ -139,87 +135,128 @@ class EMPReport extends Component{
           this.setState({
             center_ID :center,            
           },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
     } 
-    getData(startDate, endDate,center_ID, goal){
-        console.log(startDate, endDate, center_ID);
+  getData(startDate, endDate,center_ID, goal, beneficiaryType){
+    console.log(startDate, endDate, center_ID);
+    if(startDate && endDate && center_ID && beneficiaryType){
       if(center_ID==="all"){
-        axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/Empowerment Line Goal')
-        .then((response)=>{
-          console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-                _id             : a._id,            
-                goalName        : a.goalName,
-                activityName    : a.activityName,
-                unit            : a.unit,
-                Quantity        : a.Quantity,
-                Amount          : a.Amount,
-                Beneficiaries   : a.Beneficiaries,
-                LHWRF           : a.LHWRF,
-                NABARD          : a.NABARD,
-                Govt            : a.Govt,
-                Bank            : a.Bank,
-                Community       : a.Community,
-                Other           : a.Other,
-            }
-        })  
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
+        if(beneficiaryType==="all"){     
+          axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/Empowerment Line Goal/all')
+          .then((response)=>{
+            console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id             : a._id,            
+                  goalName        : a.goalName,
+                  activityName    : a.activityName,
+                  unit            : a.unit,
+                  Quantity        : a.Quantity,
+                  Amount          : a.Amount,
+                  Beneficiaries   : a.Beneficiaries,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  Govt            : a.Govt,
+                  Bank            : a.Bank,
+                  Community       : a.Community,
+                  Other           : a.Other,
+              }
+          })  
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
           })
-        })
-        .catch(function(error){
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-        });
-      }else{
-        axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "Empowerment Line Goal")
-        .then((response)=>{
-          console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-                _id             : a._id,            
-                goalName        : a.goalName,
-                activityName    : a.activityName,
-                unit            : a.unit,
-                Quantity        : a.Quantity,
-                Amount          : a.Amount,
-                Beneficiaries   : a.Beneficiaries,
-                LHWRF           : a.LHWRF,
-                NABARD          : a.NABARD,
-                Govt            : a.Govt,
-                Bank            : a.Bank,
-                Community       : a.Community,
-                Other           : a.Other,
+          .catch(function(error){
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
             }
-        })  
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
+          });
+        }else{
+          axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/'+ "Empowerment Line Goal/"+beneficiaryType)
+          .then((response)=>{
+            console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id             : a._id,            
+                  goalName        : a.goalName,
+                  activityName    : a.activityName,
+                  unit            : a.unit,
+                  Quantity        : a.Quantity,
+                  Amount          : a.Amount,
+                  Beneficiaries   : a.Beneficiaries,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  Govt            : a.Govt,
+                  Bank            : a.Bank,
+                  Community       : a.Community,
+                  Other           : a.Other,
+              }
+          })  
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
           })
-        })
-        .catch(function(error){
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-        });
+          .catch(function(error){
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
+        }
+      }else{        
+          axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "Empowerment Line Goal/"+beneficiaryType)
+          .then((response)=>{
+            console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id             : a._id,            
+                  goalName        : a.goalName,
+                  activityName    : a.activityName,
+                  unit            : a.unit,
+                  Quantity        : a.Quantity,
+                  Amount          : a.Amount,
+                  Beneficiaries   : a.Beneficiaries,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  Govt            : a.Govt,
+                  Bank            : a.Bank,
+                  Community       : a.Community,
+                  Other           : a.Other,
+              }
+          })  
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
+        
       }
     }
+  }
     handleFromChange(event){
         event.preventDefault();
        const target = event.target;
@@ -231,7 +268,7 @@ class EMPReport extends Component{
            [name] : event.target.value,
            startDate:startDate
        },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
        console.log("dateUpdate",this.state.startDate);
        });
        // localStorage.setItem('newFromDate',dateUpdate);
@@ -249,16 +286,12 @@ class EMPReport extends Component{
            endDate : endDate
         },()=>{
         console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
        });
        // localStorage.setItem('newToDate',dateUpdate);
     }
 
     currentFromDate(){
-       /* if(localStorage.getItem('newFromDate')){
-            var today = localStorage.getItem('newFromDate');
-            console.log("localStoragetoday",today);
-        }*/
         if(this.state.startDate){
             var today = this.state.startDate;
             // console.log("localStoragetoday",today);
@@ -295,13 +328,6 @@ class EMPReport extends Component{
             tableData : []
         });
     }
-  changeReportComponent(event){
-    var currentComp = $(event.currentTarget).attr('id');
-
-    this.setState({
-      'currentTabView': currentComp,
-    })
-  }
   render(){
     return(    
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -317,7 +343,7 @@ class EMPReport extends Component{
                     </div>
                         <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                        <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12">
                             <label className="formLable">Center</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                                 <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
@@ -336,18 +362,29 @@ class EMPReport extends Component{
                                 </select>
                             </div>
                         </div>
-                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                        <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
                             <label className="formLable">From</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                 <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                             </div>
                         </div>
-                        <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                        <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
                             <label className="formLable">To</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                 <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                             </div>
                         </div>  
+                        <div className="col-lg-3  col-md-6 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                              <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                <option value="all" >All</option>
+                                <option value="withUID" >With UID</option>
+                                <option value="withoutUID" >Without UID</option>
+                              </select>
+                            </div>
+                        </div> 
                     </div>  
                     <div className="marginTop11">
                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">

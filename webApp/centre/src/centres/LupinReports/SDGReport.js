@@ -20,9 +20,7 @@ class SDGReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
-        "projectCategoryType": "all",
         "beneficiaryType"    : "all",
-        "projectName"        : "all",
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
@@ -79,22 +77,23 @@ class SDGReport extends Component{
       centerName   : centerName,
     },()=>{
     // console.log("center_ID =",this.state.center_ID);
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    this.currentFromDate();
-    this.currentToDate();
-    this.setState({
-      // "center"  : this.state.center[0],
-      // "sector"  : this.state.sector[0],
-      tableData : this.state.tableData,
-    },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
-    })
+      this.currentFromDate();
+      this.currentToDate();
+      this.setState({
+        // "center"  : this.state.center[0],
+        // "sector"  : this.state.sector[0],
+        tableData : this.state.tableData,
+      },()=>{
+      console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+      })
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }   
+
     componentWillReceiveProps(nextProps){
         this.currentFromDate();
         this.currentToDate();
@@ -105,47 +104,89 @@ class SDGReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
           console.log('name', this.state)
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
         });
     }
     getData(startDate, endDate,center_ID, goal, beneficiaryType){
         console.log(startDate, endDate, center_ID);
-        axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "SDG Goal/"+beneficiaryType)
-        .then((response)=>{
-          console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-                _id             : a._id,            
-                goalName        : a.goalName,
-                activityName    : a.activityName,
-                unit            : a.unit,
-                Quantity        : a.Quantity,
-                Amount          : a.Amount,
-                Beneficiaries   : a.Beneficiaries,
-                LHWRF           : a.LHWRF,
-                NABARD          : a.NABARD,
-                Govt            : a.Govt,
-                Bank            : a.Bank,
-                Community       : a.Community,
-                Other           : a.Other,
-            }
-        })  
-          this.setState({
-            tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
+      if(startDate && endDate && center_ID && beneficiaryType){
+        if(beneficiaryType==="all"){
+          axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "SDG Goal/all")
+          .then((response)=>{
+            console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id             : a._id,            
+                  goalName        : a.goalName,
+                  activityName    : a.activityName,
+                  unit            : a.unit,
+                  Quantity        : a.Quantity,
+                  Amount          : a.Amount,
+                  Beneficiaries   : a.Beneficiaries,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  Govt            : a.Govt,
+                  Bank            : a.Bank,
+                  Community       : a.Community,
+                  Other           : a.Other,
+              }
+          })  
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
           })
-        })
-        .catch(function(error){  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-        });
+          .catch(function(error){  
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });        
+        }else{
+
+          axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "SDG Goal/"+beneficiaryType)
+          .then((response)=>{
+            console.log("resp",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id             : a._id,            
+                  goalName        : a.goalName,
+                  activityName    : a.activityName,
+                  unit            : a.unit,
+                  Quantity        : a.Quantity,
+                  Amount          : a.Amount,
+                  Beneficiaries   : a.Beneficiaries,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  Govt            : a.Govt,
+                  Bank            : a.Bank,
+                  Community       : a.Community,
+                  Other           : a.Other,
+              }
+          })  
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){  
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });        
+        }
+
+      }
     }
     handleFromChange(event){
       event.preventDefault();
@@ -264,7 +305,6 @@ class SDGReport extends Component{
                                 <option value="all" >All</option>
                                 <option value="withUID" >With UID</option>
                                 <option value="withoutUID" >Without UID</option>
-                                
                               </select>
                             </div>
                         </div> 

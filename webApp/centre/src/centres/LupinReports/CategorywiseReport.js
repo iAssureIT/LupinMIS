@@ -67,8 +67,8 @@ class CategorywiseReport extends Component{
       centerName   : centerName,
     },()=>{
         this.getAvailableCenterData(this.state.center_ID);
-    // console.log("center_ID =",this.state.center_ID);
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+      // console.log("center_ID =",this.state.center_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.currentFromDate();
@@ -79,9 +79,9 @@ class CategorywiseReport extends Component{
       // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }

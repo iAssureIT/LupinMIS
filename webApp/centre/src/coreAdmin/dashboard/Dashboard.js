@@ -12,13 +12,12 @@ import 'font-awesome/css/font-awesome.min.css';
 import html2canvas from 'html2canvas';
 import Chart from 'chart.js';
 import StatusComponent from './StatusComponent/StatusComponent.js'
-import UpdateComponent from './UpdateComponent/UpdateComponent.js'
-import TableComponent  from './TableComponent/TableComponent.js'
-import Productlist     from './productlist/Productlist.js'
-import Visitorreport   from './Visitorreport/Visitorreport.js'
-import Infocomponent   from './Infocomponent/Infocomponent.js'
 import DummyBarChart   from './chart1/DummyBarChart.js'
 import MonthBarChartbudget   from './chart1/MonthBarChartbudget.js'
+
+import BarChart from './chart1/BarChart.js';
+import PieChart from './chart1/PieChart.js';
+import CenterWisePieChart from './chart1/CenterWisePieChart.js';
 import {HorizontalBar} from 'react-chartjs-2';
 import './Dashboard.css';
 import {Bar} from 'react-chartjs-2';
@@ -56,12 +55,24 @@ export default class Dashboard extends Component{
   constructor(props) {
    super(props);
     this.state = {
+      center_annualPlanTotalBudget  :[],
+      "center_sector"                  : [],
+      "month"                         : [],
+      "piechartcolor"                  : [],
+      "sector"                       : [],
+      "annualPlanReach"              : [],
+      "annualPlanFamilyUpgradation"  : [],
+      "achievementReach"             : [],
+      "achievementTotalBudget"             : [],
+      "monthlyAchievementReach"             : [],
+      "achievementFamilyUpgradation" : [],
+      "annualPlanTotalBudget"        : [],
       'year'                : "FY 2019 - 2020",
-      'months'              : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      'PlannedBeneficiaries': ['2000', '3500', '2000', '2100', '3000', '2300', '2500', '3100', '1800', '1600', '3000', '2000'],
-      'ActualBeneficiaries' : ['1800', '3000', '1900', '2100', '2900', '2200', '2450', '3000', '1800', '1500', '2900', '2000'],
-      'expenditure'         : ['18000', '30000', '19000', '21000', '29000', '20200', '24500', '30000', '18000', '15000', '20900', '20000'],
-      'budget'              : ['20000', '35000', '20000', '21000', '30000', '23000', '25000', '31000', '19800', '16500', '30000', '20000'],
+      // 'months'              : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      // 'PlannedBeneficiaries': ['2000', '3500', '2000', '2100', '3000', '2300', '2500', '3100', '1800', '1600', '3000', '2000'],
+      // 'ActualBeneficiaries' : ['1800', '3000', '1900', '2100', '2900', '2200', '2450', '3000', '1800', '1500', '2900', '2000'],
+      // 'expenditure'         : ['18000', '30000', '19000', '21000', '29000', '20200', '24500', '30000', '18000', '15000', '20900', '20000'],
+      // 'budget'              : ['20000', '35000', '20000', '21000', '30000', '23000', '25000', '31000', '19800', '16500', '30000', '20000'],
       "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"], 
     /*  "data1"               : {
         labels: [],
@@ -113,233 +124,403 @@ export default class Dashboard extends Component{
    
  
   componentDidMount(){
-    var props={
-      achievementFamilyUpgradation: (8) [0, 0, 0, 0, 0, 14, 4, 0]
-    }
-    var ctx = document.getElementById('myChart');
-    var data = {
-      datasets: [{
-          data: [300000, 400000, 200000, 100000, 153000],
-          hoverBackgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-                'rgba(100, 180, 100, 0.5)',
-            ],
-          backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(100, 180, 100, 1)',
-                ],
-
-           
-      }],
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-          'Pune',
-          'Nashik',
-          'Aurangabad',
-          'Bharatpur',
-          'Goa',
-      ]
-    };
-    var myPieChart = new Chart(ctx, {
-      type: 'pie',
-      data: data,
-    });
-
-    var ctx = document.getElementById('myChart1');
-    var data = {
-      datasets: [{
-          data: [280000, 170000, 390000, 138000, 35000,200000],
-          hoverBackgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-                'rgba(100, 180, 100, 0.5)',
-                'rgba(200, 150, 70, 0.5)',
-            ],
-          backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(100, 180, 100, 1)',
-                'rgba(200, 150, 70, 1)',
-                ],
-
-           
-      }],
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-          'Educational Sector',
-          'Health',
-          'Agriculture Development',
-          'Natural Resource Management',
-          'Animal Husbandry',
-          'Rural Industries',
-      ]
-    };
-    var myPieChart = new Chart(ctx, {
-      type: 'pie',
-      data: data,
-    });
-
-
-
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableCenters();
+    this.getCountOfSectors();
+    this.getCountOfActivities();
+    this.getCenterwiseData(this.state.year, this.state.center_ID);
+    this.getSectorwiseData(this.state.year, this.state.center_ID);
+    this.getMonthwiseData(this.state.year, this.state.center_ID);
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+
+    console.log(" this.state.center_ID =", this.state.center_ID);
+    this.getCenterwiseData(this.state.year, this.state.center_ID);
+    this.getSectorwiseData(this.state.year, this.state.center_ID);
+    })
   }
 
-    componentWillReceiveProps(nextProps){
-      this.getAvailableCenters();
-    }
-    handleChange(event){
-      event.preventDefault();
+  componentWillReceiveProps(nextProps){
+    this.getAvailableCenters();
+    this.getCountOfSectors();
+    this.getCountOfActivities();
+    this.getCenterwiseData(this.state.year, this.state.center_ID);
+    this.getMonthwiseData(this.state.year, this.state.center_ID);
+    this.getSectorwiseData(this.state.year, this.state.center_ID);
+  }
+  handleChange(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name] : event.target.value
+    },()=>{
+      // console.log('name', this.state)
+    });
+  }
+  getAvailableCenters(){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
       this.setState({
-        [event.target.name] : event.target.value
+        availableCenters : response.data,
+        center           : response.data[0].centerName+'|'+response.data[0]._id
       },()=>{
-        // console.log('name', this.state)
-      });
-    }
-    getAvailableCenters(){
-      axios({
-        method: 'get',
-        url: '/api/centers/list',
-      }).then((response)=> {
+        // console.log('center', this.state.center);
+        var center_ID = this.state.center.split('|')[1];
         this.setState({
-          availableCenters : response.data,
-          center           : response.data[0].centerName+'|'+response.data[0]._id
+          center_ID        : center_ID
         },()=>{
-          // console.log('center', this.state.center);
-          var center_ID = this.state.center.split('|')[1];
-          this.setState({
-            center_ID        : center_ID
-          },()=>{
-          })
         })
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectCenter(event){
+    var selectedCenter = event.target.value;
+    this.setState({
+      [event.target.name] : event.target.value,
+      selectedCenter : selectedCenter,
+    },()=>{
+      var center_ID = this.state.selectedCenter.split('|')[1];
+      // console.log('center_ID', center_ID);
+      this.setState({
+        center_ID :center_ID,            
+      },()=>{
+
+      })
+    });
+  } 
+  getCountOfActivities(){
+    axios({
+      method: 'get',
+      url: 'api/sectors/count',
+    }).then((response)=> {
+      this.setState({
+        sectorCount : response.data.dataCount,
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  getCountOfSectors(){
+    axios({
+      method: 'get',
+      url: 'api/sectors/activity/count',
+    }).then((response)=> {
+      this.setState({
+        activityCount : response.data.dataCount,
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  } 
+ 
+  getCenterwiseData(year, center_ID){
+    console.log('year', year);
+    var startDate = year.substring(3, 7)+"-04-01";
+    var endDate = year.substring(10, 15)+"-03-31";
+    if(startDate && endDate && center_ID){
+        axios.get('/api/report/center/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all')
+        .then((response)=>{
+          console.log("response",response);
+      /*******************************Dashboard Status Data***************************/
+          var centerwiseData = response.data;
+          var totalindex = (centerwiseData.length)-2;
+          var totalData = response.data[totalindex];
+          var achievement_Reach      = totalData.achievement_Reach;
+          var annualPlan_Reach       = totalData.annualPlan_Reach;
+          var annualPlan_TotalBudget = totalData.annualPlan_TotalBudget;
+          var achievement_TotalBudget = totalData.achievement_TotalBudget;
+          this.setState({
+            achievement_Reach        : achievement_Reach,
+            annualPlan_Reach         : annualPlan_Reach,
+            annualPlan_TotalBudget   : annualPlan_TotalBudget,
+            achievement_TotalBudget  : achievement_TotalBudget,
+          })
+          // console.log("this.state",this.state);
+      /***********************************for centerwise data*************************/
+          var sector = [];
+          /*var annualPlanReach = [];
+          var annualPlanFamilyUpgradation = [];
+          var achievementReach = [];
+          var achievementFamilyUpgradation = [];*/
+          var annualPlanTotalBudget = [];
+          var piechartcolor =[];
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{
+              sector.push(data.name);
+              /*annualPlanReach.push(data.annualPlan_Reach);
+              annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
+              achievementReach.push(data.achievement_Reach);
+              achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);*/
+              annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
+              piechartcolor.push(this.getRandomColor());
+            })
+                    // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
+          this.setState({
+            "sector" : sector.splice(-2),
+            // "annualPlanReach1" : annualPlanReach.splice(-2),
+            // "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
+            // "achievementReach1" : achievementReach.splice(-2),
+            // "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
+            "annualPlan_TotalBudget1" : annualPlanTotalBudget.splice(-2),
+          },()=>{
+          // console.log("this.state.achievementFamilyUpgradation1",this.state.achievementFamilyUpgradation1);
+          // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
+          // console.log("this.state.annualPlan_TotalBudget1",this.state.annualPlan_TotalBudget1);
+             this.setState({
+              "center_sector"                       : sector,
+              // "annualPlanReach"              : annualPlanReach,
+              // "annualPlanFamilyUpgradation"  : annualPlanFamilyUpgradation,
+              // "achievementReach"             : achievementReach,
+              // "achievementFamilyUpgradation" : achievementFamilyUpgradation,
+              "center_annualPlanTotalBudget"       : annualPlanTotalBudget,
+              piechartcolor                 : piechartcolor
+            },()=>{
+        // console.log('center', this.state.center_sector,"tb",this.state.center_annualPlanTotalBudget);
+                    
+            });
+          
+          })
+        } 
       }).catch(function (error) {
         console.log('error', error);
       });
     } 
-    selectCenter(event){
-      var selectedCenter = event.target.value;
-      this.setState({
-        [event.target.name] : event.target.value,
-        selectedCenter : selectedCenter,
-      },()=>{
-        var center_ID = this.state.selectedCenter.split('|')[1];
-        console.log('center_ID', center_ID);
-        this.setState({
-          center_ID :center_ID,            
-        },()=>{
-          this.getData(this.state.year, this.state.center_ID);
-          this.getCenterwiseData(this.state.year, this.state.center_ID);
-          // this.getSourceData(this.state.year, this.state.center_ID);
-          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        })
-      });
-    } 
+  }
 
+  getSectorwiseData(year, center_ID){
+    console.log('year', year);
+    var startDate = year.substring(3, 7)+"-04-01";
+    var endDate = year.substring(10, 15)+"-03-31";
+    // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
+    if(startDate, endDate){
+        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all')
+        .then((response)=>{
+          console.log("respgetData",response);
+          var sector = [];
+          var annualPlanReach = [];
+          var annualPlanFamilyUpgradation = [];
+          var achievementReach = [];
+          var achievementFamilyUpgradation = [];
+          var annualPlanTotalBudget = [];
+          var piechartcolor =[];
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{
+              sector.push(data.name);
+              annualPlanReach.push(data.annualPlan_Reach);
+              annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
+              achievementReach.push(data.achievement_Reach);
+              achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
+              annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
+              piechartcolor.push(this.getRandomColor_sector());
+            })
+            console.log("annualPlanTotalBudget",annualPlanTotalBudget);
+          this.setState({
+            "sector" : sector.splice(-2),
+            "annualPlanReach1" : annualPlanReach.splice(-2),
+            "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
+            "achievementReach1" : achievementReach.splice(-2),
+            "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
+            "annualPlan_TotalBudget1" : annualPlanTotalBudget.splice(-2),
+          },()=>{
+             this.setState({
+              "sector"                       : sector,
+              "annualPlanReach"              : annualPlanReach,
+              "annualPlanFamilyUpgradation"  : annualPlanFamilyUpgradation,
+              "achievementReach"             : achievementReach,
+              "achievementFamilyUpgradation" : achievementFamilyUpgradation,
+              "annualPlanTotalBudget"        : annualPlanTotalBudget,
+              "piechartcolor"                : piechartcolor
+            },()=>{  
+          // console.log("this",this.state.sector)                  
+            });          
+          })
+        }    
+          var tableData = response.data.map((a, i)=>{
+            return {
+                name                                    : a.name,
+                annualPlan_Reach                        : a.annualPlan_Reach,
+                annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation, 
+                achievement_Reach                       : a.achievement_Reach,
+                achievement_FamilyUpgradation           : a.achievement_FamilyUpgradation,            
+                annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,            
+            } 
+        })  
+        this.setState({
+          tableData : tableData
+        },()=>{
+          // console.log("resp",this.state.tableData)
+        })
+      })
+      .catch(function(error){        
+      });
+    }
+  }
+
+  getRandomColor(){
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+  getRandomColor_sector(){
+      var letters = '01234ABCDEF56789';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+  getMonthwiseData(year, center_ID){
+    console.log('year', year, 'center_ID', center_ID);
+    var startYear = year.substring(3, 7);
+    var endYear = year.substring(10, 15);
+    if(startYear, endYear){
+        axios.get('/api/report/dashboard/'+startYear+'/'+endYear)
+        .then((response)=>{
+          // console.log("respgetData",response)
+          var month = [];
+          var monthlyPlanReach = [];
+          var monthlyAchievementReach = [];
+          var monthlyPlanTotalBudget = [];
+          var achievementTotalBudget = [];
+          var piechartcolor =[];
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{
+              month.push(data.month);
+              monthlyPlanReach.push(data.monthlyPlan_Reach);
+              monthlyAchievementReach.push(data.curr_achievement_Reach);
+              monthlyPlanTotalBudget.push(data.monthlyPlan_TotalBudget);
+              achievementTotalBudget.push(data.curr_achievement_TotalBudget);
+            })
+          this.setState({
+            "month"                        : month,
+            "monthlyPlanReach"             : monthlyPlanReach,
+            "monthlyAchievementReach"      : monthlyAchievementReach,
+            "monthlyPlanTotalBudget"       : monthlyPlanTotalBudget,
+            "achievementTotalBudget"       : achievementTotalBudget,
+          },()=>{
+                  // console.log(this.state.month)
+                         // { console.log("this.state",this.state.monthlyAchievementReach , this.state.month, this.state.monthlyAchievementReach)}
+
+          });          
+        }    
+      })
+      .catch(function(error){        
+      });
+    }
+  }
 
   render(){
     return(
-
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">
-             
-                  <div className="dashContent">
-                    <div className="col-lg-12">
-                        <div className="log-lg-12 pull-left ">
-                          <h3>Dashboard</h3>
-                        </div>
-                      </div>
-                      <div className="">
-                        <StatusComponent stats={{color:"#2FC0EF", icon:"building",heading1:"CSR Center",value1:"18", heading2:"Development",value2:"7"}} />
-                        <StatusComponent stats={{color:"#DD4B39", icon:"users",heading1:"Families",value1:"5160", heading2:"Beneficiaries",value2:"3,60,363"}} />
-                        <StatusComponent stats={{color:"#4CA75A", icon:"shopping-cart",heading1:"Budget",value1:"15.6 Cr", heading2:"Expenditure",value2:"12.3 Cr"}} />
-                        <StatusComponent stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:"12", heading2:"Activities",value2:"66"}} /> 
-                      </div>
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div className="row">
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11 mb15">
-                             {/* <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                  <label className="formLable">Center</label><span className="asterix"></span>
-                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                                      <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                                          <option className="hidden" >-- Select --</option>
-                                          {
-                                            this.state.availableCenters && this.state.availableCenters.length >0 ?
-                                            this.state.availableCenters.map((data, index)=>{
-                                              return(
-                                                <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                                              );
-                                            })
-                                            :
-                                            null
-                                          }
-                                      </select>
-                                  </div>
-                              </div>*/}
-                              <div className=" col-lg-4 col-lg-offset-4 col-md-6 col-sm-6 col-xs-12">
-                                <label className="formLable">Year</label><span className="asterix"></span>
-                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                                  <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                                   <option className="hidden" >-- Select Year --</option>
-                                   {
-                                    this.state.years.map((data, i)=>{
-                                      return <option key={i}>{data}</option>
-                                    })
-                                   }
-                                  </select>
-                                </div>
-                                {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
-                              </div>  
-                          </div>  
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                              <div className="col-lg-6">
-                                <div className="box2">
-                                    <div className="">
-                                      <h4 className="text-center">Center wise Budget</h4>
-                                      <canvas id="myChart"></canvas>
-                                    </div>
-                                </div>
-                              </div>
-                              <div className="col-lg-6">
-                                <div className="box2">
-                                    <div className="">
-                                      <h4 className="text-center">Sector wise Budget</h4>
-                                      <canvas id="myChart1"></canvas>
-                                    </div>
-                                </div>
-                              </div>
-                              <div className="col-lg-6 " >
-                                <div className="horibox mb15">
-                                  <h4 className="text-center">Month wise Goal Completion</h4>
-                                  <DummyBarChart months={this.state.months} ActualBeneficiaries={this.state.ActualBeneficiaries} PlannedBeneficiaries={this.state.PlannedBeneficiaries}/>
-                                </div>
-                              </div>
-                              <div className="col-lg-6" >
-                                <div className="horibox mb15">
-                                  <h4 className="text-center">Month wise Expenditure V/s Budget</h4>
-                                  <MonthBarChartbudget months={this.state.months} expenditure={this.state.expenditure} budget={this.state.budget}/>
-                                </div>
-                                   
-                              </div>
-                           
+              <div className="dashContent">
+                <div className="col-lg-12">
+                  <div className="log-lg-12 pull-left ">
+                    <h3>Dashboard</h3>
+                  </div>
+                </div>
+                <div className="">
+                  <StatusComponent 
+                    stats={{color:"#2FC0EF", icon:"building",heading1:"CSR Center",value1:"18", heading2:"Development",value2:"7"}} 
+                  />
+                  <StatusComponent 
+                    stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Beneficiaries",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0}} 
+                  />
+                  <StatusComponent 
+                    stats={{color:"#4CA75A", icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget ? this.state.annualPlan_TotalBudget : 0, heading2:"Expenditure",value2:this.state.achievement_TotalBudget ? this.state.achievement_TotalBudget : 0}} 
+                  />
+                  <StatusComponent 
+                    stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:this.state.sectorCount ? this.state.sectorCount : 0, heading2:"Activities",value2:this.state.activityCount ? this.state.activityCount : 0}}
+                  /> 
+                </div>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div className="row">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11 mb15">
+                       {/* <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label className="formLable">Center</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                                <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                                    <option className="hidden" >-- Select --</option>
+                                    {
+                                      this.state.availableCenters && this.state.availableCenters.length >0 ?
+                                      this.state.availableCenters.map((data, index)=>{
+                                        return(
+                                          <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                                        );
+                                      })
+                                      :
+                                      null
+                                    }
+                                </select>
+                            </div>
+                        </div>*/}
+                        <div className=" col-lg-4 col-lg-offset-4 col-md-6 col-sm-6 col-xs-12">
+                          <label className="formLable">Year</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                            <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                             <option className="hidden" >-- Select Year --</option>
+                             {
+                              this.state.years.map((data, i)=>{
+                                return <option key={i}>{data}</option>
+                              })
+                             }
+                            </select>
                           </div>
-                        </div> 
-                        
+                          {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+                        </div>  
+                    </div>  
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                      <div className="col-lg-6">
+                        <div className="box2">
+                            <div className="">
+                              <h4 className="text-center">Center wise Budget</h4>
+                              <CenterWisePieChart center_annualPlanTotalBudget={this.state.center_annualPlanTotalBudget ? this.state.center_annualPlanTotalBudget : []} piechartcolor={this.state.piechartcolor}  center_sector ={this.state.center_sector ? this.state.center_sector : []}/>
+                            </div>
                         </div>
-                         
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="box2">
+                          <h4 className="text-center">Sector wise Budget</h4>
+                          <PieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget ? this.state.annualPlanTotalBudget : []} piechartcolor={this.state.piechartcolor}  sector={this.state.sector ? this.state.sector : []} />
                         </div>
-               
+                      </div>
+                      <div className="col-lg-12">
+                        <div className="horibox">
+                          <h4 className="text-center">Sector wise Family Upgradation</h4>
+                          <BarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
+                        </div>
+                      </div>
+                         { console.log("this.state",this.state.monthlyAchievementReach , this.state.month, this.state.monthlyAchievementReach)}
+                      <div className="col-lg-6 " >
+                        <div className="horibox mb15">
+                          <h4 className="text-center">Month wise Goal Completion</h4>
+                          <DummyBarChart months={this.state.month ? this.state.month : []} ActualBeneficiaries={this.state.monthlyAchievementReach ? this.state.monthlyAchievementReach : []} PlannedBeneficiaries={this.state.monthlyPlanReach ? this.state.monthlyPlanReach : []}/>
+                        </div>
+                      </div>
+                      <div className="col-lg-6" >
+                        <div className="horibox mb15">
+                          <h4 className="text-center">Month wise Expenditure V/s Budget</h4>
+                          <MonthBarChartbudget months={this.state.month ? this.state.month : []} expenditure={this.state.achievementTotalBudget ? this.state.achievementTotalBudget : []} budget={this.state.monthlyPlanTotalBudget ? this.state.monthlyPlanTotalBudget : []}/>
+                        </div>                             
+                      </div>
+                    </div>
+                  </div> 
+                </div>
+              </div>
             </section>     
           </div>     
         </div>     
@@ -347,14 +528,3 @@ export default class Dashboard extends Component{
     );
   }
 }
-{/*
-        <Bar
-          data={data}
-          width={100}
-          height={50}
-          options={{
-            maintainAspectRatio: false
-          }}
-        />
-
-*/}
