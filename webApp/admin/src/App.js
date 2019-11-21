@@ -7,7 +7,9 @@ import './lib/router.js';
 import axios from 'axios';
 import $ from 'jquery';
 
-axios.defaults.baseURL = "http://qalmisapi.iassureit.com/";
+
+axios.defaults.baseURL = "http://uatlmisapi.iassureit.com/";
+// axios.defaults.baseURL = "http://qalmisapi.iassureit.com/";
 // axios.defaults.baseURL = "http://localhost:3054/";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
