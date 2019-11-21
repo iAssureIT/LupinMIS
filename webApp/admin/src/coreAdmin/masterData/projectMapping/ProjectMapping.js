@@ -629,33 +629,33 @@ class ProjectMapping extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {   
-      // console.log("sectors",response.data);
-      var sortArray = (response.data).sort(function(a,b){
-        return((a.activity.length) - (b.activity.length)); //ASC, For Descending order use: b - a
-      });
-      console.log("sortArray",sortArray);
+      // console.log("response.data",response.data);
       var availableSectorData = response.data.map((block)=>{
-        // var sortArray1= (block.activity).sort(function(a,b){
-        //   return((a.subActivity.length) - (b.subActivity.length)); //ASC, For Descending order use: b - a
-        // });   
-        // console.log("sortArray1",sortArray1);
-        block.activity.map((blockone)=>{
-          blockone.subActivity.map((blocktwo)=>{
-            blocktwo.checked = "N"
-            return blocktwo;
+        var totalLength = 0;
+        if(block.activity.length>0){
+          totalLength = totalLength + block.activity.length 
+          block.activity.map((blockone)=>{
+            if(blockone.subActivity.length>0){
+              totalLength = totalLength + blockone.subActivity.length 
+              blockone.subActivity.map((blocktwo)=>{
+                blocktwo.checked = "N"
+                return blocktwo;
+              })
+            }
+            blockone.checked = "N";
+            return blockone;
           })
-          blockone.checked = "N";
-          return blockone;
-        })
+        }
+        block.blockLength = totalLength;
         block.checked = "N";
         return block;
       })
-      console.log("availableSectorData",availableSectorData);
-      // console.log("response.data",response.data);
-   
-      this.setState({
-        availableSectors : availableSectorData,
+      var sortArray = availableSectorData.sort(function(a,b){
+        return((a.blockLength) - (b.blockLength)); //ASC, For Descending order use: b - a
+      });
 
+      this.setState({
+        availableSectors : sortArray,
       })
     }).catch(function (error) {
       console.log("error = ",error);
