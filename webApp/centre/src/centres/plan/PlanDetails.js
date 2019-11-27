@@ -863,6 +863,7 @@ class PlanDetails extends Component{
                     <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
+                           <label className="formLable">Center</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
                                 
@@ -875,6 +876,7 @@ class PlanDetails extends Component{
                             <div className="errorMsg">{this.state.errors.month}</div>
                           </div>
                           <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 zeroIndex">
+                          <label className="formLable">Year</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                               <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
                                 <option className="hidden" >-- Select Year --</option>
