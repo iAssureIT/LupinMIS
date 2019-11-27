@@ -226,7 +226,7 @@ class SubActivity extends Component{
       }
       if (typeof fields["subActivityName"] !== "undefined") {
         // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["subActivityName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+        if (!fields["subActivityName"].match(/^[ A-Za-z0-9_@./#&+-]*$/)) {
           formIsValid = false;
           errors["subActivityName"] = "Please enter valid Center Name.";
         }
