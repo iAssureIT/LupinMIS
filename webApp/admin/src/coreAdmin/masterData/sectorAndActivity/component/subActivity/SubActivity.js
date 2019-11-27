@@ -551,6 +551,7 @@ edit(id){
                   getData={this.getData.bind(this)}
                   tableObjects={this.state.tableObjects}
                   getSearchText={this.getSearchText.bind(this)}
+                  deleteMethod='patch'
                 />
               </div>              
             </div>

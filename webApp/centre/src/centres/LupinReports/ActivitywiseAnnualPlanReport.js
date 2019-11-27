@@ -41,19 +41,19 @@ class ActivitywiseAnnualPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 3
+                        mergedColoums : 3,
                     },
                     {
                         heading : 'Annual Plan',
-                        mergedColoums : 5
+                        mergedColoums : 5,
                     },
                     {
                         heading : "Source of Financial Plan 'Rs'",
-                        mergedColoums : 7
+                        mergedColoums : 7,
                     },
                     {
                         heading : "",
-                        mergedColoums : 1
+                        mergedColoums : 1,
                     },
                 ]
             },
@@ -72,13 +72,14 @@ class ActivitywiseAnnualPlanReport extends Component{
                 "annualPlan_IndirectCC"                  : 'Indirect Community  Contribution',
                 "annualPlan_Govt"                        : 'Govt',
                 "annualPlan_Other"                       : 'Others',
-                "annualPlan_Remark"                                    : 'Remark',
+                "annualPlan_Remark"                      : 'Remark',
             },
             "tableObjects"        : {
               paginationApply     : false,
               searchApply         : false,
               downloadApply       : true,
-            },   
+            }, 
+            availableSectors      : [],   
         }
         window.scrollTo(0, 0);
         this.getAvailableSectors = this.getAvailableSectors.bind(this);
@@ -220,17 +221,17 @@ class ActivitywiseAnnualPlanReport extends Component{
       // if(center_ID && sector_ID){ 
       //   if(sector_ID==="all"){
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
-        console.log(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
+        // console.log(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(sector_ID==="all"){
-          console.log("year",year);
+          // console.log("year",year);
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
          
-          console.log(startDate, endDate, year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);  
+          // console.log(startDate, endDate, year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);  
           axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
           // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
           .then((response)=>{
-            console.log("resp",response);
+            // console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
                   _id                                       : a._id,            
@@ -258,7 +259,7 @@ class ActivitywiseAnnualPlanReport extends Component{
             })
           })
           .catch(function(error){
-            console.log("error = ",error);
+            // console.log("error = ",error);
             if(error.message === "Request failed with status code 401"){
               swal({
                   title : "abc",
@@ -267,15 +268,15 @@ class ActivitywiseAnnualPlanReport extends Component{
             }
           });
         }else{
-          console.log("year",year);
+          // console.log("year",year);
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";             
-          console.log(startDate, endDate, year, center_ID, sector_ID);
+          // console.log(startDate, endDate, year, center_ID, sector_ID);
           // axios.get('/api/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all')
           axios.get('/api/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
           // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
           .then((response)=>{
-            console.log("resp",response);
+            // console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
                   _id                                       : a._id,            
@@ -303,7 +304,7 @@ class ActivitywiseAnnualPlanReport extends Component{
             })
           })
           .catch(function(error){
-            console.log("error = ",error);
+            // console.log("error = ",error);
             if(error.message === "Request failed with status code 401"){
               swal({
                   title : "abc",
@@ -336,21 +337,9 @@ class ActivitywiseAnnualPlanReport extends Component{
                     </div>
                     <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                        <label className="formLable">Year</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                          <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                           <option className="hidden" >-- Select--</option>
-                           {
-                            this.state.years.map((data, i)=>{
-                              return <option key={i}>{data}</option>
-                            })
-                           }
-                          </select>
-                        </div>
-                        {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
-                      </div>   
-                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+                      
+                      
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                         <label className="formLable">Sector</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
@@ -370,7 +359,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                        {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                       </div>  
-                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                         <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                           <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -381,10 +370,8 @@ class ActivitywiseAnnualPlanReport extends Component{
                             
                           </select>
                         </div>
-                      </div> 
-                    </div> 
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+                      </div>
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                         <label className="formLable">Project Category</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                           <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
@@ -396,30 +383,45 @@ class ActivitywiseAnnualPlanReport extends Component{
                           </select>
                         </div>
                       </div>
-                      {
-                        this.state.projectCategoryType === "Project Fund" ?
-
-                        <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Project Name</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                              <option value="all" >All</option>
-                              {
-                                this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                this.state.availableProjects.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                            </select>
+                       {
+                          this.state.projectCategoryType === "Project Fund" ?
+                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Project Name</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                <option value="all" >All</option>
+                                {
+                                  this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                  this.state.availableProjects.map((data, index)=>{
+                                    return(
+                                      <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }
+                              </select>
+                            </div>
                           </div>
+                        : 
+                        ""
+                        }    
+                    </div> 
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label className="formLable">Year</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                          <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                           <option className="hidden" >-- Select--</option>
+                           {
+                            this.state.years.map((data, i)=>{
+                              return <option key={i}>{data}</option>
+                            })
+                           }
+                          </select>
                         </div>
-                      : 
-                      ""
-                      }                      
+                        {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+                      </div>                     
                     </div>  
                     <div className="marginTop11">
                     

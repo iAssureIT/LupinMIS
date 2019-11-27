@@ -33,6 +33,7 @@ class IAssureTable extends Component {
 		    "normalData" 				: true,
 		}
 		this.delete = this.delete.bind(this);
+		this.printTable = this.printTable.bind(this);
 	}
 	componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -86,9 +87,10 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 		let id = e.target.id;
+		console.log("tableObjects",tableObjects.apiLink+id);
 		
 		axios({
-	        method: 'delete',
+	        method: this.props.deleteMethod ? this.props.deleteMethod :'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
 	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
@@ -493,7 +495,20 @@ class IAssureTable extends Component {
 			}			
 		});
     }
+    printTable(event){
+    	// event.preventDefault();
+       
+        var DocumentContainer = document.getElementById('section-to-print');
+
+	    var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
+	    WindowObject.document.write(DocumentContainer.innerHTML);
+	    WindowObject.document.close();
+	    WindowObject.focus();
+	    WindowObject.print();
+	    WindowObject.close();
+    }
 	render() {
+		console.log("this.state.tableData ",this.state.tableData );
 		// var x = Object.keys(this.state.tableHeading).length ;
 		// var y = 4;
 		// var z = 2;
@@ -514,17 +529,19 @@ class IAssureTable extends Component {
 	       	{ this.state.tableObjects.downloadApply === true ?
             	this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 ?
                 	
-		       	<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right	">
-			       	<div className="col-lg-6  col-md-6 col-xs-12 col-sm-12 NOpadding  pull-right" title="Download Table">
-	                	<ReactHTMLTableToExcel
-		                    id="table-to-xls"		                    
-		                    className="download-table-xls-button fa fa-download tableDwld "
-		                    table={this.state.id}
-		                    sheet="tablexls"
-		                    filename={this.state.tableName}
-		                    buttonText=""/>
-	                </div>
-                </div>
+		       <React.Fragment>
+          
+                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+                           <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table={this.state.id}
+                                sheet="tablexls"
+                                filename={this.state.tableName}
+                                buttonText=""/>
+                    </div>
+                </React.Fragment>
 	                : null
                 
                 : null
@@ -553,7 +570,7 @@ class IAssureTable extends Component {
 					
            
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
-	                <div className="table-responsive">
+	                <div className="table-responsive"  id="section-to-print">
 						<table className="table iAssureITtable-bordered table-striped table-hover" id={this.state.id}>
 	                        <thead className="tempTableHeader">	     
 		                        <tr className="tempTableHeader">
@@ -631,7 +648,7 @@ class IAssureTable extends Component {
 													{this.state.tableHeading && this.state.tableHeading.actions ? 
 														<td className="textAlignCenter">
 															<span>
-																<i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
+																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
 																{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id}></i>}
 															</span>
 															<div className="modal fade" id={"showDeleteModal-"+(value._id)} role="dialog">
@@ -657,6 +674,9 @@ class IAssureTable extends Component {
 		                                                            </div>
 		                                                          </div>
 		                                                        </div>
+		                              
+
+
 		                                                    </div>
 														</td>
 														:

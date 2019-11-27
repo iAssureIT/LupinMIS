@@ -1,0 +1,29 @@
+@media print {
+   @page {
+  size: A4 landscape;
+  max-height:100%;
+  max-width:100%
+  }
+   img {
+  width:100%;
+  height:100%;
+  display:block;
+  }
+ /* body * {
+    visibility: hidden;
+  }
+  #section-to-print, #section-to-print * {
+    visibility: visible;
+
+  }
+  #section-to-print {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+*/
+ .section-to-hide{
+  display:  none;
+ }
+}

@@ -82,7 +82,7 @@ logout(){
   render(){
 
     return(
-    <div>
+    <div className="section-not-print">
             <header className="">
               <div className="col-lg-12 padd0 pageHeader">
                 <div className="col-lg-6 col-md-4 col-sm-4 col-xs-4 padd0">

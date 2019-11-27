@@ -867,7 +867,7 @@ class Family extends Component{
                       </form>
                     </div>
                     <div id="bulk" className="tab-pane fade in ">
-                      <BulkUpload url="/api/families/bulk_upload_families" data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} uploadedData={this.uploadedData}/>
+                      <BulkUpload url="/api/families/bulk_upload_families" data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} uploadedData={this.uploadedData} fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"/>
                     </div>
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">

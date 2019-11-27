@@ -33,7 +33,7 @@ class Activity extends Component{
       "projectName"       : "LHWRF Grant",
       "projectCategoryType" : "LHWRF Grant",
       "subactivity"       : "",
-      "unit"              : "",
+      "unit"              : "Number",
       "unitCost"          : 0,
       "quantity"          : 0,
       "totalcost"         : 0,
@@ -112,17 +112,135 @@ class Activity extends Component{
       "editId"                     : this.props.match.params ? this.props.match.params.id : ''
     }
     this.uploadedData = this.uploadedData.bind(this);
+    this.handleTotalChange = this.handleTotalChange.bind(this);
+  }
+
+  remainTotal(event){
+    event.preventDefault(); 
+    console.log("event.target.name",event.target.name);
+
+    var prevTotal = 0;
+    var subTotal = 0;
+    switch(event.target.name){
+        case "LHWRF" : 
+            prevTotal = this.state.totalcost;
+            subTotal = this.state.LHWRF;
+            console.log("prevTotal = ", prevTotal);
+
+          if(parseInt(this.state.LHWRF) < this.state.totalcost){
+            if(subTotal < this.state.totalcost){
+              this.setState({ NABARD : this.state.totalcost - subTotal,"total" :subTotal}); 
+            }            
+          }else{
+            this.setState({ LHWRF : prevTotal}); 
+          }
+          break;    
+
+
+          
+        case "NABARD" : 
+          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF);
+          // console.log("add", this.state.LHWRF,this.state.NABARD)
+          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD);
+          // console.log("prevTotal in NABARD= ", prevTotal);
+          // console.log("subTotal in NABARD= ", subTotal);
+          if(parseInt(this.state.NABARD) < this.state.totalcost){
+            if(subTotal < this.state.totalcost){
+              this.setState({ bankLoan : this.state.totalcost - subTotal,"total" :subTotal},()=>{
+                // console.log("bankLoan",this.state.bankLoan);
+              }); 
+            }else{
+              this.setState({ NABARD : prevTotal}); 
+            }
+          }else{
+            this.setState({ NABARD : prevTotal}); 
+          }
+          break;    
+
+
+        case "bankLoan" : 
+          // console.log("prevTotal before = ", prevTotal);
+          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD);
+          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan);
+          // console.log("prevTotal after = ", prevTotal);
+          if(parseInt(this.state.bankLoan) < this.state.totalcost){
+            if(subTotal < this.state.totalcost){
+              this.setState({ govtscheme : this.state.totalcost - subTotal,"total" :subTotal}); 
+            }else{
+              this.setState({ bankLoan : prevTotal}); 
+            }
+          }else{
+            this.setState({ bankLoan : prevTotal}); 
+          }
+          break;    
+
+
+        case "govtscheme" : 
+          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan);
+          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme);
+          if(parseInt(this.state.govtscheme) < this.state.totalcost){
+            if(subTotal < this.state.totalcost){
+              this.setState({ directCC : this.state.totalcost - subTotal,"total" :subTotal}); 
+            }else{
+              this.setState({ govtscheme : prevTotal}); 
+            }
+          }else{
+            this.setState({ govtscheme : prevTotal}); 
+          }
+          break;    
+
+
+
+        case "directCC" : 
+          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan) - parseInt(this.state.govtscheme) ;
+          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC);
+          if(parseInt(this.state.directCC) < this.state.totalcost){
+            if(subTotal < this.state.totalcost){
+              this.setState({ indirectCC : this.state.totalcost - subTotal,"total" :subTotal}); 
+            }else{
+              this.setState({ directCC : prevTotal}); 
+            }
+          }else{
+            this.setState({ directCC : prevTotal}); 
+          }
+          break;    
+
+
+
+        case "indirectCC" : 
+          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan) - parseInt(this.state.govtscheme) - parseInt(this.state.directCC) ;
+          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC);
+          if(parseInt(this.state.indirectCC) < this.state.totalcost){
+            if(subTotal < this.state.totalcost){
+              this.setState({ other : this.state.totalcost - subTotal,"total" :subTotal},()=>{
+
+              }); 
+            }else{
+              this.setState({ indirectCC : prevTotal}); 
+            }
+          }else{
+            this.setState({ indirectCC : prevTotal}); 
+          }
+          break;   
+
+         case "other" : 
+          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan) - parseInt(this.state.govtscheme) - parseInt(this.state.directCC) - parseInt(this.state.indirectCC) ;
+          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC)+ parseInt(this.state.other);
+          if (parseInt(this.state.other) < this.state.totalcost) {
+              this.setState({"total" :subTotal}); 
+          }else{
+              this.setState({ "other" : prevTotal,"total" :subTotal}); 
+          }
+         break;
+      }
+
   }
 
   handleChange(event){
     event.preventDefault(); 
-    this.setState({      /*
-      "district"          : this.refs.district.value,
-      "block"             : this.refs.block.value,
-      "village"           : this.refs.village.value,
-*/      [event.target.name]: event.target.value
+    this.setState({      
+      [event.target.name]: event.target.value
     },()=>{
-      // console.log(this.state);
     });
  
     let fields = this.state.fields;
@@ -138,7 +256,22 @@ class Activity extends Component{
       });
     } 
   }
-
+  handleTotalChange(event){
+    event.preventDefault();
+    const target = event.target;
+    const name   = target.name;
+    this.setState({
+       [name]: target.value,
+    },()=>{
+      if (this.state.quantity > 0) {
+         var totalcost = parseInt(this.state.unitCost) * parseInt(this.state.quantity);
+         this.setState({
+           "totalcost"  : totalcost,
+           "LHWRF"      : totalcost
+         });
+      }
+    });
+  }
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
@@ -169,7 +302,8 @@ class Activity extends Component{
       selectedBeneficiaries : selectedBeneficiaries
     })
   }
-    SubmitActivity(event){
+    
+  SubmitActivity(event){
     event.preventDefault();
     var dateObj = new Date();
     var momentObj = moment(dateObj);
@@ -236,61 +370,64 @@ class Activity extends Component{
       fields["projectName"]       = "";
       fields["projectCategoryType"]= "";
       
-          console.log("activityValues", activityValues);
-      axios.post('/api/activityReport',activityValues)
-        .then((response)=>{
-          console.log("response", response);
-          swal({
-            title : response.data.message,
-            text  : response.data.message,
-          });
-            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);  
-            this.setState({
-              selectedValues : this.state.selectedBeneficiaries 
-            })    
-          })
-        .catch(function(error){       
-          console.log('error',error);
-          if(error.message === "Request failed with status code 401"){
+      // console.log("activityValues", activityValues);
+      if (parseInt(this.state.total) === parseInt(this.state.totalcost)) {
+        axios.post('/api/activityReport',activityValues)
+          .then((response)=>{
+            console.log("response", response);
             swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
+              title : response.data.message,
+              text  : response.data.message,
             });
-          }
+              this.getData(this.state.startRange, this.state.limitRange);  
+              this.setState({
+                selectedValues : this.state.selectedBeneficiaries 
+              })    
+            })
+          .catch(function(error){       
+            console.log('error',error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
+        this.setState({
+          "projectName"            : "",
+          "projectCategoryType" : "LHWRF Grant",
+          "district"               : "",
+          "block"                  : "",
+          "village"                : "",
+          "dateofIntervention"     : momentString,
+          "sector"                 : "",
+          "typeofactivity"         : "",
+          "nameofactivity"         : "",
+          "activity"               : "",
+          "subactivity"            : "",
+          "unit"                   : "",
+          "unitCost"               : "",
+          "quantity"               : "",
+          "totalcost"              : "",
+          "LHWRF"                  : "",
+          "NABARD"                 : "",
+          "bankLoan"               : "",
+          "govtscheme"             : "",
+          "directCC"               : "",
+          "indirectCC"             : "",
+          "other"                  : "",
+          "total"                  : "",
+          "remark"                 : "",
+          "fields"                 : fields,
+          "selectedBeneficiaries"  : [],
+          "listofBeneficiaries"    : [],
+          "subActivityDetails"     : [],
+          "availableActivity"      : [],
+          "availableSubActivity"   : []
         });
-      this.setState({
-        "projectName"            : "",
-        "projectCategoryType" : "LHWRF Grant",
-        "district"               : "",
-        "block"                  : "",
-        "village"                : "",
-        "dateofIntervention"     : momentString,
-        "sector"                 : "",
-        "typeofactivity"         : "",
-        "nameofactivity"         : "",
-        "activity"               : "",
-        "subactivity"            : "",
-        "unit"                   : "",
-        "unitCost"               : "",
-        "quantity"               : "",
-        "totalcost"              : "",
-        "LHWRF"                  : "",
-        "NABARD"                 : "",
-        "bankLoan"               : "",
-        "govtscheme"             : "",
-        "directCC"               : "",
-        "indirectCC"             : "",
-        "other"                  : "",
-        "total"                  : "",
-        "remark"                 : "",
-        "fields"                 : fields,
-        "selectedBeneficiaries"  : [],
-        "selectedValues"         : [],
-        "listofBeneficiaries"    : [],
-        "subActivityDetails"     : [],
-        "availableActivity"      : [],
-        "availableSubActivity"   : []
-      });
+      }else{
+        swal('Total Costs are not equal! Please check');
+      }
     }
   }
   Update(event){
@@ -509,25 +646,10 @@ class Activity extends Component{
     return formIsValid;
   }
 
-  calTotal(event){
-    event.preventDefault();
-    var LHWRF       = this.state.LHWRF;
-    var NABARD      = this.state.NABARD;
-    var bankLoan    = this.state.bankLoan;
-    var govtscheme  = this.state.govtscheme;
-    var directCC    = this.state.directCC;
-    var indirectCC  = this.state.indirectCC;
-    var other       = this.state.other;
-     add = parseInt(LHWRF) + parseInt(NABARD) + parseInt(bankLoan) + parseInt(govtscheme) + parseInt(directCC) + parseInt(indirectCC) + parseInt(other);
-    this.setState({
-      total : add,
-    })
-      var unitCost = this.state.unitCost;
-    var quantity = this.state.quantity;
-    var total = parseInt(unitCost) * parseInt(quantity)
-    this.setState({
-      "totalcost" : total
-    })
+  toglehidden(){
+   this.setState({
+     shown: !this.state.shown
+    });
   }
 
   edit(id){
@@ -1275,14 +1397,14 @@ class Activity extends Component{
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <label className="formLable">Unit Cost</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
-                              <input type="text"   className="form-control inputBox" name="unitCost" placeholder="" onKeyUp={this.calTotal.bind(this)} ref="unitCost" value={this.state.unitCost} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                              <input type="text"   className="form-control inputBox" name="unitCost" placeholder="" ref="unitCost" value={this.state.unitCost} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleTotalChange.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.unitCost}</div>
                           </div>
                           <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <label className="formLable">Quantity</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
-                              <input type="text" className="form-control inputBox" name="quantity" placeholder="" ref="quantity" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.quantity}  onChange={this.handleChange.bind(this)}/>
+                              <input type="text" className="form-control inputBox" name="quantity" placeholder="" ref="quantity" onKeyDown={this.isNumberKey.bind(this)} value={this.state.quantity}  onChange={this.handleTotalChange.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.quantity}</div>
                           </div>
@@ -1291,7 +1413,7 @@ class Activity extends Component{
 
                               <label className="formLable">Total Cost of Activity :</label>
                             
-                              <input type="text" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost" onKeyDown={this.isNumberKey.bind(this)} value={this.state.totalcost ?this.state.totalcost: ""} disabled />
+                              <input type="text" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost" onKeyDown={this.isNumberKey.bind(this)} value={this.state.totalcost} disabled />
                               
                             </div>
                             <div className="errorMsg">{this.state.errors.totalcost}</div>
@@ -1316,7 +1438,7 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">LHWRF</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                              <input type="text"   className="form-control inputBox " name="LHWRF" placeholder="" ref="LHWRF" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)}/>
+                              <input type="text"  className="form-control inputBox " name="LHWRF" placeholder="" ref="LHWRF" onKeyDown={this.isNumberKey.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.LHWRF}</div>
                           </div>
@@ -1324,13 +1446,13 @@ class Activity extends Component{
                             <label className="formLable">NABARD</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >
                               
-                              <input type="text" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD" onKeyUp={this.calTotal.bind(this)} onKeyDown={this.isNumberKey.bind(this)} value={this.state.NABARD}  onChange={this.handleChange.bind(this)}/>
+                              <input type="text" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.NABARD}</div>
                           </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Bank Loan</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                              <input type="text" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyUp={this.calTotal.bind(this)}  onKeyDown={this.isNumberKey.bind(this)} value={this.state.bankLoan}  onChange={this.handleChange.bind(this)}/>
+                              <input type="text" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.bankLoan}</div>
                           </div>
@@ -1341,21 +1463,21 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Govt. Schemes</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                              <input type="text"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  onKeyUp={this.calTotal.bind(this)}   value={this.state.govtscheme}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                              <input type="text"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.govtscheme}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                            <label className="formLable">Direct Beneficiary Contribution</label>
+                            <label className="formLable">Direct Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                              <input type="text" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  onKeyUp={this.calTotal.bind(this)}  value={this.state.directCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                              <input type="text" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.directCC}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                            <label className="formLable">Indirect Beneficiary Contribution</label>
+                            <label className="formLable">Indirect Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                              <input type="text" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC" onKeyUp={this.calTotal.bind(this)}  value={this.state.indirectCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                              <input type="text" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.indirectCC}</div>
                           </div>
@@ -1366,7 +1488,7 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Other</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
-                              <input type="text"   className="form-control inputBox" name="other" placeholder="" ref="other"  onKeyUp={this.calTotal.bind(this)}   value={this.state.other} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)}/>
+                              <input type="text"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.other}</div>
                           </div>
@@ -1414,7 +1536,7 @@ class Activity extends Component{
                     </form>
                   </div>
                    <div id="bulkactivity" className="tab-pane fade in ">
-                      <BulkUpload url="/api/activityReport/bulk_upload_activities" data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} uploadedData={this.uploadedData}/>
+                      <BulkUpload url="/api/activityReport/bulk_upload_activities" data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} uploadedData={this.uploadedData} fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"/>
                     </div>
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">

@@ -5,10 +5,10 @@ import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
- import PrintComponent from 'react-print-component';
 import './IAssureTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
+import './print.css';
 var sum = 0;
 class IAssureTable extends Component {
 	constructor(props){
@@ -33,35 +33,22 @@ class IAssureTable extends Component {
 		    "normalData" 				: true,
 		}
 		this.delete = this.delete.bind(this);
+		this.printTable = this.printTable.bind(this);
 	}
-
-
-    onPrintButtonClick() {
-        //Replace components added
-        PrintComponent.SetPrintContent(this.render());
-        //Add components to list
-        PrintComponent.AddPrintContent(this.render());
-        PrintComponent.AddPrintContent(<div>{"Mulit element"}</div>);
-        //Clear all added components in list
-        PrintComponent.ClearComponent();
-    
-        //Call this method to print
-        PrintComponent.Print();
-    }
  
 	componentDidMount() {
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    $("html,body").scrollTop(0); 
-    const center_ID = localStorage.getItem("center_ID");
-    const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
-    // console.log("localStorage =",localStorage);
-    this.setState({
-      center_ID    : center_ID,
-      centerName   : centerName,
-    },()=>{
-	    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-    }); 
+	    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+	    $("html,body").scrollTop(0); 
+	    const center_ID = localStorage.getItem("center_ID");
+	    const centerName = localStorage.getItem("centerName");
+	    // console.log("localStorage =",localStorage.getItem('centerName'));
+	    // console.log("localStorage =",localStorage);
+	    this.setState({
+	      center_ID    : center_ID,
+	      centerName   : centerName,
+	    },()=>{
+		    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    }); 
       
       // this.palindrome('Moam');
       this.setState({
@@ -507,6 +494,18 @@ class IAssureTable extends Component {
 			}			
 		});
     }
+    printTable(event){
+    	// event.preventDefault();
+       
+        var DocumentContainer = document.getElementById('section-to-print');
+
+	    var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
+	    WindowObject.document.write(DocumentContainer.innerHTML);
+	    WindowObject.document.close();
+	    WindowObject.focus();
+	    WindowObject.print();
+	    WindowObject.close();
+    }
 	render() {
 		// var x = Object.keys(this.state.tableHeading).length ;
 		// var y = 4;
@@ -525,30 +524,27 @@ class IAssureTable extends Component {
 	        	:
 	        	null
 	       	}
+	       
 	       	{ this.state.tableObjects.downloadApply === true ?
-            	this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 ?
-                	
-		       	<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right	">
-			       	<div className="col-lg-6  col-md-6 col-xs-12 col-sm-12 NOpadding  pull-right" title="Download Table">
-	                	<ReactHTMLTableToExcel
-		                    id="table-to-xls"		                    
-		                    className="download-table-xls-button fa fa-download tableDwld "
-		                    table={this.state.id}
-		                    sheet="tablexls"
-		                    filename={this.state.tableName}
-		                    buttonText=""/>
-	                </div>
-                </div>
-	                : null
+                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 ?
+                <React.Fragment>
+          
+                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+                           <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table={this.state.id}
+                                sheet="tablexls"
+                                filename={this.state.tableName}
+                                buttonText=""/>
+                    </div>
+                </React.Fragment>
+                    : null
                 
                 : null
-            }
-		       {/*	<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right	">
-		       		<div>
-                        <PrintComponent />
-                    </div>
-		       		<button className="submit" onClick={this.onPrintButtonClick.bind(this)}></button>
-		       	</div>*/}
+            }   
+	                
 	       	{
 	       		this.state.tableObjects.paginationApply === true ?
 		       		<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding pull-right">
@@ -573,15 +569,15 @@ class IAssureTable extends Component {
 		  
            
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
-	                <div className="table-responsive">
+	                <div className="table-responsive" id="section-to-print">
 						<table className="table iAssureITtable-bordered table-striped table-hover" id={this.state.id}>
 	                        <thead className="tempTableHeader">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
-												<th key={index} colSpan={data.mergedColoums} className="umDynamicHeader srpadd textAlignCenter">{data.heading}</th>			
-		                            		);		                            		
+												<th key={index} colSpan={data.mergedColoums} className={data.hide ? "umDynamicHeader srpadd textAlignCenter section-to-hide" :"umDynamicHeader srpadd textAlignCenter"}>{data.heading}</th>			
+		                            		);		                           		
 		                            	})	
 		                            	:
 		                            	null									

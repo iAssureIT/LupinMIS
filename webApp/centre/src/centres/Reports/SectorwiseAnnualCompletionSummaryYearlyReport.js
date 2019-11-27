@@ -3,6 +3,7 @@ import $                    from 'jquery';
 import axios                from 'axios';
 import moment               from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import '../../coreAdmin/IAssureTable/print.css';
 export default class YearlyReport extends Component{
     constructor(props){
         super(props);
@@ -114,7 +115,7 @@ export default class YearlyReport extends Component{
             return( 
                 <div className="row">
                     <div className="sales-report-main-class ">
-                        <div className="reports-select-date-boxmain">
+                        <div className="reports-select-date-boxmain section-not-print">
                             <div className="reports-select-date-boxsec">
                                {/* <div className="reports-select-date-Title">Yearly Reports</div>
                                 <div className="input-group">

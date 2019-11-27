@@ -21,7 +21,7 @@ class Activity extends Component{
       "academicData"        :[],
       "user_ID"             :"",
       "shown"               : true,
-      "tabtype"             : "location",
+      "tabtype"             : "location", 
       "availableSectors"    : [],
       "tableHeading"        : {
         sector              : "Name of Sector",
@@ -258,7 +258,7 @@ class Activity extends Component{
   }
   edit(id){
     var activity_id = this.props.match.params.activityId;
-    console.log('activity_id',activity_id);
+    // console.log('activity_id',activity_id);
     axios({
       method: 'get',
       url: '/api/sectors/'+id,
@@ -347,7 +347,7 @@ class Activity extends Component{
     })
   }
   render() {
-   
+    
     return (
       <div className="container-fluid">
         <div className="row">
@@ -411,6 +411,7 @@ class Activity extends Component{
                   getData={this.getData.bind(this)}
                   tableObjects={this.state.tableObjects}
                   getSearchText={this.getSearchText.bind(this)}
+                  deleteMethod='patch'
                 />
               </div> 
             </div>              

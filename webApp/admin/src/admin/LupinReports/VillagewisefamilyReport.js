@@ -539,7 +539,7 @@ class VillagewisefamilyReport extends Component{
                     </div>
                     <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 validBox">
-                      <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label className="formLable">Center</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
@@ -558,7 +558,7 @@ class VillagewisefamilyReport extends Component{
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                       </div>
-                      <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
+                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                         <label className="formLable">Sector</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
@@ -577,21 +577,7 @@ class VillagewisefamilyReport extends Component{
                         </div>
                        {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                       </div>
-                        <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
-                            <label className="formLable">From</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                            </div>
-                        </div>
-                        <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
-                            <label className="formLable">To</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                            </div>
-                        </div>
-                    </div>  
-                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable validBox  ">                        
-                      <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                         <label className="formLable">District</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                           <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
@@ -613,7 +599,7 @@ class VillagewisefamilyReport extends Component{
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.district}</div>*/}
                       </div>
-                      <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                         <label className="formLable">Block</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                           <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
@@ -632,7 +618,9 @@ class VillagewisefamilyReport extends Component{
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
                       </div>
-                      <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    </div>  
+                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable validBox  ">                        
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                         <label className="formLable">Village</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                           <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
@@ -651,9 +639,7 @@ class VillagewisefamilyReport extends Component{
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
                       </div>
-                    </div>                    
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                               <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -665,7 +651,7 @@ class VillagewisefamilyReport extends Component{
                               </select>
                             </div>
                         </div> 
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <label className="formLable">Project Category</label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                               <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
@@ -680,7 +666,7 @@ class VillagewisefamilyReport extends Component{
                         {
                             this.state.projectCategoryType === "Project Fund" ?
 
-                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                               <label className="formLable">Project Name</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
                                 <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
@@ -702,6 +688,20 @@ class VillagewisefamilyReport extends Component{
                         : 
                         ""
                         } 
+                    </div>                    
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                            <label className="formLable">From</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                            </div>
+                        </div>
+                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                            <label className="formLable">To</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                            </div>
+                        </div>
                     </div>  
                     <div className="marginTop11">
                         <div className="">

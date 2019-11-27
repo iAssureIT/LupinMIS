@@ -9,6 +9,7 @@ import MonthlyReport                                         from '../Reports/Mo
 import SectorwiseAnnualCompletionSummaryYearlyReport         from '../Reports/SectorwiseAnnualCompletionSummaryYearlyReport.js';
 import CustomisedReport                                      from '../Reports/CustomisedReport.js';
 import "../Reports/Reports.css";
+import '../../coreAdmin/IAssureTable/print.css';
 /*Sector  Annual Plan     Annual Achievement        Source of Financial Achievement               Remarks
    Total Budget Outreach  Family Upgradation plan Outreach   Families Upgraded  " Financial
 Total " % to Annual Plan  LHWRF NABARD  Bank  Loan  Community  Contribution   Govt. Others  
@@ -225,14 +226,63 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             <section className="content">
               <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                 <div className="row">
-                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact section-not-print">
                     <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
                       Sector Wise Annual Completion Summary Report                   
                     </div>
                   </div>
                   <hr className="hr-head"/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-                    <div className=" col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                   
+                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                      <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                        <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                          <option  className="hidden" >--Select--</option>
+                          <option value="all" >All</option>
+                          <option value="withUID" >With UID</option>
+                          <option value="withoutUID" >Without UID</option>
+                          
+                        </select>
+                      </div>
+                    </div> 
+                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                      <label className="formLable">Project Category</label><span className="asterix">*</span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                        <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                          <option  className="hidden" >--Select--</option>
+                          <option value="all" >All</option>
+                          <option value="LHWRF Grant" >LHWRF Grant</option>
+                          <option value="Project Fund">Project Fund</option>
+                          
+                        </select>
+                      </div>
+                    </div>
+                    {
+                      this.state.projectCategoryType === "Project Fund" ?
+                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <label className="formLable">Project Name</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                <option value="all" >All</option>
+                                {
+                                  this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                  this.state.availableProjects.map((data, index)=>{
+                                    return(
+                                      <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }
+                              </select>
+                            </div>
+                          </div>
+                      : 
+                      ""
+                    } 
+
+                    <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12">
                       <label className="formLable">Year</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
@@ -246,57 +296,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                       </div>
                       {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
                     </div>
-                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                      <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                        <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                          <option  className="hidden" >--Select--</option>
-                          <option value="all" >All</option>
-                          <option value="withUID" >With UID</option>
-                          <option value="withoutUID" >Without UID</option>
-                          
-                        </select>
-                      </div>
-                    </div> 
-                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                      <label className="formLable">Project Category</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                        <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                          <option  className="hidden" >--Select--</option>
-                          <option value="all" >All</option>
-                          <option value="LHWRF Grant" >LHWRF Grant</option>
-                          <option value="Project Fund">Project Fund</option>
-                          
-                        </select>
-                      </div>
-                    </div>
                   </div>
-                  {
-                    this.state.projectCategoryType === "Project Fund" ?
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                          <label className="formLable">Project Name</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                              <option value="all" >All</option>
-                              {
-                                this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                this.state.availableProjects.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                            </select>
-                          </div>
-                        </div>
-                      </div>  
-                    : 
-                    ""
-                  } 
+                  
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                   {
                     <SectorwiseAnnualCompletionSummaryYearlyReport  tableObjects={this.state.tableObjects} twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading} year={this.state.year} beneficiaryType={this.state.beneficiaryType} projectCategoryType={this.state.projectCategoryType} projectName={this.state.projectName} tableDatas={this.state.tableDatas}/> 

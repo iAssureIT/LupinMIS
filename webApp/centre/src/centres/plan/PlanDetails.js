@@ -118,13 +118,20 @@ class PlanDetails extends Component{
     var id = (event.target.name).split('-')[1];
     let fields = this.state.fields;
     const x =  this.refs["physicalUnit-"+id].value * this.refs["unitCost-"+id].value;
-    console.log('x',x)
+    // console.log('x',x)
     this.setState({
       [event.target.name] : event.target.value,
       totalBud : x,
       ["totalBudget-"+id] : x
     },()=>{
-      console.log('totalBud=========',this.state.totalBud )
+      // console.log('totalBud=========',this.state.totalBud );
+      if (parseInt(this.state[`noOfBeneficiaries-${id}`]) < parseInt(this.state[`noOfFamilies-${id}`]) ) {
+        swal("No. of Families should not greater than No. of Beneficiaries");
+        this.setState({
+          [`noOfBeneficiaries-${id}`] : 0,
+          [`noOfFamilies-${id}`] : 0
+        });
+      }
     });
     if (this.validateForm()) {
       let errors = {};
@@ -135,14 +142,14 @@ class PlanDetails extends Component{
     }
     var subActivityDetails = this.state.subActivityDetails;
     
-    console.log("this.state.subActivityDetails",this.state.subActivityDetails);
+    // console.log("this.state.subActivityDetails",this.state.subActivityDetails);
     var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID === id});
     var name = (event.target.name).split('-')[0];
-    console.log("idExist",idExist);
+    // console.log("idExist",idExist);
      var y =parseInt(x);
-     console.log("y1 = ",y);
+     // console.log("y1 = ",y);
     if(idExist.length > 0){      
-     console.log("y2 = ",idExist.length );
+     // console.log("y2 = ",idExist.length );
       for(var i=0; i<subActivityDetails.length; i++){
         if(subActivityDetails[i].subactivity_ID === id){
           subActivityDetails[i][name] = event.target.value;
@@ -150,7 +157,7 @@ class PlanDetails extends Component{
         }
       }
     }else{
-     console.log("y3 = ",y);
+     // console.log("y3 = ",y);
       subActivityDetails.push({
         "subactivity_ID"      : id,
         "subactivityName"     : document.getElementById('subActivityName-'+id).innerHTML,
@@ -163,7 +170,7 @@ class PlanDetails extends Component{
     this.setState({
       subActivityDetails : subActivityDetails
     },()=>{
-      console.log("subActivityDetails",this.state.subActivityDetails);
+      // console.log("subActivityDetails",this.state.subActivityDetails);
     })
   }
   uploadedData(data){
@@ -854,9 +861,8 @@ class PlanDetails extends Component{
                     </div>
                     </div>
                     <div className="row">
-                      <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                           <div className=" col-lg-3  col-lg-offset-3 col-md-4 col-sm-6 col-xs-12 ">
+                           <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
                                 
@@ -868,7 +874,7 @@ class PlanDetails extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.month}</div>
                           </div>
-                          <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 zeroIndex">
+                          <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 zeroIndex">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                               <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
                                 <option className="hidden" >-- Select Year --</option>
@@ -881,17 +887,16 @@ class PlanDetails extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.year}</div>
                           </div>
-                          <div className="col-lg-2 col-lg-offset-1 col-md-4 col-sm-6 col-xs-6 ">
-                            <div className="col-lg-12 col-sm-12 col-xs-12 " >
-                              <div className="addform text-center " id="click_advance"  onClick={this.toglehidden.bind(this)}>Add Plan
-                               {/* <div className="display_advance addContainerAct"  id="display_advance">
-                                  <i className="fa fa-plus" aria-hidden="true" id="click"></i>
-                                </div>*/}
-                              </div>
+                          <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6 pull-right">
+                            <div className="addform text-center " id="click_advance"  onClick={this.toglehidden.bind(this)}>Add Plan
+                             {/* <div className="display_advance addContainerAct"  id="display_advance">
+                                <i className="fa fa-plus" aria-hidden="true" id="click"></i>
+                              </div>*/}
                             </div>
                           </div>
-                        </div> 
-                      </div><br/>
+                        </div>
+                        <hr/>
+                        <br/>
                       <div style={hidden}>
                         <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12">
                           <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualplan">Manual</a></li>
@@ -902,7 +907,7 @@ class PlanDetails extends Component{
                             <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" >
                               <div className="row">
                                 <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
-                                  <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                                  <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                                     <label className="formLable">Sector</label><span className="asterix">*</span>
                                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
                                       <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
@@ -921,7 +926,7 @@ class PlanDetails extends Component{
                                     </div>
                                     <div className="errorMsg">{this.state.errors.sectorName}</div>
                                   </div>
-                                  <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                                  <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                                     <label className="formLable">Activity</label><span className="asterix">*</span>
                                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
                                       <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
@@ -955,8 +960,8 @@ class PlanDetails extends Component{
                                         <div className="subActDiv"  key={data._id}>
                                           <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 contentDiv  ">
                                             <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
-                                            <label className="formLable">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
-                                           </div>
+                                            <label className="formLable visibilityHidden">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
+                                          </div>
                                           <div className="col-lg-9 col-sm-10 col-xs-10 ">
                                             <div className="row">
                                               <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
@@ -967,32 +972,37 @@ class PlanDetails extends Component{
                                             <div className="row ">
                                               <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                                 <label className="formLable">Physical Units</label>
-                                                <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
+                                                <div className="input-group inputBox-main " id={"physicalUnit-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>{/*{console.log("state",this.state)}*/}
                                               </div>
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                                 <label className="formLable">Unit Cost</label>
                                                 <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>  
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                                 <label className="formLable">Total Cost</label>
                                                 <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
                                                   <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" disabled ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]} />
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>  
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                                 <label className="formLable">No.of Beneficiaries</label>
                                                 <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div> 
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
                                                 <label className="formLable">No.of Families</label>
                                                 <div className=" input-group inputBox-main" id={"noOfFamilies-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"noOfFamilies-"+data._id} placeholder="" ref={"noOfFamilies-"+data._id} value={this.state["noOfFamilies-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>
                                             </div>
@@ -1006,36 +1016,42 @@ class PlanDetails extends Component{
                                                 <label className="formLable">LHWRF</label>
                                                 <div className=" input-group inputBox-main" id={"LHWRF-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}   onChange={this.subActivityDetails.bind(this)}/>
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                                 <label className="formLable">NABARD</label>
                                                 <div className=" input-group inputBox-main" id={"NABARD-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                                 <label className="formLable">Bank Loan</label>
                                                 <div className=" input-group inputBox-main" id={"bankLoan-"+data._id}>
                                                   <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                                 <label className="formLable">Govt. Schemes</label>
                                                 <div className=" input-group inputBox-main" id={"govtscheme-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                                 <label className="formLable">Direct Com. Cont.</label>
                                                 <div className=" input-group inputBox-main" id={"directCC-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                                 <label className="formLable">Indirect Com. Cont.</label>
                                                 <div className=" input-group inputBox-main" id={"indirectCC-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>
                                             </div>
@@ -1044,6 +1060,7 @@ class PlanDetails extends Component{
                                                 <label className="formLable">Other</label>
                                                 <div className=" input-group inputBox-main" id={"other-"+data._id} >
                                                   <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                                  <span className="input-group-addon inputAddon">{data.unit}</span>
                                                 </div>
                                               </div>
                                               <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
@@ -1083,12 +1100,11 @@ class PlanDetails extends Component{
                             </form>
                           </div>
                         <div id="bulkplan" className="tab-pane fade in ">
-                          <BulkUpload url={this.state.month == "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,"month":this.state.month,"year":this.state.year}} uploadedData={this.uploadedData}/>
+                          <BulkUpload url={this.state.month == "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,"month":this.state.month,"year":this.state.year}} uploadedData={this.uploadedData} fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"/>
                         </div>
                       </div>
                      </div>
                   </div>
-                    
                     <div className="AnnualHeadCont">
                       <div className="annualHead">
                       {

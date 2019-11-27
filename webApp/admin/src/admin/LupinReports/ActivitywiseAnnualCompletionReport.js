@@ -266,7 +266,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                   </div>
                   <hr className="hr-head "/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12">
                       <label className="formLable">Center</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                         <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
@@ -285,21 +285,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
                       </div>
                       {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                     </div>
-                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                      <label className="formLable">Year</label><span className="asterix"></span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                        <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                          <option className="hidden" >-- Select Year --</option>
-                         {
-                          this.state.years.map((data, i)=>{
-                            return <option key={i}>{data}</option>
-                          })
-                         }
-                        </select>
-                      </div>
-                      {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
-                    </div>  
-                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                  
+                    <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                       <label className="formLable">Sector</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                         <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
@@ -319,9 +306,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                       </div>
                      {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                     </div>
-                  </div>  
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                       <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                         <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -333,7 +318,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                         </select>
                       </div>
                     </div>                    
-                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                       <label className="formLable">Project Category</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                         <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
@@ -345,10 +330,13 @@ class ActivitywiseAnnualCompletionReport extends Component{
                         </select>
                       </div>
                     </div>
+                  </div>  
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                  
                     {
                       this.state.projectCategoryType === "Project Fund" ?
 
-                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                         <label className="formLable">Project Name</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
                           <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
@@ -369,6 +357,20 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     : 
                     ""
                     } 
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                      <label className="formLable">Year</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                        <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                          <option className="hidden" >-- Select Year --</option>
+                         {
+                          this.state.years.map((data, i)=>{
+                            return <option key={i}>{data}</option>
+                          })
+                         }
+                        </select>
+                      </div>
+                      {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+                    </div>  
                   </div>  
                  
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">          

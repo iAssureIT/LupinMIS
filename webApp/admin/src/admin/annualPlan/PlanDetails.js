@@ -876,7 +876,7 @@ class PlanDetails extends Component{
                     </div>
                     </div>
                     <div className="row">
-                      <div className="row">
+                      <div className="">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                         {/*  <div className=" col-lg-3  col-lg-offset-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
@@ -903,8 +903,7 @@ class PlanDetails extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.year}</div>
                           </div>*/}
-                          <div className=" col-lg-9 col-lg-offset-1 col-sm-12 col-xs-12 formLable boxHeight ">
-                          <div className=" col-lg-3 col-lg-offset-2 col-md-4 col-sm-6 col-xs-12 ">
+                          <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                               <select className="custom-select form-control inputBox" ref="center" name="center"value={this.state.center} onChange={this.selectCenter.bind(this)}>
                                 <option className="hidden" >-- Select Center --</option>
@@ -947,9 +946,6 @@ class PlanDetails extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.year}</div>
                           </div>                          
-                         
-                        </div> 
-                          
                         </div> 
                       </div><br/>                      
                       <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" style={hidden} id="Academic_details">

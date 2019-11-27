@@ -58,6 +58,7 @@ import report16                                   from "../../centres/LupinRepor
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
+import '../IAssureTable/print.css';
 
 class Layout extends Component{
   
@@ -116,11 +117,11 @@ class Layout extends Component{
           <Router>
             <div className="App container-fluid">
               <div className="row">
-                <div id="headerid" className="headerbackgroundcolor">
+                <div id="headerid" className="headerbackgroundcolor section-not-print">
                   <div className="">
                     <Header />
                  </div>
-                </div>
+                </div> 
                 <div id="dashbordid" className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 NOpadding">
                   <div className="">
                     <div className=" mainContentBottom">
@@ -185,8 +186,8 @@ class Layout extends Component{
                     <Footer />
                   </div>
                 </div>
-                <div className="leftsidebarbackgroundcolor">
-                  <div className="row">
+                <div className="leftsidebarbackgroundcolor section-not-print">
+                  <div className="row ">
                     <Leftsidebar />
                   </div>
                 </div>

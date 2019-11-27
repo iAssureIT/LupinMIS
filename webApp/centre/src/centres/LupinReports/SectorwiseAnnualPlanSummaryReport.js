@@ -369,22 +369,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                                 Sector wise Annual Plan Summary Report              
                             </div>
                         </div>
-                            <hr className="hr-head"/>
+                        <hr className="hr-head"/>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-                          <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                            <label className="formLable">Year</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                              <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                               <option className="hidden" >-- Select Year --</option>
-                               {
-                                this.state.years.map((data, i)=>{
-                                  return <option key={i}>{data}</option>
-                                })
-                               }
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                               <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -396,7 +383,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                               </select>
                             </div>
                           </div> 
-                          <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <label className="formLable">Project Category</label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                               <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
@@ -408,33 +395,43 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                               </select>
                             </div>
                           </div>
-                        </div>
-                        {
-                          this.state.projectCategoryType === "Project Fund" ?
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                              <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                <label className="formLable">Project Name</label><span className="asterix">*</span>
-                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                                  <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                    <option value="all" >All</option>
-                                    {
-                                      this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                      this.state.availableProjects.map((data, index)=>{
-                                        return(
-                                          <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                        );
-                                      })
-                                      :
-                                      null
-                                    }
-                                  </select>
+                          {
+                            this.state.projectCategoryType === "Project Fund" ?
+                                <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                  <label className="formLable">Project Name</label><span className="asterix">*</span>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                    <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                      <option value="all" >All</option>
+                                      {
+                                        this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                        this.state.availableProjects.map((data, index)=>{
+                                          return(
+                                            <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }
+                                    </select>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>  
-                          : 
-                          ""
-                        } 
+                            : 
+                            ""
+                          }
+                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <label className="formLable">Year</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                              <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                               <option className="hidden" >-- Select Year --</option>
+                               {
+                                this.state.years.map((data, i)=>{
+                                  return <option key={i}>{data}</option>
+                                })
+                               }
+                              </select>
+                            </div>
+                          </div> 
+                        </div>
                         <div className="marginTop11">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <IAssureTable 

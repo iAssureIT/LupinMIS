@@ -27,7 +27,7 @@ export default class Footer extends Component{
     
   render(){
     return(
-      <footer  className="main-footer col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable">
+      <footer  className="main-footer col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable ">
         <div className="col-lg-5 col-md-5 col-sm-5 col-xs-12">
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footerLeftCss"><b><span className="footerLeftCss">Copyright © 2019</span> <a href="/" className="footerLeftCss">LupinMIS</a></b><span className="footclr">&nbsp;&nbsp;All rights
             reserved.</span>

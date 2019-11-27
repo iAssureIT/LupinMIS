@@ -721,8 +721,19 @@ margin-right: 12px;
     font-size: 14px !important;
     border-radius: 4px;
     cursor: pointer;
+
   }
   .addform:hover {
     color: #ffffff !important;
     font-family: 'Montserrat',sans-serif;
   }
+.inputAddon{
+    width: 20%;
+    border-left: 1px solid #979797!important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.visibilityHidden{
+  visibility: hidden;
+}

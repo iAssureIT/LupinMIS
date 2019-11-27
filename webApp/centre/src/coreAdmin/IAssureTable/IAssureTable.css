@@ -20,6 +20,7 @@
 }
 .iAssureITtable-bordered{
   border: 1px solid #039BE5;
+  margin-top: 2%;
 }
 .tempTableHeader{
   background: #039BE5 !important;
@@ -76,4 +77,22 @@
 }
 .noPadding{
   padding: 0px;
+}
+.tableicons{
+  font-size: 20px;
+    padding: 5px 8px;
+    box-shadow: 0 0 10px #ede1e1;
+    color: #777;
+    background-color: #fff;
+    border: 1px solid #979797 !important;
+    border-radius: 3px !important;
+}
+.tableprintincon{
+  font-size: 15px;
+    box-shadow: 0 0 10px #ede1e1;
+    color: #777;
+    background-color: #fff;
+    border: 1px solid #979797 !important;
+    border-radius: 3px !important;
+    padding: 5px 10px;
 }

@@ -55,7 +55,7 @@ class SectorAndActivity extends Component{
     }
 
     return (
-      <div className="container-fluid">
+      <div className="container-fluid"> 
         <div className="row">
           <div className="formWrapper">
              <section className="content">

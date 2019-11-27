@@ -4,9 +4,9 @@ import $ from 'jquery';
 import Header from '../common/header/Header.js'
 import Footer from '../common/footer/Footer.js'
 import Dashboard from '../dashboard/Dashboard.js'
-import Leftsidebar from '../common/leftSidebar/Leftsidebar.js'
+import Leftsidebar from '../common/leftSidebar/Leftsidebar.js';
 
- const layoutPostLogin = function (MainComponent){
+const layoutPostLogin = function (MainComponent){
 
 	return  class Layout extends Component{
   
@@ -59,14 +59,14 @@ import Leftsidebar from '../common/leftSidebar/Leftsidebar.js'
 		  }
 
 		  render(){
-		    console.log("props = ",this.props);
-		    {console.log("loggedIn status layput = ", this.state.loggedIn)}
+		    // console.log("in post login");
+		    // {console.log("loggedIn status layput = ", this.state.loggedIn)}
 		    if(this.state.loggedIn===false){
 		      return(
 		            <div className="App container-fluid">
 		            <h1> hello world! </h1>
 		                <div className="row">
-		                  <div id="headerid" className="headerbackgroundcolor ">
+		                  <div id="headerid" className="headerbackgroundcolor">
 		                    <div className="">
 		                      <Header />
 		                   </div>
@@ -84,7 +84,7 @@ import Leftsidebar from '../common/leftSidebar/Leftsidebar.js'
 		                  </div>
 		                  <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
 		                    <div className="">
-		                   </div>
+		                   </div> 
 		                  </div>
 		                </div>
 		            </div> 

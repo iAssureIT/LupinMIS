@@ -82,21 +82,19 @@ class BulkUpload extends Component{
     return (
     	 <div className=" container-fluid">
 	        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent">
-            <div className="row">
-  	          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 bulkEmployeeImg">
-  	            <a href="#" download>
-  		            <img src="https://s3.ap-south-1.amazonaws.com/assureidportal/websiteImgs/filecsv.png" />
-  	            </a>
-  	          </div>
-  	          <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 bulkEmployeeVerif">
-  	            <ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-  	              <li>Please use attached file format to bulkupload file into this system.</li>
-  	              <li>Please do not change the Heading of following file.</li>
-  	              <li>File format must be .csv or .xlsx or .xls.</li>
-  	            </ul>
-  	          </div>
-  	        </div>
-          </div>
+	          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 bulkEmployeeImg">
+	            <a href={this.props.fileurl} download>
+		            <img src="https://s3.ap-south-1.amazonaws.com/assureidportal/websiteImgs/filecsv.png" />
+	            </a>
+	          </div>
+	          <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 bulkEmployeeVerif">
+	            <ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	              <li>Please use attached file format to bulkupload file into this system.</li>
+	              <li>Please do not change the Heading of following file.</li>
+	              <li>File format must be .csv or .xlsx or .xls.</li>
+	            </ul>
+	          </div>
+	        </div>
 	        <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 bulkuploadFileouter">
 	            <input
 			          ref={el => this.fileInput = el}
