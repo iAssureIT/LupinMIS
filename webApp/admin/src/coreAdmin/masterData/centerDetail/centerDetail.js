@@ -15,11 +15,11 @@ class centerDetail extends Component{
   constructor(props){
     super(props);
     this.state = {
-      "typeOfCenter"             :"",
+      "typeOfCenter"             :"--Select Center--",
       "nameOfCenter"             :"",
       "address"                  :"",
-      "state"                    :"",
-      "district"                 :"",
+      "state"                    :"--Select State--",
+      "district"                 :"--Select District--",
       "pincode"                  :"",
       "centerInchargeName"       :"",
       "centerInchargeContact"    :"",
@@ -27,8 +27,8 @@ class centerDetail extends Component{
       "MISCoordinatorName"       :"",
       "MISCoordinatorContact"    :"",
       "MISCoordinatorEmail"      :"",
-      "districtCovered"          :"",
-      "blocksCovered"             :"",
+      "districtCovered"          :"--Select District--",
+      "blocksCovered"             :"--Select Block--",
       "centerDetailArray"        :[],
       "array"                    :[],
       "shown"                    : true,
@@ -177,11 +177,11 @@ class centerDetail extends Component{
 
       console.log("centerDetail",centerDetail);
       let fields = {};
-      fields["typeOfCenter"]           = "";
+      fields["typeOfCenter"]           = "--Select Center--";
       fields["nameOfCenter"]           = "";
       fields["address"]                = "";
-      fields["state"]                  = "";
-      fields["district"]               = "";
+      fields["state"]                  = "--Select State--";
+      fields["district"]               = "--Select District--";
       fields["pincode"]                = "";
       fields["centerInchargeName"]     = "";
       fields["centerInchargeContact"]  = "";
@@ -189,8 +189,8 @@ class centerDetail extends Component{
       fields["MISCoordinatorName"]     = "";
       fields["MISCoordinatorContact"]  = "";
       fields["MISCoordinatorEmail"]    = "";
-      fields["districtCovered"]        = "";
-      fields["blocksCovered"]          = "";
+      fields["districtCovered"]        = "--Select District--";
+      fields["blocksCovered"]          = "--Select Block--";
 
       axios.post('/api/centers',centerDetail)
       .then((response)=>{
@@ -213,11 +213,11 @@ class centerDetail extends Component{
       });
 
       this.setState({
-        "typeOfCenter"              : "",
+        "typeOfCenter"              : "--Select Center--",
         "nameOfCenter"              : "",
         "address"                   : "",
-        "state"                     : "",
-        "district"                  : "",
+        "state"                     : "--Select State--",
+        "district"                  : "--Select District--",
         "pincode"                   : "",
         "centerInchargeName"        : "",
         "centerInchargeContact"     : "",
@@ -225,8 +225,8 @@ class centerDetail extends Component{
         "MISCoordinatorName"        : "",
         "MISCoordinatorContact"     : "",
         "MISCoordinatorEmail"       : "",
-        "districtCovered"           : "",
-        "blocksCovered"              : "",
+        "districtCovered"           : "--Select District--",
+        "blocksCovered"              : "--Select Block--",
         "selectedVillages"          : [],
         "listofDistrict"            : [],
         "listofBlocks"              : [],
@@ -279,11 +279,11 @@ class centerDetail extends Component{
         };
       
         let fields = {};
-        fields["typeOfCenter"] = "";
+        fields["typeOfCenter"] = "--Select Center--";
         fields["nameOfCenter"] = "";
         fields["address"] = "";
-        fields["state"] = "";
-        fields["district"] = "";
+        fields["state"] = "--Select State--";
+        fields["district"] = "--Select District--";
         fields["pincode"] = "";
         fields["centerInchargeName"] = "";
         fields["centerInchargeContact"] = "";
@@ -291,8 +291,8 @@ class centerDetail extends Component{
         fields["MISCoordinatorName"] = "";
         fields["MISCoordinatorContact"] = "";
         fields["MISCoordinatorEmail"] = "";
-        fields["districtCovered"] = "";
-        fields["blocksCovered"] = "";
+        fields["districtCovered"] = "--Select District--";
+        fields["blocksCovered"] = "--Select Block--";
         // console.log('centerDetail', centerDetail);
         axios.patch('/api/centers',centerDetail)
         .then((response)=>{
@@ -314,11 +314,11 @@ class centerDetail extends Component{
         });
 
         this.setState({
-          "typeOfCenter"              : "",
+          "typeOfCenter"              : "--Select Center--",
           "nameOfCenter"              : "",
           "address"                   : "",
-          "state"                     : "",
-          "district"                  : "",
+          "state"                     : "--Select State--",
+          "district"                  : "--Select District--",
           "pincode"                   : "",
           "centerInchargeName"        : "",
           "centerInchargeContact"     : "",
@@ -326,8 +326,8 @@ class centerDetail extends Component{
           "MISCoordinatorName"        : "",
           "MISCoordinatorContact"     : "",
           "MISCoordinatorEmail"       : "",
-          "districtCovered"           : "",
-          "blocksCovered"              : "",
+          "districtCovered"           : "--Select District--",
+          "blocksCovered"              : "--Select Block--",
           "selectedVillages"          : [],
           "listofDistrict"            : [],
           "listofBlocks"              : [],
@@ -880,7 +880,7 @@ class centerDetail extends Component{
                               <label className="formLable">Select Type of Center</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeOfCenter" >
                                 <select className="custom-select form-control inputBox" value={this.state.typeOfCenter} ref="typeOfCenter" name="typeOfCenter" onChange={this.selectType.bind(this)} >
-                                  <option  className="hidden" >--Select Center--</option>
+                                  <option   disabled={true} value="--Select Center--">--Select Center--</option>
                                   {/*<option  className="" >Development Center</option>
                                       <option  className="" >CSR Center</option>
                                       <option  className="" >ADP</option>*/}
@@ -920,7 +920,7 @@ class centerDetail extends Component{
                               <label className="formLable">State</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
                                 <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
-                                  <option  className="hidden" value="">--Select--</option> 
+                                  <option disabled={true} value="--Select State--">--Select State--</option> 
                                   {
                                     this.state.listofStates ?
                                     this.state.listofStates.map((data, index)=>{
@@ -939,7 +939,7 @@ class centerDetail extends Component{
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                 <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onClick={this.handleclick.bind(this)}  onChange={this.handleChange.bind(this)} >
-                                  <option  className="hidden" >--Select District--</option>
+                                  <option disabled={true} value="--Select District--" >--Select District--</option>
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
@@ -949,7 +949,7 @@ class centerDetail extends Component{
                                       );
                                     })
                                     :
-                                    <option disabled>Select select State</option>
+                                   null
                                   }                                
                                 </select>
                               </div>
@@ -1043,7 +1043,7 @@ class centerDetail extends Component{
                               <label className="formLable">District Covered</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtCovered" >
                                 <select className="custom-select form-control inputBox"  value={this.state.districtCovered}  ref="districtCovered" name="districtCovered" onChange={this.districtCoveredChange.bind(this)} >
-                                  <option  className="hidden" >--Select District--</option>
+                                  <option disabled={true} value="--Select District--" >--Select District--</option>
                                   {
                                     this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
@@ -1052,7 +1052,7 @@ class centerDetail extends Component{
                                       );
                                     })
                                     :
-                                    <option disabled>Please select State</option>
+                                    null
                                   }
                                 </select>
                               </div>
@@ -1062,7 +1062,7 @@ class centerDetail extends Component{
                               <label className="formLable">Block Covered</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
                                 <select className="custom-select form-control inputBox"  value={this.state.blocksCovered}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
-                                  <option  className="hidden" >--Select Block--</option>
+                                  <option disabled={true} value="--Select Block--" >--Select Block--</option>
                                   {
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                     this.state.listofBlocks.map((data, index)=>{
@@ -1071,7 +1071,7 @@ class centerDetail extends Component{
                                       );
                                     })
                                     :
-                                    <option disabled>Please select District</option>
+                                    null
                                   }
                                 </select>
                               </div>

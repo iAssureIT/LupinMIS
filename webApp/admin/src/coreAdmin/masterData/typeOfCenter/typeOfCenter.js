@@ -217,7 +217,7 @@ class typeOfCenter extends Component{
             },
           },
           errorPlacement: function(error, element) {
-            console.log("valid",error)
+            // console.log("valid",error)
 
             if (element.attr("name") == "typeofCenter"){
               error.insertAfter("#typeofCenterErr");
@@ -247,12 +247,12 @@ class typeOfCenter extends Component{
       return formIsValid;
     }).catch(function (error) {
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
+        // if(error.message === "Request failed with status code 401"){
+        //   swal({
+        //       title : "abc",
+        //       text  : "Session is Expired. Kindly Sign In again."
+        //   });
+        // }
       });
   }
   
@@ -336,8 +336,8 @@ class typeOfCenter extends Component{
                              
                               <input type="text" className="form-control inputBox"  placeholder=""ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>
-                            <div className="errorMsg">{this.state.errors.typeofCenter}</div>
-                          </div>
+{/*                            <div className="errorMsg">{this.state.errors.typeofCenter}</div>
+*/}                          </div>
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             {
                               this.state.editId ? 

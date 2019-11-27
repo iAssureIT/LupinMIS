@@ -28,7 +28,7 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle',
 		    "paginationArray" 			: [],
 		    "startRange" 				: 0,
-		    "limitRange" 				: 10,
+		    "limitRange" 				: 10000,
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		}
