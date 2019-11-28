@@ -165,7 +165,7 @@
 #headerid {
   position: fixed;
   width: 82.1%;
-  z-index: 1;
+  z-index: 5;
   right: 0;
   transition: all .8s;
   box-shadow: 0 10px 14px rgba(92,141,255,.2);
