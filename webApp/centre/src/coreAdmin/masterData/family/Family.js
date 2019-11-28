@@ -336,10 +336,10 @@ class Family extends Component{
       formIsValid = false;
       errors["middleNameOfFH"] = "This field is required.";
     }
-    // if (!fields["uID"]) {
-    //   formIsValid = false;
-    //   errors["uID"] = "This field is required.";
-    // }
+    if (!fields["uID"]) {
+      formIsValid = false;
+      errors["uID"] = "This field is required.";
+    }
     if (!fields["caste"]) {
       formIsValid = false;
       errors["caste"] = "This field is required.";
@@ -720,7 +720,7 @@ class Family extends Component{
                               <div className="errorMsg">{this.state.errors.caste}</div>
                             </div>                      
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Land holding Category</label><span className="asterix">*</span>
+                              <label className="formLable">Land holding Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
                                 <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
                                   <option  className="hidden" >-- Select --</option>
@@ -733,7 +733,7 @@ class Family extends Component{
                               <div className="errorMsg">{this.state.errors.landCategory}</div>
                             </div>                          
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Income Category </label><span className="asterix">*</span>
+                              <label className="formLable">Income Category </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
                                 <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
                                   <option  className="hidden" >-- Select --</option>
@@ -744,7 +744,7 @@ class Family extends Component{
                               <div className="errorMsg">{this.state.errors.incomeCategory}</div>
                             </div>                          
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Special Category</label><span className="asterix">*</span>
+                              <label className="formLable">Special Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
                                 <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
                                   <option  className="hidden" >-- Select --</option>

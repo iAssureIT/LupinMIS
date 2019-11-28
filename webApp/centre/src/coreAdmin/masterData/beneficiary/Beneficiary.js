@@ -465,7 +465,7 @@ class Beneficiary extends Component{
                               <div className="errorMsg">{this.state.errors.middleNameOfBeneficiary}</div>
                             </div>
                             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
+                              <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uidNumber" >
                                 <input type="text" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
                               </div>
