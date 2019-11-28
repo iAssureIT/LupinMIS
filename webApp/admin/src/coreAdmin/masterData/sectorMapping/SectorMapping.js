@@ -105,12 +105,6 @@ class SectorMapping extends Component{
           })
           .catch(function(error){
             console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
           });
         selectedActivities.map((a, index)=>{
           this.setState({
@@ -157,12 +151,6 @@ class SectorMapping extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
       });
       selectedActivities.map((a, index)=>{
         this.setState({
@@ -270,12 +258,6 @@ class SectorMapping extends Component{
       return formIsValid;
     }).catch(function (error) {
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
   
@@ -291,12 +273,6 @@ class SectorMapping extends Component{
     })
     .catch(function(error){
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
   
@@ -312,12 +288,6 @@ class SectorMapping extends Component{
     })
     .catch(function(error){
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
 
@@ -362,13 +332,7 @@ class SectorMapping extends Component{
         availableSectors : response.data
       })
     }).catch(function (error) {
-      // console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
+      console.log("error = ",error);
     });
   }
   getSearchText(searchText, startRange, limitRange){
@@ -386,12 +350,6 @@ class SectorMapping extends Component{
         })
     }).catch(function (error) {
       // console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
 

@@ -2,12 +2,14 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
-import validate               from 'jquery-validation';
-import {withRouter}           from 'react-router-dom';
+import {withRouter}    from 'react-router-dom';
 // import _                      from 'underscore';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./typeOfCenter.css";
- 
+
+axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 class typeOfCenter extends Component{
   
   constructor(props){
@@ -87,12 +89,6 @@ class typeOfCenter extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
       });
       let fields            = {};
       fields["typeofCenter"] = "";
@@ -122,24 +118,20 @@ class typeOfCenter extends Component{
       axios.patch('/api/typeofcenters/update',typeofCenterValues, this.state.editId)
         .then((response)=>{
           console.log("response",response );
-          this.getData(this.state.startRange, this.state.limitRange);
-          swal({
-            title : response.data.message,
-            text  : response.data.message
-          });
-          this.setState({
-            editId : ''
-          })
-          this.props.history.push('/type-center');
+          if(response.data){
+            this.getData(this.state.startRange, this.state.limitRange);
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });
+            this.setState({
+              editId : ''
+            })
+            // window.location = '/type-center'
+          }
         })
         .catch(function(error){
           console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
         });
         let fields            = {};
         fields["typeofCenter"] = "";
@@ -148,8 +140,10 @@ class typeOfCenter extends Component{
         "typeofCenter"  :"",
         fields         :fields
       });
+      this.props.history.push('/type-center');
     }     
   }
+
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
@@ -208,22 +202,6 @@ class typeOfCenter extends Component{
     }
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
-
-
-    $("#typeofCenterDetails").validate({
-          rules: {
-            typeofCenter: {
-              required: true,
-            },
-          },
-          errorPlacement: function(error, element) {
-            // console.log("valid",error)
-
-            if (element.attr("name") == "typeofCenter"){
-              error.insertAfter("#typeofCenterErr");
-            }
-          }
-        });
   }
 
   edit(id){
@@ -247,12 +225,6 @@ class typeOfCenter extends Component{
       return formIsValid;
     }).catch(function (error) {
         console.log("error = ",error);
-        // if(error.message === "Request failed with status code 401"){
-        //   swal({
-        //       title : "abc",
-        //       text  : "Session is Expired. Kindly Sign In again."
-        //   });
-        // }
       });
   }
   
@@ -271,12 +243,6 @@ class typeOfCenter extends Component{
     })
     .catch(function(error){
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
   getLength(){
@@ -330,14 +296,14 @@ class typeOfCenter extends Component{
                       </div>
                       <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 " >
+                          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                             <label className="formLable"> Type of Center</label><span className="asterix">*</span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofCenterErr" >
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofCenter" >
                              
                               <input type="text" className="form-control inputBox"  placeholder=""ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>
-{/*                            <div className="errorMsg">{this.state.errors.typeofCenter}</div>
-*/}                          </div>
+                            <div className="errorMsg">{this.state.errors.typeofCenter}</div>
+                          </div>
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             {
                               this.state.editId ? 

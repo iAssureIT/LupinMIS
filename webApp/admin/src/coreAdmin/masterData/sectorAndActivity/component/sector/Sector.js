@@ -87,12 +87,6 @@ class Sector extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
       });
       let fields       = {};
       fields["sector"] = "";
@@ -133,12 +127,6 @@ class Sector extends Component{
         })
         .catch(function(error){
           console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
         });
         let fields = {};
         fields["sector"] = "";
@@ -229,12 +217,6 @@ class Sector extends Component{
       return formIsValid;
     }).catch(function (error) {
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
       });
   }
   
@@ -253,12 +235,6 @@ class Sector extends Component{
     })
     .catch(function(error){
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
   getLength(){
@@ -273,12 +249,6 @@ class Sector extends Component{
     })
     .catch(function(error){
       console.log("error = ",error);
-      // if(error.message === "Request failed with status code 401"){
-      //   swal({
-      //       title : "abc",
-      //       text  : "Session is Expired. Kindly Sign In again."
-      //   });
-      // }
     });
   }
   componentWillMount(){

@@ -85,12 +85,6 @@ class typeOfGoal extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
       });
       let fields            = {};
       fields["typeofGoal"] = "";
@@ -120,6 +114,7 @@ class typeOfGoal extends Component{
         .then((response)=>{
           console.log("response",response );
           this.getData(this.state.startRange, this.state.limitRange);
+          
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -127,16 +122,9 @@ class typeOfGoal extends Component{
           this.setState({
             editId : ''
           })
-          this.props.history.push('/type-goal');
         })
         .catch(function(error){
           console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
         });
         let fields            = {};
         fields["typeofGoal"] = "";
@@ -145,6 +133,7 @@ class typeOfGoal extends Component{
         "typeofGoal"  :"",
         fields         :fields
       });
+          this.props.history.push('/type-goal');
     }     
   }
   validateFormReq() {
@@ -246,12 +235,6 @@ class typeOfGoal extends Component{
     })
     .catch(function(error){
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
   getLength(){
