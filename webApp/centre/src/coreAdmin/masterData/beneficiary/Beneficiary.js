@@ -124,12 +124,6 @@ class Beneficiary extends Component{
       })
       .catch((error)=>{
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
       });
     }
   }
@@ -181,12 +175,6 @@ class Beneficiary extends Component{
         })
         .catch((error)=>{
           console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }   
         });
       this.setState({
         "familyID"                 :"",
@@ -325,12 +313,6 @@ class Beneficiary extends Component{
     })
     .catch(function (error) {
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
     });
   }
   
@@ -392,12 +374,6 @@ class Beneficiary extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }   
       });
     }
   }
@@ -412,12 +388,6 @@ class Beneficiary extends Component{
         })
     }).catch(function (error) {
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
     });
     console.log("availableFamilies", this.state.availableFamilies)
   }

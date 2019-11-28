@@ -132,12 +132,6 @@ class NewBeneficiary extends Component{
       })
       .catch((error)=>{
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
       });
     }
   }
@@ -252,12 +246,6 @@ class NewBeneficiary extends Component{
     })
     .catch(function(error){
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
     });
   }
 
@@ -295,12 +283,6 @@ class NewBeneficiary extends Component{
         })
     }).catch(function (error) {
       console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
   getAvailableCenter(center_ID){
@@ -328,12 +310,7 @@ class NewBeneficiary extends Component{
         })
     }).catch(function (error) {
       console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
+      
     });
   }
   camelCase(str){
@@ -380,12 +357,6 @@ class NewBeneficiary extends Component{
         })
         .catch(function(error){ 
           console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }     
         });
       })
     });
@@ -436,12 +407,6 @@ class NewBeneficiary extends Component{
         })
         .catch(function(error){ 
           console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }     
         });
     });
   }
@@ -490,12 +455,6 @@ class NewBeneficiary extends Component{
         })
         .catch(function(error){ 
           console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }     
         });
     });
   }

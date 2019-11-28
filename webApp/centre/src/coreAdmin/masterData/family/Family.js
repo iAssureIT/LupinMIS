@@ -213,12 +213,6 @@ class Family extends Component{
         })
         .catch(function(error){
           console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
         });
       this.setState({
         "familyID"             :"",
@@ -296,12 +290,6 @@ class Family extends Component{
         })
         .catch(function(error){
           console.log("error"+error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
         });
       this.setState({
         "familyID"             :"",
@@ -479,12 +467,6 @@ class Family extends Component{
     })
     .catch(function(error){ 
       console.log("error"+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }     
     });
   }
 
@@ -504,12 +486,6 @@ class Family extends Component{
     })
     .catch(function(error){
       console.log("error"+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      } 
     });
   }
   getData(startRange, limitRange, center_ID){ 
@@ -545,12 +521,6 @@ class Family extends Component{
       })    
       .catch(function(error){      
         console.log("error"+error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        } 
       }); 
     }
   }
@@ -584,12 +554,6 @@ class Family extends Component{
         })
     }).catch(function (error) {
       console.log("error"+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      } 
     });
   }
   

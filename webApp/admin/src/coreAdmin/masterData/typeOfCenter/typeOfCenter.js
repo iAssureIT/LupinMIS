@@ -108,9 +108,11 @@ class typeOfCenter extends Component{
       if (this.validateFormReq() && this.validateForm()) {
       }
     }else{
+      // if (this.validateFormReq() && this.validateForm()) {
+
       var typeofCenterValues= {
-        "ID"               :this.state.editId,
-        "typeofCenter"     :this.refs.typeofCenter.value,
+        "ID"               : this.state.editId,
+        "typeofCenter"     : this.refs.typeofCenter.value,
         "user_ID"          : this.state.user_ID,
       };
 
@@ -120,14 +122,18 @@ class typeOfCenter extends Component{
           console.log("response",response );
           if(response.data){
             this.getData(this.state.startRange, this.state.limitRange);
+              this.props.history.push('/type-center');
+            // window.location = '/type-center'
             swal({
               title : response.data.message,
               text  : response.data.message
             });
             this.setState({
-              editId : ''
+              editId : '',
+              "typeofCenter"  :"",
+              fields         :fields
+            },()=>{
             })
-            // window.location = '/type-center'
           }
         })
         .catch(function(error){
@@ -135,13 +141,8 @@ class typeOfCenter extends Component{
         });
         let fields            = {};
         fields["typeofCenter"] = "";
-   
-      this.setState({
-        "typeofCenter"  :"",
-        fields         :fields
-      });
-      this.props.history.push('/type-center');
-    }     
+    }   
+    // }  
   }
 
   validateFormReq() {

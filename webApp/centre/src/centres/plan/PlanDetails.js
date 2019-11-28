@@ -238,12 +238,6 @@ class PlanDetails extends Component{
             })
             .catch(function(error){
               console.log("error"+error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
           });
           Object.entries(planValues).map( 
             ([key, value], i)=> {
@@ -361,12 +355,6 @@ class PlanDetails extends Component{
             })
             .catch(function(error){
               console.log("error"+error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
           }); 
           this.setState({
             "year"                : this.refs.year.value,
@@ -544,12 +532,6 @@ class PlanDetails extends Component{
       })
       .catch(function(error){
         console.log("error"+error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
       });
   }
   componentWillReceiveProps(nextProps){
@@ -623,12 +605,6 @@ class PlanDetails extends Component{
         })
     }).catch(function (error) {
       console.log("error"+error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
     });
   }
   selectSector(event){
@@ -654,12 +630,6 @@ class PlanDetails extends Component{
         })
     }).catch(function (error) {
       console.log("error"+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
   selectActivity(event){
@@ -701,12 +671,6 @@ class PlanDetails extends Component{
       }
     }).catch(function (error) {
       console.log("error"+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     }); 
   }
   getAvailableSubActivity(sector_ID, activity_ID){
@@ -726,12 +690,6 @@ class PlanDetails extends Component{
       
     }).catch(function (error) {
       console.log("error"+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     }); 
   }
   edit(id){
@@ -793,12 +751,6 @@ class PlanDetails extends Component{
       return formIsValid;
     }).catch(function (error) {
       console.log("error"+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
     });
   }
   toglehidden(){   
