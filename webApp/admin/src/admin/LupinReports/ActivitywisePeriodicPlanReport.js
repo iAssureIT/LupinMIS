@@ -491,7 +491,8 @@ class ActivitywisePeriodicPlanReport extends Component{
                             <div className="row">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                                        Activity wise Periodic Plan Report              
+                                        {/*Activity wise Periodic Plan Report*/} 
+                                        Activity Periodic Plan Report             
                                     </div>
                                 </div>
                                 <hr className="hr-head"/>

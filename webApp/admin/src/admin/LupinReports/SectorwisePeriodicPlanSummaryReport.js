@@ -416,7 +416,8 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                             <div className="row">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                                        Sector wise Periodic Plan Summary Report              
+                                        {/*Sector wise Periodic Plan Summary Report*/}
+                                        Sector Periodic Plan Report              
                                     </div>
                                 </div>
                                     <hr className="hr-head"/>
