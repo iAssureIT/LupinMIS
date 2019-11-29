@@ -1,5 +1,6 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
+import validate               from 'jquery-validation';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
@@ -18,14 +19,14 @@ class Family extends Component{
       "familyID"             :"",
       "nameOfFamilyHead"     :"",
       "uID"                  :"",
-      "caste"                :"",
+      "caste"                :"-- Select --",
       "category"             :"",
       "LHWRFCentre"          :"",
       "centerArray"          : ["Pune", "Bharatpur"],
       "state"                :"Maharastra",
-      "district"             :"",
-      "block"                :"",
-      "village"              :"",
+      "district"             :"-- Select --",
+      "block"                :"-- Select --",
+      "village"              :"-- Select --",
       "contact"              :"",       
       "surnameOfFH"          :"",
       "firstNameOfFH"        :"",
@@ -101,7 +102,86 @@ class Family extends Component{
     this.getAvailableCenter(this.state.center_ID);
     this.getLength(this.state.center_ID);
     this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-    });    
+    }); 
+
+    $.validator.addMethod("regxUID", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Aadhar Number.");
+    $.validator.addMethod("regxcontact", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter a valid Contact Number.");
+      
+
+        $("#createFamily").validate({
+          rules: {
+            district: {
+              required: true,
+            },
+            block: {
+              required: true,
+            },
+            uID: {
+              required: true,
+          regxUID: /^[_0-9]*((-|\s)*[_0-9]){12}$|^$/,
+            },
+            caste: {
+              required: true,
+            },
+            surnameOfFH: {
+              required: true,
+            },
+            firstNameOfFH: {
+              required: true,
+            },
+            middleNameOfFH: {
+              required: true,
+            },
+            village: {
+              required: true,
+            },
+            contact: {
+              required: true,
+              maxlength: 10,
+              minlength: 10,
+            regxcontact: /^\+?\d+$/,
+            },
+          },
+          errorPlacement: function(error, element) {
+            if (element.attr("name") == "district"){
+              error.insertAfter("#districtErr");
+            }
+            if (element.attr("name") == "block"){
+              error.insertAfter("#blockErr");
+            }
+            if (element.attr("name") == "uID"){
+              error.insertAfter("#uIDErr");
+            }
+            if (element.attr("name") == "caste"){
+              error.insertAfter("#casteErr");
+            }
+            if (element.attr("name") == "surnameOfFH"){
+              error.insertAfter("#surnameOfFHErr");
+            }
+            if (element.attr("name") == "firstNameOfFH"){
+              error.insertAfter("#firstNameOfFHErr");
+            }
+            if (element.attr("name") == "middleNameOfFH"){
+              error.insertAfter("#middleNameOfFHErr");
+            }
+            if (element.attr("name") == "village"){
+              error.insertAfter("#villageErr");
+            }
+            if (element.attr("name") == "contact"){
+              error.insertAfter("#contactErr");
+            }
+          }
+        });
+
+
+  
+   
+
+
   }
  
   handleChange(event){
@@ -122,18 +202,18 @@ class Family extends Component{
       "village"              :this.refs.village.value, 
       "contact"              :this.refs.contact.value,
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+    // let fields = this.state.fields;
+    // fields[event.target.name] = event.target.value;
+    // this.setState({
+    //   fields
+    // });
+    // if (this.validateForm()) {
+    //   let errors = {};
+    //   errors[event.target.name] = "";
+    //   this.setState({
+    //     errors: errors
+    //   });
+    // }
   }
 
   isNumberKey(evt){
@@ -161,15 +241,17 @@ class Family extends Component{
 
   SubmitFamily(event){
     event.preventDefault();
-    if(this.refs.surnameOfFH.value ==="" || this.refs.contact.value===""
-     || this.refs.middleNameOfFH.value==="" || this.refs.firstNameOfFH.value==="" 
-     || this.refs.uID.value==="" || this.refs.caste.value===""
-     || this.refs.incomeCategory.value===""  || this.refs.landCategory.value===""|| this.refs.specialCategory.value==="" 
-     || this.refs.district.value==="" || this.refs.block.value==="" || this.refs.village.value==="" )
-    {
-    if (this.validateFormReq() && this.validateForm()){
-     }
-    }else{
+    // if(this.refs.surnameOfFH.value ==="" || this.refs.contact.value===""
+    //  || this.refs.middleNameOfFH.value==="" || this.refs.firstNameOfFH.value==="" 
+    //  || this.refs.uID.value==="" || this.refs.caste.value===""
+    //  || this.refs.incomeCategory.value===""  || this.refs.landCategory.value===""|| this.refs.specialCategory.value==="" 
+    //  || this.refs.district.value==="" || this.refs.block.value==="" || this.refs.village.value==="" )
+    // {
+    // if (this.validateFormReq() && this.validateForm()){
+    //  }
+    // }else{
+   if($('#createFamily').valid()){
+
     var familyValues= 
       {
         "family_ID"            :this.state.editId, 
@@ -237,15 +319,17 @@ class Family extends Component{
 
   UpdateFamily(event){
     event.preventDefault();
-    if(this.refs.surnameOfFH.value ==="" || this.refs.contact.value===""
-     || this.refs.middleNameOfFH.value==="" || this.refs.firstNameOfFH.value==="" 
-     || this.refs.uID.value==="" || this.refs.caste.value===""
-     || this.refs.incomeCategory.value===""  || this.refs.landCategory.value===""|| this.refs.specialCategory.value==="" 
-     || this.refs.district.value==="" || this.refs.block.value==="" || this.refs.village.value==="" )
-    {
-    if (this.validateFormReq() && this.validateForm()){
-     }
-    }else{
+    // if(this.refs.surnameOfFH.value ==="" || this.refs.contact.value===""
+    //  || this.refs.middleNameOfFH.value==="" || this.refs.firstNameOfFH.value==="" 
+    //  || this.refs.uID.value==="" || this.refs.caste.value===""
+    //  || this.refs.incomeCategory.value===""  || this.refs.landCategory.value===""|| this.refs.specialCategory.value==="" 
+    //  || this.refs.district.value==="" || this.refs.block.value==="" || this.refs.village.value==="" )
+    // {
+    // if (this.validateFormReq() && this.validateForm()){
+    //  }
+    // }else{
+    if($('#createFamily').valid()){
+
       var familyValues = {
         "family_ID"            :this.state.editId, 
         "center_ID"            :this.state.center_ID,
@@ -314,112 +398,6 @@ class Family extends Component{
         "editId"               : "",
       });
     }    
-  }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-  /*  if (!fields["familyID"]) {
-      formIsValid = false;
-      errors["familyID"] = "This field is required.";
-    }    */ 
-    if (!fields["surnameOfFH"]) {
-      formIsValid = false;
-      errors["surnameOfFH"] = "This field is required.";
-    }
-    if (!fields["firstNameOfFH"]) {
-      formIsValid = false;
-      errors["firstNameOfFH"] = "This field is required.";
-    }
-    if (!fields["middleNameOfFH"]) {
-      formIsValid = false;
-      errors["middleNameOfFH"] = "This field is required.";
-    }
-    if (!fields["uID"]) {
-      formIsValid = false;
-      errors["uID"] = "This field is required.";
-    }
-    if (!fields["caste"]) {
-      formIsValid = false;
-      errors["caste"] = "This field is required.";
-    }          
-    // if (!fields["landCategory"]) {
-    //   formIsValid = false;
-    //   errors["landCategory"] = "This field is required.";
-    // }                
-    // if (!fields["incomeCategory"]) {
-    //   formIsValid = false;
-    //   errors["incomeCategory"] = "This field is required.";
-    // }                
-    // if (!fields["specialCategory"]) {
-    //   formIsValid = false;
-    //   errors["specialCategory"] = "This field is required.";
-    // }          
-    if (!fields["contact"]) {
-      formIsValid = false;
-      errors["contact"] = "This field is required.";
-    }       
-    if (!fields["district"]) {
-      formIsValid = false;
-      errors["district"] = "This field is required.";
-    }          
-    if (!fields["block"]) {
-      formIsValid = false;
-      errors["block"] = "This field is required.";
-    }          
-    if (!fields["village"]) {
-      formIsValid = false;
-      errors["village"] = "This field is required.";
-    }          
-       
-   /* if (!fields["state"]) {
-      formIsValid = false;
-      errors["state"] = "This field is required.";
-    }    */      
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
-  validateForm(){
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    if (typeof fields["uID"] !== "undefined") {
-      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["uID"].match(/^[_0-9]*((-|\s)*[_0-9]){12}$|^$/)) {
-        formIsValid = false;
-        errors["uID"] = "Please enter valid Aadhar No.";
-      }
-    }
-/*
-    if (typeof fields["contact"] !== "undefined") {
-      if (!fields["contact"].match(/^[0-9]{10}$|^$/)) {
-        formIsValid = false;
-        errors["contact"] = "Please enter valid mobile no.";
-      }
-    }
-    if (typeof fields["familyID"] !== "undefined") {
-      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["familyID"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
-        formIsValid = false;
-        errors["familyID"] = "Please enter valid Family ID.";
-      }
-    }
-    
-    if (typeof fields["nameOfFamilyHead"] !== "undefined") {
-      // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-      if (!fields["nameOfFamilyHead"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-        formIsValid = false;
-        errors["nameOfFamilyHead"] = "Please enter valid Name.";
-      }
-    }
-*/    this.setState({
-      errors: errors
-    });
-    return formIsValid;
   }
 
   edit(id){
@@ -655,7 +633,7 @@ class Family extends Component{
 
                   <div className="tab-content ">
                     <div id="manual"  className="tab-pane fade in active ">
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="family">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="createFamily">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                            <h4 className="pageSubHeader">Create New Family</h4>
                         </div>
@@ -671,28 +649,28 @@ class Family extends Component{
                             </div>*/}
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Surname of Family Head </label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfFH" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfFHErr" >
                                 <input type="text" className="form-control inputBox" ref="surnameOfFH" name="surnameOfFH" value={this.state.surnameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.surnameOfFH}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">First Name of Family Head </label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfFH" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfFHErr" >
                                 <input type="text" className="form-control inputBox" ref="firstNameOfFH" name="firstNameOfFH" value={this.state.firstNameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.firstNameOfFH}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Middle Name of Family Head </label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfFH" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfFHErr" >
                                 <input type="text" className="form-control inputBox" ref="middleNameOfFH" name="middleNameOfFH" value={this.state.middleNameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.middleNameOfFH}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uID" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uIDErr" >
                                 <input type="text" className="form-control inputBox "  placeholder=""ref="uID" name="uID" value={this.state.uID} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.uID}</div>
@@ -700,16 +678,16 @@ class Family extends Component{
                                    
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Contact Number </label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contact" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contactErr" >
                                 <input type="text" className="form-control inputBox "  placeholder=""ref="contact" name="contact" value={this.state.contact} onKeyDown={this.isNumberKey.bind(this)} maxLength="10" onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.contact}</div>
                             </div>  
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Caste</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="caste" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="casteErr" >
                                 <select className="custom-select form-control inputBox" ref="caste" name="caste" value={this.state.caste} onChange={this.handleChange.bind(this)}>
-                                  <option  className="hidden" >-- Select --</option>
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
                                   <option>General</option>
                                   <option>SC</option>
                                   <option>ST</option>
@@ -723,7 +701,7 @@ class Family extends Component{
                               <label className="formLable">Land holding Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
                                 <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
-                                  <option  className="hidden" >-- Select --</option>
+                                  <option>-- Select --</option>
                                   <option>Big Farmer</option>
                                   <option>Landless</option>
                                   <option>Marginal Farmer</option>
@@ -736,7 +714,7 @@ class Family extends Component{
                               <label className="formLable">Income Category </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
                                 <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
-                                  <option  className="hidden" >-- Select --</option>
+                                  <option >-- Select --</option>
                                   <option>APL</option>
                                   <option>BPL</option>
                                 </select>
@@ -747,7 +725,7 @@ class Family extends Component{
                               <label className="formLable">Special Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
                                 <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
-                                  <option  className="hidden" >-- Select --</option>
+                                  <option >-- Select --</option>
                                   <option>Normal</option>
                                   <option>Differently Abled</option>
                                   <option>Veerangana</option>
@@ -758,9 +736,9 @@ class Family extends Component{
                             </div>            
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">District</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
                                 <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                                  <option  className="hidden" >-- Select --</option>
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
                                       
                                     {
                                     this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
@@ -781,9 +759,9 @@ class Family extends Component{
                             </div>
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Block</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
                                 <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                  <option  className="hidden" >-- Select --</option>
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
                                   {
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                     this.state.listofBlocks.map((data, index)=>{
@@ -800,9 +778,9 @@ class Family extends Component{
                             </div>
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Village</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
                                 <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
-                                  <option  className="hidden" >-- Select --</option>
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
                                   {
                                     this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                     this.state.listofVillages.map((data, index)=>{

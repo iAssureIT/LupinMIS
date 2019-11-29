@@ -94,20 +94,20 @@ class ViewActivity extends Component{
   }
 
   getLength(){
-    axios.get('/api/activityReport/count')
-    .then((response)=>{
-      // console.log('response', response.data);
-      this.setState({
-        dataCount : response.data.dataLength
-      },()=>{
-        // console.log('dataCount', this.state.dataCount);
-      })
-    })
-    .catch(function(error){
+    // axios.get('/api/activityReport/count')
+    // .then((response)=>{
+    //   console.log('response', response.data);
+    //   this.setState({
+    //     dataCount : response.data.dataLength
+    //   },()=>{
+    //     console.log('dataCount', this.state.dataCount);
+    //   })
+    // })
+    // .catch(function(error){
       
-    });
+    // });
   }
-  getData(startRange, limitRange){ 
+  getDataa(startRange, limitRange){ 
    var data = {
       limitRange : limitRange,
       startRange : startRange,
@@ -149,6 +149,49 @@ class ViewActivity extends Component{
     });
   }
 
+  getData(startRange, limitRange, center_ID){ 
+   var data = {
+      limitRange : limitRange,
+      startRange : startRange,
+    }
+    axios.post('/api/activityReport/list/'+center_ID, data)
+    .then((response)=>{
+      console.log("response",response);
+      var tableData = response.data.map((a, i)=>{
+        return {
+          _id                        : a._id,
+          projectCategoryType        : a.projectCategoryType,
+          projectName                : a.projectName,
+          date                       : moment(a.date).format('YYYY-MM-DD'),
+          place                      : a.place,
+          sectorName                 : a.sectorName,
+          typeofactivity             : a.typeofactivity,
+          activityName               : a.activityName,
+          subactivityName            : a.subactivityName,
+          unit                       : a.unit,
+          unitCost                   : a.unitCost,
+          quantity                   : a.quantity,
+          totalcost                  : a.totalcost,
+          numofBeneficiaries         : a.numofBeneficiaries,
+          LHWRF                      : a.LHWRF,
+          NABARD                     : a.NABARD,
+          bankLoan                   : a.bankLoan,
+          govtscheme                 : a.govtscheme,
+          directCC                   : a.directCC,
+          indirectCC                 : a.indirectCC,
+          other                      : a.other,
+          total                      : a.total,
+          remark                     : a.remark,
+        }
+      })
+      this.setState({
+        tableData : tableData
+      })
+    })
+    .catch(function(error){      
+      console.log("error = ",error); 
+    });
+  }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     var dateObj = new Date();
@@ -160,6 +203,16 @@ class ViewActivity extends Component{
     })
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    // console.log("localStorage =",localStorage);
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+    });
   }
 
   render() {

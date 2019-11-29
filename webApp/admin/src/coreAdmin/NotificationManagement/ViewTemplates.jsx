@@ -582,7 +582,7 @@ class ViewTemplates extends Component{
 														</form>
 										      		</div>
 												    <div className="modal-footer adminModal-footer paddingtop-down col-lg-12 col-md-12 col-sm-12 col-xs-12">
-												        <button  type="submit" onClick={this.submitTemplate.bind(this)} className="col-lg-2 col-md-3 col-sm-6 col-xs-12 btn pull-right btnSubmit outlinebox">Save Template</button>
+												        <button  type="submit" onClick={this.submitTemplate.bind(this)} className="col-lg-2 col-md-3 col-sm-6 col-xs-12 btn pull-right submit outlinebox">Save Template</button>
 														{/*<button type="submit" onClick={this.updateTemplate.bind(this)} className="btn pull-right col-lg-3 col-md-3 col-sm-6 col-xs-12 btnUpdate">Update Template</button>*/}
 												   	</div>
 										   		</div>

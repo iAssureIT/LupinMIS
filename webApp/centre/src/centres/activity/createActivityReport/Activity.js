@@ -706,19 +706,17 @@ class Activity extends Component{
   }
 
   getLength(center_ID){
-    axios.get('/api/activityReport/count/'+center_ID)
+   /* axios.get('/api/activityReport/count/'+center_ID)
     .then((response)=>{
-      // console.log('response', response.data);
+      console.log('response', response.data);
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        // console.log('dataCount', this.state.dataCount);
+        console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
-
-      
-    });
+    });*/
   }
   getData(startRange, limitRange, center_ID){ 
    var data = {
@@ -1124,7 +1122,7 @@ class Activity extends Component{
                           {this.state.type===true ?
 
                            <div className="switch" onClick={this.handleToggle.bind(this)} >
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  defaultChecked />
                               <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
                               <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
                               <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
@@ -1136,7 +1134,7 @@ class Activity extends Component{
                              <div className="switch" onClick={this.handleToggle.bind(this)} >
                               <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
                               <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" defaultChecked  />
                               <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
                               <span className="switch-selection" ></span>
                             </div>

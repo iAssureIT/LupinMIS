@@ -73,7 +73,7 @@ class PlanDetails extends Component{
         indirectCC          : "Indirect Community Contribution",
         other               : "Other",
         remark              : "Remark",
-        actions             : 'Action',
+        // actions             : 'Action',
       },
       "tableObjects"        : {
         deleteMethod        : 'delete',
@@ -436,7 +436,7 @@ class PlanDetails extends Component{
   }
 
   getLength(){
-    axios.get(this.state.apiCall+'/count')
+  /*  axios.get(this.state.apiCall+'/count')
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -446,7 +446,7 @@ class PlanDetails extends Component{
       })
     })
     .catch(function(error){      
-    });
+    });*/
   }
   selectMonth(event){
     event.preventDefault();
@@ -486,7 +486,7 @@ class PlanDetails extends Component{
     }
     axios.post(this.state.apiCall+'/list', data)
       .then((response)=>{
-          console.log("response",response);
+          // console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
         _id                 : a._id,
@@ -516,7 +516,7 @@ class PlanDetails extends Component{
         this.setState({
           tableData : tableData
         },()=>{
-          console.log("tableData",this.state.tableData);
+          // console.log("tableData",this.state.tableData);
         });
       })
       .catch(function(error){
@@ -578,9 +578,12 @@ class PlanDetails extends Component{
       method: 'get',
       url: '/api/centers/list',
     }).then((response)=> {
-      // console.log('centersresponse', response);
         this.setState({
-          availableCenters : response.data
+          availableCenters : response.data,
+          center           : response.data[0].centerName+'|'+response.data[0]._id
+        },()=>{
+      console.log('centersresponse', this.state.availableCenters);
+
         })
     }).catch(function (error) {
           console.log("error = ",error);

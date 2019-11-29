@@ -1,3 +1,11 @@
+.subHeader {
+    font-family: 'Montserrat',sans-serif;
+    font-size: 14px;
+    color: #333333;
+    font-weight: bold;
+    padding-bottom: 12px;
+}
+
 /*Page content */
 .pageContent{
 
@@ -672,7 +680,7 @@ margin-right: 12px;
   }
   .adminModal-body {
       /*margin-top: 50px !important;*/
-      margin-bottom: 50px !important;
+      /*margin-bottom: 50px !important;*/
   }
   .adminModal-footer {
       border-radius: 0 0 9px 9px;

@@ -1,3 +1,10 @@
+
+.rightsideHeading {
+    padding: 10px;
+    font-size: 15px;
+    display: block;
+    /*font-weight: bold;*/
+}
 .sidebar1-header{
     color: #fff;
     padding-left: 20px;

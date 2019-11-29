@@ -185,8 +185,9 @@
 .listItem{
 	font-family:'Montserrat',sans-serif !important;
 	padding-left:6px;
-  padding-top: 3px;
+  	padding-top: 3px;
 	font-size:11px !important;
+	overflow-wrap: break-word;
 }
 .noPadding{
 	padding: 0px !important;

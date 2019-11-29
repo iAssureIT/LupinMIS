@@ -1,7 +1,8 @@
 .actListItem{
 	font-family:'Montserrat',sans-serif !important;
 	padding-left:6px;
-  	padding-top: 3px;
+  padding-top: 3px;
+  overflow-wrap: break-word;
 	font-size:13px !important;
 }
 .subActivitylistItem{
@@ -10,6 +11,7 @@
  	padding-top: 3px;
 	font-size:11px !important;
 	color: #444;
+  overflow-wrap: break-word;
 }
 
 

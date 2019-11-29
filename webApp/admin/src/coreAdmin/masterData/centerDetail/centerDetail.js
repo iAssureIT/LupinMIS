@@ -412,13 +412,13 @@ class centerDetail extends Component{
       if (typeof fields["centerInchargeContact"] !== "undefined") {
         if (!fields["centerInchargeContact"].match(/^[0-9]{10}$|^$/)) {
           formIsValid = false;
-          errors["centerInchargeContact"] = "Please enter valid mobile no.";
+          errors["centerInchargeContact"] = "Please enter valid contact number";
         }
       }
       if (typeof fields["MISCoordinatorContact"] !== "undefined") {
         if (!fields["MISCoordinatorContact"].match(/^[0-9]{10}$|^$/)) {
           formIsValid = false;
-          errors["MISCoordinatorContact"] = "Please enter valid mobile no.";
+          errors["MISCoordinatorContact"] = "Please enter valid contact number";
         }
       }
       if (typeof fields["pincode"] !== "undefined") {

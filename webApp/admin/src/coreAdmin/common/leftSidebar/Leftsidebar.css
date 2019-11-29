@@ -20,7 +20,7 @@
   top: 0px;
   position: absolute;
   padding: 4px 2px;
-  font-size: 17px !imp150ortant;
+  font-size: 17px !important;
 }
 .sidebarMenuText> a[aria-expanded=true]:after i{
 /*content:"\2212";*/

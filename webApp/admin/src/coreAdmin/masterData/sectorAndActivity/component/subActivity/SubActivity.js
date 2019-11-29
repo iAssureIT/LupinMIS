@@ -408,7 +408,7 @@ edit(id){
           <div className="formWrapper">
               <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="subActivityb">
                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
-                  <span className="perinfotitle mgtpprsnalinfo"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sub-Activity</span>
+                  <span className="subHeader"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sub-Activity</span>
                 </div>
                 <div className="marginBottom col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
                 <div className="row">

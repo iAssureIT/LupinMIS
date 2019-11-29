@@ -28,10 +28,10 @@ componentDidMount(){
               <nav id="sidebar1">       
                 <ul className="list-unstyled components">
                   <li className="active">
-                    <a href="#" className="text-center">
+                    <div className="rightsideHeading ">
                          {/*   <i className="glyphicon fa fa-server"></i> &nbsp;*/}
                            Core Admin Modules
-                    </a>
+                    </div>
                   </li>
                   <li className="sidebarMenuText">
                     <a href="/companysetting" >

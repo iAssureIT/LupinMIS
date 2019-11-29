@@ -93,48 +93,44 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                   </ul>
-                </li> 
-                {/*<li className="sidebarMenuText">
-                  <Link to="/planDetails" >
-                    <i className="fa fa-book" />
-                    Reports
-                  </Link>
-                </li>*/}
+                </li>                 
                 <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
-                  <Link to="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent" >
+                  <Link to="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent">
                     <i className="fa fa-file" />
                     Plan Related Reports
-                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i> 
+
+                  {/*      <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>*/}
                   </Link>
-                  <ul className="collapse list-unstyled" id="planreport">
+                  <ul className="collapse   list-unstyled" id="planreport">
                     <li>
                       <Link to="/activitywise-annual-plan-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activitywise Annual Plan</span>
+                        <span className="sidebarMenuSubText">Activity Annual Plan</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/activity-wise-periodic-plan-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activitywise Peri. Plan</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/sector-wise-periodic-plan-summary-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector wise Peri. Plan</span>
+                        <span className="sidebarMenuSubText">Activity Periodic Plan</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/sector-wise-annual-plan-summary-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector wise Annual Plan</span>
+                        <span className="sidebarMenuSubText">Sector Annual Plan</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/sector-wise-periodic-plan-summary-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Sector Periodic Plan</span>
                       </Link>
                     </li>
                   </ul>
                 </li> 
-                <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
-                  <Link to="#report" data-toggle="collapse" className="menuContent" aria-expanded="false">
+                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
+                  <Link to="#report" data-toggle="collapse" className="menuContent"  aria-expanded="false">
                     <i className="fa fa-book" />
                     Reports
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
@@ -147,33 +143,33 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>*/}
                     <li>
-                      <Link to="/activitywise-annual-completion-report">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Activitywise Annual Report</span>
-                      </Link>
-                    </li>
-                    <li>
                       <Link to="/sector-wise-annual-completion-summary-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sectorwise Annual Report</span>
-                      </Link>
-                    </li>
-                   <li>
-                      <Link to="/activity-wise-periodic-variance-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activitywise Peri. Variance</span>
+                        <span className="sidebarMenuSubText">Sector Annual Report</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/sectorwise-periodic-variance-summary-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sectorwise Peri. Variance</span>
+                        <span className="sidebarMenuSubText">Sector Financial Variance</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/activitywise-annual-completion-report">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Activity Annual Report</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/activity-wise-periodic-variance-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Activity Financial Variance</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/activity-wise-periodic-physical-variance-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activitywise Peri. Physi. Vari.</span>
+                        <span className="sidebarMenuSubText">Activity Physical Variance</span>
                       </Link>
                     </li>
                     <li>
@@ -185,19 +181,19 @@ export default class Leftsidebar extends Component{
                     <li>
                       <Link to="/villagewise-family-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Villagewise Family Report</span>
+                        <span className="sidebarMenuSubText">Family Report</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/category-wise-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Categorywise Report</span>
+                        <span className="sidebarMenuSubText">Category Report</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/upgraded-beneficiary-report">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Upgraded Beneficiary Report</span>
+                        <span className="sidebarMenuSubText">Beneficiary Report</span>
                       </Link>
                     </li>
                   </ul>

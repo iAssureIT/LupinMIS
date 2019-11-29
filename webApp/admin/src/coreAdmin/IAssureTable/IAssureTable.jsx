@@ -508,7 +508,7 @@ class IAssureTable extends Component {
 	    WindowObject.close();
     }
 	render() {
-		console.log("this.state.tableData ",this.state.tableData );
+		// console.log("this.state.tableData ",this.state.tableData );
 		// var x = Object.keys(this.state.tableHeading).length ;
 		// var y = 4;
 		// var z = 2;

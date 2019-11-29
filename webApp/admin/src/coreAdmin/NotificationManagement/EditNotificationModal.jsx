@@ -306,7 +306,7 @@ class EditNotificationModal extends Component{
 					      		</div>
 							    <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<div>
-										<button type="submit"  className="btn pull-right col-lg-3 col-md-3 col-sm-6 col-xs-12 btnUpdate" id={this.props.emailNot} onClick={this.updateNotificationEmail.bind(this)}>Update Template</button>
+										<button type="submit"  className="btn pull-right col-lg-2 col-md-3 col-sm-6 col-xs-12 submit" id={this.props.emailNot} onClick={this.updateNotificationEmail.bind(this)}>Update Template</button>
 							   		</div>
 							   	</div>
 					   		</div>

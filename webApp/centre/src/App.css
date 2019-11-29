@@ -337,6 +337,7 @@ input, select{
 .error{
   font-size: 11px !important;
   letter-spacing : 1px;
+  font-weight: 200;
 }
 
 
