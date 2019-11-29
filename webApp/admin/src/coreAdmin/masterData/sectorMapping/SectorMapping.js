@@ -43,27 +43,7 @@ class SectorMapping extends Component{
   }
 
  
-  handleChange(event){
-    event.preventDefault();
-    this.setState({
-      "goalName"               : this.refs.goalName.value,          
-      "goalType"               : this.refs.goalType.value,          
-      "selectedActivities"     : this.state.selectedActivities,          
-    });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
-  }
-
+  
   isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
    if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
@@ -352,17 +332,42 @@ class SectorMapping extends Component{
       // console.log("error = ",error);
     });
   }
+  handleChange(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name] : event.target.value,
+      "selectedActivities"     : this.state.selectedActivities,          
+    });
+    let fields = this.state.fields;
+    fields[event.target.name] = event.target.value;
+    this.setState({
+      fields
+    });
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
+  }
 
   selectType(event){
     event.preventDefault();
-    var selectedType = event.target.value;
+    var selectedType = event.currentTarget.value;
+    var selectedTypeofGoal     =$(event.currentTarget).find('option:selected').attr('data-name')
+    // var selectedTypeofGoal     = event.currentTarget.getAttribute('data-name');
+    console.log("selectedTypeofGoal",selectedTypeofGoal)
+
     this.setState({
       goalType : selectedType,
+      selectedTypeofGoal : selectedTypeofGoal,
     });
-    this.handleChange(event);
   }
 
   render() {
+    console.log("selectedTypeofGoal",this.state.selectedTypeofGoal)
+
     return(
       <div className="container-fluid">
         <div className="row">
@@ -382,7 +387,7 @@ class SectorMapping extends Component{
                     </div>
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                        <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
+                        <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">Type of Goal/Project</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
                             <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
@@ -391,7 +396,7 @@ class SectorMapping extends Component{
                                 this.state.listofTypes ?
                                 this.state.listofTypes.map((data, index)=>{
                                   return(
-                                    <option key={index} value={data._id}>{data.typeofGoal}</option> 
+                                    <option key={index} data-name={data.typeofGoal} value={data._id}>{data.typeofGoal}</option> 
                                   );
                                 })
                                 :
@@ -401,16 +406,68 @@ class SectorMapping extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.goalType}</div>
                         </div>
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Enter Goal / Project Name</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="goalName" >
-                            <input type="text" className="form-control inputBox" value={this.state.goalName} onChange={this.handleChange.bind(this)} onKeyDown={this.isTextKey.bind(this)}  placeholder="" name="goalName" ref="goalName" />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.goalName}</div>
-                        </div>
-                        <div className=" col-md-12 col-sm-6 col-xs-12 ">
-                         
-                        </div>
+                        {
+                          this.state.selectedTypeofGoal ? 
+                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
+                              <label className="formLable">Enter Goal / Project Name</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="goalName" >
+                                {
+                                  this.state.selectedTypeofGoal==="Empowerment Line" ? 
+                                    <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
+                                      <option  className="hidden" >-- Select --</option>
+                                      <option  className="emp" >Social Security</option>
+                                      <option  className="" >Food</option>
+                                      <option  className="" >Energy</option>
+                                      <option  className="" >Housing</option>
+                                      <option  className="" >Drinking Water</option>
+                                      <option  className="" >Sanitation</option>
+                                      <option  className="" >Health Care</option>
+                                      <option  className="" >Education</option>                              
+                                    </select>
+                                  : 
+                                  this.state.selectedTypeofGoal==="ADP" ? 
+                                    <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
+                                      <option  className="hidden" >-- Select --</option>
+                                      <option  className="adp" >Health & Nutrition</option>
+                                      <option  className="" >Education</option>
+                                      <option  className="" >Agriculture & Water Resources</option>
+                                      <option  className="" >Skill Development</option>
+                                      <option  className="" >Financial Inclusion</option>
+                                      <option  className="" >Basic Infrastructure</option>
+                                    </select>
+                                  :
+                                  this.state.selectedTypeofGoal==="SDG" ? 
+                                    <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
+                                      <option  className="hidden" >-- Select --</option>
+                                      <option  className="sdg" >GOAL 1: No Poverty</option>
+                                      <option  className="" >GOAL 2: Zero Hunger</option>
+                                      <option  className="" >GOAL 3: Good Health and Well-being</option>
+                                      <option  className="" >GOAL 4: Quality Education</option>
+                                      <option  className="" >GOAL 5: Gender Equality</option>
+                                      <option  className="" >GOAL 6: Clean Water and Sanitation</option>
+                                      <option  className="" >GOAL 7: Affordable and Clean Energy</option>
+                                      <option  className="" >GOAL 8: Decent Work and Economic Growth</option>
+                                      <option  className="" >GOAL 9: Industry, Innovation and Infrastructure</option>
+                                      <option  className="" >GOAL 10: Reduced Inequality</option>
+                                      <option  className="" >GOAL 11: Sustainable Cities and Communities</option>
+                                      <option  className="" >GOAL 12: Responsible Consumption and Production</option>
+                                      <option  className="" >GOAL 13: Climate Action</option>
+                                      <option  className="" >GOAL 14: Life Below Water</option>
+                                      <option  className="" >GOAL 15: Life on Land</option>
+                                      <option  className="" >GOAL 16: Peace and Justice Strong Institutions</option>
+                                      <option  className="" >GOAL 17: Partnerships to achieve the Goal</option>
+                                    </select>
+                                  : 
+                                  this.state.selectedTypeofGoal!=="SDG" && this.state.selectedTypeofGoal!=="ADP" && this.state.selectedTypeofGoal!=="Empowerment Line"
+                                    ? 
+                                      <input type="text" className="form-control inputBox" value={this.state.goalName} onChange={this.handleChange.bind(this)}  placeholder="" name="goalName" ref="goalName" />
+                                  : null
+                                }
+                              </div>
+                              <div className="errorMsg">{this.state.errors.goalName}</div>
+                            </div>
+                        : null 
+                        }
                       </div> 
                     </div><br/>
                     <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above goal</label></div>
