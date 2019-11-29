@@ -332,7 +332,8 @@ class ActivitywiseAnnualPlanReport extends Component{
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                            Activity wise Annual Plan Report         
+                            {/*Activity wise Annual Plan Report  */}      
+                             Activity Annual Plan Report
                         </div>
                     </div>
                     <hr className="hr-head"/>

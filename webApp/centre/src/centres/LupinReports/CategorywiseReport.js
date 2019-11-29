@@ -340,7 +340,8 @@ class CategorywiseReport extends Component{
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                            Category wise Report
+                            {/*Category wise Report*/}
+                            Category Report
                         </div>
                     </div>
                     <hr className="hr-head"/>

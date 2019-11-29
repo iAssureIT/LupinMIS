@@ -228,7 +228,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact section-not-print">
                     <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                      Sector Wise Annual Completion Summary Report                   
+                      {/*Sector Wise Annual Completion Summary Report*/}       
+                      Sector Annual Report
                     </div>
                   </div>
                   <hr className="hr-head"/>

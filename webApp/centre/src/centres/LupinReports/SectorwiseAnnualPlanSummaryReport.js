@@ -366,7 +366,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                     <div className="row">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                             <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                                Sector wise Annual Plan Summary Report              
+                               {/* Sector wise Annual Plan Summary Report*/}  
+                                Sector Annual Plan Report            
                             </div>
                         </div>
                         <hr className="hr-head"/>

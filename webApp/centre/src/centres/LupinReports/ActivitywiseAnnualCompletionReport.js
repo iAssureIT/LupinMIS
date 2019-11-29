@@ -243,7 +243,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact ">
                     <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                      Activity wise Annual Completion Report                  
+                      {/*Activity wise Annual Completion Report */}   
+                      Activity Annual Report              
                     </div>
                    {/* <div className="col-lg-1 col-lg-offset-5 col-md-12 col-xs-12 col-sm-12 backBtn">
                       <Link to="/report">Back to Reports</Link>                 
