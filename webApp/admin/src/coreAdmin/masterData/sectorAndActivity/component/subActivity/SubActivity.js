@@ -417,7 +417,7 @@ edit(id){
                       <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                         <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.selectSector.bind(this)}>
-                          <option  className="hidden" >--Select Sector--</option>
+                          <option  className="hidden" >--Select --</option>
                           {
                           this.state.availableSectors && this.state.availableSectors.length >0 ?
                           this.state.availableSectors.map((data, index)=>{
@@ -436,7 +436,7 @@ edit(id){
                       <label className="formLable">Select Activity Name</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
                         <select className="custom-select form-control inputBox" ref="activityName" name="activityName" value={this.state.activityName} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)} >
-                          <option  className="hidden" >-- Select Activity--</option>
+                          <option  className="hidden" >-- Select --</option>
                           {
                           this.state.availableActivity && this.state.availableActivity.length >0 ?
                           this.state.availableActivity.map((data, index)=>{
@@ -472,7 +472,32 @@ edit(id){
                      <div className=" col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Unit</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unit" >
-                        <input type="text" className="form-control inputBox " ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <select className="custom-select form-control inputBox" ref="unit" name="unit" value={this.state.unit} onChange={this.handleChange.bind(this)} >
+                          <option  className="hidden" >-- Select--</option>
+                          <option  className="" >Number</option>
+                          <option  className="" >Kilogram</option>
+                          <option  className="" >Hectare</option>
+                          <option  className="" >Acre</option>
+                          <option  className="" >Month</option>
+                          <option  className="" >Animals</option>
+                          <option  className="" >Family</option>
+                          <option  className="" >No. of Boxes</option>
+                          <option  className="" >Quintals</option>
+                          <option  className="" >Participant</option>
+                          <option  className="" >Amount, Rs.</option>
+                          <option  className="" >SHG Number</option>
+                          <option  className="" >Events</option>
+                          <option  className="" >Members</option>
+                          <option  className="" >No of Patients</option>
+                          <option  className="" >Village</option>
+                          <option  className="" >Student Nos</option>
+                          <option  className="" >School Nos</option>
+                          <option  className="" >Metre</option>
+                          <option  className="" >Days</option>
+                          <option  className="" >Lumpsum</option>
+                          <option  className="" >Amount</option>
+                        </select>
+                   {/*     <input type="text" className="form-control inputBox " ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />*/}
                       </div>
                       <div className="errorMsg">{this.state.errors.unit}</div>
                     </div>
