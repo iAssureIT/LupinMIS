@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import $ from "jquery";
-
+import axios from 'axios';
 
 import './SignUp.css';
 
@@ -19,7 +19,12 @@ import './SignUp.css';
       console.log('confirm otp');
       event.preventDefault();
       var url = this.props.match.params;
-      console.log('url = ',url);
+      // console.log('url = ',url);
+      var sentEmailOTP = localStorage.getItem('emailotp')
+      var currentOTP = this.refs.emailotp.value
+      if(sentEmailOTP===currentOTP){
+        this.props.history.push('/reset-pwd')
+      }
 
       // var checkUserExist = FlowRouter.getParam("mailId");
       // var userData = Meteor.users.findOne({"_id":checkUserExist});
@@ -128,6 +133,42 @@ import './SignUp.css';
       var element = document.getElementById("resendOtpBtn");
       element.classList.add("btn-success");
       element.classList.remove("resendOtpColor");
+      var sentEmailOTP = localStorage.getItem('emailotp')
+      var email = localStorage.getItem('email')
+      axios
+      .patch('/api/users/setotp/'+email,{'emailotp' : sentEmailOTP})
+      .then((response)=> {
+        axios
+        .get('/api/users/email/'+email)
+        .then((response)=> {
+          // console.log("-------name------>>",response);
+          if(response&&response.data){
+            var msgvariable = {
+              '[User]'    : response.data.profile.firstName+' '+response.data.profile.lastName,
+              '[OTP]'     : sentEmailOTP
+            }
+            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+            var inputObj = {  
+              to           : email,
+              templateName : 'User - Forgot Password OTP',
+              variables    : msgvariable,
+            }
+            axios
+            .post('/api/masternotification/send-mail',inputObj)
+            .then((response)=> {
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
       // var checkUserExist = FlowRouter.getParam("mailId");
       // var userData = Meteor.users.findOne({"_id":checkUserExist});
       // if(userData){
@@ -237,7 +278,7 @@ import './SignUp.css';
                                   <i></i>
                                 </span>
                               </div>
-                              <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
+                             {/* <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
                                 <span>Enter four digit verification code received on <b>Mobile</b>.<br/></span>
                               </div>
                               <div className="input-effect input-group veribtm1">
@@ -246,7 +287,7 @@ import './SignUp.css';
                                 <span className="focus-border">
                                   <i></i>
                                 </span>
-                              </div>
+                              </div>*/}
                             </div>
                             <div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail">
                               <button type="submit" className="btn btn-info submitBtn col-lg-12 col-md-12 col-sm-12 col-xs-12 UMloginbutton">Submit</button>

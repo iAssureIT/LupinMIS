@@ -6,6 +6,7 @@ import swal                   from 'sweetalert';
 import moment                 from "moment";
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
+import validate               from 'jquery-validation';
 
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
@@ -21,18 +22,18 @@ class Activity extends Component{
     this.state = {
       "center_ID`"         : "",
       "centerName"        : "",
-      "district"          : "",
-      "block"             : "",
+      "district"          : "-- Select --",
+      "block"             : "-- Select --",
       "dateofIntervention": moment(new Date()).format('YYYY-MM-DD'),
-      "village"           : "",
+      "village"           : "-- Select --",
       "date"              : "",
-      "sector"            : "",
-      "typeofactivity"    : "",
+      "sector"            : "-- Select --",
+      "typeofactivity"    : "-- Select --",
       "nameofactivity"    : "",
-      "activity"          : "",
+      "activity"          : "-- Select --",
       "projectName"       : "LHWRF Grant",
       "projectCategoryType" : "LHWRF Grant",
-      "subactivity"       : "",
+      "subactivity"       : "-- Select --",
       "unit"              : "Number",
       "unitCost"          : 0,
       "quantity"          : 0,
@@ -125,11 +126,11 @@ class Activity extends Component{
         case "LHWRF" : 
             prevTotal = this.state.totalcost;
             subTotal = this.state.LHWRF;
-            console.log("prevTotal = ", prevTotal);
-
+            // console.log("prevTotal = ", prevTotal);
           if(parseInt(this.state.LHWRF) < this.state.totalcost){
             if(subTotal < this.state.totalcost){
-              this.setState({ NABARD : this.state.totalcost - subTotal,"total" :subTotal}); 
+              // this.setState({ NABARD : this.state.totalcost - subTotal,"total" :subTotal}); 
+              this.setState({ NABARD : this.state.totalcost - subTotal}); 
             }            
           }else{
             this.setState({ LHWRF : prevTotal}); 
@@ -146,7 +147,8 @@ class Activity extends Component{
           // console.log("subTotal in NABARD= ", subTotal);
           if(parseInt(this.state.NABARD) < this.state.totalcost){
             if(subTotal < this.state.totalcost){
-              this.setState({ bankLoan : this.state.totalcost - subTotal,"total" :subTotal},()=>{
+              // this.setState({ bankLoan : this.state.totalcost - subTotal,"total" :subTotal},()=>{
+              this.setState({ bankLoan : this.state.totalcost - subTotal},()=>{
                 // console.log("bankLoan",this.state.bankLoan);
               }); 
             }else{
@@ -165,7 +167,8 @@ class Activity extends Component{
           // console.log("prevTotal after = ", prevTotal);
           if(parseInt(this.state.bankLoan) < this.state.totalcost){
             if(subTotal < this.state.totalcost){
-              this.setState({ govtscheme : this.state.totalcost - subTotal,"total" :subTotal}); 
+              // this.setState({ govtscheme : this.state.totalcost - subTotal,"total" :subTotal}); 
+              this.setState({ govtscheme : this.state.totalcost - subTotal}); 
             }else{
               this.setState({ bankLoan : prevTotal}); 
             }
@@ -180,7 +183,8 @@ class Activity extends Component{
           subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme);
           if(parseInt(this.state.govtscheme) < this.state.totalcost){
             if(subTotal < this.state.totalcost){
-              this.setState({ directCC : this.state.totalcost - subTotal,"total" :subTotal}); 
+              // this.setState({ directCC : this.state.totalcost - subTotal,"total" :subTotal}); 
+              this.setState({ directCC : this.state.totalcost - subTotal}); 
             }else{
               this.setState({ govtscheme : prevTotal}); 
             }
@@ -196,7 +200,8 @@ class Activity extends Component{
           subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC);
           if(parseInt(this.state.directCC) < this.state.totalcost){
             if(subTotal < this.state.totalcost){
-              this.setState({ indirectCC : this.state.totalcost - subTotal,"total" :subTotal}); 
+              // this.setState({ indirectCC : this.state.totalcost - subTotal,"total" :subTotal}); 
+              this.setState({ indirectCC : this.state.totalcost - subTotal}); 
             }else{
               this.setState({ directCC : prevTotal}); 
             }
@@ -212,7 +217,8 @@ class Activity extends Component{
           subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC);
           if(parseInt(this.state.indirectCC) < this.state.totalcost){
             if(subTotal < this.state.totalcost){
-              this.setState({ other : this.state.totalcost - subTotal,"total" :subTotal},()=>{
+              // this.setState({ other : this.state.totalcost - subTotal,"total" :subTotal},()=>{
+              this.setState({ other : this.state.totalcost - subTotal},()=>{
 
               }); 
             }else{
@@ -227,9 +233,10 @@ class Activity extends Component{
           prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan) - parseInt(this.state.govtscheme) - parseInt(this.state.directCC) - parseInt(this.state.indirectCC) ;
           subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC)+ parseInt(this.state.other);
           if (parseInt(this.state.other) < this.state.totalcost) {
-              this.setState({"total" :subTotal}); 
+              // this.setState({"total" :subTotal}); 
           }else{
-              this.setState({ "other" : prevTotal,"total" :subTotal}); 
+              // this.setState({ "other" : prevTotal,"total" :subTotal}); 
+              this.setState({ "other" : prevTotal}); 
           }
          break;
       }
@@ -238,23 +245,23 @@ class Activity extends Component{
 
   handleChange(event){
     event.preventDefault(); 
-    this.setState({      
-      [event.target.name]: event.target.value
-    },()=>{
+      this.setState({      
+        [event.target.name]: event.target.value
+      },()=>{
     });
  
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm() ) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    } 
+    // let fields = this.state.fields;
+    // fields[event.target.name] = event.target.value;
+    // this.setState({
+    //   fields
+    // });
+    // if (this.validateForm() ) {
+    //   let errors = {};
+    //   errors[event.target.name] = "";
+    //   this.setState({
+    //     errors: errors
+    //   });
+    // } 
   }
   handleTotalChange(event){
     event.preventDefault();
@@ -266,8 +273,9 @@ class Activity extends Component{
       if (this.state.quantity > 0) {
          var totalcost = parseInt(this.state.unitCost) * parseInt(this.state.quantity);
          this.setState({
-           "totalcost"  : totalcost,
-           "LHWRF"      : totalcost
+          "total" : totalcost,
+          "totalcost"  : totalcost,
+          "LHWRF"      : totalcost
          });
       }
     });
@@ -309,9 +317,10 @@ class Activity extends Component{
     var momentObj = moment(dateObj);
     var momentString = momentObj.format('YYYY-MM-DD');
     // if(this.refs.dateofIntervention.value == "" ){
-        if (this.validateFormReq() && this.validateForm()){
-    //     }
-    // }else{
+    // if (this.validateFormReq() && this.validateForm()){
+    if ($("#Academic_details").valid()){
+      //     }
+      // }else{
             // console.log("date",this.state.dateofIntervention);
       var activityValues= {
         "center_ID"         : this.state.center_ID,
@@ -390,15 +399,15 @@ class Activity extends Component{
         this.setState({
           "projectName"            : "",
           "projectCategoryType" : "LHWRF Grant",
-          "district"               : "",
-          "block"                  : "",
-          "village"                : "",
+          "district"               : "-- Select --",
+          "block"                  : "-- Select --",
+          "village"                : "-- Select --",
           "dateofIntervention"     : momentString,
-          "sector"                 : "",
-          "typeofactivity"         : "",
+          "sector"                 : "-- Select --",
+          "typeofactivity"         : "-- Select --",
           "nameofactivity"         : "",
-          "activity"               : "",
-          "subactivity"            : "",
+          "activity"               : "-- Select --",
+          "subactivity"            : "-- Select --",
           "unit"                   : "",
           "unitCost"               : "",
           "quantity"               : "",
@@ -418,10 +427,15 @@ class Activity extends Component{
           "subActivityDetails"     : [],
           "availableActivity"      : [],
           "availableSubActivity"   : []
+        },()=>{
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
         });
       }else{
         swal('Total Costs are not equal! Please check');
       }
+    }else{
+      $("html,body").scrollTop(0)
+      // $('label.error').first().focus()
     }
   }
   Update(event){
@@ -763,6 +777,66 @@ class Activity extends Component{
   }
 
   componentDidMount() {
+    $("#Academic_details").validate({
+      rules: {
+        district: {
+          required: true,
+        },
+        block: {
+          required: true,
+        },
+        village: {
+          required: true,
+        },
+        sector: {
+          required: true,
+        },
+        typeofactivity: {
+          required: true,
+        },
+        activity: {
+          required: true,
+        },
+        subactivity: {
+          required: true,
+        },
+        unitCost: {
+          required: true,
+        },
+        quantity: {
+          required: true,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "district"){
+          error.insertAfter("#district");
+        }
+        if (element.attr("name") == "block"){
+          error.insertAfter("#block");
+        }
+        if (element.attr("name") == "village"){
+          error.insertAfter("#village");
+        }
+        if (element.attr("name") == "sector"){
+          error.insertAfter("#sector");
+        }
+        if (element.attr("name") == "typeofactivity"){
+          error.insertAfter("#typeofactivity");
+        }
+        if (element.attr("name") == "activity"){
+          error.insertAfter("#activity");
+        }
+        if (element.attr("name") == "subactivity"){
+          error.insertAfter("#subactivity");
+        }
+        if (element.attr("name") == "unitCost"){
+          error.insertAfter("#unitCost");
+        }
+        if (element.attr("name") == "quantity"){
+          error.insertAfter("#quantity");
+        }
+      }
+    });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableSectors();
     if(this.state.editId){      
@@ -1089,6 +1163,7 @@ class Activity extends Component{
     }  
   }
   render() {
+    console.log('state',this.state.total)
      var hidden = {
       display: this.state.shown ? "none" : "block"
     }
@@ -1183,7 +1258,7 @@ class Activity extends Component{
                               <label className="formLable">District</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                 <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
-                                  <option  className="hidden" >-- Select --</option>
+                                  <option disabled="disabled" selected="true" >-- Select --</option>
                                   {
                                     this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
                                     this.state.availableDistInCenter.map((data, index)=>{
@@ -1203,7 +1278,7 @@ class Activity extends Component{
                             <label className="formLable">Block</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                               <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                <option  className="hidden" >-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 {
                                   this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                   this.state.listofBlocks.map((data, index)=>{
@@ -1222,7 +1297,7 @@ class Activity extends Component{
                             <label className="formLable">Village</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                               <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                <option  className="hidden" >-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 {
                                   this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                   this.state.listofVillages.map((data, index)=>{
@@ -1245,7 +1320,7 @@ class Activity extends Component{
                             <label className="formLable">Sector </label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                               <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                                <option  className="hidden" >-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 {
                                   this.state.availableSectors && this.state.availableSectors.length >0 ?
                                   this.state.availableSectors.map((data, index)=>{
@@ -1264,7 +1339,7 @@ class Activity extends Component{
                             <label className="formLable">Type of Activity</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                               <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                                <option  className="hidden" >-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 <option>Common Level Activity</option>
                                  <option>Family Level Activity</option>
                               </select>
@@ -1275,7 +1350,7 @@ class Activity extends Component{
                             <label className="formLable">Activity</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                               <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                                <option  className="hidden" >-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 {
                                   this.state.availableActivity && this.state.availableActivity.length >0 ?
                                   this.state.availableActivity.map((data, index)=>{
@@ -1296,7 +1371,7 @@ class Activity extends Component{
                             <label className="formLable">Sub-Activity</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                               <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                                <option  className="hidden" >-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                   {
                                     this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
                                     this.state.availableSubActivity.map((data, index)=>{

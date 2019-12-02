@@ -542,11 +542,20 @@ class ViewTemplates extends Component{
 																	<div className="form-group">
 																	 	<label className=" label-category formLable">Template Name <span className="astrick">*</span></label>     						
 																       	<select name="templateName" id="templateName" value={this.state.templateName} onChange={this.handleChange} className="form-control inputBox-main templateType " required>
-																		  <option value="Not Selected">--Select Template Name--</option>
-																		  <option value="User New Registration">User New Registration</option>
-																		  <option value="Admin New Registration">Admin New Registration</option>
-																		  <option value="User Blocked">User Blocked</option>
-																		  <option value="User Activated">User Activated</option>
+																		  	<option value="Not Selected">--Select Template Name--</option>
+																		  	<option value="User - Signup Notification">User - Signup Notification</option>
+																			<option value="Admin - Signup Notification">Admin - Signup Notification</option>
+																			<option value="User - Forgot Password OTP">User - Forgot Password OTP</option>
+																			<option value="User - Annual Plan Submitted">User - Annual Plan Submitted</option>
+																			<option value="Admin - Annual Plan Submitted">Admin - Annual Plan Submitted</option>
+																			<option value="User - Monthly Plan Submitted">User - Monthly Plan Submitted</option>
+																			<option value="Admin - Monthly Plan Submitted">Admin - Monthly Plan Submitted</option>
+																			<option value="User - Activity Details Submitted">User - Activity Details Submitted</option>
+																			<option value="Admin - Activity Details Submitted">Admin - Activity Details Submitted</option>
+																			<option value="User - Login Account Activation">User - Login Account Activation</option>
+																			<option value="Admin - Login Account Activation">Admin - Login Account Activation</option>
+																			<option value="User - Login Account Blocked">User - Login Account Blocked</option>
+																			<option value="Admin - Login Account Blocked">Admin - Login Account Blocked</option>
 																		</select>
 																	</div>	
 																</div>

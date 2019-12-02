@@ -33,6 +33,7 @@ class SignUp extends Component {
             loggedIn : false,
             fields	 : {},
      	    errors	 : {},
+     	    buttonValue : 'Sign Up',
             auth:{
                 fullName        : '',
                 lastname        : '',
@@ -43,8 +44,7 @@ class SignUp extends Component {
                 role 			: '',
                 status 			: '',
                 centerName		: '',
-                center_ID		: '',
-               
+                center_ID		: '',               
             },
              formerrors :{
 				        	firstNameV 		: "",
@@ -61,6 +61,9 @@ class SignUp extends Component {
     }
  	usersignup(event){
  		event.preventDefault();
+ 		this.setState({
+     	    buttonValue : 'Please Wait...'
+ 		})	
  			console.log("-------this.state.auth------>>",this.state.auth);
  			var auth={
 	                firstName       : this.refs.firstname.value,
@@ -80,6 +83,7 @@ class SignUp extends Component {
         document.getElementById("signUpBtn").value = 'We are processing. Please Wait...';            
             
         var firstname                = this.refs.firstname.value;
+        var lastname                 = this.refs.lastname.value;
         var mobile                   = this.refs.mobileNumber.value;
         var email                    = this.refs.signupEmail.value;
         var passwordVar              = this.refs.signupPassword.value;
@@ -97,11 +101,39 @@ class SignUp extends Component {
                 	axios
                 	 	.post('/api/users',auth)
 			            .then((response)=> {
-			                console.log("-------userData------>>",response);
-		            		swal("success","Information submitted successfully ");
-			                // this.props.history.push("/confirm-otp");
-		            		
-			                this.props.history.push("/login");
+				            console.log("-------userData------>>",response);
+			            	if(response.data.user_id){
+				            	var msgvariable = {
+		                            '[User]'    : firstname+' '+lastname,
+		                        }
+	                            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+	                            var inputObj = {  
+	                                to           : email,
+	                                templateName : 'User - Signup Notification',
+	                                variables    : msgvariable,
+	                            }
+	                            axios
+		                	 	.post('/api/masternotification/send-mail',inputObj)
+					            .then((response)=> {
+					            	// console.log("-------mail------>>",response);
+				            		this.setState({
+	     	    						buttonValue : 'Sign Up'
+				            		},()=>{
+					            		swal("success","Information submitted successfully ");
+						                this.props.history.push("/login");
+				            		})
+					            })
+					            .catch(function (error) {
+					                console.log(error);
+					            })
+			            	}else{
+			            		this.setState({
+     	    						buttonValue : 'Sign Up'
+			            		},()=>{
+        							swal(response.data.message);
+			            		})
+			            	}
+			             //    // this.props.history.push("/confirm-otp");
 			            })
 			            .catch(function (error) {
 			                console.log(error);
@@ -409,7 +441,7 @@ class SignUp extends Component {
 							    </div>
 
 								<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group1 rrnRegisterBtn">
-							    	<input id="signUpBtn" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 acceptinput UMloginbutton UMloginbutton1 hvr-sweep-to-right" type="submit" value="Sign Up" disabled/>
+							    	<input id="signUpBtn" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 acceptinput UMloginbutton UMloginbutton1 hvr-sweep-to-right" type="submit" value={this.state.buttonValue} disabled/>
 							    </div>		   
 
 						    	<div className="col-lg-12 col-md-4 col-sm-4 col-xs-4 ">

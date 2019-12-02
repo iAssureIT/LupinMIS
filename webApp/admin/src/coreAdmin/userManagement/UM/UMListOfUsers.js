@@ -168,10 +168,10 @@ class UMListOfUsers extends Component {
 				          // console.log('res', res);
 				          this.setState({
 				          	blockswal : true,
-				          	checkedUser : null,
+				          	checkedUser : [],
 				          })
 			         
-				          checkedUsersList = null;
+				          checkedUsersList = [];
 				          // this.props.history.push('/umlistofusers');
 
 				          	// update table here
@@ -182,6 +182,27 @@ class UMListOfUsers extends Component {
 										axios.post('/api/users/userslist', data)
 										.then( (res)=>{      
 											console.log("herer",res);
+											for (var j = 0; j < res.data.length; j++) {
+												var msgvariable = {
+						                            '[User]'    : res.data[j].fullName,
+						                            '[user_email_id]' : res.data[j].emailId
+						                        }
+					                            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+					                            var inputObj = {  
+					                                to           : res.data[j].emailId,
+					                                templateName : 'User - Login Account Blocked',
+					                                variables    : msgvariable,
+					                            }
+					                            axios
+						                	 	.post('/api/masternotification/send-mail',inputObj)
+									            .then((response)=> {
+									            	// console.log("-------mail------>>",response);
+								            		
+									            })
+									            .catch(function (error) {
+									                console.log(error);
+									            })	
+											}
 											var tableData = res.data.map((a, i)=>{
 												return {
 													_id 			: a._id,
@@ -239,10 +260,10 @@ class UMListOfUsers extends Component {
 				          // console.log('res', res);
 				          this.setState({
 				          	activeswal : true,
-				          	checkedUser : null,
+				          	checkedUser : [],
 				          });
 				         
-				          checkedUsersList = null;
+				          checkedUsersList = [];
 
 				          	// update table here
 				          		var data = {
@@ -252,6 +273,31 @@ class UMListOfUsers extends Component {
 										axios.post('/api/users/userslist', data)
 										.then( (res)=>{      
 											console.log("herer",res);
+											var hostname = window.location.hostname
+											var url = hostname==='http://uatlmisadmin.iassureit.com/'?'http://uatlmiscenter.iassureit.com/':
+											hostname==='http://qalmisadmin.iassureit.com/'?'http://qalmiscenter.iassureit.com/':'http://localhost:3001/'
+											for (var j = 0; j < res.data.length; j++) {
+												var msgvariable = {
+						                            '[User]'    : res.data[j].fullName,
+						                            '[user_email_id]' : res.data[j].emailId,
+						                            '[center_application_URL]' : url
+						                        }
+					                            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+					                            var inputObj = {  
+					                                to           : res.data[j].emailId,
+					                                templateName : 'User - Login Account Activation',
+					                                variables    : msgvariable,
+					                            }
+					                            axios
+						                	 	.post('/api/masternotification/send-mail',inputObj)
+									            .then((response)=> {
+									            	// console.log("-------mail------>>",response);
+								            		
+									            })
+									            .catch(function (error) {
+									                console.log(error);
+									            })	
+											}
 											var tableData = res.data.map((a, i)=>{
 												return {
 													_id 			: a._id,
@@ -380,7 +426,7 @@ class UMListOfUsers extends Component {
 				        (res)=>{
 				          // console.log('res', res);
 				          swal("abc","Assigned Role Added Successfully",);
-				          checkedUsersList = null;
+				          checkedUsersList = [];
 
 				          		// update table here
 				          		var data = {
@@ -438,7 +484,7 @@ class UMListOfUsers extends Component {
 				        (res)=>{
 				          // console.log('res', res);
 				          swal("abc","Assigned Role Removed Successfully",);
-				          checkedUsersList = null;
+				          checkedUsersList = [];
 
 				          		// update table here
 				          		var data = {

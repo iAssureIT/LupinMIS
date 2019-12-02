@@ -287,121 +287,123 @@ class PlanDetails extends Component{
   Update(event){    
     event.preventDefault();
     var subActivityDetails = this.state.subActivityDetails;
-    if(this.refs.year.value === "" || this.refs.month.value ==="" || this.refs.sectorName.value==="" || this.refs.activityName.value==="" 
-      || this.state.physicalUnit==="" || this.refs.unitCost.value==="" || this.refs.totalBudget.value==="" || this.refs.noOfBeneficiaries.value==="" 
-      || this.refs.LHWRF.value==="" || this.refs.NABARD.value==="" || this.refs.bankLoan.value==="" || this.refs.govtscheme.value==="" 
-      || this.refs.directCC.value==="" || this.refs.indirectCC.value==="" || this.refs.other.value==="" || this.refs.remark.value==="")
-      {
-    /*    if (this.validateFormReq() && this.validateForm()){
-        }*/
-      }else{
-      if(subActivityDetails.length > 0){
-        for(var i=0; i<subActivityDetails.length; i++){
-          var planValues = {
-            "annualPlan_ID"       : this.state.editId,
-            "monthlyPlan_ID"      : this.state.editId,
-            "month"               : this.refs.month.value,          
-            "year"                : this.refs.year.value,           
-            "center_ID"           : this.state.center_ID,
-            "center"              : this.state.centerName,
-            "sector_ID"           : this.refs.sectorName.value.split('|')[1],
-            "sectorName"          : this.refs.sectorName.value.split('|')[0],
-            "activity_ID"         : this.refs.activityName.value.split('|')[1],
-            "activityName"        : this.refs.activityName.value.split('|')[0],
-            "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
-            "subactivityName"     : subActivityDetails[i].subactivityName,
-            "unit"                : subActivityDetails[i].unit,
-            "physicalUnit"        : subActivityDetails[i].physicalUnit,
-            "unitCost"            : subActivityDetails[i].unitCost,
-            "totalBudget"         : subActivityDetails[i].totalBudget,
-            "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
-            "noOfFamilies"        : subActivityDetails[i].noOfFamilies,
-            "LHWRF"               : subActivityDetails[i].LHWRF,
-            "NABARD"              : subActivityDetails[i].NABARD,
-            "bankLoan"            : subActivityDetails[i].bankLoan,
-            "govtscheme"          : subActivityDetails[i].govtscheme,
-            "directCC"            : subActivityDetails[i].directCC,
-            "indirectCC"          : subActivityDetails[i].indirectCC,
-            "other"               : subActivityDetails[i].other,
-            "remark"              : subActivityDetails[i].remark,
-          };
-                  
-          let fields = {};
-          fields["year"]              = "";
-          fields["month"]             = "";
-          fields["sectorName"]        = "";
-          fields["activityName"]      = "";
-          fields["physicalUnit"]      = "";
-          fields["unitCost"]          = "";
-          fields["totalBudget"]       = "";
-          fields["noOfBeneficiaries"] = "";
-          fields["noOfFamilies"]      = "";
-          fields["LHWRF"]             = "";
-          fields["NABARD"]            = "";
-          fields["bankLoan"]          = "";
-          fields["govtscheme"]        = "";
-          fields["directCC"]          = "";
-          fields["indirectCC"]        = "";
-          fields["other"]             = "";
-          fields["remark"]            = "";
-        
-          axios.patch(this.state.apiCall+'/update', planValues)
-            .then((response)=>{
-              swal({
-                title : response.data.message,
-                text  : response.data.message
-              });
-              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+    console.log('subActivityDetails',subActivityDetails)
+    // if(this.refs.year.value === "" || this.refs.month.value ==="" || this.refs.sectorName.value==="" || this.refs.activityName.value==="" 
+    //   || this.state.physicalUnit==="" || this.refs.unitCost.value==="" || this.refs.totalBudget.value==="" || this.refs.noOfBeneficiaries.value==="" 
+    //   || this.refs.LHWRF.value==="" || this.refs.NABARD.value==="" || this.refs.bankLoan.value==="" || this.refs.govtscheme.value==="" 
+    //   || this.refs.directCC.value==="" || this.refs.indirectCC.value==="" || this.refs.other.value==="" || this.refs.remark.value==="")
+    // {
+    //   /*    if (this.validateFormReq() && this.validateForm()){
+    //       }*/
+    // }else{
+      
+    // }
+    if(subActivityDetails&&subActivityDetails.length > 0){
+      for(var i=0; i<subActivityDetails.length; i++){
+        var planValues = {
+          "annualPlan_ID"       : this.state.editId,
+          "monthlyPlan_ID"      : this.state.editId,
+          "month"               : this.refs.month.value,          
+          "year"                : this.refs.year.value,           
+          "center_ID"           : this.state.center_ID,
+          "center"              : this.state.centerName,
+          "sector_ID"           : this.refs.sectorName.value.split('|')[1],
+          "sectorName"          : this.refs.sectorName.value.split('|')[0],
+          "activity_ID"         : this.refs.activityName.value.split('|')[1],
+          "activityName"        : this.refs.activityName.value.split('|')[0],
+          "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
+          "subactivityName"     : subActivityDetails[i].subactivityName,
+          "unit"                : subActivityDetails[i].unit,
+          "physicalUnit"        : subActivityDetails[i].physicalUnit,
+          "unitCost"            : subActivityDetails[i].unitCost,
+          "totalBudget"         : subActivityDetails[i].totalBudget,
+          "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
+          "noOfFamilies"        : subActivityDetails[i].noOfFamilies,
+          "LHWRF"               : subActivityDetails[i].LHWRF,
+          "NABARD"              : subActivityDetails[i].NABARD,
+          "bankLoan"            : subActivityDetails[i].bankLoan,
+          "govtscheme"          : subActivityDetails[i].govtscheme,
+          "directCC"            : subActivityDetails[i].directCC,
+          "indirectCC"          : subActivityDetails[i].indirectCC,
+          "other"               : subActivityDetails[i].other,
+          "remark"              : subActivityDetails[i].remark,
+        };
+                
+        // let fields = {};
+        // fields["year"]              = "";
+        // fields["month"]             = "";
+        // fields["sectorName"]        = "";
+        // fields["activityName"]      = "";
+        // fields["physicalUnit"]      = "";
+        // fields["unitCost"]          = "";
+        // fields["totalBudget"]       = "";
+        // fields["noOfBeneficiaries"] = "";
+        // fields["noOfFamilies"]      = "";
+        // fields["LHWRF"]             = "";
+        // fields["NABARD"]            = "";
+        // fields["bankLoan"]          = "";
+        // fields["govtscheme"]        = "";
+        // fields["directCC"]          = "";
+        // fields["indirectCC"]        = "";
+        // fields["other"]             = "";
+        // fields["remark"]            = "";
+      
+        console.log('planValues',planValues)
+        axios.patch(this.state.apiCall+'/update', planValues)
+          .then((response)=>{
+            console.log('response',response)
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });
+            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+          })
+          .catch(function(error){
+            console.log("error"+error);
+        }); 
+        this.setState({
+          "year"                : this.refs.year.value,
+          "month"               : this.refs.month.value,
+          "center"              :"",
+          "sector_id"           :"",
+          "sectorName"          :"",
+          "activityName"        :"",
+          "physicalUnit"        :"",
+          "unitCost"            :"",
+          "totalBudget"         :"",
+          "noOfBeneficiaries"   :"",
+          "noOfFamilies"        :"",
+          "LHWRF"               :"",
+          "NABARD"              :"",
+          "bankLoan"            :"",
+          "govtscheme"          :"",
+          "directCC"            :"",
+          "indirectCC"          :"",
+          "other"               :"",
+          "remark"              :"",
+          // "fields"              :fields,
+          "editId"              :"",
+          "subActivityDetails"  :[],
+          "availableSubActivity":[],
+          "subActivityDetails[i][name]":"",
+          "months"              :["Annual Plan","All Months", "April","May","June","July","August","September","October","November","December","January","February","March"],
+          "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+          "shown"               : true,
+          "apiCall"             : '/api/annualPlans'
+        },()=>{
+          this.props.history.push('/plan-details');
+        });
+        Object.entries(planValues).map( 
+          ([key, value], i)=> {
+            this.setState({
+              [key+'-'+this.state.subactivity_ID] : ""
             })
-            .catch(function(error){
-              console.log("error"+error);
-          }); 
-          this.setState({
-            "year"                : this.refs.year.value,
-            "month"               : this.refs.month.value,
-            "center"              :"",
-            "sector_id"           :"",
-            "sectorName"          :"",
-            "activityName"        :"",
-            "physicalUnit"        :"",
-            "unitCost"            :"",
-            "totalBudget"         :"",
-            "noOfBeneficiaries"   :"",
-            "noOfFamilies"        :"",
-            "LHWRF"               :"",
-            "NABARD"              :"",
-            "bankLoan"            :"",
-            "govtscheme"          :"",
-            "directCC"            :"",
-            "indirectCC"          :"",
-            "other"               :"",
-            "remark"              :"",
-            "fields"              :fields,
-            "editId"              :"",
-            "subActivityDetails"  :[],
-            "availableSubActivity":[],
-            "subActivityDetails[i][name]":"",
-            "months"              :["Annual Plan","All Months", "April","May","June","July","August","September","October","November","December","January","February","March"],
-            "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "shown"               : true,
-            "apiCall"             : '/api/annualPlans'
-          });
-          Object.entries(planValues).map( 
-            ([key, value], i)=> {
-              this.setState({
-                [key+'-'+this.state.subactivity_ID] : ""
-              })
-            }
-          );
+          }
+        );
 
-        }
       }
-     
     }
-    this.props.history.push('/plan-details');
-    this.setState({
-      "editId"              : "",
-    });
+    // this.props.history.push('/plan-details')
   }
   validateFormReq() {
     let fields = this.state.fields;

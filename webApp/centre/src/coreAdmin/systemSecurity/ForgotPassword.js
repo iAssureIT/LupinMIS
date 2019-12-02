@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import InputMask from 'react-input-mask';
 import swal from 'sweetalert';
 import $ from "jquery";
-
+import axios from 'axios';
 import 'font-awesome/css/font-awesome.min.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
@@ -13,7 +13,8 @@ class ForgotPassword extends Component {
       super();
       this.state ={
         email  : '',
-        mobile  : '',
+        buttonValue : 'Send Verification Code',
+        // mobile  : '',
         // subscription    : {
         //   user: Meteor.subscribe("userfunction"), 
         // }
@@ -24,14 +25,15 @@ class ForgotPassword extends Component {
       console.log('x',x);
     }
     forgotpassword(event){
-      console.log('forgotpassword');
+      // console.log('forgotpassword');
       event.preventDefault();
       var email = this.refs.enterEmail.value;
-      var mobile = this.refs.enterMobNo.value;
+      // var mobile = this.refs.enterMobNo.value;
       // console.log("email: ",email);
      this.setState({
       email : email,
-      mobile : mobile,
+      buttonValue : 'Please Wait...'
+      // mobile : mobile,
      });
       var userOtp = 1 /*Meteor.users.findOne({"username":email})*/;
       // console.log("userOtp: ",userOtp);
@@ -39,6 +41,48 @@ class ForgotPassword extends Component {
      if(userOtp==1){
       var mobileotp = Math.floor(1000 + Math.random() * 9000);
       var emailotp = Math.floor(100000 + Math.random() * 900000);
+      localStorage.setItem('emailotp',emailotp)
+      localStorage.setItem('email',this.state.email)
+      axios
+      .patch('/api/users/setotp/'+this.state.email,{'emailotp' : emailotp})
+      .then((response)=> {
+        axios
+        .get('/api/users/email/'+this.state.email)
+        .then((response)=> {
+          console.log("-------name------>>",response);
+          if(response&&response.data){
+            var msgvariable = {
+              '[User]'    : response.data.profile.firstName+' '+response.data.profile.lastName,
+              '[OTP]'     : emailotp
+            }
+            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+            var inputObj = {  
+              to           : this.state.email,
+              templateName : 'User - Forgot Password OTP',
+              variables    : msgvariable,
+            }
+            axios
+            .post('/api/masternotification/send-mail',inputObj)
+            .then((response)=> {
+              // console.log("-------mail------>>",response);
+              this.setState({
+                buttonValue : 'Send Verification Code'
+              },()=>{
+                this.props.history.push("/confirm-otp");
+              })
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
   //       // Session.set('mobotp',mobileotp);
   ///////////////
   //       // Session.set('mailotp',emailotp);
@@ -151,7 +195,7 @@ class ForgotPassword extends Component {
                             </span>
                           </div>
                         </div>
-                        <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
+                        {/*<div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
                           <span>Enter registerd Mobile Number </span>
                         </div>
                         <div className="form-group col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr veribtm">
@@ -162,11 +206,11 @@ class ForgotPassword extends Component {
                               <i></i>
                             </span>
                           </div>
-                        </div>
+                        </div>*/}
                         <div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr">
-                          <Link to='/confirm-otp'>
-                            <button type="submit" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submitBtn UMloginbutton">Send Verification Code</button>
-                          </Link>
+                          {/*<Link to='/confirm-otp'>*/}
+                            <button type="submit" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submitBtn UMloginbutton">{this.state.buttonValue}</button>
+                          {/*</Link>*/}
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls pull-right">
                           <Link to='/' className="UMGreyy "><u>Sign In</u></Link>  

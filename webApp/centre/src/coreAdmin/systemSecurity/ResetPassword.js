@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InputMask from 'react-input-mask';
 import swal from 'sweetalert';
+import axios from 'axios';
 import $ from "jquery";
 
 import 'font-awesome/css/font-awesome.min.css';
@@ -36,6 +37,26 @@ class ResetPassword extends Component {
     $('.showPwdC').toggleClass('showPwd1C');
     $('.hidePwdC').toggleClass('hidePwd1C');
     return $('.inputTextPassC').attr('type', 'password');
+  }
+  changepassword(event){
+    event.preventDefault()
+    var email = localStorage.getItem('email')
+    var password = this.refs.resetPassword.value;
+    var confirmpassword = this.refs.resetPasswordConfirm.value;
+    if(password===confirmpassword){
+      axios
+      .patch('/api/users/resetpwd/'+email,{'pwd' : password})
+      .then((response)=> {
+        localStorage.removeItem('emailotp')
+        localStorage.removeItem('email')
+        this.props.history.push('/')  
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+    }else{
+      swal("Password doesn't match")
+    }
   }
 
   render(){
@@ -89,7 +110,7 @@ class ResetPassword extends Component {
                     </div>    */}  
                     <h3 className="signInNameTitle"> <span className="bordbt">RESET PASSWORD</span></h3>
                     <div className="FormWrapper1 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <form id="resetPassword" /*onSubmit={this.changepassword.bind(this)}*/>
+                      <form id="resetPassword" onSubmit={this.changepassword.bind(this)}>
                         <div className="form-group loginFormGroup pdleftclr veribtm col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <div className="input-group">
                             <span className="input-group-addon addons glyphi-custommmLeft" id="basic-addon1"><i className="fa fa-lock" aria-hidden="true"></i></span>
