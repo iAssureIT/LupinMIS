@@ -230,11 +230,58 @@ class PlanDetails extends Component{
           axios.post(this.state.apiCall, planValues)
             .then((response)=>{
               console.log("response",response);
-              swal({
-                title : response.data.message,
-                text  : response.data.message
-              });
-              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+              if(this.refs.month.value==='Annual'){
+                var email = localStorage.getItem('email')
+                var msgvariable = {
+                  '[User]'    : localStorage.getItem('fullName'),
+                  '[FY]'    : this.refs.year.value,
+                }
+                // console.log("msgvariable :"+JSON.stringify(msgvariable));
+                var inputObj = {  
+                  to           : email,
+                  templateName : 'User - Annual Plan Submitted',
+                  variables    : msgvariable,
+                }
+                axios
+                .post('/api/masternotification/send-mail',inputObj)
+                .then((response)=> {
+                  // console.log("-------mail------>>",response);
+                  swal({
+                    title : response.data.message,
+                    text  : response.data.message
+                  });
+                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+              }else{
+                var email = localStorage.getItem('email')
+                var msgvariable = {
+                  '[User]'    : localStorage.getItem('fullName'),
+                  '[FY]'    : this.refs.year.value,
+                  '[monthName]' : this.refs.month.value
+                }
+                // console.log("msgvariable :"+JSON.stringify(msgvariable));
+                var inputObj = {  
+                  to           : email,
+                  templateName : 'User - Monthly Plan Submitted',
+                  variables    : msgvariable,
+                }
+                axios
+                .post('/api/masternotification/send-mail',inputObj)
+                .then((response)=> {
+                  // console.log("-------mail------>>",response);
+                  swal({
+                    title : response.data.message,
+                    text  : response.data.message
+                  });
+                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+              }
             })
             .catch(function(error){
               console.log("error"+error);
@@ -314,6 +361,7 @@ class PlanDetails extends Component{
           "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
           "subactivityName"     : subActivityDetails[i].subactivityName,
           "unit"                : subActivityDetails[i].unit,
+          // "unit"                : this.state["unitCost-"+this.state.editId],
           "physicalUnit"        : subActivityDetails[i].physicalUnit,
           "unitCost"            : subActivityDetails[i].unitCost,
           "totalBudget"         : subActivityDetails[i].totalBudget,

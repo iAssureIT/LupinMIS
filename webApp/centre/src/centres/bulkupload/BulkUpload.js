@@ -53,6 +53,58 @@ class BulkUpload extends Component{
         .then((response)=> {
         	if (response) {
             console.log("response",response);
+            if(this.props.data.month==='Annual'){
+              var email = localStorage.getItem('email')
+              var msgvariable = {
+                '[User]'    : localStorage.getItem('fullName'),
+                '[FY]'    : this.props.data.year,
+              }
+              // console.log("msgvariable :"+JSON.stringify(msgvariable));
+              var inputObj = {  
+                to           : email,
+                templateName : 'User - Annual Plan Submitted',
+                variables    : msgvariable,
+              }
+              axios
+              .post('/api/masternotification/send-mail',inputObj)
+              .then((response)=> {
+                // console.log("-------mail------>>",response);
+                swal({
+                  title : response.data.message,
+                  text  : response.data.message
+                });
+                this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+              })
+              .catch(function (error) {
+                  console.log(error);
+              })
+            }else{
+              var email = localStorage.getItem('email')
+              var msgvariable = {
+                '[User]'    : localStorage.getItem('fullName'),
+                '[FY]'    : this.props.data.year,
+                '[monthName]' : this.props.data.month
+              }
+              // console.log("msgvariable :"+JSON.stringify(msgvariable));
+              var inputObj = {  
+                to           : email,
+                templateName : 'User - Monthly Plan Submitted',
+                variables    : msgvariable,
+              }
+              axios
+              .post('/api/masternotification/send-mail',inputObj)
+              .then((response)=> {
+                // console.log("-------mail------>>",response);
+                swal({
+                  title : response.data.message,
+                  text  : response.data.message
+                });
+                this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+              })
+              .catch(function (error) {
+                  console.log(error);
+              })
+            }
             if (response.data.uploadedData) {
               this.props.uploadedData(response.data.uploadedData);
             }
