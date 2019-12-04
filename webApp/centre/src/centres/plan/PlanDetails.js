@@ -90,10 +90,28 @@ class PlanDetails extends Component{
       fields                : {},
       errors                : {},
       subActivityDetails    : [],
-      apiCall               : '/api/annualPlans'
+      apiCall               : '/api/annualPlans',
+      totalBud              : 0
     }
     this.uploadedData = this.uploadedData.bind(this);
+    this.remainTotal  = this.remainTotal.bind(this);
+    this.handlesubactivityChange = this.handlesubactivityChange.bind(this);
   }
+  handlesubactivityChange(event){
+   // event.preventDefault();
+    const target = event.target;
+    const value  = target.type === 'checked' ? target.checked : target.value;
+    const name   = target.name;
+    var id = (name).split('-')[1];
+    // console.log("name",name); 
+
+    this.setState({
+      [name]: value,
+    },()=>{
+    // console.log("mandatory",this.state.mandatory);
+      this.addsubActivityDetails(id,name,value,this.state.totalBud);
+    });  
+  }   
   handleChange(event){
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -111,18 +129,123 @@ class PlanDetails extends Component{
       });
     }
   }
+  remainTotal(subActivity,id){
+    var prevTotal = 0;
+    var subTotal = 0;
+    switch(subActivity){
+        case "LHWRF-"+id : 
+            prevTotal = this.state[`totalBudget-${id}`];
+            subTotal  = this.state[`LHWRF-${id}`];
+            console.log("prevTotal = ", prevTotal);
+
+          if(parseInt(this.state[`LHWRF-${id}`]) < this.state[`totalBudget-${id}`]){
+            if(subTotal < this.state[`totalBudget-${id}`]){
+              this.setState({[`NABARD-${id}`]   : this.state[`totalBudget-${id}`] - subTotal}); 
+            }            
+          }else{
+            this.setState({ [`LHWRF-${id}`] : prevTotal}); 
+          }
+          break;    
+        case "NABARD-"+id : 
+          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]);
+          // console.log("add", this.state.LHWRF,this.state.NABARD)
+          subTotal = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]);
+          // console.log("prevTotal in NABARD= ", prevTotal);
+          // console.log("subTotal in NABARD= ", subTotal);
+          if(parseInt(this.state[`NABARD-${id}`]) < this.state[`totalBudget-${id}`]){
+            if(subTotal < this.state[`totalBudget-${id}`]){
+              this.setState({ [`bankLoan-${id}`] : this.state[`totalBudget-${id}`] - subTotal},()=>{
+                // console.log("bankLoan",this.state.bankLoan);
+              }); 
+            }else{
+              this.setState({ [`NABARD-${id}`] : prevTotal}); 
+            }
+          }else{
+            this.setState({ [`NABARD-${id}`] : prevTotal}); 
+          }
+          break;    
+        case "bankLoan-"+id : 
+          // console.log("prevTotal before = ", prevTotal);
+          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]) - parseInt(this.state[`NABARD-${id}`]);
+          subTotal = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]) + parseInt(this.state[`bankLoan-${id}`]);
+          // console.log("prevTotal after = ", prevTotal);
+          if(parseInt(this.state[`bankLoan-${id}`]) < this.state[`totalBudget-${id}`]){
+            if(subTotal < this.state[`totalBudget-${id}`]){
+              this.setState({ [`govtscheme-${id}`] : this.state[`totalBudget-${id}`] - subTotal}); 
+            }else{
+              this.setState({ [`bankLoan-${id}`] : prevTotal}); 
+            }
+          }else{
+            this.setState({ [`bankLoan-${id}`] : prevTotal}); 
+          }
+          break;    
+        case "govtscheme-"+id  : 
+          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]) - parseInt(this.state[`NABARD-${id}`]) - parseInt(this.state[`bankLoan-${id}`]);
+          subTotal = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]) + parseInt(this.state[`bankLoan-${id}`]) + parseInt(this.state[`govtscheme-${id}`]);
+          if(parseInt(this.state[`govtscheme-${id}`]) < this.state[`totalBudget-${id}`]){
+            if(subTotal < this.state[`totalBudget-${id}`]){
+              this.setState({ [`directCC-${id}`] : this.state[`totalBudget-${id}`] - subTotal}); 
+            }else{
+              this.setState({ [`govtscheme-${id}`] : prevTotal}); 
+            }
+          }else{
+            this.setState({ [`govtscheme-${id}`] : prevTotal}); 
+          }
+          break;    
+        case "directCC-"+id : 
+          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]) - parseInt(this.state[`NABARD-${id}`]) - parseInt(this.state[`bankLoan-${id}`]) - parseInt(this.state[`govtscheme-${id}`]) ;
+          subTotal  = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]) + parseInt(this.state[`bankLoan-${id}`]) + parseInt(this.state[`govtscheme-${id}`]) + parseInt(this.state[`directCC-${id}`]);
+          if(parseInt(this.state[`directCC-${id}`]) < this.state[`totalBudget-${id}`]){
+            if(subTotal < this.state[`totalBudget-${id}`]){
+              this.setState({ [`indirectCC-${id}`] : this.state[`totalBudget-${id}`] - subTotal}); 
+            }else{
+              this.setState({ [`directCC-${id}`] : prevTotal}); 
+            }
+          }else{
+            this.setState({ [`directCC-${id}`] : prevTotal}); 
+          }
+          break;    
+        case "indirectCC-"+id : 
+          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]) - parseInt(this.state[`NABARD-${id}`]) - parseInt(this.state[`bankLoan-${id}`]) - parseInt(this.state[`govtscheme-${id}`]) - parseInt(this.state[`directCC-${id}`]) ;
+          subTotal = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]) + parseInt(this.state[`bankLoan-${id}`]) + parseInt(this.state[`govtscheme-${id}`]) + parseInt(this.state[`directCC-${id}`]) + parseInt(this.state[`indirectCC-${id}`]);
+          if(parseInt(this.state[`indirectCC-${id}`]) <this.state[`totalBudget-${id}`]){
+            if(subTotal < this.state[`totalBudget-${id}`]){
+              this.setState({ [`other-${id}`] : this.state[`totalBudget-${id}`] - subTotal},()=>{
+              }); 
+            }else{
+              this.setState({ [`indirectCC-${id}`] : prevTotal}); 
+            }
+          }else{
+            this.setState({ [`indirectCC-${id}`] : prevTotal}); 
+          }
+          break;   
+         case "other-"+id : 
+          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`] ) - parseInt(this.state[`NABARD-${id}`] ) - parseInt(this.state[`bankLoan-${id}`] ) - parseInt(this.state[`govtscheme-${id}`] ) - parseInt(this.state[`directCC-${id}`] ) - parseInt(this.state[`indirectCC-${id}`]) ;
+          subTotal = parseInt(this.state[`LHWRF-${id}`] ) + parseInt(this.state[`NABARD-${id}`] ) + parseInt(this.state[`bankLoan-${id}`] ) + parseInt(this.state[`govtscheme-${id}`] ) + parseInt(this.state[`directCC-${id}`] ) + parseInt(this.state[`indirectCC-${id}`] )+ parseInt(this.state[`other-${id}`]);
+          if (parseInt(this.state[`other-${id}`]) < this.state[`totalBudget-${id}`]) {
+              // this.setState({"total" :subTotal}); 
+          }else{
+              this.setState({ [`other-${id}`] : prevTotal}); 
+          }
+         break;
+      }
+
+  }
   
   subActivityDetails(event){
     // console.log("subActivityDetails",subActivityDetails);
-    event.preventDefault();
+    // event.preventDefault();
     var id = (event.target.name).split('-')[1];
+    const name  = event.target.name;
+    const value = event.target.value;
     let fields = this.state.fields;
     const x =  this.refs["physicalUnit-"+id].value * this.refs["unitCost-"+id].value;
     // console.log('x',x)
     this.setState({
       [event.target.name] : event.target.value,
       totalBud : x,
-      ["totalBudget-"+id] : x
+      ["totalBudget-"+id] : x,
+      ["LHWRF-"+id] : x
     },()=>{
       // console.log('totalBud=========',this.state.totalBud );
       if (parseInt(this.state[`noOfBeneficiaries-${id}`]) < parseInt(this.state[`noOfFamilies-${id}`]) ) {
@@ -132,6 +255,7 @@ class PlanDetails extends Component{
           [`noOfFamilies-${id}`] : 0
         });
       }
+      this.addsubActivityDetails(id,name,value,this.state.totalBud);
     });
     if (this.validateForm()) {
       let errors = {};
@@ -140,19 +264,22 @@ class PlanDetails extends Component{
         errors: errors
       });
     }
+    
+  }
+  addsubActivityDetails(id,name,value,totalBud){
     var subActivityDetails = this.state.subActivityDetails;
     
     // console.log("this.state.subActivityDetails",this.state.subActivityDetails);
     var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID === id});
-    var name = (event.target.name).split('-')[0];
+    var name = (name).split('-')[0];
     // console.log("idExist",idExist);
-     var y =parseInt(x);
+     var y =parseInt(totalBud);  
      // console.log("y1 = ",y);
     if(idExist.length > 0){      
      // console.log("y2 = ",idExist.length );
       for(var i=0; i<subActivityDetails.length; i++){
         if(subActivityDetails[i].subactivity_ID === id){
-          subActivityDetails[i][name] = event.target.value;
+          subActivityDetails[i][name] = value;
           subActivityDetails[i].totalBudget = y
         }
       }
@@ -163,15 +290,16 @@ class PlanDetails extends Component{
         "subactivityName"     : document.getElementById('subActivityName-'+id).innerHTML,
         "unit"                : document.getElementById('unit-'+id).innerHTML,
         "totalBudget"         : y,
-        [name]                : event.target.value
+        [name]                : value
 
       })
     }
     this.setState({
       subActivityDetails : subActivityDetails
     },()=>{
-      // console.log("subActivityDetails",this.state.subActivityDetails);
+      console.log("subActivityDetails",this.state.subActivityDetails);
     })
+
   }
   uploadedData(data){
      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
@@ -396,7 +524,7 @@ class PlanDetails extends Component{
         // fields["other"]             = "";
         // fields["remark"]            = "";
       
-        console.log('planValues',planValues)
+        // console.log('planValues',planValues)
         axios.patch(this.state.apiCall+'/update', planValues)
           .then((response)=>{
             console.log('response',response)
@@ -626,7 +754,7 @@ class PlanDetails extends Component{
       "year"  : this.state.years[0],
       apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
     },()=>{
-      console.log('year', this.state.year)
+      // console.log('year', this.state.year)
        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     })
     this.getLength();
@@ -668,6 +796,7 @@ class PlanDetails extends Component{
     this.getAvailableActivity(sector_ID);
   }
   getAvailableActivity(sector_ID){
+    console.log("sector_ID",sector_ID);
     axios({
       method: 'get',
       url: '/api/sectors/'+sector_ID,
@@ -676,7 +805,7 @@ class PlanDetails extends Component{
         this.setState({
           availableActivity : response.data[0].activity
         },()=>{
-          
+          console.log("availableActivity=",this.state.availableActivity);
         })
     }).catch(function (error) {
       console.log("error"+error);
@@ -732,8 +861,11 @@ class PlanDetails extends Component{
             return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] 
           });
         }))
+        console.log("availableSubActivity before",availableSubActivity);
         this.setState({
           availableSubActivity : availableSubActivity
+        },()=>{
+          console.log("availableSubActivity after",this.state.vailableSubActivity);
         })
         this.excludeSubmittedSubActivity(availableSubActivity);
        
@@ -772,6 +904,7 @@ class PlanDetails extends Component{
             "totalBudget"         : editData.totalBudget,
             "noOfBeneficiaries"   : editData.noOfBeneficiaries,
             "noOfFamilies"        : editData.noOfFamilies,
+            "unit"                : editData.unit,
             "LHWRF"               : editData.LHWRF,
             "NABARD"              : editData.NABARD,
             "bankLoan"            : editData.bankLoan,
@@ -782,6 +915,7 @@ class PlanDetails extends Component{
             "remark"              : editData.remark,
           }]
         },()=>{
+          console.log("after set state", this.state.subActivityDetails);
           var subActivityDetails = this.state.subActivityDetails[0];
           Object.entries(subActivityDetails).map( 
             ([key, value], i)=> {
@@ -992,7 +1126,7 @@ class PlanDetails extends Component{
                                           <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
                                             <label className="formLable">No.of Beneficiaries</label>
                                             <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+data._id} >
-                                              <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
+                                              <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}/>                              
                                             </div>
                                           </div> 
                                           <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
@@ -1012,42 +1146,42 @@ class PlanDetails extends Component{
                                             <label className="formLable">LHWRF</label>
                                             <div className=" input-group inputBox-main" id={"LHWRF-"+data._id} >
                                               <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}   onChange={this.subActivityDetails.bind(this)}/>
+                                              <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onBlur={()=> this.remainTotal("LHWRF-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
                                             </div>
                                           </div>
                                           <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                             <label className="formLable">NABARD</label>
                                             <div className=" input-group inputBox-main" id={"NABARD-"+data._id} >
                                               <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                              <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onBlur={()=> this.remainTotal("NABARD-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
                                             </div>
                                           </div>
                                           <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                             <label className="formLable">Bank Loan</label>
                                             <div className=" input-group inputBox-main" id={"bankLoan-"+data._id}>
                                               <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                              <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("bankLoan-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
                                             </div>
                                           </div>
                                           <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                             <label className="formLable">Govt. Schemes</label>
                                             <div className=" input-group inputBox-main" id={"govtscheme-"+data._id} >
                                               <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                              <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("govtscheme-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
                                             </div>
                                           </div>
                                           <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                             <label className="formLable">Direct Com. Cont.</label>
                                             <div className=" input-group inputBox-main" id={"directCC-"+data._id} >
                                               <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                              <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("directCC-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
                                             </div>
                                           </div>
                                           <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
                                             <label className="formLable">Indirect Com. Cont.</label>
                                             <div className=" input-group inputBox-main" id={"indirectCC-"+data._id} >
                                               <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                              <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("indirectCC-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
                                             </div>
                                           </div>
                                         </div>
@@ -1056,13 +1190,13 @@ class PlanDetails extends Component{
                                             <label className="formLable">Other</label>
                                             <div className=" input-group inputBox-main" id={"other-"+data._id} >
                                               <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
+                                              <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("other-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
                                             </div>
                                           </div>
                                           <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
                                             <label className="formLable">Remark</label>
                                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+data._id} >
-                                              <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]}   onChange={this.subActivityDetails.bind(this)}/>
+                                              <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]}   onBlur={()=> this.remainTotal("NABARD-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
                                             </div>
                                           </div>
                                         </div>  
@@ -1091,8 +1225,7 @@ class PlanDetails extends Component{
                             :
                             <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
                           }
-                          </div>
-                        
+                          </div>                        
                         </form>
                         </div>
                       </div>

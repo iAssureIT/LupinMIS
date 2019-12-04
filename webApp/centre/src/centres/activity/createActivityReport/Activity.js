@@ -118,7 +118,7 @@ class Activity extends Component{
 
   remainTotal(event){
     event.preventDefault(); 
-    console.log("event.target.name",event.target.name);
+    // console.log("event.target.name",event.target.name);
 
     var prevTotal = 0;
     var subTotal = 0;
@@ -395,6 +395,12 @@ class Activity extends Component{
             })
           .catch(function(error){       
             console.log('error',error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
           });
         this.setState({
           "projectName"            : "",
@@ -1140,27 +1146,40 @@ class Activity extends Component{
   }
 
   handleToggle(event){
-       event.preventDefault();
-      console.log("this.state.type",this.state.type)
-    if (this.state.type===true){
-      this.setState({
-        type: false,
-        projectCategoryType:"Project Fund"
-      },()=>{
-      console.log("this.state.type",this.state.type)
+      event.preventDefault();
+      // console.log("this.state.type",this.state.type)
+    // if (this.state.type===true){
+    //   this.setState({
+    //     type: false,
+    //     projectCategoryType:"Project Fund"
+    //   },()=>{
+    //   console.log("this.state.type",this.state.type)
 
-      })
-    }
-    else{
-      this.setState({
-        type: true,
-        projectCategoryType:"LHWRF Grant",
-        projectName:"LHWRF Grant",
+    //   })
+    // }
+    // else{
+    //   this.setState({
+    //     type: true,
+    //     projectCategoryType:"LHWRF Grant",
+    //     projectName:"LHWRF Grant",
 
-      },()=>{
-      console.log("this.state.type",this.state.type)
-      })
-    }  
+    //   },()=>{
+    //   console.log("this.state.type",this.state.type)
+    //   })
+    // }  
+    this.setState({
+      [event.target.name] : event.target.value
+    },()=>{
+      if (this.state.projectCategoryType == "LHWRF Grant") {
+        this.setState({
+           projectName:"LHWRF Grant",
+        })
+      }else{
+        this.setState({
+           projectName:"",
+        })
+      }
+    })
   }
   render() {
     console.log('state',this.state.total)
@@ -1194,7 +1213,7 @@ class Activity extends Component{
                       <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
                         <div className="" id="projectCategoryType" >
                           <label className=" formLable">Category Type<span className="asterix">*</span></label>
-                          {this.state.type===true ?
+                          {/*this.state.type===true ?
 
                            <div className="switch" onClick={this.handleToggle.bind(this)} >
                               <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  defaultChecked />
@@ -1214,8 +1233,16 @@ class Activity extends Component{
                               <span className="switch-selection" ></span>
                             </div>
                         
-                          }
+                          */}
+                          <div className="switch" >
+                            <input type="radio" className="switch-input pull-left" name="projectCategoryType" checked={this.state.projectCategoryType === "LHWRF Grant"} onChange={this.handleToggle.bind(this)} value="LHWRF Grant" id="week" />
+                            <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                            <input type="radio" className="switch-input pull-right" name="projectCategoryType" checked={this.state.projectCategoryType === "Project Fund"} onChange={this.handleToggle.bind(this)} value="Project Fund" id="month"  />
+                            <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                            <span className="switch-selection"></span>
+                          </div>
                         </div>
+                       
                       </div>
                         {console.log("projectCategoryType",this.state.projectCategoryType)}
                       {

@@ -495,10 +495,18 @@ class IAssureTable extends Component {
 		});
     }
     printTable(event){
-    	// event.preventDefault();
-       
-        var DocumentContainer = document.getElementById('section-to-print');
+    	event.preventDefault();
+  //   	 var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
+   
+		// mywindow.document.write(document.getElementById('section-to-print').innerHTML);
+		// mywindow.document.close(); // necessary for IE >= 10
+		// mywindow.focus(); // necessary for IE >= 10*/
+
+		// mywindow.print();
+		// mywindow.close();
+       
+       var DocumentContainer = document.getElementById('section-to-print');
 	    var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
 	    WindowObject.document.write(DocumentContainer.innerHTML);
 	    WindowObject.document.close();
