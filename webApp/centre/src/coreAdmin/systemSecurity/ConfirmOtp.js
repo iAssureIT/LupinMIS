@@ -285,7 +285,7 @@ import './SignUp.css';
                           <form id="OTPMobMail" onSubmit={this.confirmOTP.bind(this)}>
                             <div className="col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail veribtm1">
                               <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
-                                <span>Enter six digit verification code received on <b>Email</b>.<br/></span>
+                                <span>Enter six digit verification code received on <b>Email<label className="sign asterix">*</label></b>.<br/></span>
                               </div>
                               <div className="input-effect input-group" id="emailotpErr">
                                 <input type="text" className="effect-21 form-control loginInputs " ref="emailotp" name="emailotp" onBlur={this.inputEffect.bind(this)} aria-describedby="basic-addon1" title="Please enter numbers only!" maxLength="6" pattern="(0|[0-9]*)" required/>

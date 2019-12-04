@@ -203,7 +203,7 @@ class ForgotPassword extends Component {
                     <div className="FormWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 forPassWrap">
                       <form id="forgotPassword" onSubmit={this.forgotpassword.bind(this)}>
                         <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
-                          <span>Enter registerd Email Id </span>
+                          <span>Enter registerd Email Id<label className="sign asterix">*</label></span>
                         </div>
                         <div className="form-group col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr veribtm">
                           <div id="enterEmailErr" className="input-effect input-group col-lg-12">

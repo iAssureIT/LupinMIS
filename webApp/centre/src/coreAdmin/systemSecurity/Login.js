@@ -95,10 +95,17 @@ class Login extends Component {
         }
       })
       .catch(function (error) {
-          console.log(error);
-        if(localStorage!==null){
+        if(error.response&&error.response.status===401){
+          swal("Invalid Email or Password","Email ID does not exists");
+        }else if(localStorage!==null){
           swal("Invalid Email or Password","Please Enter valid email and password");
+        }else{
+          swal("Invalid Email or Password","Please try again");
         }
+          // console.log(error);
+        // if(localStorage!==null){
+        //   swal("Invalid Email or Password","Please Enter valid email and password");
+        // }
       });
     }
   }
@@ -182,7 +189,7 @@ class Login extends Component {
                           <div className="inputContent">
                             <span className="blocking-span noIb" id="loginusernameErr">
                               <input type="email" className="col-lg-12 col-md-1col-lg-12 col-md-12 col-sm-12 oesSignUpForm tmsLoginTextBox" onChange={this.handleChange} ref="loginusername" id="loginusername" name="loginusername" placeholder="" required/>
-                              <span className="floating-label"><i className="fa fa-envelope signupIconFont" aria-hidden="true"/>Email ID</span>   
+                              <span className="floating-label"><i className="fa fa-envelope signupIconFont" aria-hidden="true"/>Email ID<label className="sign asterix">*</label></span>   
                             </span>
                           </div>
                         </div>
@@ -190,7 +197,7 @@ class Login extends Component {
                           <div className="form-group1 fltlft input-group col-lg-12 col-md-12 col-sm-12 inputContent ">     
                             <span id="loginpasswordErr" className="blocking-span noIb">
                               <input type="password" className="form-control border3 pass oesSignUpForm confirmbtm inputTextPass tmsLoginTextBox" ref="loginpassword" name="loginpassword" required/>
-                              <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Password</span>                 
+                              <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Password<label className="sign asterix">*</label></span>                 
                             </span>
                          
                           <div className="showHideSignDiv">

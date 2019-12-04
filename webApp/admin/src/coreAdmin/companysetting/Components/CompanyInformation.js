@@ -5,6 +5,7 @@ import axios from 'axios';
 // import SimpleReactValidator from 'simple-react-validator';
 import swal from 'sweetalert';
 import InputMask  from 'react-input-mask';
+import validate               from 'jquery-validation';
 
 import "../../../API";
 
@@ -67,7 +68,73 @@ class CompanyInformation extends Component{
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-  var companyId = 1;
+    $.validator.addMethod("regxContact", function(value, element, regexpr) { 
+      return value===regexpr;
+    }, "This field value is similar as contact number.");
+    $("#companyInformationForm").validate({
+      rules: {
+        companyName: {
+          required: true,
+        },
+        companyContactNumber: {
+          required: true,
+        },
+        companyAltContactNumber: {
+          regxContact: this.refs.companyContactNumber.value
+        },
+        companyEmail: {
+          required: true,
+        },
+        companywebsite: {
+          required: true,
+        },
+        companyAddressLine1: {
+          required: true,
+        },
+        companyCountry: {
+          required: true,
+        },
+        companyState: {
+          required: true,
+        },
+        companyDist: {
+          required: true,
+        },
+        taluka: {
+          required: true,
+        },
+        companyCity: {
+          required: true,
+        },
+        companyPincode: {
+          required: true,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "firstname"){
+          error.insertAfter("#firstnameErr");
+        }
+        if (element.attr("name") == "lastname"){
+          error.insertAfter("#lastnameErr");
+        }
+        if (element.attr("name") == "mobileNumber"){
+          error.insertAfter("#mobileNumberErr");
+        }
+        if (element.attr("name") == "centerName"){
+          error.insertAfter("#centerNameErr");
+        }
+        if (element.attr("name") == "signupEmail"){
+          error.insertAfter("#signupEmailErr");
+        }
+        if (element.attr("name") == "signupPassword"){
+          error.insertAfter("#signupPasswordErr");
+        }
+        if (element.attr("name") == "signupConfirmPassword"){
+          error.insertAfter("#signupConfirmPasswordErr");
+        }
+      }
+    });
+    var companyId = 1;
     axios.get('/api/companysettings/'+ companyId)
     .then( (res)=>{      
       console.log("here company data",res.data);
@@ -217,13 +284,12 @@ class CompanyInformation extends Component{
   
     console.log("companyInfoFormValue--------------------",companyInfoFormValue);
 
-    formValid(this.state.formerrors)
-  if(this.state.companyName!= "" && this.state.companyContactNumber!= "" && this.state.companyEmail!= ""
-   && this.state.companywebsite!= "" && this.state.companyAddressLine1!= "" && this.state.companyCountry!= ""
-   && this.state.companyState!= "" && this.state.companyDist!= "" && this.state.companyCity!= "" && 
-    this.state.companyPincode!= "" && this.state.taluka!= "" && this.state.defaultPassword!= ""){
-    
-
+    // formValid(this.state.formerrors)
+  // if(this.state.companyName!= "" && this.state.companyContactNumber!= "" && this.state.companyEmail!= ""
+  //  && this.state.companywebsite!= "" && this.state.companyAddressLine1!= "" && this.state.companyCountry!= ""
+  //  && this.state.companyState!= "" && this.state.companyDist!= "" && this.state.companyCity!= "" && 
+  //   this.state.companyPincode!= "" && this.state.taluka!= "" && this.state.defaultPassword!= ""){
+  if($("#companyInformationForm").valid()){  
     if(this.state.submitVal == true){
         axios.post('/api/companysettings',companyInfoFormValue)
         .then( (response)=> { 
@@ -325,15 +391,17 @@ class CompanyInformation extends Component{
 
         });
     }
-  }else{
+  }
+
+  // }else{
  
 
-             swal({
-                    title: "Please enter mandatory fields",
-                    text: "Please enter mandatory fields",
-                  });
-    console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-  }
+  //            swal({
+  //                   title: "Please enter mandatory fields",
+  //                   text: "Please enter mandatory fields",
+  //                 });
+  //   console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+  // }
  
      
 
