@@ -4,6 +4,7 @@ import InputMask from 'react-input-mask';
 import swal from 'sweetalert';
 import $ from "jquery";
 import axios from 'axios';
+import validate               from 'jquery-validation';
 import 'font-awesome/css/font-awesome.min.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
@@ -21,110 +22,128 @@ class ForgotPassword extends Component {
       }
     }
     componentDidMount(){
+      $("#forgotPassword").validate({
+        rules: {
+          enterEmail: {
+            required: true,
+          }
+        },
+        errorPlacement: function(error, element) {
+          if (element.attr("name") == "enterEmail"){
+            error.insertAfter("#enterEmailErr");
+          }
+        }
+      });
       var x = this.props.match.params;
       console.log('x',x);
     }
     forgotpassword(event){
       // console.log('forgotpassword');
       event.preventDefault();
-      var email = this.refs.enterEmail.value;
-      // var mobile = this.refs.enterMobNo.value;
-      // console.log("email: ",email);
-     this.setState({
-      email : email,
-      buttonValue : 'Please Wait...'
-      // mobile : mobile,
-     });
-      var userOtp = 1 /*Meteor.users.findOne({"username":email})*/;
-      // console.log("userOtp: ",userOtp);
-     
-     if(userOtp==1){
-      var mobileotp = Math.floor(1000 + Math.random() * 9000);
-      var emailotp = Math.floor(100000 + Math.random() * 900000);
-      localStorage.setItem('emailotp',emailotp)
-      localStorage.setItem('email',this.state.email)
-      axios
-      .patch('/api/users/setotp/'+this.state.email,{'emailotp' : emailotp})
-      .then((response)=> {
-        axios
-        .get('/api/users/email/'+this.state.email)
-        .then((response)=> {
-          console.log("-------name------>>",response);
-          if(response&&response.data){
-            var msgvariable = {
-              '[User]'    : response.data.profile.firstName+' '+response.data.profile.lastName,
-              '[OTP]'     : emailotp
-            }
-            // console.log("msgvariable :"+JSON.stringify(msgvariable));
-            var inputObj = {  
-              to           : this.state.email,
-              templateName : 'User - Forgot Password OTP',
-              variables    : msgvariable,
-            }
+      if($("#forgotPassword").valid()){
+        var email = this.refs.enterEmail.value;
+        // var mobile = this.refs.enterMobNo.value;
+        // console.log("email: ",email);
+       this.setState({
+        email : email,
+        buttonValue : 'Please Wait...'
+        // mobile : mobile,
+       },()=>{
+        var userOtp = 1 /*Meteor.users.findOne({"username":email})*/;
+        // console.log("userOtp: ",userOtp);
+       
+        if(userOtp===1){
+          var mobileotp = Math.floor(1000 + Math.random() * 9000);
+          var emailotp = Math.floor(100000 + Math.random() * 900000);
+          localStorage.setItem('emailotp',emailotp)
+          localStorage.setItem('email',this.state.email)
+          // console.log('this.state.email',this.state.email)
+          axios
+          .patch('/api/users/setotp/'+this.state.email,{'emailotp' : emailotp})
+          .then((response)=> {
             axios
-            .post('/api/masternotification/send-mail',inputObj)
+            .get('/api/users/email/'+this.state.email)
             .then((response)=> {
-              // console.log("-------mail------>>",response);
-              this.setState({
-                buttonValue : 'Send Verification Code'
-              },()=>{
-                this.props.history.push("/confirm-otp");
-              })
+              console.log("-------name------>>",response);
+              if(response&&response.data){
+                var msgvariable = {
+                  '[User]'    : response.data.profile.firstName+' '+response.data.profile.lastName,
+                  '[OTP]'     : emailotp
+                }
+                // console.log("msgvariable :"+JSON.stringify(msgvariable));
+                var inputObj = {  
+                  to           : this.state.email,
+                  templateName : 'User - Forgot Password OTP',
+                  variables    : msgvariable,
+                }
+                axios
+                .post('/api/masternotification/send-mail',inputObj)
+                .then((response)=> {
+                  // console.log("-------mail------>>",response);
+                  this.setState({
+                    buttonValue : 'Send Verification Code'
+                  },()=>{
+                    this.props.history.push("/confirm-otp");
+                  })
+                })
+                .catch(function (error) {
+                  console.log(error);
+                })
+              }
             })
             .catch(function (error) {
               console.log(error);
             })
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  //       // Session.set('mobotp',mobileotp);
-  ///////////////
-  //       // Session.set('mailotp',emailotp);
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+        }else{
+          swal('Email Address not found',"Please enter valid Email Id","warning");                  
+        }
+       });
         
-  //       var newID = userOtp._id;
+        //       // Session.set('mobotp',mobileotp);
+        ///////////////
+        //       // Session.set('mailotp',emailotp);
+              
+        //       var newID = userOtp._id;
 
-  ///////////////
+        ///////////////
 
-  //       // Session.set('newID',newID);
+        //       // Session.set('newID',newID);
 
-  //       Meteor.call('addOTP', newID , emailotp, function(error,result){
-  //         if(error){
-  //           Bert.alert(error);
-  //         }else{
+        //       Meteor.call('addOTP', newID , emailotp, function(error,result){
+        //         if(error){
+        //           Bert.alert(error);
+        //         }else{
 
-  //         }
-  //       });
-      
-  //       // //Send OTP    
-  //       // Meteor.call('sendOtp',mobile,mobileotp,
-  //       // function(error,result){
-  //       //   if(error){
-  //       //     console.log(error.reason);
-  //       //   }else{
-  //       //     swal('Successfully sent the OTP to your mobile number');
-  //       //   }
-  //       // });
-                             
-        // // SEND EMAIL VERIFICATION LINK
-        // Meteor.call('sendVerificationLinkToUser', email, function(error,result){
-        //   if(error){
-        //     Bert.alert(error);
-        //   }else{ 
-        //     swal({text:'Successfully sent the OTP to your Email Address.', showConfirmButton: true,type     : 'success'});                  
-        //   } //end else
-        // }); // send verification mail ends
-        //    FlowRouter.go('/forgotOTPVarification/'+newID);
-        // // $('.confirnModalWrap').addClass('newPassword');
-        // // $('.NewForgotPasswordWrap').css('display','none');
+        //         }
+        //       });
+            
+        //       // //Send OTP    
+        //       // Meteor.call('sendOtp',mobile,mobileotp,
+        //       // function(error,result){
+        //       //   if(error){
+        //       //     console.log(error.reason);
+        //       //   }else{
+        //       //     swal('Successfully sent the OTP to your mobile number');
+        //       //   }
+        //       // });
+                                   
+              // // SEND EMAIL VERIFICATION LINK
+              // Meteor.call('sendVerificationLinkToUser', email, function(error,result){
+              //   if(error){
+              //     Bert.alert(error);
+              //   }else{ 
+              //     swal({text:'Successfully sent the OTP to your Email Address.', showConfirmButton: true,type     : 'success'});                  
+              //   } //end else
+              // }); // send verification mail ends
+              //    FlowRouter.go('/forgotOTPVarification/'+newID);
+              // // $('.confirnModalWrap').addClass('newPassword');
+              // // $('.NewForgotPasswordWrap').css('display','none');
 
-      }else{
-        swal('Email Address not found',"Please enter valid Email Id","warning");                  
+        
       }
     }
 
@@ -187,8 +206,8 @@ class ForgotPassword extends Component {
                           <span>Enter registerd Email Id </span>
                         </div>
                         <div className="form-group col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr veribtm">
-                          <div className="input-effect input-group col-lg-12">
-                            <input type="email" className="effect-21  form-control loginInputs" ref="enterEmail" name="enterEmail" onBlur={this.inputEffect.bind(this)} aria-label="Email Id" aria-describedby="basic-addon1" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Please add '.' and enter only 2 or 3 characters following '.'!" required/>
+                          <div id="enterEmailErr" className="input-effect input-group col-lg-12">
+                            <input type="email" className="effect-21  form-control loginInputs" ref="enterEmail" name="enterEmail" onBlur={this.inputEffect.bind(this)} aria-label="Email Id" aria-describedby="basic-addon1" required/>
                             <span className="input-group-addon glyphi-custommm"><i className="fa fa-envelope" aria-hidden="true"></i></span>
                             <span className="focus-border">
                               <i></i>
@@ -209,7 +228,7 @@ class ForgotPassword extends Component {
                         </div>*/}
                         <div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 pdleftclr">
                           {/*<Link to='/confirm-otp'>*/}
-                            <button type="submit" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submitBtn UMloginbutton">{this.state.buttonValue}</button>
+                            <button type="submit" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submitBtn UMloginbutton" disabled={this.state.buttonValue==='Please Wait...'?true:false}>{this.state.buttonValue}</button>
                           {/*</Link>*/}
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls pull-right">

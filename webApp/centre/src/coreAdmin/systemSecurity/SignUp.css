@@ -121,7 +121,7 @@
   margin-top: 0px !important;
 }
 .inputContent{
-  height: 45px !important;
+  /*height: 45px !important;*/
 }
 .signUpFormWrap, .forgetpassFormWrap, .confirmModalFormWrap{
   border-radius: 10px;
@@ -766,7 +766,7 @@
     text-align: right;
     /*background: #d8d8d8;*/
     font-size: 14px;
-    text-align: center;
+    /*text-align: center;*/
     padding: 5px;
     border-radius: 4px;
     float: right;
@@ -799,7 +799,7 @@
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
-.oesSignUpForm:focus ~ .floating-label, .oesSignUpForm:not(:focus):valid ~ .floating-label {
+.oesSignUpForm:focus ~ .floating-label,.oesSignUpForm.error:not(:focus) ~ .floating-label, .oesSignUpForm:not(:focus):valid ~ .floating-label {
     top: -16px;
     font-size: 13px;
     color: #555;
@@ -817,7 +817,7 @@
     font-size: 13px;
     transition: 0.2s ease all;
 }
-.oesSignUpForm:focus ~ .floating-label1, .oesSignUpForm:not(:focus):valid ~ .floating-label1 {
+.oesSignUpForm:focus ~ .floating-label1,.oesSignUpForm.error:not(:focus) ~ .floating-label1, .oesSignUpForm:not(:focus):valid ~ .floating-label1 {
     top: -16px;
     font-size: 13px;
     color: #555;
@@ -1039,7 +1039,7 @@ input[type=radio]:checked ~ span{
   color: #333333;
   padding: 4px;
   background: #fff;
-  margin-top: 05px !important;
+  /*margin-top: 05px !important;*/
   border-radius: 4px;
   /* margin-left: 5%; */
   font-weight: bold;
@@ -1391,7 +1391,7 @@ input[type="radio"]:checked:before {
 }
 .tmsLoginTextBox{
   height: 35px !important;
-  margin-bottom: 30px;
+  /*margin-bottom: 30px;*/
   border: 1px solid #aaa !important;
   box-shadow: none;
   border-radius: 4px;
@@ -1968,7 +1968,7 @@ input[type="radio"]:checked:before {
     text-align: right;
     /*background: #d8d8d8;*/
     font-size: 14px;
-    text-align: center;
+    /*text-align: center;*/
     padding: 5px;
     border-radius: 4px;
     /*margin-top: 17px;*/
@@ -2497,3 +2497,4 @@ input[type="radio"]:checked:before {
 .modal{
   overflow-y: auto !important;
 }
+.emailHeight{height: 54px;}

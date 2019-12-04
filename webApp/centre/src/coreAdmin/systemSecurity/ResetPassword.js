@@ -4,6 +4,7 @@ import InputMask from 'react-input-mask';
 import swal from 'sweetalert';
 import axios from 'axios';
 import $ from "jquery";
+import validate               from 'jquery-validation';
 
 import 'font-awesome/css/font-awesome.min.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,6 +19,26 @@ class ResetPassword extends Component {
         }
     }
 
+  componentDidMount(){
+    $("#resetPassword").validate({
+      rules: {
+        resetPassword: {
+          required: true,
+        },
+        resetPasswordConfirm: {
+          required: true,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "resetPassword"){
+          error.insertAfter("#resetPasswordErr");
+        }
+        if (element.attr("name") == "resetPasswordConfirm"){
+          error.insertAfter("#resetPasswordConfirmErr");
+        }
+      }
+    });
+  }
   showSignPass(){
     $('.showPwd').toggleClass('showPwd1');
     $('.hidePwd').toggleClass('hidePwd1');
@@ -40,22 +61,22 @@ class ResetPassword extends Component {
   }
   changepassword(event){
     event.preventDefault()
-    var email = localStorage.getItem('email')
-    var password = this.refs.resetPassword.value;
-    var confirmpassword = this.refs.resetPasswordConfirm.value;
-    if(password===confirmpassword){
-      axios
-      .patch('/api/users/resetpwd/'+email,{'pwd' : password})
-      .then((response)=> {
-        localStorage.removeItem('emailotp')
-        localStorage.removeItem('email')
-        this.props.history.push('/')  
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-    }else{
-      swal("Password doesn't match")
+    if($("#resetPassword").valid()){
+      var email = localStorage.getItem('email')
+      var password = this.refs.resetPassword.value;
+      var confirmpassword = this.refs.resetPasswordConfirm.value;
+      if(password===confirmpassword){
+        axios
+        .patch('/api/users/resetpwd/'+email,{'pwd' : password})
+        .then((response)=> {
+          this.props.history.push('/')  
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      }else{
+        swal("Password doesn't match")
+      }
     }
   }
 
@@ -112,7 +133,7 @@ class ResetPassword extends Component {
                     <div className="FormWrapper1 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <form id="resetPassword" onSubmit={this.changepassword.bind(this)}>
                         <div className="form-group loginFormGroup pdleftclr veribtm col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div className="input-group">
+                          <div id="resetPasswordErr" className="input-group">
                             <span className="input-group-addon addons glyphi-custommmLeft" id="basic-addon1"><i className="fa fa-lock" aria-hidden="true"></i></span>
                             <input type="password" className="form-control loginInputs inputTextPass" ref="resetPassword" name="resetPassword" placeholder="New Password" aria-label="Password" aria-describedby="basic-addon1" title="Password should be at least 6 characters long!" pattern=".{6,}" required/>
                             <span className="input-group-addon addons glyphi-custommm padBoth" id="basic-addon1">
@@ -122,7 +143,7 @@ class ResetPassword extends Component {
                           </div>
                         </div>
                         <div className="form-group loginFormGroup pdleftclr veribtm col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div className="input-group">
+                          <div className="input-group" id="resetPasswordConfirmErr">
                             <span className="input-group-addon addons glyphi-custommmLeft" id="basic-addon1"><i className="fa fa-lock" aria-hidden="true"></i></span>
                             <input type="password" className="form-control loginInputs inputTextPassC" ref="resetPasswordConfirm" name="resetPasswordConfirm" placeholder="Confirm New Password" aria-label="Confirm Password" aria-describedby="basic-addon1" title="Password should be at least 6 characters long!" pattern=".{6,}" required/>
                             <span className="input-group-addon addons glyphi-custommm padBoth" id="basic-addon1">

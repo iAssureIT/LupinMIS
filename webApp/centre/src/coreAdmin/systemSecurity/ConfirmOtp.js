@@ -15,15 +15,31 @@ import './SignUp.css';
         // }
       }
     }
+    componentDidMount(){
+      $("#OTPMobMail").validate({
+        rules: {
+          emailotp: {
+            required: true,
+          }
+        },
+        errorPlacement: function(error, element) {
+          if (element.attr("name") == "emailotp"){
+            error.insertAfter("#emailotpErr");
+          }
+        }
+      });
+    }
     confirmOTP(event){
-      console.log('confirm otp');
+      // console.log('confirm otp');
       event.preventDefault();
-      var url = this.props.match.params;
-      // console.log('url = ',url);
-      var sentEmailOTP = localStorage.getItem('emailotp')
-      var currentOTP = this.refs.emailotp.value
-      if(sentEmailOTP===currentOTP){
-        this.props.history.push('/reset-pwd')
+      if($('#OTPMobMail').valid()){
+        var url = this.props.match.params;
+        // console.log('url = ',url);
+        var sentEmailOTP = localStorage.getItem('emailotp')
+        var currentOTP = this.refs.emailotp.value
+        if(sentEmailOTP===currentOTP){
+          this.props.history.push('/reset-pwd')
+        }
       }
 
       // var checkUserExist = FlowRouter.getParam("mailId");
@@ -267,11 +283,11 @@ import './SignUp.css';
                             <span>We have sent you a Verification Code to your registered <b>mobile and Email </b>.<br/><br/></span>
                           </div>
                           <form id="OTPMobMail" onSubmit={this.confirmOTP.bind(this)}>
-                            <div className="col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail">
+                            <div className="col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail veribtm1">
                               <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
                                 <span>Enter six digit verification code received on <b>Email</b>.<br/></span>
                               </div>
-                              <div className="input-effect input-group veribtm1">
+                              <div className="input-effect input-group" id="emailotpErr">
                                 <input type="text" className="effect-21 form-control loginInputs " ref="emailotp" name="emailotp" onBlur={this.inputEffect.bind(this)} aria-describedby="basic-addon1" title="Please enter numbers only!" maxLength="6" pattern="(0|[0-9]*)" required/>
                                 <span className="input-group-addon glyphi-custommm"><i className="fa fa-key" aria-hidden="true"></i></span>
                                 <span className="focus-border">
@@ -294,7 +310,7 @@ import './SignUp.css';
                             </div>
                             <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail">
                               <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 pdcls">
-                                <Link to='/' className="UMGreyy  veriemailmr veriemail col-lg-12"><u>Sign In</u></Link>  
+                                <Link to='/' className="UMGreyy"><u>Sign In</u></Link>  
                               </div>
                               <div id="resendOtpBtn" className={"col-lg-6 col-md-6 col-sm-12 col-xs-12  resendOtpColor "+resendOtpWrap}>
                                 {resendOtp}

@@ -4,6 +4,7 @@ import { Link} from 'react-router-dom';
 import { Redirect } from 'react-router';
 import swal from 'sweetalert';
 import $ from "jquery";
+import validate               from 'jquery-validation';
 
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,20 +26,40 @@ class Login extends Component {
         }
   }
   componentDidMount(){
+    $("#login").validate({
+      rules: {
+        loginusername: {
+          required: true,
+        },
+        loginpassword: {
+          required: true,
+        }
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "loginusername"){
+          error.insertAfter("#loginusernameErr");
+        }
+        if (element.attr("name") == "loginpassword"){
+          error.insertAfter("#loginpasswordErr");
+        }
+      }
+    });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     
   }
   userlogin(event){
     event.preventDefault();
-    console.log("in login mode",this.state.auth);
-        var auth= {
-          email       : this.refs.loginusername.value,
-          password    : this.refs.loginpassword.value,
-        }
+    if($("#login").valid()){
+      console.log("in login mode",this.state.auth);
+      var auth= {
+        email       : this.refs.loginusername.value,
+        password    : this.refs.loginpassword.value,
+        roles       : 'MIS Coordinator'
+      }
 
-        // console.log("auth value",auth);
+      // console.log("auth value",auth);
 
-    axios
+      axios
       .post('/api/users/login',auth)
       .then((response)=> {
         console.log("-------userData------>>",response);
@@ -61,6 +82,8 @@ class Login extends Component {
               localStorage.setItem("center_ID",response.data.center_ID);
               localStorage.setItem("centerName",response.data.centerName);
               localStorage.setItem("fullName",response.data.fullName);
+              localStorage.removeItem('emailotp')
+              localStorage.removeItem('email')
               window.location.reload();
               this.setState({
                   loggedIn  :   true
@@ -77,6 +100,7 @@ class Login extends Component {
           swal("Invalid Email or Password","Please Enter valid email and password");
         }
       });
+    }
   }
   showSignPass(){
       $('.showPwd').toggleClass('showPwd1');
@@ -88,6 +112,14 @@ class Login extends Component {
       $('.hidePwd').toggleClass('hidePwd1');
       return $('.inputTextPass').attr('type', 'password');
   }
+  // handleChange(event){
+  //   event.preventDefault()
+  //   if(event.currentTarget.value){
+  //     $(event.currentTarget).siblings('.floating-label').css('top','-16px')
+  //   }else{
+  //     $(event.currentTarget).siblings('.floating-label').css('top','-16px')
+  //   }
+  // }
   render(){
     var y = 360;
     var h = y + 'px';
@@ -146,17 +178,17 @@ class Login extends Component {
                      {/*blue, white top new pink skyblue redyellow jerkin new jaket*/}
                         {<h4 className="signInNameTitle mb35"><span className="bordbt">SIGN IN</span></h4>
                         }</div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 ">
+                        <div className="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 emailHeight">
                           <div className="inputContent">
-                            <span className="blocking-span noIb">
+                            <span className="blocking-span noIb" id="loginusernameErr">
                               <input type="email" className="col-lg-12 col-md-1col-lg-12 col-md-12 col-sm-12 oesSignUpForm tmsLoginTextBox" onChange={this.handleChange} ref="loginusername" id="loginusername" name="loginusername" placeholder="" required/>
                               <span className="floating-label"><i className="fa fa-envelope signupIconFont" aria-hidden="true"/>Email ID</span>   
                             </span>
                           </div>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12">
-                          <div className="form-group form-group1 fltlft input-group col-lg-12 col-md-12 col-sm-12 inputContent ">     
-                            <span className="blocking-span noIb">
+                        <div className="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div className="form-group1 fltlft input-group col-lg-12 col-md-12 col-sm-12 inputContent ">     
+                            <span id="loginpasswordErr" className="blocking-span noIb">
                               <input type="password" className="form-control border3 pass oesSignUpForm confirmbtm inputTextPass tmsLoginTextBox" ref="loginpassword" name="loginpassword" required/>
                               <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Password</span>                 
                             </span>
@@ -170,8 +202,8 @@ class Login extends Component {
                             </span>
                           </div>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 btn">
-                          <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 UMloginbutton hvr-sweep-to-right" value="Sign In"/>
+                        <div className="col-lg-12 col-md-12 col-sm-12">
+                          <input id="logInBtn" type="submit" className="btn col-lg-12 col-md-12 col-xs-12 col-sm-12 UMloginbutton hvr-sweep-to-right" value="Sign In"/>
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  customFl pdcls ">
                           <div className="col-lg-6 col-md-6 col-sm-6">
