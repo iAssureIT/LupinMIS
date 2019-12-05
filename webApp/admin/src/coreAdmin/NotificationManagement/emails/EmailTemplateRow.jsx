@@ -52,15 +52,14 @@ class EmailTemplateRow extends Component{
 		})
 		.then((response)=> {
 	    	console.log('delete response',response);
-	    	
-	    	 swal({
-										title: "Template deleted successfully",
-										text: "Template deleted successfully",
-									});
+	    	swal({
+				title: "Template deleted successfully",
+				text: "Template deleted successfully",
+			});
 	    	console.log("here response message",response.data.message);
 	    	if(response.data.message=="Master notification deleted")
 	    	{
-	    	this.props.deleteData("Email",id);
+		    	this.props.deleteData("Email",id);
     		}
 
 		}).catch((error)=> {
@@ -89,8 +88,8 @@ class EmailTemplateRow extends Component{
 			// console.log('this.props.emailtemplateValues',this.props.emailtemplateValues, this.props.emailtemplateValues._id);
 			var text = this.props.emailtemplateValues.content ? this.props.emailtemplateValues.content : ''; 
 			// console.log("textes=",text);
-			var regex = new RegExp(/(<([^>]+)>)/ig);
-			text = text.replace(regex,'');
+			// var regex = new RegExp(/(<([^>]+)>)/ig);
+			// text = text.replace(regex,'');
 			if(this.props.emailtemplateValues && this.props.emailtemplateValues.content){
 
 		        return (
@@ -113,7 +112,7 @@ class EmailTemplateRow extends Component{
 						</div>
 						
 					</div>
-					<EditNotificationModal  emailNot={this.props.emailtemplateValues._id} emailGetData={this.emailGetData.bind(this)} data={this.props.emailtemplateValues}/>
+					<EditNotificationModal  emailNot={this.props.emailtemplateValues._id} emailGetData={this.emailGetData.bind(this)} data={this.props.emailtemplateValues} getData={this.props.getData} />
 
 					<div className="modal fade col-lg-12 col-md-12 col-sm-12 col-xs-12" id={`${this.props.emailtemplateValues._id}-rm`}  role="dialog">
 	                    <div className=" modal-dialog adminModal adminModal-dialog">
@@ -157,7 +156,7 @@ class EmailTemplateRow extends Component{
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<div className="form-group">
 							 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Message:</label>     						
-							 <p  dangerouslySetInnerHTML={{ __html:text}} className="textAreaBox"></p>
+							 <div  dangerouslySetInnerHTML={{ __html:text}} className="textAreaBox col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
 							</div>	
 						</div>
 					</div>

@@ -166,7 +166,7 @@ class EditNotificationModal extends Component{
 
 					}
 
-
+					this.props.getData();
 					$('#editNotifyModal-'+this.props.emailNot).hide();
 				    $('.modal-backdrop').remove();
                    

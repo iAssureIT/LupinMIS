@@ -71,7 +71,7 @@ class ViewTemplates extends Component{
 
 	componentDidMount() {	
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-	    $("html,body").scrollTop(0);	
+	   $("html,body").scrollTop(0);	
 	   this.getData();
 	    /*$.validator.addMethod("regxsubject", function(value, element, arg){          
 	    	return arg !== value;        
@@ -285,7 +285,8 @@ class ViewTemplates extends Component{
 		  var index = emailarray.findIndex((obj)=>{return obj._id == id});
 			  if (index !== -1) {
 			    emailarray.splice(index, 1);
-			    this.setState({emailTemplatesList: emailarray,emailTemplates:{}});
+			    this.setState({emailTemplatesList: emailarray,emailTemplates:{}},()=>
+			    this.getData());
 			  }
 			  }else if (type == "Notification") {
 			        var notificationarray = [...this.state.notificationTemplatesList]; // make a separate copy of the array
@@ -621,9 +622,9 @@ class ViewTemplates extends Component{
 						            		</div>
 						            		<div className="">
 												<div className="tab-content">
-													<div id="emailTemplates" className="tab-pane fade in active table-wrapper-scroll-y my-custom-scrollbar">
+													<div id="emailTemplates" className="tab-pane fade in active table-wrapper-scroll-y">
 													  <div className="">
-													  	<div className="sidertemplatebar col-lg-3 col-md-3 col-xs-12 col-sm-12">
+													  	<div className="sidertemplatebar col-lg-3 col-md-3 col-xs-12 col-sm-12 my-custom-scrollbar">
 													  		<div className="row">
 																{/*{ this.AllTemplates().map( (templateData, index)=>{*/}
 																	<TemplateRow getId={this.getId.bind(this)} emailTemplatesList={this.state.emailTemplatesList}/>

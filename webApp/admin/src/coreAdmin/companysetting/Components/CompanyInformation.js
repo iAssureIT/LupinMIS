@@ -8,6 +8,7 @@ import InputMask  from 'react-input-mask';
 import validate               from 'jquery-validation';
 
 import "../../../API";
+import ImageUpload from '../../ImageUpload/ImageUpload.js';
 
 const formValid = formerrors=>{
   console.log("formerrors",formerrors);
@@ -68,8 +69,10 @@ class CompanyInformation extends Component{
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    // console.log('this.state.companyContactNumber',this.state.companyContactNumber)
     $.validator.addMethod("regxContact", function(value, element, regexpr) { 
-      return value===regexpr;
+      // console.log('value===regexpr',value,element,regexpr)
+      return value!==regexpr;
     }, "This field value is similar as contact number.");
     $("#companyInformationForm").validate({
       rules: {
@@ -79,9 +82,9 @@ class CompanyInformation extends Component{
         companyContactNumber: {
           required: true,
         },
-        companyAltContactNumber: {
-          regxContact: this.refs.companyContactNumber.value
-        },
+        // companyAltContactNumber: {
+        //   regxContact: this.state.companyContactNumber
+        // },
         companyEmail: {
           required: true,
         },
@@ -109,31 +112,12 @@ class CompanyInformation extends Component{
         companyPincode: {
           required: true,
         },
-      },
-      errorPlacement: function(error, element) {
-        if (element.attr("name") == "firstname"){
-          error.insertAfter("#firstnameErr");
-        }
-        if (element.attr("name") == "lastname"){
-          error.insertAfter("#lastnameErr");
-        }
-        if (element.attr("name") == "mobileNumber"){
-          error.insertAfter("#mobileNumberErr");
-        }
-        if (element.attr("name") == "centerName"){
-          error.insertAfter("#centerNameErr");
-        }
-        if (element.attr("name") == "signupEmail"){
-          error.insertAfter("#signupEmailErr");
-        }
-        if (element.attr("name") == "signupPassword"){
-          error.insertAfter("#signupPasswordErr");
-        }
-        if (element.attr("name") == "signupConfirmPassword"){
-          error.insertAfter("#signupConfirmPasswordErr");
-        }
       }
     });
+    this.getCompanySettingsData()
+  }
+
+  getCompanySettingsData(){
     var companyId = 1;
     axios.get('/api/companysettings/'+ companyId)
     .then( (res)=>{      
@@ -155,13 +139,12 @@ class CompanyInformation extends Component{
         submitVal               : false,
         defaultPassword         : res.data.defaultPassword, 
       });
-      console.log("this.this.state.companyName",this.state.companyName)
+      // console.log("this.this.state.companyName",this.state.companyName)
     })
     .catch((error)=>{
       console.log("error = ",error);
       // alert("Something went wrong! Please check Get URL.");
     });
-  
   }
  
   removeCompanyImage(event){
@@ -317,20 +300,17 @@ class CompanyInformation extends Component{
           taluka                  : "",
           companywebsite          : "",
           defaultPassword         : "",
+          },()=>{
+            this.getCompanySettingsData()
           });
-
-          
-
         })
         .catch(function (error) {
           // handle error
           console.log(error);
-        
           swal({
-                    title: "Company Information submition failed!",
-                    text: "Company Information submition failed!",
-                  });
-
+            title: "Company Information submition failed!",
+            text: "Company Information submition failed!",
+          });
         })
         .finally(function () {
           // always executed
@@ -343,47 +323,17 @@ class CompanyInformation extends Component{
         .then( (response)=> {
           // handle success
           console.log("this is response===>>>",response);
-         
-           swal({
-                    title: "Company Information Updated Successfully",
-                    text: "Company Information Updated Successfully",
-                  });
+          swal({
+            title: "Company Information Updated Successfully",
+            text: "Company Information Updated Successfully",
+          });
 
-           // after update show updated data
-                        var companyId = 1;
-                        axios.get('/api/companysettings/'+ companyId)
-                        .then( (res)=>{      
-                          // console.log("here company data",res.data);
-                          this.setState({
-                            companyName : res.data.companyName,
-                            companyId   : 1,
-                            companyContactNumber : res.data.companyContactNumber,
-                            companyAltContactNumber : res.data.companyMobileNumber,
-                            companyEmail            : res.data.companyEmail, 
-                            companywebsite          : res.data.companywebsite, 
-                            companyAddressLine1     : res.data.companyaddress,
-                            companyDist             : res.data.district,
-                            companyPincode          : res.data.pincode,
-                            companyCity             : res.data.city,
-                            companyState            : res.data.state,
-                            companyCountry          : res.data.country,
-                            taluka                  : res.data.taluka,
-                            defaultPassword         : res.data.defaultPassword,
-                            submitVal               : false,
-                          });
-                          
-                        })
-                        .catch((error)=>{
-                          console.log("error = ",error);
-                          // alert("Something went wrong! Please check Get URL.");
-                        });
-
-          
+          // after update show updated data
+          this.getCompanySettingsData()
         })
         .catch(function (error) {
           // handle error
           console.log(error);
-          
              swal({
                     title: "Company Information updation failed!",
                     text: "Company Information updation failed!",
@@ -412,69 +362,71 @@ class CompanyInformation extends Component{
   handleChange(event){
     // const target = event.target;
     // const {name , value}   = event.target;
-    const datatype = event.target.getAttribute('data-text');
+    
+    /**************Working code of react validation***************/
+    // const datatype = event.target.getAttribute('data-text');
     const {name,value} = event.target;
-    let formerrors = this.state.formerrors;
+    // let formerrors = this.state.formerrors;
     
-    console.log("datatype",datatype);
-    switch (datatype){
+    // console.log("datatype",datatype);
+    // switch (datatype){
      
-      case 'firstcompanyname' : 
-       formerrors.firstcompanyname = companynameRegex.test(value)  && value.length>0 ? '' : "Please Enter Valid Name";
-       break;
+    //   case 'firstcompanyname' : 
+    //    formerrors.firstcompanyname = companynameRegex.test(value)  && value.length>0 ? '' : "Please Enter Valid Name";
+    //    break;
 
-       case 'companyMobile' : 
-       formerrors.companyMobile = companymobileRegex.test(value) && value.length>0 ? '' : "Please enter a valid Contact Number";
-       break;
+    //    case 'companyMobile' : 
+    //    formerrors.companyMobile = companymobileRegex.test(value) && value.length>0 ? '' : "Please enter a valid Contact Number";
+    //    break;
 
-       case 'companyEmailID' : 
-        formerrors.companyEmailID = emailRegex.test(value)  && value.length>0? "":"Please enter a valid Email ID";
-       break;
-      //  case "email" : 
-      //  formErrors.email = emailRegex.test(value)? "":"Please enter valid mail address";
-      //  break;
-      case 'companywebsitename' : 
-         formerrors.companywebsitename = companywebsiteRegex.test(value)  && value.length>0 ? '' : "Please enter a valid Company Website";
-      break;
+    //    case 'companyEmailID' : 
+    //     formerrors.companyEmailID = emailRegex.test(value)  && value.length>0? "":"Please enter a valid Email ID";
+    //    break;
+    //   //  case "email" : 
+    //   //  formErrors.email = emailRegex.test(value)? "":"Please enter valid mail address";
+    //   //  break;
+    //   case 'companywebsitename' : 
+    //      formerrors.companywebsitename = companywebsiteRegex.test(value)  && value.length>0 ? '' : "Please enter a valid Company Website";
+    //   break;
 
-       case 'companyAddress' : 
-       formerrors.companyAddress = companyAddressRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-      break;
+    //    case 'companyAddress' : 
+    //    formerrors.companyAddress = companyAddressRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
+    //   break;
     
-      case 'country' : 
-        formerrors.country = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-      break;
+    //   case 'country' : 
+    //     formerrors.country = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
+    //   break;
     
-      case 'state' : 
-        formerrors.state = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-      break;
+    //   case 'state' : 
+    //     formerrors.state = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
+    //   break;
     
-      case 'district' : 
-        formerrors.district = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-      break;
+    //   case 'district' : 
+    //     formerrors.district = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
+    //   break;
 
-      case 'taluka' : 
-        formerrors.taluka = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-      break;
+    //   case 'taluka' : 
+    //     formerrors.taluka = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
+    //   break;
 
-      case 'city' : 
-        formerrors.city = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-      break;
+    //   case 'city' : 
+    //     formerrors.city = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
+    //   break;
 
-      case 'pincode' : 
-        formerrors.pincode = companypincodeRegex.test(value)   && value.length>0? '' : "Invalid Field";
-      break;
+    //   case 'pincode' : 
+    //     formerrors.pincode = companypincodeRegex.test(value)   && value.length>0? '' : "Invalid Field";
+    //   break;
        
-       default :
-       break;
+    //    default :
+    //    break;
 
-      //  case 'companyName' : 
-      //  formerrors.companyName = value.length < 1 && value.lenght > 0 ? 'Minimum 1 Character required' : "";
-      //  break;
+    //   //  case 'companyName' : 
+    //   //  formerrors.companyName = value.length < 1 && value.lenght > 0 ? 'Minimum 1 Character required' : "";
+    //   //  break;
 
-    }
-    // this.setState({formerrors,})
-    this.setState({ formerrors,
+    // }
+    // // this.setState({formerrors,})
+    this.setState({ 
       [name]:value
     } );
   }
@@ -493,7 +445,12 @@ class CompanyInformation extends Component{
                
                 <div className="col-lg-6 col-lg-offset-6 col-md-6 col-sm-12 col-xs-12 csImageWrapper">
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    <img src= "images/lupin.png" className="companyImage" / >
+                    {/*<ImageUpload
+                      configData = {this.state.configData}
+                      fileArray  = {this.state.fileArray}
+                      fileType   = "Image"
+                    /> */}
+                    {<img src= "images/lupin.png" className="companyImage" / >}
                     {/*  {this.CompanyImage() === '../images/CSLogo.png'? <i className="fa fa-camera fonticons" aria-hidden="true" title="First Add Photo."/>
                       :
                       <i className="fa fa-times fonticons removeprofPhoto" aria-hidden="true" title="Remove Photo." onClick={this.removeCompanyImage.bind(this)} data-link={this.state.companyLogo} id={this.state.companyLogo} data-id={this.state.companyId}></i>
@@ -556,7 +513,7 @@ class CompanyInformation extends Component{
               <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >Alternate Contact Number</label>
-                  <InputMask  mask="9999999999" className="form-control areaStaes inputBox-main" title="Please enter valid mobile number only" id="companyAltContactNumber" type="text" name="companyAltContactNumber" ref="companyAltContactNumber" value={this.state.companyAltContactNumber} aria-required="true" onChange={this.handleChange.bind(this)} />
+                  <InputMask  mask="9999999999" className="form-control areaStaes inputBox-main" id="companyAltContactNumber" type="text" name="companyAltContactNumber" ref="companyAltContactNumber" value={this.state.companyAltContactNumber} aria-required="true" onChange={this.handleChange.bind(this)} />
                 </div> 
               </div>
               <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">

@@ -43,7 +43,7 @@ class CreateUser extends Component {
          mobileNumber    : "",
          role         : "",
       },
-
+      'buttonType':'Register User'
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -157,50 +157,66 @@ class CreateUser extends Component {
 
     createUser(event){
       event.preventDefault();
-      const formValues = {
-          "firstName"       : this.state.firstname,
-          "lastName"        : this.state.lastname,
-          "emailId"         : this.state.signupEmail,
-          "countryCode"     : "+91",
-          "mobileNumber"    : this.state.mobileNumber,
-          "pwd"             : "user123",
-          
-          "status"          : "Active",
-          "roles"           :  this.state.role,
-          "center_ID"       : this.refs.centerName.value.split('|')[1],
-          "centerName"      : this.refs.centerName.value.split('|')[0],
+      this.setState({'buttonType':'Please Wait...'},()=>{
+        const formValues = {
+            "firstName"       : this.state.firstname,
+            "lastName"        : this.state.lastname,
+            "emailId"         : this.state.signupEmail,
+            "countryCode"     : "+91",
+            "mobileNumber"    : this.state.mobileNumber,
+            "pwd"             : "user123",
+            "status"          : "Blocked",
+            "roles"           : this.state.role,
+            "center_ID"       : this.refs.centerName.value.split('|')[1],
+            "centerName"      : this.refs.centerName.value.split('|')[0],
         }
 
         if(this.state.firstname!=="" && this.state.lastname !=="" && this.state.signupEmail && this.state.mobileNumber && this.state.role !== "--select--"){
            axios.post('/api/users', formValues)
                 .then( (res)=>{
-                 
-                     swal({
-                    title: "User added successfully",
-                    text: "User added successfully",
-                  });
+                  var msgvariable = {
+                    '[User]'    : this.state.firstname+' '+this.state.lastname,
+                  }
+                  // console.log("msgvariable :"+JSON.stringify(msgvariable));
+                  var inputObj = {  
+                    to           : this.state.signupEmail,
+                    templateName : 'User - Signup Notification',
+                    variables    : msgvariable,
+                  }
+                  axios
+                  .post('/api/masternotification/send-mail',inputObj)
+                  .then((response)=> {
+                    // console.log("-------mail------>>",response);
+                    swal({
+                      title: "User added successfully",
+                      text: "User added successfully",
+                    });
                     this.setState({
                       firstname   : "",
                       lastname    : "",
                       signupEmail : "",
                       mobileNumber   : "",
                       role        : "",
-                      centerName  : ""
+                      centerName  : "",
+                      show: false,
+                      'buttonType':'Register User'
+                    },()=>{
+                      var data = {
+                        "startRange"        : this.state.startRange,
+                        "limitRange"        : this.state.limitRange, 
+                      }
+                                    
+                      this.props.getData(0, 10);
+                      var modal = document.getElementById("CreateUserModal");
+                      modal.style.display = "none";
+                      $('.modal-backdrop').remove();
+                      // window.location = "/umlistofusers"
+                      // this.props.history.push("/umlistofusers");    
                     })
-                    
-                    // this.refs.office.value = "",
-                    this.setState({show: false})
-
-                    var data = {
-                      "startRange"        : this.state.startRange,
-                      "limitRange"        : this.state.limitRange, 
-                    }
-                                  
-                    this.props.getData(0, 10);
-                    var modal = document.getElementById("CreateUserModal");
-                    modal.style.display = "none";
-                    $('.modal-backdrop').remove();
-                    this.props.history.push("/umlistofusers");       
+                  })
+                  .catch(function (error) {
+                      console.log(error);
+                  })  
                 })
               .catch((error)=>{
                 console.log("error = ",error);
@@ -213,8 +229,7 @@ class CreateUser extends Component {
                   });
           console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
         }
-
-
+      })
     }
 
   getRole(){
@@ -360,7 +375,7 @@ class CreateUser extends Component {
                                       );
                                     })
                                     :
-                                    null
+                                    <option value='MIS Coordinator'>MIS Coordinator</option>
                                   }  
                               </select>
                             </div>

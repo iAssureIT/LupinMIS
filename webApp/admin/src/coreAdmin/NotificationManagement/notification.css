@@ -71,7 +71,8 @@
 .my-custom-scrollbar {
 position: relative;
 height: 200px !important;
-overflow: auto;
+overflow-y: auto;
+overflow-x: hidden!important;
 }
 .table-wrapper-scroll-y {
 display: block;
@@ -491,10 +492,10 @@ display: block;
 }
 .textAreaBox{
     display: block;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
     width: 100%;
-    padding: 6px 12px;
-    font-size: 14px;
+    /*padding: 6px 12px;*/
+    font-size: 12px;
     line-height: 1.42857143;
     color: #555;
     background-color: #fff;
