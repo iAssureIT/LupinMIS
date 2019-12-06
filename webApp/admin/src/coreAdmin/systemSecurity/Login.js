@@ -53,7 +53,7 @@ class Login extends Component {
       var auth= {
         email       : this.refs.loginusername.value,
         password    : this.refs.loginpassword.value,
-        roles       : 'Admin'
+        roles       : 'admin'
       }
 
       // console.log("auth value",auth);

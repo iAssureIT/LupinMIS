@@ -92,8 +92,6 @@ class SignUp extends Component {
 	        var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
 	        var centerName				 = this.refs.centerName.value;
 	 		
-	        if(formValid(this.state.formerrors)){
-				console.log('companyName==',this.state.formerrors);
 	        if (passwordVar === signupConfirmPasswordVar) {
 	            return (passwordVar.length >= 6) ? 
 	            	(true, 
@@ -149,14 +147,20 @@ class SignUp extends Component {
 	                )
 	            
 	        } else {
-	            document.getElementById("signUpBtn").value = 'Sign Up';
-		        return swal("Passwords does not match","Please Try Again")
+	            // document.getElementById("signUpBtn").value = 'Sign Up';
+	            this.setState({
+	            	buttonValue : 'Sign Up' 
+	            },()=>{
+		        	swal("Please Try Again","Passwords does not match")
+	            })
 	        }
-	        }else{
-	            document.getElementById("signUpBtn").value = 'Sign Up';
-				swal("Please enter mandatory fields", "");
-				console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-			}
+	  //       if(formValid(this.state.formerrors)){
+			// 	console.log('companyName==',this.state.formerrors);
+	  //       }else{
+	  //           document.getElementById("signUpBtn").value = 'Sign Up';
+			// 	swal("Please enter mandatory fields", "");
+			// 	console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+			// }
  		}        
  	}
  	handleChange(event){
@@ -178,7 +182,7 @@ class SignUp extends Component {
 	       break;
 
 	       case 'mobileV' : 
-	       formerrors.mobileV = mobileRegex.test(value) ? '' : "Please Enter Numbers only";
+	       formerrors.mobileV = mobileRegex.test(value) ? '' : "Please enter valid mobile number";
 	       break;
 
 	       case 'emailIDV' : 
@@ -194,9 +198,9 @@ class SignUp extends Component {
 
 	    }
 	    // this.setState({formerrors,})
-	    this.setState({ formerrors,
-	      [name]:value
-	    } );
+	    // this.setState({ formerrors,
+	    //   [name]:value
+	    // } );
 	}
  	acceptcondition(event){
 	    var conditionaccept = event.target.value;
@@ -228,16 +232,28 @@ class SignUp extends Component {
     	$.validator.addMethod("regxCenter", function(value, element, regexpr) { 
 	      return value!==regexpr;
 	    }, "This field is required.");
+	    $.validator.addMethod("regxEmail", function(value, element, regexpr) {          
+	      return regexpr.test(value);
+	    }, "Please enter a valid email address.");
+	    $.validator.addMethod("regxMobile", function(value, element, regexpr) {          
+	      return regexpr.test(value);
+	    }, "Please enter a valid mobile number.");
+	    $.validator.addMethod("regxName", function(value, element, regexpr) {          
+	      return regexpr.test(value);
+	    }, "It should only contain alphabets.");
     	$("#signUpUser").validate({
 	      rules: {
 	        firstname: {
 	          required: true,
+	          regxName:firstnameRegex
 	        },
 	        lastname: {
 	          required: true,
+	          regxName: lastnameRegex
 	        },
 	        mobileNumber: {
 	          required: true,
+	          regxMobile:mobileRegex 
 	        },
 	        centerName: {
 	          required: true,
@@ -245,6 +261,7 @@ class SignUp extends Component {
 	        },
 	        signupEmail: {
 	          required: true,
+	          regxEmail: emailRegex
 	        },
 	        signupPassword: {
 	          required: true,
@@ -355,71 +372,75 @@ class SignUp extends Component {
 						<form id="signUpUser" onSubmit={this.usersignup.bind(this)}>
 						<h4 className="signInNameTitle "><span className="bordbt">SIGN UP</span></h4>
 							<div className="col-lg-12 col-md-12 signUpInnerWrapperOES signupfrm">
-								<div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
-							   		<span id="firstnameErr" className="blocking-span noIb">
-									   <input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="firstname" ref="firstname" name="firstname"  onChange={this.handleChange} data-text="firstNameV" required/>
-									   {this.state.formerrors.firstNameV  && (
-				                        <span className="text-danger">{this.state.formerrors.firstNameV}</span> 
-				                      )}
-							    		<span className="floating-label">
-								    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
-								    		First Name<label className="sign asterix">*</label>
-							    		</span>					   			
-									</span>
-								</div>
-							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
-									<span id="lastnameErr" className="blocking-span noIb">   
-										<input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
-										{this.state.formerrors.lastNameV  && (
-				                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
-				                      )}
-								    	<span className="floating-label1 lbfloatpass">
-								    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
-								    		Last Name<label className="sign asterix">*</label>
-								    	</span>					   			
-									</span>
+								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+									<div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
+								   		<span id="firstnameErr" className="blocking-span noIb">
+										   <input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="firstname" ref="firstname" name="firstname"  onChange={this.handleChange} data-text="firstNameV" required/>
+										   {this.state.formerrors.firstNameV  && (
+					                        <span className="text-danger">{this.state.formerrors.firstNameV}</span> 
+					                      )}
+								    		<span className="floating-label">
+									    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
+									    		First Name<label className="sign asterix">*</label>
+								    		</span>					   			
+										</span>
+									</div>
+								    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
+										<span id="lastnameErr" className="blocking-span noIb">   
+											<input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
+											{this.state.formerrors.lastNameV  && (
+					                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
+					                      )}
+									    	<span className="floating-label1 lbfloatpass">
+									    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
+									    		Last Name<label className="sign asterix">*</label>
+									    	</span>					   			
+										</span>
+								    </div>
 							    </div>
-							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
-							   		<span id="mobileNumberErr" className="blocking-span noIb">   
-									   <input className="form-control  abacusTextbox oesSignUpForm formLable" ref="mobileNumber" name="mobileNumber" id="mobileNumber" onChange={this.handleChange} data-text="mobileV" required/>
-									   {this.state.formerrors.mobileV  && (
-				                        <span className="text-danger">{this.state.formerrors.mobileV}</span> 
-				                      )}
-									   <span className="floating-label">
-									   <i className="fa fa-mobile signupIconFont" aria-hidden="true"></i>Mobile Number<label className="sign asterix">*</label></span>					   			
-								    </span>
-								</div>
-							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
-									<span id="centerNameErr" className="blocking-span noIb">   
-									<select className="form-control abacusTextbox oesSignUpForm formLable" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName">
-		                               	<option hidden> Center Name</option>
-		                                  {
-		                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
-		                                    this.state.listofCenters.map((data, index)=>{
-		                                      // console.log(data);
-		                                      return(
-		                                        <option className="formLable" key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-		                                      );
-		                                    })
-		                                    :
-		                                    null
-		                                  }  
-		                              </select>
-										{/*<input type="text" className="form-control abacusTextbox oesSignUpForm" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
-										{this.state.formerrors.la
-										stNameV  && (
-				                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
-				                      )}*/}
-								    	{/*<span className="floating-label1 lbfloatpass">
-								    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
-								    		Center Name
-								    	</span>		*/}			   			
-									</span>
-{/*									<div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
-*/}		                           
-		                              
-		                            
-							    </div>	
+								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+								    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
+								   		<span id="mobileNumberErr" className="blocking-span noIb">   
+										   <input className="form-control  abacusTextbox oesSignUpForm formLable" ref="mobileNumber" name="mobileNumber" id="mobileNumber" onChange={this.handleChange} data-text="mobileV" required/>
+										   {this.state.formerrors.mobileV  && (
+					                        <span className="text-danger">{this.state.formerrors.mobileV}</span> 
+					                      )}
+										   <span className="floating-label">
+										   <i className="fa fa-mobile signupIconFont" aria-hidden="true"></i>Mobile Number<label className="sign asterix">*</label></span>					   			
+									    </span>
+									</div>
+								    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
+										<span id="centerNameErr" className="blocking-span noIb">   
+										<select className="form-control abacusTextbox oesSignUpForm formLable" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName">
+			                               	<option hidden> Center Name</option>
+			                                  {
+			                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
+			                                    this.state.listofCenters.map((data, index)=>{
+			                                      // console.log(data);
+			                                      return(
+			                                        <option className="formLable" key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+			                                      );
+			                                    })
+			                                    :
+			                                    null
+			                                  }  
+			                              </select>
+											{/*<input type="text" className="form-control abacusTextbox oesSignUpForm" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
+											{this.state.formerrors.la
+											stNameV  && (
+					                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
+					                      )}*/}
+									    	{/*<span className="floating-label1 lbfloatpass">
+									    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
+									    		Center Name
+									    	</span>		*/}			   			
+										</span>
+	{/*									<div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
+	*/}		                           
+			                              
+			                            
+								    </div>
+								</div>	
 							    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent boxMarg">
 									<span className="blocking-span noIb">   
 									  <input id="signupEmailErr" type="email" className="form-control signupsetting formLable abacusTextbox oesSignUpForm" ref="signupEmail" name="signupEmail" onChange={this.handleChange} data-text="emailIDV" required/>

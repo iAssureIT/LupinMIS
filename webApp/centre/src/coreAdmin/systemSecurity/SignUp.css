@@ -181,9 +181,9 @@
 .noIb {
     display: initial;
 }
-.boxMarg{
+/*.boxMarg{
   margin-bottom: 20px !important;
-}
+}*/
 
 .firstverification{
   margin-top: 32%;
@@ -979,7 +979,7 @@ a { color: #333; text-decoration: none; }
 
 
 .termspad{
-    padding-bottom: 15px;
+    padding-bottom: 5px;
    /* padding-top: 5px;*/
     /*padding-left: 31px;*/
 }
@@ -2178,11 +2178,11 @@ a { color: #333; text-decoration: none; }
 }
 
 
-.termspad{
-    padding-bottom: 15px;
+/*.termspad{*/
+    /*padding-bottom: 15px;*/
    /* padding-top: 5px;*/
     /*padding-left: 31px;*/
-}
+/*}*/
 
 
 
@@ -2498,3 +2498,4 @@ input[type="radio"]:checked:before {
   overflow-y: auto !important;
 }
 .emailHeight{height: 54px;}
+.signInNameTitle {margin-top: 0px}
