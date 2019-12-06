@@ -54,24 +54,26 @@ class IAssureTableUM extends Component {
       })
 	}
 	componentWillReceiveProps(nextProps) {
-        this.setState({
-            tableData	    : nextProps.tableData,
-            completeDataCount : nextProps.completeDataCount,
-            // unCheckedUser : nextProps.unCheckedUser
-        },()=>{
-        	this.paginationFunction();
-        	console.log('unCheckedUser', this.state.unCheckedUser);	
-        })
-        if(nextProps && nextProps.unCheckedUser){
-        	nextProps.unCheckedUser.map((id, i)=>{
-        		console.log('id',id);
-	        	this.setState({
-	        		// [id] : false,
-	        		selectedUser : [],
-	        		unCheckedUser : []
-	        	})
-        	})
-        }
+		console.log('nextProps',nextProps)
+		if(nextProps){
+	        this.setState({
+	            tableData	    : nextProps.tableData,
+	            completeDataCount : nextProps.completeDataCount,
+	        },()=>{
+	        	this.paginationFunction();
+		        if(nextProps.unCheckedUser&&this.state.tableData){
+        			$('.allSelector').prop('checked',false);
+		        	this.state.tableData.map((a,i)=>{
+			        	this.setState({
+				        	[a._id] : false,
+				        	allid : []
+				        },()=>{
+				        	this.props.setunCheckedUser(false)
+				        })
+			        });
+		        }
+	        })
+		}
     }
 	componentWillUnmount(){
     	$("script[src='/js/adminSide.js']").remove();
@@ -736,66 +738,67 @@ class IAssureTableUM extends Component {
 	}
 
 
- checkAll(event) {
+    checkAll(event) {
+      let allid =[];
       if(event.target.checked){
-        $('.userCheckbox').prop('checked',true);
-        // var id = $('.userCheckbox').prop('id');
-        let allid =[];
         allid = this.state.tableData.map((a,i)=>{
+        	this.setState({
+	        	[a._id] : true,
+	        })
         	return a._id;
         });
-
-        this.setState({
-        	allid : allid,
-        },()=>{
-        	console.log("here id=======================",this.state.allid);
-        	 this.props.selectedUser(this.state.allid);
-        })
-
-       
-
-        
       }else{
-        $('.userCheckbox').prop('checked',false);
+        allid = this.state.tableData.map((a,i)=>{
+        	this.setState({
+	        	[a._id] : false,
+	        })
+        	return a._id;
+        });
       }
+      this.setState({
+    	allid : allid,
+      },()=>{
+    	// console.log("here id=======================",this.state.allid);
+    	this.props.selectedUser(this.state.allid);
+      })
     }
+    
     uncheckAll(){
 
     }
 	 
 
 	selectedId(event){
-		var selectedUser = this.state.selectedUser;
+		var selectedUser = this.state.allid?this.state.allid:[];
 		var data = event.target.id;
 		var value = event.target.checked;
-		console.log("data", data);
+		// console.log("data", data,value);
 		this.setState({
 			[data] : value,
 		},()=>{
 			if(this.state[data] === true ){
 				selectedUser.push(data);
 				this.setState({
-					selectedUser : selectedUser
+					allid : selectedUser
 				},()=>{
-					console.log('selectedUser', this.state.selectedUser);
-					this.props.selectedUser(this.state.selectedUser);
+					// console.log('length',this.state.tableData.length,this.state.allid.length)
+					if(this.state.tableData.length===this.state.allid.length){
+	        			$('.allSelector').prop('checked',true);
+					}
+					this.props.selectedUser(this.state.allid);
 				})
 			}else{
-				selectedUser.pop(data);
+        		$('.allSelector').prop('checked',false);
+				var indexVal = selectedUser.findIndex(x=>x == data)
+				// console.log('indexVal',indexVal)
+				selectedUser.splice(indexVal,1)
 				this.setState({
-					selectedUser : selectedUser
+					allid : selectedUser
 				},()=>{
-					console.log('selectedUser', this.state.selectedUser);
-					this.props.selectedUser(this.state.selectedUser);
+					this.props.selectedUser(this.state.allid);
 				})
 			}
-			
-			
 		})
-		
-		
-		
-		
 	}
 
 
@@ -887,7 +890,7 @@ class IAssureTableUM extends Component {
 													{/*console.log("values",value)*/}
 													<td className="textAlignCenter">
 														<div className="uMDetailContainer">
-															<input type="checkbox" ref="userCheckbox" name="userCheckbox" className="userCheckbox" checked={this.state[value._id]}  id={value._id} onChange={this.selectedId.bind(this)}/>
+															<input type="checkbox" ref="userCheckbox" name="userCheckbox" className="userCheckbox" checked={this.state[value._id]?true:false}  id={value._id} onChange={this.selectedId.bind(this)}/>
 							                                <span className="uMDetailCheck"></span>
 						                              	</div>
 													</td>

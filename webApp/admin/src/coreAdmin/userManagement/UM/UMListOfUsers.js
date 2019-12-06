@@ -43,6 +43,7 @@ class UMListOfUsers extends Component {
             activeswal : false,
             blockswal : false,
             confirmDel : false,
+            unCheckedUser:false
 		}
     	this.handleChange  = this.handleChange.bind(this);
 			
@@ -134,409 +135,252 @@ class UMListOfUsers extends Component {
 
 	
 	adminUserActions(event){
-			event.preventDefault();
-			var checkedUsersList     = this.state.checkedUser;
-			// console.log('id array here', checkedUsersList);
+		event.preventDefault();
+		var checkedUsersList = this.state.checkedUser;
+		console.log('id array here', checkedUsersList);
 			
-			if( checkedUsersList.length > 0 ){
-				var selectedValue        = this.refs.userListDropdown.value;
-				var keywordSelectedValue = selectedValue.split('$')[0];
-				var role                 = selectedValue.split('$')[1];
-				// console.log("selectedValue",selectedValue);
-				// console.log("role",role);
-				// console.log("keywordSelectedValue",keywordSelectedValue);
+		if( checkedUsersList.length > 0 ){
+			function getUserDetails(selectedId){
+              return new Promise(function(resolve,reject){
+                axios
+        	 	.get('/api/users/'+selectedId)
+	            .then((response)=> {
+	            	console.log("-------user------>>",response);  
+	            	resolve(response);
+	        	})
+	            .catch(function (error) {
+	                console.log(error);
+	            })
+              })
+            }
+			var selectedValue        = this.refs.userListDropdown.value;
+			var keywordSelectedValue = selectedValue.split('$')[0];
+			var role                 = selectedValue.split('$')[1];
+			// console.log("selectedValue",selectedValue);
+			// console.log("role",role);
+			// console.log("keywordSelectedValue",keywordSelectedValue);
 
-				switch(keywordSelectedValue){
-				  case '-':
-				    // console.log('selectedValue:' + selectedValue);
-				    break;
+			switch(keywordSelectedValue){
+				case '-':
+			    // console.log('selectedValue:' + selectedValue);
+			    break;
 
-				  case 'block_selected':
-
-				  for(var i=0;i< checkedUsersList.length;i++)
-				  {
-				  	var selectedId = checkedUsersList[i];
-				  	var formValues ={
-				  	 	userID : selectedId,
-				  	 	status : 'Blocked',
-				  	}
-				  	// console.log("selected i",selectedId);
-				  	 axios
-				      .post('/api/users/statusaction',formValues)
-				      .then(
-				        (res)=>{
-				          // console.log('res', res);
-				          this.setState({
-				          	blockswal : true,
-				          	checkedUser : [],
-				          })
-			         
-				          checkedUsersList = [];
-				          // this.props.history.push('/umlistofusers');
-
-				          	// update table here
-				          		var data = {
-											"startRange"        : this.state.startRange,
-								            "limitRange"        : this.state.limitRange, 
-										}
-										axios.post('/api/users/userslist', data)
-										.then( (res)=>{      
-											console.log("herer",res);
-											for (var j = 0; j < res.data.length; j++) {
-												var msgvariable = {
-						                            '[User]'    : res.data[j].fullName,
-						                            '[user_email_id]' : res.data[j].emailId
-						                        }
-					                            // console.log("msgvariable :"+JSON.stringify(msgvariable));
-					                            var inputObj = {  
-					                                to           : res.data[j].emailId,
-					                                templateName : 'User - Login Account Blocked',
-					                                variables    : msgvariable,
-					                            }
-					                            axios
-						                	 	.post('/api/masternotification/send-mail',inputObj)
-									            .then((response)=> {
-									            	// console.log("-------mail------>>",response);
-								            		
-									            })
-									            .catch(function (error) {
-									                console.log(error);
-									            })	
-											}
-											var tableData = res.data.map((a, i)=>{
-												return {
-													_id 			: a._id,
-													fullName        : a.fullName,
-									                emailId    		: a.emailId,
-									                mobileNumber    : a.mobileNumber, 
-									                status        	: a.status,	
-									                roles 			: a.roles,
-						                			centerName 	    : a.centerName,
-												}
+				case 'block_selected':
+					for(var i=0;i< checkedUsersList.length;i++){
+					  	var selectedId = checkedUsersList[i];
+					  	var formValues ={
+					  	 	userID : selectedId,
+					  	 	status : 'Blocked',
+					  	}
+					  	// console.log("selected i",selectedId);
+					  	axios
+					      .post('/api/users/statusaction',formValues)
+					      .then(
+					        (res)=>{
+					          	// console.log('res', res);
+					          	main().then(response => {
+				                    if(response){
+				                    	var msgvariable = {
+					                        '[User]'    : response.data.profile.fullName,
+					                        '[user_email_id]' : response.data.profile.emailId
+					                    }
+					                    // console.log("msgvariable :"+JSON.stringify(msgvariable));
+					                    var inputObj = {  
+					                        to           : response.data.profile.emailId,
+					                        templateName : 'User - Login Account Blocked',
+					                        variables    : msgvariable,
+					                    }
+					                    axios
+					            	 	.post('/api/masternotification/send-mail',inputObj)
+							            .then((response)=> {
+							            	// console.log("-------mail------>>",response);
+						            		this.setState({
+											  	blockswal : true,
+											  	checkedUser : [],
+											  	unCheckedUser : true
+											},()=>{
+												this.refs.userListDropdown.value = '-'
+												this.getData(this.state.startRange,this.state.limitRange)
+												checkedUsersList = []	
+												if(this.state.blockswal == true)
+											   	{
+											   		swal("abc","Account blocked successfully",);
+											   	}	
 											})
-											this.setState({
-									          completeDataCount : res.data.length,
-									          tableData 		: tableData,          
-									        },()=>{
-									        	// console.log('tableData', this.state.tableData);
-									        })
-										})
-										.catch((error)=>{
-											// console.log("error = ",error);
-											// alert("Something went wrong! Please check Get URL.");
-										});
+							            })
+							            .catch(function (error) {
+							                console.log(error);
+							            })
+				                  	}           
+				                  //here you can update your collection with axios call
+				                });
+								async function main(){
+									var response = await getUserDetails(selectedId)
+									return Promise.resolve(response);
+						        }
+					        }).catch((error)=>{ 
+					        // console.log("error = ",error);
+					    });
+					}  	   	
+				break;
 
+				case 'active_selected':
+				    for(var i=0;i< checkedUsersList.length;i++){
+					  	var selectedId = checkedUsersList[i];
+					  	var formValues ={
+					  	 	userID : selectedId,
+					  	 	status : 'Active',
+					  	}
+				  		console.log("selected i",selectedId);
 
-
+				  	 	axios
+				      	.post('/api/users/statusaction',formValues)
+				      	.then(
+				        (res)=>{
+				            console.log('res', res);
+				            main().then(response => {
+			                    if(response){
+			                    	var currentUrl = window.location.hostname
+					            	var url = currentUrl==='localhost'?'http://localhost:3001/':currentUrl==='qalmiscentre.iassureit.com'?'http://qalmiscentre.iassureit.com/':'http://uatlmiscenter.iassureit.com/'
+						            var msgvariable = {
+			                            '[User]'    : response.data.profile.fullName,
+			                            '[user_email_id]' : response.data.profile.emailId,
+			                            '[center_application_URL]' : url
+			                        }
+		                            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+		                            var inputObj = {  
+		                                to           : response.data.profile.emailId,
+		                                templateName : 'User - Login Account Activation',
+		                                variables    : msgvariable,
+		                            }
+		                            axios
+			                	 	.post('/api/masternotification/send-mail',inputObj)
+						            .then((response)=> {
+						            	console.log("-------mail------>>",response);
+					            		this.setState({
+											activeswal : true,
+											checkedUser : [],
+										  	unCheckedUser : true
+										},()=>{
+											this.refs.userListDropdown.value = '-'
+											this.getData(this.state.startRange,this.state.limitRange)
+											checkedUsersList = [];
+											if(this.state.activeswal == true)
+										   	{
+										   	 swal("abc","Account activated successfully");
+										   	}
+										});	 
+						            })
+			                  	}           
+			                });
+							async function main(){
+								var response = await getUserDetails(selectedId)
+								return Promise.resolve(response);
+					        }
 				        }).catch((error)=>{ 
-
 				        // console.log("error = ",error);
 				      });
+				    }  
+				break;
 
-				   }  
-
-
-				   	if(this.state.blockswal == true)
-				   	{
-				   		 swal("abc","Account blocked successfully",);
-				   	}
-				    break;
-
-				  case 'active_selected':
-
-				    for(var i=0;i< checkedUsersList.length;i++)
-				  {
-				  	var selectedId = checkedUsersList[i];
-				  	var formValues ={
-				  	 	userID : selectedId,
-				  	 	status : 'Active',
-				  	}
-				  	// console.log("selected i",selectedId);
-
-				  	 axios
-				      .post('/api/users/statusaction',formValues)
-				      .then(
-				        (res)=>{
-				          // console.log('res', res);
-				          this.setState({
-				          	activeswal : true,
-				          	checkedUser : [],
-				          });
-				         
-				          checkedUsersList = [];
-
-				          	// update table here
-				          		var data = {
-											"startRange"        : this.state.startRange,
-								            "limitRange"        : this.state.limitRange, 
-										}
-										axios.post('/api/users/userslist', data)
-										.then( (res)=>{      
-											console.log("herer",res);
-											var hostname = window.location.hostname
-											var url = hostname==='http://uatlmisadmin.iassureit.com/'?'http://uatlmiscenter.iassureit.com/':
-											hostname==='http://qalmisadmin.iassureit.com/'?'http://qalmiscenter.iassureit.com/':'http://localhost:3001/'
-											for (var j = 0; j < res.data.length; j++) {
-												var msgvariable = {
-						                            '[User]'    : res.data[j].fullName,
-						                            '[user_email_id]' : res.data[j].emailId,
-						                            '[center_application_URL]' : url
-						                        }
-					                            // console.log("msgvariable :"+JSON.stringify(msgvariable));
-					                            var inputObj = {  
-					                                to           : res.data[j].emailId,
-					                                templateName : 'User - Login Account Activation',
-					                                variables    : msgvariable,
-					                            }
-					                            axios
-						                	 	.post('/api/masternotification/send-mail',inputObj)
-									            .then((response)=> {
-									            	// console.log("-------mail------>>",response);
-								            		
-									            })
-									            .catch(function (error) {
-									                console.log(error);
-									            })	
-											}
-											var tableData = res.data.map((a, i)=>{
-												return {
-													_id 			: a._id,
-													fullName        : a.fullName,
-									                emailId    		: a.emailId,
-									                mobileNumber    : a.mobileNumber, 
-									                status        	: a.status,	
-									                roles 			: a.roles,
-						                			centerName 	    : a.centerName,
-												}
-											})
-											this.setState({
-									          completeDataCount : res.data.length,
-									          tableData 		: tableData,          
-									        },()=>{
-									        	// console.log('tableData', this.state.tableData);
-									        })
-										})
-										.catch((error)=>{
-											// console.log("error = ",error);
-											// alert("Something went wrong! Please check Get URL.");
-										});
-
-
-				        }).catch((error)=>{ 
-
-				        // console.log("error = ",error);
-				      });
-
-				   }  
-
-					   if(this.state.activeswal == true)
-					   {
-					   	 swal("abc","Account activated successfully");
-					   }
-				    break;
-
-				  case 'cancel_selected':
-
-				  	// var modal = document.getElementById("deleteModal");
-       //              modal.style.display = "block";
-
-				  	// if(this.state.confirmDel == true)
-				  	// {
-				  	// 	console.log("here yes");
-				  	// }else{
-				  	// 	console.log("here no");
-				  	// }
-
-				    for(var i=0;i< checkedUsersList.length;i++)
-				  {
-				  	var selectedId = checkedUsersList[i];
-				  	
-				  	// console.log("selected i",selectedId);
-				  	const token = '';
-				  	const url = '/api/users/'+selectedId ;
-					const headers = {
+				case 'cancel_selected':
+				    for(var i=0;i< checkedUsersList.length;i++){
+					  	var selectedId = checkedUsersList[i];
+					  	// console.log("selected i",selectedId);
+					  	const token = '';
+					  	const url = '/api/users/'+selectedId ;
+						const headers = {
 						    "Authorization" : token,
 						    "Content-Type" 	: "application/json",
 						};
-					axios({
-						method: "DELETE",
-						url : url,
-						headers: headers,
-						timeout: 3000,
-						data: null,
-					})
-					.then((response)=> {
-				    	window.location.reload(); 
-				    	// console.log('delete response',response);
-				    	swal("abc","User deleted successfully",);
-				    		// update table here
-				          		var data = {
-											"startRange"        : this.state.startRange,
-								            "limitRange"        : this.state.limitRange, 
-										}
-										axios.post('/api/users/userslist', data)
-										.then( (res)=>{      
-											console.log("herer",res);
-											var tableData = res.data.map((a, i)=>{
-												return {
-													_id 			: a._id,
-													fullName        : a.fullName,
-									                emailId    		: a.emailId,
-									                mobileNumber       : a.mobileNumber, 
-									                status        	: a.status,	
-									                roles 			: a.roles,
-						                			centerName 	    : a.centerName,
-												}
-											})
-											this.setState({
-									          completeDataCount : res.data.length,
-									          tableData 		: tableData,          
-									        },()=>{
-									        	console.log('tableData', this.state.tableData);
-									        })
-										})
-										.catch((error)=>{
-											// console.log("error = ",error);
-											// alert("Something went wrong! Please check Get URL.");
-										});
+						axios({
+							method: "DELETE",
+							url : url,
+							headers: headers,
+							timeout: 3000,
+							data: null,
+						})
+						.then((response)=> {
+					    	// window.location.reload(); 
+					    	// console.log('delete response',response);
+					    	this.setState({
+							  	checkedUser : [],
+							  	unCheckedUser : true
+							},()=>{
+								this.refs.userListDropdown.value = '-'
+								this.getData(this.state.startRange,this.state.limitRange)
+								checkedUsersList = []	
+					    		swal("abc","User deleted successfully",);
+							})
+						}).catch((error)=> {
+						    // console.log(error);
+						});
+				    }  
+				break;
 
+				case 'add':
+				    for(var i=0;i< checkedUsersList.length;i++){
+					  	var selectedId = checkedUsersList[i];
+					  	var formValues ={
+					  	 	userID : selectedId,
+					  	 	roles   : role,
+					  	}
+					  	// console.log("selected i",selectedId);
 
-					}).catch((error)=> {
-					    // console.log(error);
-					});
-
-
-				   }  
-					break;
-
-				  case 'add':
-
-				   for(var i=0;i< checkedUsersList.length;i++)
-				  {
-				  	var selectedId = checkedUsersList[i];
-				  	var formValues ={
-				  	 	userID : selectedId,
-				  	 	roles   : role,
-				  	}
-				  	// console.log("selected i",selectedId);
-
-				  	 axios
-				      .post('/api/users/roleadd/',formValues)
-				      .then(
+					  	axios
+				       .post('/api/users/roleadd/',formValues)
+				       .then(
 				        (res)=>{
-				          // console.log('res', res);
-				          swal("abc","Assigned Role Added Successfully",);
-				          checkedUsersList = [];
-
-				          		// update table here
-				          		var data = {
-											"startRange"        : this.state.startRange,
-								            "limitRange"        : this.state.limitRange, 
-										}
-										axios.post('/api/users/userslist', data)
-										.then( (res)=>{      
-											// console.log("herer",res);
-											var tableData = res.data.map((a, i)=>{
-												return {
-													_id 			: a._id,
-													fullName        : a.fullName,
-									                emailId    		: a.emailId,
-									                mobileNumber       : a.mobileNumber, 
-									                status        	: a.status,	
-									                roles 			: a.roles,
-						                			centerName 	    : a.centerName,
-												}
-											})
-											this.setState({
-									          completeDataCount : res.data.length,
-									          tableData 		: tableData,          
-									        },()=>{
-									        	// console.log('tableData', this.state.tableData);
-									        })
-										})
-										.catch((error)=>{
-											// console.log("error = ",error);
-											// alert("Something went wrong! Please check Get URL.");
-										});
-										
+				            // console.log('res', res);
+					        this.setState({
+							  	checkedUser : [],
+							  	unCheckedUser : true
+							},()=>{
+								this.refs.userListDropdown.value = '-'
+								this.getData(this.state.startRange,this.state.limitRange)
+								checkedUsersList = []	
+				          		swal("abc","Assigned Role Added Successfully",);
+							})
 				        }).catch((error)=>{ 
+				          // console.log("error = ",error);
+				        });
+				    }  
+				break;
 
-				        // console.log("error = ",error);
-				      });
-
-				   }  
-				    break;
-
-				  case 'remove':
-					
-
-					 for(var i=0;i< checkedUsersList.length;i++)
-				  {
-				  	var selectedId = checkedUsersList[i];
-				  	var formValues ={
-				  	 	userID : selectedId,
-				  	 	roles   : role,
-				  	}
+				case 'remove':
+					for(var i=0;i< checkedUsersList.length;i++){
+					  	var selectedId = checkedUsersList[i];
+					  	var formValues ={
+					  	 	userID : selectedId,
+					  	 	roles   : role,
+					  	}
 			
-				  	 axios
-				      .post('/api/users/roledelete/',formValues)
-				      .then(
+				  	 	axios
+				      	.post('/api/users/roledelete/',formValues)
+				      	.then(
 				        (res)=>{
-				          // console.log('res', res);
-				          swal("abc","Assigned Role Removed Successfully",);
-				          checkedUsersList = [];
-
-				          		// update table here
-				          		var data = {
-											"startRange"        : this.state.startRange,
-								            "limitRange"        : this.state.limitRange, 
-										}
-										axios.post('/api/users/userslist', data)
-										.then( (res)=>{      
-											// console.log("herer",res);
-											var tableData = res.data.map((a, i)=>{
-												return {
-													_id 			: a._id,
-													fullName        : a.fullName,
-									                emailId    		: a.emailId,
-									                mobileNumber       : a.mobileNumber, 
-									                status        	: a.status,	
-									                roles 			: a.roles,
-						                			centerName 	    : a.centerName,
-												}
-											})
-											this.setState({
-									          completeDataCount : res.data.length,
-									          tableData 		: tableData,          
-									        },()=>{
-									        	// console.log('tableData', this.state.tableData);
-									        })
-										})
-										.catch((error)=>{
-											// console.log("error = ",error);
-											// alert("Something went wrong! Please check Get URL.");
-										});
-										
+				          	// console.log('res', res);
+				          	this.setState({
+							  	checkedUser : [],
+							  	unCheckedUser : true
+							},()=>{
+								this.refs.userListDropdown.value = '-'
+								this.getData(this.state.startRange,this.state.limitRange)
+								checkedUsersList = []	
+				          		swal("abc","Assigned Role Removed Successfully",);
+							})			
 				        }).catch((error)=>{ 
-
 				        // console.log("error = ",error);
-				      });
-
-				   }  
-
-				    break;
-				}
-				this.setState({
-				   	unCheckedUser : checkedUsersList
-				})
-			}else{
-				// this.refs.userListDropdown.value = '-';
-				// swal({
-		  //   			title:'abc',
-		  //   			text:"Please select atleast one user."
-		  //   		});
+				        });
+				    }  
+				break;
 			}
-			// {this.usersListData()}
+		}else{
+			swal({
+    			title:'abc',
+    			text:"Please select atleast one user."
+    		});
+		}
 	}
 
 	selectedRole(event){
@@ -700,6 +544,11 @@ class UMListOfUsers extends Component {
 		})
 		window.location.reload(); 
 	}
+	setunCheckedUser(value){
+		this.setState({
+			unCheckedUser : value,
+		})
+	}
 	selectedUser(checkedUsersList){
 		// console.log('checkedUsersList', checkedUsersList);
 		this.setState({
@@ -770,7 +619,7 @@ render(){
 											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12  NOpadding-left text-left formLable">Select Action</label>
 												<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding inputBox-main form-control" id="userListDropdownId" ref="userListDropdown" name="userListDropdown" onChange={this.adminUserActions.bind(this)}>
-													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="-" name="userListDDOption">-- Select --</option>	
+													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="-" name="userListDDOption" disabled="disabled" selected="true">-- Select --</option>	
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="block_selected" name="userListDDOption">Block Selected</option>	
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="active_selected" name="userListDDOption">Active Selected</option>
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="cancel_selected" name="userListDDOption">Delete Selected Acccounts</option>	
@@ -787,7 +636,7 @@ render(){
 											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left formLable">Select Role</label>
 												<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding inputBox-main  form-control" ref="roleListDropdown" name="roleListDropdown" onChange={this.selectedRole.bind(this)} >
-													<option name="roleListDDOption">-- Select --</option>
+													<option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
 													<option value="all" name="roleListDDOption">Show All</option>		
 													
 													{ adminRolesListDataList.map( (rolesData,index)=>{
@@ -799,7 +648,7 @@ render(){
 											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left formLable">Select Status</label>
 												<select className=" col-col-lg-12  col-md-12 col-sm-12 col-xs-12 noPadding inputBox-main  form-control " ref="blockActive"  name="blockActive" onChange={this.selectedStatus.bind(this)}>
-													<option>-- Select --</option>	
+													<option disabled="disabled" selected="true">-- Select --</option>	
 													<option value="all"	>Show All</option>	
 													<option value="Blocked">Blocked</option>	
 													<option value="Active">Active </option>	
@@ -815,6 +664,7 @@ render(){
 						                      tableData={this.state.tableData} 
 						                      getSearchText={this.getSearchText.bind(this)}
 						                      selectedUser={this.selectedUser.bind(this)} 
+						                      setunCheckedUser={this.setunCheckedUser.bind(this)} 
 						                      unCheckedUser={this.state.unCheckedUser}
 											/>			
 										</div>

@@ -1,0 +1,56 @@
+Lupin Notification Management
+
+Center Events (Email, InApp)
+
+1. Signup 	=> User, Admin 
+2. Forgot Password => User
+3. Annual Plan Submission => User, Admin 
+4. Monthly Plan Submission => User, Admin 
+5. Annual Plan Edit  => User, Admin 
+6. Monthly Plan Edit  => User, Admin 
+7. Activity Submit  => User, Admin 
+8. Case Study Submit  => User, Admin 
+9. Highlight Submit  => User, Admin 
+
+
+
+User name,
+Date - onth, year
+Event Name,
+Center name
+sector & activity names...
+
+
+
+Dear admin,
+
+"Mr xxxx zzzz" from "Pune" Center has submitted "Annual plan" for "FY 2019-2020" on "23rd Nov 2019 3:30 PM". 
+
+Thanks
+Do-not-rely
+System Generated Notification
+
+
+Admin - Signup Notification
+Admin - Login Account Activation
+Admin - Login Account Blocked
+Admin - Annual Plan Submitted
+Admin - Monthly Plan Submitted
+Admin - Activity Details Submitted
+
+
+User - Signup Notification
+User - Forgot Password OTP 
+User - Login Account Activation
+User - Login Account Blocked
+User - Annual Plan Submitted
+User - Monthly Plan Submitted
+User - Activity Details Submitted
+
+oshin - 20 
+garima - 30
+sheetal - 10
+nilam - 800
+take :
+priyanka l - 199
+anuja - 200
