@@ -49,14 +49,14 @@ class Login extends Component {
   userlogin(event){
     event.preventDefault();
     if($("#login").valid()){
-      console.log("in login mode",this.state.auth);
+      // console.log("in login mode",this.state.auth);
       var auth= {
         email       : this.refs.loginusername.value,
         password    : this.refs.loginpassword.value,
-        roles       : 'admin'
+        roles       : 'Admin'
       }
 
-      console.log("auth value",auth);
+      // console.log("auth value",auth);
 
       axios
       .post('/api/users/login',auth)

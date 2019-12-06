@@ -3,6 +3,7 @@ import CreateUser 					     from './CreateUser.js';
 import axios                       		 from 'axios';
 import _                       			 from 'underscore';
 import swal                     		 from 'sweetalert';
+import $ 							from 'jquery';
 import './userManagement.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -136,10 +137,24 @@ class UMListOfUsers extends Component {
 	
 	adminUserActions(event){
 		event.preventDefault();
+		$('#userListDropdownId').attr('disabled','true')
 		var checkedUsersList = this.state.checkedUser;
-		console.log('id array here', checkedUsersList);
+		// console.log('id array here', checkedUsersList);
 			
 		if( checkedUsersList.length > 0 ){
+			function updateStatus(formValues){
+			  return new Promise(function(resolve,reject){
+			    axios
+			    .post('/api/users/statusaction',formValues)
+			    .then((response)=> {
+	            	console.log("-------action------>>",response);  
+			        resolve(response);
+			    })
+			    .catch(function (error) {
+			        console.log(error);
+			    })
+			  })
+			}
 			function getUserDetails(selectedId){
               return new Promise(function(resolve,reject){
                 axios
@@ -153,6 +168,19 @@ class UMListOfUsers extends Component {
 	            })
               })
             }
+            function sendMail(inputObj){
+			  return new Promise(function(resolve,reject){
+			    axios
+			    .post('/api/masternotification/send-mail',inputObj)
+			    .then((response)=> {
+			        console.log("-------mail------>>",response);
+			        resolve(response);
+			    })
+			    .catch(function (error) {
+			        console.log(error);
+			    })
+			  })
+			}
 			var selectedValue        = this.refs.userListDropdown.value;
 			var keywordSelectedValue = selectedValue.split('$')[0];
 			var role                 = selectedValue.split('$')[1];
@@ -162,125 +190,122 @@ class UMListOfUsers extends Component {
 
 			switch(keywordSelectedValue){
 				case '-':
+				$('#userListDropdownId').removeAttr('disabled')
 			    // console.log('selectedValue:' + selectedValue);
 			    break;
 
 				case 'block_selected':
-					for(var i=0;i< checkedUsersList.length;i++){
-					  	var selectedId = checkedUsersList[i];
-					  	var formValues ={
-					  	 	userID : selectedId,
-					  	 	status : 'Blocked',
-					  	}
-					  	// console.log("selected i",selectedId);
-					  	axios
-					      .post('/api/users/statusaction',formValues)
-					      .then(
-					        (res)=>{
-					          	// console.log('res', res);
-					          	main().then(response => {
-				                    if(response){
-				                    	var msgvariable = {
-					                        '[User]'    : response.data.profile.fullName,
-					                        '[user_email_id]' : response.data.profile.emailId
-					                    }
-					                    // console.log("msgvariable :"+JSON.stringify(msgvariable));
-					                    var inputObj = {  
-					                        to           : response.data.profile.emailId,
-					                        templateName : 'User - Login Account Blocked',
-					                        variables    : msgvariable,
-					                    }
-					                    axios
-					            	 	.post('/api/masternotification/send-mail',inputObj)
-							            .then((response)=> {
-							            	// console.log("-------mail------>>",response);
-						            		this.setState({
-											  	blockswal : true,
-											  	checkedUser : [],
-											  	unCheckedUser : true
-											},()=>{
-												this.refs.userListDropdown.value = '-'
-												this.getData(this.state.startRange,this.state.limitRange)
-												checkedUsersList = []	
-												if(this.state.blockswal == true)
-											   	{
-											   		swal("abc","Account blocked successfully",);
-											   	}	
-											})
-							            })
-							            .catch(function (error) {
-							                console.log(error);
-							            })
-				                  	}           
-				                  //here you can update your collection with axios call
-				                });
-								async function main(){
-									var response = await getUserDetails(selectedId)
-									return Promise.resolve(response);
-						        }
-					        }).catch((error)=>{ 
-					        // console.log("error = ",error);
-					    });
-					}  	   	
+					mainBlock().then(response => {
+						if(response){
+	                    	this.setState({
+							  	blockswal : true,
+							  	checkedUser : [],
+							  	unCheckedUser : true
+							},()=>{
+								$('#userListDropdownId').removeAttr('disabled')
+								this.refs.userListDropdown.value = '-'
+								this.getData(this.state.startRange,this.state.limitRange)
+								checkedUsersList = []	
+								if(this.state.blockswal == true)
+							   	{
+							   		swal("abc","Account blocked successfully",);
+							   	}	
+							})
+						}
+	                  //here you can update your collection with axios call
+	                });
+					async function mainBlock(){
+					    var count = 0
+					    for(var i=0;i<checkedUsersList.length;i++){
+					        var selectedId = checkedUsersList[i];
+					        var formValues ={
+					            userID : selectedId,
+					            status : 'Blocked',
+					        }
+
+					      var response = await updateStatus(formValues)
+					      if(response){
+					        var user = await getUserDetails(selectedId)
+					        if(user){
+					            var msgvariable = {
+					                '[User]'    : user.data.profile.fullName,
+					                '[user_email_id]' : user.data.profile.emailId
+					            }
+					            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+					            var inputObj = {  
+					                to           : user.data.profile.emailId,
+					                templateName : 'User - Login Account Blocked',
+					                variables    : msgvariable,
+					            }
+					        	var mail = await sendMail(inputObj)
+					        	if(mail){
+					        		count++
+					                if(count===checkedUsersList.length){
+					                    return Promise.resolve(true);
+					                }
+					        	}
+					        }
+					      }
+					    }
+					}	   	
 				break;
 
 				case 'active_selected':
-				    for(var i=0;i< checkedUsersList.length;i++){
-					  	var selectedId = checkedUsersList[i];
-					  	var formValues ={
-					  	 	userID : selectedId,
-					  	 	status : 'Active',
-					  	}
-				  		console.log("selected i",selectedId);
-
-				  	 	axios
-				      	.post('/api/users/statusaction',formValues)
-				      	.then(
-				        (res)=>{
-				            console.log('res', res);
-				            main().then(response => {
-			                    if(response){
-			                    	var currentUrl = window.location.hostname
-					            	var url = currentUrl==='localhost'?'http://localhost:3001/':currentUrl==='qalmiscentre.iassureit.com'?'http://qalmiscentre.iassureit.com/':'http://uatlmiscenter.iassureit.com/'
-						            var msgvariable = {
-			                            '[User]'    : response.data.profile.fullName,
-			                            '[user_email_id]' : response.data.profile.emailId,
-			                            '[center_application_URL]' : url
-			                        }
-		                            // console.log("msgvariable :"+JSON.stringify(msgvariable));
-		                            var inputObj = {  
-		                                to           : response.data.profile.emailId,
-		                                templateName : 'User - Login Account Activation',
-		                                variables    : msgvariable,
-		                            }
-		                            axios
-			                	 	.post('/api/masternotification/send-mail',inputObj)
-						            .then((response)=> {
-						            	console.log("-------mail------>>",response);
-					            		this.setState({
-											activeswal : true,
-											checkedUser : [],
-										  	unCheckedUser : true
-										},()=>{
-											this.refs.userListDropdown.value = '-'
-											this.getData(this.state.startRange,this.state.limitRange)
-											checkedUsersList = [];
-											if(this.state.activeswal == true)
-										   	{
-										   	 swal("abc","Account activated successfully");
-										   	}
-										});	 
-						            })
-			                  	}           
-			                });
-							async function main(){
-								var response = await getUserDetails(selectedId)
-								return Promise.resolve(response);
+				    mainActive().then(response => {
+					    if(response){
+					        this.setState({
+					            activeswal : true,
+					            checkedUser : [],
+					            unCheckedUser : true
+					        },()=>{
+								$('#userListDropdownId').removeAttr('disabled')
+					            this.refs.userListDropdown.value = '-'
+					            this.getData(this.state.startRange,this.state.limitRange)
+					            checkedUsersList = [];
+					            if(this.state.activeswal == true)
+					            {
+					             swal("abc","Account activated successfully");
+					            }
+					        }); 
+					    }
+					});
+					async function mainActive(){
+					    var count = 0
+					    for(var i=0;i<checkedUsersList.length;i++){
+					        var selectedId = checkedUsersList[i];
+					        var formValues ={
+					            userID : selectedId,
+					            status : 'Active',
 					        }
-				        }).catch((error)=>{ 
-				        // console.log("error = ",error);
-				      });
-				    }  
+
+					      var response = await updateStatus(formValues)
+					      if(response){
+					        var user = await getUserDetails(selectedId)
+					        if(user){
+					            var currentUrl = window.location.hostname
+					            var url = currentUrl==='localhost'?'http://localhost:3001/':currentUrl==='qalmiscentre.iassureit.com'?'http://qalmiscentre.iassureit.com/':'http://uatlmiscenter.iassureit.com/'
+					            var msgvariable = {
+					                '[User]'    : user.data.profile.fullName,
+					                '[user_email_id]' : user.data.profile.emailId,
+					                '[center_application_URL]' : url
+					            }
+					            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+					            var inputObj = {  
+					                to           : user.data.profile.emailId,
+					                templateName : 'User - Login Account Activation',
+					                variables    : msgvariable,
+					            }
+					            var mail = await sendMail(inputObj)
+					            if(mail){
+					                count++
+					                if(count===checkedUsersList.length){
+					                    return Promise.resolve(true);
+					                }
+					            }
+					        }
+					      }
+					    }
+					}  
 				break;
 
 				case 'cancel_selected':
@@ -307,6 +332,7 @@ class UMListOfUsers extends Component {
 							  	checkedUser : [],
 							  	unCheckedUser : true
 							},()=>{
+								$('#userListDropdownId').removeAttr('disabled')
 								this.refs.userListDropdown.value = '-'
 								this.getData(this.state.startRange,this.state.limitRange)
 								checkedUsersList = []	
@@ -336,6 +362,7 @@ class UMListOfUsers extends Component {
 							  	checkedUser : [],
 							  	unCheckedUser : true
 							},()=>{
+								$('#userListDropdownId').removeAttr('disabled')
 								this.refs.userListDropdown.value = '-'
 								this.getData(this.state.startRange,this.state.limitRange)
 								checkedUsersList = []	
@@ -364,6 +391,7 @@ class UMListOfUsers extends Component {
 							  	checkedUser : [],
 							  	unCheckedUser : true
 							},()=>{
+								$('#userListDropdownId').removeAttr('disabled')
 								this.refs.userListDropdown.value = '-'
 								this.getData(this.state.startRange,this.state.limitRange)
 								checkedUsersList = []	
@@ -376,6 +404,8 @@ class UMListOfUsers extends Component {
 				break;
 			}
 		}else{
+			this.refs.userListDropdown.value = '-'
+			$('#userListDropdownId').removeAttr('disabled')
 			swal({
     			title:'abc',
     			text:"Please select atleast one user."

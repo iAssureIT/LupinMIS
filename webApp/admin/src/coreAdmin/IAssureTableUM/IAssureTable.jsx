@@ -637,18 +637,16 @@ class IAssureTableUM extends Component {
 
     changepassword(event){
 		event.preventDefault();
-		var id = event.target.id;
-		console.log('id',id);
+		var id = event.currentTarget.id;
+		// console.log('id',id);
 		var password 		= this.state["resetPassword"+id];
 		var conPassword 	= this.state["resetPasswordConfirm"+id];
-
-		
 		// var newID 			= FlowRouter.getParam("mailId");
 		var formValues ={
-			"password" 	 : conPassword,
+			"pwd" 	 : conPassword,
 		}
 
-		var newID 		=  $(event.target).attr('id');
+		var newID 		=  $(event.currentTarget).attr('data-email');
 		if(newID){
 			var resetPassword = newID;
 		}
@@ -656,7 +654,7 @@ class IAssureTableUM extends Component {
 			{
 				if(password===conPassword){
 					if(password.length >= 6){
-						axios.put('/api/users/resetpwd/'+ newID, formValues)
+						axios.patch('/api/users/resetpwd/'+ newID, formValues)
 					      .then( (res)=>{
 					      	console.log("response-------------",res);
 					  		
@@ -1012,7 +1010,7 @@ class IAssureTableUM extends Component {
 
 
 																				                        <div className="submitButtonWrapper mt100 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																				                            <button className="btn  submit outlinebox pull-right  col-lg-4 col-lg-offset-3 col-md-6 col-sm-12 col-xs-12" onClick={this.changepassword.bind(this)} id={value._id}>Reset Password</button>
+																				                            <button className="btn  submit outlinebox pull-right  col-lg-4 col-lg-offset-3 col-md-6 col-sm-12 col-xs-12" onClick={this.changepassword.bind(this)} id={value._id} data-email={value.emailId}>Reset Password</button>
 																				                        </div>
 																				                           
 																				                    </form>
