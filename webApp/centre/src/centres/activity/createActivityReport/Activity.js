@@ -199,6 +199,8 @@ class Activity extends Component{
         case "directCC" : 
           prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan) - parseInt(this.state.govtscheme) ;
           subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC);
+          console.log("prevTotal in directCC",prevTotal);
+          console.log("")
           if(parseInt(this.state.directCC) < this.state.totalcost){
             if(subTotal < this.state.totalcost){
               // this.setState({ indirectCC : this.state.totalcost - subTotal,"total" :subTotal}); 
@@ -387,7 +389,7 @@ class Activity extends Component{
       if (parseInt(this.state.total) === parseInt(this.state.totalcost)) {
         axios.post('/api/activityReport',activityValues)
           .then((response)=>{
-            console.log("response", response);
+            // console.log("response", response);
             swal({
               title : response.data.message,
               text  : response.data.message,
@@ -398,7 +400,7 @@ class Activity extends Component{
               })    
             })
           .catch(function(error){       
-            console.log('error',error);
+            // console.log('error',error);
             if(error.message === "Request failed with status code 401"){
               swal({
                   title : "abc",
@@ -523,7 +525,7 @@ class Activity extends Component{
       });
     })
     .catch(function(error){ 
-      console.log("error = ",error);
+      // console.log("error = ",error);
     });
     this.setState({
       "projectName"        : "",
@@ -670,8 +672,8 @@ class Activity extends Component{
       url: '/api/activityReport/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log("editData",editData);
-      console.log("editData",editData.district);
+      // console.log("editData",editData);
+      // console.log("editData",editData.district);
         // getAvailableCenter(center_ID)
       this.getAvailableCenter(this.state.center_ID);
       this.getBlock(this.state.stateCode, editData.district);
@@ -679,7 +681,7 @@ class Activity extends Component{
 
       this.getAvailableActivity(editData.sector_ID);
       this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID)
-      console.log( editData.district,editData.village,editData.block);
+      // console.log( editData.district,editData.village,editData.block);
 
       this.setState({
         "editData"          : editData,
@@ -710,7 +712,7 @@ class Activity extends Component{
         "projectCategoryType"   : editData.projectCategoryType,
         "projectName"           : editData.projectName,
       }, ()=>{
-        console.log("edit", this.state.editData)
+        // console.log("edit", this.state.editData)
       });      
       let fields = this.state.fields;
       let errors = {};
@@ -721,7 +723,7 @@ class Activity extends Component{
       return formIsValid;
     })
     .catch(function (error) {
-      console.log("error = ",error);
+      // console.log("error = ",error);
     });
     // this.setState({
     //   "editId"              : "",
@@ -749,7 +751,7 @@ class Activity extends Component{
     }
     axios.post('/api/activityReport/list/'+center_ID, data)
     .then((response)=>{
-      console.log("response",response);
+      // console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                        : a._id,
@@ -782,7 +784,7 @@ class Activity extends Component{
       })
     })
     .catch(function(error){      
-      console.log("error = ",error); 
+      // console.log("error = ",error); 
     });
   }
 
@@ -923,7 +925,7 @@ class Activity extends Component{
           availableSectors : response.data
         })
     }).catch(function (error) {
-      console.log('error', error);
+      // console.log('error', error);
     });
   }
   selectSector(event){
@@ -1069,7 +1071,7 @@ class Activity extends Component{
     this.handleChange(event);
   }
   getBlock(stateCode, selectedDistrict){
-    console.log("stateCode",stateCode);
+    // console.log("stateCode",stateCode);
     axios({
       method: 'get',
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
@@ -1486,7 +1488,7 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">LHWRF</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                              <input type="text"  className="form-control inputBox " name="LHWRF" placeholder="" ref="LHWRF" onKeyDown={this.isNumberKey.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" onKeyDown={this.isNumberKey.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.LHWRF}</div>
                           </div>
@@ -1494,13 +1496,13 @@ class Activity extends Component{
                             <label className="formLable">NABARD</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >
                               
-                              <input type="text" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.NABARD}</div>
                           </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Bank Loan</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                              <input type="text" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.bankLoan}</div>
                           </div>
@@ -1511,21 +1513,21 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Govt. Schemes</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                              <input type="text"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.govtscheme}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Direct Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                              <input type="text" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.directCC}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Indirect Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                              <input type="text" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.indirectCC}</div>
                           </div>
@@ -1536,7 +1538,7 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Other</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
-                              <input type="text"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.other}</div>
                           </div>
