@@ -253,12 +253,12 @@ class ActivitywiseAnnualPlanReport extends Component{
       //   if(sector_ID==="all"){
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
         if(center_ID==="all"){
-          console.log(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
+          // console.log(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
           if(sector_ID==="all"){
-            console.log("year",year);
+            // console.log("year",year);
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
-            console.log(startDate, endDate, year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);  
+            // console.log(startDate, endDate, year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);  
             axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
               .then((response)=>{
                 console.log("resp",response);
@@ -271,7 +271,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                       annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
                       annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
                       annualPlan_UnitCost                       : a.annualPlan_UnitCost,
-                      annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
+                      annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
                       annualPlan_LHWRF                          : a.annualPlan_LHWRF,
                       annualPlan_NABARD                         : a.annualPlan_NABARD,
                       annualPlan_Bank_Loan                      : a.annualPlan_Bank_Loan,
@@ -298,12 +298,12 @@ class ActivitywiseAnnualPlanReport extends Component{
                 }
               });
             }else{
-              console.log("year",year);
+              // console.log("year",year);
               var startDate = year.substring(3, 7)+"-04-01";
               var endDate = year.substring(10, 15)+"-03-31";    
               axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
               .then((response)=>{
-                console.log("resp",response);
+                // console.log("resp",response);
                   var tableData = response.data.map((a, i)=>{
                   return {
                       _id                                       : a._id,            
@@ -341,12 +341,12 @@ class ActivitywiseAnnualPlanReport extends Component{
               });
             }
           }else{
-            console.log("year",year);
+            // console.log("year",year);
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
             axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
               .then((response)=>{
-                console.log("resp",response);
+                // console.log("resp",response);
                   var tableData = response.data.map((a, i)=>{
                   return {
                       _id                                       : a._id,            
@@ -400,6 +400,7 @@ class ActivitywiseAnnualPlanReport extends Component{
     })
   }
   render(){
+    console.log("in render all",this.state.tableData);
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">

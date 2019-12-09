@@ -327,6 +327,8 @@ class PlanDetails extends Component{
       fields["indirectCC"]        = "";
       fields["other"]             = "";
       fields["remark"]            = "";
+      console.log("subActivityDetails",subActivityDetails);
+      console.log("this.state.apiCall",this.state.apiCall);
       if(subActivityDetails.length > 0){
         for(var i=0; i<subActivityDetails.length; i++){
           var planValues = {
@@ -418,6 +420,8 @@ class PlanDetails extends Component{
             ([key, value], i)=> {
               this.setState({
                 [key+'-'+this.state.subactivity_ID] : ""
+              },()=>{
+                console.log(this.state[key+'-'+this.state.subactivity_ID]);
               })
             }
           );
@@ -880,6 +884,7 @@ class PlanDetails extends Component{
       url: this.state.apiCall+'/'+id,
       }).then((response)=> {
       var editData = response.data[0];
+      console.log("editData :",editData);
       this.getAvailableActivity(editData.sector_ID);
       this.setState({
         "availableSubActivity"    : [{
@@ -981,7 +986,8 @@ class PlanDetails extends Component{
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
-    return (
+    // console.log("after edit", this.state.subActivityDetails);
+    return ( 
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">

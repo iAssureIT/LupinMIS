@@ -341,7 +341,7 @@ class UpgradedBeneficiaryReport extends Component{
   }
   
   getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType){        
-    console.log(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType);
+    // console.log(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType);
     if(center_ID){
       if(startDate && endDate && selectedDistrict && projectCategoryType  && beneficiaryType){
         if(center_ID==="all"){
@@ -560,6 +560,7 @@ class UpgradedBeneficiaryReport extends Component{
     })
   }
   render(){
+    console.log("tableData in render",this.state.tableData);
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">

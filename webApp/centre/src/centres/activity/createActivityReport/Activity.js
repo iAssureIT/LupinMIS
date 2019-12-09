@@ -233,7 +233,12 @@ class Activity extends Component{
           prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan) - parseInt(this.state.govtscheme) - parseInt(this.state.directCC) - parseInt(this.state.indirectCC) ;
           subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC)+ parseInt(this.state.other);
           if (parseInt(this.state.other) < this.state.totalcost) {
-              // this.setState({"total" :subTotal}); 
+            if(subTotal < this.state.totalcost){
+              // this.setState({ other : this.state.totalcost - subTotal,"total" :subTotal},()=>{
+              // }); 
+            }else{
+              this.setState({ "other" : prevTotal}); 
+            }
           }else{
               // this.setState({ "other" : prevTotal,"total" :subTotal}); 
               this.setState({ "other" : prevTotal}); 
@@ -249,19 +254,6 @@ class Activity extends Component{
         [event.target.name]: event.target.value
       },()=>{
     });
- 
-    // let fields = this.state.fields;
-    // fields[event.target.name] = event.target.value;
-    // this.setState({
-    //   fields
-    // });
-    // if (this.validateForm() ) {
-    //   let errors = {};
-    //   errors[event.target.name] = "";
-    //   this.setState({
-    //     errors: errors
-    //   });
-    // } 
   }
   handleTotalChange(event){
     event.preventDefault();
@@ -1146,49 +1138,25 @@ class Activity extends Component{
   }
 
   handleToggle(event){
-      event.preventDefault();
-      // console.log("this.state.type",this.state.type)
-    // if (this.state.type===true){
-    //   this.setState({
-    //     type: false,
-    //     projectCategoryType:"Project Fund"
-    //   },()=>{
-    //   console.log("this.state.type",this.state.type)
-
-    //   })
-    // }
-    // else{
-    //   this.setState({
-    //     type: true,
-    //     projectCategoryType:"LHWRF Grant",
-    //     projectName:"LHWRF Grant",
-
-    //   },()=>{
-    //   console.log("this.state.type",this.state.type)
-    //   })
-    // }  
+      // event.preventDefault();
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
       if (this.state.projectCategoryType == "LHWRF Grant") {
         this.setState({
-           projectName:"LHWRF Grant",
-        })
-      }else{
-        this.setState({
-           projectName:"",
+           projectName:"-",
         })
       }
     })
   }
   render() {
-    console.log('state',this.state.total)
+    // console.log('state',this.state.total)
      var hidden = {
       display: this.state.shown ? "none" : "block"
     }
     return (
       <div className="container-fluid">
-        <div className="row">
+        <div className="row"> 
           <div className="formWrapper">
             <section className="content">
               <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">

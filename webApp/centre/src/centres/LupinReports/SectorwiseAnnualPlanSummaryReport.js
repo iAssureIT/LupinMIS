@@ -107,14 +107,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       this.handleFromChange = this.handleFromChange.bind(this);
       this.handleToChange = this.handleToChange.bind(this);
   }   
-  componentWillReceiveProps(nextProps, event){
-    if(nextProps){
-        this.setState({
-          [event.target.name] : event.target.value
-        },()=>{
-          console.log('name', this.state)
-                this.getData(this.state.year, this.state.center_ID);
-        });
+  componentWillReceiveProps(nextProps){
+    if(nextProps){  
+      this.getData(this.state.year, this.state.center_ID);
     }
     this.getAvailableProjects();
     this.getAvailableSectors();
@@ -355,7 +350,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.setState({
       'currentTabView': currentComp,
     })
-  }
+  } 
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
