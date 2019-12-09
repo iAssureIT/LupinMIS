@@ -391,20 +391,22 @@ class IAssureTableUM extends Component {
 					return {
 						_id 			: a._id,
 						fullName        : a.profile.fullName,
-						centerName      : a.profile.centerName,
 		                emailId    		: a.emails[0].address,
 		                mobileNumber    : a.profile.mobileNumber, 
 		                status        	: a.profile.status,	
 		                roles 			: ((a.roles.map((b, i)=>{return '<p>'+b+'</p>'})).toString()).replace(/,/g, " "),
+						centerName      : a.profile.centerName,
 					}
 				})
 	          	this.setState({
 	              tableData 		: tableData,          
-	            },()=>{
 	            })
 	        }).catch((error)=>{ 
 	        	// swal("No results found","","error");
-	       });
+	        	this.setState({
+	              tableData 		: [],          
+	            })
+	        });
 		}else{
 	      // console.log("there is no value");
 		  // console.log('completeDataCount in table', this.state.completeDataCount);

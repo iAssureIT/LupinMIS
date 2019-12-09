@@ -122,6 +122,7 @@ class Activity extends Component{
 
     var prevTotal = 0;
     var subTotal = 0;
+    // var array = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"]
     switch(event.target.name){
         case "LHWRF" : 
             prevTotal = this.state.totalcost;
@@ -305,9 +306,11 @@ class Activity extends Component{
     
   SubmitActivity(event){
     event.preventDefault();
+    // console.log("date = ", this.refs.dateofIntervention.value);
     var dateObj = new Date();
     var momentObj = moment(dateObj);
     var momentString = momentObj.format('YYYY-MM-DD');
+
     // if(this.refs.dateofIntervention.value == "" ){
     // if (this.validateFormReq() && this.validateForm()){
     if ($("#Academic_details").valid()){
@@ -322,7 +325,7 @@ class Activity extends Component{
         "district"          : this.refs.district.value,
         "block"             : this.refs.block.value,
         "village"           : this.refs.village.value,
-        // "dateofIntervention": this.refs.dateofIntervention.value,
+        "dateofIntervention": this.refs.dateofIntervention.value,
         "sector_ID"         : this.refs.sector.value.split('|')[1],
         "sectorName"        : this.refs.sector.value.split('|')[0],
         "typeofactivity"    : this.refs.typeofactivity.value,
@@ -516,27 +519,27 @@ class Activity extends Component{
     this.setState({
       "projectName"        : "",
       "projectCategoryType" : "LHWRF Grant",
-      "district"          : "",
-      "block"             : "",
-      "village"           : "",
+      "district"          : "-- Select --",
+      "block"             : "-- Select --",
+      "village"           : "-- Select --",
       "dateofIntervention": momentString,
-      "sector"            : "",
-      "typeofactivity"    : "",
+      "sector"            : "-- Select --",
+      "typeofactivity"    : "-- Select --",
       "nameofactivity"    : "",
-      "activity"          : "",
-      "subactivity"       : "",
+      "activity"          : "-- Select --",
+      "subactivity"       : "-- Select --",
       "unit"              : "",
-      "unitCost"          : "",
-      "quantity"          : "",
-      "totalcost"         : "",
-      "LHWRF"             : "",
-      "NABARD"            : "",
-      "bankLoan"          : "",
-      "govtscheme"        : "",
-      "directCC"          : "",
-      "indirectCC"        : "",
-      "other"             : "",
-      "total"             : "",
+      "unitCost"          : "0",
+      "quantity"          : "0",
+      "totalcost"         : "0",
+      "LHWRF"             : "0",
+      "NABARD"            : "0",
+      "bankLoan"          : "0",
+      "govtscheme"        : "0",
+      "directCC"          : "0",
+      "indirectCC"        : "0",
+      "other"             : "0",
+      "total"             : "0",
       "remark"            : "",
       "fields"            : fields,
       "selectedBeneficiaries" :[],
@@ -775,8 +778,15 @@ class Activity extends Component{
   }
 
   componentDidMount() {
+    $.validator.addMethod("regxDate", function(value, element, regexpr) { 
+      return value!=='';
+    }, "This field is required.");
     $("#Academic_details").validate({
       rules: {
+        dateofIntervention:{
+          required: true,
+          regxDate: this.refs.dateofIntervention.value
+        },
         district: {
           required: true,
         },
@@ -806,6 +816,9 @@ class Activity extends Component{
         },
       },
       errorPlacement: function(error, element) {
+        if (element.attr("name") == "dateofIntervention"){
+          error.insertAfter("#dateofIntervention");
+        }
         if (element.attr("name") == "district"){
           error.insertAfter("#district");
         }
@@ -1243,9 +1256,9 @@ class Activity extends Component{
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                           
                           <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Date of intervention</label>
+                            <label className="formLable">Date of Intervention</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
-                              <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)}/>
+                              <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)} required/>
                             </div>
                             <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
                           </div>
@@ -1330,17 +1343,7 @@ class Activity extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.sector}</div>
                           </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Type of Activity</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
-                              <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                                <option disabled="disabled" selected="true">-- Select --</option>
-                                <option>Common Level Activity</option>
-                                 <option>Family Level Activity</option>
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.typeofactivity}</div>
-                          </div>
+
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">Activity</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
@@ -1362,6 +1365,8 @@ class Activity extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.activity}</div>
                           </div>
+
+
                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">Sub-Activity</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
@@ -1383,19 +1388,37 @@ class Activity extends Component{
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.subactivity}</div>
-                          </div>                        
+                          </div>   
+
+
+
+                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                            <label className="formLable">Activity Type</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
+                              <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
+                                <option disabled="disabled" selected="true">-- Select --</option>
+                                <option>Common Level Activity</option>
+                                 <option>Family Level Activity</option>
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.typeofactivity}</div>
+                          </div>
+
+
+
+
                         </div> 
                       </div><br/>
                       <div className="row ">
                         <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                           <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <div className=""  >
-                              <label className="formLable">Unit :</label>
+                              <label className="formLable">Unit of Measurement</label>
                                 <div className="form-control inputBox inputBox-main unit">
                                   {this.state.subActivityDetails ? 
                                       <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
                                     :
-                                    null
+                                      null
                                   }
                                 </div>
                             </div>
