@@ -263,13 +263,22 @@ class Activity extends Component{
     this.setState({
        [name]: target.value,
     },()=>{
-      if (this.state.quantity > 0) {
+      if (this.state.unitCost > 0 & this.state.quantity > 0) {
+        console.log("this.state.unitCost = ",this.state.unitCost);
+        console.log("this.state.quantity = ",this.state.quantity);
+        
          var totalcost = parseInt(this.state.unitCost) * parseInt(this.state.quantity);
          this.setState({
-          "total" : totalcost,
-          "totalcost"  : totalcost,
-          "LHWRF"      : totalcost
+          "total"     : totalcost,
+          "totalcost" : totalcost,
+          "LHWRF"     : totalcost
          });
+      }else{
+         this.setState({
+          "total"     : "",
+          "totalcost" : "",
+          "LHWRF"     : "",
+         });        
       }
     });
   }
@@ -1162,6 +1171,8 @@ class Activity extends Component{
       }
     })
   }
+
+
   render() {
     // console.log('state',this.state.total)
      var hidden = {

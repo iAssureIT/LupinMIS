@@ -1,6 +1,12 @@
+webApp/admin/node_modules
+webApp/admin/.env
+
 /webApp/admin/node_modules
 /webApp/admin/.env
 
+
+webApp/center/node_modules
+webApp/center/.env
 
 /webApp/center/node_modules
 /webApp/center/.env

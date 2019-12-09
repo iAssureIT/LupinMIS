@@ -55,54 +55,28 @@ export default class Leftsidebar extends Component{
                 <strong className="sidebarLogoName">LFMIS <p className="fz14">Center</p></strong>
               </div>
               <ul className="list-unstyled sidebar-menu components scrollBox" style={{height:  sidebarHeight+"px"}}>
+              
                 <li className=" sidebarMenuText">
                   <Link to="/">
                     <i className="glyphicon glyphicon-briefcase"></i>
                     Dashboard
                   </Link>
                 </li>
-                <li className="sidebarMenuText">
-                  <Link to="/plan-details" >
-                    <i className="fa fa-pie-chart" />
-                    Plan Details
-                  </Link>
-                </li>
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#Activity" data-toggle="collapse" className="menuContent" aria-expanded="false">
-                    <i className="fa fa-edit" />
-                    Activity
-                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
-                  </Link>
-                  <ul className="collapse  list-unstyled" id="Activity">
-                    <li>
-                      <Link to="/activity">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Submit Activity</span>
-                      </Link>
-                    </li>                   
-                    <li>
-                      <Link to="/viewActivity">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">View all Activities</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/activityReportView">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activity Report View</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>                 
+
+
                 <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
                   <Link to="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent">
                     <i className="fa fa-file" />
-                    Plan Related Reports
+                      Planning Management
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i> 
-
-                  {/*      <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>*/}
                   </Link>
-                  <ul className="collapse   list-unstyled" id="planreport">
+                  <ul className="collapse list-unstyled" id="planreport">
+                    <li className="sidebarMenuText">
+                      <Link to="/plan-details" >
+                        <i className="fa fa-pie-chart" />
+                        Add New Plan
+                      </Link>
+                    </li>                  
                     <li>
                       <Link to="/activitywise-annual-plan-report">
                         <i className="fa fa-circle-o" />
@@ -129,19 +103,48 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li> 
+
+
+
+                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
+                  <Link to="#Activity" data-toggle="collapse" className="menuContent" aria-expanded="false">
+                    <i className="fa fa-edit" />
+                    Activity Management
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
+                  </Link>
+                  <ul className="collapse  list-unstyled" id="Activity">
+                    <li>
+                      <Link to="/activity">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Submit Activity</span>
+                      </Link>
+                    </li>                   
+                    <li>
+                      <Link to="/viewActivity">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">View all Activities</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/activityReportView">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Activity Report View</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </li>                 
+
+
+
+
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
                   <Link to="#report" data-toggle="collapse" className="menuContent"  aria-expanded="false">
                     <i className="fa fa-book" />
-                    Reports
+                    Reporting System
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
+
                   <ul className="collapse list-unstyled" id="report">
-                   {/* <li>
-                      <Link to="/Report">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Report</span>
-                      </Link>
-                    </li>*/}
                     <li>
                       <Link to="/sector-wise-annual-completion-summary-report">
                         <i className="fa fa-circle-o" />
@@ -198,6 +201,9 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li> 
+
+
+
                 <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
                   <Link to="#sreport" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-bars" />
@@ -225,10 +231,14 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li>
+
+
+
+
                 <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
                   <Link to="#MasterData" data-toggle="collapse" className="menuContent" aria-expanded="false">
                     <i className="fa fa-folder" />
-                    Beneficiary Management
+                    Family & Beneficiary
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
                   <ul className="collapse list-unstyled" id="MasterData">
@@ -246,24 +256,36 @@ export default class Leftsidebar extends Component{
                     </li>             
                   </ul>
                 </li> 
+
+
+
                 <li className="sidebarMenuText" >
                   <Link to="/centerList" >
                     <i className="fa fa-th" />
                     Center List
                   </Link>
                 </li>
+
+
+
                 <li className="sidebarMenuText">
                   <Link to="/caseStudy" >
                     <i className="fa fa-th" />
                     Case Study
                   </Link>
                 </li>
+
+
+
                 <li className="sidebarMenuText">
                   <Link to="/highlight" >
                     <i className="fa fa-th" />
                     Highlights
                   </Link>
                 </li>
+
+
+
               </ul>
             </nav>
           </div>
