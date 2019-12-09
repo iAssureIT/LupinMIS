@@ -374,48 +374,46 @@ class IAssureTableUM extends Component {
 		});	
 	}
 	tableSearch(){
-    	var searchText = this.refs.tableSearch.value;
-    	console.log("here search data",searchText);
-    	var formValues =
-    	{
+    	var searchText = this.refs.tableSearch.value.trim();
+    	// console.log("here search data",searchText);
+    	var formValues ={
 			searchText : searchText,
 		}
-		 if(searchText && searchText.length !== 0) {
-					axios
-				      .post('/api/users/searchValue',formValues)
-				      .then(
-				        (res)=>{
-				          console.log('res', res);
-				          // swal("Search successfull by "+searchText+ "","success");
-				          var data = res.data.data;
-				          var tableData = data.map((a, i)=>{
-								return {
-									_id 			: a._id,
-									fullName        : a.profile.fullName,
-									centerName      : a.profile.centerName,
-					                emailId    		: a.emails[0].address,
-					                mobileNumber    : a.profile.mobileNumber, 
-					                status        	: a.profile.status,	
-					                roles 			: ((a.roles.map((b, i)=>{return '<p>'+b+'</p>'})).toString()).replace(/,/g, " "),
-								}
-							})
-				          	this.setState({
-				              tableData 		: tableData,          
-				            },()=>{
-				            })
-				        }).catch((error)=>{ 
-				        	// swal("No results found","","error");
-				      });
-			}else{
-
-				console.log("there is no value");
-				 // console.log('completeDataCount in table', this.state.completeDataCount);
-			      this.setState({
-			      	tableHeading	  : this.props.tableHeading,
-			      	tableData 		  : this.props.tableData,
-			      	completeDataCount : this.props.completeDataCount
-			      })
-			}
+		if(searchText && searchText.length !== 0) {
+		  axios
+	      .post('/api/users/searchValue',formValues)
+	      .then(
+	        (res)=>{
+	          // console.log('res', res);
+	          // swal("Search successfull by "+searchText+ "","success");
+	          var data = res.data.data;
+	          var tableData = data.map((a, i)=>{
+					return {
+						_id 			: a._id,
+						fullName        : a.profile.fullName,
+						centerName      : a.profile.centerName,
+		                emailId    		: a.emails[0].address,
+		                mobileNumber    : a.profile.mobileNumber, 
+		                status        	: a.profile.status,	
+		                roles 			: ((a.roles.map((b, i)=>{return '<p>'+b+'</p>'})).toString()).replace(/,/g, " "),
+					}
+				})
+	          	this.setState({
+	              tableData 		: tableData,          
+	            },()=>{
+	            })
+	        }).catch((error)=>{ 
+	        	// swal("No results found","","error");
+	       });
+		}else{
+	      // console.log("there is no value");
+		  // console.log('completeDataCount in table', this.state.completeDataCount);
+	      this.setState({
+	      	tableHeading	  : this.props.tableHeading,
+	      	tableData 		  : this.props.tableData,
+	      	completeDataCount : this.props.completeDataCount
+	      })
+		}
 		// if(searchText && searchText.length !== 0) {
 		// 	this.setState({
 		// 		"normalData"  : false,
@@ -807,7 +805,7 @@ class IAssureTableUM extends Component {
 		// var z = 2;
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
-	       		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding">
+	       		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding-left">
 					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding formLable text-left">Users Per Page</label>
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 						<select onChange={this.setLimit.bind(this)} value={this.state.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12  noPadding inputBox-main form-control">
@@ -820,7 +818,7 @@ class IAssureTableUM extends Component {
 						</select>
 					</div>
 				</div>           
-				<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding">
+				<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding-right">
 	        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding formLable text-left">Search</label>
 	        		<div className="input-group inputBox-main">
 				        <input type="text" onChange={this.tableSearch.bind(this)} className="NOpadding-right zzero form-control inputBox" ref="tableSearch" id="tableSearch" name="tableSearch"/>

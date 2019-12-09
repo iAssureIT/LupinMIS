@@ -64,104 +64,108 @@ class SignUp extends Component {
  	usersignup(event){
  		event.preventDefault();
  		if($("#signUpUser").valid()){
-	 		this.setState({
-	     	    buttonValue : 'Please Wait...'
-	 		})	
-			console.log("-------this.state.auth------>>",this.state.auth);
-			var auth={
-	            firstName       : this.refs.firstname.value,
-	            lastName        : this.refs.lastname.value,
-	            mobileNumber    : this.refs.mobileNumber.value,
-	            emailId         : this.refs.signupEmail.value,
-	            pwd        		: this.refs.signupPassword.value,
-	            signupPassword  : this.refs.signupConfirmPassword.value,
-	            roles 			: 'MIS Coordinator',
-	            status			: "Blocked",
-	            centerName		: this.refs.centerName.value.split('|')[0],
-	            center_ID		: this.refs.centerName.value.split('|')[1],
-	        }
-			console.log("-------auth------>>",auth);
+ 			if($('#idacceptcondition').is(":checked")){
+		 		this.setState({
+		     	    buttonValue : 'Please Wait...'
+		 		})	
+				console.log("-------this.state.auth------>>",this.state.auth);
+				var auth={
+		            firstName       : this.refs.firstname.value,
+		            lastName        : this.refs.lastname.value,
+		            mobileNumber    : this.refs.mobileNumber.value,
+		            emailId         : this.refs.signupEmail.value,
+		            pwd        		: this.refs.signupPassword.value,
+		            signupPassword  : this.refs.signupConfirmPassword.value,
+		            roles 			: 'MIS Coordinator',
+		            status			: "Blocked",
+		            centerName		: this.refs.centerName.value.split('|')[0],
+		            center_ID		: this.refs.centerName.value.split('|')[1],
+		        }
+				console.log("-------auth------>>",auth);
 
-	        document.getElementById("signUpBtn").value = 'We are processing. Please Wait...';            
-	            
-	        var firstname                = this.refs.firstname.value;
-	        var lastname                 = this.refs.lastname.value;
-	        var mobile                   = this.refs.mobileNumber.value;
-	        var email                    = this.refs.signupEmail.value;
-	        var passwordVar              = this.refs.signupPassword.value;
-	        var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
-	        var centerName				 = this.refs.centerName.value;
-	 		
-	        if (passwordVar === signupConfirmPasswordVar) {
-	            return (passwordVar.length >= 6) ? 
-	            	(true, 
-	            	 console.log("formValues= ",auth),
-		             document.getElementById("signUpBtn").value = 'Sign Up',
-	  				// browserHistory.push("/"),
-	            	axios
-	            	 	.post('/api/users',auth)
-			            .then((response)=> {
-				            console.log("-------userData------>>",response);
-			            	if(response.data.user_id){
-				            	var msgvariable = {
-		                            '[User]'    : firstname+' '+lastname,
-		                        }
-	                            // console.log("msgvariable :"+JSON.stringify(msgvariable));
-	                            var inputObj = {  
-	                                to           : email,
-	                                templateName : 'User - Signup Notification',
-	                                variables    : msgvariable,
-	                            }
-	                            axios
-		                	 	.post('/api/masternotification/send-mail',inputObj)
-					            .then((response)=> {
-					            	// console.log("-------mail------>>",response);
+		        document.getElementById("signUpBtn").value = 'We are processing. Please Wait...';            
+		            
+		        var firstname                = this.refs.firstname.value;
+		        var lastname                 = this.refs.lastname.value;
+		        var mobile                   = this.refs.mobileNumber.value;
+		        var email                    = this.refs.signupEmail.value;
+		        var passwordVar              = this.refs.signupPassword.value;
+		        var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
+		        var centerName				 = this.refs.centerName.value;
+		 		
+		        if (passwordVar === signupConfirmPasswordVar) {
+		            return (passwordVar.length >= 6) ? 
+		            	(true, 
+		            	 console.log("formValues= ",auth),
+			             document.getElementById("signUpBtn").value = 'Sign Up',
+		  				// browserHistory.push("/"),
+		            	axios
+		            	 	.post('/api/users',auth)
+				            .then((response)=> {
+					            console.log("-------userData------>>",response);
+				            	if(response.data.user_id){
+					            	var msgvariable = {
+			                            '[User]'    : firstname+' '+lastname,
+			                        }
+		                            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+		                            var inputObj = {  
+		                                to           : email,
+		                                templateName : 'User - Signup Notification',
+		                                variables    : msgvariable,
+		                            }
+		                            axios
+			                	 	.post('/api/masternotification/send-mail',inputObj)
+						            .then((response)=> {
+						            	// console.log("-------mail------>>",response);
+					            		this.setState({
+		     	    						buttonValue : 'Sign Up'
+					            		},()=>{
+						            		swal("success","Information submitted successfully ");
+							                this.props.history.push("/login");
+					            		})
+						            })
+						            .catch(function (error) {
+						                console.log(error);
+						            })
+				            	}else{
 				            		this.setState({
-	     	    						buttonValue : 'Sign Up'
+		 	    						buttonValue : 'Sign Up'
 				            		},()=>{
-					            		swal("success","Information submitted successfully ");
-						                this.props.history.push("/login");
+		    							swal(response.data.message);
 				            		})
-					            })
-					            .catch(function (error) {
-					                console.log(error);
-					            })
-			            	}else{
-			            		this.setState({
-	 	    						buttonValue : 'Sign Up'
-			            		},()=>{
-	    							swal(response.data.message);
-			            		})
-			            	}
-			             //    // this.props.history.push("/confirm-otp");
-			            })
-			            .catch(function (error) {
-			                console.log(error);
-	    					swal("Unable to submit data ",error);
-			            })
-	            	)
-	            :
-	                (
-		                document.getElementById("signUpBtn").value = 'Sign Up',
-		                swal("Password should be at least 6 Characters Long","Please try again or create an Account")       
-	                )
-	            
-	        } else {
-	            // document.getElementById("signUpBtn").value = 'Sign Up';
-	            this.setState({
-	            	buttonValue : 'Sign Up' 
-	            },()=>{
-		        	swal("Please Try Again","Passwords does not match")
-	            })
-	        }
-	  //       if(formValid(this.state.formerrors)){
-			// 	console.log('companyName==',this.state.formerrors);
-	  //       }else{
-	  //           document.getElementById("signUpBtn").value = 'Sign Up';
-			// 	swal("Please enter mandatory fields", "");
-			// 	console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-			// }
- 		}        
+				            	}
+				             //    // this.props.history.push("/confirm-otp");
+				            })
+				            .catch(function (error) {
+				                console.log(error);
+		    					swal("Unable to submit data ",error);
+				            })
+		            	)
+		            :
+		                (
+			                document.getElementById("signUpBtn").value = 'Sign Up',
+			                swal("Password should be at least 6 Characters Long","Please try again or create an Account")       
+		                )
+		            
+		        } else {
+		            // document.getElementById("signUpBtn").value = 'Sign Up';
+		            this.setState({
+		            	buttonValue : 'Sign Up' 
+		            },()=>{
+			        	swal("Please Try Again","Passwords does not match")
+		            })
+		        }
+		  //       if(formValid(this.state.formerrors)){
+				// 	console.log('companyName==',this.state.formerrors);
+		  //       }else{
+		  //           document.getElementById("signUpBtn").value = 'Sign Up';
+				// 	swal("Please enter mandatory fields", "");
+				// 	console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+				// }
+	 		}else{
+	 			swal("Accept Terms and Conditions", "Please accept Terms and Conditions");
+	 		}        
+ 		}
  	}
  	handleChange(event){
 	    // const target = event.target;
@@ -204,16 +208,16 @@ class SignUp extends Component {
 	}
  	acceptcondition(event){
 	    var conditionaccept = event.target.value;
-	    console.log("condition",conditionaccept);
+	    // console.log("condition",conditionaccept);
 	    if(conditionaccept=="acceptedconditions"){
-	        $(".acceptinput").removeAttr('disabled');
+	        // $(".acceptinput").removeAttr('disabled');
 	        // if(this.state.roletype=="Student"){
 	        //     document.getElementById("lastname").removeAttribute("");
 	        // }else{
 	        //     null;
 	        // }
 	    } else{
-	        $(".acceptinput").addAttr('disabled');
+	        // $(".acceptinput").addAttr('disabled');
 	    }
     }
 
@@ -515,7 +519,7 @@ class SignUp extends Component {
 							    </div>
 
 								<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group1 rrnRegisterBtn">
-							    	<input id="signUpBtn" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 acceptinput UMloginbutton UMloginbutton1 hvr-sweep-to-right" type="submit" value={this.state.buttonValue} disabled={this.state.buttonValue==='Please Wait...'?true:false}/>
+							    	<input id="signUpBtn" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 acceptinput UMloginbutton UMloginbutton1 hvr-sweep-to-right" type="submit" value={this.state.buttonValue} disabled={this.state.buttonValue==='Please Wait...'?true:false}/>
 							    </div>		   
 
 						    	<div className="col-lg-12 col-md-4 col-sm-4 col-xs-4 ">
