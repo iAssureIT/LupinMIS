@@ -245,7 +245,13 @@ class PlanDetails extends Component{
       [event.target.name] : event.target.value,
       totalBud : x,
       ["totalBudget-"+id] : x,
-      ["LHWRF-"+id] : x
+      ["LHWRF-"+id] : x,
+      ["NABARD-"+id] : 0,
+      ["bankLoan-"+id] : 0,
+      ["directCC-"+id] : 0,
+      ["govtscheme-"+id] : 0,
+      ["indirectCC-"+id] : 0,
+      ["other-"+id] : 0,
     },()=>{
       // console.log('totalBud=========',this.state.totalBud );
       if (parseInt(this.state[`noOfBeneficiaries-${id}`]) < parseInt(this.state[`noOfFamilies-${id}`]) ) {
@@ -327,8 +333,8 @@ class PlanDetails extends Component{
       fields["indirectCC"]        = "";
       fields["other"]             = "";
       fields["remark"]            = "";
-      console.log("subActivityDetails",subActivityDetails);
-      console.log("this.state.apiCall",this.state.apiCall);
+      // console.log("subActivityDetails",subActivityDetails);
+      // console.log("this.state.apiCall",this.state.apiCall);
       if(subActivityDetails.length > 0){
         for(var i=0; i<subActivityDetails.length; i++){
           var planValues = {
@@ -360,6 +366,9 @@ class PlanDetails extends Component{
           axios.post(this.state.apiCall, planValues)
             .then((response)=>{
               console.log("response",response);
+              if (response.status === 200 ) {
+                swal("Plan created successfully");
+              }
               if(this.refs.month.value==='Annual'){
                 var email = localStorage.getItem('email')
                 var msgvariable = {
@@ -376,15 +385,12 @@ class PlanDetails extends Component{
                 .post('/api/masternotification/send-mail',inputObj)
                 .then((response)=> {
                   // console.log("-------mail------>>",response);
-                  swal({
-                    title : response.data.message,
-                    text  : response.data.message
-                  });
-                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+                  
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
+                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
               }else{
                 var email = localStorage.getItem('email')
                 var msgvariable = {
@@ -402,15 +408,12 @@ class PlanDetails extends Component{
                 .post('/api/masternotification/send-mail',inputObj)
                 .then((response)=> {
                   // console.log("-------mail------>>",response);
-                  swal({
-                    title : response.data.message,
-                    text  : response.data.message
-                  });
-                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+                  
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
+                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
               }
             })
             .catch(function(error){
@@ -427,6 +430,7 @@ class PlanDetails extends Component{
           );
         }
       }else{
+        this.validateFormReq();
         swal({
           title : "abc",
           text  : "Please fill atleast one SubActivity Details."
@@ -459,7 +463,7 @@ class PlanDetails extends Component{
         "availableSubActivity":[],
         "availableActivity"   :[],
         "subActivityDetails[i][name]":"",
-        shown                 : !this.state.shown
+        // shown                 : !this.state.shown
       });
     // }
   }
@@ -589,7 +593,7 @@ class PlanDetails extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-    $("html,body").scrollTop(0);
+    // $("html,body").scrollTop(0);
       if (!fields["sectorName"]) {
         formIsValid = false;
         errors["sectorName"] = "This field is required.";
@@ -620,7 +624,7 @@ class PlanDetails extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-    $("html,body").scrollTop(0);
+    // $("html,body").scrollTop(0);
 
       this.setState({
         errors: errors 

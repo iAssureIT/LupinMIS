@@ -155,7 +155,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         }else{
           var sector_id = event.target.value.split('|')[1];
         }
-      // console.log('sector_id',sector_id);
+      console.log('sector_id',sector_id);
       this.setState({
             sector_ID : sector_id,
           },()=>{

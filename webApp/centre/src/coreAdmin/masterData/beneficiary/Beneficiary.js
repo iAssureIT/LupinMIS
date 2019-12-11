@@ -132,7 +132,7 @@ class Beneficiary extends Component{
   }
   Update(event){
     event.preventDefault();
-      if(this.refs.familyID.value === "" ||  this.refs.relation.value==="" ||  this.refs.uidNumber.value==="" 
+      if(this.refs.familyID.value === "" ||  this.refs.relation.value===""
         || this.refs.surnameOfBeneficiary.value===""|| this.refs.firstNameOfBeneficiary.value===""|| this.refs.middleNameOfBeneficiary.value==="")
       {
         if (this.validateFormReq() && this.validateForm()){
@@ -251,9 +251,7 @@ class Beneficiary extends Component{
       })
       this.edit(editId);
     }
-    /*else{
-      window.location.reload();
-    }*/
+   
     if(nextProps){
       this.getLength();
     }  
@@ -277,7 +275,7 @@ class Beneficiary extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    console.log("center_ID =",this.state.center_ID);
+    // console.log("center_ID =",this.state.center_ID);
      this.getLength(this.state.center_ID);
     // this.getData();
     this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
@@ -292,7 +290,7 @@ class Beneficiary extends Component{
     })
     .then((response)=> {
       var editData = response.data[0];
-      console.log('editData',editData);
+      // console.log('editData',editData);
       
       this.setState({
         "beneficiaryID"            : editData.beneficiaryID,
