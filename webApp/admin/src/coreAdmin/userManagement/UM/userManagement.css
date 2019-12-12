@@ -41,7 +41,8 @@
   z-index: 0;
 }
 .btmmargin{
-  margin-bottom: 30px;
+  /*margin-bottom: 30px;*/
+  height: 100px;
 }
 .topmr40{
   margin-top: 35px;

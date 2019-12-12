@@ -634,6 +634,7 @@ class NewBeneficiary extends Component{
                                 getBeneficiaries={this.addBeneficiary.bind(this)}    
                                 selectedValues = {this.state.selectedValues}  
                                 sendBeneficiary={this.state.sendBeneficiary}
+                                showUpgradation={$('select[name="subactivity"]').find('option:selected').attr('data-upgrade')}
                               />
                             </div>
                           </div> 

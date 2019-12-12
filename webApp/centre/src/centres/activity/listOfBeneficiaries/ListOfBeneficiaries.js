@@ -24,11 +24,12 @@ class ListOfBeneficiaries extends Component{
       "tableHeading"                : {
         beneficiaryID               : "Beneficiary ID",
         familyID                    : "Family ID",
-        nameofbeneficiaries           : "Name of Beneficiary",
+        nameofbeneficiaries         : "Name of Beneficiary",
         relation                    : "Relation with Family Head",
         dist                        : "District",
         block                       : "Block",
         village                     : "Village",
+        isUpgraded                  : "Upgraded",
         // actions                     : 'Action',
       },
       "tableObjects"        : {
@@ -138,6 +139,7 @@ class ListOfBeneficiaries extends Component{
             dist                      : a.dist,
             block                     : a.block,
             village                   : a.village,
+            upgraded                  : a.isUpgraded,
           }
       })
       this.setState({
@@ -167,8 +169,7 @@ class ListOfBeneficiaries extends Component{
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.dataCount}
                       tableData={this.state.tableData}
-                      getData={this.getData.bind(this)}   
-                                         
+                      getData={this.getData.bind(this)} 
                     />
                   </div>
                 </div> 

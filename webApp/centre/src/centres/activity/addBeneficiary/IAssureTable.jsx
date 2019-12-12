@@ -17,6 +17,7 @@ class IAssureTable extends Component {
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
 		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
 		    "tableObjects" 				: props && props.tableObjects ? props.tableObjects : {},		    
+		    "showUpgradation" 			: props && props.showUpgradation ? props.showUpgradation : '',		    
 		    "reA" 						: /[^a-zA-Z]/g,
 		    "reN" 						: /[^0-9]/g,
 		    "sort" 	  					: true,
@@ -47,8 +48,9 @@ class IAssureTable extends Component {
             tableData	    : nextProps.tableData,
             dataCount 		: nextProps.dataCount,
             selectedValues  : nextProps.selectedValues,
-            sendBeneficiary : nextProps.sendBeneficiary,
-            selectedBeneficiaries : nextProps.sendBeneficiary
+            // sendBeneficiary : nextProps.sendBeneficiary,
+            selectedBeneficiaries : nextProps.sendBeneficiary,
+            showUpgradation : nextProps.showUpgradation
         },()=>{
         	
         	if(this.state.selectedValues){
@@ -58,10 +60,13 @@ class IAssureTable extends Component {
 	        		})
 	        	})
         	}
-        	if(this.state.selectedBeneficiaries){
-        		this.state.selectedBeneficiaries.map((a, i)=>{
+        	if(this.state.selectedBeneficiaries&&this.state.selectedBeneficiaries.length>0){
+        		this.state.selectedBeneficiaries.map((value, i)=>{
+        			let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village
+        			let upgradeid = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'
         			this.setState({
-	        			[a.beneficiary_ID+'|'+a.beneficiaryID+'|'+a.family_ID+'|'+a.familyID+'|'+a.nameofbeneficiaries] : true
+	        			[id] : true,
+	        			[upgradeid] : value.isUpgraded==='Yes'?true:false
 	        		})
         		})
         	}
@@ -493,35 +498,38 @@ class IAssureTable extends Component {
     	var selectedBeneficiaries = this.state.selectedBeneficiaries;
     	var value = event.target.checked;
 	    var id    = event.target.id;
+	    // console.log('value',value,id)
+
 	    this.setState({
 	      [id] : value
 	    },()=>{
-	    	
-	    	if(this.state[id] == true){
+		    console.log('this.state[id+"|upgrade"]',this.state[id+"|upgrade"])
+	    	if(id.split('|')[10]){
+				let newId = id.replace('|upgrade','')
+				this.setState({
+			      [newId] : value,
+			    })    		
+		    }else{
+		     	if(this.state[id+"|upgrade"]&&!value){
+		    	this.setState({
+			      [id] : true
+			    },()=>{
+		    		swal('','This operation is not allowed. Please deselect the upgraded value.');
+			    })} 
+		    }
+	    	if(this.state[id] === true){
 			    selectedBeneficiaries.push({
-
-            // _id                       : a._id,
-            // beneficiary_ID            : a.beneficiary_ID,
-            // beneficiaryID             : a.beneficiaryID,
-            // family_ID                 : a.family_ID,
-            // familyID                  : a.familyID,
-            // nameofbeneficiaries       : a.nameofbeneficiaries,
-            // relation                  : a.relation,
-            // dist                      : a.dist,
-            // block                     : a.block,
-            // village                   : a.village,
-          
 		    		_id     		    : id.split('|')[0],
 		    		beneficiary_ID      : id.split('|')[1],
 					beneficiaryID       : id.split('|')[2],
 		    		family_ID           : id.split('|')[3],
 					familyID            : id.split('|')[4],
-					nameofbeneficiaries   : id.split('|')[5],
+					nameofbeneficiaries : id.split('|')[5],
 					relation            : id.split('|')[6],
 					dist          	    : id.split('|')[7],
 					block               : id.split('|')[8],
 					village             : id.split('|')[9],
-        
+					isUpgraded 			: id.split('|')[10]&&value?'Yes':id.split('|')[10]&&!value?'No':this.state[id+"|upgrade"]?'Yes':'No'
 		    	});
 		    	
 		    	this.setState({
@@ -593,8 +601,10 @@ class IAssureTable extends Component {
 	                            {/*<th className="textAlignCenter">
 									<input type="checkbox" />
 								</th>*/}
-
 	                            <th className="umDynamicHeader srpadd textAlignLeft">Select</th>
+								{this.state.showUpgradation === 'Yes'?
+	                            	<th className="umDynamicHeader srpadd textAlignLeft">Upgraded</th>	
+								:null}
 
 	                            <th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
 		                            { this.state.tableHeading ?
@@ -627,6 +637,15 @@ class IAssureTable extends Component {
 														<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village]?true:false} id={value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village} onChange={this.selectBeneficiary.bind(this)}/>
 														<span className="checkboxMark"></span>
 													</td>
+													{
+														this.state.showUpgradation === 'Yes'?
+														<td className="textAlignCenter checkboxContainer">
+															<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade']?true:false} id={value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'} onChange={this.selectBeneficiary.bind(this)}/>
+															<span className="checkboxMark"></span>
+														</td>
+														:
+														null
+													}
 													<td className="textAlignCenter">{this.state.startRange+1+i}</td>
 													{
 														Object.entries(value).map( 

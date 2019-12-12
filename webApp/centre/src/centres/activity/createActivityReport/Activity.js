@@ -122,7 +122,6 @@ class Activity extends Component{
 
     var prevTotal = 0;
     var subTotal = 0;
-    // var array = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"]
     switch(event.target.name){
         case "LHWRF" : 
             prevTotal = this.state.totalcost;
@@ -312,6 +311,8 @@ class Activity extends Component{
   getBeneficiaries(selectedBeneficiaries){
     this.setState({
       selectedBeneficiaries : selectedBeneficiaries
+    },()=>{
+      console.log('selectedBeneficiaries',this.state.selectedBeneficiaries)
     })
   }
     
@@ -390,14 +391,15 @@ class Activity extends Component{
         axios.post('/api/activityReport',activityValues)
           .then((response)=>{
             // console.log("response", response);
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
             swal({
               title : response.data.message,
               text  : response.data.message,
             });
-              this.getData(this.state.startRange, this.state.limitRange);  
-              this.setState({
-                selectedValues : this.state.selectedBeneficiaries 
-              })    
+              // this.getData(this.state.startRange, this.state.limitRange);  
+              // this.setState({
+              //   selectedValues : this.state.selectedBeneficiaries 
+              // })    
             })
           .catch(function(error){       
             // console.log('error',error);
@@ -409,38 +411,38 @@ class Activity extends Component{
             }
           });
         this.setState({
-          "projectName"            : "",
+          "projectName"        : "",
           "projectCategoryType" : "LHWRF Grant",
-          "district"               : "-- Select --",
-          "block"                  : "-- Select --",
-          "village"                : "-- Select --",
-          "dateofIntervention"     : momentString,
-          "sector"                 : "-- Select --",
-          "typeofactivity"         : "-- Select --",
-          "nameofactivity"         : "",
-          "activity"               : "-- Select --",
-          "subactivity"            : "-- Select --",
-          "unit"                   : "",
-          "unitCost"               : "",
-          "quantity"               : "",
-          "totalcost"              : "",
-          "LHWRF"                  : "",
-          "NABARD"                 : "",
-          "bankLoan"               : "",
-          "govtscheme"             : "",
-          "directCC"               : "",
-          "indirectCC"             : "",
-          "other"                  : "",
-          "total"                  : "",
-          "remark"                 : "",
-          "fields"                 : fields,
-          "selectedBeneficiaries"  : [],
-          "listofBeneficiaries"    : [],
-          "subActivityDetails"     : [],
-          "availableActivity"      : [],
-          "availableSubActivity"   : []
-        },()=>{
-          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+          "district"          : "-- Select --",
+          "block"             : "-- Select --",
+          "village"           : "-- Select --",
+          "dateofIntervention": momentString,
+          "sector"            : "-- Select --",
+          "typeofactivity"    : "-- Select --",
+          "nameofactivity"    : "",
+          "activity"          : "-- Select --",
+          "subactivity"       : "-- Select --",
+          "unit"              : "",
+          "unitCost"          : "0",
+          "quantity"          : "0",
+          "totalcost"         : "0",
+          "LHWRF"             : "0",
+          "NABARD"            : "0",
+          "bankLoan"          : "0",
+          "govtscheme"        : "0",
+          "directCC"          : "0",
+          "indirectCC"        : "0",
+          "other"             : "0",
+          "total"             : "0",
+          "remark"            : "",
+          "fields"            : fields,
+          "selectedBeneficiaries" :[],
+          "selectedValues"         : [],    
+          "listofBeneficiaries": [],      
+          "subActivityDetails" : [],
+          "availableSectors"   : [],
+          "availableActivity"  : [],
+          "availableSubActivity": [],
         });
       }else{
         swal('Total Costs are not equal! Please check');
@@ -675,45 +677,76 @@ class Activity extends Component{
       // console.log("editData",editData);
       // console.log("editData",editData.district);
         // getAvailableCenter(center_ID)
-      this.getAvailableCenter(this.state.center_ID);
-      this.getBlock(this.state.stateCode, editData.district);
-      this.getVillages(this.state.stateCode, editData.district, editData.block);
-
-      this.getAvailableActivity(editData.sector_ID);
-      this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID)
       // console.log( editData.district,editData.village,editData.block);
-
-      this.setState({
-        "editData"          : editData,
-        "stateCode"         : editData.stateCode,
-        "district"          : editData.district,
-        "block"             : editData.block,
-        "village"           : editData.village,
-        "date"              : editData.date,
-        "sector"            : editData.sectorName+'|'+editData.sector_ID,
-        "typeofactivity"    : editData.typeofactivity,
-        "activity"          : editData.activityName+'|'+editData.activity_ID,
-        "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
-        "subActivityDetails": editData.unit,
-        "unitCost"          : editData.unitCost,
-        "quantity"          : editData.quantity,
-        "totalcost"         : editData.totalcost,
-        "LHWRF"             : editData.sourceofFund.LHWRF,
-        "NABARD"            : editData.sourceofFund.NABARD,
-        "bankLoan"          : editData.sourceofFund.bankLoan,
-        "govtscheme"        : editData.sourceofFund.govtscheme,
-        "directCC"          : editData.sourceofFund.directCC,
-        "indirectCC"        : editData.sourceofFund.indirectCC,
-        "other"             : editData.sourceofFund.other,
-        "total"             : editData.sourceofFund.total,
-        "remark"            : editData.remark,
-        "listofBeneficiaries" : editData.listofBeneficiaries,
-        "selectedBeneficiaries" : editData.listofBeneficiaries,
-        "projectCategoryType"   : editData.projectCategoryType,
-        "projectName"           : editData.projectName,
-      }, ()=>{
-        // console.log("edit", this.state.editData)
-      });      
+      if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
+        var bentableData = []
+        editData.listofBeneficiaries.map((a, i)=>{
+          axios.get('/api/beneficiaries/'+a.beneficiary_ID)
+          .then((response)=>{
+            console.log('response',response)
+            bentableData.push({
+              _id                       : a._id,
+              beneficiary_ID            : a.beneficiary_ID,
+              beneficiaryID             : a.beneficiaryID,
+              family_ID                 : a.family_ID,
+              familyID                  : a.familyID,
+              nameofbeneficiaries       : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
+              relation                  : a.relation,
+              dist                      : a.dist,
+              block                     : a.block,
+              village                   : a.village,
+              isUpgraded                : a.isUpgraded,
+            })
+            if(editData.listofBeneficiaries.length===(i+1)){
+              this.setState({
+                bentableData : bentableData
+              },()=>{
+                console.log('bentableData',this.state.bentableData)
+                this.setState({
+                  "editData"          : editData,
+                  "stateCode"         : editData.stateCode,
+                  "district"          : editData.district,
+                  "block"             : editData.block,
+                  "village"           : editData.village,
+                  "date"              : editData.date,
+                  "sector"            : editData.sectorName+'|'+editData.sector_ID,
+                  "typeofactivity"    : editData.typeofactivity,
+                  "activity"          : editData.activityName+'|'+editData.activity_ID,
+                  "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
+                  "subActivityDetails": editData.unit,
+                  "unitCost"          : editData.unitCost,
+                  "quantity"          : editData.quantity,
+                  "totalcost"         : editData.totalcost,
+                  "LHWRF"             : editData.sourceofFund.LHWRF,
+                  "NABARD"            : editData.sourceofFund.NABARD,
+                  "bankLoan"          : editData.sourceofFund.bankLoan,
+                  "govtscheme"        : editData.sourceofFund.govtscheme,
+                  "directCC"          : editData.sourceofFund.directCC,
+                  "indirectCC"        : editData.sourceofFund.indirectCC,
+                  "other"             : editData.sourceofFund.other,
+                  "total"             : editData.sourceofFund.total,
+                  "remark"            : editData.remark,
+                  "listofBeneficiaries" : bentableData,
+                  "selectedBeneficiaries" : bentableData,
+                  "projectCategoryType"   : editData.projectCategoryType,
+                  "projectName"           : editData.projectName,
+                }, ()=>{
+                  // console.log("edit", this.state.editData)
+                  this.getAvailableCenter(this.state.center_ID);
+                  this.getBlock(this.state.stateCode, this.state.district);
+                  this.getVillages(this.state.stateCode, this.state.district, this.state.block);
+                  this.getAvailableActivity(editData.sector_ID);
+                  this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID)
+                }); 
+              })
+            }
+          })
+          .catch(function(error){ 
+            console.log("error = ",error);
+          });
+        })
+      }
+           
       let fields = this.state.fields;
       let errors = {};
       let formIsValid = true;
@@ -1390,7 +1423,7 @@ class Activity extends Component{
                                     this.state.availableSubActivity.map((data, index)=>{
                                       if(data.subActivityName ){
                                         return(
-                                          <option className="" key={data._id} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                          <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
                                         );
                                       }
                                     })
