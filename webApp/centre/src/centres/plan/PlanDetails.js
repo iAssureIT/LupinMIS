@@ -1,5 +1,4 @@
 import React, { Component }   from 'react';
-import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
@@ -16,9 +15,9 @@ class PlanDetails extends Component{
     this.state = {
       "center"              :"",
       "sector_id"           :"",
-      "sectorName"          :"",
+      "sectorName"          :"-- Select --",
       "subActivity"         :"",
-      "activityName"        :"",
+      "activityName"        :"-- Select --",
       "physicalUnit"        :"",
       "unitCost"            :"",
       "totalBudget"         :"",
@@ -101,17 +100,58 @@ class PlanDetails extends Component{
    // event.preventDefault();
     const target = event.target;
     const value  = target.type === 'checked' ? target.checked : target.value;
-    const name   = target.name;
-    var id = (name).split('-')[1];
-    // console.log("name",name); 
+    const name   = (target.name).split('-')[0];
+    var index    = (target.name).split('-')[1];
+    var obj      = this.state.availableSubActivity[parseInt(index)]; 
+    obj[name]    = value;
 
     this.setState({
-      [name]: value,
+      [event.target.name]: value,
     },()=>{
-    // console.log("mandatory",this.state.mandatory);
-      this.addsubActivityDetails(id,name,value,this.state.totalBud);
+      // console.log("name",name);
+      if (name === "physicalUnit" || name === "unitCost") {
+        this.calculateTotalBudget(index); 
+      }
+      if (name === "noOfBeneficiaries" || name === "noOfFamilies") {
+        if (parseInt(this.state[`noOfBeneficiaries-${index}`]) < parseInt(this.state[`noOfFamilies-${index}`]) ) {
+          swal("No. of Families should not greater than No. of Beneficiaries");
+         this.state.availableSubActivity[parseInt(index)].noOfBeneficiaries = 0;
+         this.state.availableSubActivity[parseInt(index)].noOfFamilies = 0;
+          this.setState({
+            [`noOfBeneficiaries-${index}`] : 0,
+            [`noOfFamilies-${index}`] : 0
+          });
+        }
+      }
+      // this.addsubActivityDetails(id,name,value,this.state.totalBud);
     });  
-  }   
+  }
+  calculateTotalBudget(index){
+    if (this.state["physicalUnit-"+index] && this.state["unitCost-"+index]) {
+      const total =  parseInt(this.state["physicalUnit-"+index]) * parseInt(this.state["unitCost-"+index]);
+      // console.log("total",total);
+      this.state.availableSubActivity[parseInt(index)].totalBudget = total;
+      this.state.availableSubActivity[parseInt(index)].LHWRF = total;
+      this.state.availableSubActivity[parseInt(index)].NABARD = 0;
+      this.state.availableSubActivity[parseInt(index)].bankLoan = 0;
+      this.state.availableSubActivity[parseInt(index)].directCC = 0;
+      this.state.availableSubActivity[parseInt(index)].govtscheme = 0;
+      this.state.availableSubActivity[parseInt(index)].indirectCC = 0;
+      this.state.availableSubActivity[parseInt(index)].other = 0;
+      this.setState({ 
+        ["totalBudget-"+index] : total,
+        ["LHWRF-"+index] : total,
+        ["NABARD-"+index] : 0,
+        ["bankLoan-"+index] : 0,
+        ["directCC-"+index] : 0,
+        ["govtscheme-"+index] : 0,
+        ["indirectCC-"+index] : 0,
+        ["other-"+index] : 0,
+      })
+
+    }
+  }
+
   handleChange(event){
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -129,106 +169,41 @@ class PlanDetails extends Component{
       });
     }
   }
-  remainTotal(subActivity,id){
-    var prevTotal = 0;
-    var subTotal = 0;
-    switch(subActivity){
-        case "LHWRF-"+id : 
-            prevTotal = this.state[`totalBudget-${id}`];
-            subTotal  = this.state[`LHWRF-${id}`];
-            console.log("prevTotal = ", prevTotal);
 
-          if(parseInt(this.state[`LHWRF-${id}`]) < this.state[`totalBudget-${id}`]){
-            if(subTotal < this.state[`totalBudget-${id}`]){
-              this.setState({[`NABARD-${id}`]   : this.state[`totalBudget-${id}`] - subTotal}); 
-            }            
-          }else{
-            this.setState({ [`LHWRF-${id}`] : prevTotal}); 
+  remainTotal(index,name){
+    var totalBudget    = this.state.availableSubActivity[parseInt(index)].totalBudget;
+    var getsubActivity = this.state.availableSubActivity[parseInt(index)];
+    var subTotal       = parseInt(getsubActivity.LHWRF) + parseInt(getsubActivity.NABARD) + parseInt(getsubActivity.bankLoan) + parseInt(getsubActivity.govtscheme) + parseInt(getsubActivity.directCC) + parseInt(getsubActivity.indirectCC) + parseInt(getsubActivity.other);
+    var arr            = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
+    var findIndex      = arr.findIndex((obj)=>{return obj  === name});
+
+    if (findIndex !== -1) {
+      if (parseInt(subTotal) < parseInt(totalBudget)) {
+         var getstate = arr[findIndex + 1];
+          if (getstate) {
+             getsubActivity[getstate] = totalBudget - subTotal;
+             this.setState({[getstate+"-"+index] : totalBudget - subTotal });
           }
-          break;    
-        case "NABARD-"+id : 
-          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]);
-          // console.log("add", this.state.LHWRF,this.state.NABARD)
-          subTotal = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]);
-          // console.log("prevTotal in NABARD= ", prevTotal);
-          // console.log("subTotal in NABARD= ", subTotal);
-          if(parseInt(this.state[`NABARD-${id}`]) < this.state[`totalBudget-${id}`]){
-            if(subTotal < this.state[`totalBudget-${id}`]){
-              this.setState({ [`bankLoan-${id}`] : this.state[`totalBudget-${id}`] - subTotal},()=>{
-                // console.log("bankLoan",this.state.bankLoan);
-              }); 
-            }else{
-              this.setState({ [`NABARD-${id}`] : prevTotal}); 
-            }
-          }else{
-            this.setState({ [`NABARD-${id}`] : prevTotal}); 
+
+      }else{
+        var remainTotal =  0;
+        for (var j = 0; j < findIndex; j++) {
+            remainTotal += parseInt(getsubActivity[arr[j]]);
+        }
+        if (remainTotal > 0 ) {
+          getsubActivity[arr[findIndex]] = totalBudget - remainTotal;
+          this.setState({[arr[findIndex]+"-"+index] : totalBudget - remainTotal});
+        }
+        for (var i = findIndex + 1; i < arr.length; i++) {
+          var currentState = arr[i];
+          if (currentState) {
+             getsubActivity[currentState] = 0;
+             this.setState({[currentState+"-"+index] : 0 });
           }
-          break;    
-        case "bankLoan-"+id : 
-          // console.log("prevTotal before = ", prevTotal);
-          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]) - parseInt(this.state[`NABARD-${id}`]);
-          subTotal = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]) + parseInt(this.state[`bankLoan-${id}`]);
-          // console.log("prevTotal after = ", prevTotal);
-          if(parseInt(this.state[`bankLoan-${id}`]) < this.state[`totalBudget-${id}`]){
-            if(subTotal < this.state[`totalBudget-${id}`]){
-              this.setState({ [`govtscheme-${id}`] : this.state[`totalBudget-${id}`] - subTotal}); 
-            }else{
-              this.setState({ [`bankLoan-${id}`] : prevTotal}); 
-            }
-          }else{
-            this.setState({ [`bankLoan-${id}`] : prevTotal}); 
-          }
-          break;    
-        case "govtscheme-"+id  : 
-          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]) - parseInt(this.state[`NABARD-${id}`]) - parseInt(this.state[`bankLoan-${id}`]);
-          subTotal = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]) + parseInt(this.state[`bankLoan-${id}`]) + parseInt(this.state[`govtscheme-${id}`]);
-          if(parseInt(this.state[`govtscheme-${id}`]) < this.state[`totalBudget-${id}`]){
-            if(subTotal < this.state[`totalBudget-${id}`]){
-              this.setState({ [`directCC-${id}`] : this.state[`totalBudget-${id}`] - subTotal}); 
-            }else{
-              this.setState({ [`govtscheme-${id}`] : prevTotal}); 
-            }
-          }else{
-            this.setState({ [`govtscheme-${id}`] : prevTotal}); 
-          }
-          break;    
-        case "directCC-"+id : 
-          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]) - parseInt(this.state[`NABARD-${id}`]) - parseInt(this.state[`bankLoan-${id}`]) - parseInt(this.state[`govtscheme-${id}`]) ;
-          subTotal  = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]) + parseInt(this.state[`bankLoan-${id}`]) + parseInt(this.state[`govtscheme-${id}`]) + parseInt(this.state[`directCC-${id}`]);
-          if(parseInt(this.state[`directCC-${id}`]) < this.state[`totalBudget-${id}`]){
-            if(subTotal < this.state[`totalBudget-${id}`]){
-              this.setState({ [`indirectCC-${id}`] : this.state[`totalBudget-${id}`] - subTotal}); 
-            }else{
-              this.setState({ [`directCC-${id}`] : prevTotal}); 
-            }
-          }else{
-            this.setState({ [`directCC-${id}`] : prevTotal}); 
-          }
-          break;    
-        case "indirectCC-"+id : 
-          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`]) - parseInt(this.state[`NABARD-${id}`]) - parseInt(this.state[`bankLoan-${id}`]) - parseInt(this.state[`govtscheme-${id}`]) - parseInt(this.state[`directCC-${id}`]) ;
-          subTotal = parseInt(this.state[`LHWRF-${id}`]) + parseInt(this.state[`NABARD-${id}`]) + parseInt(this.state[`bankLoan-${id}`]) + parseInt(this.state[`govtscheme-${id}`]) + parseInt(this.state[`directCC-${id}`]) + parseInt(this.state[`indirectCC-${id}`]);
-          if(parseInt(this.state[`indirectCC-${id}`]) <this.state[`totalBudget-${id}`]){
-            if(subTotal < this.state[`totalBudget-${id}`]){
-              this.setState({ [`other-${id}`] : this.state[`totalBudget-${id}`] - subTotal},()=>{
-              }); 
-            }else{
-              this.setState({ [`indirectCC-${id}`] : prevTotal}); 
-            }
-          }else{
-            this.setState({ [`indirectCC-${id}`] : prevTotal}); 
-          }
-          break;   
-         case "other-"+id : 
-          prevTotal = this.state[`totalBudget-${id}`] - parseInt(this.state[`LHWRF-${id}`] ) - parseInt(this.state[`NABARD-${id}`] ) - parseInt(this.state[`bankLoan-${id}`] ) - parseInt(this.state[`govtscheme-${id}`] ) - parseInt(this.state[`directCC-${id}`] ) - parseInt(this.state[`indirectCC-${id}`]) ;
-          subTotal = parseInt(this.state[`LHWRF-${id}`] ) + parseInt(this.state[`NABARD-${id}`] ) + parseInt(this.state[`bankLoan-${id}`] ) + parseInt(this.state[`govtscheme-${id}`] ) + parseInt(this.state[`directCC-${id}`] ) + parseInt(this.state[`indirectCC-${id}`] )+ parseInt(this.state[`other-${id}`]);
-          if (parseInt(this.state[`other-${id}`]) < this.state[`totalBudget-${id}`]) {
-              // this.setState({"total" :subTotal}); 
-          }else{
-              this.setState({ [`other-${id}`] : prevTotal}); 
-          }
-         break;
+        }
       }
+      
+    }
 
   }
   
@@ -312,64 +287,65 @@ class PlanDetails extends Component{
   }
   SubmitAnnualPlan(event){
     event.preventDefault();
-    var subActivityDetails = this.state.subActivityDetails;
-    // if (this.validateFormReq() &&this.validateForm()) {
-    
+    var subActivityDetails = this.state.availableSubActivity.filter((data,i)=>{
+      return data.totalBudget > 0;
+    });   
+    // console.log("subActivityDetails",subActivityDetails);
+
       let fields = {};
-      fields["year"]              = "";
-      fields["month"]             = "";
-      fields["sectorName"]        = "";
-      fields["activityName"]      = "";
-      fields["physicalUnit"]      = "";
-      fields["unitCost"]          = "";
-      fields["totalBudget"]       = "";
-      fields["noOfFamilies"]      = "";
-      fields["noOfBeneficiaries"] = "";
-      fields["LHWRF"]             = "";
-      fields["NABARD"]            = "";
-      fields["bankLoan"]          = "";
-      fields["govtscheme"]        = "";
-      fields["directCC"]          = "";
-      fields["indirectCC"]        = "";
-      fields["other"]             = "";
-      fields["remark"]            = "";
-      // console.log("subActivityDetails",subActivityDetails);
-      // console.log("this.state.apiCall",this.state.apiCall);
+      // fields["year"]              = "";
+      // fields["month"]             = "";
+      // fields["sectorName"]        = "";
+      // fields["activityName"]      = "";
+      // fields["physicalUnit"]      = "";
+      // fields["unitCost"]          = "";
+      // fields["totalBudget"]       = "";
+      // fields["noOfFamilies"]      = "";
+      // fields["noOfBeneficiaries"] = "";
+      // fields["LHWRF"]             = "";
+      // fields["NABARD"]            = "";
+      // fields["bankLoan"]          = "";
+      // fields["govtscheme"]        = "";
+      // fields["directCC"]          = "";
+      // fields["indirectCC"]        = "";
+      // fields["other"]             = "";
+      // fields["remark"]            = "";
+      // // console.log("this.state.apiCall",this.state.apiCall);
       if(subActivityDetails.length > 0){
         for(var i=0; i<subActivityDetails.length; i++){
           var planValues = {
-            "month"               : this.refs.month.value,          
-            "year"                : this.refs.year.value,          
+            "month"               : this.state.month,          
+            "year"                : this.state.year,          
             "center_ID"           : this.state.center_ID,
             "center"              : this.state.centerName,
-            "sector_ID"           : this.refs.sectorName.value.split('|')[1],
-            "sectorName"          : this.refs.sectorName.value.split('|')[0],
-            "activity_ID"         : this.refs.activityName.value.split('|')[1],
-            "activityName"        : this.refs.activityName.value.split('|')[0],
-            "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
-            "subactivityName"     : subActivityDetails[i].subactivityName,
+            "sector_ID"           : this.state.sectorName.split('|')[1],
+            "sectorName"          : this.state.sectorName.split('|')[0],
+            "activity_ID"         : this.state.activityName.split('|')[1],
+            "activityName"        : this.state.activityName.split('|')[0],
+            "subactivity_ID"      : subActivityDetails[i]._id,
+            "subactivityName"     : subActivityDetails[i].subActivityName,
             "unit"                : subActivityDetails[i].unit,
-            "physicalUnit"        : subActivityDetails[i].physicalUnit,
-            "unitCost"            : subActivityDetails[i].unitCost,
-            "totalBudget"         : subActivityDetails[i].totalBudget,
-            "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
-            "noOfFamilies"        : subActivityDetails[i].noOfFamilies,
-            "LHWRF"               : subActivityDetails[i].LHWRF,
-            "NABARD"              : subActivityDetails[i].NABARD,
-            "bankLoan"            : subActivityDetails[i].bankLoan,
-            "govtscheme"          : subActivityDetails[i].govtscheme,
-            "directCC"            : subActivityDetails[i].directCC,
-            "indirectCC"          : subActivityDetails[i].indirectCC,
-            "other"               : subActivityDetails[i].other,
+            "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
+            "unitCost"            : parseInt(subActivityDetails[i].unitCost),
+            "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
+            "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
+            "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
+            "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
+            "NABARD"              : parseInt(subActivityDetails[i].NABARD),
+            "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
+            "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
+            "directCC"            : parseInt(subActivityDetails[i].directCC),
+            "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
+            "other"               : parseInt(subActivityDetails[i].other),
             "remark"              : subActivityDetails[i].remark,
           };
           axios.post(this.state.apiCall, planValues)
             .then((response)=>{
-              console.log("response",response);
+              // console.log("response",response);
               if (response.status === 200 ) {
                 swal("Plan created successfully");
               }
-              if(this.refs.month.value==='Annual'){
+              if(this.state.month ==='Annual'){
                 var email = localStorage.getItem('email')
                 var msgvariable = {
                   '[User]'    : localStorage.getItem('fullName'),
@@ -442,21 +418,8 @@ class PlanDetails extends Component{
         "month"               : this.refs.month.value,
         "center"              :"",
         "sector_id"           :"",
-        "sectorName"          :"",
-        "activityName"        :"",
-        "physicalUnit"        :"",
-        "unitCost"            :"",
-        "totalBudget"         :"",
-        "noOfBeneficiaries"   :"",
-        "noOfFamilies"        :"",
-        "LHWRF"               :"",
-        "NABARD"              :"",
-        "bankLoan"            :"",
-        "govtscheme"          :"",
-        "directCC"            :"",
-        "indirectCC"          :"",
-        "other"               :"",
-        "remark"              :"",
+        "sectorName"          :"-- Select --",
+        "activityName"        :"-- Select --",
         "fields"              :fields,
         "editId"              :"",
         "subActivityDetails"  :[],
@@ -465,77 +428,44 @@ class PlanDetails extends Component{
         "subActivityDetails[i][name]":"",
         // shown                 : !this.state.shown
       });
-    // }
   }
   Update(event){    
     event.preventDefault();
-    var subActivityDetails = this.state.subActivityDetails;
-    console.log('subActivityDetails',subActivityDetails)
-    // if(this.refs.year.value === "" || this.refs.month.value ==="" || this.refs.sectorName.value==="" || this.refs.activityName.value==="" 
-    //   || this.state.physicalUnit==="" || this.refs.unitCost.value==="" || this.refs.totalBudget.value==="" || this.refs.noOfBeneficiaries.value==="" 
-    //   || this.refs.LHWRF.value==="" || this.refs.NABARD.value==="" || this.refs.bankLoan.value==="" || this.refs.govtscheme.value==="" 
-    //   || this.refs.directCC.value==="" || this.refs.indirectCC.value==="" || this.refs.other.value==="" || this.refs.remark.value==="")
-    // {
-    //   /*    if (this.validateFormReq() && this.validateForm()){
-    //       }*/
-    // }else{
-      
-    // }
+    var subActivityDetails = this.state.availableSubActivity;
     if(subActivityDetails&&subActivityDetails.length > 0){
       for(var i=0; i<subActivityDetails.length; i++){
         var planValues = {
           "annualPlan_ID"       : this.state.editId,
           "monthlyPlan_ID"      : this.state.editId,
-          "month"               : this.refs.month.value,          
-          "year"                : this.refs.year.value,           
+          "month"               : this.state.month,          
+          "year"                : this.state.year,           
           "center_ID"           : this.state.center_ID,
           "center"              : this.state.centerName,
-          "sector_ID"           : this.refs.sectorName.value.split('|')[1],
-          "sectorName"          : this.refs.sectorName.value.split('|')[0],
-          "activity_ID"         : this.refs.activityName.value.split('|')[1],
-          "activityName"        : this.refs.activityName.value.split('|')[0],
-          "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
-          "subactivityName"     : subActivityDetails[i].subactivityName,
+          "sector_ID"           : this.state.sectorName.split('|')[1],
+          "sectorName"          : this.state.sectorName.split('|')[0],
+          "activity_ID"         : this.state.activityName.split('|')[1],
+          "activityName"        : this.state.activityName.split('|')[0],
+          "subactivity_ID"      : subActivityDetails[i]._id,
+          "subactivityName"     : subActivityDetails[i].subActivityName,
           "unit"                : subActivityDetails[i].unit,
-          // "unit"                : this.state["unitCost-"+this.state.editId],
-          "physicalUnit"        : subActivityDetails[i].physicalUnit,
-          "unitCost"            : subActivityDetails[i].unitCost,
-          "totalBudget"         : subActivityDetails[i].totalBudget,
-          "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
-          "noOfFamilies"        : subActivityDetails[i].noOfFamilies,
-          "LHWRF"               : subActivityDetails[i].LHWRF,
-          "NABARD"              : subActivityDetails[i].NABARD,
-          "bankLoan"            : subActivityDetails[i].bankLoan,
-          "govtscheme"          : subActivityDetails[i].govtscheme,
-          "directCC"            : subActivityDetails[i].directCC,
-          "indirectCC"          : subActivityDetails[i].indirectCC,
-          "other"               : subActivityDetails[i].other,
+          "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
+          "unitCost"            : parseInt(subActivityDetails[i].unitCost),
+          "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
+          "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
+          "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
+          "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
+          "NABARD"              : parseInt(subActivityDetails[i].NABARD),
+          "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
+          "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
+          "directCC"            : parseInt(subActivityDetails[i].directCC),
+          "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
+          "other"               : parseInt(subActivityDetails[i].other),
           "remark"              : subActivityDetails[i].remark,
         };
-                
-        // let fields = {};
-        // fields["year"]              = "";
-        // fields["month"]             = "";
-        // fields["sectorName"]        = "";
-        // fields["activityName"]      = "";
-        // fields["physicalUnit"]      = "";
-        // fields["unitCost"]          = "";
-        // fields["totalBudget"]       = "";
-        // fields["noOfBeneficiaries"] = "";
-        // fields["noOfFamilies"]      = "";
-        // fields["LHWRF"]             = "";
-        // fields["NABARD"]            = "";
-        // fields["bankLoan"]          = "";
-        // fields["govtscheme"]        = "";
-        // fields["directCC"]          = "";
-        // fields["indirectCC"]        = "";
-        // fields["other"]             = "";
-        // fields["remark"]            = "";
-      
         // console.log('planValues',planValues)
         axios.patch(this.state.apiCall+'/update', planValues)
           .then((response)=>{
-            console.log('response',response)
+            // console.log('response',response)
             swal({
               title : response.data.message,
               text  : response.data.message
@@ -546,30 +476,14 @@ class PlanDetails extends Component{
             console.log("error"+error);
         }); 
         this.setState({
-          "year"                : this.refs.year.value,
-          "month"               : this.refs.month.value,
-          "center"              :"",
-          "sector_id"           :"",
-          "sectorName"          :"",
-          "activityName"        :"",
-          "physicalUnit"        :"",
-          "unitCost"            :"",
-          "totalBudget"         :"",
-          "noOfBeneficiaries"   :"",
-          "noOfFamilies"        :"",
-          "LHWRF"               :"",
-          "NABARD"              :"",
-          "bankLoan"            :"",
-          "govtscheme"          :"",
-          "directCC"            :"",
-          "indirectCC"          :"",
-          "other"               :"",
-          "remark"              :"",
-          // "fields"              :fields,
+          "year"                : "FY 2019 - 2020",
+          "month"               : "Annual Plan",
+          "center"              : "",
+          "sector_id"           : "",
+          "sectorName"          : "-- Select --",
+          "activityName"        : "-- Select --",
           "editId"              :"",
-          "subActivityDetails"  :[],
           "availableSubActivity":[],
-          "subActivityDetails[i][name]":"",
           "months"              :["Annual Plan","All Months", "April","May","June","July","August","September","October","November","December","January","February","March"],
           "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
           "shown"               : true,
@@ -577,14 +491,6 @@ class PlanDetails extends Component{
         },()=>{
           this.props.history.push('/plan-details');
         });
-        Object.entries(planValues).map( 
-          ([key, value], i)=> {
-            this.setState({
-              [key+'-'+this.state.subactivity_ID] : ""
-            })
-          }
-        );
-
       }
     }
     // this.props.history.push('/plan-details')
@@ -661,7 +567,7 @@ class PlanDetails extends Component{
       tableObjects,
       fields
     },()=>{
-      console.log('month =====================================', this.state.month, this.state.year)
+      // console.log('month =====================================', this.state.month, this.state.year)
       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     });
 
@@ -747,7 +653,7 @@ class PlanDetails extends Component{
         this.edit(this.state.editId);
       })    
     }    
-     this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+    this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     if(nextProps){
       this.getLength();
     }
@@ -766,7 +672,6 @@ class PlanDetails extends Component{
        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     })
     this.getLength();
-    this.calTotal();
    
 
     const center_ID = localStorage.getItem("center_ID");
@@ -813,7 +718,7 @@ class PlanDetails extends Component{
         this.setState({
           availableActivity : response.data[0].activity
         },()=>{
-          console.log("availableActivity=",this.state.availableActivity);
+          // console.log("availableActivity=",this.state.availableActivity);
         })
     }).catch(function (error) {
       console.log("error"+error);
@@ -850,6 +755,7 @@ class PlanDetails extends Component{
         this.setState({
           availableSubActivity : _.compact(_.flatten(x))
         },()=>{
+          // console.log("available ---->",this.state.availableSubActivity);
        /*   swal({
               title : "abc",
               text  : "SubActivity is submitted already or not available"
@@ -865,20 +771,35 @@ class PlanDetails extends Component{
       method: 'get',
       url: '/api/sectors/'+sector_ID,
     }).then((response)=> {
+      // console.log("response.data",response.data);
         var availableSubActivity = _.flatten(response.data.map((a, i)=>{
             return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] 
           });
         }))
-        console.log("availableSubActivity before",availableSubActivity);
+        var newavailableSubActivity = availableSubActivity.map((data,index)=>{
+          data.physicalUnit = 0;
+          data.unitCost     = 0;
+          data.LHWRF        = 0;
+          data.NABARD       = 0;
+          data.bankLoan     = 0;
+          data.govtscheme   = 0;
+          data.directCC     = 0;
+          data.indirectCC   = 0;
+          data.other        = 0;
+          data.totalBudget  = 0;
+          data.noOfBeneficiaries = 0;
+          data.noOfFamilies = 0;
+          data.remark       = '';
+          return data;
+        });
+        // console.log("newavailableSubActivity",newavailableSubActivity);
         this.setState({
-          availableSubActivity : availableSubActivity
+          availableSubActivity : newavailableSubActivity
         },()=>{
-          console.log("availableSubActivity after",this.state.vailableSubActivity);
+          // console.log("availableSubActivity after",this.state.availableSubActivity);
         })
-        this.excludeSubmittedSubActivity(availableSubActivity);
-       
-      
-    }).catch(function (error) {
+        // this.excludeSubmittedSubActivity(availableSubActivity);       
+    }).catch((error)=> {
       console.log("error"+error);
     }); 
   }
@@ -888,52 +809,37 @@ class PlanDetails extends Component{
       url: this.state.apiCall+'/'+id,
       }).then((response)=> {
       var editData = response.data[0];
-      console.log("editData :",editData);
+      // console.log("editData :",editData);
       this.getAvailableActivity(editData.sector_ID);
       this.setState({
         "availableSubActivity"    : [{
-          _id                     : editData.subactivity_ID,
-          subActivityName         : editData.subactivityName,
-          unit                    : editData.unit,
+          _id                   : editData.subactivity_ID,
+          "subActivityName"     : editData.subactivityName,
+          "unit"                : editData.unit,
+          "physicalUnit"        : editData.physicalUnit,
+          "unitCost"            : editData.unitCost,
+          "totalBudget"         : editData.totalBudget,
+          "noOfBeneficiaries"   : editData.noOfBeneficiaries,
+          "noOfFamilies"        : editData.noOfFamilies,
+          "unit"                : editData.unit,
+          "LHWRF"               : editData.LHWRF,
+          "NABARD"              : editData.NABARD,
+          "bankLoan"            : editData.bankLoan,
+          "govtscheme"          : editData.govtscheme,
+          "directCC"            : editData.directCC,
+          "indirectCC"          : editData.indirectCC,
+          "other"               : editData.other,
+          "remark"              : editData.remark,
         }],
+        "shown"                   : false,
+        "year"                    : editData.year,
+        "month"                   : editData.month,
+        "center"                  : editData.center,
+        "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
+        "activityName"            : editData.activityName+'|'+editData.activity_ID,
+        "subactivity_ID"          : editData.subactivity_ID,
       },()=>{
-        this.setState({
-          "shown"                   : false,
-          "year"                    : editData.year,
-          "month"                   : editData.month,
-          "center"                  : editData.center,
-          "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
-          "activityName"            : editData.activityName+'|'+editData.activity_ID,
-          "subactivity_ID"          : editData.subactivity_ID,
-          "subActivityDetails"      : [{
-            "subactivity_ID"      : editData.subactivity_ID,
-            "subactivityName"     : editData.subactivityName,           
-            "physicalUnit"        : editData.physicalUnit,
-            "unitCost"            : editData.unitCost,
-            "totalBudget"         : editData.totalBudget,
-            "noOfBeneficiaries"   : editData.noOfBeneficiaries,
-            "noOfFamilies"        : editData.noOfFamilies,
-            "unit"                : editData.unit,
-            "LHWRF"               : editData.LHWRF,
-            "NABARD"              : editData.NABARD,
-            "bankLoan"            : editData.bankLoan,
-            "govtscheme"          : editData.govtscheme,
-            "directCC"            : editData.directCC,
-            "indirectCC"          : editData.indirectCC,
-            "other"               : editData.other,
-            "remark"              : editData.remark,
-          }]
-        },()=>{
-          console.log("after set state", this.state.subActivityDetails);
-          var subActivityDetails = this.state.subActivityDetails[0];
-          Object.entries(subActivityDetails).map( 
-            ([key, value], i)=> {
-              this.setState({
-                [key+'-'+this.state.subactivity_ID] : value
-              })
-            }
-          );
-        });
+       
       })      
       let fields = this.state.fields;
       let errors = {};
@@ -943,7 +849,7 @@ class PlanDetails extends Component{
       });
       return formIsValid;
     }).catch(function (error) {
-      console.log("error"+error);
+      // console.log("error"+error);
     });
   }
   toglehidden(){   
@@ -958,18 +864,6 @@ class PlanDetails extends Component{
       tableData : []
     })
   }
-  calTotal(event){   
-    // console.log('onKeyUp');
-      // var physicalUnit = event.target.name;
-
-      this.setState({
-        // physicalUnit : event.target.value
-      }, ()=>{
-        // console.log(this.state)
-      })
-
-  }
-
   isNumberKey(evt){
     // console.log('onKeyDown');
     var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -983,10 +877,6 @@ class PlanDetails extends Component{
     }
   }
   render() {
-    /*var shown = {
-      display: this.state.shown ? "block" : "none"
-    };
-    */
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
@@ -1024,7 +914,7 @@ class PlanDetails extends Component{
                        <label className="formLable">Year</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
-                          <option className="hidden" >-- Select Year --</option>
+                          <option disabled={true}>-- Select Year --</option>
                          {
                           this.state.years.map((data, i)=>{
                             return <option key={i}>{data}</option>
@@ -1053,7 +943,7 @@ class PlanDetails extends Component{
                                 <label className="formLable">Sector</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
                                   <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
-                                    <option  className="hidden" >-- Select --</option>
+                                    <option disabled={true} >-- Select --</option>
                                     {
                                       this.state.availableSectors && this.state.availableSectors.length >0 ?
                                       this.state.availableSectors.map((data, index)=>{
@@ -1072,7 +962,7 @@ class PlanDetails extends Component{
                                 <label className="formLable">Activity</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
                                   <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
-                                    <option  className="hidden" >-- Select --</option>
+                                    <option  disabled={true} >-- Select --</option>
                                     {
                                     this.state.availableActivity && this.state.availableActivity.length >0 ?
                                     this.state.availableActivity.map((data, index)=>{
@@ -1100,125 +990,125 @@ class PlanDetails extends Component{
                                 if(data.subActivityName ){
                                   return(
                                     <div className="subActDiv"  key={data._id}>
-                                      <div className=" col-lg-3 col-md-3 col-sm-3 col-xs-3 contentDiv  ">
-                                        <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
-                                        <label className="formLable visibilityHidden">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
-                                      </div>
-                                      <div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 NOpadding">
-                                        <div className="row">
-                                          <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
-                                            <label className="formLable head">Sub-Activity Details</label>
+                                          <div className=" col-lg-3 col-md-3 col-sm-3 col-xs-3 contentDiv  ">
+                                            <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
+                                            <label className="formLable visibilityHidden">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
                                           </div>
-                                        </div>
-                                       
-                                        <div className="row ">
-                                          <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                            <label className="formLable">Physical Units</label>
-                                            <div className="input-group inputBox-main " id={"physicalUnit-"+data._id} >
-                                              <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                              <span className="input-group-addon inputAddonforphysicalunit">{data.unit}</span>
-                                            </div>{/*{console.log("state",this.state)}*/}
-                                          </div>
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                            <label className="formLable">Unit Cost</label>
-                                            <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
-                                              <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
+                                          <div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 NOpadding">
+                                            <div className="row">
+                                              <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
+                                                <label className="formLable head">Sub-Activity Details</label>
+                                              </div>
                                             </div>
-                                          </div>  
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                            <label className="formLable">Total Cost</label>
-                                            <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
-                                              <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" disabled ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]} />
+                                           
+                                            <div className="row ">
+                                              <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                <label className="formLable">Physical Units</label>
+                                                <div className="input-group inputBox-main " id={"physicalUnit-"+index} >
+                                                  <input type="number" min="0" className="form-control inputBox nameParts" name={"physicalUnit-"+index} placeholder="" value={data.physicalUnit} onChange={this.handlesubactivityChange}/>
+                                                  <span className="input-group-addon inputAddonforphysicalunit">{data.unit}</span>
+                                                </div>{/*{console.log("state",this.state)}*/}
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                <label className="formLable">Unit Cost</label>
+                                                <div className=" input-group inputBox-main" id={"unitCost-"+index} >
+                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                  <input type="text"  min="0" className="form-control inputBox nameParts" name={"unitCost-"+index} placeholder="" value={data.unitCost} onChange={this.handlesubactivityChange}/>
+                                                </div>
+                                              </div>  
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                <label className="formLable">Total Cost</label>
+                                                <div className="input-group inputBox-main" id={"totalBudget-"+index} >                                         
+                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                  <input type="number"  min="0" className="form-control inputBox formLable " name={"totalBudget-"+index} disabled value={data.totalBudget}/>
+                                                </div>
+                                              </div>  
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                <label className="formLable">No.of Beneficiaries</label>
+                                                <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+index} >
+                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+index} placeholder="" value={data.noOfBeneficiaries} onChange={this.handlesubactivityChange}/>                              
+                                                </div>
+                                              </div> 
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
+                                                <label className="formLable">No.of Families</label>
+                                                <div className=" input-group inputBox-main" id={"noOfFamilies-"+index} >
+                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"noOfFamilies-"+index} placeholder="" value={data.noOfFamilies} onChange={this.handlesubactivityChange}/>                              
+                                                </div>
+                                              </div>
                                             </div>
-                                          </div>  
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                            <label className="formLable">No.of Beneficiaries</label>
-                                            <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+data._id} >
-                                              <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}/>                              
+                                            <div className="row">
+                                              <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields   ">
+                                                <label className="formLable head">Sources of Fund</label>
+                                              </div>
                                             </div>
-                                          </div> 
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
-                                            <label className="formLable">No.of Families</label>
-                                            <div className=" input-group inputBox-main" id={"noOfFamilies-"+data._id} >
-                                              <input type="text" className="form-control inputBox nameParts" name={"noOfFamilies-"+data._id} placeholder="" ref={"noOfFamilies-"+data._id} value={this.state["noOfFamilies-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
+                                            <div className="row">
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">LHWRF</label>
+                                                <div className=" input-group inputBox-main" id={"LHWRF-"+index} >
+                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"LHWRF-"+index} placeholder="" value={data.LHWRF} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"LHWRF")}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">NABARD</label>
+                                                <div className=" input-group inputBox-main" id={"NABARD-"+index} >
+                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"NABARD-"+index} placeholder="" value={data.NABARD} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"NABARD")}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Bank Loan</label>
+                                                <div className=" input-group inputBox-main" id={"bankLoan-"+index}>
+                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"bankLoan-"+index} placeholder="" value={data.bankLoan} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"bankLoan")}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Govt. Schemes</label>
+                                                <div className=" input-group inputBox-main" id={"govtscheme-"+index} >
+                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"govtscheme-"+index} placeholder="" value={data.govtscheme} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"govtscheme")}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Direct Com. Cont.</label>
+                                                <div className=" input-group inputBox-main" id={"directCC-"+index} >
+                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"directCC-"+index} placeholder="" value={data.directCC} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"directCC")}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Indirect Com. Cont.</label>
+                                                <div className=" input-group inputBox-main" id={"indirectCC-"+index} >
+                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"indirectCC-"+index} placeholder="" value={data.indirectCC} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"indirectCC")}/>
+                                                </div>
+                                              </div>
                                             </div>
-                                          </div>
-                                        </div>
-                                        <div className="row">
-                                          <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields   ">
-                                            <label className="formLable head">Sources of Fund</label>
-                                          </div>
-                                        </div>
-                                        <div className="row">
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                            <label className="formLable">LHWRF</label>
-                                            <div className=" input-group inputBox-main" id={"LHWRF-"+data._id} >
-                                              <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onBlur={()=> this.remainTotal("LHWRF-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
-                                            </div>
-                                          </div>
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                            <label className="formLable">NABARD</label>
-                                            <div className=" input-group inputBox-main" id={"NABARD-"+data._id} >
-                                              <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onBlur={()=> this.remainTotal("NABARD-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
-                                            </div>
-                                          </div>
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                            <label className="formLable">Bank Loan</label>
-                                            <div className=" input-group inputBox-main" id={"bankLoan-"+data._id}>
-                                              <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("bankLoan-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
-                                            </div>
-                                          </div>
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                            <label className="formLable">Govt. Schemes</label>
-                                            <div className=" input-group inputBox-main" id={"govtscheme-"+data._id} >
-                                              <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("govtscheme-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
-                                            </div>
-                                          </div>
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                            <label className="formLable">Direct Com. Cont.</label>
-                                            <div className=" input-group inputBox-main" id={"directCC-"+data._id} >
-                                              <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("directCC-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
-                                            </div>
-                                          </div>
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                            <label className="formLable">Indirect Com. Cont.</label>
-                                            <div className=" input-group inputBox-main" id={"indirectCC-"+data._id} >
-                                              <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("indirectCC-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className=" row">
-                                          <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                            <label className="formLable">Other</label>
-                                            <div className=" input-group inputBox-main" id={"other-"+data._id} >
-                                              <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                              <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onBlur={()=> this.remainTotal("other-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
-                                            </div>
-                                          </div>
-                                          <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
-                                            <label className="formLable">Remark</label>
-                                            <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+data._id} >
-                                              <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]}   onBlur={()=> this.remainTotal("NABARD-"+data._id,data._id)} onChange={this.handlesubactivityChange.bind(this)}/>
-                                            </div>
-                                          </div>
-                                        </div>  
-                                        <div className="row">                            
-                                          <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
-                                            <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
-                                              <label className="formLable"></label>
-                                              <div className="errorMsg">{this.state.errors.remark}</div>
-                                            </div>
-                                          </div> 
-                                        </div><br/>
-                                      </div>  <br/>
+                                            <div className=" row">
+                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                <label className="formLable">Other</label>
+                                                <div className=" input-group inputBox-main" id={"other-"+index} >
+                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"other-"+index} placeholder="" value={data.other} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"other")}/>
+                                                </div>
+                                              </div>
+                                              <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
+                                                <label className="formLable">Remark</label>
+                                                <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+index} >
+                                                  <input type="text" className="form-control inputBox nameParts" name={"remark-"+index} placeholder="Remark" value={data.remark} onChange={this.handlesubactivityChange} />
+                                                </div>
+                                              </div>
+                                            </div>  
+                                            <div className="row">                            
+                                              <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
+                                                <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
+                                                  <label className="formLable"></label>
+                                                  <div className="errorMsg">{this.state.errors.remark}</div>
+                                                </div>
+                                              </div> 
+                                            </div><br/>
+                                          </div>  <br/>
                                     </div>
                                   );
                                 }else{

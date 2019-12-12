@@ -755,3 +755,12 @@ margin-right: 12px;
   padding: 25px 15px 15px 15px;
   margin-bottom: 20px;
 }
+
+/*remove input type number side arrows*/
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none; 
+  margin: 0; 
+}
