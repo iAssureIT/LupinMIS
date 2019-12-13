@@ -183,8 +183,8 @@ class PlanDetails extends Component{
              getsubActivity[getstate] = totalBudget - subTotal;
              this.setState({[getstate+"-"+index] : totalBudget - subTotal });
           }
-          for (var i = findIndex + 2; i < arr.length; i++) {
-            var currentStates = arr[i];
+          for (var k = findIndex + 2; k < arr.length; k++) {
+            var currentStates = arr[k];
             if (currentStates) {
                getsubActivity[currentStates] = 0;
                this.setState({[currentStates+"-"+index] : 0 });

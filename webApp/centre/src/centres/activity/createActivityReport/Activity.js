@@ -119,134 +119,44 @@ class Activity extends Component{
   remainTotal(event){
     event.preventDefault(); 
     // console.log("event.target.name",event.target.name);
-
-    var prevTotal = 0;
-    var subTotal = 0;
-    switch(event.target.name){
-        case "LHWRF" : 
-            prevTotal = this.state.totalcost;
-            subTotal = this.state.LHWRF;
-            // console.log("prevTotal = ", prevTotal);
-          if(parseInt(this.state.LHWRF) < this.state.totalcost){
-            if(subTotal < this.state.totalcost){
-              // this.setState({ NABARD : this.state.totalcost - subTotal,"total" :subTotal}); 
-              this.setState({ NABARD : this.state.totalcost - subTotal}); 
-            }            
-          }else{
-            this.setState({ LHWRF : prevTotal}); 
+    var totalBudget = parseInt(this.state.totalcost);
+    var subTotal    = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC) + parseInt(this.state.other);
+    // console.log("subTotal",subTotal);
+    var arr = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
+    var findIndex = arr.findIndex((obj)=>{return obj  == event.target.name});
+    // console.log("findIndex",findIndex);
+    if (findIndex !== -1) {
+      if (parseInt(subTotal) < parseInt(totalBudget)) {
+         var getstate = arr[findIndex + 1];
+          if (getstate) {
+            this.setState({[getstate] : totalBudget - subTotal });
           }
-          break;    
-
-
-          
-        case "NABARD" : 
-          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF);
-          // console.log("add", this.state.LHWRF,this.state.NABARD)
-          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD);
-          // console.log("prevTotal in NABARD= ", prevTotal);
-          // console.log("subTotal in NABARD= ", subTotal);
-          if(parseInt(this.state.NABARD) < this.state.totalcost){
-            if(subTotal < this.state.totalcost){
-              // this.setState({ bankLoan : this.state.totalcost - subTotal,"total" :subTotal},()=>{
-              this.setState({ bankLoan : this.state.totalcost - subTotal},()=>{
-                // console.log("bankLoan",this.state.bankLoan);
-              }); 
-            }else{
-              this.setState({ NABARD : prevTotal}); 
+          for (var k = findIndex + 2; k < arr.length; k++) {
+            var currentStates = arr[k];
+            if (currentStates) {
+               this.setState({[currentStates] : 0 });
             }
-          }else{
-            this.setState({ NABARD : prevTotal}); 
           }
-          break;    
-
-
-        case "bankLoan" : 
-          // console.log("prevTotal before = ", prevTotal);
-          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD);
-          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan);
-          // console.log("prevTotal after = ", prevTotal);
-          if(parseInt(this.state.bankLoan) < this.state.totalcost){
-            if(subTotal < this.state.totalcost){
-              // this.setState({ govtscheme : this.state.totalcost - subTotal,"total" :subTotal}); 
-              this.setState({ govtscheme : this.state.totalcost - subTotal}); 
-            }else{
-              this.setState({ bankLoan : prevTotal}); 
-            }
-          }else{
-            this.setState({ bankLoan : prevTotal}); 
+         
+      }else{
+        var remainTotal =  0;
+        for (var j = 0; j < findIndex; j++) {
+            remainTotal += parseInt(this.state[arr[j]]);
+        }
+        if (remainTotal > 0 ) {
+          this.setState({[arr[findIndex]] : totalBudget - remainTotal });
+        }
+        for (var i = findIndex + 1; i < arr.length; i++) {
+          var currentState = arr[i];
+          if (currentState) {
+             this.setState({[currentState] : 0 });
           }
-          break;    
-
-
-        case "govtscheme" : 
-          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan);
-          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme);
-          if(parseInt(this.state.govtscheme) < this.state.totalcost){
-            if(subTotal < this.state.totalcost){
-              // this.setState({ directCC : this.state.totalcost - subTotal,"total" :subTotal}); 
-              this.setState({ directCC : this.state.totalcost - subTotal}); 
-            }else{
-              this.setState({ govtscheme : prevTotal}); 
-            }
-          }else{
-            this.setState({ govtscheme : prevTotal}); 
-          }
-          break;    
-
-
-
-        case "directCC" : 
-          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan) - parseInt(this.state.govtscheme) ;
-          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC);
-          console.log("prevTotal in directCC",prevTotal);
-          console.log("")
-          if(parseInt(this.state.directCC) < this.state.totalcost){
-            if(subTotal < this.state.totalcost){
-              // this.setState({ indirectCC : this.state.totalcost - subTotal,"total" :subTotal}); 
-              this.setState({ indirectCC : this.state.totalcost - subTotal}); 
-            }else{
-              this.setState({ directCC : prevTotal}); 
-            }
-          }else{
-            this.setState({ directCC : prevTotal}); 
-          }
-          break;    
-
-
-
-        case "indirectCC" : 
-          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan) - parseInt(this.state.govtscheme) - parseInt(this.state.directCC) ;
-          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC);
-          if(parseInt(this.state.indirectCC) < this.state.totalcost){
-            if(subTotal < this.state.totalcost){
-              // this.setState({ other : this.state.totalcost - subTotal,"total" :subTotal},()=>{
-              this.setState({ other : this.state.totalcost - subTotal},()=>{
-
-              }); 
-            }else{
-              this.setState({ indirectCC : prevTotal}); 
-            }
-          }else{
-            this.setState({ indirectCC : prevTotal}); 
-          }
-          break;   
-
-         case "other" : 
-          prevTotal = this.state.totalcost - parseInt(this.state.LHWRF) - parseInt(this.state.NABARD) - parseInt(this.state.bankLoan) - parseInt(this.state.govtscheme) - parseInt(this.state.directCC) - parseInt(this.state.indirectCC) ;
-          subTotal = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC)+ parseInt(this.state.other);
-          if (parseInt(this.state.other) < this.state.totalcost) {
-            if(subTotal < this.state.totalcost){
-              // this.setState({ other : this.state.totalcost - subTotal,"total" :subTotal},()=>{
-              // }); 
-            }else{
-              this.setState({ "other" : prevTotal}); 
-            }
-          }else{
-              // this.setState({ "other" : prevTotal,"total" :subTotal}); 
-              this.setState({ "other" : prevTotal}); 
-          }
-         break;
+        }
+        
       }
+
+    }
+    this.setState({"total": subTotal });
 
   }
 
@@ -265,8 +175,8 @@ class Activity extends Component{
        [name]: target.value,
     },()=>{
       if (this.state.unitCost > 0 & this.state.quantity > 0) {
-        console.log("this.state.unitCost = ",this.state.unitCost);
-        console.log("this.state.quantity = ",this.state.quantity);
+        // console.log("this.state.unitCost = ",this.state.unitCost);
+        // console.log("this.state.quantity = ",this.state.quantity);
         
          var totalcost = parseInt(this.state.unitCost) * parseInt(this.state.quantity);
          this.setState({
@@ -364,7 +274,7 @@ class Activity extends Component{
       };
       let fields                  = {};
       fields["district"]          = "";
-      fields["block"]             = "";
+      fields["block"]             = "";  
       fields["village"]           = "";
       fields["dateofIntervention"]= "";
       fields["sector"]            = "";
@@ -1563,7 +1473,7 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">LHWRF</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                              <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" onKeyDown={this.isNumberKey.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.LHWRF}</div>
                           </div>
@@ -1571,13 +1481,13 @@ class Activity extends Component{
                             <label className="formLable">NABARD</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >
                               
-                              <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD"  value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.NABARD}</div>
                           </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Bank Loan</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                              <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.bankLoan}</div>
                           </div>
@@ -1588,21 +1498,21 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Govt. Schemes</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                              <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.govtscheme}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Direct Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                              <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.directCC}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Indirect Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                              <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.indirectCC}</div>
                           </div>
@@ -1613,7 +1523,7 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Other</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
-                              <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.other}</div>
                           </div>
