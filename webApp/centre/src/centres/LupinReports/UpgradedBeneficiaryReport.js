@@ -102,7 +102,7 @@ class UpgradedBeneficiaryReport extends Component{
       // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
@@ -246,64 +246,29 @@ class UpgradedBeneficiaryReport extends Component{
   }
   
   getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType){        
-    console.log(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType);
+    // console.log(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType);
     if(center_ID){
       if(startDate && endDate && selectedDistrict && projectCategoryType  && beneficiaryType){
         if(selectedDistrict==="all"){
-          axios.get('/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-          .then((response)=>{
-            console.log("resp",response);
-              var tableData = response.data.map((a, i)=>{
-              return {
-                _id             : a._id,            
-                district        : a.district,
-                block           : a.block,
-                village         : a.village,
-                beneficiaryID   : a.beneficiaryID,
-                sectorName      : a.sectorName,
-                activityName    : a.activityName,
-                subactivityName : a.subactivityName,
-                // unitCost        : a.unitCost,
-                // totalcost       : a.totalcost,
-                date            : a.date,
-                unit            : a.unit,
-                quantity        : a.quantity,
-                LHWRF           : a.LHWRF,
-                NABARD          : a.NABARD,
-                bankLoan        : a.bankLoan,
-                directCC        : a.directCC,
-                indirectCC      : a.indirectCC,
-                govtscheme      : a.govtscheme,
-                other           : a.other,
-                total           : a.total,
-              }
-            })
-            this.setState({
-              tableData : tableData
-            },()=>{
-              console.log("resp",this.state.tableData)
-            })
-          })
-          .catch(function(error){  
-            // console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
-          });
+          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
         }else{
-          axios.get('/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-          .then((response)=>{
-            console.log("resp",response);
-              var tableData = response.data.map((a, i)=>{
-              return {
+          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
+        }
+        axios.get(url)
+        .then((response)=>{
+          // console.log("resp",response);
+          var data = response.data
+          var tableData = [];
+          data.map((a, i)=>{
+            axios.get('/api/beneficiaries/'+a.beneficiaryID)
+            .then((response)=>{
+              // console.log('response',response)
+              tableData.push({
                 _id             : a._id,            
                 district        : a.district,
                 block           : a.block,
                 village         : a.village,
-                beneficiaryID   : a.beneficiaryID,
+                beneficiaryID   : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
                 sectorName      : a.sectorName,
                 activityName    : a.activityName,
                 subactivityName : a.subactivityName,
@@ -320,24 +285,27 @@ class UpgradedBeneficiaryReport extends Component{
                 govtscheme      : a.govtscheme,
                 other           : a.other,
                 total           : a.total,
+              })
+              if(data.length===(i+1)){
+                this.setState({
+                  tableData : tableData
+                })
               }
             })
-            this.setState({
-              tableData : tableData
-            },()=>{
-              console.log("resp",this.state.tableData)
-            })
+            .catch(function(error){ 
+              console.log("error = ",error);
+            });
           })
-          .catch(function(error){  
-            // console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
-          });
-        }
+        })
+        .catch(function(error){  
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
+        });
       }
     }
   }
@@ -406,7 +374,7 @@ class UpgradedBeneficiaryReport extends Component{
       // this.handleToChange();
   }
   getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
+      // console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });

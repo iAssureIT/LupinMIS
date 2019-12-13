@@ -41,6 +41,17 @@ class Beneficiary extends Component{
 
   handleChange(event){
     event.preventDefault();
+    if(event.currentTarget.name==='familyID'){
+      let id = $(event.currentTarget).find('option:selected').attr('data-id')
+      axios.get('/api/families/'+id)
+      .then((response)=>{
+        // console.log('response',response)
+        this.setState({"surnameOfBeneficiary":response.data[0].surnameOfFH})
+      })
+      .catch(function(error){ 
+        console.log("error = ",error);
+      });
+    }
     this.setState({
       "familyID"                  : this.refs.familyID.value,          
       "surnameOfBeneficiary"      : this.refs.surnameOfBeneficiary.value,
@@ -402,7 +413,7 @@ class Beneficiary extends Component{
                     {
                       this.state.availableFamilies ? this.state.availableFamilies.map((data, index)=>{
                         return(
-                          <option key={data._id} value={data.familyID+'|'+data._id}>{data.familyID}</option>
+                          <option key={data._id} value={data.familyID+'|'+data._id} data-id={data._id}>{data.familyID}</option>
                           );
                       }) 
                       : 
