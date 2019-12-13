@@ -69,10 +69,8 @@ class CompanyInformation extends Component{
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    // console.log('this.state.companyContactNumber',this.state.companyContactNumber)
     $.validator.addMethod("regxContact", function(value, element, regexpr) { 
-      // console.log('value===regexpr',value,element,regexpr)
-      return value!==regexpr;
+      return value===regexpr;
     }, "This field value is similar as contact number.");
     $("#companyInformationForm").validate({
       rules: {
@@ -82,9 +80,9 @@ class CompanyInformation extends Component{
         companyContactNumber: {
           required: true,
         },
-        // companyAltContactNumber: {
-        //   regxContact: this.state.companyContactNumber
-        // },
+        companyAltContactNumber: {
+          regxContact: this.refs.companyContactNumber.value
+        },
         companyEmail: {
           required: true,
         },
@@ -114,10 +112,6 @@ class CompanyInformation extends Component{
         },
       }
     });
-    this.getCompanySettingsData()
-  }
-
-  getCompanySettingsData(){
     var companyId = 1;
     axios.get('/api/companysettings/'+ companyId)
     .then( (res)=>{      

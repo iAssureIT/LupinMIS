@@ -443,6 +443,7 @@ class Activity extends Component{
           "availableSectors"   : [],
           "availableActivity"  : [],
           "availableSubActivity": [],
+          "sendBeneficiary"     : [],
         });
       }else{
         swal('Total Costs are not equal! Please check');
@@ -461,7 +462,7 @@ class Activity extends Component{
 
     var activityValues= {
       "activityReport_ID" : this.state.editId,
-      "categoryType"      : this.state.categoryType,
+      "categoryType"      : this.state.projectCategoryType,
       "center_ID"         : this.state.center_ID,
       "centerName"        : this.state.centerName,
       "date"              : this.refs.dateofIntervention.value,
@@ -517,6 +518,8 @@ class Activity extends Component{
     fields["indirectCC"]        = "";
     fields["other"]             = "";
     fields["remark"]             = "";
+
+    // console.log('activityValues',activityValues)
     axios.patch('/api/activityReport',activityValues)
     .then((response)=>{
       // console.log("update",response);
@@ -562,6 +565,7 @@ class Activity extends Component{
       "availableSectors"   : [],
       "availableActivity"  : [],
       "availableSubActivity": [],
+      "sendBeneficiary"     : [],
       
     });
       this.props.history.push('/activity');
@@ -683,7 +687,7 @@ class Activity extends Component{
         editData.listofBeneficiaries.map((a, i)=>{
           axios.get('/api/beneficiaries/'+a.beneficiary_ID)
           .then((response)=>{
-            console.log('response',response)
+            // console.log('response',response)
             bentableData.push({
               _id                       : a._id,
               beneficiary_ID            : a.beneficiary_ID,
@@ -701,9 +705,10 @@ class Activity extends Component{
               this.setState({
                 bentableData : bentableData
               },()=>{
-                console.log('bentableData',this.state.bentableData)
+                // console.log('bentableData',this.state.bentableData)
                 this.setState({
                   "editData"          : editData,
+                  "dateofIntervention": editData.date,
                   "stateCode"         : editData.stateCode,
                   "district"          : editData.district,
                   "block"             : editData.block,
@@ -911,7 +916,7 @@ class Activity extends Component{
     // })
     this.getLength();
     
-    this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+    this.getBlock(this.state.stateCode, this.state.district);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -930,24 +935,61 @@ class Activity extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    var editId = nextProps.match.params.id;
-    this.getAvailableSectors();      
-    this.getAvailableCenter(this.state.center_ID, this.state.stateCode);      
-    this.getBlock(this.state.stateCode, this.state.selectedDistrict);
-    this.setState({
-      "editId" : editId,
-    },()=>{
-      // console.log('editId componentWillReceiveProps', this.state.editId);
-      // this.getAvailableActivity(this.state.editSectorId);
-      // this.getAvailableSubActivity(this.state.editSectorId);
-      
-    })  
-    this.edit(editId);
+    console.log('nextProps',nextProps)
     if(nextProps){
+      var editId = nextProps.match.params.id;
+      this.getAvailableSectors();      
+      this.getAvailableCenter(this.state.center_ID, this.state.stateCode);      
+      this.getBlock(this.state.stateCode, this.state.district);
+      this.setState({
+        "editId" : editId,
+      },()=>{
+        // console.log('editId componentWillReceiveProps', this.state.editId);
+        // this.getAvailableActivity(this.state.editSectorId);
+        // this.getAvailableSubActivity(this.state.editSectorId);
+        
+      })  
+      this.edit(editId);
       this.getLength();
     }
   }
-   
+  
+  deleted(){
+    var dateObj = new Date();
+    var momentObj = moment(dateObj);
+    var momentString = momentObj.format('YYYY-MM-DD');
+    this.setState({
+      "stateCode"         : this.state.stateCode,
+      "district"          : '-- Select --',
+      "block"             : '-- Select --',
+      "village"           : '-- Select --',
+      "date"              : momentString,
+      "sector"            : '-- Select --',
+      "typeofactivity"    : '-- Select --',
+      "activity"          : '-- Select --',
+      "subactivity"       : '-- Select --',
+      "subActivityDetails": '',
+      "unitCost"          : 0,
+      "quantity"          : 0,
+      "totalcost"         : 0,
+      "LHWRF"             : 0,
+      "NABARD"            : 0,
+      "bankLoan"          : 0,
+      "govtscheme"        : 0,
+      "directCC"          : 0,
+      "indirectCC"        : 0,
+      "other"             : 0,
+      "total"             : 0,
+      "remark"            : '',
+      "listofBeneficiaries" : [],
+      "selectedBeneficiaries" : [],
+      "sendBeneficiary"       : [],
+      "selectedValues"        : [],
+      "projectCategoryType"   : this.state.projectCategoryType,
+      "projectName"           : '',
+    })
+  } 
+
   getAvailableSectors(){
     axios({
       method: 'get',
@@ -1079,8 +1121,8 @@ class Activity extends Component{
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      // console.log('selectedDistrict',this.state.selectedDistrict);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      // console.log('selectedDistrict',this.state.district);
+      this.getBlock(this.state.stateCode, this.state.district);
       })
     });
     this.handleChange(event);
@@ -1095,10 +1137,10 @@ class Activity extends Component{
       var selectedDistrict = this.state.district;
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
-        selectedDistrict :selectedDistrict
+        district :selectedDistrict
       },()=>{
-      // console.log('selectedDistrict',this.state.selectedDistrict);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      // console.log('selectedDistrict',this.state.district);
+      this.getBlock(this.state.stateCode, this.state.district);
       })
     });
     this.handleChange(event);
@@ -1127,7 +1169,7 @@ class Activity extends Component{
       block : block
     },()=>{
       // console.log("block",block);
-      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      this.getVillages(this.state.stateCode, this.state.district, this.state.block);
     });
     this.handleChange(event);
   }
@@ -1632,6 +1674,7 @@ class Activity extends Component{
                       tableData={this.state.tableData}
                       getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects}
+                      isDeleted={this.deleted.bind(this)}
                     />
                   </div> 
                 </div>

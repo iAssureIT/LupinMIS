@@ -87,11 +87,11 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 		let id = e.target.id;
-		
 		axios({
 	        method: 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
+	    	this.props.isDeleted()
 	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        swal({
 	        	text : response.data.message,

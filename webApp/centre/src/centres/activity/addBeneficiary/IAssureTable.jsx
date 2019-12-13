@@ -53,13 +53,13 @@ class IAssureTable extends Component {
             showUpgradation : nextProps.showUpgradation
         },()=>{
         	
-        	if(this.state.selectedValues){
-	        	this.state.selectedValues.map((a, i)=>{
-	        		this.setState({
-	        			[a.beneficiary_ID+'|'+a.beneficiaryID+'|'+a.family_ID+'|'+a.familyID+'|'+a.nameofbeneficiaries] : false
-	        		})
-	        	})
-        	}
+        	// if(this.state.selectedValues){
+	        // 	this.state.selectedValues.map((a, i)=>{
+	        // 		this.setState({
+	        // 			[a.beneficiary_ID+'|'+a.beneficiaryID+'|'+a.family_ID+'|'+a.familyID+'|'+a.nameofbeneficiaries] : false
+	        // 		})
+	        // 	})
+        	// }
         	if(this.state.selectedBeneficiaries&&this.state.selectedBeneficiaries.length>0){
         		this.state.selectedBeneficiaries.map((value, i)=>{
         			let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village
@@ -69,6 +69,17 @@ class IAssureTable extends Component {
 	        			[upgradeid] : value.isUpgraded==='Yes'?true:false
 	        		})
         		})
+        	}else{
+        		if(this.state.tableData&&this.state.tableData.length>0){
+	        		this.state.tableData.map((value, i)=>{
+	        			let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village
+	        			let upgradeid = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'
+	        			this.setState({
+		        			[id] : false,
+		        			[upgradeid] : false
+		        		})
+	        		})
+        		}
         	}
         	this.paginationFunction();
         })

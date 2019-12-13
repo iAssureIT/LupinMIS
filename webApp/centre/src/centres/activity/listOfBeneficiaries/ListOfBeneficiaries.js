@@ -78,11 +78,11 @@ class ListOfBeneficiaries extends Component{
         sendBeneficiary: nextProps.sendBeneficiary,
         tableData      : nextProps.sendBeneficiary
       },()=>{
-        if(this.state.selectedValues){
-          this.setState({
-            tableData : []
-          })
-        }
+        // if(this.state.selectedValues){
+        //   this.setState({
+        //     tableData : []
+        //   })
+        // }
       })
     }
   }

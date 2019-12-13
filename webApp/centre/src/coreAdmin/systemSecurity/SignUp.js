@@ -376,75 +376,71 @@ class SignUp extends Component {
 						<form id="signUpUser" onSubmit={this.usersignup.bind(this)}>
 						<h4 className="signInNameTitle "><span className="bordbt">SIGN UP</span></h4>
 							<div className="col-lg-12 col-md-12 signUpInnerWrapperOES signupfrm">
-								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-									<div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
-								   		<span id="firstnameErr" className="blocking-span noIb">
-										   <input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="firstname" ref="firstname" name="firstname"  onChange={this.handleChange} data-text="firstNameV" required/>
-										   {this.state.formerrors.firstNameV  && (
-					                        <span className="text-danger">{this.state.formerrors.firstNameV}</span> 
-					                      )}
-								    		<span className="floating-label">
-									    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
-									    		First Name<label className="sign asterix">*</label>
-								    		</span>					   			
-										</span>
-									</div>
-								    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
-										<span id="lastnameErr" className="blocking-span noIb">   
-											<input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
-											{this.state.formerrors.lastNameV  && (
-					                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
-					                      )}
-									    	<span className="floating-label1 lbfloatpass">
-									    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
-									    		Last Name<label className="sign asterix">*</label>
-									    	</span>					   			
-										</span>
-								    </div>
+								<div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
+							   		<span id="firstnameErr" className="blocking-span noIb">
+									   <input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="firstname" ref="firstname" name="firstname"  onChange={this.handleChange} data-text="firstNameV" required/>
+									   {this.state.formerrors.firstNameV  && (
+				                        <span className="text-danger">{this.state.formerrors.firstNameV}</span> 
+				                      )}
+							    		<span className="floating-label">
+								    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
+								    		First Name<label className="sign asterix">*</label>
+							    		</span>					   			
+									</span>
+								</div>
+							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
+									<span id="lastnameErr" className="blocking-span noIb">   
+										<input type="text" className="form-control abacusTextbox oesSignUpForm formLable" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
+										{this.state.formerrors.lastNameV  && (
+				                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
+				                      )}
+								    	<span className="floating-label1 lbfloatpass">
+								    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
+								    		Last Name<label className="sign asterix">*</label>
+								    	</span>					   			
+									</span>
 							    </div>
-								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-								    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
-								   		<span id="mobileNumberErr" className="blocking-span noIb">   
-										   <input className="form-control  abacusTextbox oesSignUpForm formLable" ref="mobileNumber" name="mobileNumber" id="mobileNumber" onChange={this.handleChange} data-text="mobileV" required/>
-										   {this.state.formerrors.mobileV  && (
-					                        <span className="text-danger">{this.state.formerrors.mobileV}</span> 
-					                      )}
-										   <span className="floating-label">
-										   <i className="fa fa-mobile signupIconFont" aria-hidden="true"></i>Mobile Number<label className="sign asterix">*</label></span>					   			
-									    </span>
-									</div>
-								    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
-										<span id="centerNameErr" className="blocking-span noIb">   
-										<select className="form-control abacusTextbox oesSignUpForm formLable" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName">
-			                               	<option hidden> Center Name</option>
-			                                  {
-			                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
-			                                    this.state.listofCenters.map((data, index)=>{
-			                                      // console.log(data);
-			                                      return(
-			                                        <option className="formLable" key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-			                                      );
-			                                    })
-			                                    :
-			                                    null
-			                                  }  
-			                              </select>
-											{/*<input type="text" className="form-control abacusTextbox oesSignUpForm" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
-											{this.state.formerrors.la
-											stNameV  && (
-					                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
-					                      )}*/}
-									    	{/*<span className="floating-label1 lbfloatpass">
-									    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
-									    		Center Name
-									    	</span>		*/}			   			
-										</span>
-	{/*									<div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
-	*/}		                           
-			                              
-			                            
-								    </div>
-								</div>	
+							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
+							   		<span id="mobileNumberErr" className="blocking-span noIb">   
+									   <input className="form-control  abacusTextbox oesSignUpForm formLable" ref="mobileNumber" name="mobileNumber" id="mobileNumber" onChange={this.handleChange} data-text="mobileV" required/>
+									   {this.state.formerrors.mobileV  && (
+				                        <span className="text-danger">{this.state.formerrors.mobileV}</span> 
+				                      )}
+									   <span className="floating-label">
+									   <i className="fa fa-mobile signupIconFont" aria-hidden="true"></i>Mobile Number<label className="sign asterix">*</label></span>					   			
+								    </span>
+								</div>
+							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd1 boxMarg">
+									<span id="centerNameErr" className="blocking-span noIb">   
+									<select className="form-control abacusTextbox oesSignUpForm formLable" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName">
+		                               	<option hidden> Center Name</option>
+		                                  {
+		                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
+		                                    this.state.listofCenters.map((data, index)=>{
+		                                      // console.log(data);
+		                                      return(
+		                                        <option className="formLable" key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+		                                      );
+		                                    })
+		                                    :
+		                                    null
+		                                  }  
+		                              </select>
+										{/*<input type="text" className="form-control abacusTextbox oesSignUpForm" id="lastname" ref="lastname" name="lastname"  onChange={this.handleChange} data-text="lastNameV" required/>
+										{this.state.formerrors.la
+										stNameV  && (
+				                        <span className="text-danger">{this.state.formerrors.lastNameV}</span> 
+				                      )}*/}
+								    	{/*<span className="floating-label1 lbfloatpass">
+								    		<i className="fa fa-user-circle-o signupIconFont" aria-hidden="true"/> 
+								    		Center Name
+								    	</span>		*/}			   			
+									</span>
+{/*									<div className="formLable mrgtop6">Center Name<span className="requiredsign"></span></div>
+*/}		                           
+		                              
+		                            
+							    </div>	
 							    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent boxMarg">
 									<span className="blocking-span noIb">   
 									  <input id="signupEmailErr" type="email" className="form-control signupsetting formLable abacusTextbox oesSignUpForm" ref="signupEmail" name="signupEmail" onChange={this.handleChange} data-text="emailIDV" required/>
