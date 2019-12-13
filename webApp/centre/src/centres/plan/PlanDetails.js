@@ -27,7 +27,6 @@ class PlanDetails extends Component{
       "bankLoan"            :"",
       "govtscheme"          :"",
       "directCC"            :"",
-      "year"                :"FY 2019 - 2020",
       "indirectCC"          :"",
       "other"               :"",
       "remark"              :"",
@@ -37,7 +36,7 @@ class PlanDetails extends Component{
       "heading"             :"Annual Plan",
       "months"              :["Annual Plan","All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
       "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
-
+      "year"                :"FY 2019 - 2020",
       "shown"               : true,
        "twoLevelHeader"     : {
         apply               : true,
@@ -184,7 +183,13 @@ class PlanDetails extends Component{
              getsubActivity[getstate] = totalBudget - subTotal;
              this.setState({[getstate+"-"+index] : totalBudget - subTotal });
           }
-
+          for (var i = findIndex + 2; i < arr.length; i++) {
+            var currentStates = arr[i];
+            if (currentStates) {
+               getsubActivity[currentStates] = 0;
+               this.setState({[currentStates+"-"+index] : 0 });
+            }
+          }
       }else{
         var remainTotal =  0;
         for (var j = 0; j < findIndex; j++) {
@@ -413,9 +418,8 @@ class PlanDetails extends Component{
         });
       }
       this.setState({
-        "planValues"          :"",
-        "year"                : this.refs.year.value,
-        "month"               : this.refs.month.value,
+        "year"                : "FY 2019 - 2020",
+        "month"               : "Annual Plan",
         "center"              :"",
         "sector_id"           :"",
         "sectorName"          :"-- Select --",
@@ -426,6 +430,7 @@ class PlanDetails extends Component{
         "availableSubActivity":[],
         "availableActivity"   :[],
         "subActivityDetails[i][name]":"",
+        "shown"               : true,
         // shown                 : !this.state.shown
       });
   }
@@ -539,7 +544,7 @@ class PlanDetails extends Component{
   }
 
   getLength(){
-    axios.get(this.state.apiCall+'/count')
+    axios.get(this.state.apiCall+'/count'+"/"+this.state.center_ID)
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -554,21 +559,26 @@ class PlanDetails extends Component{
   selectMonth(event){
     event.preventDefault();
     var tableObjects = this.state.tableObjects;
-    tableObjects["apiLink"] = this.refs.month.value === 'Annual Plan' ? '/api/annualPlans/' : '/api/monthlyPlans/';
+    tableObjects["apiLink"] = event.target.value === 'Annual Plan' ? '/api/annualPlans/' : '/api/monthlyPlans/';
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
-      "years"               : this.refs.month.value === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-      "month"               : this.refs.month.value,        
-      "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
-      "sectorName"          : "",
-      "activityName"        : "",
-      "availableSubActivity": "",
+      "years"               : event.target.value  === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+      "month"               : event.target.value,        
+      "apiCall"             : event.target.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
+      "sectorName"          : "-- Select --",
+      "activityName"        : "-- Select --",
+      "availableSubActivity": [],
       tableObjects,
       fields
     },()=>{
-      // console.log('month =====================================', this.state.month, this.state.year)
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+      this.setState({
+        "year" : this.state.years[0]
+      },()=>{
+        // console.log('month =====', this.state.month, this.state.year)
+        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+
+      })
     });
 
     if (this.validateForm()) {
@@ -587,9 +597,10 @@ class PlanDetails extends Component{
     startRange : startRange,
     limitRange : limitRange
     }
+    // console.log("data",data);
     axios.post(this.state.apiCall+'/list', data)
       .then((response)=>{
-          console.log("response",response);
+          // console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
         _id                 : a._id,
@@ -619,7 +630,7 @@ class PlanDetails extends Component{
         this.setState({
           tableData : tableData
         },()=>{
-          console.log("tableData",this.state.tableData);
+          // console.log("tableData",this.state.tableData);
         });
       })
       .catch(function(error){
@@ -709,7 +720,7 @@ class PlanDetails extends Component{
     this.getAvailableActivity(sector_ID);
   }
   getAvailableActivity(sector_ID){
-    console.log("sector_ID",sector_ID);
+    // console.log("sector_ID",sector_ID);
     axios({
       method: 'get',
       url: '/api/sectors/'+sector_ID,
@@ -731,41 +742,7 @@ class PlanDetails extends Component{
     this.handleChange(event);
     this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
   }
-  excludeSubmittedSubActivity(){
-    axios({
-      method: 'get',
-      url: this.state.apiCall+'/list',
-    }).then((response)=> {
-      if(response.data.length > 0){
-        var submittedSubActivity = response.data.map((a, i)=>{
-          return _.pick(a, "subactivity_ID", "month")
-        })
-        var abc = _.pluck(_.compact(submittedSubActivity.map((m, i)=> { 
-          if(m.month === this.refs.month.value){
-            return m;
-          } 
-        })), "subactivity_ID");
-
-        var x = this.state.availableSubActivity.map((a, i)=>{
-          if(!abc.includes(a._id)){
-            return a;
-          }
-        });
-
-        this.setState({
-          availableSubActivity : _.compact(_.flatten(x))
-        },()=>{
-          // console.log("available ---->",this.state.availableSubActivity);
-       /*   swal({
-              title : "abc",
-              text  : "SubActivity is submitted already or not available"
-          });*/
-        });
-      }
-    }).catch(function (error) {
-      console.log("error"+error);
-    }); 
-  }
+  
   getAvailableSubActivity(sector_ID, activity_ID){
     axios({
       method: 'get',
@@ -864,18 +841,7 @@ class PlanDetails extends Component{
       tableData : []
     })
   }
-  isNumberKey(evt){
-    // console.log('onKeyDown');
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
+
   render() {
     var hidden = {
       display: this.state.shown ? "none" : "block"
@@ -901,9 +867,9 @@ class PlanDetails extends Component{
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                         <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
-                          
+                          <option disabled={true}>-- Select Plan --</option>
                          {this.state.months.map((data,index) =>
-                          <option key={index}  className="" >{data}</option>
+                          <option key={index}  value={data} >{data}</option>
                           )}
                           
                         </select>

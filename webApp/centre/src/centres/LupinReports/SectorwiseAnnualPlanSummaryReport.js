@@ -179,16 +179,12 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.setState({
       projectCategoryType : projectCategoryType,
     },()=>{
-        if(this.state.projectCategoryType === "LHWRF Grant"){
-          this.setState({
-            projectName : "LHWRF Grant",
-          })          
-        }else if (this.state.projectCategoryType=== "all"){
+       if (this.state.projectCategoryType=== "all" || this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log("shown",this.state.shown, this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
@@ -296,7 +292,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
          [name] : event.target.value,
          endDate : endDate
       },()=>{
-      console.log("dateUpdate",this.state.endDate);
+      // console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
      });
      // localStorage.setItem('newToDate',dateUpdate);
@@ -375,7 +371,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                                 <option value="all" >All</option>
                                 <option value="withUID" >With UID</option>
                                 <option value="withoutUID" >Without UID</option>
-                                
+                                 
                               </select>
                             </div>
                           </div> 

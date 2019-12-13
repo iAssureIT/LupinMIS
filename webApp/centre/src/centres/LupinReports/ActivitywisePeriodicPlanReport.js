@@ -116,7 +116,7 @@ class ActivitywisePeriodicPlanReport extends Component{
           tableData : this.state.tableData,
         },()=>{
         // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
@@ -127,7 +127,7 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.getAvailableSectors();
         this.currentFromDate();
         this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID,this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
@@ -181,16 +181,12 @@ class ActivitywisePeriodicPlanReport extends Component{
 
     selectprojectCategoryType(event){
         event.preventDefault();
-        console.log(event.target.value)
+        // console.log(event.target.value)
         var projectCategoryType = event.target.value;
         this.setState({
           projectCategoryType : projectCategoryType,
         },()=>{
-            if(this.state.projectCategoryType === "LHWRF Grant"){
-              this.setState({
-                projectName : "LHWRF Grant",
-              })          
-            }else if (this.state.projectCategoryType=== "all"){
+            if (this.state.projectCategoryType=== "all" || this.state.projectCategoryType === "LHWRF Grant"){
               this.setState({
                 projectName : "all",
               })    
@@ -231,11 +227,11 @@ class ActivitywisePeriodicPlanReport extends Component{
         })
     }
     getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
+        // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
-        console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
             if(sector_ID==="all"){
                 axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-            // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
+                // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
                 .then((response)=>{
                   console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{
@@ -277,7 +273,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                     }
                 });
             }else{             
-                console.log(startDate, endDate, center_ID, sector_ID);
+                // console.log(startDate, endDate, center_ID, sector_ID);
                 axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
                 .then((response)=>{
@@ -334,8 +330,7 @@ class ActivitywisePeriodicPlanReport extends Component{
            [name] : event.target.value,
            startDate:startDate
        },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-       // console.log("dateUpdate",this.state.startDate);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID,this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
        });
        // localStorage.setItem('newFromDate',dateUpdate);
     }
@@ -352,7 +347,7 @@ class ActivitywisePeriodicPlanReport extends Component{
            endDate : endDate
         },()=>{
         // console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
        });
        // localStorage.setItem('newToDate',dateUpdate);
     }
@@ -518,13 +513,13 @@ class ActivitywisePeriodicPlanReport extends Component{
                                     <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                            <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                                            <input onChange={this.handleFromChange} name="startDate" ref="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                                         </div>
                                     </div>
                                     <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                                         <label className="formLable">To</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                            <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                                            <input onChange={this.handleToChange} name="endDate" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                                         </div>
                                     </div>
                                 </div>  
