@@ -497,7 +497,7 @@ class centerDetail extends Component{
       console.log("editData",editData);
       this.getDistrict(editData.address.stateCode);
       this.getBlock(editData.address.stateCode, editData.address.district);
-      console.log(editData.address.stateCode, editData.address.district, editData.blocksCovered);
+      // console.log(editData.address.stateCode, editData.address.district, editData.blocksCovered);
       this.getVillages(editData.address.stateCode, editData.address.district, editData.blocksCovered);
       this.setState({
         "typeOfCenter"             : editData.type_ID,
@@ -658,11 +658,11 @@ class centerDetail extends Component{
       districtCovered: districtCovered
     },()=>{
       var selectedDistrict = this.state.districtCovered.split('|')[0];
-      console.log("selectedDistrict",selectedDistrict);
+      // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      console.log('selectedDistrict',this.state.selectedDistrict);
+      // console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });

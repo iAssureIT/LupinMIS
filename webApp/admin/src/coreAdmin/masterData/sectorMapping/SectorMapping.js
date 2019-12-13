@@ -3,6 +3,7 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
+import validate               from 'jquery-validation';
 
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./SectorMapping.css";
@@ -14,7 +15,7 @@ class SectorMapping extends Component{
    
     this.state = {
       "goalName"           : "",
-      "goalType"           : "",
+      "goalType"           : "-- Select --",
       "sector"             : "",
       "activity"           : "",
       "uID"                : "",
@@ -58,14 +59,15 @@ class SectorMapping extends Component{
   Submit(event){
     event.preventDefault();
     var selectedActivities = this.state.selectedActivities;
-    if (this.validateFormReq() && this.validateForm()) {
-      if (this.state.selectedActivities==""){      
-        swal({
-          title: 'abc',
-          text: "Please select any Activity",
-          button: true,
-        });
-      }else{        
+    // if (this.validateFormReq() && this.validateForm()) {
+    if (this.state.selectedActivities==""){      
+      swal({
+        title: 'abc',
+        text: "Please select any Activity",
+        button: true,
+      });
+    }else{   
+      if($('#sectorMapping').valid()){
         var mappingValues= 
         {     
           "goal"   : this.refs.goalName.value,          
@@ -93,13 +95,13 @@ class SectorMapping extends Component{
         })
         this.setState({
           "goalName"           :"",
-          "goalType"           :"",
+          "goalType"           :"-- Select --",
           "selectedActivities" :[],
           fields               :fields
         });
-        
-      }
-    }  
+      }        
+    }
+    // }    
   }
   Update(event){
     event.preventDefault();
@@ -139,7 +141,7 @@ class SectorMapping extends Component{
       })
       this.setState({
         "goalName"           : "",
-        "goalType"           : "",
+        "goalType"           : "-- Select --",
         "selectedActivities" : [],
         fields               : fields
       });
@@ -201,6 +203,24 @@ class SectorMapping extends Component{
   }
 
   componentDidMount() {
+    $("#sectorMapping").validate({
+      rules: {
+        goalType: {
+          required: true,
+        },
+        goalName: {
+          required: true,
+        }
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "goalType"){
+          error.insertAfter("#goalType");
+        }
+        if (element.attr("name") == "goalName"){
+          error.insertAfter("#goalName");
+        }
+      }
+    });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     var editId = this.props.match.params.sectorMappingId;
     if(this.state.editId){      
@@ -391,7 +411,7 @@ class SectorMapping extends Component{
                           <label className="formLable">Type of Goal/Project</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
                             <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
-                              <option  className="hidden" >-- Select --</option>
+                              <option selected="true" disabled="disabled">-- Select --</option>
                               {
                                 this.state.listofTypes ?
                                 this.state.listofTypes.map((data, index)=>{

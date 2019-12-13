@@ -31,7 +31,7 @@ class Activity extends Component{
       "typeofactivity"    : "-- Select --",
       "nameofactivity"    : "",
       "activity"          : "-- Select --",
-      "projectName"       : "LHWRF Grant",
+      "projectName"       : "-- Select --",
       "projectCategoryType" : "LHWRF Grant",
       "subactivity"       : "-- Select --",
       "unit"              : "Number",
@@ -359,7 +359,7 @@ class Activity extends Component{
         "total"             : this.state.total,
         "remark"            : this.refs.remark.value,
         "listofBeneficiaries" : this.state.selectedBeneficiaries,
-        "projectName"         : this.state.projectName,
+        "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
         "projectCategoryType" : this.state.projectCategoryType,
       };
       let fields                  = {};
@@ -411,7 +411,7 @@ class Activity extends Component{
             }
           });
         this.setState({
-          "projectName"        : "",
+          "projectName"        : "-- Select --",
           "projectCategoryType" : "LHWRF Grant",
           "district"          : "-- Select --",
           "block"             : "-- Select --",
@@ -440,9 +440,9 @@ class Activity extends Component{
           "selectedValues"         : [],    
           "listofBeneficiaries": [],      
           "subActivityDetails" : [],
-          "availableSectors"   : [],
-          "availableActivity"  : [],
-          "availableSubActivity": [],
+          // "availableSectors"   : [],
+          // "availableActivity"  : [],
+          // "availableSubActivity": [],
           "sendBeneficiary"     : [],
         });
       }else{
@@ -491,7 +491,7 @@ class Activity extends Component{
       "total"             : this.state.total,
       "remark"            : this.refs.remark.value,
       "listofBeneficiaries" : this.state.selectedBeneficiaries,
-      "projectName"         : this.state.projectName,
+      "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
       "projectCategoryType" : this.state.projectCategoryType,
     };
     let fields                  = {};
@@ -533,7 +533,7 @@ class Activity extends Component{
       // console.log("error = ",error);
     });
     this.setState({
-      "projectName"        : "",
+      "projectName"        : "-- Select --",
       "projectCategoryType" : "LHWRF Grant",
       "district"          : "-- Select --",
       "block"             : "-- Select --",
@@ -562,9 +562,9 @@ class Activity extends Component{
       "selectedValues"         : [],    
       "listofBeneficiaries": [],      
       "subActivityDetails" : [],
-      "availableSectors"   : [],
-      "availableActivity"  : [],
-      "availableSubActivity": [],
+      // "availableSectors"   : [],
+      // "availableActivity"  : [],
+      // "availableSubActivity": [],
       "sendBeneficiary"     : [],
       
     });
@@ -734,7 +734,7 @@ class Activity extends Component{
                   "listofBeneficiaries" : bentableData,
                   "selectedBeneficiaries" : bentableData,
                   "projectCategoryType"   : editData.projectCategoryType,
-                  "projectName"           : editData.projectName,
+                  "projectName"           : editData.projectName==='all'?'-- Select --':editData.projectName,
                 }, ()=>{
                   // console.log("edit", this.state.editData)
                   this.getAvailableCenter(this.state.center_ID);
@@ -794,7 +794,7 @@ class Activity extends Component{
         return {
           _id                        : a._id,
           projectCategoryType        : a.projectCategoryType,
-          projectName                : a.projectName,
+          projectName                : a.projectName==='all'?'-':a.projectName,
           date                       : moment(a.date).format('YYYY-MM-DD'),
           place                      : a.place,
           sectorName                 : a.sectorName,
@@ -986,7 +986,7 @@ class Activity extends Component{
       "sendBeneficiary"       : [],
       "selectedValues"        : [],
       "projectCategoryType"   : this.state.projectCategoryType,
-      "projectName"           : '',
+      "projectName"           : '-- Select --',
     })
   } 
 
@@ -1243,7 +1243,7 @@ class Activity extends Component{
     },()=>{
       if (this.state.projectCategoryType == "LHWRF Grant") {
         this.setState({
-           projectName:"-",
+           projectName:"-- Select --",
         })
       }
     })
