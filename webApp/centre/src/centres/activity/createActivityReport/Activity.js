@@ -116,6 +116,10 @@ class Activity extends Component{
     this.handleTotalChange = this.handleTotalChange.bind(this);
   }
 
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   remainTotal(event){
     event.preventDefault(); 
     // console.log("event.target.name",event.target.name);
@@ -802,18 +806,18 @@ class Activity extends Component{
           activityName               : a.activityName,
           subactivityName            : a.subactivityName,
           unit                       : a.unit,
-          unitCost                   : a.unitCost,
-          quantity                   : a.quantity,
-          totalcost                  : a.totalcost,
-          numofBeneficiaries         : a.numofBeneficiaries,
-          LHWRF                      : a.LHWRF,
-          NABARD                     : a.NABARD,
-          bankLoan                   : a.bankLoan,
-          govtscheme                 : a.govtscheme,
-          directCC                   : a.directCC,
-          indirectCC                 : a.indirectCC,
-          other                      : a.other,
-          total                      : a.total,
+          unitCost                   : this.numberWithCommas(a.unitCost),
+          quantity                   : this.numberWithCommas(a.quantity),
+          totalcost                  : this.numberWithCommas(a.totalcost),
+          numofBeneficiaries         : this.numberWithCommas(a.numofBeneficiaries),
+          LHWRF                      : this.numberWithCommas(a.LHWRF),
+          NABARD                     : this.numberWithCommas(a.NABARD),
+          bankLoan                   : this.numberWithCommas(a.bankLoan),
+          govtscheme                 : this.numberWithCommas(a.govtscheme),
+          directCC                   : this.numberWithCommas(a.directCC),
+          indirectCC                 : this.numberWithCommas(a.indirectCC),
+          other                      : this.numberWithCommas(a.other),
+          total                      : this.numberWithCommas(a.total),
           remark                     : a.remark,
         }
       })
@@ -1522,14 +1526,14 @@ class Activity extends Component{
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <label className="formLable">Unit Cost</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
-                              <input type="text"   className="form-control inputBox" name="unitCost" placeholder="" ref="unitCost" value={this.state.unitCost} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleTotalChange.bind(this)}/>
+                              <input type="text"   className="form-control inputBox" name="unitCost" placeholder="" ref="unitCost" value={this.numberWithCommas(this.state.unitCost)} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleTotalChange.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.unitCost}</div>
                           </div>
                           <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <label className="formLable">Quantity</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
-                              <input type="text" className="form-control inputBox" name="quantity" placeholder="" ref="quantity" onKeyDown={this.isNumberKey.bind(this)} value={this.state.quantity}  onChange={this.handleTotalChange.bind(this)}/>
+                              <input type="text" className="form-control inputBox" name="quantity" placeholder="" ref="quantity" onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.quantity)}  onChange={this.handleTotalChange.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.quantity}</div>
                           </div>
@@ -1538,7 +1542,7 @@ class Activity extends Component{
 
                               <label className="formLable">Total Cost of Activity :</label>
                             
-                              <input type="text" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost" onKeyDown={this.isNumberKey.bind(this)} value={this.state.totalcost} disabled />
+                              <input type="text" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost" onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.totalcost)} disabled />
                               
                             </div>
                             <div className="errorMsg">{this.state.errors.totalcost}</div>
@@ -1563,7 +1567,7 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">LHWRF</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                              <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" onKeyDown={this.isNumberKey.bind(this)} value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.LHWRF)}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.LHWRF}</div>
                           </div>
@@ -1571,13 +1575,13 @@ class Activity extends Component{
                             <label className="formLable">NABARD</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >
                               
-                              <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD"  onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.NABARD)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.NABARD}</div>
                           </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Bank Loan</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                              <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyDown={this.isNumberKey.bind(this)} value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.bankLoan)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.bankLoan}</div>
                           </div>
@@ -1588,21 +1592,21 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Govt. Schemes</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                              <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.numberWithCommas(this.state.govtscheme)}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.govtscheme}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Direct Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                              <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.numberWithCommas(this.state.directCC)} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.directCC}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Indirect Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                              <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.numberWithCommas(this.state.indirectCC)} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.indirectCC}</div>
                           </div>
@@ -1613,7 +1617,7 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Other</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
-                              <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.numberWithCommas(this.state.other)} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.other}</div>
                           </div>
@@ -1623,7 +1627,7 @@ class Activity extends Component{
                                
                                   <div className="form-control inputBox inputBox-main unit">
                                     {this.state.total ? 
-                                        <label className="formLable" id="total">{this.state.total}</label>
+                                        <label className="formLable" id="total">{this.numberWithCommas(this.state.total)}</label>
                                       :
                                       0
                                     }
