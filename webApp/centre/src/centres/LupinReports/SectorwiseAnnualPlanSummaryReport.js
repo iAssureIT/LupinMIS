@@ -227,7 +227,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
        // axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
-          console.log("resp",response);
+          // console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
             return {
                 _id                                     : a._id,            
@@ -245,11 +245,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                 monthlyPlan_Govt                        : a.monthlyPlan_Govt,
                 monthlyPlan_Other                       : a.monthlyPlan_Other,
             } 
-        })  
+          })  
           this.setState({
             tableData : tableData
-          },()=>{
-            console.log("resp",this.state.tableData)
           })
         })
         .catch(function(error){  
@@ -335,7 +333,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       // this.handleToChange();
   }
   getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
+      // console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });

@@ -776,13 +776,13 @@ class ProjectMapping extends Component{
                                   return(
                                     <div key={index} className="col-md-4  col-lg-4 col-sm-12 col-xs-12 blockheight noPadding">
                                       <div className="row"> 
-                                        <div className="actionDiv" id="sector">
-                                          <div className="sectorContainer col-lg-1 ">
+                                        <div className="actionDiv col-lg-12 col-md-12 col-xs-12 col-sm-12 noPadding" id="sector">
+                                          <div className="sectorContainer col-lg-1">
                                             <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} data-txt={data._id} value={data.checked=="N"?"Y":"N"} id={data._id +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
                                             <span className="sectorCheck"></span>
                                           </div>
+                                          <label  className="fz14 faintColor col-lg-10">{data.sector}</label>                                   
                                         </div>                            
-                                        <label  className="fz14 faintColor">{data.sector}</label>                                   
                                         {
                                           data.activity.map((a, i)=>{
     
@@ -790,12 +790,12 @@ class ProjectMapping extends Component{
                                               <div key ={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                                                 <div className={data._id +"|"+data.sector}> 
                                                   <div className="actionDiv" id="activityName">
-                                                    <div className="SDGContainer col-lg-1 ">
+                                                    <div className="SDGContainer col-lg-1">
                                                       <input type="checkbox" name="activityName"  data-typechecked={a.activityName} data-index={i} data-txt={index} value={a.checked=="N"?"Y":"N"} className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={a.checked==="Y"?true:false} onChange={this.selectActivity.bind(this)} />
                                                       <span className="SDGCheck"></span>
                                                     </div>
+                                                    <label className="actListItem col-lg-10">{a.activityName}</label>
                                                   </div>                            
-                                                  <label className="actListItem">{a.activityName}</label>
                                                 </div>  
                                                   {
                                                     a.subActivity.length>0?
@@ -808,8 +808,8 @@ class ProjectMapping extends Component{
                                                                 <input type="checkbox" name="subActivityName" className ="subActivityName" data-typechecked={a.subActivityName}  data-index={j} data-actindex={i} data-txt={index} value={b.checked=="N"?"Y":"N"}  data-typechecked="subActivityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName+"|"+b._id+"|"+b.subActivityName}  checked={b.checked==="Y"?true:false} onChange={this.selectSubactivity.bind(this)} />
                                                                 <span className="subCheck"></span>
                                                               </div>
+                                                              <label className="subActivitylistItem col-lg-10">{b.subActivityName}</label>
                                                             </div>                            
-                                                            <label className="subActivitylistItem">{b.subActivityName}</label>
                                                           </div>   
                                                         </div>
                                                       );

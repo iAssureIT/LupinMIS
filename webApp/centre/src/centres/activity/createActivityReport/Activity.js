@@ -255,7 +255,34 @@ class Activity extends Component{
   }
 
   handleChange(event){
-    event.preventDefault(); 
+    event.preventDefault();
+      if(event.currentTarget.name==='projectName'){
+        let id = $(event.currentTarget).find('option:selected').attr('data-id')
+        axios.get('/api/projectMappings/'+id)
+        .then((response)=>{
+          if(response.data[0].sector&&response.data[0].sector.length>0){
+            var returnData = [...new Set(response.data[0].sector.map(a => a.sector_ID))]
+            if(returnData&&returnData.length>0){
+              var array = returnData.map((data,index) => {
+                let getIndex = response.data[0].sector.findIndex(x => x.sector_ID===data)
+                if(getIndex>=0){
+                  return {
+                    '_id' : response.data[0].sector[getIndex].sector_ID,
+                    'sector' : response.data[0].sector[getIndex].sectorName
+                  };
+                }
+              });
+              this.setState({
+                availableSectors : array
+              })
+            }
+
+          }
+        })
+        .catch(function(error){
+          console.log("error = ",error);
+        });
+      }
       this.setState({      
         [event.target.name]: event.target.value
       },()=>{
@@ -939,7 +966,7 @@ class Activity extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('nextProps',nextProps)
+    // console.log('nextProps',nextProps)
     if(nextProps){
       var editId = nextProps.match.params.id;
       this.getAvailableSectors();      
@@ -1241,13 +1268,14 @@ class Activity extends Component{
   }
 
   handleToggle(event){
-      // event.preventDefault();
+    // event.preventDefault();
+    this.getAvailableSectors()
     this.setState({
-      [event.target.name] : event.target.value
+      [event.target.name] : event.target.value,
     },()=>{
       if (this.state.projectCategoryType == "LHWRF Grant") {
         this.setState({
-           projectName:"-- Select --",
+          projectName:"-- Select --",
         })
       }
     })
@@ -1330,7 +1358,7 @@ class Activity extends Component{
                                   this.state.availableProjects && this.state.availableProjects.length > 0  ? 
                                   this.state.availableProjects.map((data, index)=>{
                                     return(
-                                      <option key={index} value={(data.projectName)}>{(data.projectName)}</option>
+                                      <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
                                     );
                                   })
                                   :
