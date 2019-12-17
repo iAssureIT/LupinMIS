@@ -582,6 +582,7 @@
   width: 106px !important;
   line-height: 25px;
   font-size: 13px;
+  z-index: 1
 }
 .unit{
   margin-top: 30px;

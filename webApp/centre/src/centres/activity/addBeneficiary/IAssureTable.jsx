@@ -60,6 +60,7 @@ class IAssureTable extends Component {
 	        // 		})
 	        // 	})
         	// }
+        	// console.log('update',this.state.selectedBeneficiaries);
         	if(this.state.selectedBeneficiaries&&this.state.selectedBeneficiaries.length>0){
         		this.state.selectedBeneficiaries.map((value, i)=>{
         			let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village
@@ -509,55 +510,56 @@ class IAssureTable extends Component {
     	var selectedBeneficiaries = this.state.selectedBeneficiaries;
     	var value = event.target.checked;
 	    var id    = event.target.id;
+	    var operation = false
 	    // console.log('value',value,id)
-
-	    this.setState({
-	      [id] : value
-	    },()=>{
-		    console.log('this.state[id+"|upgrade"]',this.state[id+"|upgrade"])
-	    	if(id.split('|')[10]){
-				let newId = id.replace('|upgrade','')
-				this.setState({
-			      [newId] : value,
-			    })    		
-		    }else{
-		     	if(this.state[id+"|upgrade"]&&!value){
-		    	this.setState({
-			      [id] : true
-			    },()=>{
-		    		swal('','This operation is not allowed. Please deselect the upgraded value.');
-			    })} 
-		    }
-	    	if(this.state[id] === true){
-			    selectedBeneficiaries.push({
-		    		_id     		    : id.split('|')[0],
-		    		beneficiary_ID      : id.split('|')[1],
-					beneficiaryID       : id.split('|')[2],
-		    		family_ID           : id.split('|')[3],
-					familyID            : id.split('|')[4],
-					nameofbeneficiaries : id.split('|')[5],
-					relation            : id.split('|')[6],
-					dist          	    : id.split('|')[7],
-					block               : id.split('|')[8],
-					village             : id.split('|')[9],
-					isUpgraded 			: id.split('|')[10]&&value?'Yes':id.split('|')[10]&&!value?'No':this.state[id+"|upgrade"]?'Yes':'No'
-		    	});
-		    	
-		    	this.setState({
-		          selectedBeneficiaries : selectedBeneficiaries
-		        },()=>{
-		          this.props.getBeneficiaries(this.state.selectedBeneficiaries);
-		        });
+	    if(id.split('|')[10]){
+			let newId = id.replace('|upgrade','')
+			operation = true
+			this.setState({[newId] : value,[id] : value})
+	    }else{
+	    	if(this.state[id+'|upgrade']===false){
+				operation = true
+				this.setState({[id] : value})
+	    	}else{
+		    	swal('','This operation is not allowed. Please deselect the upgraded value.');
+	    	}
+	    }
+	    // console.log('operation',operation)
+	    if(operation){
+		    if(value===true){
+				var index = selectedBeneficiaries.findIndex(v => v.beneficiary_ID === id.split('|')[1])
+				if(index<0){
+				    selectedBeneficiaries.push({
+			    		_id     		    : id.split('|')[0],
+			    		beneficiary_ID      : id.split('|')[1],
+						beneficiaryID       : id.split('|')[2],
+			    		family_ID           : id.split('|')[3],
+						familyID            : id.split('|')[4],
+						nameofbeneficiaries : id.split('|')[5],
+						relation            : id.split('|')[6],
+						dist          	    : id.split('|')[7],
+						block               : id.split('|')[8],
+						village             : id.split('|')[9],
+						isUpgraded 			: id.split('|')[10]&&value?'Yes':id.split('|')[10]&&!value?'No':this.state[id+"|upgrade"]?'Yes':'No'
+			    	});
+			    	this.setState({
+			          selectedBeneficiaries : selectedBeneficiaries
+			        },()=>{
+			          this.props.getBeneficiaries(this.state.selectedBeneficiaries);
+			        });
+				}
 			}else{
-				var index = selectedBeneficiaries.findIndex(v => v.beneficiary_ID === id.split('|')[0]);
-		        selectedBeneficiaries.splice(selectedBeneficiaries.findIndex(v => v.beneficiary_ID === id.split('|')[0]), 1);
-		        this.setState({
-		          selectedBeneficiaries : selectedBeneficiaries
-		        },()=>{
-		          this.props.getBeneficiaries(this.state.selectedBeneficiaries);
-		        });
+				var index = selectedBeneficiaries.findIndex(v => v.beneficiary_ID === id.split('|')[1])
+				if(index>=0){
+			        selectedBeneficiaries.splice(selectedBeneficiaries.findIndex(v => v.beneficiary_ID === id.split('|')[1]), 1);
+			        this.setState({
+			          selectedBeneficiaries : selectedBeneficiaries
+			        },()=>{
+			          this.props.getBeneficiaries(this.state.selectedBeneficiaries);
+			        });
+				}
 			}
-	    });
+	    }
     }
 	render() {
         return (
