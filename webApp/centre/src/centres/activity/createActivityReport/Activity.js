@@ -1506,20 +1506,20 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">LHWRF</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                              <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.LHWRF)}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" value={this.numberWithCommas(this.state.LHWRF)}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.LHWRF}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">NABARD</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >                              
-                              <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD"  onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.NABARD)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD" value={this.numberWithCommas(this.state.NABARD)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.NABARD}</div>
                           </div><div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Bank Loan</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                              <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan"  onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.bankLoan)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan" value={this.numberWithCommas(this.state.bankLoan)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.bankLoan}</div>
                           </div>
@@ -1530,21 +1530,21 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Govt. Schemes</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                              <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.numberWithCommas(this.state.govtscheme)}  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.numberWithCommas(this.state.govtscheme)}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.govtscheme}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Direct Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                              <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.numberWithCommas(this.state.directCC)} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.numberWithCommas(this.state.directCC)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.directCC}</div>
                           </div>
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Indirect Community Contribution</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                              <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.numberWithCommas(this.state.indirectCC)} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.numberWithCommas(this.state.indirectCC)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.indirectCC}</div>
                           </div>
@@ -1555,7 +1555,7 @@ class Activity extends Component{
                           <div className=" col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Other</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
-                              <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.numberWithCommas(this.state.other)} onKeyDown={this.isNumberKey.bind(this)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                              <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.numberWithCommas(this.state.other)} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.other}</div>
                           </div>
