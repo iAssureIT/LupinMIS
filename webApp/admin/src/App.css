@@ -763,3 +763,4 @@ margin-right: 12px;
   .abc{
     
   }
+  .can-toggle.demo-rebrand-2 input[type=checkbox]:checked~label .can-toggle__switch:after{z-index: 1}

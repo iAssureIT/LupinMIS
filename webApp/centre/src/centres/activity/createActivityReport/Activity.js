@@ -470,7 +470,7 @@ class Activity extends Component{
           "selectedBeneficiaries" :[],
           "selectedValues"         : [],    
           "listofBeneficiaries": [],      
-          "subActivityDetails" : [],
+          "subActivityDetails" : '',
           // "availableSectors"   : [],
           // "availableActivity"  : [],
           // "availableSubActivity": [],
@@ -592,7 +592,7 @@ class Activity extends Component{
       "selectedBeneficiaries" :[],
       "selectedValues"         : [],    
       "listofBeneficiaries": [],      
-      "subActivityDetails" : [],
+      "subActivityDetails" : '',
       // "availableSectors"   : [],
       // "availableActivity"  : [],
       // "availableSubActivity": [],
@@ -1026,10 +1026,9 @@ class Activity extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-        
-        this.setState({
-          availableSectors : response.data
-        })
+      this.setState({
+        availableSectors : response.data
+      })
     }).catch(function (error) {
       // console.log('error', error);
     });
@@ -1040,7 +1039,9 @@ class Activity extends Component{
     var sector_ID = event.target.value.split('|')[1];
     this.setState({
       sector_ID          : sector_ID,
-      subActivityDetails : ""
+      activity           : '-- Select --',
+      subActivityDetails : "",
+      subactivity : "-- Select --",
     })
     this.handleChange(event);
     this.getAvailableActivity(sector_ID);
