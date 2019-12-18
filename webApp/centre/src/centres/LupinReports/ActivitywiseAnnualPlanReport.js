@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import $                    from 'jquery';
+// import $                    from 'jquery';
 import axios                from 'axios';
 import swal                 from 'sweetalert';
-import moment               from 'moment';
-import DailyReport          from '../Reports/DailyReport.js';
-import WeeklyReport         from '../Reports/WeeklyReport.js';
-import MonthlyReport        from '../Reports/MonthlyReport.js';
-import YearlyReport         from '../Reports/YearlyReport.js';
-import CustomisedReport     from '../Reports/CustomisedReport.js';
+// import moment               from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 
@@ -360,7 +355,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                        {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                       </div>  
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                      {/*<div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                         <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                           <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -371,7 +366,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                             
                           </select>
                         </div>
-                      </div>
+                      </div>*/}
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                         <label className="formLable">Project Category</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
@@ -407,8 +402,6 @@ class ActivitywiseAnnualPlanReport extends Component{
                         : 
                         ""
                         }    
-                    </div> 
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label className="formLable">Year</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
@@ -423,7 +416,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
                       </div>                     
-                    </div>  
+                    </div> 
                     <div className="marginTop11">
                     
                         <div className="">

@@ -1,10 +1,10 @@
 import React, { Component }   from 'react';
-import axios                  from 'axios';
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
-import swal                   from 'sweetalert';
-
 import 'react-table/react-table.css';
 import "./ListOfBeneficiaries.css";
+// import axios                  from 'axios';
+// import swal                   from 'sweetalert';
+
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import NewBeneficiary from "../addBeneficiary/NewBeneficiary.js";
 
 class ListOfBeneficiaries extends Component{

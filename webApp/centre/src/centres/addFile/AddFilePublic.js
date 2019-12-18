@@ -1,10 +1,10 @@
 import React, { Component }   from 'react';
-import $                      from 'jquery';
+// import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import S3FileUpload           from 'react-s3';
-import { deleteFile }         from 'react-s3';
-import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+// import { deleteFile }         from 'react-s3';
+// import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 
 import 'react-table/react-table.css';
 import "./AddFile.css";
@@ -22,7 +22,7 @@ class AddFile extends Component{
       "fileArray"         : props && props.fileArray ? props.fileArray : {},        
       "fileType"          : props && props.fileType ? props.fileType : {},        
       filenames            : [],
-      fileArray           : [],
+      // fileArray           : [],
     }
   }
   
@@ -81,7 +81,7 @@ class AddFile extends Component{
       if (newFile) {
       // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
-        if(ext=="jpg" || ext=="png" || ext=="jpeg" || ext=="JPG" || ext=="PNG" || ext=="JPEG"){ 
+        if(ext==="jpg" || ext==="png" || ext==="jpeg" || ext==="JPG" || ext==="PNG" || ext==="JPEG"){ 
           if (newFile) {
             S3FileUpload
               .uploadFile(newFile,this.state.config)
@@ -128,8 +128,8 @@ class AddFile extends Component{
       // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
 
-        if(ext=="DOC" || ext=="DOCX" || ext=="PDF" || ext=="XLS" || ext=="XLSX"  || ext=="PPT" || ext=="PPTX" || ext=="TXT"|| 
-          ext=="doc" || ext=="docx" || ext=="pdf" || ext=="xls" || ext=="xlsx" || ext=="ppt" || ext=="pptx" || ext=="txt"){ 
+        if(ext==="DOC" || ext==="DOCX" || ext==="PDF" || ext==="XLS" || ext==="XLSX"  || ext==="PPT" || ext==="PPTX" || ext==="TXT"|| 
+          ext==="doc" || ext==="docx" || ext==="pdf" || ext==="xls" || ext==="xlsx" || ext==="ppt" || ext==="pptx" || ext==="txt"){ 
           if (newFile) {
             S3FileUpload
               .uploadFile(newFile,this.state.config)
@@ -178,7 +178,7 @@ class AddFile extends Component{
     var filePath = e.target.getAttribute('data-id');
     var data = filePath.split("/");
     var imageName = data[4];
-    // console.log("imageName==",imageName);
+    // console.log("imageName===",imageName);
     if(index){
       swal({
         title: "Are you sure you want to delete this image?",
@@ -221,7 +221,7 @@ class AddFile extends Component{
                 method: configData.deleteMethod,
                 url   : configData.apiLink+id
             }).then((response)=> {
-                if(response.data=='workspace deleted'){
+                if(response.data==='workspace deleted'){
                   swal("Workspace deleted successfully");
                   this.props.history.push(configData.pageURL);
                   window.location.reload();
@@ -268,7 +268,7 @@ class AddFile extends Component{
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imgdetails">{this.state.fileType=== "Image" ? "(Max size: 1 Mb, Format: JPEG, PNG)" : "(Max size: 1 Mb, Format: DOC, PDF, XLS)"} </div>
             </div>
             {
-              this.state.fileArray==null?
+              this.state.fileArray===null?
               null
               :
               this.state.fileArray.map((data,index)=>{

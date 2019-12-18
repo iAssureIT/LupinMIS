@@ -564,7 +564,7 @@ class centerDetail extends Component{
     // console.log('/api/centers/list/'+startRange+'/'+limitRange);
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
-    // console.log('response', response.data);
+    console.log('response', response.data);
     var tableData = response.data.map((a, i)=>{
     return {
       _id                       : a._id,

@@ -3,11 +3,6 @@ import $                    from 'jquery';
 import axios                from 'axios';
 import swal                 from 'sweetalert';
 import moment               from 'moment';
-import DailyReport          from '../Reports/DailyReport.js';
-import WeeklyReport         from '../Reports/WeeklyReport.js';
-import MonthlyReport        from '../Reports/MonthlyReport.js';
-import YearlyReport         from '../Reports/YearlyReport.js';
-import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 class UpgradedBeneficiaryReport extends Component{
@@ -36,14 +31,14 @@ class UpgradedBeneficiaryReport extends Component{
                     heading : 'Sector Details',
                     mergedColoums : 6
                 },
-                {
-                    heading : 'Cost Sharing "Rs"',
-                    mergedColoums : 7
-                },
-                {
-                    heading : '',
-                    mergedColoums : 1
-                },
+                // {
+                //     heading : 'Cost Sharing "Rs"',
+                //     mergedColoums : 7
+                // },
+                // {
+                //     heading : '',
+                //     mergedColoums : 1
+                // },
                
             ]
         },
@@ -59,14 +54,14 @@ class UpgradedBeneficiaryReport extends Component{
             "date"               : 'Date Of Intervention',
             "unit"               : 'Unit',
             "quantity"           : 'Quantity',    
-            "LHWRF"              : 'LHWRF',
-            "NABARD"             : 'NABARD',
-            "bankLoan"           : 'Bank Loan',
-            "directCC"           : 'Direct Community  Contribution',
-            "indirectCC"         : 'Indirect Community  Contribution',
-            "govtscheme"         : 'Govt',
-            "other"              : 'Others',
-            "total"              : 'Total "Rs"',
+            // "LHWRF"              : 'LHWRF',
+            // "NABARD"             : 'NABARD',
+            // "bankLoan"           : 'Bank Loan',
+            // "directCC"           : 'Direct Community  Contribution',
+            // "indirectCC"         : 'Indirect Community  Contribution',
+            // "govtscheme"         : 'Govt',
+            // "other"              : 'Others',
+            // "total"              : 'Total "Rs"',
         },        
         "tableObjects"        : {
           paginationApply     : false,
@@ -262,7 +257,7 @@ class UpgradedBeneficiaryReport extends Component{
           data.map((a, i)=>{
             axios.get('/api/beneficiaries/'+a.beneficiaryID)
             .then((response)=>{
-              // console.log('response',response)
+              console.log('response',response)
               tableData.push({
                 _id             : a._id,            
                 district        : a.district,

@@ -176,12 +176,6 @@ class Family extends Component{
             }
           }
         });
-
-
-  
-   
-
-
   }
  
   handleChange(event){
