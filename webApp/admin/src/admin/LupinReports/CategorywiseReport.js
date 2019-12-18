@@ -489,7 +489,7 @@ class CategorywiseReport extends Component{
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                       </div>
                       <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                        <label className="formLable">District</label><span className="asterix">*</span>
+                        <label className="formLable">District</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                           <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
                             <option  className="hidden" >--select--</option>
@@ -512,7 +512,7 @@ class CategorywiseReport extends Component{
                         {/*<div className="errorMsg">{this.state.errors.district}</div>*/}
                       </div>
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                          <label className="formLable">Select Beneficiary</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                             <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
                               <option  className="hidden" >--Select--</option>
@@ -524,7 +524,7 @@ class CategorywiseReport extends Component{
                           </div>
                       </div> 
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Project Category</label><span className="asterix">*</span>
+                          <label className="formLable">Project Category</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                             <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
                               <option  className="hidden" >--Select--</option>
@@ -540,7 +540,7 @@ class CategorywiseReport extends Component{
                         {
                             this.state.projectCategoryType === "Project Fund" ?
                             <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Project Name</label><span className="asterix">*</span>
+                              <label className="formLable">Project Name</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
                                 <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
                                   <option  className="hidden" >--Select--</option>

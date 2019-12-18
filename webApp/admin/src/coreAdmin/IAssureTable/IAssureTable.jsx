@@ -585,13 +585,13 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
+	                            <th className="umDynamicHeader srpadd text-center">Sr.No.</th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
 													if(key === 'actions'){
 														return(
-															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value}</th>
+															<th key={i} className="umDynamicHeader srpadd text-center">{value}</th>
 														);	
 													}else{
 														return(

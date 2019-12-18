@@ -598,7 +598,7 @@ class GeographicalReport extends Component{
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                       </div>
                       <div className=" col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
-                        <label className="formLable">Sector</label><span className="asterix">*</span>
+                        <label className="formLable">Sector</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
                             <option  className="hidden" >--Select Sector--</option>
@@ -618,7 +618,7 @@ class GeographicalReport extends Component{
                        {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                       </div>
                       <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                        <label className="formLable">District</label><span className="asterix">*</span>
+                        <label className="formLable">District</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                           <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
                            {/* <option  className="hidden" >--select--</option>*/}
@@ -652,7 +652,7 @@ class GeographicalReport extends Component{
                         {/*<div className="errorMsg">{this.state.errors.district}</div>*/}
                       </div>
                       <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                        <label className="formLable">Block</label><span className="asterix">*</span>
+                        <label className="formLable">Block</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                           <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
                            {/* <option  className="hidden" >-- Select --</option>*/}
@@ -675,7 +675,7 @@ class GeographicalReport extends Component{
                     <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box  ">                        
                       
                       <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                        <label className="formLable">Village</label><span className="asterix">*</span>
+                        <label className="formLable">Village</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                           <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
                             {/* <option  className="hidden" >-- Select --</option>*/}
@@ -695,7 +695,7 @@ class GeographicalReport extends Component{
                         {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
                       </div>
                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                            <label className="formLable">Select Beneficiary</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                               <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
                                 <option  className="hidden" >--Select--</option>
@@ -707,7 +707,7 @@ class GeographicalReport extends Component{
                             </div>
                         </div> 
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Project Category</label><span className="asterix">*</span>
+                            <label className="formLable">Project Category</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                               <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
                                 <option  className="hidden" >--Select--</option>
@@ -722,7 +722,7 @@ class GeographicalReport extends Component{
                             this.state.projectCategoryType === "Project Fund" ?
 
                             <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Project Name</label><span className="asterix">*</span>
+                              <label className="formLable">Project Name</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
                                 <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
                                   <option  className="hidden" >--Select--</option>
