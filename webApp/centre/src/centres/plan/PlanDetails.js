@@ -348,7 +348,11 @@ class PlanDetails extends Component{
             .then((response)=>{
               // console.log("response",response);
               if (response.status === 200 ) {
-                swal("Plan created successfully");
+                swal({
+                  title : response.data.message,
+                  text  : response.data.message
+                });
+                // swal("Plan created successfully");
               }
               if(this.state.month ==='Annual'){
                 var email = localStorage.getItem('email')

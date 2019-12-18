@@ -32,28 +32,29 @@ class UpgradedBeneficiaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Beneficiary Details',
-                    mergedColoums : 5
+                    mergedColoums : 7
                 }, 
                 {
                     heading : 'Sector Details',
                     mergedColoums : 6
                 },
-                {
-                    heading : 'Cost Sharing "Rs"',
-                    mergedColoums : 7
-                },
-                {
-                    heading : '',
-                    mergedColoums : 1
-                },
-               
+                // {
+                //     heading : 'Cost Sharing "Rs"',
+                //     mergedColoums : 7
+                // },
+                // {
+                //     heading : '',
+                //     mergedColoums : 1
+                // },               
             ]
         },
         "tableHeading"      : {
             "district"           : 'District',
             "block"              : 'Block',
             "village"            : 'Village',
-            "beneficiaryID"      : 'Name of Beneficiary',
+            "familyID"           : 'Family ID',
+            "beneficiaryID"      : 'Beneficiary ID',
+            "namebeneficiary"    : 'Name of Beneficiary',
             // "activityName"    : 'Project',
             "sectorName"         : 'Sector',
             "activityName"       : 'Activity',
@@ -61,14 +62,14 @@ class UpgradedBeneficiaryReport extends Component{
             "date"               : 'Date Of Intervention',
             "unit"               : 'Unit',
             "quantity"           : 'Quantity',    
-            "LHWRF"              : 'LHWRF',
-            "NABARD"             : 'NABARD',
-            "bankLoan"           : 'Bank Loan',
-            "directCC"           : 'Direct Community  Contribution',
-            "indirectCC"         : 'Indirect Community  Contribution',
-            "govtscheme"         : 'Govt',
-            "other"              : 'Others',
-            "total"              : 'Total "Rs"',
+            // "LHWRF"              : 'LHWRF',
+            // "NABARD"             : 'NABARD',
+            // "bankLoan"           : 'Bank Loan',
+            // "directCC"           : 'Direct Community  Contribution',
+            // "indirectCC"         : 'Indirect Community  Contribution',
+            // "govtscheme"         : 'Govt',
+            // "other"              : 'Others',
+            // "total"              : 'Total "Rs"',
         },        
         "tableObjects"        : {
           paginationApply     : false,
@@ -141,6 +142,7 @@ class UpgradedBeneficiaryReport extends Component{
   }
   selectCenter(event){
     var selectedCenter = event.target.value;
+    console.log("selectedCenter",selectedCenter);
     this.setState({
       [event.target.name] : event.target.value,
       selectedCenter : selectedCenter,
@@ -346,139 +348,68 @@ class UpgradedBeneficiaryReport extends Component{
       if(startDate && endDate && selectedDistrict && projectCategoryType  && beneficiaryType){
         if(center_ID==="all"){
           if(selectedDistrict==="all"){
-            axios.get('/api/report/upgraded/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)    
-            .then((response)=>{
-              console.log("resp",response);
-                var tableData = response.data.map((a, i)=>{
-                return {
-                  _id             : a._id,            
-                  district        : a.district,
-                  block           : a.block,
-                  village         : a.village,
-                  beneficiaryID   : a.beneficiaryID,
-                  sectorName      : a.sectorName,
-                  activityName    : a.activityName,
-                  subactivityName : a.subactivityName,
-                  date            : a.date,
-                  unit            : a.unit,
-                  quantity        : a.quantity,
-                  unitCost        : a.unitCost,
-                  totalcost       : a.totalcost,
-                  LHWRF           : a.LHWRF,
-                  NABARD          : a.NABARD,
-                  bankLoan        : a.bankLoan,
-                  govtscheme      : a.govtscheme,
-                  directCC        : a.directCC,
-                  indirectCC      : a.indirectCC,
-                  other           : a.other,
-                  total           : a.total,
-                }
-              })
-              this.setState({
-                tableData : tableData
-              },()=>{
-                // console.log("resp",this.state.tableData)
-              })
-            })
-            .catch(function(error){  
-              // console.log("error = ",error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
-            });
+          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
           }else{
-            axios.get('/api/report/upgraded/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-            .then((response)=>{
-              console.log("resp",response);
-                var tableData = response.data.map((a, i)=>{
-                return {
-                  _id             : a._id,            
-                  district        : a.district,
-                  block           : a.block,
-                  village         : a.village,
-                  beneficiaryID   : a.beneficiaryID,
-                  sectorName      : a.sectorName,
-                  activityName    : a.activityName,
-                  subactivityName : a.subactivityName,
-                  date            : a.date,
-                  unit            : a.unit,
-                  quantity        : a.quantity,
-                  unitCost        : a.unitCost,
-                  totalcost       : a.totalcost,
-                  LHWRF           : a.LHWRF,
-                  NABARD          : a.NABARD,
-                  bankLoan        : a.bankLoan,
-                  govtscheme      : a.govtscheme,
-                  directCC        : a.directCC,
-                  indirectCC      : a.indirectCC,
-                  other           : a.other,
-                  total           : a.total,
-                }
-              })
-              this.setState({
-                tableData : tableData
-              },()=>{
-                // console.log("resp",this.state.tableData)
-              })
-            })
-            .catch(function(error){  
-              // console.log("error = ",error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
-            });
+          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
           }
         }else{
-          axios.get('/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-            .then((response)=>{
-              console.log("resp",response);
-                var tableData = response.data.map((a, i)=>{
-                return {
-                  _id             : a._id,            
-                  district        : a.district,
-                  block           : a.block,
-                  village         : a.village,
-                  beneficiaryID   : a.beneficiaryID,
-                  sectorName      : a.sectorName,
-                  activityName    : a.activityName,
-                  subactivityName : a.subactivityName,
-                  date            : a.date,
-                  unit            : a.unit,
-                  quantity        : a.quantity,
-                  unitCost        : a.unitCost,
-                  totalcost       : a.totalcost,
-                  LHWRF           : a.LHWRF,
-                  NABARD          : a.NABARD,
-                  bankLoan        : a.bankLoan,
-                  govtscheme      : a.govtscheme,
-                  directCC        : a.directCC,
-                  indirectCC      : a.indirectCC,
-                  other           : a.other,
-                  total           : a.total,
-                }
-              })
-              this.setState({
-                tableData : tableData
-              },()=>{
-                // console.log("resp",this.state.tableData)
-              })
-            })
-            .catch(function(error){  
-              // console.log("error = ",error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
-            });
+          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
         }
+      axios.get(url)
+        .then((response)=>{
+          console.log("resp",response);
+          var data = response.data
+          var tableData = [];
+          data.map((a, i)=>{
+
+            axios.get('/api/beneficiaries/'+a.beneficiaryID)
+            .then((response)=>{
+              // console.log('response',response)
+              tableData.push({
+                _id             : a._id,            
+                district        : a.district,
+                block           : a.block,
+                village         : a.village,
+                familyID        : response.data[0].familyID,
+                beneficiaryID   : response.data[0].beneficiaryID,
+                namebeneficiary : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
+                sectorName      : a.sectorName,
+                activityName    : a.activityName,
+                subactivityName : a.subactivityName,
+                // unitCost        : a.unitCost,
+                // totalcost       : a.totalcost,
+                date            : a.date,
+                unit            : a.unit,
+                quantity        : a.quantity,
+                LHWRF           : a.LHWRF,
+                NABARD          : a.NABARD,
+                bankLoan        : a.bankLoan,
+                directCC        : a.directCC,
+                indirectCC      : a.indirectCC,
+                govtscheme      : a.govtscheme,
+                other           : a.other,
+                total           : a.total,
+              })
+              if(data.length===(i+1)){
+                this.setState({
+                  tableData : tableData
+                })
+              }
+            })
+            .catch(function(error){ 
+              console.log("error = ",error);
+            });
+          })
+        })
+        .catch(function(error){  
+          // console.log("error = ",error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+              title : "abc",
+              text  : "Session is Expired. Kindly Sign In again."
+            });
+          }
+        });
       }
     }
   }
