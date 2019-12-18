@@ -226,6 +226,7 @@ class UMListOfUsers extends Component {
 					      var response = await updateStatus(formValues)
 					      if(response){
 					        var user = await getUserDetails(selectedId)
+					        return Promise.resolve(true);
 					        if(user){
 					            var msgvariable = {
 					                '[User]'    : user.data.profile.fullName,
@@ -282,6 +283,7 @@ class UMListOfUsers extends Component {
 					      var response = await updateStatus(formValues)
 					      if(response){
 					        var user = await getUserDetails(selectedId)
+					        return Promise.resolve(true);
 					        if(user){
 					            var currentUrl = window.location.hostname
 					            var url = currentUrl==='localhost'?'http://localhost:3001/':currentUrl==='qalmiscentre.iassureit.com'?'http://qalmiscentre.iassureit.com/':'http://uatlmiscenter.iassureit.com/'

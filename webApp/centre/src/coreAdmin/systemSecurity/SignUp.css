@@ -1197,28 +1197,16 @@ input[type="radio"]:checked:before {
       z-index: 0 !important;
 }
 
-.showPwd{
+.showPwd,.showPwdConf{
   display: block;
 }
-.hidePwd{
+.hidePwd,.hidePwdConf{
   display: none;
 }
 .showPwd1{
   display: none;
 }
 .hidePwd1{
-  display: block;
-}
-.showPwdC{
-  display: block;
-}
-.hidePwdC{
-  display: none;
-}
-.showPwd1C{
-  display: none;
-}
-.hidePwd1C{
   display: block;
 }
 

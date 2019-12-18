@@ -81,7 +81,7 @@ class SignUp extends Component {
 		            centerName		: this.refs.centerName.value.split('|')[0],
 		            center_ID		: this.refs.centerName.value.split('|')[1],
 		        }
-				console.log("-------auth------>>",auth);
+				// console.log("-------auth------>>",auth);
 
 		        document.getElementById("signUpBtn").value = 'We are processing. Please Wait...';            
 		            
@@ -96,7 +96,7 @@ class SignUp extends Component {
 		        if (passwordVar === signupConfirmPasswordVar) {
 		            return (passwordVar.length >= 6) ? 
 		            	(true, 
-		            	 console.log("formValues= ",auth),
+		            	 // console.log("formValues= ",auth),
 			             document.getElementById("signUpBtn").value = 'Sign Up',
 		  				// browserHistory.push("/"),
 		            	axios
@@ -113,6 +113,12 @@ class SignUp extends Component {
 		                                templateName : 'User - Signup Notification',
 		                                variables    : msgvariable,
 		                            }
+		                            this.setState({
+	     	    						buttonValue : 'Sign Up'
+				            		},()=>{
+					            		swal("success","Information submitted successfully ");
+						                this.props.history.push("/login");
+				            		})
 		                //             axios
 			               //  	 	.post('/api/masternotification/send-mail',inputObj)
 						            // .then((response)=> {
@@ -312,6 +318,16 @@ class SignUp extends Component {
         $('.hidePwd').toggleClass('hidePwd1');
         return $('.inputTextPass').attr('type', 'password');
     }
+    showSignPass1(){
+        $('.showPwdConf').toggleClass('showPwd1');
+        $('.hidePwdConf').toggleClass('hidePwd1');
+        return $('.inputTextPassConf').attr('type', 'text');
+    }
+    hideSignPass1(){
+        $('.showPwdConf').toggleClass('showPwd1');
+        $('.hidePwdConf').toggleClass('hidePwd1');
+        return $('.inputTextPassConf').attr('type', 'password');
+    }
 
 	getCenters(){
 	    axios({
@@ -479,12 +495,12 @@ class SignUp extends Component {
 							   		<div className="input-group textpdEye fltlft col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
 							   			
 					                     <span className="blocking-span noIb" id="signupConfirmPasswordErr">
-						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPass tmsLoginTextBox" ref="signupConfirmPassword" name="signupConfirmPassword" required/>
+						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPassConf tmsLoginTextBox" ref="signupConfirmPassword" name="signupConfirmPassword" required/>
 						                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Confirm Password<label className="sign asterix">*</label></span>                 
 						                  </span>
 						                <div className="showHideSignDiv">
-						                  <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
-						                  <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
+						                  <i className="fa fa-eye showPwdConf showEyeupSign" aria-hidden="true" onClick={this.showSignPass1.bind(this)}></i>
+						                  <i className="fa fa-eye-slash hidePwdConf hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass1.bind(this)}></i>
 						                </div> 
 						                  <span className="focus-border">
 						                    <i></i>

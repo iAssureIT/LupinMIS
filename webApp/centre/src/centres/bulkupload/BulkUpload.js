@@ -54,6 +54,11 @@ class BulkUpload extends Component{
         	if (response) {
             console.log("response",response);
             if(this.props.data.month==='Annual'){
+              swal({
+                title : response.data.message,
+                text  : response.data.message
+              });
+              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
               var email = localStorage.getItem('email')
               var msgvariable = {
                 '[User]'    : localStorage.getItem('fullName'),
@@ -79,6 +84,11 @@ class BulkUpload extends Component{
               //     console.log(error);
               // })
             }else{
+              swal({
+                title : response.data.message,
+                text  : response.data.message
+              });
+              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
               var email = localStorage.getItem('email')
               var msgvariable = {
                 '[User]'    : localStorage.getItem('fullName'),
