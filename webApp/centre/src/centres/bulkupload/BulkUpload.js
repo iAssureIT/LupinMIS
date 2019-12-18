@@ -65,19 +65,19 @@ class BulkUpload extends Component{
                 templateName : 'User - Annual Plan Submitted',
                 variables    : msgvariable,
               }
-              axios
-              .post('/api/masternotification/send-mail',inputObj)
-              .then((response)=> {
-                // console.log("-------mail------>>",response);
-                swal({
-                  title : response.data.message,
-                  text  : response.data.message
-                });
-                this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-              })
-              .catch(function (error) {
-                  console.log(error);
-              })
+              // axios
+              // .post('/api/masternotification/send-mail',inputObj)
+              // .then((response)=> {
+              //   // console.log("-------mail------>>",response);
+              //   swal({
+              //     title : response.data.message,
+              //     text  : response.data.message
+              //   });
+              //   this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+              // })
+              // .catch(function (error) {
+              //     console.log(error);
+              // })
             }else{
               var email = localStorage.getItem('email')
               var msgvariable = {
@@ -91,19 +91,19 @@ class BulkUpload extends Component{
                 templateName : 'User - Monthly Plan Submitted',
                 variables    : msgvariable,
               }
-              axios
-              .post('/api/masternotification/send-mail',inputObj)
-              .then((response)=> {
-                // console.log("-------mail------>>",response);
-                swal({
-                  title : response.data.message,
-                  text  : response.data.message
-                });
-                this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-              })
-              .catch(function (error) {
-                  console.log(error);
-              })
+              // axios
+              // .post('/api/masternotification/send-mail',inputObj)
+              // .then((response)=> {
+              //   // console.log("-------mail------>>",response);
+              //   swal({
+              //     title : response.data.message,
+              //     text  : response.data.message
+              //   });
+              //   this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+              // })
+              // .catch(function (error) {
+              //     console.log(error);
+              // })
             }
             if (response.data.uploadedData) {
               this.props.uploadedData(response.data.uploadedData);

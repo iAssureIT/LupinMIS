@@ -237,7 +237,8 @@ class UMListOfUsers extends Component {
 					                templateName : 'User - Login Account Blocked',
 					                variables    : msgvariable,
 					            }
-					        	var mail = await sendMail(inputObj)
+					        	// var mail = await sendMail(inputObj)
+					        	var mail = ''
 					        	if(mail){
 					        		count++
 					                if(count===checkedUsersList.length){
@@ -295,7 +296,8 @@ class UMListOfUsers extends Component {
 					                templateName : 'User - Login Account Activation',
 					                variables    : msgvariable,
 					            }
-					            var mail = await sendMail(inputObj)
+					            // var mail = await sendMail(inputObj)
+					            var mail = ''
 					            if(mail){
 					                count++
 					                if(count===checkedUsersList.length){

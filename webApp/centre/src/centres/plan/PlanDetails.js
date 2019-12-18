@@ -362,15 +362,15 @@ class PlanDetails extends Component{
                   templateName : 'User - Annual Plan Submitted',
                   variables    : msgvariable,
                 }
-                axios
-                .post('/api/masternotification/send-mail',inputObj)
-                .then((response)=> {
-                  // console.log("-------mail------>>",response);
+                // axios
+                // .post('/api/masternotification/send-mail',inputObj)
+                // .then((response)=> {
+                //   // console.log("-------mail------>>",response);
                   
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+                // })
+                // .catch(function (error) {
+                //     console.log(error);
+                // })
                   this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
               }else{
                 var email = localStorage.getItem('email')
@@ -385,15 +385,15 @@ class PlanDetails extends Component{
                   templateName : 'User - Monthly Plan Submitted',
                   variables    : msgvariable,
                 }
-                axios
-                .post('/api/masternotification/send-mail',inputObj)
-                .then((response)=> {
-                  // console.log("-------mail------>>",response);
+                // axios
+                // .post('/api/masternotification/send-mail',inputObj)
+                // .then((response)=> {
+                //   // console.log("-------mail------>>",response);
                   
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+                // })
+                // .catch(function (error) {
+                //     console.log(error);
+                // })
                   this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
               }
             })
