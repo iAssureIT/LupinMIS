@@ -131,14 +131,21 @@
 
 
 .box2{
-    height: 305px;
+   /* height: 305px;
     background-color: #ffffff;
     border: 1px solid #eee;
      -webkit-box-shadow: 0 0 10px #eee; 
     box-shadow: 0 0 10px #eee;  
     border-radius: 5px;
-    
-}
+    */
+    position: relative;
+    border-radius: 3px;
+    background: #ffffff;
+    border-top: 3px solid #039BE5;
+    margin-bottom: 20px;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+} 
 .horibox{
     height: 420px;
     background-color: #ffffff;

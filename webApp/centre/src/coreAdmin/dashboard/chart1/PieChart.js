@@ -33,7 +33,7 @@ export default class PieChart extends Component {
         data: [],
         backgroundColor: [] ,
         hoverBackgroundColor: []
-        }]
+        }],
       }
     }
   }
@@ -61,7 +61,7 @@ export default class PieChart extends Component {
   render() {
     return (
       <div>
-        <Pie data={this.state.data} />
+        <Pie height={120} data={this.state.data}  options={{ legend: {display: false} }}  />
       </div>
     );
   }
