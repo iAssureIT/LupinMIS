@@ -68,6 +68,11 @@ logout(){
       console.log("Header Token = ",token);
       this.setState({
         loggedIn : false
+      },()=>{
+        localStorage.removeItem("emailId");
+        localStorage.removeItem("center_ID");
+        localStorage.removeItem("centerName");
+        localStorage.removeItem("fullName");
       })
       // browserHistory.push("/login");
       // this.props.history.push("/login");
@@ -121,10 +126,10 @@ logout(){
                         </div>
                         <hr className="borderline marTop"/>
                         <div className="logoutDiv marTop">
-                          <span className="pull-left">
-                            <a  className=" profileTitle btnpadd " >
+                          {/*<span className="pull-left">
+                            <a  className=" profileTitle btnpadd" href="/#">
                              <button type="button" className="profilebtn btn">Profile</button></a>
-                          </span>
+                          </span>*/}
                           <span className="pull-right">
                             <a  className="profileTitle btnpadd" href="/login">
                             {/* <button type="button" className="profilebtn">Logout</button>*/}
