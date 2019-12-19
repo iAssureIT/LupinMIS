@@ -134,7 +134,102 @@ class UMListOfUsers extends Component {
 		// return  Meteor.roles.find({"name":{ $nin: ["superAdmin"] }}).fetch();
 	}
 
-	
+	activeSelected(checkedUsersList){
+		function updateStatus(formValues){
+			  return new Promise(function(resolve,reject){
+			    axios
+			    .post('/api/users/statusaction',formValues)
+			    .then((response)=> {
+	            	console.log("-------action------>>",response);  
+			        resolve(response);
+			    })
+			    .catch(function (error) {
+			        console.log(error);
+			    })
+			  })
+			}
+			function getUserDetails(selectedId){
+              return new Promise(function(resolve,reject){
+                axios
+        	 	.get('/api/users/'+selectedId)
+	            .then((response)=> {
+	            	console.log("-------user------>>",response);  
+	            	resolve(response);
+	        	})
+	            .catch(function (error) {
+	                console.log(error);
+	            })
+              })
+            }
+            function sendMail(inputObj){
+			  return new Promise(function(resolve,reject){
+			    axios
+			    .post('/api/masternotification/send-mail',inputObj)
+			    .then((response)=> {
+			        console.log("-------mail------>>",response);
+			        resolve(response);
+			    })
+			    .catch(function (error) {
+			        console.log(error);
+			    })
+			  })
+			}
+		mainActive().then(response => {
+					    if(response){
+					        this.setState({
+					            activeswal : true,
+					            checkedUser : [],
+					            unCheckedUser : true
+					        },()=>{
+								$('#userListDropdownId').removeAttr('disabled')
+					            this.refs.userListDropdown.value = '-'
+					            this.getData(this.state.startRange,this.state.limitRange)
+					            checkedUsersList = [];
+					            if(this.state.activeswal == true)
+					            {
+					             swal("abc","Account activated successfully");
+					            }
+					        }); 
+					    }
+					});
+					async function mainActive(){
+					    var count = 0
+					    for(var i=0;i<checkedUsersList.length;i++){
+					        var selectedId = checkedUsersList[i];
+					        var formValues ={
+					            userID : selectedId,
+					            status : 'Active',
+					        }
+
+					      var response = await updateStatus(formValues)
+					      if(response){
+					        var user = await getUserDetails(selectedId)
+					        if(user){
+					            var currentUrl = window.location.hostname
+					            var url = currentUrl==='localhost'?'http://localhost:3001/':currentUrl==='qalmiscentre.iassureit.com'?'http://qalmiscentre.iassureit.com/':'http://uatlmiscenter.iassureit.com/'
+					            var msgvariable = {
+					                '[User]'    : user.data.profile.fullName,
+					                '[user_email_id]' : user.data.profile.emailId,
+					                '[center_application_URL]' : url
+					            }
+					            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+					            var inputObj = {  
+					                to           : user.data.profile.emailId,
+					                templateName : 'User - Login Account Activation',
+					                variables    : msgvariable,
+					            }
+					            var mail = await sendMail(inputObj)
+					            if(mail){
+					                count++
+					                if(count===checkedUsersList.length){
+					                    return Promise.resolve(true);
+					                }
+					            }
+					        }
+					      }
+					    }
+					}
+	}
 	adminUserActions(event){
 		event.preventDefault();
 		$('#userListDropdownId').attr('disabled','true')
@@ -226,7 +321,6 @@ class UMListOfUsers extends Component {
 					      var response = await updateStatus(formValues)
 					      if(response){
 					        var user = await getUserDetails(selectedId)
-					        // return Promise.resolve(true);
 					        if(user){
 					            var msgvariable = {
 					                '[User]'    : user.data.profile.fullName,
@@ -239,7 +333,6 @@ class UMListOfUsers extends Component {
 					                variables    : msgvariable,
 					            }
 					        	var mail = await sendMail(inputObj)
-					        	// var mail = ''
 					        	if(mail){
 					        		count++
 					                if(count===checkedUsersList.length){
@@ -253,63 +346,7 @@ class UMListOfUsers extends Component {
 				break;
 
 				case 'active_selected':
-				    mainActive().then(response => {
-					    if(response){
-					        this.setState({
-					            activeswal : true,
-					            checkedUser : [],
-					            unCheckedUser : true
-					        },()=>{
-								$('#userListDropdownId').removeAttr('disabled')
-					            this.refs.userListDropdown.value = '-'
-					            this.getData(this.state.startRange,this.state.limitRange)
-					            checkedUsersList = [];
-					            if(this.state.activeswal == true)
-					            {
-					             swal("abc","Account activated successfully");
-					            }
-					        }); 
-					    }
-					});
-					async function mainActive(){
-					    var count = 0
-					    for(var i=0;i<checkedUsersList.length;i++){
-					        var selectedId = checkedUsersList[i];
-					        var formValues ={
-					            userID : selectedId,
-					            status : 'Active',
-					        }
-
-					      var response = await updateStatus(formValues)
-					      if(response){
-					        var user = await getUserDetails(selectedId)
-					        // return Promise.resolve(true);
-					        if(user){
-					            var currentUrl = window.location.hostname
-					            var url = currentUrl==='localhost'?'http://localhost:3001/':currentUrl==='qalmiscentre.iassureit.com'?'http://qalmiscentre.iassureit.com/':'http://uatlmiscenter.iassureit.com/'
-					            var msgvariable = {
-					                '[User]'    : user.data.profile.fullName,
-					                '[user_email_id]' : user.data.profile.emailId,
-					                '[center_application_URL]' : url
-					            }
-					            // console.log("msgvariable :"+JSON.stringify(msgvariable));
-					            var inputObj = {  
-					                to           : user.data.profile.emailId,
-					                templateName : 'User - Login Account Activation',
-					                variables    : msgvariable,
-					            }
-					            var mail = await sendMail(inputObj)
-					            // var mail = ''
-					            if(mail){
-					                count++
-					                if(count===checkedUsersList.length){
-					                    return Promise.resolve(true);
-					                }
-					            }
-					        }
-					      }
-					    }
-					}  
+				    this.activeSelected(checkedUsersList)  
 				break;
 
 				case 'cancel_selected':
