@@ -2136,9 +2136,9 @@ a.article, a.article:hover {
     clear: both;
   }
   .box-header {
-    color: #444;
+   color: #444;
     display: block;
-    padding: 0px 20px;
+    padding: 10px; 
     position: relative;
     /*padding-left: 28px;*/
   }
@@ -2153,10 +2153,10 @@ a.article, a.article:hover {
   .box-header > .ion,
   .box-header .box-title {
     display: inline-block;
-    /*font-size: 18px;*/
+    font-size: 17px;
     margin: 0;
     line-height: 1;
-    font-weight: 600;
+    /*font-weight: 600;*/
   }
   .box-header .box-title{
     text-align: center;

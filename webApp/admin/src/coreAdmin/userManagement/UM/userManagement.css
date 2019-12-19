@@ -3906,10 +3906,10 @@ right: 15px;
 .box-header {
   color: #444;
   display: block;
-  padding: 5px 30px;
+  /*padding: 5px 30px;*/
+  padding: 10px;
   position: relative;
 }
-
 .collapsed-box .box-header.with-border {
   border-bottom: none;
 }
@@ -3918,10 +3918,10 @@ right: 15px;
 .box-header > .ion,
 .box-header .box-title {
   display: inline-block;
-  /*font-size: 18px;*/
+  font-size: 17px;
   margin: 0;
   line-height: 1;
-  font-weight: 600;
+  /*font-weight: 600;*/
 }
 .box-header .box-title{
   text-align: center;
@@ -3996,7 +3996,7 @@ right: 15px;
 }
 .box-header.with-border {
   border-bottom: 1px solid #f4f4f4;
-  margin-top: 50px;
+  /*margin-top: 50px;*/
 }
 
 .cursorpointer{

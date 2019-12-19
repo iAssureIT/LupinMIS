@@ -57,12 +57,12 @@ class Login extends Component {
         roles       : 'MIS Coordinator'
       }
 
-      console.log("auth value",auth);
+      // console.log("auth value",auth);
 
       axios
       .post('/api/users/login',auth)
       .then((response)=> {
-        console.log("-------userData------>>",response);
+        // console.log("-------userData------>>",response);
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token;
 
       

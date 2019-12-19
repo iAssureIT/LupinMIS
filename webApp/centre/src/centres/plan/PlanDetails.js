@@ -731,7 +731,9 @@ class PlanDetails extends Component{
     }).then((response)=> {
       
         this.setState({
-          availableActivity : response.data[0].activity
+          availableActivity : response.data[0].activity,
+          activityName      : "-- Select --",
+          availableSubActivity : []
         },()=>{
           // console.log("availableActivity=",this.state.availableActivity);
         })
@@ -748,22 +750,28 @@ class PlanDetails extends Component{
   }
   
   getAvailableSubActivity(sector_ID, activity_ID){
-    axios({
-      method: 'get',
-      url: '/api/sectors/'+sector_ID,
-    }).then((response)=> {
+
+    var data={
+      "sector_ID"   : sector_ID,
+      "activity_ID" : activity_ID,
+      "planFor"     : this.state.month === "Annual Plan" ? "Annual" : "Monthly",
+      "month"       : this.state.month,
+      "year"        : this.state.year
+    }
+    axios.post('/api/sectors/activity',data)
+    .then((response)=> {
       // console.log("response.data",response.data);
-        var availableSubActivity = _.flatten(response.data.map((a, i)=>{
-            return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] 
-          });
-        }))
-        var newavailableSubActivity = availableSubActivity.map((data,index)=>{
+        // var availableSubActivity = _.flatten(response.data.map((a, i)=>{
+        //     return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] 
+        //   });
+        // }))
+        var newavailableSubActivity = response.data.map((data,index)=>{
           data.physicalUnit = 0;
           data.unitCost     = 0;
           data.LHWRF        = 0;
           data.NABARD       = 0;
           data.bankLoan     = 0;
-          data.govtscheme   = 0;
+          data.govtscheme   = 0; 
           data.directCC     = 0;
           data.indirectCC   = 0;
           data.other        = 0;
@@ -976,7 +984,7 @@ class PlanDetails extends Component{
                                                 <label className="formLable">Physical Units</label>
                                                 <div className="input-group inputBox-main " id={"physicalUnit-"+index} >
                                                   <input type="number" min="0" className="form-control inputBox nameParts" name={"physicalUnit-"+index} placeholder="" value={data.physicalUnit} onChange={this.handlesubactivityChange}/>
-                                                  <span className="input-group-addon inputAddonforphysicalunit">{data.unit}</span>
+                                                  <span className="input-group-addon inputAddonforphysicalunit" title={data.unit}>{data.unit.length>8?data.unit.substr(0,5)+'...':data.unit}</span>
                                                 </div>{/*{console.log("state",this.state)}*/}
                                               </div>
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
@@ -1082,10 +1090,10 @@ class PlanDetails extends Component{
                                     </div>
                                   );
                                 }else{
-                                  return <label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity  </label>
+                                  return <label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity. </label>
                                 }
                               })
-                              :
+                              : 
                               null
                             }                           
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">

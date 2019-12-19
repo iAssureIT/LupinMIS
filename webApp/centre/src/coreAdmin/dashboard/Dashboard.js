@@ -365,32 +365,32 @@ export default class Dashboard extends Component{
   }
 
   getRandomColor(){
-    // var letters = '0123456789ABCDEF';
-    // var color = '#';
-    // for (var i = 0; i < 6; i++) {
-    //   color += letters[Math.floor(Math.random() * 16)];
-    // }
-    // return color;
-      var letters = 'BCDEF'.split('');
-      var color = '#';
-      for (var i = 0; i < 6; i++ ) {
-          color += letters[Math.floor(Math.random() * letters.length)];
-      }
-      return color;
-  }
-  getRandomColor_sector(){
-      // var letters = '01234ABCDEF56789';
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+      // var letters = 'BCDEF'.split('');
       // var color = '#';
-      // for (var i = 0; i < 6; i++) {
-      //   color += letters[Math.floor(Math.random() * 16)];
+      // for (var i = 0; i < 6; i++ ) {
+      //     color += letters[Math.floor(Math.random() * letters.length)];
       // }
       // return color;
-      var letters = 'BCDEF'.split('');
+  }
+  getRandomColor_sector(){
+      var letters = '01234ABCDEF56789';
       var color = '#';
-      for (var i = 0; i < 6; i++ ) {
-          color += letters[Math.floor(Math.random() * letters.length)];
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
       }
       return color;
+      // var letters = 'BCDEF'.split('');
+      // var color = '#';
+      // for (var i = 0; i < 6; i++ ) {
+      //     color += letters[Math.floor(Math.random() * letters.length)];
+      // }
+      // return color;
     }
 
   getMonthwiseData(year, center_ID){

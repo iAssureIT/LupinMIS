@@ -21,7 +21,7 @@ import CenterWisePieChart from './chart1/CenterWisePieChart.js';
 import {HorizontalBar} from 'react-chartjs-2';
 import './Dashboard.css';
 import {Bar} from 'react-chartjs-2';
-
+ 
 
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -364,6 +364,12 @@ export default class Dashboard extends Component{
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+     // var letters = 'BCDEF'.split('');
+     //  var color = '#';
+     //  for (var i = 0; i < 6; i++ ) {
+     //      color += letters[Math.floor(Math.random() * letters.length)];
+     //  }
+     //  return color;
   }
   getRandomColor_sector(){
       var letters = '01234ABCDEF56789';
@@ -372,6 +378,12 @@ export default class Dashboard extends Component{
         color += letters[Math.floor(Math.random() * 16)];
       }
       return color;
+      //  var letters = 'BCDEF'.split('');
+      // var color = '#';
+      // for (var i = 0; i < 6; i++ ) {
+      //     color += letters[Math.floor(Math.random() * letters.length)];
+      // }
+      // return color;
     }
 
   getMonthwiseData(year, center_ID){
@@ -421,12 +433,10 @@ export default class Dashboard extends Component{
           <div className="formWrapper"> 
             <section className="content">
               <div className="dashContent">
-                <div className="col-lg-12">
-                  <div className="log-lg-12 pull-left ">
-                    <h3>Dashboard</h3>
-                  </div>
+                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
+                  <h3>Dashboard</h3>
                 </div>
-                <div className="">
+                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
                   <StatusComponent 
                     stats={{color:"#2FC0EF", icon:"building",heading1:"CSR Center",value1:"18", heading2:"Development",value2:"7"}} 
                   />
@@ -440,7 +450,7 @@ export default class Dashboard extends Component{
                     stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:this.state.sectorCount ? this.state.sectorCount : 0, heading2:"Activities",value2:this.state.activityCount ? this.state.activityCount : 0}}
                   /> 
                 </div>
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11 mb15">
                        {/* <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -477,37 +487,54 @@ export default class Dashboard extends Component{
                         </div>  
                     </div>  
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                      <div className="col-lg-6">
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div className="box2">
-                            <div className="">
-                              <h4 className="text-center">Center wise Budget</h4>
+                            <div className="box-header with-border">
+                              <h3 className="box-title">Center wise Budget</h3>
+                            </div>
+                            <div className="box-body">
                               <CenterWisePieChart center_annualPlanTotalBudget={this.state.center_annualPlanTotalBudget ? this.state.center_annualPlanTotalBudget : []} piechartcolor={this.state.piechartcolor}  center_sector ={this.state.center_sector ? this.state.center_sector : []}/>
                             </div>
                         </div>
                       </div>
-                      <div className="col-lg-6">
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div className="box2">
-                          <h4 className="text-center">Sector wise Budget</h4>
-                          <PieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget ? this.state.annualPlanTotalBudget : []} piechartcolor={this.state.piechartcolor}  sector={this.state.sector ? this.state.sector : []} />
+                          <div className="box-header with-border">
+                            <h3 className="box-title">Sector wise Budget</h3>
+                          </div>
+                          <div className="box-body">
+                             <PieChart annualPlanTotalBudget={this.state.annualPlanTotalBudget ? this.state.annualPlanTotalBudget : []} piechartcolor={this.state.piechartcolor}  sector={this.state.sector ? this.state.sector : []} />
+                          </div>
                         </div>
                       </div>
-                      <div className="col-lg-12">
-                        <div className="horibox">
-                          <h4 className="text-center">Sector wise Family Upgradation</h4>
-                          <BarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div className="box2">
+                          <div className="box-header with-border">
+                             <h3 className="box-title">Sector wise Family Upgradation</h3>
+                          </div>
+                          <div className="box-body">
+                            <BarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
+                          </div>
                         </div>
                       </div>
-                         { console.log("this.state",this.state.monthlyAchievementReach , this.state.month, this.state.monthlyAchievementReach)}
-                      <div className="col-lg-6 " >
-                        <div className="horibox mb15">
-                          <h4 className="text-center">Month wise Goal Completion</h4>
-                          <DummyBarChart months={this.state.month ? this.state.month : []} ActualBeneficiaries={this.state.monthlyAchievementReach ? this.state.monthlyAchievementReach : []} PlannedBeneficiaries={this.state.monthlyPlanReach ? this.state.monthlyPlanReach : []}/>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                        <div className="box2">
+                          <div className="box-header with-border">
+                             <h3 className="box-title">Month wise Goal Completion</h3>
+                          </div>
+                          <div className="box-body">
+                            <DummyBarChart months={this.state.month ? this.state.month : []} ActualBeneficiaries={this.state.monthlyAchievementReach ? this.state.monthlyAchievementReach : []} PlannedBeneficiaries={this.state.monthlyPlanReach ? this.state.monthlyPlanReach : []}/>
+                          </div>
                         </div>
                       </div>
-                      <div className="col-lg-6" >
-                        <div className="horibox mb15">
-                          <h4 className="text-center">Month wise Expenditure V/s Budget</h4>
-                          <MonthBarChartbudget months={this.state.month ? this.state.month : []} expenditure={this.state.achievementTotalBudget ? this.state.achievementTotalBudget : []} budget={this.state.monthlyPlanTotalBudget ? this.state.monthlyPlanTotalBudget : []}/>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                        <div className="box2">
+                          <div className="box-header with-border">
+                             <h3 className="box-title">Month wise Expenditure V/s Budget</h3>
+                          </div>
+                          <div className="box-body">
+                            <MonthBarChartbudget months={this.state.month ? this.state.month : []} expenditure={this.state.achievementTotalBudget ? this.state.achievementTotalBudget : []} budget={this.state.monthlyPlanTotalBudget ? this.state.monthlyPlanTotalBudget : []}/>
+                          </div>
                         </div>                             
                       </div>
                     </div>

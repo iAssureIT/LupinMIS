@@ -32,9 +32,9 @@ export default class StatusComponent extends Component{
     return(
         <main className="col-lg-3">
 {/*      <div className="emptyclass"></div>
-*/}         <div className="col-lg-12 mainicon" >
+*/}         <div className="col-lg-12 mainicon NOpadding" >
             <div className="row">
-              <div className="col-lg-4 ccon1" style={{backgroundColor:this.props.stats.color}} >
+              <div className="col-lg-4 ccon1 " style={{backgroundColor:this.props.stats.color}} >
                 <div className="row"><i className={"fa fa-"+this.props.stats.icon}></i></div>
               </div>
               <div className="col-lg-7 statusBox">

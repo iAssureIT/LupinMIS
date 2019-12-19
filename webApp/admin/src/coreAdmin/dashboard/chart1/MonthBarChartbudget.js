@@ -83,8 +83,8 @@ export default class monthBarChartbudget extends Component{
   // }
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
-     console.log("data",data);
-     console.log("props",props);
+     // console.log("data",data);
+     // console.log("props",props);
     if (data) {
       data.datasets[0].data = props.expenditure ? props.expenditure : "";
       data.datasets[1].data = props.budget ? props.budget : "";
@@ -100,7 +100,7 @@ export default class monthBarChartbudget extends Component{
   render() {
     return (
       <div>
-       <Bar data={this.state.data} height={350}  options={options} />
+       <Bar data={this.state.data} height={300}  options={options} />
       </div>
     );
   }

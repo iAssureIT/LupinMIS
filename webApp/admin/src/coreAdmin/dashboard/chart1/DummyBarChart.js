@@ -109,7 +109,7 @@ export default class BarChart extends Component{
   render() {
     return (
       <div>
-       <Bar data={this.state.data} height={350}  options={options} />
+       <Bar data={this.state.data} height={300}  options={options} />
       </div>
     );
   }

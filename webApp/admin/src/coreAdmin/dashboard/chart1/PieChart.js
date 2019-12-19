@@ -28,11 +28,11 @@ export default class PieChart extends Component {
     // console.log("props",props);
     this.state={
       "data" : {
-      labels: [],
+      labels: ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"],
       datasets: [{
-        data: [],
-        backgroundColor: [] ,
-        hoverBackgroundColor: []
+        data: [300000,170000,50000,200000,250000],
+        backgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"] ,
+        hoverBackgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
         }]
       }
     }
@@ -42,26 +42,28 @@ export default class PieChart extends Component {
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
      // console.log("data",data);
-     // console.log("props",props);
-    if (data) {
-     // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);
-      data.datasets[0].data = props.annualPlanTotalBudget ? props.annualPlanTotalBudget : [];
-      // data.datas/ets[1].data = props.annualPlanFamilyUpgradation;
-      data.labels = props.sector;
-      // data.labels = props.priorities;
-      // data.datasets[0].data = props.count;
-      data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];
-      // data.datasets[0].hoverBackgroundColor = props.priorities.length === 4 ? ['#FF0000','#ffbf00','#4682B4','#3CB371'] : ['#FF0000','#ffbf00','#3CB371'];
-      return{
-         data : data
-      }
-    }
+     console.log("props.piechartcolor in pie",props.piechartcolor);
+     if (props.annualPlanTotalBudget && props.annualPlanTotalBudget.length > 0) {
+        if (data) {
+         // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);
+          data.datasets[0].data = props.annualPlanTotalBudget ? props.annualPlanTotalBudget : [];
+          // data.datas/ets[1].data = props.annualPlanFamilyUpgradation;
+          data.labels = props.sector;
+          // data.labels = props.priorities;
+          // data.datasets[0].data = props.count;
+          data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];
+          data.datasets[0].hoverBackgroundColor = props.piechartcolor ? props.piechartcolor : [];
+          return{
+             data : data
+          }
+        }
+     }
   }
 
   render() {
-    return (
+    return (  
       <div>
-        <Pie data={this.state.data} />
+        <Pie height={120} data={this.state.data} options={{legend: {display: false} }} />
       </div>
     );
   }

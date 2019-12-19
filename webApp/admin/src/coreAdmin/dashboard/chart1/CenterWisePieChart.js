@@ -19,7 +19,7 @@ export default class PieChart extends Component {
   //           stack: '1',
   //           data: []
   //         },          
-  //       ]
+  //       ] 
   //     }
   //   }
   // }
@@ -28,11 +28,11 @@ export default class PieChart extends Component {
     // console.log("props",props);
     this.state={
       "data" : {
-      labels: [],
+      labels: ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"],
       datasets: [{
-        data: [],
-        backgroundColor: [] ,
-        hoverBackgroundColor: []
+        data: [500000,150000,90000,100000,200000],
+        backgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"],
+        hoverBackgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
         }]
       }
     }
@@ -43,17 +43,19 @@ export default class PieChart extends Component {
      var data = {...state.data};
      // console.log("data",data);
      // console.log("props",props);
-    if (data) {
-     // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);
-      data.datasets[0].data = props.center_annualPlanTotalBudget ? props.center_annualPlanTotalBudget : [];
-      // data.datas/ets[1].data = props.annualPlanFamilyUpgradation;
-      data.labels = props.center_sector ? props.center_sector : [];
-      // data.labels = props.priorities;
-      // data.datasets[0].data = props.count;
-      data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];
-      // data.datasets[0].hoverBackgroundColor = props.priorities.length === 4 ? ['#FF0000','#ffbf00','#4682B4','#3CB371'] : ['#FF0000','#ffbf00','#3CB371'];
-      return{
-         data : data
+    if (props.center_annualPlanTotalBudget && props.center_annualPlanTotalBudget.length > 0) {
+      if (data) {
+       // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);
+        data.datasets[0].data = props.center_annualPlanTotalBudget ? props.center_annualPlanTotalBudget : [];
+        // data.datas/ets[1].data = props.annualPlanFamilyUpgradation;
+        data.labels = props.center_sector ? props.center_sector : [];
+        // data.labels = props.priorities;
+        // data.datasets[0].data = props.count;
+        data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];
+        data.datasets[0].hoverBackgroundColor = props.piechartcolor ? props.piechartcolor : [];
+        return{
+           data : data
+        }
       }
     }
   }
@@ -61,7 +63,7 @@ export default class PieChart extends Component {
   render() {
     return (
       <div>
-        <Pie data={this.state.data} />
+        <Pie height={120} data={this.state.data} options={{legend: {display: false} }} />
       </div>
     );
   }

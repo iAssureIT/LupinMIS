@@ -18,7 +18,7 @@ export default class CenterwiseBarChart extends Component{
   // displayName: 'BarExample',
   constructor(props){
     super(props);
-    console.log("props",props);
+    // console.log("props",props);
     this.state={
       "data" : {
         labels: [],
@@ -115,7 +115,7 @@ export default class CenterwiseBarChart extends Component{
   }
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
-     console.log("props",props);
+     // console.log("props",props);
     if (data) {
       /*
       data.labels = props.center;
@@ -133,7 +133,7 @@ export default class CenterwiseBarChart extends Component{
       return{
          data : data
       }
-     console.log("data",data);
+     // console.log("data",data);
 
       /* console.log("this.state.sector",sector);
       /* console.log("this.state.annualPlanReach",annualPlanReach);

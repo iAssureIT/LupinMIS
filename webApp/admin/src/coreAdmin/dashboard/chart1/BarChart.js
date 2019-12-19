@@ -110,7 +110,7 @@ export default class BarChart extends Component{
     return (
       <div>
 {/*       <Radar data={this.state.data} height={350}  options={options} />*/}
-       <Bar data={this.state.data} height={350}  options={options} />
+       <Bar data={this.state.data} height={300}  options={options} />
       </div>
     );
   }

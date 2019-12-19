@@ -13,13 +13,13 @@ class PlanDetails extends Component{
   constructor(props){
     super(props); 
     this.state = {
-      "center"              :"",
+      "center"              :"-- Select --",
       "sector_id"           :"",
       "sectorName"          :"",
       "subActivity"         :"",
       "activityName"        :"",
       "physicalUnit"        :"",
-      "unitCost"            :"",
+      "unitCost"            :"", 
       "totalBudget"         :"",
       "noOfBeneficiaries"   :"",
       "LHWRF"               :"",
@@ -165,233 +165,6 @@ class PlanDetails extends Component{
     })
   }
 
-  SubmitAnnualPlan(event){
-    event.preventDefault();
-    var subActivityDetails = this.state.subActivityDetails;
-    if (this.validateFormReq() &&this.validateForm()) {
-    
-      let fields = {};
-      fields["year"]              = "";
-      fields["month"]             = "";
-      fields["sectorName"]        = "";
-      fields["activityName"]      = "";
-      fields["physicalUnit"]      = "";
-      fields["unitCost"]          = "";
-      fields["totalBudget"]       = "";
-      fields["noOfFamilies"]      = "";
-      fields["noOfBeneficiaries"] = "";
-      fields["LHWRF"]             = "";
-      fields["NABARD"]            = "";
-      fields["bankLoan"]          = "";
-      fields["govtscheme"]        = "";
-      fields["directCC"]          = "";
-      fields["indirectCC"]        = "";
-      fields["other"]             = "";
-      fields["remark"]            = "";
-      if(subActivityDetails.length > 0){
-        for(var i=0; i<subActivityDetails.length; i++){
-          var planValues = {
-            "month"               : this.refs.month.value,          
-            "year"                : this.refs.year.value,          
-            "center_ID"           : this.state.center_ID,
-            "center"              : this.state.centerName,
-            "sector_ID"           : this.refs.sectorName.value.split('|')[1],
-            "sectorName"          : this.refs.sectorName.value.split('|')[0],
-            "activity_ID"         : this.refs.activityName.value.split('|')[1],
-            "activityName"        : this.refs.activityName.value.split('|')[0],
-            "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
-            "subactivityName"     : subActivityDetails[i].subactivityName,
-            "unit"                : subActivityDetails[i].unit,
-            "physicalUnit"        : subActivityDetails[i].physicalUnit,
-            "unitCost"            : subActivityDetails[i].unitCost,
-            "totalBudget"         : subActivityDetails[i].totalBudget,
-            "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
-            "noOfFamilies"        : subActivityDetails[i].noOfFamilies,
-            "LHWRF"               : subActivityDetails[i].LHWRF,
-            "NABARD"              : subActivityDetails[i].NABARD,
-            "bankLoan"            : subActivityDetails[i].bankLoan,
-            "govtscheme"          : subActivityDetails[i].govtscheme,
-            "directCC"            : subActivityDetails[i].directCC,
-            "indirectCC"          : subActivityDetails[i].indirectCC,
-            "other"               : subActivityDetails[i].other,
-            "remark"              : subActivityDetails[i].remark,
-          };
-          axios.post(this.state.apiCall, planValues)
-            .then((response)=>{
-              console.log("response",response);
-              swal({
-                title : response.data.message,
-                text  : response.data.message
-              });
-              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-            })
-            .catch(function(error){
-              console.log("error"+error);
-          });
-          Object.entries(planValues).map( 
-            ([key, value], i)=> {
-              this.setState({
-                [key+'-'+this.state.subactivity_ID] : ""
-              })
-            }
-          );
-        }
-      }else{
-        swal({
-          title : "abc",
-          text  : "Please fill atleast one SubActivity Details."
-        });
-      }
-      this.setState({
-        "planValues"          :"",
-        "year"                : this.refs.year.value,
-        "month"               : this.refs.month.value,
-        "center"              :"",
-        "sector_id"           :"",
-        "sectorName"          :"",
-        "activityName"        :"",
-        "physicalUnit"        :"",
-        "unitCost"            :"",
-        "totalBudget"         :"",
-        "noOfBeneficiaries"   :"",
-        "noOfFamilies"        :"",
-        "LHWRF"               :"",
-        "NABARD"              :"",
-        "bankLoan"            :"",
-        "govtscheme"          :"",
-        "directCC"            :"",
-        "indirectCC"          :"",
-        "other"               :"",
-        "remark"              :"",
-        "fields"              :fields,
-        "editId"              :"",
-        "subActivityDetails"  :[],
-        "availableSubActivity":[],
-        "availableActivity"   :[],
-        "subActivityDetails[i][name]":"",
-        shown                 : !this.state.shown
-      });
-    }
-  }
-  Update(event){    
-    event.preventDefault();
-    var subActivityDetails = this.state.subActivityDetails;
-    if(this.refs.year.value === "" || this.refs.month.value ==="" || this.refs.sectorName.value==="" || this.refs.activityName.value==="" 
-      || this.state.physicalUnit==="" || this.refs.unitCost.value==="" || this.refs.totalBudget.value==="" || this.refs.noOfBeneficiaries.value==="" 
-      || this.refs.LHWRF.value==="" || this.refs.NABARD.value==="" || this.refs.bankLoan.value==="" || this.refs.govtscheme.value==="" 
-      || this.refs.directCC.value==="" || this.refs.indirectCC.value==="" || this.refs.other.value==="" || this.refs.remark.value==="")
-      {
-    /*    if (this.validateFormReq() && this.validateForm()){
-        }*/
-      }else{
-      if(subActivityDetails.length > 0){
-        for(var i=0; i<subActivityDetails.length; i++){
-          var planValues = {
-            "annualPlan_ID"       : this.state.editId,
-            "monthlyPlan_ID"      : this.state.editId,
-            "month"               : this.refs.month.value,          
-            "year"                : this.refs.year.value,           
-            "center_ID"           : this.state.center_ID,
-            "center"              : this.state.centerName,
-            "sector_ID"           : this.refs.sectorName.value.split('|')[1],
-            "sectorName"          : this.refs.sectorName.value.split('|')[0],
-            "activity_ID"         : this.refs.activityName.value.split('|')[1],
-            "activityName"        : this.refs.activityName.value.split('|')[0],
-            "subactivity_ID"      : subActivityDetails[i].subactivity_ID,
-            "subactivityName"     : subActivityDetails[i].subactivityName,
-            "unit"                : subActivityDetails[i].unit,
-            "physicalUnit"        : subActivityDetails[i].physicalUnit,
-            "unitCost"            : subActivityDetails[i].unitCost,
-            "totalBudget"         : subActivityDetails[i].totalBudget,
-            "noOfBeneficiaries"   : subActivityDetails[i].noOfBeneficiaries,
-            "noOfFamilies"        : subActivityDetails[i].noOfFamilies,
-            "LHWRF"               : subActivityDetails[i].LHWRF,
-            "NABARD"              : subActivityDetails[i].NABARD,
-            "bankLoan"            : subActivityDetails[i].bankLoan,
-            "govtscheme"          : subActivityDetails[i].govtscheme,
-            "directCC"            : subActivityDetails[i].directCC,
-            "indirectCC"          : subActivityDetails[i].indirectCC,
-            "other"               : subActivityDetails[i].other,
-            "remark"              : subActivityDetails[i].remark,
-          };
-                  
-          let fields = {};
-          fields["year"]              = "";
-          fields["month"]             = "";
-          fields["sectorName"]        = "";
-          fields["activityName"]      = "";
-          fields["physicalUnit"]      = "";
-          fields["unitCost"]          = "";
-          fields["totalBudget"]       = "";
-          fields["noOfBeneficiaries"] = "";
-          fields["noOfFamilies"]      = "";
-          fields["LHWRF"]             = "";
-          fields["NABARD"]            = "";
-          fields["bankLoan"]          = "";
-          fields["govtscheme"]        = "";
-          fields["directCC"]          = "";
-          fields["indirectCC"]        = "";
-          fields["other"]             = "";
-          fields["remark"]            = "";
-        
-          axios.patch(this.state.apiCall+'/update', planValues)
-            .then((response)=>{
-              swal({
-                title : response.data.message,
-                text  : response.data.message
-              });
-              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-            })
-            .catch(function(error){
-              console.log("error"+error);
-          }); 
-          this.setState({
-            "year"                : this.refs.year.value,
-            "month"               : this.refs.month.value,
-            "center"              :"",
-            "sector_id"           :"",
-            "sectorName"          :"",
-            "activityName"        :"",
-            "physicalUnit"        :"",
-            "unitCost"            :"",
-            "totalBudget"         :"",
-            "noOfBeneficiaries"   :"",
-            "noOfFamilies"        :"",
-            "LHWRF"               :"",
-            "NABARD"              :"",
-            "bankLoan"            :"",
-            "govtscheme"          :"",
-            "directCC"            :"",
-            "indirectCC"          :"",
-            "other"               :"",
-            "remark"              :"",
-            "fields"              :fields,
-            "editId"              :"",
-            "subActivityDetails"  :[],
-            "availableSubActivity":[],
-            "subActivityDetails[i][name]":"",
-            "months"              :["Annual Plan","All Months", "April","May","June","July","August","September","October","November","December","January","February","March"],
-            "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "shown"               : true,
-            "apiCall"             : '/api/annualPlans'
-          });
-          Object.entries(planValues).map( 
-            ([key, value], i)=> {
-              this.setState({
-                [key+'-'+this.state.subactivity_ID] : ""
-              })
-            }
-          );
-
-        }
-      }
-     
-    }
-    this.props.history.push('/plan-details');
-    this.setState({
-      "editId"              : "",
-    });
-  }
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
@@ -434,38 +207,26 @@ class PlanDetails extends Component{
       });
       return formIsValid;
   }
-
-  getLength(){
-  /*  axios.get(this.state.apiCall+'/count')
-    .then((response)=>{
-      // console.log('response', response.data);
-      this.setState({
-        dataCount : response.data.dataLength
-      },()=>{
-        console.log('dataCount', this.state.dataCount);
-      })
-    })
-    .catch(function(error){      
-    });*/
-  }
   selectMonth(event){
     event.preventDefault();
     var tableObjects = this.state.tableObjects;
-    tableObjects["apiLink"] = this.refs.month.value === 'Annual Plan' ? '/api/annualPlans/' : '/api/monthlyPlans/';
+    tableObjects["apiLink"] = event.target.value === 'Annual Plan' ? '/api/annualPlans/' : '/api/monthlyPlans/';
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
-      "years"               : this.refs.month.value === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-      "month"               : this.refs.month.value,        
-      "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
-      "sectorName"          : "",
-      "activityName"        : "",
-      "availableSubActivity": "",
+      "years"               : event.target.value === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+      "month"               : event.target.value,        
+      "apiCall"             : event.target.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
+
       tableObjects,
       fields
     },()=>{
       console.log('month =====================================', this.state.month, this.state.year)
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+      this.setState({
+        "year" : this.state.years[0]
+      },()=>{
+        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+      });
     });
 
     if (this.validateForm()) {
@@ -523,45 +284,11 @@ class PlanDetails extends Component{
         console.log("error"+error);
       });
   }
-  componentWillReceiveProps(nextProps){
-    this.getAvailableSectors();
-    var editId = nextProps.match.params.id;
-
-    if(nextProps.match.params.id){
-      this.setState({
-        editId : editId,
-        editSectorId : nextProps.match.params.sectorId
-      },()=>{
-        if(this.state.editId && this.state.month === 'Annual Plan'){
-          this.setState({
-            "months"              :["Annual Plan"],
-            "years"               : this.refs.month.value === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
-          })
-        }else if(this.state.editId && this.state.month !== 'Annual Plan'){
-          this.setState({
-            "months"              :["All Months", "April","May","June","July","August","September","October","November","December","January","February","March"],
-            "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-            "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
-          })
-        }
-        this.getAvailableActivity(this.state.editSectorId);
-        this.getAvailableSubActivity(this.state.editSectorId);
-        this.edit(this.state.editId);
-      })    
-    }    
-     this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-    if(nextProps){
-      this.getLength();
-    }
-  }
+  
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableSectors();
     this.getAvailableCenters();
-    if(this.state.editId){     
-      this.edit(this.state.editId);       
-    }
     this.setState({
       "year"  : this.state.years[0],
       apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
@@ -569,8 +296,6 @@ class PlanDetails extends Component{
       console.log('year', this.state.year)
        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     })
-    this.getLength();
-    this.calTotal();
   }
 
   getAvailableCenters(){
@@ -580,9 +305,9 @@ class PlanDetails extends Component{
     }).then((response)=> {
         this.setState({
           availableCenters : response.data,
-          center           : response.data[0].centerName+'|'+response.data[0]._id
+          // center           : response.data[0].centerName+'|'+response.data[0]._id
         },()=>{
-      console.log('centersresponse', this.state.availableCenters);
+      // console.log('centersresponse', this.state.availableCenters);
 
         })
     }).catch(function (error) {
@@ -704,67 +429,6 @@ class PlanDetails extends Component{
       console.log("error"+error);
     }); 
   }
-  edit(id){
-    axios({
-      method: 'get',
-      url: this.state.apiCall+'/'+id,
-      }).then((response)=> {
-      var editData = response.data[0];
-      this.getAvailableActivity(editData.sector_ID);
-      this.setState({
-        "availableSubActivity"    : [{
-          _id                     : editData.subactivity_ID,
-          subActivityName         : editData.subactivityName,
-          unit                    : editData.unit,
-        }],
-      },()=>{
-        this.setState({
-          "shown"                   : false,
-          "year"                    : editData.year,
-          "month"                   : editData.month,
-          "center"                  : editData.center,
-          "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
-          "activityName"            : editData.activityName+'|'+editData.activity_ID,
-          "subactivity_ID"          : editData.subactivity_ID,
-          "subActivityDetails"      : [{
-            "subactivity_ID"      : editData.subactivity_ID,
-            "subactivityName"     : editData.subactivityName,           
-            "physicalUnit"        : editData.physicalUnit,
-            "unitCost"            : editData.unitCost,
-            "totalBudget"         : editData.totalBudget,
-            "noOfBeneficiaries"   : editData.noOfBeneficiaries,
-            "noOfFamilies"        : editData.noOfFamilies,
-            "LHWRF"               : editData.LHWRF,
-            "NABARD"              : editData.NABARD,
-            "bankLoan"            : editData.bankLoan,
-            "govtscheme"          : editData.govtscheme,
-            "directCC"            : editData.directCC,
-            "indirectCC"          : editData.indirectCC,
-            "other"               : editData.other,
-            "remark"              : editData.remark,
-          }]
-        },()=>{
-          var subActivityDetails = this.state.subActivityDetails[0];
-          Object.entries(subActivityDetails).map( 
-            ([key, value], i)=> {
-              this.setState({
-                [key+'-'+this.state.subactivity_ID] : value
-              })
-            }
-          );
-        });
-      })      
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-    }).catch(function (error) {
-      console.log("error"+error);
-    });
-  }
   toglehidden(){   
     this.setState({
      shown: !this.state.shown
@@ -777,35 +441,7 @@ class PlanDetails extends Component{
       tableData : []
     })
   }
-  calTotal(event){   
-    // console.log('onKeyUp');
-      // var physicalUnit = event.target.name;
-
-      this.setState({
-        // physicalUnit : event.target.value
-      }, ()=>{
-        // console.log(this.state)
-      })
-
-  }
-
-  isNumberKey(evt){
-    // console.log('onKeyDown');
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
   render() {
-    /*var shown = {
-      display: this.state.shown ? "block" : "none"
-    };
-    */
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
@@ -827,36 +463,11 @@ class PlanDetails extends Component{
                     <div className="row">
                       <div className="">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                        {/*  <div className=" col-lg-3  col-lg-offset-3 col-md-4 col-sm-6 col-xs-12 ">
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
-                              <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
-                                
-                               {this.state.months.map((data,index) =>
-                                <option key={index}  className="" >{data}</option>
-                                )}
-                                
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.month}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 zeroIndex">
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                              <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
-                                <option className="hidden" >-- Select Year --</option>
-                               {
-                                this.state.years.map((data, i)=>{
-                                  return <option key={i}>{data}</option>
-                                })
-                               }
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.year}</div>
-                          </div>*/}
                           <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                             <label className="formLable">Center</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                               <select className="custom-select form-control inputBox" ref="center" name="center"value={this.state.center} onChange={this.selectCenter.bind(this)}>
-                                <option className="hidden" >-- Select Center --</option>
+                                <option disabled={true} >-- Select --</option>
                                 {
                                   this.state.availableCenters && this.state.availableCenters.length >0 ?
                                   this.state.availableCenters.map((data, index)=>{
@@ -876,8 +487,9 @@ class PlanDetails extends Component{
                            <label className="formLable">Plan</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                               <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
+                                <option disabled={true} >-- Select --</option>
                                {this.state.months.map((data,index) =>
-                                <option key={index}  className="" >{data}</option>
+                                  <option key={index}  className="" >{data}</option>
                                 )}
                                 
                               </select>
@@ -888,210 +500,28 @@ class PlanDetails extends Component{
                             <label className="formLable">Year</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                               <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
-                                <option className="hidden" >-- Select Year --</option>
+                                <option disabled={true} >-- Select --</option>
                                {
                                 this.state.years.map((data, i)=>{
                                   return <option key={i}>{data}</option>
                                 })
-                               }
+                               } 
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.year}</div>
                           </div>                          
                         </div> 
-                      </div><br/>                      
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" style={hidden} id="Academic_details">
-                        <div className="row ">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  validbox ">                
-                            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Sector</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
-                                <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
-                                  <option  className="hidden" >-- Select --</option>
-                                  {
-                                    this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                    this.state.availableSectors.map((data, index)=>{
-                                      return(
-                                        <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.sectorName}</div>
-                            </div>
-                            <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                              <label className="formLable">Activity</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
-                                <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
-                                  <option  className="hidden" >-- Select --</option>
-                                  {
-                                  this.state.availableActivity && this.state.availableActivity.length >0 ?
-                                  this.state.availableActivity.map((data, index)=>{
-                                    if(data.activityName ){
-                                      return(
-                                        <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
-                                      );
-                                    }
-                                  })
-                                  :
-                                  null
-                                }
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.activityName}</div>
-                            </div>                  
-                          </div> 
-                        </div><br/>  
-                        <div>
-                          {this.state.availableSubActivity ? <hr className=""/> :""}
-                        </div>                     
-                          {
-                            this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
-                            this.state.availableSubActivity.map((data, index)=>{
-                              if(data.subActivityName ){
-                                return(
-                                  <div className="subActDiv"  key={data._id}>
-                                    <div className=" col-lg-3 col-md-1 col-sm-6 col-xs-12 contentDiv  ">
-                                      <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
-                                      <label className="formLable">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
-                                     </div>
-                                    <div className="col-lg-9 col-sm-10 col-xs-10 ">
-                                      <div className="row">
-                                        <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
-                                          <label className="formLable head">Sub-Activity Details</label>
-                                        </div>
-                                      </div>
-                                     
-                                      <div className="row ">
-                                        <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                          <label className="formLable">Physical Units</label>
-                                          <div className=" input-group inputBox-main " id={"physicalUnit-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"physicalUnit-"+data._id} placeholder="" ref={"physicalUnit-"+data._id} value={this.state["physicalUnit-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>{/*{console.log("state",this.state)}*/}
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                          <label className="formLable">Unit Cost</label>
-                                          <div className=" input-group inputBox-main" id={"unitCost-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"unitCost-"+data._id} placeholder="" ref={"unitCost"+"-"+data._id} value={this.state["unitCost-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>  
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                          <label className="formLable">Total Cost</label>
-                                          <div className="input-group inputBox-main" id={"totalBudget-"+data._id} >                                         
-                                            <input className="form-control inputBox formLable " name={"totalBudget-"+data._id} placeholder="" disabled ref={"totalBudget-"+data._id} value={this.state["totalBudget-"+data._id]} />
-                                          </div>
-                                        </div>  
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                          <label className="formLable">No.of Beneficiaries</label>
-                                          <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+data._id} placeholder="" ref={"noOfBeneficiaries-"+data._id} value={this.state["noOfBeneficiaries-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
-                                          </div>
-                                        </div> 
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
-                                          <label className="formLable">No.of Families</label>
-                                          <div className=" input-group inputBox-main" id={"noOfFamilies-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"noOfFamilies-"+data._id} placeholder="" ref={"noOfFamilies-"+data._id} value={this.state["noOfFamilies-"+data._id]} onKeyDown={this.isNumberKey.bind(this)} onChange={this.subActivityDetails.bind(this)}/>                              
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="row">
-                                        <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields   ">
-                                          <label className="formLable head">Sources of Fund</label>
-                                        </div>
-                                      </div>
-                                      <div className="row">
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">LHWRF</label>
-                                          <div className=" input-group inputBox-main" id={"LHWRF-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"LHWRF-"+data._id} placeholder="" ref={"LHWRF-"+data._id} value={this.state["LHWRF-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}   onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">NABARD</label>
-                                          <div className=" input-group inputBox-main" id={"NABARD-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"NABARD-"+data._id} placeholder="" ref={"NABARD-"+data._id} value={this.state["NABARD-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Bank Loan</label>
-                                          <div className=" input-group inputBox-main" id={"bankLoan-"+data._id}>
-                                            <input type="text" className="form-control inputBox nameParts" name={"bankLoan-"+data._id} placeholder="" ref={"bankLoan-"+data._id} value={this.state["bankLoan-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Govt. Schemes</label>
-                                          <div className=" input-group inputBox-main" id={"govtscheme-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"govtscheme-"+data._id} placeholder="" ref={"govtscheme-"+data._id} value={this.state["govtscheme-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Direct Com. Cont.</label>
-                                          <div className=" input-group inputBox-main" id={"directCC-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"directCC-"+data._id} placeholder="" ref={"directCC-"+data._id} value={this.state["directCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Indirect Com. Cont.</label>
-                                          <div className=" input-group inputBox-main" id={"indirectCC-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"indirectCC-"+data._id} placeholder="" ref={"indirectCC-"+data._id} value={this.state["indirectCC-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className=" row">
-                                        <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                          <label className="formLable">Other</label>
-                                          <div className=" input-group inputBox-main" id={"other-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"other-"+data._id} placeholder="" ref={"other-"+data._id} value={this.state["other-"+data._id]} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                        <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
-                                          <label className="formLable">Remark</label>
-                                          <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+data._id} >
-                                            <input type="text" className="form-control inputBox nameParts" name={"remark-"+data._id} placeholder="Remark" ref={"remark-"+data._id} value={this.state["remark-"+data._id]}   onChange={this.subActivityDetails.bind(this)}/>
-                                          </div>
-                                        </div>
-                                      </div>  
-                                      <div className="row">                            
-                                        <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
-                                          <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
-                                            <label className="formLable"></label>
-                                            <div className="errorMsg">{this.state.errors.remark}</div>
-                                          </div>
-                                        </div> 
-                                      </div><br/>
-                                    </div>  <br/>
-                                  </div>
-                                );
-                              }else{
-                                return <label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity  </label>
-                              }
-                            })
-                            :
-                            null
-                          }                           
-                        <div className="col-lg-12">
-                         <br/>{
-                          this.state.editId ? 
-                          <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
-                          :
-                          <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
-                        }
-                        </div>
-                      
-                      </form>
+                      </div>                  
                     </div>
-                    
                     <div className="AnnualHeadCont">
                       <div className="annualHead">
                       {
-                        this.state.month==="--Quarter 1--"
+                        this.state.month ==="--Quarter 1--"
                           ?
                             <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
                           :
-                            <h5 defaultValue="Annual Plan">{this.state.month === "Annual Plan" ? "Annual Plan": "Monthly Plan" || this.state.month !== "Annual Plan" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+
+                            <h5 defaultValue="Annual Plan">{this.state.month+" - "+this.state.year}</h5> 
                             // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                         }
                       </div>
