@@ -195,7 +195,7 @@ class addWorkspace extends Component{
         });
       }
     axios
-      .get('/api/projectSettings/single/S3')
+      .get('/api/projectSettings/get/one/S3')
       .then((response)=>{
         const config = {
                           bucketName      : response.data.bucket,

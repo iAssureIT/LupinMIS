@@ -5,10 +5,11 @@ import axios from 'axios';
 // import SimpleReactValidator from 'simple-react-validator';
 import swal from 'sweetalert';
 import InputMask  from 'react-input-mask';
+import AddFilePublic          from "../../addFile/AddFilePublic.js";
 import validate               from 'jquery-validation';
 
 import "../../../API";
-import ImageUpload from '../../ImageUpload/ImageUpload.js';
+// import ImageUpload from '../../ImageUpload/ImageUpload.js';
 
 const formValid = formerrors=>{
   console.log("formerrors",formerrors);
@@ -47,6 +48,15 @@ class CompanyInformation extends Component{
       companywebsite          : "",
       data                    : [],
       submitVal               : true,
+      imgArrayWSaws           : [],
+      logoFilename               : "",    
+      logo_Image              :"",
+      "configData" : {
+        dirName         : 'CompanySetting',
+        deleteMethod    : 'delete',
+        apiLink         : '/api/caseStudies/delete/',
+        pageURL         : '/caseStudyy',
+      },
       formerrors :{
         firstcompanyname : "",
         companyMobile : " ",
@@ -69,9 +79,10 @@ class CompanyInformation extends Component{
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    $.validator.addMethod("regxContact", function(value, element, regexpr) { 
+ 
+   /* $.validator.addMethod("regxContact", function(value, element, regexpr) { 
       return value===regexpr;
-    }, "This field value is similar as contact number.");
+    }, "This field value is similar as contact number.");*/
     $("#companyInformationForm").validate({
       rules: {
         companyName: {
@@ -81,7 +92,7 @@ class CompanyInformation extends Component{
           required: true,
         },
         companyAltContactNumber: {
-          regxContact: this.refs.companyContactNumber.value
+          // regxContact: this.refs.companyContactNumber.value
         },
         companyEmail: {
           required: true,
@@ -132,8 +143,9 @@ class CompanyInformation extends Component{
         taluka                  : res.data.taluka,
         submitVal               : false,
         defaultPassword         : res.data.defaultPassword, 
+        logoFilename            : res.data.logoFilename, 
       });
-      // console.log("this.this.state.companyName",this.state.companyName)
+      console.log("this.this.state.companyName",this.state.companyName)
     })
     .catch((error)=>{
       console.log("error = ",error);
@@ -189,7 +201,6 @@ class CompanyInformation extends Component{
   }
 
   componentWillReceiveProps(nextProps) {
-
     if(nextProps.get && nextProps.get.length != 0){
 
      this.setState({
@@ -354,6 +365,7 @@ class CompanyInformation extends Component{
   
   }
   handleChange(event){
+
     // const target = event.target;
     // const {name , value}   = event.target;
     
@@ -424,6 +436,16 @@ class CompanyInformation extends Component{
       [name]:value
     } );
   }
+  getLogo(logo, filename){
+    this.setState({
+      "companyLogo" : logo,
+      "logoFilename" : filename,
+    },()=>{
+    console.log("logoFilename",this.state.logoFilename);
+      console.log("companyLogo",this.state.companyLogo)
+    })
+
+  }
 
   render(){
     const {formerrors} = this.state;
@@ -431,20 +453,26 @@ class CompanyInformation extends Component{
       <div className="">
         <form id="companyInformationForm"  >
           <div className="">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm">  
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">  
               <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <h4 className="basicinfotxt"><i className="fa fa-info-circle fonticons" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Basic Info</h4>
               </div>
-              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div className="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                
                 <div className="col-lg-6 col-lg-offset-6 col-md-6 col-sm-12 col-xs-12 csImageWrapper">
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <AddFilePublic
+                        getLogo={this.getLogo.bind(this)}
+                        configData = {this.state.configData} 
+                        logo  = {this.state.logo} 
+                        fileType   = "Image" 
+                      />   
                     {/*<ImageUpload
                       configData = {this.state.configData}
-                      fileArray  = {this.state.fileArray}
+                      logo  = {this.state.logo}
                       fileType   = "Image"
                     /> */}
-                    {<img src= "images/lupin.png" className="companyImage" / >}
+                    {/*<img src= "images/lupin.png" className="companyImage" / >*/}
                     {/*  {this.CompanyImage() === '../images/CSLogo.png'? <i className="fa fa-camera fonticons" aria-hidden="true" title="First Add Photo."/>
                       :
                       <i className="fa fa-times fonticons removeprofPhoto" aria-hidden="true" title="Remove Photo." onClick={this.removeCompanyImage.bind(this)} data-link={this.state.companyLogo} id={this.state.companyLogo} data-id={this.state.companyId}></i>

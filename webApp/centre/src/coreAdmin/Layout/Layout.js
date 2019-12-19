@@ -31,7 +31,7 @@ import ViewActivity                               from "../../centres/activity/v
 import ActivityReportView                         from "../../centres/activityReportView/ActivityReportView.js";
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import Plan                                       from "../../centres/plan/PlanDetails.js";
-import CaseStudyy                                  from "../../centres/caseStudy/CaseStudy.js";
+import CaseStudyy                                  from "../../centres/caseStudy/CaseStudyy.js";
 import CaseStudy                                 from "../../centres/addFile/CaseStudy.js";
 import AddFilePrivate                             from "../../centres/addFile/AddFilePrivate.js";
 import Highlight                                  from "../../centres/highLight/Highlight.js";

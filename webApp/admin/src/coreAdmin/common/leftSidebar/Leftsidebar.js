@@ -47,7 +47,7 @@ export default class Leftsidebar extends Component{
   } 
 
   render(){
-    console.log('nkhjh',  window.screen.height );  
+    // console.log('nkhjh',  window.screen.height );  
     var sidebarHeight = window.screen.height - 185;
     return(
       <div>

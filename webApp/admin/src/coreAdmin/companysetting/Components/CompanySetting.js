@@ -68,10 +68,11 @@ import CompanyPaymentGateway        from  '../Components/CompanyPaymentGateway.j
                       </div>*/}
                       <div className="tab-content col-lg-12 col-md-12 col-xs-12 col-sm-12">
                         <div className="tab-pane active" id="companyInformation"> <CompanyInformation/> </div>
+                     {/* 
                         <div className="tab-pane" id="CompanyLocation"> <CompanyLocation/> </div>
                         <div className="tab-pane" id="CompanyBankDetails"> <CompanyBankDetails/> </div>                               
                         <div className="tab-pane" id="CompanyTaxDetails"> <CompanyTaxDetails/> </div>
-                        <div className="tab-pane" id="CompanyPaymentGateway"> <CompanyPaymentGateway/> </div>                                
+                        <div className="tab-pane" id="CompanyPaymentGateway"> <CompanyPaymentGateway/> </div>   */}                             
                       </div> 
                     </div>
                   </div>

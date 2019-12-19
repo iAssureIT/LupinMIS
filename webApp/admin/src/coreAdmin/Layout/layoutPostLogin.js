@@ -36,9 +36,9 @@ import Leftsidebar from '../common/leftSidebar/Leftsidebar.js'
 
 
 		    const token = localStorage.getItem("token");
-		    console.log("Dashboard Token = ",token);
+		    // console.log("Dashboard Token = ",token);
 		    if(token!==null){
-		    console.log("*********===***********imin ",token);
+		    // console.log("*********===***********imin ",token);
 		      this.setState({
 		        loggedIn : true
 		      })
@@ -59,8 +59,8 @@ import Leftsidebar from '../common/leftSidebar/Leftsidebar.js'
 		  }
 
 		  render(){
-		    console.log("props = ",this.props);
-		    {console.log("loggedIn status layput = ", this.state.loggedIn)}
+		    // console.log("props = ",this.props);
+		    // {console.log("loggedIn status layput = ", this.state.loggedIn)}
 		    if(this.state.loggedIn===false){
 		      return(
 		            <div className="App container-fluid">
