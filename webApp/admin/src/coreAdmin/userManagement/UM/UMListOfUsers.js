@@ -226,7 +226,7 @@ class UMListOfUsers extends Component {
 					      var response = await updateStatus(formValues)
 					      if(response){
 					        var user = await getUserDetails(selectedId)
-					        return Promise.resolve(true);
+					        // return Promise.resolve(true);
 					        if(user){
 					            var msgvariable = {
 					                '[User]'    : user.data.profile.fullName,
@@ -238,8 +238,8 @@ class UMListOfUsers extends Component {
 					                templateName : 'User - Login Account Blocked',
 					                variables    : msgvariable,
 					            }
-					        	// var mail = await sendMail(inputObj)
-					        	var mail = ''
+					        	var mail = await sendMail(inputObj)
+					        	// var mail = ''
 					        	if(mail){
 					        		count++
 					                if(count===checkedUsersList.length){
@@ -283,7 +283,7 @@ class UMListOfUsers extends Component {
 					      var response = await updateStatus(formValues)
 					      if(response){
 					        var user = await getUserDetails(selectedId)
-					        return Promise.resolve(true);
+					        // return Promise.resolve(true);
 					        if(user){
 					            var currentUrl = window.location.hostname
 					            var url = currentUrl==='localhost'?'http://localhost:3001/':currentUrl==='qalmiscentre.iassureit.com'?'http://qalmiscentre.iassureit.com/':'http://uatlmiscenter.iassureit.com/'
@@ -298,8 +298,8 @@ class UMListOfUsers extends Component {
 					                templateName : 'User - Login Account Activation',
 					                variables    : msgvariable,
 					            }
-					            // var mail = await sendMail(inputObj)
-					            var mail = ''
+					            var mail = await sendMail(inputObj)
+					            // var mail = ''
 					            if(mail){
 					                count++
 					                if(count===checkedUsersList.length){

@@ -242,7 +242,7 @@ class EMPReport extends Component{
                         <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Select Beneficiary</label><span className="asterix">*</span>
+                            <label className="formLable">Select Beneficiary</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                               <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
                                 <option  className="hidden" >--Select--</option>

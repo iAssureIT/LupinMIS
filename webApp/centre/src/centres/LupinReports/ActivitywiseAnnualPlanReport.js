@@ -336,7 +336,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                       
                       
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                        <label className="formLable">Sector</label><span className="asterix">*</span>
+                        <label className="formLable">Sector</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
                             <option  className="hidden" >--Select--</option>
@@ -368,7 +368,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                       </div>*/}
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                        <label className="formLable">Project Category</label><span className="asterix">*</span>
+                        <label className="formLable">Project Category</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                           <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
                             <option  className="hidden" >--Select--</option>
@@ -382,7 +382,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                        {
                           this.state.projectCategoryType === "Project Fund" ?
                           <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Project Name</label><span className="asterix">*</span>
+                            <label className="formLable">Project Name</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
                               <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
                                 <option value="all" >All</option>
