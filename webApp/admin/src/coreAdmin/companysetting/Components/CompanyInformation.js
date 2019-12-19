@@ -7,7 +7,7 @@ import swal from 'sweetalert';
 import S3FileUpload           from 'react-s3';
 import { deleteFile }         from 'react-s3';
 import InputMask  from 'react-input-mask';
-import AddFilePublic          from "../../addFile/AddFilePublic.js";
+import AddImgPublicCompanySetting          from "../../addFile/AddImgPublicCompanySetting.js";
 import validate               from 'jquery-validation';
 
 import "../../../API";
@@ -368,7 +368,7 @@ class CompanyInformation extends Component{
                         </div>
                       </div>
                       :
-                        <AddFilePublic
+                        <AddImgPublicCompanySetting
                             getLogo={this.getLogo.bind(this)}
                             configData = {this.state.configData} 
                             logo  = {this.state.logo} 
