@@ -215,7 +215,7 @@ i, span {
     font-size: 1em;
     display: block;
 }
-#sidebar ul li a:hover {
+#sidebar ul li a:hover,#sidebar ul li.sidebarMenuText.active a {
     color: #555;
     background: #fff;
 }

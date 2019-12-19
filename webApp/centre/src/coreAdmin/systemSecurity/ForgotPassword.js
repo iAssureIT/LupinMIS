@@ -76,24 +76,19 @@ class ForgotPassword extends Component {
                   templateName : 'User - Forgot Password OTP',
                   variables    : msgvariable,
                 }
-                this.setState({
-                  buttonValue : 'Send Verification Code'
-                },()=>{
-                  this.props.history.push("/confirm-otp");
+                axios
+                .post('/api/masternotification/send-mail',inputObj)
+                .then((response)=> {
+                  // console.log("-------mail------>>",response);
+                  this.setState({
+                    buttonValue : 'Send Verification Code'
+                  },()=>{
+                    this.props.history.push("/confirm-otp");
+                  })
                 })
-                // axios
-                // .post('/api/masternotification/send-mail',inputObj)
-                // .then((response)=> {
-                //   // console.log("-------mail------>>",response);
-                //   this.setState({
-                //     buttonValue : 'Send Verification Code'
-                //   },()=>{
-                //     this.props.history.push("/confirm-otp");
-                //   })
-                // })
-                // .catch(function (error) {
-                //   console.log(error);
-                // })
+                .catch(function (error) {
+                  console.log(error);
+                })
               }
             })
             .catch(function (error) {

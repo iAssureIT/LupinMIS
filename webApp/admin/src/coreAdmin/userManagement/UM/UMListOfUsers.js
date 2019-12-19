@@ -66,7 +66,7 @@ class UMListOfUsers extends Component {
 		}
 		axios.post('/api/users/userslist', data)
 		.then( (res)=>{      
-			console.log("res =============",res.data);
+			// console.log("res =============",res.data);
 			var tableData = res.data.map((a, i)=>{
 				return {
 					_id 			: a._id,
@@ -136,99 +136,193 @@ class UMListOfUsers extends Component {
 
 	activeSelected(checkedUsersList){
 		function updateStatus(formValues){
-			  return new Promise(function(resolve,reject){
-			    axios
-			    .post('/api/users/statusaction',formValues)
-			    .then((response)=> {
-	            	console.log("-------action------>>",response);  
-			        resolve(response);
-			    })
-			    .catch(function (error) {
-			        console.log(error);
-			    })
-			  })
-			}
-			function getUserDetails(selectedId){
-              return new Promise(function(resolve,reject){
-                axios
-        	 	.get('/api/users/'+selectedId)
-	            .then((response)=> {
-	            	console.log("-------user------>>",response);  
-	            	resolve(response);
-	        	})
-	            .catch(function (error) {
-	                console.log(error);
-	            })
-              })
-            }
-            function sendMail(inputObj){
-			  return new Promise(function(resolve,reject){
-			    axios
-			    .post('/api/masternotification/send-mail',inputObj)
-			    .then((response)=> {
-			        console.log("-------mail------>>",response);
-			        resolve(response);
-			    })
-			    .catch(function (error) {
-			        console.log(error);
-			    })
-			  })
-			}
+		  return new Promise(function(resolve,reject){
+		    axios
+		    .post('/api/users/statusaction',formValues)
+		    .then((response)=> {
+            	console.log("-------action------>>",response);  
+		        resolve(response);
+		    })
+		    .catch(function (error) {
+		        console.log(error);
+		    })
+		  })
+		}
+		function getUserDetails(selectedId){
+          return new Promise(function(resolve,reject){
+            axios
+    	 	.get('/api/users/'+selectedId)
+            .then((response)=> {
+            	console.log("-------user------>>",response);  
+            	resolve(response);
+        	})
+            .catch(function (error) {
+                console.log(error);
+            })
+          })
+        }
+        function sendMail(inputObj){
+		  return new Promise(function(resolve,reject){
+		    axios
+		    .post('/api/masternotification/send-mail',inputObj)
+		    .then((response)=> {
+		        console.log("-------mail------>>",response);
+		        resolve(response);
+		    })
+		    .catch(function (error) {
+		        console.log(error);
+		    })
+		  })
+		}
 		mainActive().then(response => {
-					    if(response){
-					        this.setState({
-					            activeswal : true,
-					            checkedUser : [],
-					            unCheckedUser : true
-					        },()=>{
-								$('#userListDropdownId').removeAttr('disabled')
-					            this.refs.userListDropdown.value = '-'
-					            this.getData(this.state.startRange,this.state.limitRange)
-					            checkedUsersList = [];
-					            if(this.state.activeswal == true)
-					            {
-					             swal("abc","Account activated successfully");
-					            }
-					        }); 
-					    }
-					});
-					async function mainActive(){
-					    var count = 0
-					    for(var i=0;i<checkedUsersList.length;i++){
-					        var selectedId = checkedUsersList[i];
-					        var formValues ={
-					            userID : selectedId,
-					            status : 'Active',
-					        }
+		    if(response){
+		        this.setState({
+		            activeswal : true,
+		            checkedUser : [],
+		            unCheckedUser : true
+		        },()=>{
+					$('#userListDropdownId').removeAttr('disabled')
+		            this.refs.userListDropdown.value = '-'
+		            this.getData(this.state.startRange,this.state.limitRange)
+		            checkedUsersList = [];
+		            if(this.state.activeswal == true)
+		            {
+		             swal("abc","Account activated successfully");
+		            }
+		        }); 
+		    }
+		});
+		async function mainActive(){
+		    var count = 0
+		    for(var i=0;i<checkedUsersList.length;i++){
+		        var selectedId = checkedUsersList[i];
+		        var formValues ={
+		            userID : selectedId,
+		            status : 'Active',
+		        }
 
-					      var response = await updateStatus(formValues)
-					      if(response){
-					        var user = await getUserDetails(selectedId)
-					        if(user){
-					            var currentUrl = window.location.hostname
-					            var url = currentUrl==='localhost'?'http://localhost:3001/':currentUrl==='qalmiscentre.iassureit.com'?'http://qalmiscentre.iassureit.com/':'http://uatlmiscenter.iassureit.com/'
-					            var msgvariable = {
-					                '[User]'    : user.data.profile.fullName,
-					                '[user_email_id]' : user.data.profile.emailId,
-					                '[center_application_URL]' : url
-					            }
-					            // console.log("msgvariable :"+JSON.stringify(msgvariable));
-					            var inputObj = {  
-					                to           : user.data.profile.emailId,
-					                templateName : 'User - Login Account Activation',
-					                variables    : msgvariable,
-					            }
-					            var mail = await sendMail(inputObj)
-					            if(mail){
-					                count++
-					                if(count===checkedUsersList.length){
-					                    return Promise.resolve(true);
-					                }
-					            }
-					        }
-					      }
-					    }
-					}
+		      var response = await updateStatus(formValues)
+		      if(response){
+		        var user = await getUserDetails(selectedId)
+		        if(user){
+		            var currentUrl = window.location.hostname
+		            var url = currentUrl==='localhost'?'http://localhost:3001/':currentUrl==='qalmiscentre.iassureit.com'?'http://qalmiscentre.iassureit.com/':'http://uatlmiscenter.iassureit.com/'
+		            var msgvariable = {
+		                '[User]'    : user.data.profile.fullName,
+		                '[user_email_id]' : user.data.profile.emailId,
+		                '[center_application_URL]' : url
+		            }
+		            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+		            var inputObj = {  
+		                to           : user.data.profile.emailId,
+		                templateName : 'User - Login Account Activation',
+		                variables    : msgvariable,
+		            }
+		            var mail = await sendMail(inputObj)
+		            if(mail){
+		                count++
+		                if(count===checkedUsersList.length){
+		                    return Promise.resolve(true);
+		                }
+		            }
+		        }
+		      }
+		    }
+		}
+	}
+	blockSelected(checkedUsersList){
+		function updateStatus(formValues){
+		  return new Promise(function(resolve,reject){
+		    axios
+		    .post('/api/users/statusaction',formValues)
+		    .then((response)=> {
+            	console.log("-------action------>>",response);  
+		        resolve(response);
+		    })
+		    .catch(function (error) {
+		        console.log(error);
+		    })
+		  })
+		}
+		function getUserDetails(selectedId){
+          return new Promise(function(resolve,reject){
+            axios
+    	 	.get('/api/users/'+selectedId)
+            .then((response)=> {
+            	console.log("-------user------>>",response);  
+            	resolve(response);
+        	})
+            .catch(function (error) {
+                console.log(error);
+            })
+          })
+        }
+        function sendMail(inputObj){
+		  return new Promise(function(resolve,reject){
+		    axios
+		    .post('/api/masternotification/send-mail',inputObj)
+		    .then((response)=> {
+		        console.log("-------mail------>>",response);
+		        resolve(response);
+		    })
+		    .catch(function (error) {
+		        console.log(error);
+		    })
+		  })
+		}
+		mainBlock().then(response => {
+			if(response){
+            	this.setState({
+				  	blockswal : true,
+				  	checkedUser : [],
+				  	unCheckedUser : true
+				},()=>{
+					$('#userListDropdownId').removeAttr('disabled')
+					this.refs.userListDropdown.value = '-'
+					this.getData(this.state.startRange,this.state.limitRange)
+					checkedUsersList = []	
+					if(this.state.blockswal == true)
+				   	{
+				   		swal("abc","Account blocked successfully",);
+				   	}	
+				})
+			}
+          //here you can update your collection with axios call
+        });
+		async function mainBlock(){
+		    var count = 0
+		    for(var i=0;i<checkedUsersList.length;i++){
+		        var selectedId = checkedUsersList[i];
+		        var formValues ={
+		            userID : selectedId,
+		            status : 'Blocked',
+		        }
+
+		      var response = await updateStatus(formValues)
+		      if(response){
+		        var user = await getUserDetails(selectedId)
+		        if(user){
+		            var msgvariable = {
+		                '[User]'    : user.data.profile.fullName,
+		                '[user_email_id]' : user.data.profile.emailId
+		            }
+		            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+		            var inputObj = {  
+		                to           : user.data.profile.emailId,
+		                templateName : 'User - Login Account Blocked',
+		                variables    : msgvariable,
+		            }
+		        	var mail = await sendMail(inputObj)
+		        	if(mail){
+		        		count++
+		                if(count===checkedUsersList.length){
+		                    return Promise.resolve(true);
+		                }
+		        	}
+		        }
+		      }
+		    }
+		}	
 	}
 	adminUserActions(event){
 		event.preventDefault();
@@ -237,45 +331,6 @@ class UMListOfUsers extends Component {
 		// console.log('id array here', checkedUsersList);
 			
 		if( checkedUsersList.length > 0 ){
-			function updateStatus(formValues){
-			  return new Promise(function(resolve,reject){
-			    axios
-			    .post('/api/users/statusaction',formValues)
-			    .then((response)=> {
-	            	console.log("-------action------>>",response);  
-			        resolve(response);
-			    })
-			    .catch(function (error) {
-			        console.log(error);
-			    })
-			  })
-			}
-			function getUserDetails(selectedId){
-              return new Promise(function(resolve,reject){
-                axios
-        	 	.get('/api/users/'+selectedId)
-	            .then((response)=> {
-	            	console.log("-------user------>>",response);  
-	            	resolve(response);
-	        	})
-	            .catch(function (error) {
-	                console.log(error);
-	            })
-              })
-            }
-            function sendMail(inputObj){
-			  return new Promise(function(resolve,reject){
-			    axios
-			    .post('/api/masternotification/send-mail',inputObj)
-			    .then((response)=> {
-			        console.log("-------mail------>>",response);
-			        resolve(response);
-			    })
-			    .catch(function (error) {
-			        console.log(error);
-			    })
-			  })
-			}
 			var selectedValue        = this.refs.userListDropdown.value;
 			var keywordSelectedValue = selectedValue.split('$')[0];
 			var role                 = selectedValue.split('$')[1];
@@ -290,59 +345,7 @@ class UMListOfUsers extends Component {
 			    break;
 
 				case 'block_selected':
-					mainBlock().then(response => {
-						if(response){
-	                    	this.setState({
-							  	blockswal : true,
-							  	checkedUser : [],
-							  	unCheckedUser : true
-							},()=>{
-								$('#userListDropdownId').removeAttr('disabled')
-								this.refs.userListDropdown.value = '-'
-								this.getData(this.state.startRange,this.state.limitRange)
-								checkedUsersList = []	
-								if(this.state.blockswal == true)
-							   	{
-							   		swal("abc","Account blocked successfully",);
-							   	}	
-							})
-						}
-	                  //here you can update your collection with axios call
-	                });
-					async function mainBlock(){
-					    var count = 0
-					    for(var i=0;i<checkedUsersList.length;i++){
-					        var selectedId = checkedUsersList[i];
-					        var formValues ={
-					            userID : selectedId,
-					            status : 'Blocked',
-					        }
-
-					      var response = await updateStatus(formValues)
-					      if(response){
-					        var user = await getUserDetails(selectedId)
-					        if(user){
-					            var msgvariable = {
-					                '[User]'    : user.data.profile.fullName,
-					                '[user_email_id]' : user.data.profile.emailId
-					            }
-					            // console.log("msgvariable :"+JSON.stringify(msgvariable));
-					            var inputObj = {  
-					                to           : user.data.profile.emailId,
-					                templateName : 'User - Login Account Blocked',
-					                variables    : msgvariable,
-					            }
-					        	var mail = await sendMail(inputObj)
-					        	if(mail){
-					        		count++
-					                if(count===checkedUsersList.length){
-					                    return Promise.resolve(true);
-					                }
-					        	}
-					        }
-					      }
-					    }
-					}	   	
+				    this.blockSelected(checkedUsersList)
 				break;
 
 				case 'active_selected':
@@ -398,7 +401,7 @@ class UMListOfUsers extends Component {
 				       .post('/api/users/roleadd/',formValues)
 				       .then(
 				        (res)=>{
-				            // console.log('res', res);
+				            console.log('res', res);
 					        this.setState({
 							  	checkedUser : [],
 							  	unCheckedUser : true

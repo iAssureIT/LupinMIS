@@ -174,32 +174,6 @@ class CreateUser extends Component {
         if(this.state.firstname!=="" && this.state.lastname !=="" && this.state.signupEmail && this.state.mobileNumber && this.state.role !== "--select--"){
            axios.post('/api/users', formValues)
                 .then( (res)=>{
-                  swal({
-                    title: "User added successfully",
-                    text: "User added successfully",
-                  });
-                  this.setState({
-                    firstname   : "",
-                    lastname    : "",
-                    signupEmail : "",
-                    mobileNumber   : "",
-                    role        : "",
-                    centerName  : "",
-                    show: false,
-                    'buttonType':'Register User'
-                  },()=>{
-                    var data = {
-                      "startRange"        : this.state.startRange,
-                      "limitRange"        : this.state.limitRange, 
-                    }
-                                  
-                    this.props.getData(0, 10);
-                    var modal = document.getElementById("CreateUserModal");
-                    modal.style.display = "none";
-                    $('.modal-backdrop').remove();
-                    // window.location = "/umlistofusers"
-                    // this.props.history.push("/umlistofusers");    
-                  })
                   var msgvariable = {
                     '[User]'    : this.state.firstname+' '+this.state.lastname,
                   }
@@ -209,40 +183,40 @@ class CreateUser extends Component {
                     templateName : 'User - Signup Notification',
                     variables    : msgvariable,
                   }
-                  // axios
-                  // .post('/api/masternotification/send-mail',inputObj)
-                  // .then((response)=> {
-                  //   // console.log("-------mail------>>",response);
-                  //   swal({
-                  //     title: "User added successfully",
-                  //     text: "User added successfully",
-                  //   });
-                  //   this.setState({
-                  //     firstname   : "",
-                  //     lastname    : "",
-                  //     signupEmail : "",
-                  //     mobileNumber   : "",
-                  //     role        : "",
-                  //     centerName  : "",
-                  //     show: false,
-                  //     'buttonType':'Register User'
-                  //   },()=>{
-                  //     var data = {
-                  //       "startRange"        : this.state.startRange,
-                  //       "limitRange"        : this.state.limitRange, 
-                  //     }
+                  axios
+                  .post('/api/masternotification/send-mail',inputObj)
+                  .then((response)=> {
+                    // console.log("-------mail------>>",response);
+                    swal({
+                      title: "User added successfully",
+                      text: "User added successfully",
+                    });
+                    this.setState({
+                      firstname   : "",
+                      lastname    : "",
+                      signupEmail : "",
+                      mobileNumber   : "",
+                      role        : "",
+                      centerName  : "",
+                      show: false,
+                      'buttonType':'Register User'
+                    },()=>{
+                      var data = {
+                        "startRange"        : this.state.startRange,
+                        "limitRange"        : this.state.limitRange, 
+                      }
                                     
-                  //     this.props.getData(0, 10);
-                  //     var modal = document.getElementById("CreateUserModal");
-                  //     modal.style.display = "none";
-                  //     $('.modal-backdrop').remove();
-                  //     // window.location = "/umlistofusers"
-                  //     // this.props.history.push("/umlistofusers");    
-                  //   })
-                  // })
-                  // .catch(function (error) {
-                  //     console.log(error);
-                  // })  
+                      this.props.getData(0, 10);
+                      var modal = document.getElementById("CreateUserModal");
+                      modal.style.display = "none";
+                      $('.modal-backdrop').remove();
+                      // window.location = "/umlistofusers"
+                      // this.props.history.push("/umlistofusers");    
+                    })
+                  })
+                  .catch(function (error) {
+                      console.log(error);
+                  })  
                 })
               .catch((error)=>{
                 console.log("error = ",error);

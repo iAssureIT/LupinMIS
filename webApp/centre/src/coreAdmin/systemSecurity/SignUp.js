@@ -113,12 +113,6 @@ class SignUp extends Component {
 		                                templateName : 'User - Signup Notification',
 		                                variables    : msgvariable,
 		                            }
-		               //              this.setState({
-	     	    						// buttonValue : 'Sign Up'
-				            	// 	},()=>{
-					            // 		swal("success","Information submitted successfully ");
-						           //      this.props.history.push("/login");
-				            	// 	})
 		                            axios
 			                	 	.post('/api/masternotification/send-mail',inputObj)
 						            .then((response)=> {

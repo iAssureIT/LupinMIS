@@ -129,12 +129,13 @@ logout(){
                             </div>
                           </div>
                           <hr className="borderline marTop"/>
-                          <div className="logoutDiv marTop">
+                          <div className="marTop">
                             {/*<span className="pull-left">
                               <a  className=" profileTitle btnpadd " href="/#">
                                <button type="button" className="profilebtn btn">Profile</button></a>
                             </span>*/}
-                            <span className="pull-right">
+                            {/*<span className="pull-right">*/}
+                            <span className="col-lg-offset-4">
                               <a  className="profileTitle btnpadd" href="/login">
                               {/* <button type="button" className="profilebtn">Logout</button>*/}
                                  <button type="button" className="btn  profilebtn" onClick={this.logout.bind(this)}>Sign Out</button>

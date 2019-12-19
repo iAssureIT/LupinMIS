@@ -169,13 +169,13 @@ import './SignUp.css';
               templateName : 'User - Forgot Password OTP',
               variables    : msgvariable,
             }
-            // axios
-            // .post('/api/masternotification/send-mail',inputObj)
-            // .then((response)=> {
-            // })
-            // .catch(function (error) {
-            //   console.log(error);
-            // })
+            axios
+            .post('/api/masternotification/send-mail',inputObj)
+            .then((response)=> {
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
           }
         })
         .catch(function (error) {
