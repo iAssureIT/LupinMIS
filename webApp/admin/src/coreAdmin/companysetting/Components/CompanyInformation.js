@@ -4,6 +4,8 @@ import $ from "jquery";
 import axios from 'axios';
 // import SimpleReactValidator from 'simple-react-validator';
 import swal from 'sweetalert';
+import S3FileUpload           from 'react-s3';
+import { deleteFile }         from 'react-s3';
 import InputMask  from 'react-input-mask';
 import AddFilePublic          from "../../addFile/AddFilePublic.js";
 import validate               from 'jquery-validation';
@@ -78,6 +80,7 @@ class CompanyInformation extends Component{
     this.handleChange = this.handleChange.bind(this);
   }
   componentDidMount() {
+    console.log("localStorage.token = ",localStorage.getItem("token"));
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
  
    /* $.validator.addMethod("regxContact", function(value, element, regexpr) { 
@@ -144,6 +147,9 @@ class CompanyInformation extends Component{
         submitVal               : false,
         defaultPassword         : res.data.defaultPassword, 
         logoFilename            : res.data.logoFilename, 
+        companyLogo             : res.data.companyLogo, 
+      },()=>{
+          console.log("1. companyLogo = ", this.state.companyLogo);
       });
       console.log("this.this.state.companyName",this.state.companyName)
     })
@@ -153,52 +159,6 @@ class CompanyInformation extends Component{
     });
   }
  
-  removeCompanyImage(event){
-    event.preventDefault();
-    // var link = $(event.target).attr('data-link');
-  }
-
-  CompanyImage(){
-    // var TempIamge = this.props.tempLogoData;
-    // if(TempIamge){
-    //   // this.setState({
-    //   //   commonLogo : TempIamge.logo
-    //   // })
-    //   return TempIamge.logo;
-    // }else{
-    //   var companyData = CompanySettings.findOne({});
-    //   if(companyData){
-    //     if(companyData.companyLogo){
-    //       // this.setState({
-    //       //   commonLogo : companyData.companyLogo
-    //       // })
-    //       return companyData.companyLogo;
-    //     }else{
-    //       return '/images/CSLogo.png';
-    //     }
-    //   } else{
-    //     return '/images/CSLogo.png';
-    //   }
-    // }
-  }
-  imgBrowse(e){
-   
-    e.preventDefault();
-    // let self=this;      
-    //   if(e.currentTarget.files){
-    //   var file=e.currentTarget.files[0];
-    //   if(file){
-    //     var fileExt=e.currentTarget.files[0].name.split('.').pop();
-    //     if (fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'svg' || fileExt == 'png' ) {
-    //        attachLogoToS3Function(file,self);
-    //     }else{
-    //     swal({
-    //       title:"abc",
-    //       text:'Please upload only .jpg/.jpeg/.svg/.png files'});
-    //     }
-    //   }
-    // }           
-  }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.get && nextProps.get.length != 0){
@@ -219,7 +179,6 @@ class CompanyInformation extends Component{
                 logoFilename            : this.state.logoFilename,
                 companyLogo             : this.state.companyLogo,
                 defaultPassword         : this.state.defaultPassword
-
      });
     }
 
@@ -270,13 +229,6 @@ class CompanyInformation extends Component{
       defaultPassword         : this.state.defaultPassword
     }
   
-    console.log("companyInfoFormValue--------------------",companyInfoFormValue);
-
-    // formValid(this.state.formerrors)
-  // if(this.state.companyName!= "" && this.state.companyContactNumber!= "" && this.state.companyEmail!= ""
-  //  && this.state.companywebsite!= "" && this.state.companyAddressLine1!= "" && this.state.companyCountry!= ""
-  //  && this.state.companyState!= "" && this.state.companyDist!= "" && this.state.companyCity!= "" && 
-  //   this.state.companyPincode!= "" && this.state.taluka!= "" && this.state.defaultPassword!= ""){
   if($("#companyInformationForm").valid()){  
     if(this.state.submitVal == true){
         axios.post('/api/companysettings',companyInfoFormValue)
@@ -306,7 +258,7 @@ class CompanyInformation extends Component{
           companywebsite          : "",
           defaultPassword         : "",
           },()=>{
-            this.getCompanySettingsData()
+            // this.getCompanySettingsData()
           });
         })
         .catch(function (error) {
@@ -323,7 +275,7 @@ class CompanyInformation extends Component{
     }else{
       // upate function
 
-      console.log("update axios");
+      console.log("update axios = ",companyInfoFormValueUpdate);
       axios.patch('/api/companysettings/information',companyInfoFormValueUpdate)
         .then( (response)=> {
           // handle success
@@ -332,9 +284,6 @@ class CompanyInformation extends Component{
             title: "Company Information Updated Successfully",
             text: "Company Information Updated Successfully",
           });
-
-          // after update show updated data
-          this.getCompanySettingsData()
         })
         .catch(function (error) {
           // handle error
@@ -348,90 +297,13 @@ class CompanyInformation extends Component{
     }
   }
 
-  // }else{
- 
-
-  //            swal({
-  //                   title: "Please enter mandatory fields",
-  //                   text: "Please enter mandatory fields",
-  //                 });
-  //   console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-  // }
- 
-     
-
       
 
   
   }
   handleChange(event){
 
-    // const target = event.target;
-    // const {name , value}   = event.target;
-    
-    /**************Working code of react validation***************/
-    // const datatype = event.target.getAttribute('data-text');
     const {name,value} = event.target;
-    // let formerrors = this.state.formerrors;
-    
-    // console.log("datatype",datatype);
-    // switch (datatype){
-     
-    //   case 'firstcompanyname' : 
-    //    formerrors.firstcompanyname = companynameRegex.test(value)  && value.length>0 ? '' : "Please Enter Valid Name";
-    //    break;
-
-    //    case 'companyMobile' : 
-    //    formerrors.companyMobile = companymobileRegex.test(value) && value.length>0 ? '' : "Please enter a valid Contact Number";
-    //    break;
-
-    //    case 'companyEmailID' : 
-    //     formerrors.companyEmailID = emailRegex.test(value)  && value.length>0? "":"Please enter a valid Email ID";
-    //    break;
-    //   //  case "email" : 
-    //   //  formErrors.email = emailRegex.test(value)? "":"Please enter valid mail address";
-    //   //  break;
-    //   case 'companywebsitename' : 
-    //      formerrors.companywebsitename = companywebsiteRegex.test(value)  && value.length>0 ? '' : "Please enter a valid Company Website";
-    //   break;
-
-    //    case 'companyAddress' : 
-    //    formerrors.companyAddress = companyAddressRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-    //   break;
-    
-    //   case 'country' : 
-    //     formerrors.country = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-    //   break;
-    
-    //   case 'state' : 
-    //     formerrors.state = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-    //   break;
-    
-    //   case 'district' : 
-    //     formerrors.district = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-    //   break;
-
-    //   case 'taluka' : 
-    //     formerrors.taluka = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-    //   break;
-
-    //   case 'city' : 
-    //     formerrors.city = companynameRegex.test(value)  && value.length>0 ? '' : "Invalid Field";
-    //   break;
-
-    //   case 'pincode' : 
-    //     formerrors.pincode = companypincodeRegex.test(value)   && value.length>0? '' : "Invalid Field";
-    //   break;
-       
-    //    default :
-    //    break;
-
-    //   //  case 'companyName' : 
-    //   //  formerrors.companyName = value.length < 1 && value.lenght > 0 ? 'Minimum 1 Character required' : "";
-    //   //  break;
-
-    // }
-    // // this.setState({formerrors,})
     this.setState({ 
       [name]:value
     } );
@@ -441,14 +313,36 @@ class CompanyInformation extends Component{
       "companyLogo" : logo,
       "logoFilename" : filename,
     },()=>{
-    console.log("logoFilename",this.state.logoFilename);
+      console.log("logoFilename",this.state.logoFilename);
       console.log("companyLogo",this.state.companyLogo)
     })
 
   }
+  
+  deleteimagelogoDirect(event){
+    event.preventDefault();
+    swal({
+          title: "Are you sure you want to delete this image?",
+          text: "Once deleted, you will not be able to recover this image!",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((success) => {
+            if (success) {
+              swal("abc","Your image is deleted!");
+              this.setState({
+                companyLogo : ""
+              })
+            } else {
+            swal("abc","Your image is safe!");
+          }
+        });
+  }
 
   render(){
     const {formerrors} = this.state;
+    console.log("companyLogo",this.state.companyLogo)
+
     return(
       <div className="">
         <form id="companyInformationForm"  >
@@ -461,36 +355,26 @@ class CompanyInformation extends Component{
                
                 <div className="col-lg-6 col-lg-offset-6 col-md-6 col-sm-12 col-xs-12 csImageWrapper">
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    <AddFilePublic
-                        getLogo={this.getLogo.bind(this)}
-                        configData = {this.state.configData} 
-                        logo  = {this.state.logo} 
-                        fileType   = "Image" 
-                      />   
-                    {/*<ImageUpload
-                      configData = {this.state.configData}
-                      logo  = {this.state.logo}
-                      fileType   = "Image"
-                    /> */}
-                    {/*<img src= "images/lupin.png" className="companyImage" / >*/}
-                    {/*  {this.CompanyImage() === '../images/CSLogo.png'? <i className="fa fa-camera fonticons" aria-hidden="true" title="First Add Photo."/>
-                      :
-                      <i className="fa fa-times fonticons removeprofPhoto" aria-hidden="true" title="Remove Photo." onClick={this.removeCompanyImage.bind(this)} data-link={this.state.companyLogo} id={this.state.companyLogo} data-id={this.state.companyId}></i>
-                      }
-                      <div className="col-lg-12 col-md-12 col-sm-12ClientImgWrap1 displayBlockOne">
-                        {
-                        this.CompanyImage() ==='../images/CSLogo.png' ?  <i className="fa fa-camera fonticons paddingNoImageUpload col-lg-2 col-md-2 col-sm-2   styleUpload" title="Add Photo.">
-                        <input type="file" className="col-lg-1 col-md-1 col-sm-1 col-xs-12 browseDoc" accept="image/*" onChange={this.imgBrowse.bind(this)}/> </i>
-                          :
-                          <i className="fa fa-camera fonticons paddingNoImageUpload col-lg-2  styleUpload" title="Change Photo.">
-                            <input type="file" className="col-lg-1 col-md-1 col-sm-1 col-xs-1 browseDoc" accept="image/*" onChange={this.imgBrowse.bind(this)}/>
-                          </i>
-                        }
+                    {this.state.companyLogo 
+                      ? 
+                        // <img src={this.state.companyLogo} className="imageC"/>
+                      <div className=" padTopC">
+                        <div className="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <h5 className="formLable col-lg-12 col-md-12 col-sm-12 col-xs-12 row">Logo <span className="astrick">*</span></h5>
+                        </div>
+                        <div className="containerC">
+                          <label id="logoImage" className="pull-right custFaTimes1" title="Delete image" onClick={this.deleteimagelogoDirect.bind(this)}>X</label>
+                          <img src={this.state.companyLogo} alt="logo_Lupin" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imageC"/>
+                        </div>
                       </div>
-
-                        {<img className="col-lg-12 col-md-12 col-sm-12 ClientImgWrap1 displayLogoOne" src={this.CompanyImage()?this.CompanyImage() :"/images/preloader.gif"}/>}
-                        
-                    */}
+                      :
+                        <AddFilePublic
+                            getLogo={this.getLogo.bind(this)}
+                            configData = {this.state.configData} 
+                            logo  = {this.state.logo} 
+                            fileType   = "Image" 
+                          />   
+                    }
                   </div>
                 </div>
               </div>
