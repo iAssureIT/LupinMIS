@@ -753,7 +753,8 @@ class centerDetail extends Component{
     var districtCovered = event.target.value;
     // console.log('districtCovered', districtCovered);
     this.setState({
-      districtCovered: districtCovered
+      districtCovered: districtCovered,
+      blocksCovered : '--Select Block--',
     },()=>{
       var selectedDistrict = this.state.districtCovered.split('|')[0];
       // console.log("selectedDistrict",selectedDistrict);

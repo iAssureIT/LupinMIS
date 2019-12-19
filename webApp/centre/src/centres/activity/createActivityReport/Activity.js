@@ -677,13 +677,15 @@ class Activity extends Component{
                   "selectedBeneficiaries" : bentableData,
                   "projectCategoryType"   : editData.projectCategoryType,
                   "projectName"           : editData.projectName==='all'?'-- Select --':editData.projectName,
+                  "sectorId" : editData.sector_ID,
+                  "activityId" : editData.activity_ID,
                 }, ()=>{
                   // console.log("edit", this.state.editData)
                   this.getAvailableCenter(this.state.center_ID);
                   this.getBlock(this.state.stateCode, this.state.district);
                   this.getVillages(this.state.stateCode, this.state.district, this.state.block);
-                  this.getAvailableActivity(editData.sector_ID);
-                  this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID)
+                  this.getAvailableActivity(this.state.sectorId);
+                  this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
                 }); 
               })
             }
