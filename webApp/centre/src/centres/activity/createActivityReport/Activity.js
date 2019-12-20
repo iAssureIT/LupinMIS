@@ -78,8 +78,8 @@ class Activity extends Component{
 
         projectCategoryType        : "Category",
         projectName                : "Project Name",
-        date                       : "Date",
-        place                      : "Place",
+        date                       : "Intervention Date",
+        place                      : "Intervention Place",
         sectorName                 : "Sector",
         activityName               : "Activity",
         subactivityName            : "Sub-Activity",

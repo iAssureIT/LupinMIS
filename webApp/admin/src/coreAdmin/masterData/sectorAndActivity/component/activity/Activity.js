@@ -24,8 +24,8 @@ class Activity extends Component{
       "tabtype"             : "location", 
       "availableSectors"    : [],
       "tableHeading"        : {
-        sector              : "Name of Sector",
-        activityName        : "Name of Activity",
+        sector              : "Sector",
+        activityName        : "Activity",
         actions             : 'Action',
       },
       "tableObjects"        : {
@@ -344,7 +344,7 @@ class Activity extends Component{
                     <div className="errorMsg">{this.state.errors.sector}</div>
                   </div>
                   <div className=" col-md-6 col-sm-6 col-xs-12 ">
-                    <label className="formLable">Name of Activity</label><span className="asterix">*</span>
+                    <label className="formLable">Activity</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activityName" >
                       
                       <input type="text" className="form-control inputBox "  placeholder="" name="activityName"  value={this.state.activityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activityName" />

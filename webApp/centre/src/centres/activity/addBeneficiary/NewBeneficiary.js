@@ -482,7 +482,7 @@ class NewBeneficiary extends Component{
               <div className="modal-dialog modal-lg " >
                 <div className="modal-content ">
                   <div className=" ">
-                    <div className="col-lg-12  col-md-10 pageContent margTop">
+                    <div className="col-lg-12  col-md-10 fixedModalHeight margTop">
                       <button type="button" className="close" data-dismiss="modal"> <i className="fa fa-times"></i></button>
                         <div className="col-lg-12 ">
                           <div className="row">

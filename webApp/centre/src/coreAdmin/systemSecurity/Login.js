@@ -97,8 +97,8 @@ class Login extends Component {
       .catch(function (error) {
         if(error.response&&error.response.status===401){
           swal("Invalid Email or Password","Email ID does not exists");
-        }else if(localStorage!==null){
-          swal("Invalid Email or Password","Please Enter valid email and password");
+        }else if(error.response&&error.response.status===409){
+          swal("Invalid Email or Password","Please Enter a valid password");
         }else{
           swal("Invalid Email or Password","Please try again");
         }

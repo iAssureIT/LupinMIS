@@ -14,7 +14,7 @@ class SectorMapping extends Component{
     super(props);
    
     this.state = {
-      "goalName"           : "",
+      "goalName"           : "-- Select --",
       "goalType"           : "-- Select --",
       "sector"             : "",
       "activity"           : "",
@@ -60,7 +60,7 @@ class SectorMapping extends Component{
     event.preventDefault();
     var selectedActivities = this.state.selectedActivities;
     // if (this.validateFormReq() && this.validateForm()) {
-    if (this.state.selectedActivities==""){      
+    if (selectedActivities.length===0){      
       swal({
         title: 'abc',
         text: "Please select any Activity",
@@ -94,10 +94,11 @@ class SectorMapping extends Component{
           })
         })
         this.setState({
-          "goalName"           :"",
+          "goalName"           :"-- Select --",
           "goalType"           :"-- Select --",
           "selectedActivities" :[],
-          fields               :fields
+          // fields               :fields,
+          "selectedTypeofGoal" : ''
         });
       }        
     }
@@ -106,52 +107,59 @@ class SectorMapping extends Component{
   Update(event){
     event.preventDefault();
     var selectedActivities = this.state.selectedActivities;
-    if(this.refs.goalName.value == "" || this.refs.goalType.value =="")
-   {
-      if (this.validateFormReq() && this.validateForm()){
-      }
-    }else{
-    var id2 = this.state.uID;
-    var mappingValues= 
-    {     
-      "sectorMapping_ID"    : this.state.editId,
-      "goal"                : this.refs.goalName.value,
-      "type_ID"             : this.refs.goalType.value,          
-      "sector"              : this.state.selectedActivities,                  
-    };
-    let fields = {};
-    fields["goalName"]  = "";
-    fields["goalType"]  = "";
+    if (selectedActivities.length===0){      
+      swal({
+        title: 'abc',
+        text: "Please select any Activity",
+        button: true,
+      });
+    }else{   
+      if($('#sectorMapping').valid()){
+      // if(this.refs.goalName.value == "" || this.refs.goalType.value ==""){
+        //   if (this.validateFormReq() && this.validateForm()){
+        //   }
+        // }else{
+        var id2 = this.state.uID;
+        var mappingValues= 
+        {     
+          "sectorMapping_ID"    : this.state.editId,
+          "goal"                : this.refs.goalName.value,
+          "type_ID"             : this.refs.goalType.value,          
+          "sector"              : this.state.selectedActivities,                  
+        };
+        let fields = {};
+        fields["goalName"]  = "";
+        fields["goalType"]  = "";
 
-    axios.patch('/api/sectorMappings/update',mappingValues)
-      .then((response)=>{
-        swal({
-          title : response.data.message,
-          text  : response.data.message
-        });
-        this.getData(this.state.startRange, this.state.limitRange);
-      })
-      .catch(function(error){
-        console.log("error = ",error);
-      });
-      selectedActivities.map((a, index)=>{
-        this.setState({
-          [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : false
-        })
-      })
-      this.setState({
-        "goalName"           : "",
-        "goalType"           : "-- Select --",
-        "selectedActivities" : [],
-        fields               : fields
-      });
-      
-    }   
-    
-    this.props.history.push('/sector-mapping');
-    this.setState({
-      "editId"              : "",
-    });
+        axios.patch('/api/sectorMappings/update',mappingValues)
+          .then((response)=>{
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });
+            this.getData(this.state.startRange, this.state.limitRange);
+          })
+          .catch(function(error){
+            console.log("error = ",error);
+          });
+          selectedActivities.map((a, index)=>{
+            this.setState({
+              [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : false
+            })
+          })
+          this.setState({
+            "goalName"           : "-- Select --",
+            "goalType"           : "-- Select --",
+            "selectedActivities" : [],
+            // fields               : fields,
+            "selectedTypeofGoal" : '',
+            "editId"              : "",
+          },()=>{
+            this.props.history.push('/sector-mapping');
+          });
+        // }   
+      }
+    }
   }
 
   validateFormReq() {
@@ -238,24 +246,35 @@ class SectorMapping extends Component{
       url: '/api/sectorMappings/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      editData.sector.map((a, i)=>{
-        this.setState({
-          [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : true
-        },()=>{
-        })
-      })
-      this.setState({
-        "goalName"                : editData.goal,        
-        "goalType"                : editData.type_ID,      
-        "selectedActivities"      : editData.sector, 
-      });
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
+      // console.log('editData=====',editData)
+      if(editData){
+        axios({
+          method: 'get',
+          url: '/api/typeofgoals/'+editData.type_ID,
+        }).then((response)=> {
+          // console.log('response==',response)
+          editData.sector.map((a, i)=>{
+            this.setState({
+              [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : true
+            })
+          })
+          this.setState({
+            "goalName"                : editData.goal,
+            "selectedTypeofGoal"      : response.data[0].typeofGoal,
+            "goalType"                : editData.type_ID,      
+            "selectedActivities"      : editData.sector, 
+          });
+          let fields = this.state.fields;
+          let errors = {};
+          let formIsValid = true;
+          this.setState({
+            errors: errors
+          });
+          return formIsValid;
+        }).catch(function (error) {
+          // console.log("error = ",error);
+        });
+      }
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -310,8 +329,7 @@ class SectorMapping extends Component{
           selectedActivities   : selectedActivities,
         });
       }else{
-        var index = selectedActivities.findIndex(v => v.activityName === id);
-        selectedActivities.splice(selectedActivities.findIndex(v => v.activityName === id), 1);
+        selectedActivities.splice(selectedActivities.findIndex(v => v.activity_ID === id.split("|")[2]), 1);
         this.setState({
           selectedActivities : selectedActivities
         });
@@ -434,7 +452,7 @@ class SectorMapping extends Component{
                                 {
                                   this.state.selectedTypeofGoal==="Empowerment Line" ? 
                                     <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
-                                      <option  className="hidden" >-- Select --</option>
+                                      <option  selected="true" disabled="disabled">-- Select --</option>
                                       <option  className="emp" >Social Security</option>
                                       <option  className="" >Food</option>
                                       <option  className="" >Energy</option>
@@ -447,7 +465,7 @@ class SectorMapping extends Component{
                                   : 
                                   this.state.selectedTypeofGoal==="ADP" ? 
                                     <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
-                                      <option  className="hidden" >-- Select --</option>
+                                      <option  selected="true" disabled="disabled">-- Select --</option>
                                       <option  className="adp" >Health & Nutrition</option>
                                       <option  className="" >Education</option>
                                       <option  className="" >Agriculture & Water Resources</option>
@@ -458,7 +476,7 @@ class SectorMapping extends Component{
                                   :
                                   this.state.selectedTypeofGoal==="SDG" ? 
                                     <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
-                                      <option  className="hidden" >-- Select --</option>
+                                      <option  selected="true" disabled="disabled">-- Select --</option>
                                       <option  className="sdg" >GOAL 1: No Poverty</option>
                                       <option  className="" >GOAL 2: Zero Hunger</option>
                                       <option  className="" >GOAL 3: Good Health and Well-being</option>
@@ -480,7 +498,7 @@ class SectorMapping extends Component{
                                   : 
                                   this.state.selectedTypeofGoal!=="SDG" && this.state.selectedTypeofGoal!=="ADP" && this.state.selectedTypeofGoal!=="Empowerment Line"
                                     ? 
-                                      <input type="text" className="form-control inputBox" value={this.state.goalName} onChange={this.handleChange.bind(this)}  placeholder="" name="goalName" ref="goalName" />
+                                      <input type="text" className="form-control inputBox" value={this.state.goalName==='-- Select --'?'':this.state.goalName} onChange={this.handleChange.bind(this)}  placeholder="" name="goalName" ref="goalName" />
                                   : null
                                 }
                               </div>

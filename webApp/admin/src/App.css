@@ -191,8 +191,8 @@ input, select{
   font-size: 12px !important;
 }
 .inputBox:disabled{
-  background: #fff;
-  cursor: auto;
+  /*background: #fff;*/
+  /*cursor: auto;*/
 }
 
 .valid_box{

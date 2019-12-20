@@ -1,6 +1,12 @@
 /*Page content */
+.fixedModalHeight{
+  background-color: #ffffff !important;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  height: 600px !important;
+  overflow-y: auto;
+}
 .pageContent{
-
   background-color: #ffffff !important;
   padding-bottom: 15px;
   margin-bottom: 20px;

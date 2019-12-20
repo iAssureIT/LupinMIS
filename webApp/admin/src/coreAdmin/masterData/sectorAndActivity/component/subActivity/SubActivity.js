@@ -23,9 +23,9 @@ class SubActivity extends Component{
       fields                : {},
       errors                : {},
       "tableHeading"        : {
-        sector              : "Name of Sector",
-        activityName        : "Name of Activity",
-        subActivityName     : "Name of Sub-Activity",
+        sector              : "Sector",
+        activityName        : "Activity",
+        subActivityName     : "Sub-Activity",
         unit                : "Unit",
         familyUpgradation   : "Family Upgradation",
         actions             : 'Action',

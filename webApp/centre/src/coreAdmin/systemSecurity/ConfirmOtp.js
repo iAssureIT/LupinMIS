@@ -39,6 +39,8 @@ import './SignUp.css';
         var currentOTP = this.refs.emailotp.value
         if(sentEmailOTP===currentOTP){
           this.props.history.push('/reset-pwd')
+        }else{
+          swal('abc',"OTP doesn't match with sent OTP");                  
         }
       }
 

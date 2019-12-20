@@ -376,11 +376,12 @@ class UMListOfUsers extends Component {
 							  	checkedUser : [],
 							  	unCheckedUser : true
 							},()=>{
+						        // console.log('========checkedUsersList.length===',response)
 								$('#userListDropdownId').removeAttr('disabled')
 								this.refs.userListDropdown.value = '-'
 								this.getData(this.state.startRange,this.state.limitRange)
-								checkedUsersList = []	
-					    		swal("abc","User deleted successfully",);
+								checkedUsersList = []
+				          		swal("abc","User(s) Deleted Successfully");
 							})
 						}).catch((error)=> {
 						    // console.log(error);
@@ -389,6 +390,7 @@ class UMListOfUsers extends Component {
 				break;
 
 				case 'add':
+					var changed = 0
 				    for(var i=0;i< checkedUsersList.length;i++){
 					  	var selectedId = checkedUsersList[i];
 					  	var formValues ={
@@ -401,16 +403,19 @@ class UMListOfUsers extends Component {
 				       .post('/api/users/roleadd/',formValues)
 				       .then(
 				        (res)=>{
-				            console.log('res', res);
+				            // console.log('res', res);
 					        this.setState({
 							  	checkedUser : [],
 							  	unCheckedUser : true
 							},()=>{
+								if(res.data&&res.data.message==='Roles-Updated'){
+						          	changed++
+						        }
 								$('#userListDropdownId').removeAttr('disabled')
 								this.refs.userListDropdown.value = '-'
 								this.getData(this.state.startRange,this.state.limitRange)
 								checkedUsersList = []	
-				          		swal("abc","Assigned Role Added Successfully",);
+				          		swal("abc",changed + " Records(s) Updated Successfully");
 							})
 				        }).catch((error)=>{ 
 				          // console.log("error = ",error);
@@ -419,6 +424,7 @@ class UMListOfUsers extends Component {
 				break;
 
 				case 'remove':
+					var changed = 0
 					for(var i=0;i< checkedUsersList.length;i++){
 					  	var selectedId = checkedUsersList[i];
 					  	var formValues ={
@@ -430,16 +436,18 @@ class UMListOfUsers extends Component {
 				      	.post('/api/users/roledelete/',formValues)
 				      	.then(
 				        (res)=>{
-				          	// console.log('res', res);
 				          	this.setState({
 							  	checkedUser : [],
 							  	unCheckedUser : true
 							},()=>{
+					          	if(res.data&&res.data.data.nModified===1){
+						          	changed++
+						        }
 								$('#userListDropdownId').removeAttr('disabled')
 								this.refs.userListDropdown.value = '-'
 								this.getData(this.state.startRange,this.state.limitRange)
 								checkedUsersList = []	
-				          		swal("abc","Assigned Role Removed Successfully",);
+				          		swal("abc",changed + " Records(s) Updated Successfully");
 							})			
 				        }).catch((error)=>{ 
 				        // console.log("error = ",error);

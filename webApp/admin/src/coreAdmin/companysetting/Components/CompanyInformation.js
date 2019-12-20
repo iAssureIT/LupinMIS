@@ -383,7 +383,7 @@ class CompanyInformation extends Component{
               <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >
-                    Organisation Name
+                    Organization Name
                   </label>
                   <span className="astrick">*</span>                        
                   <input
@@ -400,7 +400,7 @@ class CompanyInformation extends Component{
               </div>
               <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
-                  <label className="control-label statelabel locationlabel" >Organisation ID</label><span className="astrick"></span>
+                  <label className="control-label statelabel locationlabel" >Organization ID</label><span className="astrick"></span>
                   <input id="companyId" value={this.state.companyId} onChange={this.handleChange.bind(this)} type="text" name="companyId" ref="companyId" className="form-control areaStaes inputBox-main" title="Company ID" autoComplete="off" disabled />
                 </div>  
               </div>               
@@ -424,7 +424,7 @@ class CompanyInformation extends Component{
               </div>
               <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
-                  <label className="control-label statelabel locationlabel" >Organisation EmailID</label><span className="astrick">*</span>
+                  <label className="control-label statelabel locationlabel" >Organization EmailID</label><span className="astrick">*</span>
                   <input className="form-control areaStaes inputBox-main" 
                     title="Please enter valid email address" 
                     id="companyEmail" type="text"
@@ -440,7 +440,7 @@ class CompanyInformation extends Component{
               </div>
               <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
-                  <label className="control-label statelabel locationlabel" >Organisation Website</label><span className="astrick">*</span>
+                  <label className="control-label statelabel locationlabel" >Organization Website</label><span className="astrick">*</span>
                   <input className="form-control areaStaes inputBox-main" title="Please enter valid webside address"   data-text="companywebsitename"  id="companywebsite" type="text" name="companywebsite" ref="companywebsite" value={this.state.companywebsite} aria-required="true" onChange={this.handleChange.bind(this)} required/>
                   {this.state.formerrors.companywebsitename &&(
                       <span className="text-danger">{formerrors.companywebsitename}</span> 
@@ -473,7 +473,7 @@ class CompanyInformation extends Component{
               <div className="form-group valid_box col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >
-                  Organisation Address
+                  Organization Address
                   </label>
                   <span className="astrick">*</span>                          
                   <input

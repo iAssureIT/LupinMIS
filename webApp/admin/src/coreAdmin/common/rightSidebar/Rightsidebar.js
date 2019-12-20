@@ -36,7 +36,7 @@ componentDidMount(){
                   <li className="sidebarMenuText">
                     <a href="/companysetting" >
                       <i className="fa fa-building" />
-                      Organisation Setting
+                      Organization Setting
                     </a>
                   </li>
                   <li className="sidebarMenuText">

@@ -56,21 +56,20 @@ class Login extends Component {
         roles       : 'admin'
       }
 
-      // console.log("auth value",auth);
+      console.log("auth value",auth);
 
       axios
       .post('/api/users/login',auth)
       .then((response)=> {
         console.log("-------userData------>>",response);
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token;
-
         localStorage.setItem("token",response.data.token);
         localStorage.setItem("emailId",response.data.emailId);
         localStorage.setItem("center_ID",response.data.center_ID);
         localStorage.setItem("centerName",response.data.centerName);
         localStorage.setItem("fullName",response.data.fullName);
         if(axios.defaults.headers.common.Authorization){
-          console.log("axios.defaults.headers.common.Authorization",axios.defaults.headers.common.Authorization);
+          // console.log("axios.defaults.headers.common.Authorization",axios.defaults.headers.common.Authorization);
          /* alert("Authorization check ",);*/
           this.props.history.push("/dashboard");
           window.location.reload();
@@ -86,11 +85,11 @@ class Login extends Component {
         }
       })
       .catch(function (error) {
-         // console.log("error", error.response.status);
+         console.log("error", error.response);
         if(error.response&&error.response.status===401){
           swal("Invalid Email or Password","Email ID does not exists");
-        }else if(localStorage!==null){
-          swal("Invalid Email or Password","Please Enter valid email and password");
+        }else if(error.response&&error.response.status===409){
+          swal("Invalid Email or Password","Please Enter a valid password");
         }else{
           swal("Invalid Email or Password","Please try again");
         }

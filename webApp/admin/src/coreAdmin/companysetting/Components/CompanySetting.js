@@ -51,7 +51,7 @@ import CompanyPaymentGateway        from  '../Components/CompanyPaymentGateway.j
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                      Organisation Setting                                     
+                      Organization Setting                                     
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>     

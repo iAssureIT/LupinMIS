@@ -1009,7 +1009,7 @@ class IAssureTableUM extends Component {
 																				                      
 
 
-																				                        <div className="submitButtonWrapper mt100 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																				                        <div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																				                            <button className="btn  submit outlinebox pull-right  col-lg-4 col-lg-offset-3 col-md-6 col-sm-12 col-xs-12" onClick={this.changepassword.bind(this)} id={value._id} data-email={value.emailId}>Reset Password</button>
 																				                        </div>
 																				                           
