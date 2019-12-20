@@ -39,7 +39,8 @@ import Highlight                                  from "../../centres/highLight/
 import CenterList                                 from "../../centres/centerList/centerList.js";
 
 // import report                                     from "../../centres/LupinReports/Report.js";
-import report1                                    from "../../centres/LupinReports/ActivitywiseAnnualCompletionReport.js";
+// import report1                                    from "../../centres/LupinReports/ActivitywiseAnnualCompletionReport.js";
+import report1                                    from "../../centres/LupinReports/ActivityAnnualreport.js";
 import report2                                    from "../../centres/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
 import report3                                    from "../../centres/LupinReports/ActivityWisePeriodicVarianceReport.js";
 import report4                                    from "../../centres/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";
