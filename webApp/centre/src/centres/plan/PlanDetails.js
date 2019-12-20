@@ -5,7 +5,7 @@ import _                      from 'underscore';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "./PlanDetails.css";
 import BulkUpload             from "../bulkupload/BulkUpload.js";
-
+import $ from 'jquery';
 var add=0
 
 class PlanDetails extends Component{
@@ -89,11 +89,54 @@ class PlanDetails extends Component{
       errors                : {},
       subActivityDetails    : [],
       apiCall               : '/api/annualPlans',
-      totalBud              : 0
+      totalBud              : 0,
+      fileDetailUrl         : "/api/annualPlans/get/filedetails/",
+      goodRecordsTable      : [],
+      failedRecordsTable    : [],
+      goodRecordsHeading :{
+        sectorName          : "Sector",
+        activityName        : "Activity",
+        subactivityName     : "Sub-Activity",
+        unit                : "Unit",
+        physicalUnit        : "Physical Unit",
+        unitCost            : "Unit Cost",
+        totalBudget         : "Total Cost",
+        noOfBeneficiaries   : "No. Of Beneficiaries",
+        noOfFamilies        : "No. Of Families",
+        LHWRF               : "LHWRF",
+        NABARD              : "NABARD",
+        bankLoan            : "Bank Loan",
+        govtscheme          : "Govt. Scheme",
+        directCC            : "Direct Community Contribution",
+        indirectCC          : "Indirect Community Contribution",
+        other               : "Other",
+        remark              : "Remark"
+    },
+    failedtableHeading :{
+        sectorName          : "Sector",
+        activityName        : "Activity",
+        subactivityName     : "Sub-Activity",
+        unit                : "Unit",
+        physicalUnit        : "Physical Unit",
+        unitCost            : "Unit Cost",
+        totalBudget         : "Total Cost",
+        noOfBeneficiaries   : "No. Of Beneficiaries",
+        noOfFamilies        : "No. Of Families",
+        LHWRF               : "LHWRF",
+        NABARD              : "NABARD",
+        bankLoan            : "Bank Loan",
+        govtscheme          : "Govt. Scheme",
+        directCC            : "Direct Community Contribution",
+        indirectCC          : "Indirect Community Contribution",
+        other               : "Other",
+        remark              : "Remark",
+        failedremark        : 'failed remark',
+    },
     }
     this.uploadedData = this.uploadedData.bind(this);
     this.remainTotal  = this.remainTotal.bind(this);
     this.handlesubactivityChange = this.handlesubactivityChange.bind(this);
+    this.getFileDetails = this.getFileDetails.bind(this);
   }
   handlesubactivityChange(event){
    // event.preventDefault();
@@ -853,7 +896,72 @@ class PlanDetails extends Component{
       tableData : []
     })
   }
+  getFileDetails(fileName){
+      axios
+      .get(this.state.fileDetailUrl+fileName)
+      .then((response)=> {
+      $('.fullpageloader').hide();  
+      if (response) {
+        this.setState({
+            fileDetails:response.data,
+            failedRecordsCount : response.data.failedRecords.length,
+            goodDataCount : response.data.goodrecords.length
+        });
 
+          var tableData = response.data.goodrecords.map((a, i)=>{
+           
+          return{
+              "sectorName"        : a.sectorName        ? a.sectorName    : '-',
+              "activityName"       : a.activityName        ? a.activityName    : '-',
+              "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
+              "unit"         : a.unit     ? a.unit : '-',
+              "physicalUnit"   : a.physicalUnit     ? a.physicalUnit : '-',
+              "unitCost"   : a.unitCost     ? a.unitCost : '-',
+              "noOfBeneficiaries"      : a.noOfBeneficiaries     ? a.noOfBeneficiaries : '-',
+              "noOfFamilies"   : a.noOfFamilies     ? a.noOfFamilies : '-',
+              "LHWRF" : a.LHWRF ? a.LHWRF : '-',
+              "NABARD" : a.NABARD ? a.NABARD : '-', 
+              "bankLoan"   : a.bankLoan     ? a.bankLoan : '-', 
+              "govtscheme"   : a.govtscheme     ? a.govtscheme : '-',
+              "directCC"   : a.directCC     ? a.directCC : '-',
+              "indirectCC"   : a.indirectCC     ? a.indirectCC : '-',
+              "other"   : a.other     ? a.other : '-',
+              "remark"   : a.remark     ? a.remark : '-'
+          }
+        })
+
+        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+        return{
+            "failedremark"        : a.remark        ? a.remark    : '-',
+            "sectorName"        : a.sectorName        ? a.sectorName    : '-',
+            "activityName"       : a.activityName        ? a.activityName    : '-',
+            "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
+            "unit"         : a.unit     ? a.unit : '-',
+            "physicalUnit"   : a.physicalUnit     ? a.physicalUnit : '-',
+            "unitCost"   : a.unitCost     ? a.unitCost : '-',
+            "noOfBeneficiaries"      : a.noOfBeneficiaries     ? a.noOfBeneficiaries : '-',
+            "noOfFamilies"   : a.noOfFamilies     ? a.noOfFamilies : '-',
+            "LHWRF" : a.LHWRF ? a.LHWRF : '-',
+            "NABARD" : a.NABARD ? a.NABARD : '-', 
+            "bankLoan"   : a.bankLoan     ? a.bankLoan : '-', 
+            "govtscheme"   : a.govtscheme     ? a.govtscheme : '-',
+            "directCC"   : a.directCC     ? a.directCC : '-',
+            "indirectCC"   : a.indirectCC     ? a.indirectCC : '-',
+            "other"   : a.other     ? a.other : '-',
+            "remark"   : a.remark     ? a.remark : '-',
+            "failedremark"   : a.remark     ? a.remark : '-'
+        }
+        })
+        this.setState({
+            goodRecordsTable : tableData,
+            failedRecordsTable : failedRecordsTable
+        })
+      }
+      })
+      .catch((error)=> { 
+            
+      }) 
+  }
   render() {
     var hidden = {
       display: this.state.shown ? "none" : "block"
@@ -1106,10 +1214,37 @@ class PlanDetails extends Component{
                           </div>                        
                         </form>
                         </div>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  formLable " >
+                          <div className="row">  
+                           <IAssureTable 
+                              tableName = "Plan Details"
+                              id = "PlanDetails"
+                              tableHeading={this.state.tableHeading}
+                              twoLevelHeader={this.state.twoLevelHeader} 
+                              dataCount={this.state.dataCount}
+                              tableData={this.state.tableData}
+                              getData={this.getData.bind(this)}
+                              tableObjects={this.state.tableObjects}
+                              getSearchText={this.getSearchText.bind(this)}
+                            />
+                          </div>
+                        </div> 
                       </div>
                       <div id="bulkplan" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                          <BulkUpload url={this.state.month == "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,"month":this.state.month,"year":this.state.year}} uploadedData={this.uploadedData} fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"/>
+                          <BulkUpload url={this.state.month == "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
+                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,"month":this.state.month,"year":this.state.year}} 
+                          uploadedData={this.uploadedData} 
+                          fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
+                          fileDetailUrl={this.state.fileDetailUrl}
+                          getFileDetails={this.getFileDetails}
+                          fileDetails={this.state.fileDetails}
+                          goodRecordsHeading ={this.state.goodRecordsHeading}
+                          failedtableHeading={this.state.failedtableHeading}
+                          failedRecordsTable ={this.state.failedRecordsTable}
+                          failedRecordsCount={this.state.failedRecordsCount}
+                          goodRecordsTable={this.state.goodRecordsTable}
+                          goodDataCount={this.state.goodDataCount}/>
                         </div>
                       </div>
                   </div>
@@ -1126,21 +1261,7 @@ class PlanDetails extends Component{
                       }
                     </div>
                   </div>
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  formLable " >
-                    <div className="row">  
-                     <IAssureTable 
-                        tableName = "Plan Details"
-                        id = "PlanDetails"
-                        tableHeading={this.state.tableHeading}
-                        twoLevelHeader={this.state.twoLevelHeader} 
-                        dataCount={this.state.dataCount}
-                        tableData={this.state.tableData}
-                        getData={this.getData.bind(this)}
-                        tableObjects={this.state.tableObjects}
-                        getSearchText={this.getSearchText.bind(this)}
-                      />
-                    </div>
-                  </div> 
+                  
                 </div>
               </div>
             </section>

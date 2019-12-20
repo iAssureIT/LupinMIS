@@ -37,9 +37,28 @@ class Beneficiary extends Component{
       },
       "startRange"          : 0,
       "limitRange"          : 10000,
-      "editId"              : this.props.match.params ? this.props.match.params.id : ''
+      "editId"              : this.props.match.params ? this.props.match.params.id : '',
+      fileDetailUrl         : "/api/beneficiaries/get/filedetails/",
+      goodRecordsTable      : [],
+      failedRecordsTable    : [],
+      goodRecordsHeading :{
+        beneficiaryID       : "Beneficiary ID",
+        familyID            : "Family ID",
+        nameofbeneficiaries : "Name of Beneficiary",
+        uidNumber           : "UID Number",
+        relation            : "Relation with Family Head"
+      },
+      failedtableHeading :{
+        beneficiaryID       : "Beneficiary ID",
+        familyID            : "Family ID",
+        nameofbeneficiaries : "Name of Beneficiary",
+        uidNumber           : "UID Number",
+        relation            : "Relation with Family Head",
+        remark              : "Remark"
+      }
     }
     this.uploadedData = this.uploadedData.bind(this);
+    this.getFileDetails = this.getFileDetails.bind(this);
   }
 
   handleChange(event){
@@ -433,7 +452,50 @@ class Beneficiary extends Component{
       console.log("error = ",error);
     });
   }
+  getFileDetails(fileName){
+      axios
+      .get(this.state.fileDetailUrl+fileName)
+      .then((response)=> {
+      $('.fullpageloader').hide();  
+      if (response) {
+        this.setState({
+            fileDetails:response.data,
+            failedRecordsCount : response.data.failedRecords.length,
+            goodDataCount : response.data.goodrecords.length
+        });
 
+          var tableData = response.data.goodrecords.map((a, i)=>{
+           
+          return{
+              "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
+              "familyID"       : a.familyID        ? a.familyID    : '-',
+              "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
+              nameofbeneficiaries : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+              "relation"       : a.relation     ? a.relation : '-',
+          }
+        })
+
+        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+        return{
+            "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
+            "familyID"       : a.familyID        ? a.familyID    : '-',
+            "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
+            "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+            "relation"       : a.relation     ? a.relation : '-',
+            "remark"   : a.remark     ? a.remark : '-'
+            
+        }
+        })
+        this.setState({
+            goodRecordsTable : tableData,
+            failedRecordsTable : failedRecordsTable
+        })
+      }
+      })
+      .catch((error)=> { 
+            
+      }) 
+  } 
   render() {
     return (
       <div className="container-fluid">
@@ -534,21 +596,35 @@ class Beneficiary extends Component{
                           }
                         </div> 
                       </form>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                        <IAssureTable 
+                          tableHeading={this.state.tableHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          dataCount={this.state.dataCount}
+                          tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          tableObjects={this.state.tableObjects}
+                        />
+                      </div>
                     </div>
                     <div id="bulkbenificiary" className="tab-pane fade in ">
-                      <BulkUpload url="/api/beneficiaries/bulk_upload_beneficiary" data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} uploadedData={this.uploadedData} fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Beneficiaries.xlsx"/>
+                      <BulkUpload url="/api/beneficiaries/bulk_upload_beneficiary" 
+                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}}
+                      uploadedData={this.uploadedData} 
+                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Beneficiaries.xlsx"
+                      fileDetailUrl={this.state.fileDetailUrl}
+                      getFileDetails={this.getFileDetails}
+                      fileDetails={this.state.fileDetails}
+                      goodRecordsHeading ={this.state.goodRecordsHeading}
+                      failedtableHeading={this.state.failedtableHeading}
+                      failedRecordsTable ={this.state.failedRecordsTable}
+                      failedRecordsCount={this.state.failedRecordsCount}
+                      goodRecordsTable={this.state.goodRecordsTable}
+                      goodDataCount={this.state.goodDataCount}
+                      />
                     </div>
                   </div>
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                    <IAssureTable 
-                      tableHeading={this.state.tableHeading}
-                      twoLevelHeader={this.state.twoLevelHeader} 
-                      dataCount={this.state.dataCount}
-                      tableData={this.state.tableData}
-                      getData={this.getData.bind(this)}
-                      tableObjects={this.state.tableObjects}
-                    />
-                  </div>              
+                                
                 </div>
               </div>
             </section>

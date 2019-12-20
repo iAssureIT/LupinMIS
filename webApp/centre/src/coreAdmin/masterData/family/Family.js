@@ -40,7 +40,6 @@ class Family extends Component{
       fields: {},
       errors: {},
       "tableObjects"         : {
-     
         apiLink               : '/api/families/',
         editUrl               : '/family/',      
         paginationApply       : false,
@@ -62,10 +61,41 @@ class Family extends Component{
       },            
       "startRange"            : 0,
       "limitRange"            : 10000,
-      "editId"                : this.props.match.params ? this.props.match.params.id : ''    
+      "editId"                : this.props.match.params ? this.props.match.params.id : '',    
+      fileDetailUrl           : "/api/families/get/filedetails/",
+      goodRecordsTable      : [],
+      failedRecordsTable    : [],
+      goodRecordsHeading :{
+        familyID              : "Family ID",
+        nameOfFH              : "Name of Family Head",
+        uidNumber             : "UID Number",
+        contactNumber         : "Contact Number",
+        caste                 : "Caste",
+        landCategory          : "Land holding Category",        
+        incomeCategory        : "Income Category",        
+        specialCategory       : "Special Category",        
+        dist                  : "District",
+        block                 : "Block",
+        village               : "Village"
+    },
+    failedtableHeading :{
+        familyID              : "Family ID",
+        nameOfFH              : "Name of Family Head",
+        uidNumber             : "UID Number",
+        contactNumber         : "Contact Number",
+        caste                 : "Caste",
+        landCategory          : "Land holding Category",        
+        incomeCategory        : "Income Category",        
+        specialCategory       : "Special Category",        
+        dist                  : "District",
+        block                 : "Block",
+        village               : "Village",
+        remark                : "Remark"
+    }
     }
     // console.log('editId' , this.state.editId);
     this.uploadedData = this.uploadedData.bind(this);
+    this.getFileDetails = this.getFileDetails.bind(this);
   }
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
@@ -605,7 +635,63 @@ class Family extends Component{
     },()=>{
       // console.log("village",village);
     });  
-  }  
+  } 
+  getFileDetails(fileName){
+      axios
+      .get(this.state.fileDetailUrl+fileName)
+      .then((response)=> {
+      $('.fullpageloader').hide();  
+      if (response) {
+        this.setState({
+            fileDetails:response.data,
+            failedRecordsCount : response.data.failedRecords.length,
+            goodDataCount : response.data.goodrecords.length
+        });
+
+          var tableData = response.data.goodrecords.map((a, i)=>{
+           
+          return{
+              "familyID"        : a.familyID        ? a.familyID    : '-',
+              "nameOfFH"       : a.nameOfFH        ? a.nameOfFH    : '-',
+              "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
+              "contactNumber"         : a.contactNumber     ? a.contactNumber : '-',
+              "caste"   : a.caste     ? a.caste : '-',
+              "landCategory"   : a.landCategory     ? a.landCategory : '-',
+              "incomeCategory"      : a.incomeCategory     ? a.incomeCategory : '-',
+              "specialCategory"   : a.specialCategory     ? a.specialCategory : '-',
+              "dist" : a.dist ? a.dist : '-',
+              "block" : a.block ? a.block : '-', 
+              "village"   : a.village     ? a.village : '-'
+          }
+        })
+
+        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+        return{
+            "familyID"        : a.familyID        ? a.familyID    : '-',
+            "nameOfFH"       : a.nameOfFH        ? a.nameOfFH    : '-',
+            "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
+            "contactNumber"         : a.contactNumber     ? a.contactNumber : '-',
+            "caste"   : a.caste     ? a.caste : '-',
+            "landCategory"   : a.landCategory     ? a.landCategory : '-',
+            "incomeCategory"      : a.incomeCategory     ? a.incomeCategory : '-',
+            "specialCategory"   : a.specialCategory     ? a.specialCategory : '-',
+            "dist" : a.dist ? a.dist : '-',
+            "block" : a.block ? a.block : '-', 
+            "village"   : a.village     ? a.village : '-',
+            "remark"   : a.remark     ? a.remark : '-'
+            
+        }
+        })
+        this.setState({
+            goodRecordsTable : tableData,
+            failedRecordsTable : failedRecordsTable
+        })
+      }
+      })
+      .catch((error)=> { 
+            
+      }) 
+  } 
   render() {     
     return (
       <div className="container-fluid">
@@ -801,21 +887,36 @@ class Family extends Component{
                         </div>
                         </div>
                       </form>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                        <IAssureTable 
+                          tableHeading={this.state.tableHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          dataCount={this.state.dataCount}
+                          tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          tableObjects={this.state.tableObjects}                          
+                        />
+                    </div>
+
                     </div>
                     <div id="bulk" className="tab-pane fade in ">
-                      <BulkUpload url="/api/families/bulk_upload_families" data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} uploadedData={this.uploadedData} fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"/>
+                      <BulkUpload url="/api/families/bulk_upload_families" 
+                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
+                      uploadedData={this.uploadedData} 
+                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
+                      fileDetailUrl={this.state.fileDetailUrl}
+                      getFileDetails={this.getFileDetails}
+                      fileDetails={this.state.fileDetails}
+                      goodRecordsHeading ={this.state.goodRecordsHeading}
+                      failedtableHeading={this.state.failedtableHeading}
+                      failedRecordsTable ={this.state.failedRecordsTable}
+                      failedRecordsCount={this.state.failedRecordsCount}
+                      goodRecordsTable={this.state.goodRecordsTable}
+                      goodDataCount={this.state.goodDataCount}
+                      />
                     </div>
                   </div>
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                      <IAssureTable 
-                        tableHeading={this.state.tableHeading}
-                        twoLevelHeader={this.state.twoLevelHeader} 
-                        dataCount={this.state.dataCount}
-                        tableData={this.state.tableData}
-                        getData={this.getData.bind(this)}
-                        tableObjects={this.state.tableObjects}                          
-                      />
-                    </div> 
+                   
                   </div>              
                 </div>
             </section>

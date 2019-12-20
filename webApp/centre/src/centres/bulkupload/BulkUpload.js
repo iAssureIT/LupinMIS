@@ -3,33 +3,46 @@ import XLSX from "xlsx";
 import './BulkUpload.css';
 import axios from 'axios';
 import swal  from 'sweetalert';
+import $ from 'jquery';
+import IAssureTable           from "./IAssureTable.js";
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 class BulkUpload extends Component{
 	constructor(props) {
     super(props);
     this.state = {
     	"inputFileData" : [],
+      tableData:[],
+    failedRecordsTable:[],
+    
+    tableObjects : {
+        paginationApply : false,
+        searchApply     : false
+    }
     }
     this.fileInput = React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handleFile   = this.handleFile.bind(this);
   } 
-  handleChange(e) { 
+  componentWillReceiveProps(){
+    
+  }            
+  handleChange(e) {
     const files = e.target.files;
-    if (files && files[0]){ 
+    if (files && files[0]){
       var fileName = files[0].name;
       var ext = fileName.split('.').pop();
       if (ext === 'csv' || ext === 'xlsx' || ext === 'xls') {
          this.handleFile(files[0]);
       }else{
         this.fileInput.value = '';
-        // swal('Invalid file format.');
+        swal({text: "Invalid file format."})
       }
     }
   }
-  handleFile(file) {
+  /*handleFile(file) {
     // console.log("this.fileInput",this.fileInput.value);
-   const reader = new FileReader();
+    const reader = new FileReader();
     const rABS = !!reader.readAsBinaryString;
     reader.onload = ({ target: { result } }) => {
       const wb = XLSX.read(result, { type: rABS ? "binary" : "array" });
@@ -133,8 +146,87 @@ class BulkUpload extends Component{
     };
     if (rABS) reader.readAsBinaryString(file);   
     else reader.readAsArrayBuffer(file);
+  }*/
+  handleFile(file) {
+    $('.fullpageloader').show();
+    this.setState({fileName: file.name})
+    // console.log("this.fileInput",this.fileInput.value);
+    const reader = new FileReader();
+    const rABS = !!reader.readAsBinaryString;
+    reader.onload = ({ target: { result } }) => {
+      const wb = XLSX.read(result, { type: rABS ? "binary" : "array" });
+      // console.log("wb",wb);
+      const wsname = wb.SheetNames[0];
+      // console.log("wsname",wsname);
+      const ws = wb.Sheets[wsname];
+      // console.log("ws",ws);
+      const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      //console.log("data",data);
+      var documentObj = [];
+      let count = 0;
+      for (var j = 1; j <= data.length; j++) {
+        var record = data[j];
+        var attributeArray = [];
+        let header = data[0];
+        //console.log('record',record)
+        if (record !== undefined && record.length > 0) {
+            var k;
+            // loop on header columns
+            for (k in header) {
+                if (!documentObj.hasOwnProperty(count)) {
+                  if (record[k] == undefined) {  
+                    documentObj.push({ [header[k]]: '-' });
+                  }else{
+                    documentObj.push({ [header[k]]: record[k] });
+                  }
+                } 
+                else {
+                  if (record[k] == undefined) {
+                   documentObj[count][header[k]] = '-';   
+                  }else{
+                    documentObj[count][header[k]] = record[k];
+                  }
+                  // documentObj[count]['filename'] = file.name;
+                  //documentObj[count]['vendor_ID'] = this.props.requiredData.vendor;
+                }
+            }
+            count++;
+        }
+    }
+      this.setState({inputFileData:documentObj},()=>{
+        console.log('inputFileData',this.state.inputFileData)
+        $('.fullpageloader').hide()
+      });
+    };
+    if (rABS) reader.readAsBinaryString(file);  
+    else reader.readAsArrayBuffer(file);
   }
+  bulkUpload() {
+    var formValues = {
+      data    : this.state.inputFileData,
+      reqdata : this.props.data,
+      fileName : this.state.fileName
+    };
+    console.log('formValues',formValues);
 
+    $('.fullpageloader').show();
+    axios.post(this.props.url, formValues)
+        .then((response) => {
+            
+            this.fileInput.value = '';
+            this.setState({inputFileData:[]});
+            swal({text: response.data.message})
+                        
+            $('.filedetailsDiv').show()
+            this.props.getFileDetails(this.state.fileName) 
+        })
+        .catch((error) => {
+            console.log('error', error);
+        })
+  }
+  getData(){
+
+  }
   render() {
   	 const SheetJSFT = [
       "xlsx",
@@ -151,21 +243,129 @@ class BulkUpload extends Component{
 	          </div>
 	          <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 bulkEmployeeVerif">
 	            <ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-	              <li>Please use attached file format to bulkupload file into this system.</li>
+	              <li>Please use attached file format for bulkupload into this system.</li>
 	              <li>Please do not change the Heading of following file.</li>
-	              <li>File format must be .csv or .xlsx or .xls.</li>
+	              <li>File format must be .xlsx or .xls.</li>
 	            </ul>
 	          </div>
 	        </div>
-	        <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 bulkuploadFileouter">
+	        <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 bulkuploadFileouter">
 	            <input
 			          ref={el => this.fileInput = el}
 			          type="file"
-	                  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"
+	              className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"
 			          accept={SheetJSFT}
 			          onChange={this.handleChange}
 			        />
 	        </div>
+          {
+            this.state.inputFileData.length > 0 ?
+            <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4" style={{marginTop:'2%'}}>
+              <button className="submitBtnGo btn addBtn"
+              onClick={this.bulkUpload.bind(this)} >Submit</button>
+            </div>           
+            :
+            <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4" style={{marginTop:'2%'}}>
+              <button className="submitBtn btn addBtn"
+                    disabled>Submit</button>
+            </div>        
+          }
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 filedetailsDiv" style={{display:"none"}}>
+        <br/>
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent NoPadding">
+          {
+            this.props.fileDetails ?
+            <div className="">
+              <ul className="nav nav-tabs">
+                <li className="active"><a data-toggle="tab" href="#failure">Failure</a></li>
+                <li ><a data-toggle="tab" href="#success">Success</a></li>
+              </ul>
+              <div className="tab-content">
+              <h5>Filename: <span>{this.state.fileName}</span></h5>
+                <div id="failure" className="tab-pane fade in active">
+                <h5>
+                Out of {this.props.fileDetails.totalRecords } {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  &nbsp;
+
+                {this.props.fileDetails.failedRecords.length} bad {this.props.fileDetails.failedRecords.length > 1 ? "records were " : "record was " }found.
+                </h5>
+                  <div className="text-right">
+                  <br/>
+                   <ReactHTMLTableToExcel
+                      id="test-table-xls-button"
+                      className="download-table-xls-button"
+                      table="table-to-xls"
+                      filename="tablexls"
+                      sheet="tablexls"
+                      buttonText="Download as XLS"/>
+                      <br/>
+                    </div>  
+                    <div style={{overflowX: "auto"}}>
+
+                    <IAssureTable 
+                      tableHeading={this.props.failedtableHeading}
+                      twoLevelHeader={this.state.twoLevelHeader} 
+                      dataCount={this.props.failedRecordsCount}
+                      tableData={this.props.failedRecordsTable}
+                      tableObjects={this.state.tableObjects}
+                      />
+
+
+                    <table className="table" width="50%" id="table-to-xls" style={{display:"block"}}>
+                      <thead>
+                        <tr>
+                        {
+                          this.props.fileDetails.failedRecords[0] ? 
+                          Object.entries(this.props.fileDetails.failedRecords[0]).map( ([key, value], i)=> {
+                           return(<th>{key}</th>);
+                          }) : null
+                        }
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {
+                        this.props.fileDetails.failedRecords ? 
+                        this.props.fileDetails.failedRecords.map((data,index)=>{
+                         
+                          return(
+                            <tr key={index}>
+                            { Object.entries(data).map( ([key, value], i)=> {
+                                return(<td>{data[key]}</td>);
+                              })
+                            }
+                          </tr>
+                          );
+                        }) 
+                        : null
+                      }
+                      </tbody>
+                    </table>
+                    </div>
+
+                  </div>
+                <div id="success" className="tab-pane fade">
+                  <h5>
+                  Out of {this.props.fileDetails.totalRecords} {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  {this.props.fileDetails.goodrecords.length} {this.props.fileDetails.goodrecords.length > 1 ? "records are" : "record is" } added successfully. &nbsp;
+                    
+                  </h5>
+                      <IAssureTable 
+                      tableHeading={this.props.goodRecordsHeading}
+                      twoLevelHeader={this.state.twoLevelHeader} 
+                      dataCount={this.props.goodDataCount}
+                      tableData={this.props.goodRecordsTable}
+                      //getData={this.getData.bind(this)}
+                      tableObjects={this.state.tableObjects}
+                      />
+                  {
+                  
+                }
+                </div>
+                
+              </div>
+            </div>  
+            : null
+          }
+        </div>
+      </div>
     	</div>
     )
   }
