@@ -158,9 +158,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
           sector_ID : sector_id,
         },()=>{
         console.log(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-
     })
   }
 
@@ -191,7 +189,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
+      // console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })

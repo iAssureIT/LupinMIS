@@ -232,16 +232,16 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 unit                                      : a.unit,
                 annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
                 annualPlan_Reach                          : a.annualPlan_Reach,
-                annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
+                annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
                 monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
                 monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
+                monthlyPlan_FamilyUpgradation             : a.monthlyPlan_FamilyUpgradation,
                 achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
                 achievement_Reach                         : a.achievement_Reach,
-                achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
+                achievement_FamilyUpgradation             : a.achievement_FamilyUpgradation,
                 variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
                 variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
-                variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
+                variance_monthlyPlan_FamilyUpgradation    : a.variance_monthlyPlan_FamilyUpgradation,
             }            
           })
           this.setState({
@@ -320,8 +320,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log("dateUpdate",this.state.startDate);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -405,8 +405,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         </div>
                     </div>
                     <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">                      
                       <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Sector</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
@@ -474,6 +473,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                       : 
                       ""
                       }                     
+                    </div>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">From</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >

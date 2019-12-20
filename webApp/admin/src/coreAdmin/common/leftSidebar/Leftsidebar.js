@@ -157,15 +157,15 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
-                      <Link to="/villagewise-family-report" title="Family Report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Family Report</span>
-                      </Link>
-                    </li>
-                    <li>
                       <Link to="/category-wise-report" title="Category Report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Category Report</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/villagewise-family-report" title="Family Report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Family Report</span>
                       </Link>
                     </li>
                     <li>
@@ -253,15 +253,15 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
-                      <Link to="/villagewise-family-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Village wise Family Report</span>
-                      </Link>
-                    </li>
-                    <li>
                       <Link to="/category-wise-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Category wise Report</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/villagewise-family-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Village wise Family Report</span>
                       </Link>
                     </li>
                     <li>

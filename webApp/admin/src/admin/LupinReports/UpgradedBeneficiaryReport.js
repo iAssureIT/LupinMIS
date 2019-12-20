@@ -28,7 +28,7 @@ class UpgradedBeneficiaryReport extends Component{
         "beneficiaryType"    : "all",
         "projectName"        : "all",
        "twoLevelHeader"    : {
-            apply           : true,
+            apply           : false,
             firstHeaderData : [
                 {
                     heading : 'Beneficiary Details',
@@ -37,39 +37,22 @@ class UpgradedBeneficiaryReport extends Component{
                 {
                     heading : 'Sector Details',
                     mergedColoums : 6
-                },
-                // {
-                //     heading : 'Cost Sharing "Rs"',
-                //     mergedColoums : 7
-                // },
-                // {
-                //     heading : '',
-                //     mergedColoums : 1
-                // },               
+                },     
             ]
         },
         "tableHeading"      : {
-            "district"           : 'District',
-            "block"              : 'Block',
-            "village"            : 'Village',
-            "familyID"           : 'Family ID',
-            "beneficiaryID"      : 'Beneficiary ID',
-            "namebeneficiary"    : 'Name of Beneficiary',
-            // "activityName"    : 'Project',
+            "date"               : 'Date Of Intervention',
+            "projectName"        : 'Project',
             "sectorName"         : 'Sector',
             "activityName"       : 'Activity',
             "subactivityName"    : 'Sub-Activity',
-            "date"               : 'Date Of Intervention',
-            "unit"               : 'Unit',
-            "quantity"           : 'Quantity',    
-            // "LHWRF"              : 'LHWRF',
-            // "NABARD"             : 'NABARD',
-            // "bankLoan"           : 'Bank Loan',
-            // "directCC"           : 'Direct Community  Contribution',
-            // "indirectCC"         : 'Indirect Community  Contribution',
-            // "govtscheme"         : 'Govt',
-            // "other"              : 'Others',
-            // "total"              : 'Total "Rs"',
+            "familyID"           : 'Family ID',
+            "beneficiaryID"      : 'Beneficiary ID',
+            "namebeneficiary"    : 'Name of Beneficiary',           
+            "uid"                : 'UID',           
+            "village"            : 'Village',
+            "block"              : 'Block',
+            "district"           : 'District',
         },        
         "tableObjects"        : {
           paginationApply     : false,
@@ -367,28 +350,18 @@ class UpgradedBeneficiaryReport extends Component{
               // console.log('response',response)
               tableData.push({
                 _id             : a._id,            
-                district        : a.district,
-                block           : a.block,
-                village         : a.village,
-                familyID        : response.data[0].familyID,
-                beneficiaryID   : response.data[0].beneficiaryID,
-                namebeneficiary : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
+                date            : a.date,
+                projectName     : "LHWRF",
                 sectorName      : a.sectorName,
                 activityName    : a.activityName,
                 subactivityName : a.subactivityName,
-                // unitCost        : a.unitCost,
-                // totalcost       : a.totalcost,
-                date            : a.date,
-                unit            : a.unit,
-                quantity        : a.quantity,
-                LHWRF           : a.LHWRF,
-                NABARD          : a.NABARD,
-                bankLoan        : a.bankLoan,
-                directCC        : a.directCC,
-                indirectCC      : a.indirectCC,
-                govtscheme      : a.govtscheme,
-                other           : a.other,
-                total           : a.total,
+                familyID        : response.data[0].familyID,
+                beneficiaryID   : response.data[0].beneficiaryID,
+                namebeneficiary : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
+                uid             : response.data[0].uidNumber ? response.data[0].uidNumber : "NA",
+                village         : a.village,
+                block           : a.block,
+                district        : a.district,             
               })
               if(data.length===(i+1)){
                 this.setState({
@@ -431,7 +404,7 @@ class UpgradedBeneficiaryReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     console.log("dateUpdate",this.state.startDate);
     });
   }
@@ -452,8 +425,8 @@ class UpgradedBeneficiaryReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        console.log("dateUpdate",this.state.endDate);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
 

@@ -182,17 +182,17 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
-                      <Link to="/villagewise-family-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Family Report</span>
-                      </Link>
-                    </li>
-                    <li>
                       <Link to="/category-wise-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Category Report</span>
                       </Link>
                     </li>
+                    <li>
+                      <Link to="/villagewise-family-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Family Report</span>
+                      </Link>
+                    </li>                    
                     <li>
                       <Link to="/upgraded-beneficiary-report">
                         <i className="fa fa-circle-o" />

@@ -503,7 +503,7 @@ class GeographicalReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       console.log("dateUpdate",this.state.startDate);
     });
   }
@@ -525,7 +525,7 @@ class GeographicalReport extends Component{
        endDate : endDate
     },()=>{
       console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
 
@@ -752,6 +752,8 @@ class GeographicalReport extends Component{
                       : 
                       ""
                       } 
+                    </div>
+                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable   ">                        
                       <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">From</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >

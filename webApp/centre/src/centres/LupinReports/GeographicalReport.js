@@ -434,7 +434,7 @@ class GeographicalReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     console.log("dateUpdate",this.state.startDate);
     });
   }
@@ -457,7 +457,7 @@ class GeographicalReport extends Component{
        endDate : endDate
     },()=>{
       console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
 
@@ -629,6 +629,33 @@ class GeographicalReport extends Component{
                             </select>
                           </div>
                       </div>
+                      {
+                        this.state.projectCategoryType === "Project Fund" ?
+
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                          <label className="formLable">Project Name</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                              <option  className="hidden" >--Select--</option>
+                               <option value="all" >All</option>
+                              {
+                                this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                this.state.availableProjects.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
+                          </div>
+                        </div>
+                      : 
+                      ""
+                      } 
+                    </div>                     
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                           <label className="formLable">From</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
@@ -641,33 +668,6 @@ class GeographicalReport extends Component{
                               <input onChange={this.handleToChange} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                           </div>
                       </div>
-                    </div>                     
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      {
-                          this.state.projectCategoryType === "Project Fund" ?
-
-                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Project Name</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                <option  className="hidden" >--Select--</option>
-                                 <option value="all" >All</option>
-                                {
-                                  this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                  this.state.availableProjects.map((data, index)=>{
-                                    return(
-                                      <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                }
-                              </select>
-                            </div>
-                          </div>
-                        : 
-                        ""
-                        } 
                     </div>  
                     <div className="marginTop11">
                         <div className="">

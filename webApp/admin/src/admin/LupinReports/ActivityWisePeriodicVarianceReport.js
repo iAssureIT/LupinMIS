@@ -469,8 +469,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
            [name] : event.target.value,
            startDate:startDate
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log("dateUpdate",this.state.startDate);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            console.log("dateUpdate",this.state.startDate);
         });
     }
     handleToChange(event){
@@ -490,8 +490,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
            [name] : event.target.value,
            endDate : endDate
         },()=>{
-          console.log("dateUpdate",this.state.endDate);
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            console.log("dateUpdate",this.state.endDate);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
     }
 

@@ -609,7 +609,7 @@ class IAssureTable extends Component {
 	                        <tbody>
 	                           { this.state.tableData && this.state.tableData.length > 0 ?
 	                           		this.state.tableData.map( 
-										(value, i)=> {													
+										(value, i)=> {
 											return(
 												<tr key={i} className="">
 													<td className="textAlignCenter">{this.state.startRange+1+i}</td>
@@ -621,7 +621,7 @@ class IAssureTable extends Component {
 																	var value2 = value1 ? value1.replace(regex,'') : '';
 																	var aN = value2.replace(this.state.reA, "");
 																	if(aN && $.type( aN ) === 'string'){
-																		var textAlign = 'textAlignLeft noWrapText';
+																		var textAlign = 'textAlignLeft noWrapText'
 																	}else{
 																		var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
 																		if(bN){

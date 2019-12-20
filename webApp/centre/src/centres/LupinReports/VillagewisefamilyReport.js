@@ -3,18 +3,12 @@ import $                    from 'jquery';
 import swal                 from 'sweetalert';
 import axios                from 'axios';
 import moment               from 'moment';
-import DailyReport          from '../Reports/DailyReport.js';
-import WeeklyReport         from '../Reports/WeeklyReport.js';
-import MonthlyReport        from '../Reports/MonthlyReport.js';
-import YearlyReport         from '../Reports/YearlyReport.js';
-import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 class VillagewisefamilyReport extends Component{
 	constructor(props){
     super(props);
     this.state = {
-        'currentTabView'    : "Monthly",
         'tableDatas'        : [],
         'reportData'        : {},
         'tableData'         : [],
@@ -30,7 +24,7 @@ class VillagewisefamilyReport extends Component{
         "beneficiaryType"    : "all",
         "projectName"        : "all",
         "twoLevelHeader"    : {
-            apply           : true,
+            apply           : false,
             firstHeaderData : [
                 {
                     heading : 'Family Details',
@@ -39,31 +33,19 @@ class VillagewisefamilyReport extends Component{
                
                 {
                     heading : 'Activity Details',
-                    mergedColoums : 5
-                },
-                {
-                    heading : 'Expenditure(Rs. in Lakhs)',
-                    mergedColoums : 10
+                    mergedColoums : 6
                 },
                
             ]
         },
         "tableHeading"      : {
-            "name_family"    : 'Name of Family Head',
-            "familyID"       : 'Family ID',
+            "projectName"    : 'Project',
+            "sectorName"     : 'Sector',
             "activityName"   : 'Activity',
             "subactivityName": 'Subactivity',
-            "unit"           : 'Unit',
-            "UnitCost"       : 'Unit Rate',
-            "quantity"       : 'Quantity',
-            "LHWRF"          : 'LHWRF',
-            "NABARD"         : 'NABARD',
-            "Bank_Loan"      : 'Bank Loan',
-            "DirectCC"       : 'Direct Community  Contribution',
-            "IndirectCC"     : 'Indirect Community  Contribution',
-            "Govt"           : 'Govt',
-            "Other"          : 'Others',
-            "total"          : 'Total',        
+            "familyID"       : 'Family ID',
+            "name_family"    : 'Name of Family Head',
+                
         },
         "tableObjects"        : {
           paginationApply     : false,
@@ -122,6 +104,7 @@ class VillagewisefamilyReport extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       console.log('name', this.state)
     });
   }
@@ -345,22 +328,12 @@ class VillagewisefamilyReport extends Component{
               var tableData = response.data.map((a, i)=>{
               return {
                 _id                    : a._id,            
-                name_family            : a.name_family,
-                familyID               : a.familyID,
-                familyID               : a.familyID,
+                projectName            : "LHWRF",
+                sectorName             : a.sectorName,
                 activityName           : a.activityName,
                 subactivityName        : a.subactivityName,
-                unit                   : a.unit,
-                UnitCost               : a.UnitCost,
-                quantity               : a.quantity,
-                LHWRF                  : a.LHWRF,
-                NABARD                 : a.NABARD,
-                Bank_Loan              : a.Bank_Loan,
-                DirectCC               : a.DirectCC,
-                IndirectCC             : a.IndirectCC,
-                Govt                   : a.Govt,
-                Other                  : a.Other,
-                total                  : a.total,
+                familyID               : a.familyID,
+                name_family            : a.name_family,
               }
             })
             this.setState({
@@ -385,22 +358,12 @@ class VillagewisefamilyReport extends Component{
               var tableData = response.data.map((a, i)=>{
               return {
                 _id                    : a._id,            
-                name_family            : a.name_family,
-                familyID               : a.familyID,
-                familyID               : a.familyID,
+                projectName            : "LHWRF",
+                sectorName             : a.sectorName,
                 activityName           : a.activityName,
                 subactivityName        : a.subactivityName,
-                unit                   : a.unit,
-                UnitCost               : a.UnitCost,
-                quantity               : a.quantity,
-                LHWRF                  : a.LHWRF,
-                NABARD                 : a.NABARD,
-                Bank_Loan              : a.Bank_Loan,
-                DirectCC               : a.DirectCC,
-                IndirectCC             : a.IndirectCC,
-                Govt                   : a.Govt,
-                Other                  : a.Other,
-                total                  : a.total,
+                familyID               : a.familyID,
+                name_family            : a.name_family,
               }
             })
             this.setState({
@@ -439,7 +402,7 @@ class VillagewisefamilyReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     console.log("dateUpdate",this.state.startDate);
     });
   }
@@ -461,7 +424,7 @@ class VillagewisefamilyReport extends Component{
        endDate : endDate
     },()=>{
       console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
 
@@ -525,89 +488,89 @@ class VillagewisefamilyReport extends Component{
                     </div>
                     <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 validBox">
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Sector</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
-                              <option  className="hidden" >--Select Sector--</option>
-                              <option value="all" >All</option>
-                              {
-                                this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                this.state.availableSectors.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                            </select>
-                          </div>
-                         {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                        <label className="formLable">Sector</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                          <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                            <option  className="hidden" >--Select Sector--</option>
+                            <option value="all" >All</option>
+                            {
+                              this.state.availableSectors && this.state.availableSectors.length >0 ?
+                              this.state.availableSectors.map((data, index)=>{
+                                return(
+                                  <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                );
+                              })
+                              :
+                              null
+                            }
+                          </select>
                         </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                          <label className="formLable">District</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                            <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
-                                  
-                                {
-                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                this.state.availableDistInCenter.map((data, index)=>{
-                                  // console.log("data",data)
-                                  return(
-                                    /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+                       {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+                      </div>
+                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
+                        <label className="formLable">District</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                          <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
+                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                                
+                              {
+                              this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                              this.state.availableDistInCenter.map((data, index)=>{
+                                // console.log("data",data)
+                                return(
+                                  /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                  <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
 
-                                  );
-                                })
-                                :
-                                null
-                              }                               
-                            </select>
-                          </div>
+                                );
+                              })
+                              :
+                              null
+                            }                               
+                          </select>
                         </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Block</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                            <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
-                              {
-                                this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                this.state.listofBlocks.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }                              
-                            </select>
-                          </div>
-                          {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
+                      </div>
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
+                        <label className="formLable">Block</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                          <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                            {
+                              this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                              this.state.listofBlocks.map((data, index)=>{
+                                return(
+                                  <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                );
+                              })
+                              :
+                              null
+                            }                              
+                          </select>
                         </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Village</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                            <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
-                              {
-                                this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                                this.state.listofVillages.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
-                                  );
-                                })
-                                :
-                                null
-                              } 
-                            </select>
-                          </div>
-                          {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
+                        {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
+                      </div>
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
+                        <label className="formLable">Village</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                          <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
+                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                            {
+                              this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                              this.state.listofVillages.map((data, index)=>{
+                                return(
+                                  <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                );
+                              })
+                              :
+                              null
+                            } 
+                          </select>
                         </div>
+                        {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
+                      </div>
                     </div>  
                     <div className=" col-lg-12 col-sm-12 col-xs-12 formLable validBox  ">                        
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
@@ -623,77 +586,77 @@ class VillagewisefamilyReport extends Component{
                           </div>
                       </div> 
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Project Category</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                            <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                              <option  className="hidden" >--Select--</option>
-                              <option value="all" >All</option>
-                              <option value="LHWRF Grant" >LHWRF Grant</option>
-                              <option value="Project Fund">Project Fund</option>
-                              
-                            </select>
-                          </div>
+                        <label className="formLable">Project Category</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                          <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="LHWRF Grant" >LHWRF Grant</option>
+                            <option value="Project Fund">Project Fund</option>
+                            
+                          </select>
+                        </div>
                       </div>
-                       <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">From</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleFromChange} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                            </div>
-                        </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">To</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleToChange} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                            </div>
-                        </div>
-                    </div>                     
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      
-                        {
-                            this.state.projectCategoryType === "Project Fund" ?
+                      {
+                          this.state.projectCategoryType === "Project Fund" ?
 
-                            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Project Name</label><span className="asterix"></span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                                <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                  <option  className="hidden" >--Select--</option>
-                                   <option value="all" >All</option>
-                                  {
-                                    this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                    this.state.availableProjects.map((data, index)=>{
-                                      return(
-                                        <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }
-                                </select>
-                              </div>
+                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Project Name</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                 <option value="all" >All</option>
+                                {
+                                  this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                  this.state.availableProjects.map((data, index)=>{
+                                    return(
+                                      <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }
+                              </select>
                             </div>
-                        : 
-                        ""
-                        } 
-                    </div>  
-                    <div className="marginTop11">
-                        <div className="">
-                            <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <IAssureTable 
-                                    tableName = "Villagewise Family Report"
-                                    id = "VillagewisefamilyReport"
-                                    completeDataCount={this.state.tableDatas.length}
-                                    twoLevelHeader={this.state.twoLevelHeader} 
-                                    editId={this.state.editSubId} 
-                                    getData={this.getData.bind(this)} 
-                                    tableHeading={this.state.tableHeading} 
-                                    tableData={this.state.tableData} 
-                                    tableObjects={this.state.tableObjects}
-                                    getSearchText={this.getSearchText.bind(this)}/>
-                            </div>
-                        </div>
+                          </div>
+                      : 
+                      ""
+                      } 
                     </div>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 validBox">
+                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                        <label className="formLable">From</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                            <input onChange={this.handleFromChange} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                        </div>
+                      </div>
+                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                        <label className="formLable">To</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                            <input onChange={this.handleToChange} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                        </div>
+                      </div>
+                    </div>                     
+                    
+                    <div className="marginTop11">
+                      <div className="">
+                        <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <IAssureTable 
+                                tableName = "Villagewise Family Report"
+                                id = "VillagewisefamilyReport"
+                                completeDataCount={this.state.tableDatas.length}
+                                twoLevelHeader={this.state.twoLevelHeader} 
+                                editId={this.state.editSubId} 
+                                getData={this.getData.bind(this)} 
+                                tableHeading={this.state.tableHeading} 
+                                tableData={this.state.tableData} 
+                                tableObjects={this.state.tableObjects}
+                                getSearchText={this.getSearchText.bind(this)}/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>   
                 </div>   
-              </div>
             </section>
           </div>
         </div>

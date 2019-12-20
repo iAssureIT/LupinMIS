@@ -31,7 +31,7 @@ class VillagewisefamilyReport extends Component{
         "beneficiaryType"    : "all",
         "projectName"        : "all",
         "twoLevelHeader"    : {
-            apply           : true,
+            apply           : false,
             firstHeaderData : [
                 {
                     heading : 'Family Details',
@@ -42,29 +42,15 @@ class VillagewisefamilyReport extends Component{
                     heading : 'Activity Details',
                     mergedColoums : 5
                 },
-                {
-                    heading : 'Expenditure(Rs. in Lakhs)',
-                    mergedColoums : 10
-                },
-               
             ]
         },
         "tableHeading"      : {
-            "name_family"    : 'Name of Family Head',
-            "familyID"       : 'Family ID',
+            "projectName"    : 'Project',
+            "sectorName"     : 'Sector',
             "activityName"   : 'Activity',
             "subactivityName": 'Subactivity',
-            "unit"           : 'Unit',
-            "UnitCost"       : 'Unit Rate',
-            "quantity"       : 'Quantity',
-            "LHWRF"          : 'LHWRF',
-            "NABARD"         : 'NABARD',
-            "Bank_Loan"      : 'Bank Loan',
-            "DirectCC"       : 'Direct Community  Contribution',
-            "IndirectCC"     : 'Indirect Community  Contribution',
-            "Govt"           : 'Govt',
-            "Other"          : 'Others',
-            "total"          : 'Total',        
+            "familyID"       : 'Family ID',
+            "name_family"    : 'Name of Family Head',
         },
         "tableObjects"        : {
           paginationApply     : false,
@@ -370,24 +356,14 @@ class VillagewisefamilyReport extends Component{
           console.log("resp",response);
             var tableData = response.data.map((a, i)=>{
             return {
-              _id                    : a._id,            
-              name_family            : a.name_family,
-              familyID               : a.familyID,
-              familyID               : a.familyID,
-              activityName           : a.activityName,
-              subactivityName        : a.subactivityName,
-              unit                   : a.unit,
-              UnitCost               : a.UnitCost,
-              quantity               : a.quantity,
-              LHWRF                  : a.LHWRF,
-              NABARD                 : a.NABARD,
-              Bank_Loan              : a.Bank_Loan,
-              DirectCC               : a.DirectCC,
-              IndirectCC             : a.IndirectCC,
-              Govt                   : a.Govt,
-              Other                  : a.Other,
-              total                  : a.total,
-            }
+                _id                    : a._id,            
+                projectName            : "LHWRF",
+                sectorName             : a.sectorName,
+                activityName           : a.activityName,
+                subactivityName        : a.subactivityName,
+                familyID               : a.familyID,
+                name_family            : a.name_family,
+              }
           })
           this.setState({
             tableData : tableData
@@ -410,24 +386,14 @@ class VillagewisefamilyReport extends Component{
           console.log("resp",response);
             var tableData = response.data.map((a, i)=>{
             return {
-              _id                    : a._id,            
-              name_family            : a.name_family,
-              familyID               : a.familyID,
-              familyID               : a.familyID,
-              activityName           : a.activityName,
-              subactivityName        : a.subactivityName,
-              unit                   : a.unit,
-              UnitCost               : a.UnitCost,
-              quantity               : a.quantity,
-              LHWRF                  : a.LHWRF,
-              NABARD                 : a.NABARD,
-              Bank_Loan              : a.Bank_Loan,
-              DirectCC               : a.DirectCC,
-              IndirectCC             : a.IndirectCC,
-              Govt                   : a.Govt,
-              Other                  : a.Other,
-              total                  : a.total,
-            }
+                _id                    : a._id,            
+                projectName            : "LHWRF",
+                sectorName             : a.sectorName,
+                activityName           : a.activityName,
+                subactivityName        : a.subactivityName,
+                familyID               : a.familyID,
+                name_family            : a.name_family,
+              }
           })
           this.setState({
             tableData : tableData
@@ -465,7 +431,7 @@ class VillagewisefamilyReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     console.log("dateUpdate",this.state.startDate);
     });
   }
@@ -487,7 +453,7 @@ class VillagewisefamilyReport extends Component{
        endDate : endDate
     },()=>{
       console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   } 
 
@@ -700,6 +666,8 @@ class VillagewisefamilyReport extends Component{
                       : 
                       ""
                       } 
+                    </div>  
+                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable   ">                        
                       <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 validBox">
                           <label className="formLable">From</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
