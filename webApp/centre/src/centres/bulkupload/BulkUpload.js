@@ -310,7 +310,7 @@ class BulkUpload extends Component{
                       />
 
 
-                    <table className="table" width="50%" id="table-to-xls" style={{display:"block"}}>
+                    <table className="table" width="50%" id="table-to-xls" style={{display:"none"}}>
                       <thead>
                         <tr>
                         {

@@ -90,7 +90,7 @@ class Family extends Component{
         dist                  : "District",
         block                 : "Block",
         village               : "Village",
-        remark                : "Remark"
+        failedRemark          :  "Failed Data Remark"
     }
     }
     // console.log('editId' , this.state.editId);
@@ -678,7 +678,7 @@ class Family extends Component{
             "dist" : a.dist ? a.dist : '-',
             "block" : a.block ? a.block : '-', 
             "village"   : a.village     ? a.village : '-',
-            "remark"   : a.remark     ? a.remark : '-'
+            "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
             
         }
         })

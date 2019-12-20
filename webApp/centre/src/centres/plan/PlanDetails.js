@@ -90,10 +90,13 @@ class PlanDetails extends Component{
       subActivityDetails    : [],
       apiCall               : '/api/annualPlans',
       totalBud              : 0,
-      fileDetailUrl         : "/api/annualPlans/get/filedetails/",
+      annualFileDetailUrl   : "/api/annualPlans/get/filedetails/",
+      monthlyFileDetailUrl  : "/api/monthlyplans/get/filedetails/",
       goodRecordsTable      : [],
       failedRecordsTable    : [],
       goodRecordsHeading :{
+        month               : "Month",
+        year                : "Year",
         sectorName          : "Sector",
         activityName        : "Activity",
         subactivityName     : "Sub-Activity",
@@ -119,7 +122,6 @@ class PlanDetails extends Component{
         unit                : "Unit",
         physicalUnit        : "Physical Unit",
         unitCost            : "Unit Cost",
-        totalBudget         : "Total Cost",
         noOfBeneficiaries   : "No. Of Beneficiaries",
         noOfFamilies        : "No. Of Families",
         LHWRF               : "LHWRF",
@@ -130,7 +132,7 @@ class PlanDetails extends Component{
         indirectCC          : "Indirect Community Contribution",
         other               : "Other",
         remark              : "Remark",
-        failedremark        : 'failed remark',
+        failedRemark        : 'Failed Data Remark',
     },
     }
     this.uploadedData = this.uploadedData.bind(this);
@@ -897,8 +899,9 @@ class PlanDetails extends Component{
     })
   }
   getFileDetails(fileName){
+    var fileDetailUrl = this.state.month == "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl;
       axios
-      .get(this.state.fileDetailUrl+fileName)
+      .get(fileDetailUrl+fileName)
       .then((response)=> {
       $('.fullpageloader').hide();  
       if (response) {
@@ -911,12 +914,15 @@ class PlanDetails extends Component{
           var tableData = response.data.goodrecords.map((a, i)=>{
            
           return{
+              "month"        : a.month        ? a.month    : '-',
+              "year"        : a.year        ? a.year    : '-',
               "sectorName"        : a.sectorName        ? a.sectorName    : '-',
               "activityName"       : a.activityName        ? a.activityName    : '-',
               "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
               "unit"         : a.unit     ? a.unit : '-',
               "physicalUnit"   : a.physicalUnit     ? a.physicalUnit : '-',
               "unitCost"   : a.unitCost     ? a.unitCost : '-',
+              "totalBudget"   : a.totalBudget     ? a.totalBudget : '-',
               "noOfBeneficiaries"      : a.noOfBeneficiaries     ? a.noOfBeneficiaries : '-',
               "noOfFamilies"   : a.noOfFamilies     ? a.noOfFamilies : '-',
               "LHWRF" : a.LHWRF ? a.LHWRF : '-',
@@ -932,7 +938,6 @@ class PlanDetails extends Component{
 
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
         return{
-            "failedremark"        : a.remark        ? a.remark    : '-',
             "sectorName"        : a.sectorName        ? a.sectorName    : '-',
             "activityName"       : a.activityName        ? a.activityName    : '-',
             "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
@@ -949,7 +954,7 @@ class PlanDetails extends Component{
             "indirectCC"   : a.indirectCC     ? a.indirectCC : '-',
             "other"   : a.other     ? a.other : '-',
             "remark"   : a.remark     ? a.remark : '-',
-            "failedremark"   : a.remark     ? a.remark : '-'
+            "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
         }
         })
         this.setState({
@@ -1235,8 +1240,8 @@ class PlanDetails extends Component{
                           <BulkUpload url={this.state.month == "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
                           data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,"month":this.state.month,"year":this.state.year}} 
                           uploadedData={this.uploadedData} 
-                          fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
-                          fileDetailUrl={this.state.fileDetailUrl}
+                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/Plan%2BSubmission.xlsx"
+                          fileDetailUrl={this.state.month == "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
                           getFileDetails={this.getFileDetails}
                           fileDetails={this.state.fileDetails}
                           goodRecordsHeading ={this.state.goodRecordsHeading}

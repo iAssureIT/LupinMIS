@@ -110,10 +110,59 @@ class Activity extends Component{
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
       "limitRange"                 : 10000,
-      "editId"                     : this.props.match.params ? this.props.match.params.id : ''
+      "editId"                     : this.props.match.params ? this.props.match.params.id : '',
+      fileDetailUrl         : "/api/activityReport/get/filedetails/",
+      goodRecordsTable      : [],
+      failedRecordsTable    : [],
+      goodRecordsHeading :{
+        projectCategoryType        : "Category",
+        projectName                : "Project Name",
+        date                       : "Date",
+        place                      : "Place",
+        sectorName                 : "Sector",
+        activityName               : "Activity",
+        subactivityName            : "Sub-Activity",
+        unit                       : "Unit",
+        unitCost                   : "Unit Cost",
+        quantity                   : "Quantity",
+        totalcost                  : "Total Cost",
+        numofBeneficiaries         : "No. Of Beneficiaries",
+        LHWRF                      : "LHWRF",
+        NABARD                     : "NABARD",
+        bankLoan                   : "Bank Loan",
+        govtscheme                 : "Govt. Scheme",
+        directCC                   : "Direct Community Contribution",
+        indirectCC                 : "Indirect Community Contribution",
+        other                      : "Other",
+        remark                     : "Remark",
+      },
+      failedtableHeading :{
+        projectCategoryType        : "Category",
+        projectName                : "Project Name",
+        date                       : "Date",
+        place                      : "Place",
+        sectorName                 : "Sector",
+        activityName               : "Activity",
+        subactivityName            : "Sub-Activity",
+        unit                       : "Unit",
+        unitCost                   : "Unit Cost",
+        quantity                   : "Quantity",
+        numofBeneficiaries         : "No. Of Beneficiaries",
+        LHWRF                      : "LHWRF",
+        NABARD                     : "NABARD",
+        bankLoan                   : "Bank Loan",
+        govtscheme                 : "Govt. Scheme",
+        directCC                   : "Direct Community Contribution",
+        indirectCC                 : "Indirect Community Contribution",
+        other                      : "Other",
+        remark                     : "Remark",
+        failedRemark               : "Failed Data Remark",
+      }
+    
     }
     this.uploadedData = this.uploadedData.bind(this);
     this.handleTotalChange = this.handleTotalChange.bind(this);
+    this.getFileDetails = this.getFileDetails.bind(this);
   }
 
   numberWithCommas(x) {
@@ -1194,7 +1243,79 @@ class Activity extends Component{
       }
     })
   }
+  getFileDetails(fileName){
+      axios
+      .get(this.state.fileDetailUrl+fileName)
+      .then((response)=> {
+      $('.fullpageloader').hide();  
+      if (response) {
+        this.setState({
+            fileDetails:response.data,
+            failedRecordsCount : response.data.failedRecords.length,
+            goodDataCount : response.data.goodrecords.length
+        });
 
+          var tableData = response.data.goodrecords.map((a, i)=>{
+           
+          return{
+              "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
+              "projectName"         : a.projectName        ? a.projectName    : '-',
+              "date"                : a.date     ? a.date : '-',
+              "place"               : a.district + ", " + a.block + ", " + a.village ,
+              "sectorName"          : a.sectorName     ? a.sectorName : '-',
+              "activityName"        : a.activityName     ? a.activityName : '-',
+              "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
+              "unit"                : a.unit     ? a.unit : '-',
+              "unitCost"            : a.unitCost     ? a.unitCost : '-',
+              "quantity"            : a.quantity     ? a.quantity : '-',
+              "totalcost"           : a.totalcost     ? a.totalcost : '-',
+              "numofBeneficiaries"  : a.numofBeneficiaries     ? a.numofBeneficiaries : '-',
+              "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
+              "NABARD"              : a.NABARD     ? a.NABARD : '-',
+              "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
+              "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
+              "directCC"            : a.directCC     ? a.directCC : '-',
+              "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
+              "other"               : a.other     ? a.other : '-',
+              "remark"              : a.remark     ? a.remark : '-',
+          }
+          
+        })
+
+        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+        return{
+            "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
+            "projectName"         : a.projectName        ? a.projectName    : '-',
+            "date"                : a.date     ? a.date : '-',
+            "place"               : a.district + ", " + a.block + ", " + a.village ,
+            "sectorName"          : a.sectorName     ? a.sectorName : '-',
+            "activityName"        : a.activityName     ? a.activityName : '-',
+            "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
+            "unit"                : a.unit     ? a.unit : '-',
+            "unitCost"            : a.unitCost     ? a.unitCost : '-',
+            "quantity"            : a.quantity     ? a.quantity : '-',
+            "numofBeneficiaries"  : a.numofBeneficiaries     ? a.numofBeneficiaries : '-',
+            "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
+            "NABARD"              : a.NABARD     ? a.NABARD : '-',
+            "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
+            "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
+            "directCC"            : a.directCC     ? a.directCC : '-',
+            "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
+            "other"               : a.other     ? a.other : '-',
+            "remark"              : a.remark     ? a.remark : '-',
+            "failedRemark"        : a.failedRemark     ? a.failedRemark : '-',
+        }
+        })
+        this.setState({
+            goodRecordsTable : tableData,
+            failedRecordsTable : failedRecordsTable
+        })
+      }
+      })
+      .catch((error)=> { 
+            
+      }) 
+  } 
 
   render() {
     // console.log('state',this.state.total)
@@ -1437,10 +1558,6 @@ class Activity extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.typeofactivity}</div>
                           </div>
-
-
-
-
                         </div> 
                       </div><br/>
                       <div className="row ">
@@ -1604,12 +1721,7 @@ class Activity extends Component{
                         <hr className=""/>
                       </div>
                     </form>
-                  </div>
-                   <div id="bulkactivity" className="tab-pane fade in ">
-                      <BulkUpload url="/api/activityReport/bulk_upload_activities" data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} uploadedData={this.uploadedData} fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"/>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
                       tableName = "Activity Report"
                       id = "activityReport"
@@ -1622,6 +1734,25 @@ class Activity extends Component{
                       isDeleted={this.deleted.bind(this)}
                     />
                   </div> 
+                  </div>
+                    <div id="bulkactivity" className="tab-pane fade in ">
+                     <BulkUpload url="/api/activityReport/bulk_upload_activities" 
+                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
+                      uploadedData={this.uploadedData} 
+                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
+                      fileDetailUrl={this.state.fileDetailUrl}
+                      getFileDetails={this.getFileDetails}
+                      fileDetails={this.state.fileDetails}
+                      goodRecordsHeading ={this.state.goodRecordsHeading}
+                      failedtableHeading={this.state.failedtableHeading}
+                      failedRecordsTable ={this.state.failedRecordsTable}
+                      failedRecordsCount={this.state.failedRecordsCount}
+                      goodRecordsTable={this.state.goodRecordsTable}
+                      goodDataCount={this.state.goodDataCount}
+                      />
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
             </section>

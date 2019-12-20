@@ -54,7 +54,7 @@ class Beneficiary extends Component{
         nameofbeneficiaries : "Name of Beneficiary",
         uidNumber           : "UID Number",
         relation            : "Relation with Family Head",
-        remark              : "Remark"
+        failedRemark        : "Failed Data Remark"
       }
     }
     this.uploadedData = this.uploadedData.bind(this);
@@ -482,7 +482,7 @@ class Beneficiary extends Component{
             "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
             "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
             "relation"       : a.relation     ? a.relation : '-',
-            "remark"   : a.remark     ? a.remark : '-'
+            "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
             
         }
         })
