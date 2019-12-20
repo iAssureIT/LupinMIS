@@ -2,6 +2,7 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
+import validate               from 'jquery-validation';
 
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import CreateBeneficiary      from "./CreateBeneficiary.js";
@@ -62,18 +63,7 @@ class Beneficiary extends Component{
       "uidNumber"                 : this.refs.uidNumber.value,
       "relation"                  : this.refs.relation.value,
     });
-    // let fields                = this.state.fields;
-    // fields[event.target.name] = event.target.value;
-    // this.setState({
-    //   fields
-    // });
-    // if (this.validateForm()) {
-    //   let errors                = {};
-    //   errors[event.target.name] = "";
-    //   this.setState({
-    //     errors: errors
-    //   });
-    // }
+  
   }
 
   isTextKey(evt){

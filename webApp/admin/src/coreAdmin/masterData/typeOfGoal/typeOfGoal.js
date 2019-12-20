@@ -2,6 +2,7 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
+import validate               from 'jquery-validation';
 import {withRouter}           from 'react-router-dom';
 // import _                      from 'underscore';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
@@ -40,18 +41,6 @@ class typeOfGoal extends Component{
     this.setState({
      "typeofGoal"   : this.refs.typeofGoal.value,  
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
   }
 
   isTextKey(evt) {
@@ -69,12 +58,12 @@ class typeOfGoal extends Component{
 
   SubmitType_Goal(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
-    var typeofGoalValues= {
-    "typeofGoal"       :this.refs.typeofGoal.value,
-    "user_ID"          : this.state.user_ID,
-    };
-    axios.post('/api/typeofgoals',typeofGoalValues)
+    if($('#typeofGoalDetails').valid()){
+      var typeofGoalValues= {
+      "typeofGoal"       :this.refs.typeofGoal.value,
+      "user_ID"          : this.state.user_ID,
+      };
+      axios.post('/api/typeofgoals',typeofGoalValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
         console.log("typeofGoalValues",response );
@@ -86,12 +75,8 @@ class typeOfGoal extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
-      let fields            = {};
-      fields["typeofGoal"] = "";
-   
       this.setState({
         "typeofGoal"  :"",
-        fields    :fields
       });
     } 
   }
@@ -99,22 +84,16 @@ class typeOfGoal extends Component{
 
   updateType_Goal(event){
     event.preventDefault();
-    if(this.refs.typeofGoal.value ==="") {
-      // console.log('state validation');
-      if (this.validateFormReq() && this.validateForm()) {
-      }
-    }else{
+    if($('#typeofGoalDetails').valid()){
       var typeofGoalValues= {
         "ID"              :this.state.editId,
         "typeofGoal"      :this.refs.typeofGoal.value,
         "user_ID"         : this.state.user_ID,
       };
-      
       axios.patch('/api/typeofgoals/update',typeofGoalValues, this.state.editId)
         .then((response)=>{
           console.log("response",response );
           this.getData(this.state.startRange, this.state.limitRange);
-          
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -126,48 +105,13 @@ class typeOfGoal extends Component{
         .catch(function(error){
           console.log("error = ",error);
         });
-        let fields            = {};
-        fields["typeofGoal"] = "";
-   
       this.setState({
         "typeofGoal"  :"",
-        fields         :fields
       });
           this.props.history.push('/type-goal');
     }     
   }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-      if (!fields["typeofGoal"]) {
-        formIsValid = false;
-        errors["typeofGoal"] = "This field is required.";
-      }     
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
-  validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-      if (typeof fields["typeofGoal"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["typeofGoal"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["typeofGoal"] = "Please enter valid Type of Goal.";
-        }
-      }
-    $("html,body").scrollTop(0);
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
+ 
 
   componentWillReceiveProps(nextProps){
   // console.log('componentWillReceiveProps');
@@ -194,6 +138,23 @@ class typeOfGoal extends Component{
     }
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
+    $.validator.addMethod("regxtypeofGoal", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Type of Goal.");
+
+    $("#typeofGoalDetails").validate({
+      rules: {
+        typeofGoal: {
+          required: true,
+          regxtypeofGoal: /^[_A-z]*((-|\s)*[_A-z])*$|^$/,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "typeofGoal"){
+          error.insertAfter("#typeofGoalErr");
+        }
+      }
+    });
   }
 
   edit(id){
@@ -205,15 +166,7 @@ class typeOfGoal extends Component{
       this.setState({
         "typeofGoal"     :editData.typeofGoal,
       },()=>{
-        
       });
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
     }).catch(function (error) {
         console.log("error = ",error);
        
@@ -290,11 +243,10 @@ class typeOfGoal extends Component{
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                             <label className="formLable"> Type of Goal</label><span className="asterix">*</span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoal" >
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
                              
                               <input type="text" className="form-control inputBox"  placeholder=""ref="typeofGoal" name="typeofGoal" value={this.state.typeofGoal} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>
-                            <div className="errorMsg">{this.state.errors.typeofGoal}</div>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             {

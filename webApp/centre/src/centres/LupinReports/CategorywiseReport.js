@@ -257,6 +257,14 @@ class CategorywiseReport extends Component{
     event.preventDefault();
     const target = event.target;
     const name = target.name;
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    console.log(Date.parse(startDate));
+    if ((Date.parse(endDate) <= Date.parse(startDate))) {
+        swal("Start date","From date should be less than To date");
+        // document.getElementById("endDate").value = "";
+        this.refs.startDate.value="";
+    }
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -264,8 +272,9 @@ class CategorywiseReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    // console.log("dateUpdate",this.state.startDate);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+
+    console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -273,15 +282,23 @@ class CategorywiseReport extends Component{
     const target = event.target;
     const name = target.name;
 
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    if ((Date.parse(startDate) >= Date.parse(endDate))) {
+      swal("End date","To date should be greater than From date");
+      // document.getElementById("endDate").value = "";
+      this.refs.endDate.value="";
+    }
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var endDate = moment(dateUpdate).format('YYYY-MM-DD');
     this.setState({
-       [name] : event.target.value,
-       endDate : endDate
+     [name] : event.target.value,
+     endDate : endDate
     },()=>{
-    // console.log("dateUpdate",this.state.endDate);
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    console.log("dateUpdate",this.state.endDate);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+
     });
   }
 
@@ -345,7 +362,7 @@ class CategorywiseReport extends Component{
                         </div>
                     </div>
                     <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 validBox">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
                           <label className="formLable">District</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
@@ -368,7 +385,7 @@ class CategorywiseReport extends Component{
                             </select>
                           </div>
                         </div>
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">Select Beneficiary</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                               <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -380,7 +397,7 @@ class CategorywiseReport extends Component{
                               </select>
                             </div>
                         </div> 
-                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">Project Category</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                               <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
@@ -393,46 +410,41 @@ class CategorywiseReport extends Component{
                             </div>
                         </div>
                         {
-                            this.state.projectCategoryType === "Project Fund" ?
-
-                            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Project Name</label><span className="asterix"></span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                                <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                  <option  className="hidden" >--Select--</option>
-                                   <option value="all" >All</option>
-                                  {
-                                    this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                    this.state.availableProjects.map((data, index)=>{
-                                      return(
-                                        <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }
-                                </select>
-                              </div>
+                          this.state.projectCategoryType === "Project Fund" ?
+                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                            <label className="formLable">Project Name</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                 <option value="all" >All</option>
+                                {
+                                  this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                  this.state.availableProjects.map((data, index)=>{
+                                    return(
+                                      <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }
+                              </select>
                             </div>
+                          </div>
                         : 
                         ""
                         } 
-                    </div> 
-
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">From</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                              <input onChange={this.handleFromChange.bind(this)} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                              <input onChange={this.handleFromChange.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                           </div>
                       </div>
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">To</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                              <input onChange={this.handleToChange.bind(this)} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                              <input onChange={this.handleToChange.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                           </div>
                       </div> 
-                       
                     </div>  
                     <div className="marginTop11">
                         <div className="">

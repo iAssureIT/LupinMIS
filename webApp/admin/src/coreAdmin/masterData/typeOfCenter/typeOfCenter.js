@@ -1,6 +1,7 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
+import validate               from 'jquery-validation';
 import swal                   from 'sweetalert';
 import {withRouter}    from 'react-router-dom';
 // import _                      from 'underscore';
@@ -43,18 +44,7 @@ class typeOfCenter extends Component{
     this.setState({
      "typeofCenter"   : this.refs.typeofCenter.value,  
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+  
   }
 
   isTextKey(evt) {
@@ -72,12 +62,16 @@ class typeOfCenter extends Component{
 
   SubmitType_Center(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    if($('#typeofCenterDetails').valid()){
+    // if (this.validateFormReq() && this.validateForm()) {
     var typeofCenterValues= {
     "typeofCenter"      :this.refs.typeofCenter.value,
     "user_ID"          : this.state.user_ID,
     };
 
+      let fields            = {};
+      fields["typeofCenter"] = "";
+   
      console.log("typeofCenterValues",typeofCenterValues );
     axios.post('/api/typeofcenters',typeofCenterValues)
       .then((response)=>{
@@ -90,9 +84,6 @@ class typeOfCenter extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
-      let fields            = {};
-      fields["typeofCenter"] = "";
-   
       this.setState({
         "typeofCenter"  :"",
         fields    :fields
@@ -103,13 +94,13 @@ class typeOfCenter extends Component{
 
   updateType_Center(event){
     event.preventDefault();
-    if(this.refs.typeofCenter.value ==="") {
-      // console.log('state validation');
-      if (this.validateFormReq() && this.validateForm()) {
-      }
-    }else{
+    // if(this.refs.typeofCenter.value ==="") {
+    //   // console.log('state validation');
+    //   if (this.validateFormReq() && this.validateForm()) {
+    //   }
+    // }else{
       // if (this.validateFormReq() && this.validateForm()) {
-
+    if($('#typeofCenterDetails').valid()){
       var typeofCenterValues= {
         "ID"               : this.state.editId,
         "typeofCenter"     : this.refs.typeofCenter.value,
@@ -145,39 +136,6 @@ class typeOfCenter extends Component{
     // }  
   }
 
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-      if (!fields["typeofCenter"]) {
-        formIsValid = false;
-        errors["typeofCenter"] = "This field is required.";
-      }     
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
-  validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-      if (typeof fields["typeofCenter"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["typeofCenter"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["typeofCenter"] = "Please enter valid Type of Center.";
-        }
-      }
-    $("html,body").scrollTop(0);
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
   componentWillReceiveProps(nextProps){
     // console.log('componentWillReceiveProps');
     var editId = nextProps.match.params.typeofCenterId;
@@ -203,6 +161,23 @@ class typeOfCenter extends Component{
     }
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
+    $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Type of Center.");
+
+    $("#typeofCenterDetails").validate({
+      rules: {
+        typeofCenter: {
+          required: true,
+          regxtypeofCenter: /^[_A-z]*((-|\s)*[_A-z])*$|^$/,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "typeofCenter"){
+          error.insertAfter("#typeofCenterErr");
+        }
+      }
+    });
   }
 
   edit(id){
@@ -228,7 +203,6 @@ class typeOfCenter extends Component{
         console.log("error = ",error);
       });
   }
-  
   getData(startRange, limitRange){
     var data = {
       limitRange : limitRange,
@@ -299,7 +273,7 @@ class typeOfCenter extends Component{
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                             <label className="formLable"> Type of Center</label><span className="asterix">*</span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofCenter" >
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofCenterErr" >
                              
                               <input type="text" className="form-control inputBox"  placeholder=""ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>
