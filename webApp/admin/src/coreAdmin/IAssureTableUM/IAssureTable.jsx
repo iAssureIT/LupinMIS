@@ -375,14 +375,14 @@ class IAssureTableUM extends Component {
 	}
 	setLimit(event){
 		event.preventDefault();
+		console.log('this.refs.limitRange.value',this.refs.limitRange.value)
 		var limitRange = parseInt(this.refs.limitRange.value);
 		var startRange = 0;
 		this.setState({
 			"limitRange":limitRange,
-			"startRange":0
-
+			// "startRange":0
 		},()=>{
-			this.paginationFunction();
+			// this.paginationFunction();
 			if(this.state.normalData === true){
 				this.props.getData(startRange, this.state.limitRange);
 			}	

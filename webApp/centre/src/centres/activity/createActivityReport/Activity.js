@@ -1013,17 +1013,19 @@ class Activity extends Component{
   }
 
   getAvailableActivity(sector_ID){
-    axios({
-      method: 'get',
-      url: '/api/sectors/'+sector_ID,
-    }).then((response)=> {
-        this.setState({
-          availableActivity : response.data[0].activity
-        },()=>{
-        })
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
+    if(sector_ID){
+      axios({
+        method: 'get',
+        url: '/api/sectors/'+sector_ID,
+      }).then((response)=> {
+          this.setState({
+            availableActivity : response.data[0].activity
+          },()=>{
+          })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+    }
   }
 
   selectActivity(event){

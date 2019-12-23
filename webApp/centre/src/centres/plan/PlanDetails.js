@@ -769,22 +769,24 @@ class PlanDetails extends Component{
     this.getAvailableActivity(sector_ID);
   }
   getAvailableActivity(sector_ID){
-    // console.log("sector_ID",sector_ID);
-    axios({
-      method: 'get',
-      url: '/api/sectors/'+sector_ID,
-    }).then((response)=> {
-      
-        this.setState({
-          availableActivity : response.data[0].activity,
-          activityName      : "-- Select --",
-          availableSubActivity : []
-        },()=>{
-          // console.log("availableActivity=",this.state.availableActivity);
-        })
-    }).catch(function (error) {
-      console.log("error"+error);
-    });
+    console.log("sector_ID",sector_ID);
+    if(sector_ID){
+      axios({
+        method: 'get',
+        url: '/api/sectors/'+sector_ID,
+      }).then((response)=> {
+        
+          this.setState({
+            availableActivity : response.data[0].activity,
+            activityName      : "-- Select --",
+            availableSubActivity : []
+          },()=>{
+            // console.log("availableActivity=",this.state.availableActivity);
+          })
+      }).catch(function (error) {
+        console.log("error"+error);
+      });
+    }
   }
   selectActivity(event){
     event.preventDefault();
@@ -795,7 +797,7 @@ class PlanDetails extends Component{
   }
   
   getAvailableSubActivity(sector_ID, activity_ID){
-
+    
     var data={
       "sector_ID"   : sector_ID,
       "activity_ID" : activity_ID,
@@ -845,38 +847,40 @@ class PlanDetails extends Component{
         url: this.state.apiCall+'/'+id,
         }).then((response)=> {
         var editData = response.data[0];
-        // console.log("editData :",editData);
-        this.getAvailableActivity(editData.sector_ID);
-        this.setState({
-          "availableSubActivity"    : [{
-            _id                   : editData.subactivity_ID,
-            "subActivityName"     : editData.subactivityName,
-            "unit"                : editData.unit,
-            "physicalUnit"        : editData.physicalUnit,
-            "unitCost"            : editData.unitCost,
-            "totalBudget"         : editData.totalBudget,
-            "noOfBeneficiaries"   : editData.noOfBeneficiaries,
-            "noOfFamilies"        : editData.noOfFamilies,
-            "unit"                : editData.unit,
-            "LHWRF"               : editData.LHWRF,
-            "NABARD"              : editData.NABARD,
-            "bankLoan"            : editData.bankLoan,
-            "govtscheme"          : editData.govtscheme,
-            "directCC"            : editData.directCC,
-            "indirectCC"          : editData.indirectCC,
-            "other"               : editData.other,
-            "remark"              : editData.remark,
-          }],
-          "shown"                   : false,
-          "year"                    : editData.year,
-          "month"                   : editData.month,
-          "center"                  : editData.center,
-          "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
-          "activityName"            : editData.activityName+'|'+editData.activity_ID,
-          "subactivity_ID"          : editData.subactivity_ID,
-        },()=>{
-         
-        })      
+        if(editData){
+        console.log("editData :",editData.sector_ID);
+          this.getAvailableActivity(editData.sector_ID);
+          this.setState({
+            "availableSubActivity"    : [{
+              _id                   : editData.subactivity_ID,
+              "subActivityName"     : editData.subactivityName,
+              "unit"                : editData.unit,
+              "physicalUnit"        : editData.physicalUnit,
+              "unitCost"            : editData.unitCost,
+              "totalBudget"         : editData.totalBudget,
+              "noOfBeneficiaries"   : editData.noOfBeneficiaries,
+              "noOfFamilies"        : editData.noOfFamilies,
+              "unit"                : editData.unit,
+              "LHWRF"               : editData.LHWRF,
+              "NABARD"              : editData.NABARD,
+              "bankLoan"            : editData.bankLoan,
+              "govtscheme"          : editData.govtscheme,
+              "directCC"            : editData.directCC,
+              "indirectCC"          : editData.indirectCC,
+              "other"               : editData.other,
+              "remark"              : editData.remark,
+            }],
+            "shown"                   : false,
+            "year"                    : editData.year,
+            "month"                   : editData.month,
+            "center"                  : editData.center,
+            "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
+            "activityName"            : editData.activityName+'|'+editData.activity_ID,
+            "subactivity_ID"          : editData.subactivity_ID,
+          },()=>{
+           
+          })      
+        }
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
