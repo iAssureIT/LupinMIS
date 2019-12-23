@@ -28,7 +28,7 @@ class CategorywiseReport extends Component{
         "projectName"        : "all",
         "selectedDistrict"  : "all",
         "twoLevelHeader"    : {
-            apply           : true,
+            apply           : false,
             firstHeaderData : [
                 {
                     heading : 'Family Details',
@@ -41,11 +41,12 @@ class CategorywiseReport extends Component{
             ]
         },
         "tableHeading"      : {
+          "projectName"       : 'Project',
           "incomeCategory"    : 'Income Category',
           "landCategory"      : 'Land Holding Category',
           "specialCategory"   : 'Special Category',
-          "Reach"             : 'Reached',
-          "FamilyUpgradation" : 'Upgraded',        
+          "Reach"             : 'No of Families Reached',
+          "FamilyUpgradation" : 'No of Families Upgraded',        
         },
         "tableObjects"        : {
           paginationApply     : false,
@@ -328,6 +329,7 @@ class CategorywiseReport extends Component{
               var tableData = response.data.map((a, i)=>{
               return {
                 _id                    : a._id,            
+                projectName            : "LHWRF",
                 incomeCategory         : a.incomeCategory,
                 landCategory           : a.landCategory,
                 specialCategory        : a.specialCategory,
@@ -524,7 +526,7 @@ class CategorywiseReport extends Component{
                         {/*<div className="errorMsg">{this.state.errors.district}</div>*/}
                       </div>
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Select Beneficiary</label><span className="asterix"></span>
+                          <label className="formLable">Beneficiary</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                             <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
                               <option  className="hidden" >--Select--</option>

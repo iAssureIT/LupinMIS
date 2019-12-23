@@ -219,7 +219,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
     })
   }
   getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-    console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
+    // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
     if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
       if(sector_ID==="all"){
         axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
@@ -347,20 +347,24 @@ class ActivityWisePeriodicVarianceReport extends Component{
   }
 
   currentFromDate(){
-      if(this.state.startDate){
-          var today = this.state.startDate;
-          // console.log("localStoragetoday",today);
-      }else {
-          var today = moment(new Date()).format('YYYY-MM-DD');
-      // console.log("today",today);
-      }
-      console.log("nowfrom",today)
-      this.setState({
-         startDate :today
-      },()=>{
-      });
-      return today;
-      // this.handleFromChange()
+    if(this.state.startDate){
+        var today = this.state.startDate;
+        // console.log("localStoragetoday",today);
+    }else {
+        // var today = moment(new Date()).format('YYYY-MM-DD');
+        // var today = new Date("January 20, 2018 15:00:00");
+        var today = (new Date());
+        var nextDate = today.getDate() - 30;
+        today.setDate(nextDate);
+        // var newDate = today.toLocaleString();
+        var today =  moment(today).format('YYYY-MM-DD');
+        console.log("today",today);
+    }
+    this.setState({ 
+       startDate :today
+    },()=>{
+    });
+    return today;
   }
 
   currentToDate(){
@@ -427,7 +431,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                        {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                       </div> 
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                        <label className="formLable">Select Beneficiary</label><span className="asterix"></span>
+                        <label className="formLable">Beneficiary</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                           <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
                             <option  className="hidden" >--Select--</option>
