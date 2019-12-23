@@ -1030,6 +1030,19 @@ class PlanDetails extends Component{
                   <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                       <div id="manualplan"  className="tab-pane fade in active ">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt"> 
+                          <div className="AnnualHeadCont col-lg-8">
+                              <div className="annualHead">
+                              {
+                                this.state.month==="--Quarter 1--"
+                                  ?
+                                    <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
+                                  :
+                                    <h5 defaultValue="Annual Plan">{this.state.month === "Annual Plan" ? "Annual Plan": "Monthly Plan" || this.state.month !== "Annual Plan" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                                    // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                                }
+                              </div>
+                            </div>
+                  
                            <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
                               <button type="button" className="btn addBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick={this.toglehidden.bind(this)}>Add Plan</button>
                            </div> 
@@ -1261,19 +1274,7 @@ class PlanDetails extends Component{
                       </div>
                   </div>
                  
-                  <div className="AnnualHeadCont">
-                    <div className="annualHead">
-                    {
-                      this.state.month==="--Quarter 1--"
-                        ?
-                          <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
-                        :
-                          <h5 defaultValue="Annual Plan">{this.state.month === "Annual Plan" ? "Annual Plan": "Monthly Plan" || this.state.month !== "Annual Plan" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
-                          // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
-                      }
-                    </div>
-                  </div>
-                  
+                
                 </div>
               </div>
             </section>

@@ -19,8 +19,9 @@ class typeOfCenter extends Component{
       "typeofCenter"        :"",
       "user_ID"             :"",
       "typeofCenter_id"     :"",
-      fields                : {},
-      errors                : {},
+      "typeofCenterRegX"     :"",
+      "fields"                : {},
+      "errors"                : {},
       "tableHeading"        : {
         typeofCenter        : "Type Of Center",
         actions             : 'Action',
@@ -44,6 +45,19 @@ class typeOfCenter extends Component{
     this.setState({
      "typeofCenter"   : this.refs.typeofCenter.value,  
     });
+    let fields = this.state.fields;
+        fields[event.target.name] = event.target.value;
+        this.setState({
+          fields
+        });
+        if (this.validateFormReq()) {
+          let errors = {};
+          errors[event.target.name] = "";
+          this.setState({
+            errors: errors
+          });
+        }
+
   
   }
 
@@ -62,32 +76,32 @@ class typeOfCenter extends Component{
 
   SubmitType_Center(event){
     event.preventDefault();
-    if($('#typeofCenterDetails').valid()){
-    // if (this.validateFormReq() && this.validateForm()) {
-    var typeofCenterValues= {
-    "typeofCenter"      :this.refs.typeofCenter.value,
-    "user_ID"          : this.state.user_ID,
-    };
-
-      let fields            = {};
-      fields["typeofCenter"] = "";
+   // if($('#typeofCenterDetails').valid()){
+    if (this.validateFormReq()) {
+      var typeofCenterValues= {
+      "typeofCenter"      :this.refs.typeofCenter.value,
+      "user_ID"          : this.state.user_ID,
+      };
    
-     console.log("typeofCenterValues",typeofCenterValues );
-    axios.post('/api/typeofcenters',typeofCenterValues)
-      .then((response)=>{
-        this.getData(this.state.startRange, this.state.limitRange);
-        swal({
-          title : response.data.message,
-          text  : response.data.message
+      axios.post('/api/typeofcenters',typeofCenterValues)
+        .then((response)=>{
+          this.getData(this.state.startRange, this.state.limitRange);
+          swal({
+            title : response.data.message,
+            text  : response.data.message
+          });
+        })
+        .catch(function(error){
+          console.log("error = ",error);
         });
-      })
-      .catch(function(error){
-        console.log("error = ",error);
-      });
-      this.setState({
-        "typeofCenter"  :"",
-        fields    :fields
-      });
+       
+        let fields                 = {};
+        fields["typeofCenterRegX"] = "";
+        
+        this.setState({
+          "typeofCenter"    :"",
+          "fields"          :fields
+        });
     } 
   }
 
@@ -177,7 +191,22 @@ class typeOfCenter extends Component{
           error.insertAfter("#typeofCenterErr");
         }
       }
+     
     });
+        }
+  validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+    if (!fields["typeofCenterRegX"]) {
+      formIsValid = false;
+      errors["typeofCenterRegX"] = "This field is required.";
+    }   
+  
+    this.setState({
+      errors: errors
+    });
+    return formIsValid;
   }
 
   edit(id){
@@ -275,9 +304,9 @@ class typeOfCenter extends Component{
                             <label className="formLable"> Type of Center</label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofCenterErr" >
                              
-                              <input type="text" className="form-control inputBox"  placeholder=""ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                              <input type="text" className="form-control inputBox"  placeholder=""ref="typeofCenter" name="typeofCenterRegX" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>
-                            <div className="errorMsg">{this.state.errors.typeofCenter}</div>
+                            <div className="errorMsg">{this.state.errors.typeofCenterRegX}</div>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             {

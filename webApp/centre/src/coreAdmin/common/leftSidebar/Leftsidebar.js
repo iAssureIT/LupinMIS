@@ -18,11 +18,16 @@ export default class Leftsidebar extends Component{
   }
    
   componentDidMount(){
-     /*$(document).ready(function () {
-     $('#sidebarCollapse').on('click', function () {
-         $('#sidebar').toggleClass('active');
-     });
-  });*/
+
+    /* Highlight current li*/
+     $(document).ready(function () {
+
+      $('.activeClass li').on('click', function() {
+        $('.activeClass li').removeClass('activeOne');
+        $(this).addClass('activeOne');
+
+      });
+    });
   }    
 
   eventclk1(event){
@@ -70,7 +75,7 @@ export default class Leftsidebar extends Component{
                       Planning Management
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i> 
                   </Link>
-                  <ul className="collapse list-unstyled" id="planreport">
+                  <ul className="collapse list-unstyled activeClass" id="planreport">
                     <li className="sidebarMenuText">
                       <Link to="/plan-details" title="Add New Plan">
                         <i className="fa fa-pie-chart" />
@@ -112,7 +117,7 @@ export default class Leftsidebar extends Component{
                     Activity Management
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
-                  <ul className="collapse  list-unstyled" id="Activity">
+                  <ul className="collapse  list-unstyled activeClass" id="Activity">
                     <li>
                       <Link to="/activity" title="Submit Activity">
                         <i className="fa fa-circle-o" />
@@ -144,7 +149,7 @@ export default class Leftsidebar extends Component{
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
 
-                  <ul className="collapse list-unstyled" id="report">
+                  <ul className="collapse list-unstyled activeClass" id="report">
                     <li>
                       <Link to="/sector-wise-annual-completion-summary-report" title="Sector Annual Report">
                         <i className="fa fa-circle-o" />
@@ -210,7 +215,7 @@ export default class Leftsidebar extends Component{
                     Special Reports
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
-                  <ul className="collapse list-unstyled" id="sreport">
+                  <ul className="collapse list-unstyled activeClass" id="sreport">
                     <li>
                       <Link to="/SDG-report" title="SDG Report">
                         <i className="fa fa-circle-o" />
@@ -241,7 +246,7 @@ export default class Leftsidebar extends Component{
                     Family & Beneficiary
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
-                  <ul className="collapse list-unstyled" id="MasterData">
+                  <ul className="collapse list-unstyled activeClass" id="MasterData">
                     <li>
                       <Link to="/family" title="Create Family">
                         <i className="fa fa-circle-o" />

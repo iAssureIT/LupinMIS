@@ -33,10 +33,10 @@ import CompanyPaymentGateway        from  '../Components/CompanyPaymentGateway.j
     
   }
   clickLi(event){
-    event.preventDefault();
+   // event.preventDefault();
     // $("#companyLocationForm").validate().resetForm();
     // $("#companyInformationForm").validate().resetForm();
-    $('.error').css({'display':'none'})
+    //$('.error').css({'display':'none'})
   }
 
 

@@ -96,3 +96,18 @@
     border-radius: 3px !important;
     padding: 5px 10px;
 }
+
+/*.scrollContent {
+  display: block !important;
+  height: 262px !important;
+  overflow: auto !important;
+  width: 100% !important;
+      background-color: #fff;
+}
+
+.fixedHeader {
+  display: table !important;
+  overflow: auto !important;
+  width: 100% !important;
+}
+*/

@@ -571,8 +571,8 @@ class IAssureTable extends Component {
            
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
 	                <div className="table-responsive"  id="section-to-print">
-						<table className="table iAssureITtable-bordered table-striped table-hover" id={this.state.id}>
-	                        <thead className="tempTableHeader">	     
+						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
+	                        <thead className="tempTableHeader fixedHeader">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
@@ -606,7 +606,7 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                        </thead>
-	                        <tbody>
+	                        <tbody className="scrollContent">
 	                           { this.state.tableData && this.state.tableData.length > 0 ?
 	                           		this.state.tableData.map( 
 										(value, i)=> {

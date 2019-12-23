@@ -16,6 +16,7 @@ class typeOfGoal extends Component{
       "typeofGoal"          :"",
       "user_ID"             :"",
       "typeofGoal_id"       :"",
+      "typeofGoalRegx"       :"",
       fields                : {},
       errors                : {},
       "tableHeading"        : {
@@ -41,6 +42,18 @@ class typeOfGoal extends Component{
     this.setState({
      "typeofGoal"   : this.refs.typeofGoal.value,  
     });
+    let fields = this.state.fields;
+    fields[event.target.name] = event.target.value;
+    this.setState({
+      fields
+    });
+    if (this.validateFormReq()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
   }
 
   isTextKey(evt) {
@@ -58,7 +71,7 @@ class typeOfGoal extends Component{
 
   SubmitType_Goal(event){
     event.preventDefault();
-    if($('#typeofGoalDetails').valid()){
+    if (this.validateFormReq()) {
       var typeofGoalValues= {
       "typeofGoal"       :this.refs.typeofGoal.value,
       "user_ID"          : this.state.user_ID,
@@ -75,9 +88,15 @@ class typeOfGoal extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
-      this.setState({
-        "typeofGoal"  :"",
-      });
+
+        let fields                 = {};
+        fields["typeofGoalRegx"] = "";
+        
+        this.setState({
+          "typeofGoal"     : "",
+          "fields"         :fields
+        });
+     
     } 
   }
 
@@ -156,7 +175,19 @@ class typeOfGoal extends Component{
       }
     });
   }
-
+   validateFormReq() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+    if (!fields["typeofGoalRegx"]) {
+      formIsValid = false;
+      errors["typeofGoalRegx"] = "This field is required.";
+    }   
+    this.setState({
+      errors: errors
+    });
+    return formIsValid;
+  }
   edit(id){
     axios({
       method: 'get',
@@ -245,8 +276,10 @@ class typeOfGoal extends Component{
                             <label className="formLable"> Type of Goal</label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
                              
-                              <input type="text" className="form-control inputBox"  placeholder=""ref="typeofGoal" name="typeofGoal" value={this.state.typeofGoal} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                              <input type="text" className="form-control inputBox"  placeholder="" ref="typeofGoal" name="typeofGoalRegx" value={this.state.typeofGoal} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>
+                            <div className="errorMsg">{this.state.errors.typeofGoalRegx}</div>
+
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             {

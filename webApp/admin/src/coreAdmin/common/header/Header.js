@@ -34,16 +34,11 @@ export default class Header extends Component{
   }
     
 openNav() {
-  var currentWidth =  document.getElementById("mySidenav").style.width;
-  // console.log("currentWidth",currentWidth);
   document.getElementById("mySidenav").style.width = "250px";
 }
 
 closeNav() {
-  var currentWidth =  document.getElementById("mySidenav").style.width;
-  // console.log("currentWidth",currentWidth);
   document.getElementById("mySidenav").style.width = "0";
-
 }
 
 toggleNav(){

@@ -23,7 +23,14 @@ export default class Leftsidebar extends Component{
          $('#sidebar').toggleClass('active');
      });
   });*/
+  /* Highlight current li*/
+     $(document).ready(function () {
+      $('.activeClass li').on('click', function() {
+        $('.activeClass li').removeClass('activeOne');
+        $(this).addClass('activeOne');
 
+      });
+    });
   }    
 
   
@@ -80,7 +87,7 @@ export default class Leftsidebar extends Component{
 
                   {/*      <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>*/}
                   </Link>
-                  <ul className="collapse   list-unstyled" id="planreport">
+                  <ul className="collapse   list-unstyled activeClass" id="planreport">
                     <li>
                       <Link to="/activitywise-annual-plan-report" title="Activity Annual Plan">
                         <i className="fa fa-circle-o" />
@@ -113,7 +120,7 @@ export default class Leftsidebar extends Component{
                     Reports
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
-                  <ul className="collapse list-unstyled" id="report">
+                  <ul className="collapse list-unstyled activeClass" id="report">
                    {/* <li>
                       <Link to="/Report">
                         <i className="fa fa-circle-o" /> 
@@ -278,7 +285,7 @@ export default class Leftsidebar extends Component{
                     Special Reports
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
-                  <ul className="collapse  list-unstyled" id="sreport">
+                  <ul className="collapse  list-unstyled activeClass" id="sreport">
                     <li>
                       <Link to="/SDG-report" title="SDG Report">
                         <i className="fa fa-circle-o" />
@@ -305,7 +312,7 @@ export default class Leftsidebar extends Component{
                     Master Data
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
-                  <ul className="collapse   list-unstyled" id="MasterData">
+                  <ul className="collapse   list-unstyled activeClass" id="MasterData">
                     <li>
                       <Link to="/type-center" title="Type of Center">
                         <i className="fa fa-circle-o" /> 
