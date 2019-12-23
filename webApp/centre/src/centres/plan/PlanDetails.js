@@ -838,53 +838,56 @@ class PlanDetails extends Component{
     }); 
   }
   edit(id){
-    axios({
-      method: 'get',
-      url: this.state.apiCall+'/'+id,
-      }).then((response)=> {
-      var editData = response.data[0];
-      // console.log("editData :",editData);
-      this.getAvailableActivity(editData.sector_ID);
-      this.setState({
-        "availableSubActivity"    : [{
-          _id                   : editData.subactivity_ID,
-          "subActivityName"     : editData.subactivityName,
-          "unit"                : editData.unit,
-          "physicalUnit"        : editData.physicalUnit,
-          "unitCost"            : editData.unitCost,
-          "totalBudget"         : editData.totalBudget,
-          "noOfBeneficiaries"   : editData.noOfBeneficiaries,
-          "noOfFamilies"        : editData.noOfFamilies,
-          "unit"                : editData.unit,
-          "LHWRF"               : editData.LHWRF,
-          "NABARD"              : editData.NABARD,
-          "bankLoan"            : editData.bankLoan,
-          "govtscheme"          : editData.govtscheme,
-          "directCC"            : editData.directCC,
-          "indirectCC"          : editData.indirectCC,
-          "other"               : editData.other,
-          "remark"              : editData.remark,
-        }],
-        "shown"                   : false,
-        "year"                    : editData.year,
-        "month"                   : editData.month,
-        "center"                  : editData.center,
-        "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
-        "activityName"            : editData.activityName+'|'+editData.activity_ID,
-        "subactivity_ID"          : editData.subactivity_ID,
-      },()=>{
-       
-      })      
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
+    console.log('id===',id)
+    if(id){
+      axios({
+        method: 'get',
+        url: this.state.apiCall+'/'+id,
+        }).then((response)=> {
+        var editData = response.data[0];
+        // console.log("editData :",editData);
+        this.getAvailableActivity(editData.sector_ID);
+        this.setState({
+          "availableSubActivity"    : [{
+            _id                   : editData.subactivity_ID,
+            "subActivityName"     : editData.subactivityName,
+            "unit"                : editData.unit,
+            "physicalUnit"        : editData.physicalUnit,
+            "unitCost"            : editData.unitCost,
+            "totalBudget"         : editData.totalBudget,
+            "noOfBeneficiaries"   : editData.noOfBeneficiaries,
+            "noOfFamilies"        : editData.noOfFamilies,
+            "unit"                : editData.unit,
+            "LHWRF"               : editData.LHWRF,
+            "NABARD"              : editData.NABARD,
+            "bankLoan"            : editData.bankLoan,
+            "govtscheme"          : editData.govtscheme,
+            "directCC"            : editData.directCC,
+            "indirectCC"          : editData.indirectCC,
+            "other"               : editData.other,
+            "remark"              : editData.remark,
+          }],
+          "shown"                   : false,
+          "year"                    : editData.year,
+          "month"                   : editData.month,
+          "center"                  : editData.center,
+          "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
+          "activityName"            : editData.activityName+'|'+editData.activity_ID,
+          "subactivity_ID"          : editData.subactivity_ID,
+        },()=>{
+         
+        })      
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+        this.setState({
+          errors: errors
+        });
+        return formIsValid;
+      }).catch(function (error) {
+        // console.log("error"+error);
       });
-      return formIsValid;
-    }).catch(function (error) {
-      // console.log("error"+error);
-    });
+    }
   }
   toglehidden(){   
     this.setState({
@@ -1081,11 +1084,11 @@ class PlanDetails extends Component{
                                 if(data.subActivityName ){
                                   return(
                                     <div className="subActDiv"  key={data._id}>
-                                          <div className=" col-lg-3 col-md-3 col-sm-3 col-xs-3 contentDiv  ">
+                                          <div className=" col-lg-2 col-md-2 col-sm-2 col-xs-2 contentDiv  ">
                                             <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
                                             <label className="formLable visibilityHidden">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
                                           </div>
-                                          <div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 NOpadding">
+                                          <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 NOpadding">
                                             <div className="row">
                                               <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
                                                 <label className="formLable head">Sub-Activity Details</label>
@@ -1097,7 +1100,7 @@ class PlanDetails extends Component{
                                                 <label className="formLable">Physical Units</label>
                                                 <div className="input-group inputBox-main " id={"physicalUnit-"+index} >
                                                   <input type="number" min="0" className="form-control inputBox nameParts" name={"physicalUnit-"+index} placeholder="" value={data.physicalUnit} onChange={this.handlesubactivityChange}/>
-                                                  <span className="input-group-addon inputAddonforphysicalunit" title={data.unit}>{data.unit.length>8?data.unit.substr(0,5)+'...':data.unit}</span>
+                                                  <span className="input-group-addon inputAddonforphysicalunit" title={data.unit}>{data.unit.length>9?data.unit.substr(0,3)+'...':data.unit}</span>
                                                 </div>{/*{console.log("state",this.state)}*/}
                                               </div>
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">

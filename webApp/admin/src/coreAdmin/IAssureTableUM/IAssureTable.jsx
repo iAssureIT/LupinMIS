@@ -52,6 +52,24 @@ class IAssureTableUM extends Component {
       	tableData 		  : this.props.tableData,
       	completeDataCount : this.props.completeDataCount
       })
+     //    $("#resetPassword").validate({
+	    //   rules: {
+	    //     loginusername: {
+	    //       required: true,
+	    //     },
+	    //     loginpassword: {
+	    //       required: true,
+	    //     }
+	    //   },
+	    //   errorPlacement: function(error, element) {
+	    //     if (element.attr("name") == "loginusername"){
+	    //       error.insertAfter("#loginusernameErr");
+	    //     }
+	    //     if (element.attr("name") == "loginpassword"){
+	    //       error.insertAfter("#loginpasswordErr");
+	    //     }
+	    //   }
+	    // });
 	}
 	componentWillReceiveProps(nextProps) {
 		console.log('nextProps',nextProps)
@@ -650,7 +668,8 @@ class IAssureTableUM extends Component {
 		if(newID){
 			var resetPassword = newID;
 		}
-			if(password !== "" && conPassword !== null)
+			// if(password !== "" && conPassword !== null)
+			if($("#resetPassword").valid())
 			{
 				if(password===conPassword){
 					if(password.length >= 6){
@@ -697,13 +716,17 @@ class IAssureTableUM extends Component {
 									});
 				}
 			}else{
-				
-				 swal({
-										title: "Please enter mandatory fields",
-										text: "Please enter mandatory fields",
-									});
-          		console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+				$('#resetPassword'+id+'-error').css({position: 'absolute',bottom: -5+'px',left: 0+'%'})
+				$('#resetPasswordConfirm'+id+'-error').css({position: 'absolute',bottom: -5+'px',left: 0+'%'})
 			}
+			// else{
+				
+			// 	 swal({
+			// 							title: "Please enter mandatory fields",
+			// 							text: "Please enter mandatory fields",
+			// 						});
+   //        		console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+			// }
 	}
 
 
@@ -728,7 +751,16 @@ class IAssureTableUM extends Component {
         $('.hidePwd').toggleClass('hidePwd1');
         return $('.inputTextPass').attr('type', 'password');
     }
-
+    showSignPassC(){
+	    $('.showPwdC').toggleClass('showPwd1C');
+	    $('.hidePwdC').toggleClass('hidePwd1C');
+	    return $('.inputTextPassC').attr('type', 'text');
+	}
+	hideSignPassC(){
+	    $('.showPwdC').toggleClass('showPwd1C');
+	    $('.hidePwdC').toggleClass('hidePwd1C');
+	    return $('.inputTextPassC').attr('type', 'password');
+	}
 	showprofile(e){
 		e.preventDefault();
 
@@ -796,6 +828,16 @@ class IAssureTableUM extends Component {
 					this.props.selectedUser(this.state.allid);
 				})
 			}
+		})
+	}
+	resetPasswordField(event){
+		event.preventDefault()
+		var id = $(event.currentTarget).attr('data-id')
+		this.setState({
+			['resetPassword'+id] : '',
+			['resetPasswordConfirm'+id] : '',
+		},()=>{
+			$('label.error').html('')
 		})
 	}
 
@@ -951,7 +993,7 @@ class IAssureTableUM extends Component {
 																		    <div className="modal-content  ummodallftmg">
 																		      <div className="modal-header adminModal-header userHeader">
 																		        
-																		        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+																		        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.resetPasswordField.bind(this)} data-id={value._id}>
 																		        
 																		          &times;
 																		        </button>
@@ -964,7 +1006,7 @@ class IAssureTableUM extends Component {
 																				                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 
 																				                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																				                    <form id={value._id} >
+																				                    <form id='resetPassword' >
 																				                       
 
 
@@ -993,12 +1035,12 @@ class IAssureTableUM extends Component {
 																											    	</label>
 
 																								                     <span className="blocking-span noIb">
-																									                    <input type="password" value={this.state["resetPasswordConfirm"+value._id]} onChange={this.handleChange} className="form-control pass border3 oesSignUpForm  inputTextPass " ref="resetPasswordConfirm" name={"resetPasswordConfirm"+value._id} id={"resetPasswordConfirm"+value._id}  autoComplete="off" required/>
+																									                    <input type="password" value={this.state["resetPasswordConfirm"+value._id]} onChange={this.handleChange} className="form-control pass border3 oesSignUpForm  inputTextPassC" ref="resetPasswordConfirm" name={"resetPasswordConfirm"+value._id} id={"resetPasswordConfirm"+value._id}  autoComplete="off" required/>
 																							{/*		                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Confirm Password</span> */ }               
 																									                  </span>
 																									                <div className="showHideSignDiv">
-																									                  <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
-																									                  <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
+																									                  <i className="fa fa-eye showPwdC showEyeupSign" aria-hidden="true" onClick={this.showSignPassC.bind(this)}></i>
+																									                  <i className="fa fa-eye-slash hidePwdC hideEyeSignup " aria-hidden="true" onClick={this.hideSignPassC.bind(this)}></i>
 																									                </div> 
 																									                  <span className="focus-border">
 																									                    <i></i>
@@ -1066,7 +1108,7 @@ class IAssureTableUM extends Component {
 	                    </tbody>
 	                    </table>
 	                    </div>
-	                    {this.state.tableData && this.state.tableData.length > 0 ?
+	                    {/*this.state.tableData && this.state.tableData.length > 0 ?
 	                    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paginationAdminWrap">
 		                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 			                    	{ 
@@ -1108,7 +1150,7 @@ class IAssureTableUM extends Component {
 							</div>
 							:
 							null
-	                    }
+	                    */}
 	                    
 	                </div>                        
 	            </div>

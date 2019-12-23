@@ -282,7 +282,7 @@ import './SignUp.css';
                       <div className="divConfirmOtpModalWrap">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" className="firstverification">
                           <div className="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
-                            <span>We have sent you a Verification Code to your registered <b>mobile and Email </b>.<br/><br/></span>
+                            <span>We have sent you a Verification Code to your registered <b>Email</b>.<br/><br/></span>
                           </div>
                           <form id="OTPMobMail" onSubmit={this.confirmOTP.bind(this)}>
                             <div className="col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail veribtm1">

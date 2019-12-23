@@ -89,16 +89,19 @@ import report16                                   from "../../admin/LupinReports
 componentDidMount(){
     $(document).ready(function () {
        $('#sidebarCollapse').on('click', function () {
+        console.log('sidebar')
            $('#sidebar').toggleClass('active');
        });
     });
     $(document).ready(function () {
        $('#sidebarCollapse').on('click', function () {
+        console.log('headerid')
            $('#headerid').toggleClass('headereffect');
        });
     });
     $(document).ready(function () {
        $('#sidebarCollapse').on('click', function () {
+        console.log('dashbordid')
            $('#dashbordid').toggleClass('dashboardeffect');
        });
     });

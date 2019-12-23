@@ -410,6 +410,8 @@ class SignUp extends Component {
 								    	</span>					   			
 									</span>
 							    </div>
+							</div>
+							<div className="col-lg-12 col-md-12 signUpInnerWrapperOES">
 							    <div className="form-group form-group1 col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent textpd boxMarg">
 							   		<span id="mobileNumberErr" className="blocking-span noIb">   
 									   <input className="form-control  abacusTextbox oesSignUpForm formLable" ref="mobileNumber" name="mobileNumber" id="mobileNumber" onChange={this.handleChange} data-text="mobileV" required/>
@@ -451,87 +453,87 @@ class SignUp extends Component {
 		                              
 		                            
 							    </div>	
-							    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent boxMarg">
-									<span className="blocking-span noIb">   
-									  <input id="signupEmailErr" type="email" className="form-control signupsetting formLable abacusTextbox oesSignUpForm" ref="signupEmail" name="signupEmail" onChange={this.handleChange} data-text="emailIDV" required/>
-									  {this.state.formerrors.emailIDV  && (
-				                        <span className="text-danger">{this.state.formerrors.emailIDV}</span> 
-				                      )}
-							    		<span className="floating-label"><i className="fa fa-envelope-o signupIconFont" aria-hidden="true"></i>Email ID<label className="sign asterix">*</label></span>					   			
+							</div>
+						    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent boxMarg">
+								<span className="blocking-span noIb">   
+								  <input id="signupEmailErr" type="email" className="form-control signupsetting formLable abacusTextbox oesSignUpForm" ref="signupEmail" name="signupEmail" onChange={this.handleChange} data-text="emailIDV" required/>
+								  {this.state.formerrors.emailIDV  && (
+			                        <span className="text-danger">{this.state.formerrors.emailIDV}</span> 
+			                      )}
+						    		<span className="floating-label"><i className="fa fa-envelope-o signupIconFont" aria-hidden="true"></i>Email ID<label className="sign asterix">*</label></span>					   			
+								</span>
+						    </div>				   		
+					   		<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent">
+							    <div className="form-group form-group1 fltlft input-group col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
+						   			{/*<span className="blocking-span noIb">
+										<input type="password" className="form-control pass oesSignUpForm confirmbtm inputTextPass" ref="signupPassword" name="signupPassword" required/>
+										<span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Password</span>					   			
 									</span>
-							    </div>				   		
-						   		<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent">
-								    <div className="form-group form-group1 fltlft input-group col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
-							   			{/*<span className="blocking-span noIb">
-											<input type="password" className="form-control pass oesSignUpForm confirmbtm inputTextPass" ref="signupPassword" name="signupPassword" required/>
-											<span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Password</span>					   			
-										</span>
-										<span className="input-group-addon eyeicon  glyphi-custommm">
-											<i className="fa fa-eye Pass showPwd" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
-											<i className="fa fa-eye-slash Pass hidePwd" aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
-										</span>
-					                    <span className="focus-border">
-					                    	<i></i>
-					                    </span>*/}
+									<span className="input-group-addon eyeicon  glyphi-custommm">
+										<i className="fa fa-eye Pass showPwd" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
+										<i className="fa fa-eye-slash Pass hidePwd" aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
+									</span>
+				                    <span className="focus-border">
+				                    	<i></i>
+				                    </span>*/}
 
-					                    <span className="blocking-span noIb" id="signupPasswordErr">
-						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPass tmsLoginTextBox" ref="signupPassword" name="signupPassword" required/>
-						                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Password<label className="sign asterix">*</label></span>                 
-						                  </span>
-						                <div className="showHideSignDiv">
-						                  <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
-						                  <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
-						                </div> 
-						                  <span className="focus-border">
-						                    <i></i>
-						                  </span>
-									</div>
-							   		<div className="input-group textpdEye fltlft col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
-							   			
-					                     <span className="blocking-span noIb" id="signupConfirmPasswordErr">
-						                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPassConf tmsLoginTextBox" ref="signupConfirmPassword" name="signupConfirmPassword" required/>
-						                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Confirm Password<label className="sign asterix">*</label></span>                 
-						                  </span>
-						                <div className="showHideSignDiv">
-						                  <i className="fa fa-eye showPwdConf showEyeupSign" aria-hidden="true" onClick={this.showSignPass1.bind(this)}></i>
-						                  <i className="fa fa-eye-slash hidePwdConf hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass1.bind(this)}></i>
-						                </div> 
-						                  <span className="focus-border">
-						                    <i></i>
-						                  </span>
-									</div>
+				                    <span className="blocking-span noIb" id="signupPasswordErr">
+					                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPass tmsLoginTextBox" ref="signupPassword" name="signupPassword" required/>
+					                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Password<label className="sign asterix">*</label></span>                 
+					                  </span>
+					                <div className="showHideSignDiv">
+					                  <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
+					                  <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
+					                </div> 
+					                  <span className="focus-border">
+					                    <i></i>
+					                  </span>
 								</div>
-							    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent signUpContainer termspad">
-					                <input  id="idacceptcondition" type="checkbox"  value="acceptedconditions" onClick={this.acceptcondition.bind(this)}/>
-					                <Link data-toggle="modal" data-target="#myModal" className="form-checkbox UMGrey1 modalbutton fontbold terms1 pull-left" onClick={this.showModal.bind(this)}>&nbsp;I agree to the <span className="under"> terms & conditions</span><label className="sign asterix">*</label></Link>
-					                <span className="signUpCheck"></span>
-					            </div>
-							    <div class="modal fade" id="myModal" role="dialog">
-							      <div class="modal-dialog">
-							        <div class="modal-content">
+						   		<div className="input-group textpdEye fltlft col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
+						   			
+				                     <span className="blocking-span noIb" id="signupConfirmPasswordErr">
+					                    <input type="password" className="form-control pass border3 oesSignUpForm formLable confirmbtm inputTextPassConf tmsLoginTextBox" ref="signupConfirmPassword" name="signupConfirmPassword" required/>
+					                    <span className="floating-label1 lbfloatpass"><i className="fa fa-lock" aria-hidden="true"></i> Confirm Password<label className="sign asterix">*</label></span>                 
+					                  </span>
+					                <div className="showHideSignDiv">
+					                  <i className="fa fa-eye showPwdConf showEyeupSign" aria-hidden="true" onClick={this.showSignPass1.bind(this)}></i>
+					                  <i className="fa fa-eye-slash hidePwdConf hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass1.bind(this)}></i>
+					                </div> 
+					                  <span className="focus-border">
+					                    <i></i>
+					                  </span>
+								</div>
+							</div>
+						    <div className="form-group form-group1 col-lg-12 col-md-12 col-xs-12 col-sm-12 inputContent signUpContainer termspad">
+				                <input  id="idacceptcondition" type="checkbox"  value="acceptedconditions" onClick={this.acceptcondition.bind(this)}/>
+				                <Link data-toggle="modal" data-target="#myModal" className="form-checkbox UMGrey1 modalbutton fontbold terms1 pull-left" onClick={this.showModal.bind(this)}>&nbsp;I agree to the <span className="under"> terms & conditions</span><label className="sign asterix">*</label></Link>
+				                <span className="signUpCheck"></span>
+				            </div>
+						    <div class="modal fade" id="myModal" role="dialog">
+						      <div class="modal-dialog">
+						        <div class="modal-content">
 
-							          <div class="modal-header">
-							            <button type="button" class="close" data-dismiss="modal">&times;</button>
-							            <h2 className="modaltext">Terms & Conditions</h2>
-							          </div>
-							          <div class="modal-body">
-							            <p className="modaltext modalpara modalparascroll">{this.state.termsCondition?this.state.termsCondition.instruction:null}</p>
-							          </div>
-							          <div class="modal-footer">
-							            <button type="button" class="btn btn-default" data-dismiss="modal">Proceed</button>
-							          </div>
-							        </div>
-							      </div>
-							    </div>
+						          <div class="modal-header">
+						            <button type="button" class="close" data-dismiss="modal">&times;</button>
+						            <h2 className="modaltext">Terms & Conditions</h2>
+						          </div>
+						          <div class="modal-body">
+						            <p className="modaltext modalpara modalparascroll">{this.state.termsCondition?this.state.termsCondition.instruction:null}</p>
+						          </div>
+						          <div class="modal-footer">
+						            <button type="button" class="btn btn-default" data-dismiss="modal">Proceed</button>
+						          </div>
+						        </div>
+						      </div>
+						    </div>
 
-								<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group1 rrnRegisterBtn">
-							    	<input id="signUpBtn" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 acceptinput UMloginbutton UMloginbutton1 hvr-sweep-to-right" type="submit" value={this.state.buttonValue} disabled={this.state.buttonValue==='Please Wait...'?true:false}/>
-							    </div>		   
+							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group1 rrnRegisterBtn">
+						    	<input id="signUpBtn" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 acceptinput UMloginbutton UMloginbutton1 hvr-sweep-to-right" type="submit" value={this.state.buttonValue} disabled={this.state.buttonValue==='Please Wait...'?true:false}/>
+						    </div>		   
 
-						    	<div className="col-lg-12 col-md-4 col-sm-4 col-xs-4 ">
-							    	<Link to='/' className="UMGreyy  signInbtn1"><u>Sign In</u></Link> 	
-						    	</div>
-						    </div> 
+					    	<div className="col-lg-12 col-md-4 col-sm-4 col-xs-4 ">
+						    	<Link to='/' className="UMGreyy  signInbtn1"><u>Sign In</u></Link> 	
+					    	</div>
 					  	</form>
 				  	</div>
 				</div>

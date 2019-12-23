@@ -664,98 +664,101 @@ class Activity extends Component{
   }
 
   edit(id){
-    axios({
-      method: 'get',
-      url: '/api/activityReport/'+id,
-    }).then((response)=> {
-      var editData = response.data[0];
-      // console.log("editData",editData);
-      // console.log("editData",editData.district);
-        // getAvailableCenter(center_ID)
-      // console.log( editData.district,editData.village,editData.block);
-      if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
-        var bentableData = []
-        editData.listofBeneficiaries.map((a, i)=>{
-          axios.get('/api/beneficiaries/'+a.beneficiary_ID)
-          .then((response)=>{
-            // console.log('response',response)
-            bentableData.push({
-              _id                       : a._id,
-              beneficiary_ID            : a.beneficiary_ID,
-              beneficiaryID             : a.beneficiaryID,
-              family_ID                 : a.family_ID,
-              familyID                  : a.familyID,
-              nameofbeneficiaries       : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
-              relation                  : a.relation,
-              dist                      : a.dist,
-              block                     : a.block,
-              village                   : a.village,
-              isUpgraded                : a.isUpgraded,
-            })
-            if(editData.listofBeneficiaries.length===(i+1)){
-              this.setState({
-                bentableData : bentableData
-              },()=>{
-                // console.log('bentableData',this.state.bentableData)
-                this.setState({
-                  "editData"          : editData,
-                  "dateofIntervention": editData.date,
-                  "stateCode"         : editData.stateCode,
-                  "district"          : editData.district,
-                  "block"             : editData.block,
-                  "village"           : editData.village,
-                  "date"              : editData.date,
-                  "sector"            : editData.sectorName+'|'+editData.sector_ID,
-                  "typeofactivity"    : editData.typeofactivity,
-                  "activity"          : editData.activityName+'|'+editData.activity_ID,
-                  "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
-                  "subActivityDetails": editData.unit,
-                  "unitCost"          : editData.unitCost,
-                  "quantity"          : editData.quantity,
-                  "totalcost"         : editData.totalcost,
-                  "LHWRF"             : editData.sourceofFund.LHWRF,
-                  "NABARD"            : editData.sourceofFund.NABARD,
-                  "bankLoan"          : editData.sourceofFund.bankLoan,
-                  "govtscheme"        : editData.sourceofFund.govtscheme,
-                  "directCC"          : editData.sourceofFund.directCC,
-                  "indirectCC"        : editData.sourceofFund.indirectCC,
-                  "other"             : editData.sourceofFund.other,
-                  "total"             : editData.sourceofFund.total,
-                  "remark"            : editData.remark,
-                  "listofBeneficiaries" : bentableData,
-                  "selectedBeneficiaries" : bentableData,
-                  "projectCategoryType"   : editData.projectCategoryType,
-                  "projectName"           : editData.projectName==='all'?'-- Select --':editData.projectName,
-                  "sectorId" : editData.sector_ID,
-                  "activityId" : editData.activity_ID,
-                }, ()=>{
-                  // console.log("edit", this.state.editData)
-                  this.getAvailableCenter(this.state.center_ID);
-                  this.getBlock(this.state.stateCode, this.state.district);
-                  this.getVillages(this.state.stateCode, this.state.district, this.state.block);
-                  this.getAvailableActivity(this.state.sectorId);
-                  this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
-                }); 
+    console.log('id',id)
+    if(id){
+      axios({
+        method: 'get',
+        url: '/api/activityReport/'+id,
+      }).then((response)=> {
+        var editData = response.data[0];
+        // console.log("editData",editData);
+        // console.log("editData",editData.district);
+          // getAvailableCenter(center_ID)
+        // console.log( editData.district,editData.village,editData.block);
+        if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
+          var bentableData = []
+          editData.listofBeneficiaries.map((a, i)=>{
+            axios.get('/api/beneficiaries/'+a.beneficiary_ID)
+            .then((response)=>{
+              // console.log('response',response)
+              bentableData.push({
+                _id                       : a._id,
+                beneficiary_ID            : a.beneficiary_ID,
+                beneficiaryID             : a.beneficiaryID,
+                family_ID                 : a.family_ID,
+                familyID                  : a.familyID,
+                nameofbeneficiaries       : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
+                relation                  : a.relation,
+                dist                      : a.dist,
+                block                     : a.block,
+                village                   : a.village,
+                isUpgraded                : a.isUpgraded,
               })
-            }
+              if(editData.listofBeneficiaries.length===(i+1)){
+                this.setState({
+                  bentableData : bentableData
+                },()=>{
+                  // console.log('bentableData',this.state.bentableData)
+                  this.setState({
+                    "editData"          : editData,
+                    "dateofIntervention": editData.date,
+                    "stateCode"         : editData.stateCode,
+                    "district"          : editData.district,
+                    "block"             : editData.block,
+                    "village"           : editData.village,
+                    "date"              : editData.date,
+                    "sector"            : editData.sectorName+'|'+editData.sector_ID,
+                    "typeofactivity"    : editData.typeofactivity,
+                    "activity"          : editData.activityName+'|'+editData.activity_ID,
+                    "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
+                    "subActivityDetails": editData.unit,
+                    "unitCost"          : editData.unitCost,
+                    "quantity"          : editData.quantity,
+                    "totalcost"         : editData.totalcost,
+                    "LHWRF"             : editData.sourceofFund.LHWRF,
+                    "NABARD"            : editData.sourceofFund.NABARD,
+                    "bankLoan"          : editData.sourceofFund.bankLoan,
+                    "govtscheme"        : editData.sourceofFund.govtscheme,
+                    "directCC"          : editData.sourceofFund.directCC,
+                    "indirectCC"        : editData.sourceofFund.indirectCC,
+                    "other"             : editData.sourceofFund.other,
+                    "total"             : editData.sourceofFund.total,
+                    "remark"            : editData.remark,
+                    "listofBeneficiaries" : bentableData,
+                    "selectedBeneficiaries" : bentableData,
+                    "projectCategoryType"   : editData.projectCategoryType,
+                    "projectName"           : editData.projectName==='all'?'-- Select --':editData.projectName,
+                    "sectorId" : editData.sector_ID,
+                    "activityId" : editData.activity_ID,
+                  }, ()=>{
+                    // console.log("edit", this.state.editData)
+                    this.getAvailableCenter(this.state.center_ID);
+                    this.getBlock(this.state.stateCode, this.state.district);
+                    this.getVillages(this.state.stateCode, this.state.district, this.state.block);
+                    this.getAvailableActivity(this.state.sectorId);
+                    this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
+                  }); 
+                })
+              }
+            })
+            .catch(function(error){ 
+              console.log("error = ",error);
+            });
           })
-          .catch(function(error){ 
-            console.log("error = ",error);
-          });
-        })
-      }
-           
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
+        }
+             
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+        this.setState({
+          errors: errors
+        });
+        return formIsValid;
+      })
+      .catch(function (error) {
+        // console.log("error = ",error);
       });
-      return formIsValid;
-    })
-    .catch(function (error) {
-      // console.log("error = ",error);
-    });
+    }
     // this.setState({
     //   "editId"              : "",
     // });

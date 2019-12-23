@@ -79,7 +79,7 @@ class ForgotPassword extends Component {
                 axios
                 .post('/api/masternotification/send-mail',inputObj)
                 .then((response)=> {
-                  // console.log("-------mail------>>",response);
+                  console.log("-------mail------>>",response);
                   this.setState({
                     buttonValue : 'Send Verification Code'
                   },()=>{

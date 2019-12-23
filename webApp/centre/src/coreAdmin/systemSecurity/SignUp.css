@@ -1290,6 +1290,7 @@ input[type="radio"]:checked:before {
 }
 .boxMarg{
   margin-bottom: 20px !important;
+  /*height: 50px;*/
 }
 
 
