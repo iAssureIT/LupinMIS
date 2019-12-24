@@ -108,13 +108,13 @@ class typeOfCenter extends Component{
 
   updateType_Center(event){
     event.preventDefault();
-    // if(this.refs.typeofCenter.value ==="") {
-    //   // console.log('state validation');
-    //   if (this.validateFormReq() && this.validateForm()) {
-    //   }
-    // }else{
+    if(this.refs.typeofCenter.value ==="") {
+      // console.log('state validation');
+      if (this.validateFormReq()) {
+      }
+    }else{
       // if (this.validateFormReq() && this.validateForm()) {
-    if($('#typeofCenterDetails').valid()){
+    // if($('#typeofCenterDetails').valid()){
       var typeofCenterValues= {
         "ID"               : this.state.editId,
         "typeofCenter"     : this.refs.typeofCenter.value,
@@ -207,6 +207,23 @@ class typeOfCenter extends Component{
       errors: errors
     });
     return formIsValid;
+  }
+  validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+    if (typeof fields["typeofCenterRegX"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["typeofCenterRegX"].match(/^\S*$/)) {
+          formIsValid = false;
+          errors["typeofCenterRegX"] = "Please enter valid Type of Center";
+        }
+      }
+   
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
   }
 
   edit(id){

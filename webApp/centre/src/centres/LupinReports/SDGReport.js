@@ -238,8 +238,12 @@ class SDGReport extends Component{
           var today = this.state.startDate;
           // console.log("localStoragetoday",today);
       }else {
-          var today = moment(new Date()).format('YYYY-MM-DD');
-      // console.log("today",today);
+          var today = (new Date());
+        var nextDate = today.getDate() - 30;
+        today.setDate(nextDate);
+        // var newDate = today.toLocaleString();
+        var today =  moment(today).format('YYYY-MM-DD');
+        console.log("today",today);
       }
       console.log("nowfrom",today)
       this.setState({
