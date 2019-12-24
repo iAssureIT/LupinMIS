@@ -50,7 +50,7 @@ class GeographicalReport extends Component{
             ]
         },
         "tableHeading"      : {
-          "projectCategoryType"              : 'projectCategoryType',
+          "achievement_projectCategory"      : 'Project',
           "name"                             : 'Activity',
           "achievement_Reach"                : "Reach",
           "achievement_FamilyUpgradation"    : 'Upgradation', 
@@ -385,7 +385,7 @@ class GeographicalReport extends Component{
                 var tableData = response.data.map((a, i)=>{
                 return {
                   _id                                   : a._id,            
-                  projectCategoryType                   : a.projectCategoryType,
+                  achievement_projectCategory           : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                  : a.name,
                   achievement_Reach                     : a.achievement_Reach,
                   achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
@@ -421,7 +421,7 @@ class GeographicalReport extends Component{
                 var tableData = response.data.map((a, i)=>{
                 return {
                   _id                                   : a._id,            
-                  projectCategoryType                   : a.projectCategoryType,
+                  achievement_projectCategory           : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                  : a.name,
                   achievement_Reach                     : a.achievement_Reach,
                   achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
@@ -457,7 +457,7 @@ class GeographicalReport extends Component{
                 var tableData = response.data.map((a, i)=>{
                 return {
                   _id                                   : a._id,            
-                  projectCategoryType                   : a.projectCategoryType,
+                  achievement_projectCategory           : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                  : a.name,
                   achievement_Reach                     : a.achievement_Reach,
                   achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,

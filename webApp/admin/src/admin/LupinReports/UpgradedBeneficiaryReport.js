@@ -289,7 +289,7 @@ class UpgradedBeneficiaryReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        console.log("projecttype", this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
@@ -343,7 +343,8 @@ class UpgradedBeneficiaryReport extends Component{
           console.log("resp",response);
           var data = response.data
           var tableData = [];
-          data.map((a, i)=>{
+          if(data.length>0){
+            data.map((a, i)=>{
 
             axios.get('/api/beneficiaries/'+a.beneficiaryID)
             .then((response)=>{
@@ -351,7 +352,7 @@ class UpgradedBeneficiaryReport extends Component{
               tableData.push({
                 _id             : a._id,            
                 date            : a.date,
-                projectCategoryType: projectCategoryType,
+                projectCategoryType: a.projectCategoryType,
                 sectorName      : a.sectorName,
                 activityName    : a.activityName,
                 subactivityName : a.subactivityName,
@@ -373,6 +374,11 @@ class UpgradedBeneficiaryReport extends Component{
               console.log("error = ",error);
             });
           })
+        }else{
+          this.setState({
+            tableData : []
+          })
+        }
         })
         .catch(function(error){  
           // console.log("error = ",error);
