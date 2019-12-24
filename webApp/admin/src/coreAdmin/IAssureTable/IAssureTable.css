@@ -97,9 +97,9 @@
 .totalrow{
   background-color: #ddd;
 }
+/*
+.scrollContent {
 
-/*.scrollContent {
-  display: block !important;
   height: 262px !important;
   overflow: auto !important;
   width: 100% !important;
@@ -109,5 +109,4 @@
   display: table !important;
   overflow: auto !important;
   width: 100% !important;
-}
-*/
+}*/

@@ -309,10 +309,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
     console.log(Date.parse(startDate));
-    if ((Date.parse(endDate) <= Date.parse(startDate))) {
-        swal("Start date","From date should be less than To date");
-        this.refs.startDate.value="";
-    }
+ 
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -330,10 +327,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    if ((Date.parse(startDate) >= Date.parse(endDate))) {
-        swal("End date","To date should be greater than From date");
-        this.refs.endDate.value="";
-    }
+  
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var endDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -366,6 +360,26 @@ class ActivityWisePeriodicVarianceReport extends Component{
     });
     return today;
   }
+   onBlurEventFrom(){
+
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+        console.log("startDate",startDate,endDate)
+         if ((Date.parse(endDate) <= Date.parse(startDate))) {
+            
+            swal("Start date","From date should be less than To date");
+            this.refs.startDate.value="";
+        }
+    }
+    onBlurEventTo(){
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+        console.log("startDate",startDate,endDate)
+          if ((Date.parse(startDate) >= Date.parse(endDate))) {
+            swal("End date","To date should be greater than From date");
+            this.refs.endDate.value="";
+        }
+    }
 
   currentToDate(){
       if(this.state.endDate){
@@ -482,16 +496,16 @@ class ActivityWisePeriodicVarianceReport extends Component{
                       <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">From</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                              <input onChange={this.handleFromChange} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                              <input onChange={this.handleFromChange}  onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                           </div>
                       </div>
                       <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">To</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                              <input onChange={this.handleToChange} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                              <input onChange={this.handleToChange}  onBlur={this.onBlurEventTo.bind(this)}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                           </div>
                       </div>  
-                    </div>  
+                    </div> 
                     <div className="marginTop11">
                         <div className="">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">

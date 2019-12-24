@@ -578,13 +578,13 @@ class IAssureTable extends Component {
            
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
 	                <div className="table-responsive" id="section-to-print">
-						<table className="table iAssureITtable-bordered table-striped table-hover" id={this.state.id}>
+						<table className="table iAssureITtable-bordered customTable table-striped table-hover" id={this.state.id}>
 	                        <thead className="tempTableHeader  fixedHeader">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
-												<th key={index} colSpan={data.mergedColoums} className={data.hide ? "umDynamicHeader srpadd textAlignCenter section-to-hide" :"umDynamicHeader srpadd textAlignCenter"}>{data.heading}</th>			
+												<th key={index} colSpan={data.mergedColoums} className={data.hide ? "umDynamicHeader srpadd textAlignCenter section-to-hide fixedHeading" :"umDynamicHeader srpadd textAlignCenter fixedHeading"}>{data.heading}</th>			
 		                            		);		                           		
 		                            	})	
 		                            	:
@@ -592,24 +592,24 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
+	                            <th className="umDynamicHeader fixedHeading srpadd textAlignLeft">Sr.No.</th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
 													if(key === 'actions'){
 														return(
-															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value}</th>
+															<th key={i} className="umDynamicHeader fixedHeading srpadd textAlignLeft">{value}</th>
 														);	
 													}else{
 														return(
-															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															<th key={i} className="umDynamicHeader fixedHeading srpadd textAlignLeft">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
 													}
 																							
 											}
 										) 
 										:
-										<th className="umDynamicHeader srpadd textAlignLeft"></th>
+										<th className="umDynamicHeader fixedHeading srpadd textAlignLeft"></th>
 									}
 	                            </tr>
 	                        </thead>

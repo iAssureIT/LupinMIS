@@ -5398,3 +5398,7 @@ a.article, a.article:hover {
 .jgjg{
   color: #333;
 }
+.activeOne a{
+  color: #333  !important;
+  background-color: #fff !important
+}

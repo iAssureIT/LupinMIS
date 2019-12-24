@@ -95,13 +95,14 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         },   
     }
     window.scrollTo(0, 0); 
-    this.handleFromChange    = this.handleFromChange.bind(this);
-    this.handleToChange      = this.handleToChange.bind(this);
-    this.currentFromDate     = this.currentFromDate.bind(this);
-    this.currentToDate       = this.currentToDate.bind(this);
-    this.getAvailableProjects = this.getAvailableProjects.bind(this);
-  }
-
+    this.handleFromChange       = this.handleFromChange.bind(this);
+    this.onBlurEventFrom        = this.onBlurEventFrom.bind(this);
+    this.onBlurEventTo          = this.onBlurEventTo.bind(this);
+    this.handleToChange         = this.handleToChange.bind(this);
+    this.currentFromDate        = this.currentFromDate.bind(this);
+    this.currentToDate          = this.currentToDate.bind(this);
+    this.getAvailableProjects   = this.getAvailableProjects.bind(this);
+    }
     componentDidMount(){
         const center_ID = localStorage.getItem("center_ID");
         const centerName = localStorage.getItem("centerName");
@@ -257,11 +258,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
         console.log(Date.parse(startDate));
-        if ((Date.parse(endDate) <= Date.parse(startDate))) {
-            
-            swal("Start date","From date should be less than To date");
-            this.refs.startDate.value="";
-        }
+       
         var dateVal = event.target.value;
         var dateUpdate = new Date(dateVal);
         var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -278,10 +275,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         const name = target.name;
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        if ((Date.parse(startDate) >= Date.parse(endDate))) {
-            swal("End date","To date should be greater than From date");
-            this.refs.endDate.value="";
-        }
+      
         var dateVal = event.target.value;
         var dateUpdate = new Date(dateVal);
         var endDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -292,14 +286,36 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
        });
     }
+    onBlurEventFrom(){
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+        console.log("startDate",startDate,endDate)
+         if ((Date.parse(endDate) <= Date.parse(startDate))) {
+            
+            swal("Start date","From date should be less than To date");
+            this.refs.startDate.value="";
+        }
+    }
+    onBlurEventTo(){
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+        console.log("startDate",startDate,endDate)
+          if ((Date.parse(startDate) >= Date.parse(endDate))) {
+            swal("End date","To date should be greater than From date");
+            this.refs.endDate.value="";
+        }
+    }
 
     currentFromDate(){
         if(this.state.startDate){
             var today = this.state.startDate;
             // console.log("localStoragetoday",today);
         }else {
-            var today = moment(new Date()).format('YYYY-MM-DD');
-        // console.log("today",today);
+            var today = (new Date());
+            var nextDate = today.getDate() - 30;
+            today.setDate(nextDate);
+            var today =  moment(today).format('YYYY-MM-DD');
+            console.log("today",today);
         }
         console.log("nowfrom",today)
         this.setState({
@@ -309,7 +325,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         return today;
         // this.handleFromChange()
     }
-
     currentToDate(){
         if(this.state.endDate){
             var today = this.state.endDate;
@@ -330,13 +345,13 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             tableData : []
         });
     }
-  changeReportComponent(event){
-    var currentComp = $(event.currentTarget).attr('id');
+    changeReportComponent(event){
+        var currentComp = $(event.currentTarget).attr('id');
 
-    this.setState({
-      'currentTabView': currentComp,
-    })
-  }
+        this.setState({
+          'currentTabView': currentComp,
+        })
+    }
   render(){
     return( 
         <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -381,13 +396,13 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                                     <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                            <input onChange={this.handleFromChange} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                                            <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                                         </div>
                                     </div>
                                     <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                                         <label className="formLable">To</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                            <input onChange={this.handleToChange} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                                            <input onChange={this.handleToChange} onBlur={this.onBlurEventTo}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                                         </div>
                                     </div>  
                                 </div>  
