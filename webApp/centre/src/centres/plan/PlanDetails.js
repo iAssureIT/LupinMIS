@@ -7,9 +7,7 @@ import "./PlanDetails.css";
 import BulkUpload             from "../bulkupload/BulkUpload.js";
 import $ from 'jquery';
 var add=0
-
 class PlanDetails extends Component{
-  
   constructor(props){
     super(props); 
     this.state = {
@@ -38,7 +36,7 @@ class PlanDetails extends Component{
       "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       "year"                :"FY 2019 - 2020",
       "shown"               : true,
-       "twoLevelHeader"     : {
+      "twoLevelHeader"     : {
         apply               : true,
         firstHeaderData     : [
                                 {
@@ -116,24 +114,25 @@ class PlanDetails extends Component{
         remark              : "Remark"
     },
     failedtableHeading :{
-        sectorName          : "Sector",
-        activityName        : "Activity",
-        subactivityName     : "Sub-Activity",
-        unit                : "Unit",
-        physicalUnit        : "Physical Unit",
-        unitCost            : "Unit Cost",
-        noOfBeneficiaries   : "No. Of Beneficiaries",
-        noOfFamilies        : "No. Of Families",
-        LHWRF               : "LHWRF",
-        NABARD              : "NABARD",
-        bankLoan            : "Bank Loan",
-        govtscheme          : "Govt. Scheme",
-        directCC            : "Direct Community Contribution",
-        indirectCC          : "Indirect Community Contribution",
-        other               : "Other",
-        remark              : "Remark",
-        failedRemark        : 'Failed Data Remark',
+      sectorName          : "Sector",
+      activityName        : "Activity",
+      subactivityName     : "Sub-Activity",
+      unit                : "Unit",
+      physicalUnit        : "Physical Unit",
+      unitCost            : "Unit Cost",
+      noOfBeneficiaries   : "No. Of Beneficiaries",
+      noOfFamilies        : "No. Of Families",
+      LHWRF               : "LHWRF",
+      NABARD              : "NABARD",
+      bankLoan            : "Bank Loan",
+      govtscheme          : "Govt. Scheme",
+      directCC            : "Direct Community Contribution",
+      indirectCC          : "Indirect Community Contribution",
+      other               : "Other",
+      remark              : "Remark",
+      failedRemark        : 'Failed Data Remark',
     },
+    availableSubActivity : []
     }
     this.uploadedData = this.uploadedData.bind(this);
     this.remainTotal  = this.remainTotal.bind(this);
@@ -159,8 +158,8 @@ class PlanDetails extends Component{
       if (name === "noOfBeneficiaries" || name === "noOfFamilies") {
         if (parseInt(this.state[`noOfBeneficiaries-${index}`]) < parseInt(this.state[`noOfFamilies-${index}`]) ) {
           swal("No. of Families should not greater than No. of Beneficiaries");
-         this.state.availableSubActivity[parseInt(index)].noOfBeneficiaries = 0;
-         this.state.availableSubActivity[parseInt(index)].noOfFamilies = 0;
+          this.state.availableSubActivity[parseInt(index)].noOfBeneficiaries = 0;
+          this.state.availableSubActivity[parseInt(index)].noOfFamilies = 0;
           this.setState({
             [`noOfBeneficiaries-${index}`] : 0,
             [`noOfFamilies-${index}`] : 0
@@ -223,22 +222,22 @@ class PlanDetails extends Component{
 
     if (findIndex !== -1) {
       if (parseInt(subTotal) < parseInt(totalBudget)) {
-         var getstate = arr[findIndex + 1];
-          if (getstate) {
-             getsubActivity[getstate] = totalBudget - subTotal;
-             this.setState({[getstate+"-"+index] : totalBudget - subTotal });
+        var getstate = arr[findIndex + 1];
+        if (getstate) {
+          getsubActivity[getstate] = totalBudget - subTotal;
+          this.setState({[getstate+"-"+index] : totalBudget - subTotal });
+        }
+        for (var k = findIndex + 2; k < arr.length; k++) {
+          var currentStates = arr[k];
+          if (currentStates) {
+            getsubActivity[currentStates] = 0;
+            this.setState({[currentStates+"-"+index] : 0 });
           }
-          for (var k = findIndex + 2; k < arr.length; k++) {
-            var currentStates = arr[k];
-            if (currentStates) {
-               getsubActivity[currentStates] = 0;
-               this.setState({[currentStates+"-"+index] : 0 });
-            }
-          }
+        }
       }else{
         var remainTotal =  0;
         for (var j = 0; j < findIndex; j++) {
-            remainTotal += parseInt(getsubActivity[arr[j]]);
+          remainTotal += parseInt(getsubActivity[arr[j]]);
         }
         if (remainTotal > 0 ) {
           getsubActivity[arr[findIndex]] = totalBudget - remainTotal;
@@ -247,14 +246,12 @@ class PlanDetails extends Component{
         for (var i = findIndex + 1; i < arr.length; i++) {
           var currentState = arr[i];
           if (currentState) {
-             getsubActivity[currentState] = 0;
-             this.setState({[currentState+"-"+index] : 0 });
+            getsubActivity[currentState] = 0;
+            this.setState({[currentState+"-"+index] : 0 });
           }
         }
       }
-      
     }
-
   }
   
   subActivityDetails(event){
@@ -288,18 +285,16 @@ class PlanDetails extends Component{
       }
       this.addsubActivityDetails(id,name,value,this.state.totalBud);
     });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
-    
+    // if (this.validateForm()) {
+    //   let errors = {};
+    //   errors[event.target.name] = "";
+    //   this.setState({
+    //     errors: errors
+    //   });
+    // }
   }
   addsubActivityDetails(id,name,value,totalBud){
     var subActivityDetails = this.state.subActivityDetails;
-    
     // console.log("this.state.subActivityDetails",this.state.subActivityDetails);
     var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID === id});
     var name = (name).split('-')[0];
@@ -322,18 +317,14 @@ class PlanDetails extends Component{
         "unit"                : document.getElementById('unit-'+id).innerHTML,
         "totalBudget"         : y,
         [name]                : value
-
       })
     }
     this.setState({
       subActivityDetails : subActivityDetails
-    },()=>{
-      console.log("subActivityDetails",this.state.subActivityDetails);
     })
-
   }
   uploadedData(data){
-     this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+    this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
   }
   SubmitAnnualPlan(event){
     event.preventDefault();
@@ -341,147 +332,124 @@ class PlanDetails extends Component{
       return data.totalBudget > 0;
     });   
     // console.log("subActivityDetails",subActivityDetails);
-
-      let fields = {};
-      // fields["year"]              = "";
-      // fields["month"]             = "";
-      // fields["sectorName"]        = "";
-      // fields["activityName"]      = "";
-      // fields["physicalUnit"]      = "";
-      // fields["unitCost"]          = "";
-      // fields["totalBudget"]       = "";
-      // fields["noOfFamilies"]      = "";
-      // fields["noOfBeneficiaries"] = "";
-      // fields["LHWRF"]             = "";
-      // fields["NABARD"]            = "";
-      // fields["bankLoan"]          = "";
-      // fields["govtscheme"]        = "";
-      // fields["directCC"]          = "";
-      // fields["indirectCC"]        = "";
-      // fields["other"]             = "";
-      // fields["remark"]            = "";
-      // // console.log("this.state.apiCall",this.state.apiCall);
-      if(subActivityDetails.length > 0){
-        for(var i=0; i<subActivityDetails.length; i++){
-          var planValues = {
-            "month"               : this.state.month,          
-            "year"                : this.state.year,          
-            "center_ID"           : this.state.center_ID,
-            "center"              : this.state.centerName,
-            "sector_ID"           : this.state.sectorName.split('|')[1],
-            "sectorName"          : this.state.sectorName.split('|')[0],
-            "activity_ID"         : this.state.activityName.split('|')[1],
-            "activityName"        : this.state.activityName.split('|')[0],
-            "subactivity_ID"      : subActivityDetails[i]._id,
-            "subactivityName"     : subActivityDetails[i].subActivityName,
-            "unit"                : subActivityDetails[i].unit,
-            "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
-            "unitCost"            : parseInt(subActivityDetails[i].unitCost),
-            "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
-            "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
-            "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
-            "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
-            "NABARD"              : parseInt(subActivityDetails[i].NABARD),
-            "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
-            "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
-            "directCC"            : parseInt(subActivityDetails[i].directCC),
-            "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
-            "other"               : parseInt(subActivityDetails[i].other),
-            "remark"              : subActivityDetails[i].remark,
-          };
-          axios.post(this.state.apiCall, planValues)
-            .then((response)=>{
-              // console.log("response",response);
-              if (response.status === 200 ) {
-                swal({
-                  title : response.data.message,
-                  text  : response.data.message
-                });
-                // swal("Plan created successfully");
-              }
-              if(this.state.month ==='Annual'){
-                var email = localStorage.getItem('email')
-                var msgvariable = {
-                  '[User]'    : localStorage.getItem('fullName'),
-                  '[FY]'    : this.refs.year.value,
-                }
-                // console.log("msgvariable :"+JSON.stringify(msgvariable));
-                var inputObj = {  
-                  to           : email,
-                  templateName : 'User - Annual Plan Submitted',
-                  variables    : msgvariable,
-                }
-                // axios
-                // .post('/api/masternotification/send-mail',inputObj)
-                // .then((response)=> {
-                //   // console.log("-------mail------>>",response);
-                  
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // })
-                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-              }else{
-                var email = localStorage.getItem('email')
-                var msgvariable = {
-                  '[User]'    : localStorage.getItem('fullName'),
-                  '[FY]'    : this.refs.year.value,
-                  '[monthName]' : this.refs.month.value
-                }
-                // console.log("msgvariable :"+JSON.stringify(msgvariable));
-                var inputObj = {  
-                  to           : email,
-                  templateName : 'User - Monthly Plan Submitted',
-                  variables    : msgvariable,
-                }
-                // axios
-                // .post('/api/masternotification/send-mail',inputObj)
-                // .then((response)=> {
-                //   // console.log("-------mail------>>",response);
-                  
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // })
-                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-              }
-            })
-            .catch(function(error){
-              console.log("error"+error);
-          });
-          Object.entries(planValues).map( 
-            ([key, value], i)=> {
-              this.setState({
-                [key+'-'+this.state.subactivity_ID] : ""
-              },()=>{
-                console.log(this.state[key+'-'+this.state.subactivity_ID]);
-              })
+    if(subActivityDetails.length > 0){
+      for(var i=0; i<subActivityDetails.length; i++){
+        var planValues = {
+          "month"               : this.state.month,          
+          "year"                : this.state.year,          
+          "center_ID"           : this.state.center_ID,
+          "center"              : this.state.centerName,
+          "sector_ID"           : this.state.sectorName.split('|')[1],
+          "sectorName"          : this.state.sectorName.split('|')[0],
+          "activity_ID"         : this.state.activityName.split('|')[1],
+          "activityName"        : this.state.activityName.split('|')[0],
+          "subactivity_ID"      : subActivityDetails[i]._id,
+          "subactivityName"     : subActivityDetails[i].subActivityName,
+          "unit"                : subActivityDetails[i].unit,
+          "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
+          "unitCost"            : parseInt(subActivityDetails[i].unitCost),
+          "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
+          "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
+          "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
+          "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
+          "NABARD"              : parseInt(subActivityDetails[i].NABARD),
+          "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
+          "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
+          "directCC"            : parseInt(subActivityDetails[i].directCC),
+          "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
+          "other"               : parseInt(subActivityDetails[i].other),
+          "remark"              : subActivityDetails[i].remark,
+        };
+        axios.post(this.state.apiCall, planValues)
+          .then((response)=>{
+            // console.log("response",response);
+            if (response.status === 200 ) {
+              swal({
+                title : response.data.message,
+                text  : response.data.message
+              });
+              // swal("Plan created successfully");
             }
-          );
-        }
-      }else{
-        this.validateFormReq();
-        swal({
-          title : "abc",
-          text  : "Please fill atleast one SubActivity Details."
+            if(this.state.month ==='Annual'){
+              var email = localStorage.getItem('email')
+              var msgvariable = {
+                '[User]'    : localStorage.getItem('fullName'),
+                '[FY]'    : this.refs.year.value,
+              }
+              // console.log("msgvariable :"+JSON.stringify(msgvariable));
+              var inputObj = {  
+                to           : email,
+                templateName : 'User - Annual Plan Submitted',
+                variables    : msgvariable,
+              }
+              // axios
+              // .post('/api/masternotification/send-mail',inputObj)
+              // .then((response)=> {
+              //   // console.log("-------mail------>>",response);
+                
+              // })
+              // .catch(function (error) {
+              //     console.log(error);
+              // })
+              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+            }else{
+              var email = localStorage.getItem('email')
+              var msgvariable = {
+                '[User]'    : localStorage.getItem('fullName'),
+                '[FY]'    : this.refs.year.value,
+                '[monthName]' : this.refs.month.value
+              }
+              // console.log("msgvariable :"+JSON.stringify(msgvariable));
+              var inputObj = {  
+                to           : email,
+                templateName : 'User - Monthly Plan Submitted',
+                variables    : msgvariable,
+              }
+              // axios
+              // .post('/api/masternotification/send-mail',inputObj)
+              // .then((response)=> {
+              //   // console.log("-------mail------>>",response);
+                
+              // })
+              // .catch(function (error) {
+              //     console.log(error);
+              // })
+              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+            }
+          })
+          .catch(function(error){
+            console.log("error"+error);
         });
+        Object.entries(planValues).map( 
+          ([key, value], i)=> {
+            this.setState({
+              [key+'-'+this.state.subactivity_ID] : ""
+            })
+          }
+        );
       }
-      this.setState({
-        "year"                : "FY 2019 - 2020",
-        "month"               : "Annual Plan",
-        "center"              :"",
-        "sector_id"           :"",
-        "sectorName"          :"-- Select --",
-        "activityName"        :"-- Select --",
-        "fields"              :fields,
-        "editId"              :"",
-        "subActivityDetails"  :[],
-        "availableSubActivity":[],
-        "availableActivity"   :[],
-        "subActivityDetails[i][name]":"",
-        "shown"               : true,
-        // shown                 : !this.state.shown
+    }else{
+      this.validateFormReq();
+      swal({
+        title : "abc",
+        text  : "Please fill atleast one SubActivity Details."
       });
+    }
+    this.setState({
+      "year"                : "FY 2019 - 2020",
+      "month"               : "Annual Plan",
+      "center"              :"",
+      "sector_id"           :"",
+      "sectorName"          :"-- Select --",
+      "activityName"        :"-- Select --",
+      // "fields"              :fields,
+      "editId"              :"",
+      "subActivityDetails"  :[],
+      "availableSubActivity":[],
+      "availableActivity"   :[],
+      "subActivityDetails[i][name]":"",
+      "shown"               : true,
+    });
   }
   Update(event){    
     event.preventDefault();
@@ -518,15 +486,15 @@ class PlanDetails extends Component{
         };
         // console.log('planValues',planValues)
         axios.patch(this.state.apiCall+'/update', planValues)
-          .then((response)=>{
-            // console.log('response',response)
-            swal({
-              title : response.data.message,
-              text  : response.data.message
-            });
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-          })
-          .catch(function(error){
+        .then((response)=>{
+          // console.log('response',response)
+          swal({
+            title : response.data.message,
+            text  : response.data.message
+          });
+          this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+        })
+        .catch(function(error){
             console.log("error"+error);
         }); 
         this.setState({
@@ -547,7 +515,6 @@ class PlanDetails extends Component{
         });
       }
     }
-    // this.props.history.push('/plan-details')
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -591,16 +558,15 @@ class PlanDetails extends Component{
       });
       return formIsValid;
   }
-
   getLength(){
     axios.get(this.state.apiCall+'/count'+"/"+this.state.center_ID)
     .then((response)=>{
       // console.log('response', response.data);
-      this.setState({
-        dataCount : response.data.dataLength
-      },()=>{
-        console.log('dataCount', this.state.dataCount);
-      })
+      if(response&&response.data){
+        this.setState({
+          dataCount : response.data.dataLength
+        })
+      }
     })
     .catch(function(error){      
     });
@@ -619,77 +585,71 @@ class PlanDetails extends Component{
       "activityName"        : "-- Select --",
       "availableSubActivity": [],
       tableObjects,
-      fields
+      // fields
     },()=>{
       this.setState({
         "year" : this.state.years[0]
       },()=>{
         // console.log('month =====', this.state.month, this.state.year)
         this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-
       })
     });
-
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+    // if (this.validateForm()) {
+    //   let errors = {};
+    //   errors[event.target.name] = "";
+    //   this.setState({
+    //     errors: errors
+    //   });
+    // }
   }
   getData(center_ID, month, year, startRange, limitRange ){
     var data = {
-    center_ID  : center_ID,
-    month      : month,
-    year       : year,
-    startRange : startRange,
-    limitRange : limitRange
+      center_ID  : center_ID,
+      month      : month,
+      year       : year,
+      startRange : startRange,
+      limitRange : limitRange
     }
     // console.log("data",data);
     axios.post(this.state.apiCall+'/list', data)
-      .then((response)=>{
-          // console.log("response",response);
+    .then((response)=>{
+      // console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
-        _id                 : a._id,
-        month               : a.month,
-        year                : a.year,
-        sectorName          : a.sectorName,
-        activityName        : a.activityName,
-        subactivityName     : a.subactivityName,
-        unit                : a.unit,
-        physicalUnit        : a.physicalUnit,
-        unitCost            : a.unitCost,
-        totalBudget         : a.totalBudget,
-        noOfBeneficiaries   : a.noOfBeneficiaries,
-        noOfFamilies        : a.noOfFamilies,
-        LHWRF               : a.LHWRF,
-        NABARD              : a.NABARD,
-        bankLoan            : a.bankLoan,
-        govtscheme          : a.govtscheme,
-        directCC            : a.directCC,
-        indirectCC          : a.indirectCC,
-        other               : a.other,
-        remark              : a.remark,
-        
+          _id                 : a._id,
+          month               : a.month,
+          year                : a.year,
+          sectorName          : a.sectorName,
+          activityName        : a.activityName,
+          subactivityName     : a.subactivityName,
+          unit                : a.unit,
+          physicalUnit        : a.physicalUnit,
+          unitCost            : a.unitCost,
+          totalBudget         : a.totalBudget,
+          noOfBeneficiaries   : a.noOfBeneficiaries,
+          noOfFamilies        : a.noOfFamilies,
+          LHWRF               : a.LHWRF,
+          NABARD              : a.NABARD,
+          bankLoan            : a.bankLoan,
+          govtscheme          : a.govtscheme,
+          directCC            : a.directCC,
+          indirectCC          : a.indirectCC,
+          other               : a.other,
+          remark              : a.remark,
+          
         }
       })
-
-        this.setState({
-          tableData : tableData
-        },()=>{
-          // console.log("tableData",this.state.tableData);
-        });
-      })
-      .catch(function(error){
-        console.log("error"+error);
+      this.setState({
+        tableData : tableData
       });
+    })
+    .catch(function(error){
+      console.log("error"+error);
+    });
   }
   componentWillReceiveProps(nextProps){
     this.getAvailableSectors();
     var editId = nextProps.match.params.id;
-
     if(nextProps.match.params.id){
       this.setState({
         editId : editId,
@@ -729,11 +689,9 @@ class PlanDetails extends Component{
       apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
     },()=>{
       // console.log('year', this.state.year)
-       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     })
     this.getLength();
-   
-
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -741,8 +699,6 @@ class PlanDetails extends Component{
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
-    },()=>{
-    // console.log("center_ID =",this.state.center_ID);
     });
   }
   getAvailableSectors(){
@@ -750,10 +706,9 @@ class PlanDetails extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-        
-        this.setState({
-          availableSectors : response.data
-        })
+      this.setState({
+        availableSectors : response.data
+      })
     }).catch(function (error) {
       console.log("error"+error);
     });
@@ -769,20 +724,17 @@ class PlanDetails extends Component{
     this.getAvailableActivity(sector_ID);
   }
   getAvailableActivity(sector_ID){
-    console.log("sector_ID",sector_ID);
+    // console.log("sector_ID",sector_ID);
     if(sector_ID){
       axios({
         method: 'get',
         url: '/api/sectors/'+sector_ID,
       }).then((response)=> {
-        
-          this.setState({
-            availableActivity : response.data[0].activity,
-            activityName      : "-- Select --",
-            availableSubActivity : []
-          },()=>{
-            // console.log("availableActivity=",this.state.availableActivity);
-          })
+        this.setState({
+          availableActivity : response.data[0].activity,
+          // activityName      : "-- Select --",
+          availableSubActivity : []
+        })
       }).catch(function (error) {
         console.log("error"+error);
       });
@@ -797,7 +749,6 @@ class PlanDetails extends Component{
   }
   
   getAvailableSubActivity(sector_ID, activity_ID){
-    
     var data={
       "sector_ID"   : sector_ID,
       "activity_ID" : activity_ID,
@@ -807,11 +758,8 @@ class PlanDetails extends Component{
     }
     axios.post('/api/sectors/activity',data)
     .then((response)=> {
-      // console.log("response.data",response.data);
-        // var availableSubActivity = _.flatten(response.data.map((a, i)=>{
-        //     return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] 
-        //   });
-        // }))
+      console.log('response.data',response.data)
+      if(response&&response.data){
         var newavailableSubActivity = response.data.map((data,index)=>{
           data.physicalUnit = 0;
           data.unitCost     = 0;
@@ -828,19 +776,18 @@ class PlanDetails extends Component{
           data.remark       = '';
           return data;
         });
-        // console.log("newavailableSubActivity",newavailableSubActivity);
+        console.log("newavailableSubActivity",newavailableSubActivity);
         this.setState({
           availableSubActivity : newavailableSubActivity
-        },()=>{
-          // console.log("availableSubActivity after",this.state.availableSubActivity);
         })
-        // this.excludeSubmittedSubActivity(availableSubActivity);       
+      }
+      // this.excludeSubmittedSubActivity(availableSubActivity);       
     }).catch((error)=> {
       console.log("error"+error);
     }); 
   }
   edit(id){
-    console.log('id===',id)
+    // console.log('id===',id)
     if(id){
       axios({
         method: 'get',
@@ -848,8 +795,9 @@ class PlanDetails extends Component{
         }).then((response)=> {
         var editData = response.data[0];
         if(editData){
-        console.log("editData :",editData.sector_ID);
+          // console.log("editData :",editData);
           this.getAvailableActivity(editData.sector_ID);
+          this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID);
           this.setState({
             "availableSubActivity"    : [{
               _id                   : editData.subactivity_ID,
@@ -877,17 +825,8 @@ class PlanDetails extends Component{
             "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
             "activityName"            : editData.activityName+'|'+editData.activity_ID,
             "subactivity_ID"          : editData.subactivity_ID,
-          },()=>{
-           
           })      
         }
-        let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
-        this.setState({
-          errors: errors
-        });
-        return formIsValid;
       }).catch(function (error) {
         // console.log("error"+error);
       });
@@ -896,8 +835,6 @@ class PlanDetails extends Component{
   toglehidden(){   
     this.setState({
      shown: !this.state.shown
-    },()=>{
-      // console.log('shown', this.state.shown, !this.state.shown);
     });
   }
   getSearchText(searchText, startRange, limitRange){
@@ -907,44 +844,41 @@ class PlanDetails extends Component{
   }
   getFileDetails(fileName){
     var fileDetailUrl = this.state.month == "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl;
-      axios
-      .get(fileDetailUrl+fileName)
-      .then((response)=> {
+    axios
+    .get(fileDetailUrl+fileName)
+    .then((response)=> {
       $('.fullpageloader').hide();  
       if (response) {
         this.setState({
-            fileDetails:response.data,
-            failedRecordsCount : response.data.failedRecords.length,
-            goodDataCount : response.data.goodrecords.length
+          fileDetails:response.data,
+          failedRecordsCount : response.data.failedRecords.length,
+          goodDataCount : response.data.goodrecords.length
         });
-
-          var tableData = response.data.goodrecords.map((a, i)=>{
-           
+        var tableData = response.data.goodrecords.map((a, i)=>{ 
           return{
-              "month"        : a.month        ? a.month    : '-',
-              "year"        : a.year        ? a.year    : '-',
-              "sectorName"        : a.sectorName        ? a.sectorName    : '-',
-              "activityName"       : a.activityName        ? a.activityName    : '-',
-              "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
-              "unit"         : a.unit     ? a.unit : '-',
-              "physicalUnit"   : a.physicalUnit     ? a.physicalUnit : '-',
-              "unitCost"   : a.unitCost     ? a.unitCost : '-',
-              "totalBudget"   : a.totalBudget     ? a.totalBudget : '-',
-              "noOfBeneficiaries"      : a.noOfBeneficiaries     ? a.noOfBeneficiaries : '-',
-              "noOfFamilies"   : a.noOfFamilies     ? a.noOfFamilies : '-',
-              "LHWRF" : a.LHWRF ? a.LHWRF : '-',
-              "NABARD" : a.NABARD ? a.NABARD : '-', 
-              "bankLoan"   : a.bankLoan     ? a.bankLoan : '-', 
-              "govtscheme"   : a.govtscheme     ? a.govtscheme : '-',
-              "directCC"   : a.directCC     ? a.directCC : '-',
-              "indirectCC"   : a.indirectCC     ? a.indirectCC : '-',
-              "other"   : a.other     ? a.other : '-',
-              "remark"   : a.remark     ? a.remark : '-'
+            "month"        : a.month        ? a.month    : '-',
+            "year"        : a.year        ? a.year    : '-',
+            "sectorName"        : a.sectorName        ? a.sectorName    : '-',
+            "activityName"       : a.activityName        ? a.activityName    : '-',
+            "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
+            "unit"         : a.unit     ? a.unit : '-',
+            "physicalUnit"   : a.physicalUnit     ? a.physicalUnit : '-',
+            "unitCost"   : a.unitCost     ? a.unitCost : '-',
+            "totalBudget"   : a.totalBudget     ? a.totalBudget : '-',
+            "noOfBeneficiaries"      : a.noOfBeneficiaries     ? a.noOfBeneficiaries : '-',
+            "noOfFamilies"   : a.noOfFamilies     ? a.noOfFamilies : '-',
+            "LHWRF" : a.LHWRF ? a.LHWRF : '-',
+            "NABARD" : a.NABARD ? a.NABARD : '-', 
+            "bankLoan"   : a.bankLoan     ? a.bankLoan : '-', 
+            "govtscheme"   : a.govtscheme     ? a.govtscheme : '-',
+            "directCC"   : a.directCC     ? a.directCC : '-',
+            "indirectCC"   : a.indirectCC     ? a.indirectCC : '-',
+            "other"   : a.other     ? a.other : '-',
+            "remark"   : a.remark     ? a.remark : '-'
           }
         })
-
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
-        return{
+          return{
             "sectorName"        : a.sectorName        ? a.sectorName    : '-',
             "activityName"       : a.activityName        ? a.activityName    : '-',
             "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
@@ -962,17 +896,17 @@ class PlanDetails extends Component{
             "other"   : a.other     ? a.other : '-',
             "remark"   : a.remark     ? a.remark : '-',
             "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
-        }
+          }
         })
         this.setState({
-            goodRecordsTable : tableData,
-            failedRecordsTable : failedRecordsTable
+          goodRecordsTable : tableData,
+          failedRecordsTable : failedRecordsTable
         })
       }
-      })
-      .catch((error)=> { 
-            
-      }) 
+    })
+    .catch((error)=> { 
+          
+    }) 
   }
   render() {
     var hidden = {
@@ -999,7 +933,7 @@ class PlanDetails extends Component{
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                         <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
-                          <option disabled={true}>-- Select Plan --</option>
+                          <option disabled="disabled" selected="true">-- Select Plan --</option>
                          {this.state.months.map((data,index) =>
                           <option key={index}  value={data} >{data}</option>
                           )}
@@ -1012,7 +946,7 @@ class PlanDetails extends Component{
                        <label className="formLable">Year</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
-                          <option disabled={true}>-- Select Year --</option>
+                          <option disabled="disabled" selected="true">-- Select Year --</option>
                          {
                           this.state.years.map((data, i)=>{
                             return <option key={i}>{data}</option>
@@ -1054,7 +988,7 @@ class PlanDetails extends Component{
                                 <label className="formLable">Sector</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
                                   <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
-                                    <option disabled={true} >-- Select --</option>
+                                    <option disabled="disabled" selected="true">-- Select --</option>
                                     {
                                       this.state.availableSectors && this.state.availableSectors.length >0 ?
                                       this.state.availableSectors.map((data, index)=>{
@@ -1073,7 +1007,7 @@ class PlanDetails extends Component{
                                 <label className="formLable">Activity</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
                                   <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
-                                    <option  disabled={true} >-- Select --</option>
+                                    <option disabled="disabled" selected="true">-- Select --</option>
                                     {
                                     this.state.availableActivity && this.state.availableActivity.length >0 ?
                                     this.state.availableActivity.map((data, index)=>{
@@ -1273,8 +1207,6 @@ class PlanDetails extends Component{
                         </div>
                       </div>
                   </div>
-                 
-                
                 </div>
               </div>
             </section>

@@ -7,20 +7,17 @@ import moment                 from "moment";
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 import validate               from 'jquery-validation';
-
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 import "./Activity.css";
 
 var add = 0;
-
 class Activity extends Component{
-  
   constructor(props){
     super(props);
     this.state = {
-      "center_ID`"         : "",
+      "center_ID`"        : "",
       "centerName"        : "",
       "district"          : "-- Select --",
       "block"             : "-- Select --",
@@ -47,11 +44,11 @@ class Activity extends Component{
       "other"             : 0,
       "total"             : 0,
       "remark"            : "",
-      type               : true,      
+      type                : true,      
       shown               : true,      
-      "listofDistrict"    :"",
-      "listofBlocks"      :"",
-      "listofVillages"    :"",
+      "listofDistrict"    :[],
+      "listofBlocks"      :[],
+      "listofVillages"    :[],
       fields              : {},
       errors              : {},
        "twoLevelHeader"   : {
@@ -72,10 +69,9 @@ class Activity extends Component{
                             {
                               heading : '',
                               mergedColoums : 1
-                            },]
+                            }]
       },
       "tableHeading"      : {
-
         projectCategoryType        : "Category",
         projectName                : "Project Name",
         date                       : "Intervention Date",
@@ -181,21 +177,20 @@ class Activity extends Component{
     // console.log("findIndex",findIndex);
     if (findIndex !== -1) {
       if (parseInt(subTotal) < parseInt(totalBudget)) {
-         var getstate = arr[findIndex + 1];
-          if (getstate) {
-            this.setState({[getstate] : totalBudget - subTotal });
+        var getstate = arr[findIndex + 1];
+        if (getstate) {
+          this.setState({[getstate] : totalBudget - subTotal });
+        }
+        for (var k = findIndex + 2; k < arr.length; k++) {
+          var currentStates = arr[k];
+          if (currentStates) {
+            this.setState({[currentStates] : 0 });
           }
-          for (var k = findIndex + 2; k < arr.length; k++) {
-            var currentStates = arr[k];
-            if (currentStates) {
-               this.setState({[currentStates] : 0 });
-            }
-          }
-         
+        }
       }else{
         var remainTotal =  0;
         for (var j = 0; j < findIndex; j++) {
-            remainTotal += parseInt(this.state[arr[j]]);
+          remainTotal += parseInt(this.state[arr[j]]);
         }
         if (remainTotal > 0 ) {
           this.setState({[arr[findIndex]] : totalBudget - remainTotal });
@@ -203,15 +198,12 @@ class Activity extends Component{
         for (var i = findIndex + 1; i < arr.length; i++) {
           var currentState = arr[i];
           if (currentState) {
-             this.setState({[currentState] : 0 });
+            this.setState({[currentState] : 0 });
           }
         }
-        
       }
-
     }
     this.setState({"total": subTotal });
-
   }
 
   handleChange(event){
@@ -258,19 +250,18 @@ class Activity extends Component{
       if (this.state.unitCost > 0 & this.state.quantity > 0) {
         // console.log("this.state.unitCost = ",this.state.unitCost);
         // console.log("this.state.quantity = ",this.state.quantity);
-        
-         var totalcost = parseInt(this.state.unitCost) * parseInt(this.state.quantity);
-         this.setState({
+        var totalcost = parseInt(this.state.unitCost) * parseInt(this.state.quantity);
+        this.setState({
           "total"     : totalcost,
           "totalcost" : totalcost,
           "LHWRF"     : totalcost
-         });
+        });
       }else{
-         this.setState({
+        this.setState({
           "total"     : "",
           "totalcost" : "",
           "LHWRF"     : "",
-         });        
+        });        
       }
     });
   }
@@ -302,8 +293,6 @@ class Activity extends Component{
   getBeneficiaries(selectedBeneficiaries){
     this.setState({
       selectedBeneficiaries : selectedBeneficiaries
-    },()=>{
-      console.log('selectedBeneficiaries',this.state.selectedBeneficiaries)
     })
   }
     
@@ -313,13 +302,8 @@ class Activity extends Component{
     var dateObj = new Date();
     var momentObj = moment(dateObj);
     var momentString = momentObj.format('YYYY-MM-DD');
-
-    // if(this.refs.dateofIntervention.value == "" ){
-    // if (this.validateFormReq() && this.validateForm()){
     if ($("#Academic_details").valid()){
-      //     }
-      // }else{
-            // console.log("date",this.state.dateofIntervention);
+      // console.log("date",this.state.dateofIntervention);
       var activityValues= {
         "center_ID"         : this.state.center_ID,
         "centerName"        : this.state.centerName,
@@ -353,54 +337,27 @@ class Activity extends Component{
         "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
         "projectCategoryType" : this.state.projectCategoryType,
       };
-      let fields                  = {};
-      fields["district"]          = "";
-      fields["block"]             = "";  
-      fields["village"]           = "";
-      fields["dateofIntervention"]= "";
-      fields["sector"]            = "";
-      fields["typeofactivity"]    = "";
-      fields["nameofactivity"]    = "";
-      fields["activity"]          = "";
-      fields["subactivity"]       = "";
-      fields["unit"]              = "";
-      fields["unitCost"]          = "";
-      fields["quantity"]          = "";
-      fields["totalcost"]         = "";
-      fields["LHWRF"]             = "";
-      fields["NABARD"]            = "";
-      fields["bankLoan"]          = "";
-      fields["govtscheme"]        = "";
-      fields["directCC"]          = "";
-      fields["indirectCC"]        = "";
-      fields["other"]             = "";
-      fields["projectName"]       = "";
-      fields["projectCategoryType"]= "";
       
       // console.log("activityValues", activityValues);
       if (parseInt(this.state.total) === parseInt(this.state.totalcost)) {
         axios.post('/api/activityReport',activityValues)
-          .then((response)=>{
-            // console.log("response", response);
-            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+        .then((response)=>{
+          // console.log("response", response);
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
             swal({
               title : response.data.message,
               text  : response.data.message,
+            });   
+          })
+        .catch(function(error){       
+          // console.log('error',error);
+          if(error.message === "Request failed with status code 401"){
+            swal({
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
             });
-              // this.getData(this.state.startRange, this.state.limitRange);  
-              // this.setState({
-              //   selectedValues : this.state.selectedBeneficiaries 
-              // })    
-            })
-          .catch(function(error){       
-            // console.log('error',error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
-          });
+          }
+        });
         this.setState({
           "projectName"        : "-- Select --",
           "projectCategoryType" : "LHWRF Grant",
@@ -426,7 +383,6 @@ class Activity extends Component{
           "other"             : "0",
           "total"             : "0",
           "remark"            : "",
-          "fields"            : fields,
           "selectedBeneficiaries" :[],
           "selectedValues"         : [],    
           "listofBeneficiaries": [],      
@@ -441,16 +397,13 @@ class Activity extends Component{
       }
     }else{
       $("html,body").scrollTop(0)
-      // $('label.error').first().focus()
     }
   }
   Update(event){
     event.preventDefault();
-    // if (this.validateFormReq() && this.validateForm()) {
     var dateObj = new Date();
     var momentObj = moment(dateObj);
     var momentString = momentObj.format('YYYY-MM-DD');
-
     var activityValues= {
       "activityReport_ID" : this.state.editId,
       "categoryType"      : this.state.projectCategoryType,
@@ -485,36 +438,11 @@ class Activity extends Component{
       "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
       "projectCategoryType" : this.state.projectCategoryType,
     };
-    let fields                  = {};
-    fields["projectName"]       = "";
-    fields["projectCategoryType"]= "";
-    fields["district"]          = "";
-    fields["block"]             = "";
-    fields["village"]           = "";
-    fields["dateofIntervention"]= "";
-    fields["sector"]            = "";
-    fields["typeofactivity"]    = "";
-    fields["nameofactivity"]    = "";
-    fields["activity"]          = "";
-    fields["subactivity"]       = "";
-    fields["unit"]              = "";
-    fields["unitCost"]          = "";
-    fields["quantity"]          = "";
-    fields["totalcost"]         = "";
-    fields["LHWRF"]             = "";
-    fields["NABARD"]            = "";
-    fields["bankLoan"]          = "";
-    fields["govtscheme"]        = "";
-    fields["directCC"]          = "";
-    fields["indirectCC"]        = "";
-    fields["other"]             = "";
-    fields["remark"]             = "";
-
     // console.log('activityValues',activityValues)
     axios.patch('/api/activityReport',activityValues)
     .then((response)=>{
       // console.log("update",response);
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
       swal({
         title : response.data.message,
         text  : response.data.message,
@@ -548,7 +476,6 @@ class Activity extends Component{
       "other"             : "0",
       "total"             : "0",
       "remark"            : "",
-      "fields"            : fields,
       "selectedBeneficiaries" :[],
       "selectedValues"         : [],    
       "listofBeneficiaries": [],      
@@ -556,14 +483,10 @@ class Activity extends Component{
       // "availableSectors"   : [],
       // "availableActivity"  : [],
       // "availableSubActivity": [],
-      "sendBeneficiary"     : [],
-      
+      "sendBeneficiary"     : [],      
+      "editId"              : "",
     });
-      this.props.history.push('/activity');
-      this.setState({
-        "editId"              : "",
-      });
-    // }
+    this.props.history.push('/activity');
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -664,7 +587,7 @@ class Activity extends Component{
   }
 
   edit(id){
-    console.log('id',id)
+    // console.log('id',id)
     if(id){
       axios({
         method: 'get',
@@ -672,97 +595,82 @@ class Activity extends Component{
       }).then((response)=> {
         var editData = response.data[0];
         // console.log("editData",editData);
-        // console.log("editData",editData.district);
-          // getAvailableCenter(center_ID)
-        // console.log( editData.district,editData.village,editData.block);
-        if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
+        if(editData){
           var bentableData = []
-          editData.listofBeneficiaries.map((a, i)=>{
-            axios.get('/api/beneficiaries/'+a.beneficiary_ID)
-            .then((response)=>{
-              // console.log('response',response)
-              bentableData.push({
-                _id                       : a._id,
-                beneficiary_ID            : a.beneficiary_ID,
-                beneficiaryID             : a.beneficiaryID,
-                family_ID                 : a.family_ID,
-                familyID                  : a.familyID,
-                nameofbeneficiaries       : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
-                relation                  : a.relation,
-                dist                      : a.dist,
-                block                     : a.block,
-                village                   : a.village,
-                isUpgraded                : a.isUpgraded,
-              })
-              if(editData.listofBeneficiaries.length===(i+1)){
-                this.setState({
-                  bentableData : bentableData
-                },()=>{
-                  // console.log('bentableData',this.state.bentableData)
-                  this.setState({
-                    "editData"          : editData,
-                    "dateofIntervention": editData.date,
-                    "stateCode"         : editData.stateCode,
-                    "district"          : editData.district,
-                    "block"             : editData.block,
-                    "village"           : editData.village,
-                    "date"              : editData.date,
-                    "sector"            : editData.sectorName+'|'+editData.sector_ID,
-                    "typeofactivity"    : editData.typeofactivity,
-                    "activity"          : editData.activityName+'|'+editData.activity_ID,
-                    "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
-                    "subActivityDetails": editData.unit,
-                    "unitCost"          : editData.unitCost,
-                    "quantity"          : editData.quantity,
-                    "totalcost"         : editData.totalcost,
-                    "LHWRF"             : editData.sourceofFund.LHWRF,
-                    "NABARD"            : editData.sourceofFund.NABARD,
-                    "bankLoan"          : editData.sourceofFund.bankLoan,
-                    "govtscheme"        : editData.sourceofFund.govtscheme,
-                    "directCC"          : editData.sourceofFund.directCC,
-                    "indirectCC"        : editData.sourceofFund.indirectCC,
-                    "other"             : editData.sourceofFund.other,
-                    "total"             : editData.sourceofFund.total,
-                    "remark"            : editData.remark,
-                    "listofBeneficiaries" : bentableData,
-                    "selectedBeneficiaries" : bentableData,
-                    "projectCategoryType"   : editData.projectCategoryType,
-                    "projectName"           : editData.projectName==='all'?'-- Select --':editData.projectName,
-                    "sectorId" : editData.sector_ID,
-                    "activityId" : editData.activity_ID,
-                  }, ()=>{
-                    // console.log("edit", this.state.editData)
-                    this.getAvailableCenter(this.state.center_ID);
-                    this.getBlock(this.state.stateCode, this.state.district);
-                    this.getVillages(this.state.stateCode, this.state.district, this.state.block);
-                    this.getAvailableActivity(this.state.sectorId);
-                    this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
-                  }); 
+          if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
+            editData.listofBeneficiaries.map((a, i)=>{
+              axios.get('/api/beneficiaries/'+a.beneficiary_ID)
+              .then((response)=>{
+                // console.log('response',response)
+                bentableData.push({
+                  _id                       : a._id,
+                  beneficiary_ID            : a.beneficiary_ID,
+                  beneficiaryID             : a.beneficiaryID,
+                  family_ID                 : a.family_ID,
+                  familyID                  : a.familyID,
+                  nameofbeneficiaries       : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
+                  relation                  : a.relation,
+                  dist                      : a.dist,
+                  block                     : a.block,
+                  village                   : a.village,
+                  isUpgraded                : a.isUpgraded,
                 })
-              }
+                if(editData.listofBeneficiaries.length===(i+1)){
+                  this.setState({
+                    bentableData : bentableData
+                  })
+                }
+              })
+              .catch(function(error){ 
+                console.log("error = ",error);
+              });
             })
-            .catch(function(error){ 
-              console.log("error = ",error);
-            });
-          })
+          }
+          this.setState({
+            "editData"          : editData,
+            "dateofIntervention": editData.date,
+            "stateCode"         : editData.stateCode,
+            "district"          : editData.district,
+            "block"             : editData.block,
+            "village"           : editData.village,
+            "date"              : editData.date,
+            "sector"            : editData.sectorName+'|'+editData.sector_ID,
+            "typeofactivity"    : editData.typeofactivity,
+            "activity"          : editData.activityName+'|'+editData.activity_ID,
+            "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
+            "subActivityDetails": editData.unit,
+            "unitCost"          : editData.unitCost,
+            "quantity"          : editData.quantity,
+            "totalcost"         : editData.totalcost,
+            "LHWRF"             : editData.sourceofFund.LHWRF,
+            "NABARD"            : editData.sourceofFund.NABARD,
+            "bankLoan"          : editData.sourceofFund.bankLoan,
+            "govtscheme"        : editData.sourceofFund.govtscheme,
+            "directCC"          : editData.sourceofFund.directCC,
+            "indirectCC"        : editData.sourceofFund.indirectCC,
+            "other"             : editData.sourceofFund.other,
+            "total"             : editData.sourceofFund.total,
+            "remark"            : editData.remark,
+            "listofBeneficiaries"   : this.state.bentableData,
+            "selectedBeneficiaries" : this.state.bentableData,
+            "projectCategoryType"   : editData.projectCategoryType,
+            "projectName"           : editData.projectName==='all'?'-- Select --':editData.projectName,
+            "sectorId"   : editData.sector_ID,
+            "activityId" : editData.activity_ID,
+          }, ()=>{
+            // console.log("edit", this.state.editData)
+            this.getAvailableCenter(this.state.center_ID);
+            this.getBlock(this.state.stateCode, this.state.district);
+            this.getVillages(this.state.stateCode, this.state.district, this.state.block);
+            this.getAvailableActivity(this.state.sectorId);
+            this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
+          });
         }
-             
-        let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
-        this.setState({
-          errors: errors
-        });
-        return formIsValid;
       })
       .catch(function (error) {
         // console.log("error = ",error);
       });
     }
-    // this.setState({
-    //   "editId"              : "",
-    // });
-
   }
 
   getLength(center_ID){
@@ -785,7 +693,7 @@ class Activity extends Component{
     }
     axios.post('/api/activityReport/list/'+center_ID, data)
     .then((response)=>{
-      // console.log("response",response);
+      console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                        : a._id,
@@ -903,15 +811,7 @@ class Activity extends Component{
     this.setState({
       editId : editId
     })
-    // var dateObj = new Date();
-    // var momentObj = moment(dateObj);
-    // var momentString = momentObj.format('YYYY-MM-DD');
-
-    // this.setState({
-    //   dateofIntervention :momentString,
-    // })
     this.getLength();
-    
     this.getBlock(this.state.stateCode, this.state.district);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
@@ -939,11 +839,6 @@ class Activity extends Component{
       this.getBlock(this.state.stateCode, this.state.district);
       this.setState({
         "editId" : editId,
-      },()=>{
-        // console.log('editId componentWillReceiveProps', this.state.editId);
-        // this.getAvailableActivity(this.state.editSectorId);
-        // this.getAvailableSubActivity(this.state.editSectorId);
-        
       })  
       this.edit(editId);
       this.getLength();
@@ -991,9 +886,11 @@ class Activity extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-      this.setState({
-        availableSectors : response.data
-      })
+      if(response&&response.data){
+        this.setState({
+          availableSectors : response.data
+        })
+      }
     }).catch(function (error) {
       // console.log('error', error);
     });
@@ -1018,10 +915,11 @@ class Activity extends Component{
         method: 'get',
         url: '/api/sectors/'+sector_ID,
       }).then((response)=> {
+        if(response&&response.data[0]){
           this.setState({
             availableActivity : response.data[0].activity
-          },()=>{
           })
+        }
       }).catch(function (error) {
         console.log("error = ",error);
       });
@@ -1045,11 +943,10 @@ class Activity extends Component{
       url: '/api/sectors/'+sector_ID,
     }).then((response)=> {
       var availableSubActivity = _.flatten(response.data.map((a, i)=>{
-          return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
-        }))
+        return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
+      }))
       this.setState({
         availableSubActivity : availableSubActivity
-      },()=>{
       });
     }).catch(function (error) {
       console.log("error = ",error);
@@ -1059,46 +956,41 @@ class Activity extends Component{
     event.preventDefault();
     this.setState({[event.target.name]:event.target.value});
     var subActivity_ID = event.target.value.split('|')[1];
-
     var subActivityDetails = _.flatten(this.state.availableSubActivity.map((a, i)=>{ return a._id === subActivity_ID ? a.unit : ""}))
     this.setState({
       subActivityDetails : subActivityDetails
     })
     this.handleChange(event);
-
   }
 
   getAvailableCenter(center_ID){
     // console.log("CID"  ,center_ID);
-    axios({
-      method: 'get',
-      url: '/api/centers/'+center_ID,
-      }).then((response)=> {
+    if(center_ID){
+      axios({
+        method: 'get',
+        url: '/api/centers/'+center_ID,
+        }).then((response)=> {
         function removeDuplicates(data, param){
-            return data.filter(function(item, pos, array){
-                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
-            })
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+          })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
         // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
-          // availableDistInCenter  : response.data[0].districtsCovered,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
           // districtsCovered : response.data[0].districtsCovered
         },()=>{
-        var stateCode =this.state.address.split('|')[0];
-         this.setState({
-          stateCode  : stateCode,
-
-        },()=>{
-          // console.log("stateCode", this.state.stateCode)
-        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
-        });
+          var stateCode =this.state.address.split('|')[0];
+          this.setState({
+            stateCode  : stateCode,
+          });
         })
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+    }
   }
   camelCase(str){
     return str
@@ -1120,8 +1012,8 @@ class Activity extends Component{
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      // console.log('selectedDistrict',this.state.district);
-      this.getBlock(this.state.stateCode, this.state.district);
+        // console.log('selectedDistrict',this.state.district);
+        this.getBlock(this.state.stateCode, this.state.district);
       })
     });
     this.handleChange(event);
@@ -1138,25 +1030,25 @@ class Activity extends Component{
       this.setState({
         district :selectedDistrict
       },()=>{
-      // console.log('selectedDistrict',this.state.district);
-      this.getBlock(this.state.stateCode, this.state.district);
+        // console.log('selectedDistrict',this.state.district);
+        this.getBlock(this.state.stateCode, this.state.district);
       })
     });
     this.handleChange(event);
   }
   getBlock(stateCode, selectedDistrict){
-    // console.log("stateCode",stateCode);
+    // console.log("stateCode",stateCode,selectedDistrict);
     axios({
       method: 'get',
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+      // console.log('response ==========', response.data);
+      if(response&&response.data){
         this.setState({
           listofBlocks : response.data
-        },()=>{
-        // console.log('listofBlocks', this.state.listofBlocks);
         })
+      }
     }).catch(function (error) {
       console.log('error', error);
     });
@@ -1173,18 +1065,16 @@ class Activity extends Component{
     this.handleChange(event);
   }
   getVillages(stateCode, selectedDistrict, block){
-    console.log(stateCode, selectedDistrict, block);
+    // console.log(stateCode, selectedDistrict, block);
     axios({
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
       // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
-        // console.log('response ==========', response.data);
-        this.setState({
-          listofVillages : response.data
-        },()=>{
-        // console.log('listofVillages', this.state.listofVillages);
-        })
+      // console.log('response ==========', response.data);
+      this.setState({
+        listofVillages : response.data
+      })
     }).catch(function (error) {
       console.log('error', error);
     });
@@ -1194,8 +1084,6 @@ class Activity extends Component{
     var village = event.target.value;
     this.setState({
       village : village
-    },()=>{
-      // console.log("village",village);
     });
     this.handleChange(event);
   }
@@ -1225,11 +1113,10 @@ class Activity extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      // console.log('responseP', response);
-        
-        this.setState({
-          availableProjects : response.data
-        })
+      // console.log('responseP', response); 
+      this.setState({
+        availableProjects : response.data
+      })
     }).catch(function (error) {
       console.log('error', error);
     });
@@ -1249,46 +1136,43 @@ class Activity extends Component{
     })
   }
   getFileDetails(fileName){
-      axios
-      .get(this.state.fileDetailUrl+fileName)
-      .then((response)=> {
+    axios
+    .get(this.state.fileDetailUrl+fileName)
+    .then((response)=> {
       $('.fullpageloader').hide();  
-      if (response) {
+      if(response&&response.data) {
         this.setState({
-            fileDetails:response.data,
-            failedRecordsCount : response.data.failedRecords.length,
-            goodDataCount : response.data.goodrecords.length
+          fileDetails:response.data,
+          failedRecordsCount : response.data.failedRecords.length,
+          goodDataCount : response.data.goodrecords.length
         });
-
-          var tableData = response.data.goodrecords.map((a, i)=>{
-           
+        var tableData = response.data.goodrecords.map((a, i)=>{
           return{
-              "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
-              "projectName"         : a.projectName        ? a.projectName    : '-',
-              "date"                : a.date     ? a.date : '-',
-              "place"               : a.district + ", " + a.block + ", " + a.village ,
-              "sectorName"          : a.sectorName     ? a.sectorName : '-',
-              "activityName"        : a.activityName     ? a.activityName : '-',
-              "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
-              "unit"                : a.unit     ? a.unit : '-',
-              "unitCost"            : a.unitCost     ? a.unitCost : '-',
-              "quantity"            : a.quantity     ? a.quantity : '-',
-              "totalcost"           : a.totalcost     ? a.totalcost : '-',
-              "numofBeneficiaries"  : a.numofBeneficiaries     ? a.numofBeneficiaries : '-',
-              "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
-              "NABARD"              : a.NABARD     ? a.NABARD : '-',
-              "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
-              "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
-              "directCC"            : a.directCC     ? a.directCC : '-',
-              "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
-              "other"               : a.other     ? a.other : '-',
-              "remark"              : a.remark     ? a.remark : '-',
+            "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
+            "projectName"         : a.projectName        ? a.projectName    : '-',
+            "date"                : a.date     ? a.date : '-',
+            "place"               : a.district + ", " + a.block + ", " + a.village ,
+            "sectorName"          : a.sectorName     ? a.sectorName : '-',
+            "activityName"        : a.activityName     ? a.activityName : '-',
+            "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
+            "unit"                : a.unit     ? a.unit : '-',
+            "unitCost"            : a.unitCost     ? a.unitCost : '-',
+            "quantity"            : a.quantity     ? a.quantity : '-',
+            "totalcost"           : a.totalcost     ? a.totalcost : '-',
+            "numofBeneficiaries"  : a.numofBeneficiaries     ? a.numofBeneficiaries : '-',
+            "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
+            "NABARD"              : a.NABARD     ? a.NABARD : '-',
+            "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
+            "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
+            "directCC"            : a.directCC     ? a.directCC : '-',
+            "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
+            "other"               : a.other     ? a.other : '-',
+            "remark"              : a.remark     ? a.remark : '-',
           }
-          
         })
 
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
-        return{
+          return{
             "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
             "projectName"         : a.projectName        ? a.projectName    : '-',
             "date"                : a.date     ? a.date : '-',
@@ -1309,17 +1193,17 @@ class Activity extends Component{
             "other"               : a.other     ? a.other : '-',
             "remark"              : a.remark     ? a.remark : '-',
             "failedRemark"        : a.failedRemark     ? a.failedRemark : '-',
-        }
+          }
         })
         this.setState({
-            goodRecordsTable : tableData,
-            failedRecordsTable : failedRecordsTable
+          goodRecordsTable : tableData,
+          failedRecordsTable : failedRecordsTable
         })
       }
-      })
-      .catch((error)=> { 
-            
-      }) 
+    })
+    .catch((error)=> { 
+          
+    }) 
   } 
 
   render() {

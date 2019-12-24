@@ -11,8 +11,7 @@ import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./centerDetail.css";
  
 var centerDetailArray  = [];
-class centerDetail extends Component{
-  
+class centerDetail extends Component{  
   constructor(props){
     super(props);
     this.state = {
@@ -29,7 +28,7 @@ class centerDetail extends Component{
       "MISCoordinatorContact"    :"",
       "MISCoordinatorEmail"      :"",
       "districtCovered"          :"--Select District--",
-      "blocksCovered"             :"--Select Block--",
+      "blocksCovered"            :"--Select Block--",
       "centerDetailArray"        :[],
       "array"                    :[],
       "shown"                    : true,
@@ -81,15 +80,7 @@ class centerDetail extends Component{
     }
     this.changeTab = this.changeTab.bind(this); 
   }
-
   handleclick(event){
-    /*  let fields = {};
-    let errors={};
-    if(this.refs.district.value===""){ 
-      console.log("state", this.state.state);
-       errors["district"] = "Please select State.";
-       errors["districtCovered"] = "Please select State.";
-    }*/
   }
   handleChange(event){
     event.preventDefault();
@@ -109,19 +100,6 @@ class centerDetail extends Component{
       "districtCovered"          : this.refs.districtCovered.value,
       "blocksCovered"            : this.refs.blocksCovered.value,
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-  
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
   }
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -149,185 +127,137 @@ class centerDetail extends Component{
     event.preventDefault();
     if($("#Academic_details").valid()){
       var selectedVillages = this.state.selectedVillages;
-      // if (this.validateForm() && this.validateFormReq()) {
-        var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+      var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+      var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
+      var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
+      var id2 = this.state.uID;
+      var centerDetail= 
+      {
+        "type_ID"                   : this.refs.typeOfCenter.value,
+        "centerName"                : this.refs.nameOfCenter.value,
+        "address"                   : {
+            "addressLine"           : this.refs.address.value,
+            "state"                 : this.refs.state.value.split('|')[0],
+            "district"              : this.refs.district.value,
+            "pincode"               : this.refs.pincode.value,
+            "stateCode"             : this.refs.state.value.split('|')[1],
+        },
+        "districtsCovered"          : districtsCovered,
+        "blocksCovered"             : blocksCovered,
+        "villagesCovered"           : this.state.selectedVillages,
+        "centerInchargeName"        : this.refs.centerInchargeName.value,
+        "centerInchargeMobile"      : this.refs.centerInchargeContact.value,
+        "centerInchargeEmail"       : this.refs.centerInchargeEmail.value,
+        "misCoordinatorName"        : this.refs.MISCoordinatorName.value,
+        "misCoordinatorMobile"      : this.refs.MISCoordinatorContact.value,
+        "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
+      };
 
-        var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
-        var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
-        var id2 = this.state.uID;
-        var centerDetail= 
-        {
-          "type_ID"                   : this.refs.typeOfCenter.value,
-          "centerName"                : this.refs.nameOfCenter.value,
-          "address"                   : {
-              "addressLine"           : this.refs.address.value,
-              "state"                 : this.refs.state.value.split('|')[0],
-              "district"              : this.refs.district.value,
-              "pincode"               : this.refs.pincode.value,
-              "stateCode"             : this.refs.state.value.split('|')[1],
-          },
-          "districtsCovered"          : districtsCovered,
-          "blocksCovered"             : blocksCovered,
-          "villagesCovered"           : this.state.selectedVillages,
-          "centerInchargeName"        : this.refs.centerInchargeName.value,
-          "centerInchargeMobile"      : this.refs.centerInchargeContact.value,
-          "centerInchargeEmail"       : this.refs.centerInchargeEmail.value,
-          "misCoordinatorName"        : this.refs.MISCoordinatorName.value,
-          "misCoordinatorMobile"      : this.refs.MISCoordinatorContact.value,
-          "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
-        };
-
-        console.log("centerDetail",centerDetail);
-        let fields = {};
-        fields["typeOfCenter"]           = "--Select Center--";
-        fields["nameOfCenter"]           = "";
-        fields["address"]                = "";
-        fields["state"]                  = "--Select State--";
-        fields["district"]               = "--Select District--";
-        fields["pincode"]                = "";
-        fields["centerInchargeName"]     = "";
-        fields["centerInchargeContact"]  = "";
-        fields["centerInchargeEmail"]    = "";
-        fields["MISCoordinatorName"]     = "";
-        fields["MISCoordinatorContact"]  = "";
-        fields["MISCoordinatorEmail"]    = "";
-        fields["districtCovered"]        = "--Select District--";
-        fields["blocksCovered"]          = "--Select Block--";
-
-        axios.post('/api/centers',centerDetail)
-        .then((response)=>{
-        console.log('response',response);
-          this.getData(this.state.startRange, this.state.limitRange);
-          swal({
-            title : response.data.message,
-            text  : response.data.message
-          });
-        })
-        .catch(function(error){
-          console.log('error',error);
+      // console.log("centerDetail",centerDetail);
+      axios.post('/api/centers',centerDetail)
+      .then((response)=>{
+      // console.log('response',response);
+        this.getData(this.state.startRange, this.state.limitRange);
+        swal({
+          title : response.data.message,
+          text  : response.data.message
         });
+      })
+      .catch(function(error){
+        console.log('error',error);
+      });
 
-        this.setState({
-          "typeOfCenter"              : "--Select Center--",
-          "nameOfCenter"              : "",
-          "address"                   : "",
-          "state"                     : "--Select State--",
-          "district"                  : "--Select District--",
-          "pincode"                   : "",
-          "centerInchargeName"        : "",
-          "centerInchargeContact"     : "",
-          "centerInchargeEmail"       : "",
-          "MISCoordinatorName"        : "",
-          "MISCoordinatorContact"     : "",
-          "MISCoordinatorEmail"       : "",
-          "districtCovered"           : "--Select District--",
-          "blocksCovered"              : "--Select Block--",
-          "selectedVillages"          : [],
-          "listofDistrict"            : [],
-          "listofBlocks"              : [],
-          "listofVillages"            : [],
-          "fields"                    : fields
-        });
-        selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
-      // }
+      this.setState({
+        "typeOfCenter"              : "--Select Center--",
+        "nameOfCenter"              : "",
+        "address"                   : "",
+        "state"                     : "--Select State--",
+        "district"                  : "--Select District--",
+        "pincode"                   : "",
+        "centerInchargeName"        : "",
+        "centerInchargeContact"     : "",
+        "centerInchargeEmail"       : "",
+        "MISCoordinatorName"        : "",
+        "MISCoordinatorContact"     : "",
+        "MISCoordinatorEmail"       : "",
+        "districtCovered"           : "--Select District--",
+        "blocksCovered"              : "--Select Block--",
+        "selectedVillages"          : [],
+        "listofDistrict"            : [],
+        "listofBlocks"              : [],
+        "listofVillages"            : [],
+      });
+      selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
     }
   }
   Update(event){
     event.preventDefault();
     if($("#Academic_details").valid()){
       var selectedVillages = this.state.selectedVillages;
-      // if(this.refs.address.value == "" || this.refs.typeOfCenter.value =="" || this.refs.nameOfCenter.value=="" 
-      //   || this.refs.district.value=="" || this.refs.pincode.value=="" || this.refs.centerInchargeName.value=="" 
-      //   || this.refs.centerInchargeContact.value=="" || this.refs.centerInchargeEmail.value=="" || this.refs.MISCoordinatorName.value=="" 
-      //   || this.refs.MISCoordinatorContact.value=="" || this.refs.MISCoordinatorEmail.value=="")
-      //  {
-      //     console.log('state validation');
-      //     if (this.validateForm() && this.validateFormReq()){
-      //       console.log('abc');
-      //     }
-        // }else{
+      var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
+      var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
+      var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
+      // console.log("blocksCovered",blocksCovered);
+      // console.log("districtsCovered",districtsCovered);
+      
+      var centerDetail = {
+        "center_ID"                : this.state.editId,
+        "centerName"               : this.refs.nameOfCenter.value,
+        "type_ID"                  : this.refs.typeOfCenter.value,
+        "address"                  : {
+          "addressLine"           : this.refs.address.value,
+          "state"                 : this.refs.state.value.split('|')[0],
+          "district"              : this.refs.district.value,
+          "pincode"               : this.refs.pincode.value,
+          "stateCode"             : this.refs.state.value.split('|')[1],
+        },
+        "districtsCovered"          : districtsCovered,
+        "blocksCovered"             : blocksCovered,
+        "villagesCovered"           : this.state.selectedVillages,
+        "centerInchargeName"        : this.refs.centerInchargeName.value,
+        "centerInchargeMobile"      : this.refs.centerInchargeContact.value,
+        "centerInchargeEmail"       : this.refs.centerInchargeEmail.value,
+        "misCoordinatorName"        : this.refs.MISCoordinatorName.value,
+        "misCoordinatorMobile"      : this.refs.MISCoordinatorContact.value,
+        "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
+      };
+  
+      // console.log('centerDetail', centerDetail);
+      axios.patch('/api/centers',centerDetail)
+      .then((response)=>{
+        // console.log('response',response);
+        this.getData(this.state.startRange, this.state.limitRange);
+        swal({
+          title : response.data.message,
+          text  : response.data.message
+        });
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
 
-          var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
-          var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
-          var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
-        console.log("blocksCovered",blocksCovered);
-        console.log("districtsCovered",districtsCovered);
-          
-          var centerDetail = {
-            "center_ID"                : this.state.editId,
-            "centerName"                : this.refs.nameOfCenter.value,
-            "type_ID"                      : this.refs.typeOfCenter.value,
-            "address"                   : {
-                "addressLine"           : this.refs.address.value,
-                "state"                 : this.refs.state.value.split('|')[0],
-                "district"              : this.refs.district.value,
-                "pincode"               : this.refs.pincode.value,
-                "stateCode"             : this.refs.state.value.split('|')[1],
-            },
-            "districtsCovered"          : districtsCovered,
-            "blocksCovered"             : blocksCovered,
-            "villagesCovered"           : this.state.selectedVillages,
-            "centerInchargeName"        : this.refs.centerInchargeName.value,
-            "centerInchargeMobile"      : this.refs.centerInchargeContact.value,
-            "centerInchargeEmail"       : this.refs.centerInchargeEmail.value,
-            "misCoordinatorName"        : this.refs.MISCoordinatorName.value,
-            "misCoordinatorMobile"      : this.refs.MISCoordinatorContact.value,
-            "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
-          };
-        
-          let fields = {};
-          fields["typeOfCenter"] = "--Select Center--";
-          fields["nameOfCenter"] = "";
-          fields["address"] = "";
-          fields["state"] = "--Select State--";
-          fields["district"] = "--Select District--";
-          fields["pincode"] = "";
-          fields["centerInchargeName"] = "";
-          fields["centerInchargeContact"] = "";
-          fields["centerInchargeEmail"] = "";
-          fields["MISCoordinatorName"] = "";
-          fields["MISCoordinatorContact"] = "";
-          fields["MISCoordinatorEmail"] = "";
-          fields["districtCovered"] = "--Select District--";
-          fields["blocksCovered"] = "--Select Block--";
-          // console.log('centerDetail', centerDetail);
-          axios.patch('/api/centers',centerDetail)
-          .then((response)=>{
-            console.log('response',response);
-            this.getData(this.state.startRange, this.state.limitRange);
-            swal({
-              title : response.data.message,
-              text  : response.data.message
-            });
-          })
-          .catch(function(error){
-            console.log("error = ",error);
-          });
-
-          this.setState({
-            "typeOfCenter"              : "--Select Center--",
-            "nameOfCenter"              : "",
-            "address"                   : "",
-            "state"                     : "--Select State--",
-            "district"                  : "--Select District--",
-            "pincode"                   : "",
-            "centerInchargeName"        : "",
-            "centerInchargeContact"     : "",
-            "centerInchargeEmail"       : "",
-            "MISCoordinatorName"        : "",
-            "MISCoordinatorContact"     : "",
-            "MISCoordinatorEmail"       : "",
-            "districtCovered"           : "--Select District--",
-            "blocksCovered"              : "--Select Block--",
-            "selectedVillages"          : [],
-            "listofDistrict"            : [],
-            "listofBlocks"              : [],
-            "listofVillages"            : [],
-            "editlistofVillages"        : [],
-            "fields"                    : fields
-          });
-          selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
-      // } 
+      this.setState({
+        "typeOfCenter"              : "--Select Center--",
+        "nameOfCenter"              : "",
+        "address"                   : "",
+        "state"                     : "--Select State--",
+        "district"                  : "--Select District--",
+        "pincode"                   : "",
+        "centerInchargeName"        : "",
+        "centerInchargeContact"     : "",
+        "centerInchargeEmail"       : "",
+        "MISCoordinatorName"        : "",
+        "MISCoordinatorContact"     : "",
+        "MISCoordinatorEmail"       : "",
+        "districtCovered"           : "--Select District--",
+        "blocksCovered"              : "--Select Block--",
+        "selectedVillages"          : [],
+        "listofDistrict"            : [],
+        "listofBlocks"              : [],
+        "listofVillages"            : [],
+        "editlistofVillages"        : [],
+      });
+      selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
       this.props.history.push('/center-details');
       this.setState({
         "editId"              : "",
@@ -555,88 +485,86 @@ class centerDetail extends Component{
     this.getData(this.state.startRange, this.state.limitRange);
   }
   componentWillReceiveProps(nextProps){
-    var editId = nextProps.match.params.id;
-    if(nextProps.match.params.id){
-      this.setState({
-        editId : editId
-      })
-      this.edit(editId);
-    }
     if(nextProps){
+      var editId = nextProps.match.params.id;
+      if(nextProps.match.params.id){
+        this.setState({
+          editId : editId
+        },()=>{
+          this.edit(this.state.editId);
+        })
+      }
       this.getLength();
     }
   }
   
   edit(id){
-    axios({
-      method: 'get',
-      url: '/api/centers/'+id,
-    }).then((response)=> {
-      var editData = response.data[0];
-      editData.villagesCovered.map((data, i)=>{
-        this.setState({
-          [data.village] : true
-        })
-      })
-      // console.log("editData",editData);
-
-      this.setState({
-        "typeOfCenter"             : editData.type_ID,
-        "nameOfCenter"             : editData.centerName,
-        "address"                  : editData.address.addressLine, 
-        "state"                    : editData.address.state+'|'+editData.address.stateCode,
-        "district"                 : editData.address.district,
-        "pincode"                  : editData.address.pincode,
-        "centerInchargeName"       : editData.centerInchargeName,
-        "centerInchargeContact"    : editData.centerInchargeMobile,
-        "centerInchargeEmail"      : editData.centerInchargeEmail,
-        "MISCoordinatorName"       : editData.misCoordinatorName,
-        "MISCoordinatorContact"    : editData.misCoordinatorMobile,
-        "MISCoordinatorEmail"      : editData.misCoordinatorEmail,
-        "selectedVillages"         : editData.villagesCovered,
-        "districtCovered"          : "--Select District--",
-        "blocksCovered"             : "--Select Block--",
-        "villagesCovered"          : editData.villagesCovered,
-        'stateCode'                : editData.address.stateCode
-      },()=>{
-        // console.log(this.state)
-        this.getDistrict(editData.address.stateCode);
-        this.getBlock(editData.address.stateCode, editData.address.district);
-        // console.log(editData.address.stateCode, editData.address.district, editData.blocksCovered);
-        // this.getVillages(editData.address.stateCode, editData.address.district, editData.blocksCovered);
-        if(editData.villagesCovered&&editData.villagesCovered.length>0){
-          var returnData = [...new Set(editData.villagesCovered.map(a => a.village))]
-          if(returnData&&returnData.length>0){
-            var array = returnData.map((data,index) => {
-              return {'cityName' : data};
-            });
+    if(id){
+      axios({
+        method: 'get',
+        url: '/api/centers/'+id,
+      }).then((response)=> {
+        if(response&&response.data[0]){ 
+          var editData = response.data[0];
+          editData.villagesCovered.map((data, i)=>{
             this.setState({
-              listofVillages : array,
-              editlistofVillages : array
+              [data.village] : true
             })
-          }
+          })
+          console.log("editData",editData);
+
+          this.setState({
+            "typeOfCenter"             : editData.type_ID,
+            "nameOfCenter"             : editData.centerName,
+            "address"                  : editData.address.addressLine, 
+            "state"                    : editData.address.state+'|'+editData.address.stateCode,
+            "district"                 : editData.address.district,
+            "pincode"                  : editData.address.pincode,
+            "centerInchargeName"       : editData.centerInchargeName,
+            "centerInchargeContact"    : editData.centerInchargeMobile,
+            "centerInchargeEmail"      : editData.centerInchargeEmail,
+            "MISCoordinatorName"       : editData.misCoordinatorName,
+            "MISCoordinatorContact"    : editData.misCoordinatorMobile,
+            "MISCoordinatorEmail"      : editData.misCoordinatorEmail,
+            "selectedVillages"         : editData.villagesCovered,
+            "districtCovered"          : "--Select District--",
+            "blocksCovered"            : "--Select Block--",
+            "villagesCovered"          : editData.villagesCovered,
+            'stateCode'                : editData.address.stateCode
+          },()=>{
+            // console.log(this.state)
+            this.getDistrict(editData.address.stateCode);
+            this.getBlock(editData.address.stateCode, editData.address.district);
+            // console.log(editData.address.stateCode, editData.address.district, editData.blocksCovered);
+            // this.getVillages(editData.address.stateCode, editData.address.district, editData.blocksCovered);
+            if(editData.villagesCovered&&editData.villagesCovered.length>0){
+              var returnData = [...new Set(editData.villagesCovered.map(a => a.village))]
+              if(returnData&&returnData.length>0){
+                var array = returnData.map((data,index) => {
+                  return {'cityName' : data};
+                });
+                this.setState({
+                  listofVillages : array,
+                  editlistofVillages : array
+                })
+              }
+            }
+          });      
         }
-      });      
-    //   let fields = this.state.fields;
-    //   let errors = {};
-    //   let formIsValid = true;
-    //   this.setState({
-    //     errors: errors
-    //   });
-    //   return formIsValid;
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+    }
   }
   getLength(){
     axios.get('/api/centers/count')
     .then((response)=>{
       // console.log('response', response.data);
-      this.setState({
-        dataCount : response.data.dataLength
-      },()=>{
-        // console.log('dataCount', this.state.dataCount);
-      })
+      if(response&&response.data){
+        this.setState({
+          dataCount : response.data.dataLength
+        })
+      }
     })
     .catch(function(error){
       console.log("error = ",error);
@@ -647,40 +575,40 @@ class centerDetail extends Component{
     // console.log('/api/centers/list/'+startRange+'/'+limitRange);
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
-    console.log('response', response.data);
-    var tableData = response.data.map((a, i)=>{
-    return {
-      _id                       : a._id,
-      type                      : a.type,
-      centerName                : a.centerName,
-      places                    : a.address,
-      centerInchargeDetail      : a.centerInchargeDetail,
-      misCoordinatorDetail      : a.misCoordinatorDetail,
-      numberofVillage           : a.numberofVillage,
-    }
-    })
-    this.setState({
-      tableData : tableData
-    })
+      // console.log('response', response.data);
+      if(response&&response.data&&response.data.length>0){
+        var tableData = response.data.map((a, i)=>{
+        return {
+            _id                       : a._id,
+            type                      : a.type,
+            centerName                : a.centerName,
+            places                    : a.address,
+            centerInchargeDetail      : a.centerInchargeDetail,
+            misCoordinatorDetail      : a.misCoordinatorDetail,
+            numberofVillage           : a.numberofVillage,
+          }
+        })
+        this.setState({
+          tableData : tableData
+        })
+      }
     })
     .catch(function(error){
       console.log("error = ",error);
     });
   }
   componentWillMount(){
-        // window.location.reload(true);
   }
-  
   getTypeOfCenter(){
     axios({
       method: 'get',
       url: '/api/typeofcenters/list',
     }).then((response)=> {
+      if(response&&response.data){
         this.setState({
           listofTypes : response.data
-        },()=>{
-        console.log('listofTypes', this.state.listofTypes);
         })
+      }
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -694,8 +622,6 @@ class centerDetail extends Component{
       var typeOfCenterID = this.state.typeOfCenter.split('|')[1];
       this.setState({
         typeOfCenterID :typeOfCenterID
-      },()=>{
-      console.log('typeOfCenterID',this.state.typeOfCenterID);
       })
     });
     this.handleChange(event);
@@ -705,12 +631,12 @@ class centerDetail extends Component{
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/states/get/list/IN',
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+      // console.log('response ==========', response.data);
+      if(response&&response.data){
         this.setState({
           listofStates : response.data
-        },()=>{
-        // console.log('listofStates', this.state.listofStates);
         })
+      }
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -726,8 +652,8 @@ class centerDetail extends Component{
       this.setState({
         stateCode :stateCode
       },()=>{
-      console.log('stateCode',this.state.stateCode);
-      this.getDistrict(this.state.stateCode);
+        // console.log('stateCode',this.state.stateCode);
+        this.getDistrict(this.state.stateCode);
       })
     });
     this.handleChange(event);
@@ -735,15 +661,16 @@ class centerDetail extends Component{
   getDistrict(stateCode){
     axios({
       method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/districts/get/list/'+stateCode+'/IN',
       url: 'http://locationapi.iassureit.com/api/districts/get/list/IN/'+stateCode,
     }).then((response)=> {
         // console.log('response ==========', response.data);
-        this.setState({
-          listofDistrict : response.data
-        },()=>{
-        console.log('listofDistrict', this.state.listofDistrict);
-        })
+        if(response&&response.data){
+          this.setState({
+            listofDistrict : response.data,
+            districtCovered : '--Select District--',
+            // district : '--Select District--',
+          })
+        }
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -755,14 +682,15 @@ class centerDetail extends Component{
     this.setState({
       districtCovered: districtCovered,
       blocksCovered : '--Select Block--',
+      listofVillages : []
     },()=>{
       var selectedDistrict = this.state.districtCovered.split('|')[0];
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      // console.log('selectedDistrict',this.state.selectedDistrict);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+        // console.log('selectedDistrict',this.state.selectedDistrict);
+        this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
@@ -772,12 +700,12 @@ class centerDetail extends Component{
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
-        console.log('response ==========', response.data);
+      if(response&&response.data){
+        // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
-        },()=>{
-        console.log('listofBlocks', this.state.listofBlocks);
         })
+      }
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -788,30 +716,32 @@ class centerDetail extends Component{
     this.setState({
       blocksCovered : blocksCovered
     },()=>{
-      console.log("blocksCovered",blocksCovered);
+      // console.log("blocksCovered",blocksCovered);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.blocksCovered);
     });
   }
   getVillages(stateCode, selectedDistrict, blocksCovered){
-    console.log('stateCode, selectedDistrict, blocksCovered',stateCode, selectedDistrict, blocksCovered);
+    // console.log('stateCode, selectedDistrict, blocksCovered',stateCode, selectedDistrict, blocksCovered);
     axios({
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
       // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+blocksCovered+'/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
         // console.log('response ==========', response.data);
-        if(this.state.editlistofVillages){
-          var listofVillages = response.data
-          this.state.editlistofVillages.map((data,index) => {
-            listofVillages.push({'cityName' : data.cityName});
-          });
-          this.setState({
-            listofVillages : listofVillages
-          })
-        }else{
-          this.setState({
-            listofVillages : response.data
-          })
+        if(response&&response.data){
+          if(this.state.editlistofVillages){
+            var listofVillages = response.data
+            this.state.editlistofVillages.map((data,index) => {
+              listofVillages.push({'cityName' : data.cityName});
+            });
+            this.setState({
+              listofVillages : listofVillages
+            })
+          }else{
+            this.setState({
+              listofVillages : response.data
+            })
+          }
         }
     }).catch(function (error) {
       console.log('error', error);
@@ -819,32 +749,32 @@ class centerDetail extends Component{
   }
   selectVillage(event){
     var selectedVillages = this.state.selectedVillages;
-
+    var listofVillages = this.state.listofVillages;
     var value = event.target.checked;
     var id    = event.target.id;
-
+    var cityName = $(event.currentTarget).parent().parent().siblings('label').html();
     this.setState({
       [id] : value
     },()=>{
-      console.log('village', this.state[id], id);
-      if(this.state[id] == true){
+      // console.log('village', this.state[id], id);
+      if(this.state[id] === true){
         selectedVillages.push({
           district  : this.refs.districtCovered.value,
           block     : this.refs.blocksCovered.value,
           village   : id
         });
         this.setState({
-          selectedVillages : selectedVillages
+          selectedVillages : selectedVillages,
         });
-        console.log('selectedVillages', selectedVillages);
       }else{
+        // console.log('listofVillages', listofVillages,cityName);
         var index = selectedVillages.findIndex(v => v.village === id);
         // console.log('index', index);
         selectedVillages.splice(selectedVillages.findIndex(v => v.village === id), 1);
+        listofVillages.splice(listofVillages.findIndex(v => v.cityName === cityName));
         this.setState({
-          selectedVillages : selectedVillages
-        },()=>{
-          // console.log('selectedVillages',this.state.selectedVillages);
+          selectedVillages : selectedVillages,
+          listofVillages : listofVillages
         });
       }
     });      
@@ -852,44 +782,21 @@ class centerDetail extends Component{
   editVillage(event){
     event.preventDefault();
     var id = event.target.id;
-    console.log('id',id);
-
+    // console.log('id',id);
     var selectedVillages = this.state.selectedVillages[id];
-    console.log('selectedVillages', selectedVillages);
+    // console.log('selectedVillages', selectedVillages);
   }
   deleteVillage(event){
     event.preventDefault();
     var id = event.target.id;
-    console.log('id',id);
+    // console.log('id',id);
     var selectedVillages = this.state.selectedVillages;
     // console.log('index', index);
     selectedVillages.splice(id, 1);
     this.setState({
       selectedVillages : selectedVillages
-    },()=>{
-      // console.log('selectedVillages',this.state.selectedVillages);
     });
   }
-/*  onclickDist(event){
-    event.preventDefault();
-    console.log('ghjg');
-
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    // $("html,body").scrollTop(0);
-    console.log(!fields["state"]);
-    if (!fields["state"]) {
-      console.log('state errors');
-      formIsValid = false;
-      errors["state"] = "This field is required.";
-    }       
-    this.setState({
-      errors: errors
-    });
-
-  }*/
-
   camelCase(str){
     return str
     .toLowerCase()
@@ -908,7 +815,6 @@ class centerDetail extends Component{
     })
   }
   render() {
-        // console.log('dataCount', this.state.dataCount, 'tableData', this.state.tableData);
     return (
       <div className="container-fluid">
         <div className="row">
@@ -932,7 +838,7 @@ class centerDetail extends Component{
                               <label className="formLable">Select Type of Center</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeOfCenter" >
                                 <select className="custom-select form-control inputBox" value={this.state.typeOfCenter} ref="typeOfCenter" name="typeOfCenter" onChange={this.selectType.bind(this)} >
-                                  <option   disabled={true} value="--Select Center--">--Select Center--</option>
+                                  <option   disabled="disabled" selected="true" value="--Select Center--">--Select Center--</option>
                                   {/*<option  className="" >Development Center</option>
                                       <option  className="" >CSR Center</option>
                                       <option  className="" >ADP</option>*/}
@@ -972,7 +878,7 @@ class centerDetail extends Component{
                               <label className="formLable">State</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
                                 <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
-                                  <option disabled={true} value="--Select State--">--Select State--</option> 
+                                  <option disabled="disabled" selected="true" value="--Select State--">--Select State--</option> 
                                   {
                                     this.state.listofStates ?
                                     this.state.listofStates.map((data, index)=>{
@@ -991,7 +897,7 @@ class centerDetail extends Component{
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                 <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onClick={this.handleclick.bind(this)}  onChange={this.handleChange.bind(this)} >
-                                  <option disabled={true} value="--Select District--" >--Select District--</option>
+                                  <option disabled="disabled" selected="true" value="--Select District--" >--Select District--</option>
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
@@ -1095,7 +1001,7 @@ class centerDetail extends Component{
                               <label className="formLable">District Covered</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtCovered" >
                                 <select className="custom-select form-control inputBox"  value={this.state.districtCovered}  ref="districtCovered" name="districtCovered" onChange={this.districtCoveredChange.bind(this)} >
-                                  <option disabled={true} value="--Select District--" >--Select District--</option>
+                                  <option disabled="disabled" selected="true" value="--Select District--" >--Select District--</option>
                                   {
                                     this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
@@ -1114,7 +1020,7 @@ class centerDetail extends Component{
                               <label className="formLable">Block Covered</label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
                                 <select className="custom-select form-control inputBox"  value={this.state.blocksCovered}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
-                                  <option disabled={true} value="--Select Block--" >--Select Block--</option>
+                                  <option disabled="disabled" selected="true" value="--Select Block--" >--Select Block--</option>
                                   {
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                     this.state.listofBlocks.map((data, index)=>{
@@ -1164,6 +1070,10 @@ class centerDetail extends Component{
                           </div>
                         </div>
                         : 
+                        this.state.districtCovered!=='--Select District--'&&this.state.blocksCovered!=='--Select Block--'?
+                          <p className="mt col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          No villages found.</p>
+                        :
                         null
                         }      
                                    
