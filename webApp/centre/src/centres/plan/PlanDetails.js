@@ -1260,7 +1260,7 @@ class PlanDetails extends Component{
                           <BulkUpload url={this.state.month == "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
                           data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,"month":this.state.month,"year":this.state.year}} 
                           uploadedData={this.uploadedData} 
-                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/Plan%2BSubmission.xlsx"
+                          fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
                           fileDetailUrl={this.state.month == "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
                           getFileDetails={this.getFileDetails}
                           fileDetails={this.state.fileDetails}
