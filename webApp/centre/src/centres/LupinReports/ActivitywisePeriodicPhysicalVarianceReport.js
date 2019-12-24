@@ -52,7 +52,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
           ]
         },
         "tableHeading"      : {
-          "name"               : 'Activity & Sub Activity',
+          "achievement_projectCategory"        : 'Project',
+          "name"                               : 'Activity & Sub Activity',
           "unit"                               : 'Unit',
           "annualPlan_PhysicalUnit"            : 'Physical Units', 
           "annualPlan_Reach"                   : "Reach",
@@ -176,7 +177,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
     },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
-            projectName : "LHWRF Grant",
+            projectName : "all",
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({
@@ -228,6 +229,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
           var tableData = response.data.map((a, i)=>{
             return {
                 _id                                       : a._id,            
+                achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                 name                                      : a.name,
                 unit                                      : a.unit,
                 annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
@@ -267,20 +269,21 @@ class ActivityWisePeriodicVarianceReport extends Component{
           var tableData = response.data.map((a, i)=>{
             return {
                 _id                                       : a._id,            
-                name                      : a.name,
+                achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                name                                      : a.name,
                 unit                                      : a.unit,
                 annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
                 annualPlan_Reach                          : a.annualPlan_Reach,
-                annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
+                annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
                 monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
                 monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
+                monthlyPlan_FamilyUpgradation             : a.monthlyPlan_FamilyUpgradation,
                 achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
                 achievement_Reach                         : a.achievement_Reach,
-                achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
+                achievement_FamilyUpgradation             : a.achievement_FamilyUpgradation,
                 variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
                 variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
-                variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
+                variance_monthlyPlan_FamilyUpgradation    : a.variance_monthlyPlan_FamilyUpgradation,
                 
             }            
           })

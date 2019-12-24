@@ -74,6 +74,7 @@ export default class YearlyReport extends Component{
                     var tableData = response.data.map((a, i)=>{
                     return {
                         _id                               : a._id,
+                        achievement_projectCategory       : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                              : a.name,
                         annualPlan_Reach                  : a.annualPlan_Reach, 
                         annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 

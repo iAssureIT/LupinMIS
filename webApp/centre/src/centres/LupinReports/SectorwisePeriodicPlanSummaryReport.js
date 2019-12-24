@@ -33,7 +33,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 2
+                    mergedColoums : 3
                 },
                 {
                     heading : 'Annual Plan',
@@ -54,6 +54,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
+            "achievement_projectCategory"      : 'Project',
             "name"                             : 'Sector',
             "annualPlan_TotalBudget"           : 'Total Budget', 
             "Per_Annual"                       : 'Proportion to Total %', 
@@ -95,7 +96,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
           centerName   : centerName,
         },()=>{
         // console.log("center_ID =",this.state.center_ID);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.getAvailableSectors();
@@ -108,7 +109,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
           tableData : this.state.tableData,
         },()=>{
         // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
@@ -118,7 +119,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         this.getAvailableProjects();
         this.currentFromDate();
         this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
@@ -126,7 +127,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
             // console.log('name', this.state)
         });
     }
@@ -144,7 +145,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             this.setState({
               sector_ID        : sector_ID
             },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
             })
             // console.log('sector', this.state.sector);
           })
@@ -171,7 +172,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         // console.log('availableSectors', this.state.availableSectors);
         // console.log('sector_ID', this.state.sector_ID);
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
     }
 
@@ -189,7 +190,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             }
             // console.log("shown",this.state.shown, this.state.projectCategoryType)
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
           },()=>{
         })
     }
@@ -219,12 +220,12 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
               projectName : projectName,
             },()=>{
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
     }
 
     getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){        
-        console.log(startDate, endDate, center_ID);
+        console.log(startDate, endDate, center_ID,projectCategoryType);
         // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
             axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
@@ -233,6 +234,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
               var tableData = response.data.map((a, i)=>{
                 return {
                     _id                                     : a._id,            
+                    achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                     name                                    : a.name,
                     annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
                     Per_Annual                              : a.Per_Annual,
@@ -253,7 +255,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
               this.setState({
                 tableData : tableData
               },()=>{
-                console.log("resp",this.state.tableData)
+                // console.log("resp",this.state.tableData)
               })
             })
             .catch(function(error){  
@@ -282,7 +284,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
            [name] : event.target.value,
            startDate:startDate
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID,this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
         // localStorage.setItem('newFromDate',dateUpdate);
     }
@@ -301,7 +303,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
            endDate : endDate
         },()=>{
         // console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
        });
        // localStorage.setItem('newToDate',dateUpdate);
     }

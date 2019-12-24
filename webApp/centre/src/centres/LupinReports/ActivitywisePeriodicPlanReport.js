@@ -37,7 +37,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 3
+                        mergedColoums :4 
                     },
                     {
                         heading : 'Annual Plan',
@@ -58,6 +58,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 ]
             },
             "tableHeading"      : {
+                "achievement_projectCategory"               : 'Project',
                 "name"                                      : 'Activity & Sub Activity',
                 "unit"                                      : 'Unit',
                 "annualPlan_Reach"                          : 'Reach', 
@@ -239,6 +240,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                     var tableData = response.data.map((a, i)=>{
                         return {
                         _id                                       : a._id,            
+                        achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                                      : a.name,
                         unit                                      : a.unit,
                         annualPlan_Reach                          : a.annualPlan_Reach,
@@ -283,6 +285,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                     var tableData = response.data.map((a, i)=>{
                         return {
                         _id                                       : a._id,            
+                        achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                                      : a.name,
                         unit                                      : a.unit,
                         annualPlan_Reach                          : a.annualPlan_Reach,

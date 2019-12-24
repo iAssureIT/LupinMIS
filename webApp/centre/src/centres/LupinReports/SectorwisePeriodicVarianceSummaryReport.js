@@ -60,7 +60,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         },
         "tableHeading"      : {
             // "SrNo"          : 'Sr No',
-            "name"                             : 'Sector',
+            "achievement_projectCategory"        : 'Project',
+            "name"                               : 'Sector',
             "annualPlan_TotalBudget_L"           : "Annual Budget Plan 'Lakh'",
             "monthlyPlan_TotalBudget_L"          : 'Periodic Budget plan "Lakh"', 
             "monthlyPlan_LHWRF_L"                : 'LHWRF',
@@ -155,7 +156,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         },()=>{
             if(this.state.projectCategoryType === "LHWRF Grant"){
               this.setState({
-                projectName : "LHWRF Grant",
+                projectName : "all",
               })          
             }else if (this.state.projectCategoryType=== "all"){
               this.setState({
@@ -205,6 +206,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
               var tableData = response.data.map((a, i)=>{
                 return {
                     _id                                       : a._id,            
+                    achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                     name                                      : a.name,
                     annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
                     monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                

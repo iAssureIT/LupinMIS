@@ -318,7 +318,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
          [name] : event.target.value,
          startDate:startDate
       },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       console.log("dateUpdate",this.state.startDate);
       });
     }
@@ -337,7 +337,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
          endDate : endDate
       },()=>{
         console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       });
     }
 

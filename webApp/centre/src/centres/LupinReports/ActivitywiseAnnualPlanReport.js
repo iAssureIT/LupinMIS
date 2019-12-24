@@ -36,7 +36,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 3,
+                        mergedColoums : 4,
                     },
                     {
                         heading : 'Annual Plan',
@@ -53,6 +53,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                 ]
             },
             "tableHeading"      : {
+                "achievement_projectCategory"            : 'Project',
                 "name"                                   : 'Activity & Sub Activity',
                 "unit"                                   : 'Unit',
                 "annualPlan_Reach"                       : 'Reach', 
@@ -167,7 +168,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
-            projectName : "LHWRF Grant",
+            projectName : "all",
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({
@@ -222,14 +223,13 @@ class ActivitywiseAnnualPlanReport extends Component{
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
          
-          // console.log(startDate, endDate, year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);  
           axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-          // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
           .then((response)=>{
-            // console.log("resp",response);
+            console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
                   _id                                       : a._id,            
+                  achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                      : a.name,
                   unit                                      : a.unit,
                   annualPlan_Reach                          : a.annualPlan_Reach,
@@ -266,15 +266,13 @@ class ActivitywiseAnnualPlanReport extends Component{
           // console.log("year",year);
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";             
-          // console.log(startDate, endDate, year, center_ID, sector_ID);
-          // axios.get('/api/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all')
           axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-          // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
           .then((response)=>{
-            // console.log("resp",response);
+            console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
                   _id                                       : a._id,            
+                  achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                      : a.name,
                   unit                                      : a.unit,
                   annualPlan_Reach                          : a.annualPlan_Reach,

@@ -36,7 +36,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 2
+                    mergedColoums : 3
                 },
                 {
                     heading : 'Annual Plan',
@@ -57,6 +57,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
+            "achievement_projectCategory"        : 'Project',
             "name"                              : 'Sector',
             "annualPlan_Reach"                  : 'OutReach', 
             "annualPlan_FamilyUpgradation"      : 'Family Upgradation', 
@@ -149,7 +150,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
-            projectName : "LHWRF Grant",
+            projectName : "all",
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({

@@ -27,7 +27,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Activity Details',
-                    mergedColoums : 3,
+                    mergedColoums : 4,
                     hide :false,
                 },
                 // {
@@ -51,12 +51,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
             ]
         },
         "tableHeading"      : {
+            "achievement_projectCategory"   : 'Project',
             "name"                          : 'Activity & Sub Activity',
             "unit"                          : 'Unit',
-            // "annualPlan_Reach"              : 'Reach', 
-            // "annualPlan_FamilyUpgradation"  : 'Families Upgradation', 
-            // "annualPlan_PhysicalUnit"       : 'Physical Units', 
-            // "annualPlan_TotalBudget"        : "Total Budget 'Rs'",
             "achievement_Reach"             : 'Reach', 
             "achievement_FamilyUpgradation" : 'Families Upgradation', 
             "achievement_PhysicalUnit"      : 'Physical Units', 
@@ -171,7 +168,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
     },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
-            projectName : "LHWRF Grant",
+            projectName : "all",
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({
@@ -226,12 +223,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
             var tableData = response.data.map((a, i)=>{
             return {
               _id                           : a._id,
+              achievement_projectCategory   : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
               name                          : a.name,
               unit                          : a.unit,
-              // annualPlan_Reach              : a.annualPlan_Reach,
-              // annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
-              // annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
-              // annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
               achievement_Reach             : a.achievement_Reach,
               achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
               achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
