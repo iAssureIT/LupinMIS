@@ -181,7 +181,7 @@ class UpgradedBeneficiaryReport extends Component{
     },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
-            projectName : "LHWRF Grant",
+            projectName : "all",
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({
