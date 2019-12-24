@@ -381,10 +381,7 @@ class ActivitywisePeriodicPlanReport extends Component{
         event.preventDefault();
         const target = event.target;
         const name = target.name;
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        console.log(Date.parse(startDate));
-       
+     
         var dateVal = event.target.value;
         var dateUpdate = new Date(dateVal);
         var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -400,19 +397,16 @@ class ActivitywisePeriodicPlanReport extends Component{
         event.preventDefault();
         const target = event.target;
         const name = target.name;
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        console.log(Date.parse(startDate));
-       
+    
         var dateVal = event.target.value;
         var dateUpdate = new Date(dateVal);
-        var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+        var endDate = moment(dateUpdate).format('YYYY-MM-DD');
         this.setState({
            [name] : event.target.value,
-           startDate:startDate
+           endDate:endDate
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log("dateUpdate",this.state.startDate);
+        console.log("dateUpdate",this.state.endDate);
         });
     }
 
@@ -468,7 +462,7 @@ class ActivitywisePeriodicPlanReport extends Component{
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
       console.log("startDate",startDate,endDate)
-      if ((Date.parse(endDate) <= Date.parse(startDate))) {
+      if ((Date.parse(endDate) <Date.parse(startDate))) {
           swal("Start date","From date should be less than To date");
           this.refs.startDate.value="";
       }
@@ -477,7 +471,7 @@ class ActivitywisePeriodicPlanReport extends Component{
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
         console.log("startDate",startDate,endDate)
-          if ((Date.parse(startDate) >= Date.parse(endDate))) {
+          if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";
         }

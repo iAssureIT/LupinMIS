@@ -130,7 +130,8 @@ class SubActivity extends Component{
     event.preventDefault();
     if(this.refs.sector.value ==="" || this.refs.activityName.value==="" || this.refs.subActivityName.value ==="" || this.state.unit ==="")
     {
-      if (this.validateFormReq() && this.validateForm()) {}
+          if (this.validateFormReq() && this.validateForm()) {}
+
     }else{
     var subActivityValues = {
       "sector_ID"            : this.refs.sector.value.split('|')[1],
@@ -172,7 +173,8 @@ class SubActivity extends Component{
         .catch(function(error){
           console.log("error = ",error);
         });
-    }     
+    } 
+    
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -214,7 +216,7 @@ class SubActivity extends Component{
       }
       if (typeof fields["subActivityName"] !== "undefined") {
         // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["subActivityName"].match(/^[ A-Za-z0-9_@./#&+-]*$/)) {
+        if (!fields["subActivityName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
           formIsValid = false;
           errors["subActivityName"] = "Please enter valid Center Name.";
         }
@@ -365,6 +367,8 @@ edit(id){
     }
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{
+      console.log("response = ",response);
+
       this.setState({
         tableData : response.data
       });

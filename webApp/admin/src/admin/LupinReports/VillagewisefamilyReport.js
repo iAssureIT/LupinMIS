@@ -374,10 +374,7 @@ class VillagewisefamilyReport extends Component{
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
     console.log(Date.parse(startDate));
-    if ((Date.parse(endDate) <= Date.parse(startDate))) {
-        swal("Start date","From date should be less than To date");
-        this.refs.startDate.value="";
-    }
+   
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -395,10 +392,7 @@ class VillagewisefamilyReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    if ((Date.parse(startDate) >= Date.parse(endDate))) {
-        swal("End date","To date should be greater than From date");
-        this.refs.endDate.value="";
-    }
+   
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var endDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -464,7 +458,7 @@ class VillagewisefamilyReport extends Component{
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
     console.log("startDate",startDate,endDate)
-    if ((Date.parse(endDate) <= Date.parse(startDate))) {
+    if ((Date.parse(endDate) < Date.parse(startDate))) {
         swal("Start date","From date should be less than To date");
         this.refs.startDate.value="";
     }
@@ -473,7 +467,7 @@ class VillagewisefamilyReport extends Component{
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
       console.log("startDate",startDate,endDate)
-        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+        if ((Date.parse(startDate) > Date.parse(endDate))) {
           swal("End date","To date should be greater than From date");
           this.refs.endDate.value="";
       }

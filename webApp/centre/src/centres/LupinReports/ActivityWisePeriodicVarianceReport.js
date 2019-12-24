@@ -422,7 +422,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
         console.log("startDate",startDate,endDate)
-        if ((Date.parse(endDate) <= Date.parse(startDate))) {
+        if ((Date.parse(endDate) < Date.parse(startDate))) {
             swal("Start date","From date should be less than To date");
             this.refs.startDate.value="";
         }
@@ -431,7 +431,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
         console.log("startDate",startDate,endDate)
-          if ((Date.parse(startDate) >= Date.parse(endDate))) {
+          if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";
         }
