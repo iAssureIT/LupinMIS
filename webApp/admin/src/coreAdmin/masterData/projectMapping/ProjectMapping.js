@@ -91,6 +91,24 @@ class ProjectMapping extends Component{
  });
      // localStorage.setItem('newFromDate',dateUpdate);
   }
+   onBlurEventFrom(){
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    console.log("startDate",startDate,endDate)
+    if ((Date.parse(endDate) <= Date.parse(startDate))) {
+        swal("Start date","From date should be less than To date");
+        this.refs.startDate.value="";
+    }
+  }
+  onBlurEventTo(){
+      var startDate = document.getElementById("startDate").value;
+      var endDate = document.getElementById("endDate").value;
+      console.log("startDate",startDate,endDate)
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+          swal("End date","To date should be greater than From date");
+          this.refs.endDate.value="";
+      }
+  }
   handleToChange(event){
       event.preventDefault();
       const target = event.target;
@@ -752,15 +770,15 @@ class ProjectMapping extends Component{
                         </div>
                         <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">Start Date</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="startDate" >
-                                <input onChange={this.handleFromChange.bind(this)} name="fromDateCustomised" ref="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" >
+                                <input onChange={this.handleFromChange.bind(this)}  onBlur={this.onBlurEventFrom.bind(this)} name="fromDateCustomised" id="startDate"  ref="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                             </div>
                           <div className="errorMsg">{this.state.errors.startDate}</div>
                         </div>
                         <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">End Date</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="endDate" >
-                                <input onChange={this.handleToChange.bind(this)} name="toDateCustomised" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main"  >
+                                <input onChange={this.handleToChange.bind(this)}  onBlur={this.onBlurEventTo.bind(this)} id="endDate" name="toDateCustomised" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                             </div>
                           <div className="errorMsg">{this.state.errors.endDate}</div>
                         </div>  
