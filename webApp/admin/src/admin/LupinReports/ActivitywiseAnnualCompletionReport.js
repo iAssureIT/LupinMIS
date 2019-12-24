@@ -120,12 +120,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
       })
     }).catch(function (error) {
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
+       
       });
   } 
   selectCenter(event){
@@ -157,12 +152,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
       })
     }).catch(function (error) {
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
+      
       });
   }
   selectSector(event){
@@ -207,12 +197,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
       })
     }).catch(function (error) {
       console.log('error', error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
+    
     });
   }
   selectprojectName(event){
@@ -240,12 +225,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
+       
       });
     
   } 

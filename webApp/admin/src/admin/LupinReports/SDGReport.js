@@ -114,13 +114,8 @@ class SDGReport extends Component{
           },()=>{
           })
         }).catch(function (error) { 
-           // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
+            console.log("error = ",error);
+         
         });
     } 
     selectCenter(event){
@@ -175,13 +170,8 @@ class SDGReport extends Component{
           })
         })
         .catch(function(error){  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
+          console.log("error = ",error);
+          
         });
       }else{
         axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/SDG Goal/'+beneficiaryType)
@@ -211,13 +201,8 @@ class SDGReport extends Component{
           })
         })
         .catch(function(error){  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
+           console.log("error = ",error);
+       
         });
       }
     }else{      
@@ -248,13 +233,8 @@ class SDGReport extends Component{
           })
         })
         .catch(function(error){  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
+          console.log("error = ",error);
+          
         });
       
     }

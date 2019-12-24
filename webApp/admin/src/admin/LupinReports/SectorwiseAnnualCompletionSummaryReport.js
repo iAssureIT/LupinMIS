@@ -128,13 +128,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         },()=>{
         })
       }).catch(function (error) {  
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
+        console.log("error = ",error);
+      
       });
   } 
   selectCenter(event){
@@ -176,13 +171,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           // console.log('sector', this.state.sector);
         })
       }).catch(function (error) {  
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
+        console.log("error = ",error);
+       
       });
   }
   selectSector(event){
@@ -231,12 +221,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       })
     }).catch(function (error) {
       console.log('error', error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
+     
     });
   }
   selectprojectName(event){

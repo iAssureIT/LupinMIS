@@ -108,13 +108,8 @@ class CategorywiseReport extends Component{
       },()=>{
       })
     }).catch(function (error) {
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
+      console.log("error = ",error);
+       
     });
   }
   selectCenter(event){
@@ -162,12 +157,7 @@ class CategorywiseReport extends Component{
       })
     }).catch(function (error) {
       console.log("districtError",+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      } 
+      
     });
   } 
 
@@ -206,13 +196,8 @@ class CategorywiseReport extends Component{
         // console.log('listofBlocks', this.state.listofBlocks);
         })
     }).catch(function (error) {
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
+          console.log("error = ",error);
+          
       });
   }
   selectBlock(event){
@@ -240,13 +225,8 @@ class CategorywiseReport extends Component{
         // console.log('listofVillages', this.state.listofVillages);
         })
     }).catch(function (error) {
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
+          console.log("error = ",error);
+        
       });
   }
   selectVillage(event){
@@ -301,12 +281,7 @@ class CategorywiseReport extends Component{
       })
     }).catch(function (error) {
       console.log('error', error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
+      
     });
   }
   selectprojectName(event){
@@ -344,13 +319,8 @@ class CategorywiseReport extends Component{
             })
           })
           .catch(function(error){
-              // console.log("error = ",error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
+              console.log("error = ",error);
+              
           });
         }else{
           axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
@@ -374,13 +344,8 @@ class CategorywiseReport extends Component{
             })
           })
           .catch(function(error){
-              // console.log("error = ",error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
+              console.log("error = ",error);
+            
           });
         }
       }

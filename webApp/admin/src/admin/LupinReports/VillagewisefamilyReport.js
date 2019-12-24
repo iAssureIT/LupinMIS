@@ -116,13 +116,8 @@ class VillagewisefamilyReport extends Component{
       },()=>{
       })
     }).catch(function (error) {  
-      // console.log("error = ",error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }
+      console.log("error = ",error);
+    
     });
   }
   selectCenter(event){
@@ -171,12 +166,7 @@ class VillagewisefamilyReport extends Component{
       })
     }).catch(function (error) {
       console.log("districtError",+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      } 
+     
     });
   } 
   getAvailableSectors(){
@@ -191,13 +181,8 @@ class VillagewisefamilyReport extends Component{
           },()=>{
         })
       }).catch(function (error) {  
-        // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
+        console.log("error = ",error);
+       
       });
   }
   selectSector(event){
@@ -329,12 +314,7 @@ class VillagewisefamilyReport extends Component{
       })
     }).catch(function (error) {
       console.log('error', error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
+     
     });
   }
   selectprojectName(event){
@@ -381,13 +361,8 @@ class VillagewisefamilyReport extends Component{
           })
         })
         .catch(function(error){  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
+           console.log("error = ",error);
+          
         });
       }
     }

@@ -158,13 +158,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
           },()=>{
           })
         }).catch(function (error) {
-            // console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
+           console.log("error = ",error);
+           
         });
     } 
     selectCenter(event){
@@ -199,13 +194,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
             },()=>{
           })
         }).catch(function (error) {
-            // console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
+             console.log("error = ",error);
+            
         });
     }
     selectSector(event){
@@ -258,12 +248,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
           })
         }).catch(function (error) {
           console.log('error', error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }   
+        
         });
     }
     selectprojectName(event){
@@ -328,13 +313,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                       })
                     })
                     .catch(function(error){
-                        // console.log("error = ",error);
-                        if(error.message === "Request failed with status code 401"){
-                          swal({
-                              title : "abc",
-                              text  : "Session is Expired. Kindly Sign In again."
-                          });
-                        }
+                        console.log("error = ",error);
+                      
                     });
                 }else{
                     axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
@@ -383,13 +363,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                       })
                     })
                     .catch(function(error){
-                        // console.log("error = ",error);
-                        if(error.message === "Request failed with status code 401"){
-                          swal({
-                              title : "abc",
-                              text  : "Session is Expired. Kindly Sign In again."
-                          });
-                        }
+                         console.log("error = ",error);
+                      
                     });
                 }
             }
@@ -440,13 +415,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                   })
                 }) 
                 .catch(function(error){
-                    // console.log("error = ",error);
-                    if(error.message === "Request failed with status code 401"){
-                      swal({
-                          title : "abc",
-                          text  : "Session is Expired. Kindly Sign In again."
-                      });
-                    }
+                     console.log("error = ",error);
+                  
                 });
             }
         }
