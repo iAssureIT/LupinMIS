@@ -259,6 +259,7 @@ class Beneficiary extends Component{
 
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
+    console.log('mani ',nextProps.match.params.id);
     if(nextProps.match.params.id){
       this.setState({
         editId : editId
@@ -347,7 +348,8 @@ class Beneficiary extends Component{
   }
 
   edit(id){
-    axios({
+    if(id && id != undefined){
+      axios({
       method: 'get',
       url: '/api/beneficiaries/'+id,
     })
@@ -375,6 +377,18 @@ class Beneficiary extends Component{
     .catch(function (error) {
       console.log("error = ",error);
     });
+    }else{
+      this.setState({
+        "beneficiaryID"            : "",
+        "familyID"                 : "",          
+        "surnameOfBeneficiary"     : "",
+        "firstNameOfBeneficiary"   : "",
+        "middleNameOfBeneficiary"  : "",
+        "uidNumber"                : "",          
+        "relation"                 : "",          
+      });     
+    }
+    
   }
   
   getLength(center_ID){
