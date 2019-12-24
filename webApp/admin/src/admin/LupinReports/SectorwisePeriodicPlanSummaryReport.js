@@ -33,7 +33,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 2
+                    mergedColoums : 3
                 },
                 {
                     heading : 'Annual Plan',
@@ -54,6 +54,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
+            "achievement_projectCategory"      : 'Project',
             "name"                             : 'Sector',
             "annualPlan_TotalBudget"           : 'Total Budget', 
             "Per_Annual"                       : 'Proportion to Total %', 
@@ -171,7 +172,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         },()=>{
             if(this.state.projectCategoryType === "LHWRF Grant"){
               this.setState({
-                projectName : "LHWRF Grant",
+                projectName : "all",
               })          
             }else if (this.state.projectCategoryType=== "all"){
               this.setState({
@@ -226,6 +227,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                   var tableData = response.data.map((a, i)=>{
                     return {
                         _id                                     : a._id,            
+                        achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                                    : a.name,
                         annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
                         Per_Annual                              : a.Per_Annual,
@@ -265,6 +267,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                   var tableData = response.data.map((a, i)=>{
                     return {
                         _id                                     : a._id,            
+                        achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                                    : a.name,
                         annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
                         Per_Annual                              : a.Per_Annual,

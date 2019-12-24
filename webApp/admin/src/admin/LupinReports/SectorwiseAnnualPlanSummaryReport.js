@@ -36,7 +36,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 2
+                    mergedColoums : 3
                 },
                 {
                     heading : 'Annual Plan',
@@ -53,6 +53,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
+            "achievement_projectCategory"      : 'Project',
             "name"                             : 'Sector',
             "annualPlan_TotalBudget"           : 'Total Budget', 
             "Per_Annual"                       : 'Proportion to Total %', 
@@ -216,7 +217,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
-            projectName : "LHWRF Grant",
+            projectName : "all",
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({
@@ -271,6 +272,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               var tableData = response.data.map((a, i)=>{
                 return {
                     _id                                     : a._id,            
+                    achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                     name                                    : a.name,
                     annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
                     Per_Annual                              : a.Per_Annual,
@@ -293,13 +295,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               })
             })
             .catch(function(error){  
-              // console.log("error = ",error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
+              console.log("error = ",error);
             });
           }else{
             console.log("year",year);
@@ -311,6 +307,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               var tableData = response.data.map((a, i)=>{
                 return {
                     _id                                     : a._id,            
+                    achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                     name                                    : a.name,
                     annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
                     Per_Annual                              : a.Per_Annual,
@@ -333,13 +330,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               })
             })
             .catch(function(error){  
-              // console.log("error = ",error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
+              console.log("error = ",error);
             });
           }
         }

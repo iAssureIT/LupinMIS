@@ -42,7 +42,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 3
+                        mergedColoums : 4
                     },
                     {
                         heading : 'Annual Plan',
@@ -59,6 +59,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                 ]
             },
             "tableHeading"      : {
+                "achievement_projectCategory"            : 'Project',
                 "name"                                   : 'Activity & Sub Activity',
                 "unit"                                   : 'Unit',
                 "annualPlan_Reach"                       : 'Reach', 
@@ -204,7 +205,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
-            projectName : "LHWRF Grant",
+            projectName : "all",
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({
@@ -265,6 +266,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                   var tableData = response.data.map((a, i)=>{
                   return {
                       _id                                       : a._id,            
+                      achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                                      : a.name,
                       unit                                      : a.unit,
                       annualPlan_Reach                          : a.annualPlan_Reach,
@@ -307,6 +309,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                   var tableData = response.data.map((a, i)=>{
                   return {
                       _id                                       : a._id,            
+                      achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                                      : a.name,
                       unit                                      : a.unit,
                       annualPlan_Reach                          : a.annualPlan_Reach,
@@ -350,13 +353,14 @@ class ActivitywiseAnnualPlanReport extends Component{
                   var tableData = response.data.map((a, i)=>{
                   return {
                       _id                                       : a._id,            
+                      achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                                      : a.name,
                       unit                                      : a.unit,
                       annualPlan_Reach                          : a.annualPlan_Reach,
                       annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
                       annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
                       annualPlan_UnitCost                       : a.annualPlan_UnitCost,
-                      annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
+                      annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
                       annualPlan_LHWRF                          : a.annualPlan_LHWRF,
                       annualPlan_NABARD                         : a.annualPlan_NABARD,
                       annualPlan_Bank_Loan                      : a.annualPlan_Bank_Loan,
