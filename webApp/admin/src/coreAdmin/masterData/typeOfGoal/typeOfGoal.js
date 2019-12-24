@@ -47,7 +47,7 @@ class typeOfGoal extends Component{
     this.setState({
       fields
     });
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()) {
       let errors = {};
       errors[event.target.name] = "";
       this.setState({
@@ -71,7 +71,7 @@ class typeOfGoal extends Component{
 
   SubmitType_Goal(event){
     event.preventDefault();
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()) {
       var typeofGoalValues= {
       "typeofGoal"       :this.refs.typeofGoal.value,
       "user_ID"          : this.state.user_ID,
@@ -103,7 +103,7 @@ class typeOfGoal extends Component{
 
   updateType_Goal(event){
     event.preventDefault();
-    if($('#typeofGoalDetails').valid()){
+    if (this.validateFormReq() && this.validateForm()){
       var typeofGoalValues= {
         "ID"              :this.state.editId,
         "typeofGoal"      :this.refs.typeofGoal.value,
@@ -187,6 +187,24 @@ class typeOfGoal extends Component{
       errors: errors
     });
     return formIsValid;
+  }
+
+   validateForm() {
+    let fields = this.state.fields;
+    let errors = {};
+    let formIsValid = true;
+      if (typeof fields["typeofGoalRegx"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["typeofGoalRegx"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["typeofGoalRegx"] = "Please enter valid Type of Goal.";
+        }
+      }
+    $("html,body").scrollTop(0);
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
   }
   edit(id){
     axios({

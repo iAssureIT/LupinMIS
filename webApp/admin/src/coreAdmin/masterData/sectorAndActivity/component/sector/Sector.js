@@ -101,11 +101,8 @@ class Sector extends Component{
 
   updateSector(event){
     event.preventDefault();
-    if(this.refs.sector.value ==="") {
-      // console.log('state validation');
       if (this.validateFormReq() && this.validateForm()) {
-      }
-    }else{
+   
       var sectorValues= {
         "sector_ID"   :this.state.editId,
         "sector"      :this.refs.sector.value,

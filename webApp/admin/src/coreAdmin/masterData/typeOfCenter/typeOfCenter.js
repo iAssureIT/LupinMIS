@@ -50,7 +50,7 @@ class typeOfCenter extends Component{
         this.setState({
           fields
         });
-        if (this.validateFormReq()) {
+        if (this.validateFormReq() && this.validateForm()) {
           let errors = {};
           errors[event.target.name] = "";
           this.setState({
@@ -77,7 +77,7 @@ class typeOfCenter extends Component{
   SubmitType_Center(event){
     event.preventDefault();
    // if($('#typeofCenterDetails').valid()){
-    if (this.validateFormReq()) {
+    if (this.validateFormReq() && this.validateForm()) {
       var typeofCenterValues= {
       "typeofCenter"      :this.refs.typeofCenter.value,
       "user_ID"          : this.state.user_ID,
@@ -108,38 +108,37 @@ class typeOfCenter extends Component{
 
   updateType_Center(event){
     event.preventDefault();
-    if(this.refs.typeofCenter.value ==="") {
-      // console.log('state validation');
-      if (this.validateFormReq()) {
-      }
-    }else{
-      // if (this.validateFormReq() && this.validateForm()) {
-    // if($('#typeofCenterDetails').valid()){
-      var typeofCenterValues= {
-        "ID"               : this.state.editId,
-        "typeofCenter"     : this.refs.typeofCenter.value,
-        "user_ID"          : this.state.user_ID,
-      };
+       console.log("validateForm",this.validateForm(),this.validateFormReq()  );
+      if (this.validateFormReq() && this.validateForm()) {
+        if(this.refs.typeofCenter.value ==="") {
+        }else{
+          // if (this.validateFormReq() && this.validateForm()) {
+        // if($('#typeofCenterDetails').valid()){
+          var typeofCenterValues= {
+            "ID"               : this.state.editId,
+            "typeofCenter"     : this.refs.typeofCenter.value,
+            "user_ID"          : this.state.user_ID,
+          };
 
-      
-      axios.patch('/api/typeofcenters/update',typeofCenterValues, this.state.editId)
-        .then((response)=>{
-          console.log("response",response );
-          if(response.data){
-            this.getData(this.state.startRange, this.state.limitRange);
-              this.props.history.push('/type-center');
-            // window.location = '/type-center'
-            swal({
-              title : response.data.message,
-              text  : response.data.message
-            });
-            this.setState({
-              editId : '',
-              "typeofCenter"  :"",
-              fields         :fields
-            },()=>{
-            })
-          }
+          
+          axios.patch('/api/typeofcenters/update',typeofCenterValues, this.state.editId)
+            .then((response)=>{
+              console.log("response",response );
+              if(response.data){
+                this.getData(this.state.startRange, this.state.limitRange);
+                  this.props.history.push('/type-center');
+                // window.location = '/type-center'
+                swal({
+                  title : response.data.message,
+                  text  : response.data.message
+                });
+                this.setState({
+                  editId : '',
+                  "typeofCenter"  :"",
+                  fields         :fields
+                },()=>{
+                })
+              }
         })
         .catch(function(error){
           console.log("error = ",error);
@@ -148,6 +147,7 @@ class typeOfCenter extends Component{
         fields["typeofCenter"] = "";
     }   
     // }  
+  }
   }
 
   componentWillReceiveProps(nextProps){
@@ -208,23 +208,25 @@ class typeOfCenter extends Component{
     });
     return formIsValid;
   }
-  validateForm() {
+
+   validateForm() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-    if (typeof fields["typeofCenterRegX"] !== "undefined") {
+      if (typeof fields["typeofCenterRegX"] !== "undefined") {
         // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["typeofCenterRegX"].match(/^\S*$/)) {
+        if (!fields["typeofCenterRegX"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
           formIsValid = false;
-          errors["typeofCenterRegX"] = "Please enter valid Type of Center";
+          errors["typeofCenterRegX"] = "Please enter valid Sector Name.";
         }
       }
-   
+    $("html,body").scrollTop(0);
       this.setState({
         errors: errors
       });
       return formIsValid;
   }
+
 
   edit(id){
     axios({
