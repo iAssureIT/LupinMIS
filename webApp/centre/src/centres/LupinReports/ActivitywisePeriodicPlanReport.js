@@ -71,9 +71,9 @@ class ActivitywisePeriodicPlanReport extends Component{
                 "monthlyPlan_LHWRF_L"                       : 'LHWRF',
                 "monthlyPlan_NABARD_L"                      : 'NABARD',
                 "monthlyPlan_Bank_Loan_L"                   : 'Bank Loan',
+                "monthlyPlan_Govt_L"                        : 'Govt',
                 "monthlyPlan_DirectCC_L"                    : 'Direct Community  Contribution',
                 "monthlyPlan_IndirectCC_L"                  : 'Indirect Community  Contribution',
-                "monthlyPlan_Govt_L"                        : 'Govt',
                 "monthlyPlan_Other_L"                       : 'Others',/*
                 "monthlyPlan_Other_L"                       : 'Remark',*/
             },

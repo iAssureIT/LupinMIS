@@ -39,12 +39,12 @@ class VillagewisefamilyReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "projectName"    : 'Project',
-            "sectorName"     : 'Sector',
-            "activityName"   : 'Activity',
-            "subactivityName": 'Subactivity',
-            "familyID"       : 'Family ID',
-            "name_family"    : 'Name of Family Head',
+            "projectCategoryType" : 'Project',
+            "sectorName"          : 'Sector',
+            "activityName"        : 'Activity',
+            "subactivityName"     : 'Subactivity',
+            "familyID"            : 'Family ID',
+            "name_family"         : 'Name of Family Head',
                 
         },
         "tableObjects"        : {
@@ -64,15 +64,13 @@ class VillagewisefamilyReport extends Component{
   componentDidMount(){
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
-    // console.log("localStorage =",localStorage);
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
     this.getAvailableCenterData(this.state.center_ID);
     // console.log("center_ID =",this.state.center_ID);
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableProjects();
@@ -85,7 +83,7 @@ class VillagewisefamilyReport extends Component{
       tableData : this.state.tableData,
     },()=>{
     console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
@@ -96,7 +94,7 @@ class VillagewisefamilyReport extends Component{
     this.getAvailableSectors();
     this.currentFromDate();
     this.currentToDate();
-    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
     console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
@@ -104,7 +102,7 @@ class VillagewisefamilyReport extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
       console.log('name', this.state)
     });
   }
@@ -182,7 +180,7 @@ class VillagewisefamilyReport extends Component{
           sector_ID : sector_id,
         },()=>{
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
     })
   }
   districtChange(event){    
@@ -200,7 +198,7 @@ class VillagewisefamilyReport extends Component{
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
@@ -227,7 +225,7 @@ class VillagewisefamilyReport extends Component{
       block : block
     },()=>{
       // console.log("block",block);
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
@@ -254,7 +252,7 @@ class VillagewisefamilyReport extends Component{
     this.setState({
       village : village
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
       console.log("village",village);
     });  
   }  
@@ -275,7 +273,7 @@ class VillagewisefamilyReport extends Component{
     },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
-            projectName : "LHWRF Grant",
+            projectName : "all",
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({
@@ -284,7 +282,7 @@ class VillagewisefamilyReport extends Component{
         }
         console.log("shown",this.state.shown, this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
       },()=>{
     })
   }
@@ -313,22 +311,22 @@ class VillagewisefamilyReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
   }
       
-  getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-    console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType);
-      if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType){
+  getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID){        
+    console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
+      if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
         if(sector_ID==="all"){
-          axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+          axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID)
           .then((response)=>{
             console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
                 _id                    : a._id,            
-                projectName            : "LHWRF",
+                projectCategoryType    : a.projectCategoryType,
                 sectorName             : a.sectorName,
                 activityName           : a.activityName,
                 subactivityName        : a.subactivityName,
@@ -352,13 +350,13 @@ class VillagewisefamilyReport extends Component{
             }
           });
         }else{
-          axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+          axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID)
           .then((response)=>{
             console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
                 _id                    : a._id,            
-                projectName            : "LHWRF",
+                projectCategoryType    : a.projectCategoryType,
                 sectorName             : a.sectorName,
                 activityName           : a.activityName,
                 subactivityName        : a.subactivityName,
@@ -402,7 +400,7 @@ class VillagewisefamilyReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
     console.log("dateUpdate",this.state.startDate);
     });
   }
@@ -424,7 +422,7 @@ class VillagewisefamilyReport extends Component{
        endDate : endDate
     },()=>{
       console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
     });
   }
 

@@ -65,9 +65,9 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             "monthlyPlan_LHWRF"                : 'LHWRF',
             "monthlyPlan_NABARD"               : 'NABARD',
             "monthlyPlan_Bank_Loan"            : 'Bank Loan',
+            "monthlyPlan_Govt"                 : 'Govt',
             "monthlyPlan_DirectCC"             : 'Direct Community  Contribution',
             "monthlyPlan_IndirectCC"           : 'Indirect Community  Contribution',
-            "monthlyPlan_Govt"                 : 'Govt',
             "monthlyPlan_Other"                : 'Others',
         },
         

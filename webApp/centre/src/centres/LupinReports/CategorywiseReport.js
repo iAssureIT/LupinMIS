@@ -39,7 +39,7 @@ class CategorywiseReport extends Component{
             ]
         },
         "tableHeading"      : {
-          "projectName"       : 'Project',
+          "projectCategoryType": 'projectCategoryType',
           "incomeCategory"    : 'Income Category',
           "landCategory"      : 'Land Holding Category',
           "specialCategory"   : 'Special Category',
@@ -229,7 +229,7 @@ class CategorywiseReport extends Component{
             var tableData = response.data.map((a, i)=>{
             return {
               _id                    : a._id,            
-              projectName            : "LHWRF",
+              projectCategoryType    : a.projectCategoryType,
               incomeCategory         : a.incomeCategory,
               landCategory           : a.landCategory,
               specialCategory        : a.specialCategory,
