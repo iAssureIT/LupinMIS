@@ -509,6 +509,7 @@ class centerDetail extends Component{
   
   edit(id){
     if(id){
+      $('label.error').html('')
       axios({
         method: 'get',
         url: '/api/centers/'+id,
@@ -658,8 +659,24 @@ class centerDetail extends Component{
     },()=>{
       var stateCode = this.state.state.split('|')[1];
       // console.log('state', stateCode);
+      // if(this.state.editlistofVillages.length!==0){
+      //   var listofVillages = this.state.listofVillages
+      //   this.state.editlistofVillages.map((data,index) => {
+      //     var index = listofVillages.findIndex(v => v.cityName === data.cityName);
+      //     if(index<0){
+      //       listofVillages.push({'cityName' : data.cityName});
+      //     }
+      //   });
+      //   this.setState({
+      //     listofVillages : listofVillages
+      //   })
+      // }
       this.setState({
-        stateCode :stateCode
+        stateCode :stateCode,
+        pincode :'',
+        district : '--Select District--',
+        districtCovered : '--Select District--',
+        blocksCovered : '--Select Block--',
       },()=>{
         // console.log('stateCode',this.state.stateCode);
         this.getDistrict(this.state.stateCode);
@@ -676,8 +693,6 @@ class centerDetail extends Component{
         if(response&&response.data){
           this.setState({
             listofDistrict : response.data,
-            districtCovered : '--Select District--',
-            // district : '--Select District--',
           })
         }
     }).catch(function (error) {
@@ -691,8 +706,11 @@ class centerDetail extends Component{
     this.setState({
       districtCovered: districtCovered,
       blocksCovered : '--Select Block--',
-      listofVillages : []
+      // listofVillages : []
     },()=>{
+      if(this.state.editlistofVillages.length===0){
+        this.state.listofVillages = []
+      }
       var selectedDistrict = this.state.districtCovered.split('|')[0];
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
@@ -738,10 +756,15 @@ class centerDetail extends Component{
     }).then((response)=> {
         // console.log('response ==========', response.data);
         if(response&&response.data){
-          if(this.state.editlistofVillages){
+          if(this.state.editlistofVillages.length!==0){
             var listofVillages = response.data
+            // console.log('listofVillages',listofVillages)
             this.state.editlistofVillages.map((data,index) => {
-              listofVillages.push({'cityName' : data.cityName});
+              var index = listofVillages.findIndex(v => v.cityName === data.cityName);
+              // console.log('index',index)
+              if(index<0){
+                listofVillages.push({'cityName' : data.cityName});
+              }
             });
             this.setState({
               listofVillages : listofVillages
@@ -780,7 +803,9 @@ class centerDetail extends Component{
         var index = selectedVillages.findIndex(v => v.village === id);
         // console.log('index', index);
         selectedVillages.splice(selectedVillages.findIndex(v => v.village === id), 1);
-        listofVillages.splice(listofVillages.findIndex(v => v.cityName === cityName));
+        if(this.refs.districtCovered.value==='--Select District--'&&this.refs.blocksCovered.value==='--Select Block--'){
+          listofVillages.splice(listofVillages.findIndex(v => v.cityName === cityName), 1);
+        }
         this.setState({
           selectedVillages : selectedVillages,
           listofVillages : listofVillages

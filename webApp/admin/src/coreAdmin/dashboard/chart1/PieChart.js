@@ -63,7 +63,7 @@ export default class PieChart extends Component {
   render() {
     return (  
       <div>
-        <Pie height={120} data={this.state.data} options={{legend: {display: false} }} />
+        <Pie height={120} data={this.state.data} options={{legend: {display: true,"position": "right",} }} />
       </div>
     );
   }
