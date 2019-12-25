@@ -654,14 +654,13 @@ class centerDetail extends Component{
     },()=>{
       var stateCode = this.state.state.split('|')[1];
       // console.log('state', stateCode);
-      var listofVillages = this.state.editlistofVillages
       this.setState({
         stateCode :stateCode,
-        // pincode :'',
-        // district : '--Select District--',
-        // districtCovered : '--Select District--',
-        // blocksCovered : '--Select Block--',
-        // listofVillages : listofVillages
+        pincode :'',
+        district : '--Select District--',
+        districtCovered : '--Select District--',
+        blocksCovered : '--Select Block--',
+        // listofVillages : this.state.editlistofVillages
       },()=>{
         // console.log('stateCode',this.state.stateCode);
         this.getDistrict(this.state.stateCode);
@@ -691,15 +690,12 @@ class centerDetail extends Component{
     this.setState({
       districtCovered: districtCovered,
       blocksCovered : '--Select Block--',
-      // listofVillages : []
     },()=>{
-      if(this.state.editlistofVillages.length===0){
-        this.state.listofVillages = []
-      }
       var selectedDistrict = this.state.districtCovered.split('|')[0];
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict
+        // listofVillages : this.state.editlistofVillages
       },()=>{
         // console.log('selectedDistrict',this.state.selectedDistrict);
         this.getBlock(this.state.stateCode, this.state.selectedDistrict);

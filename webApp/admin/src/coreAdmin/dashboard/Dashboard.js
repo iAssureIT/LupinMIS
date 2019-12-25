@@ -214,7 +214,7 @@ export default class Dashboard extends Component{
     });
   } 
  
-  getCenterwiseData(year, center_ID){
+  getCenterwiseData(year){
     console.log('year', year);
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
@@ -223,6 +223,7 @@ export default class Dashboard extends Component{
         .then((response)=>{
       /*******************************Dashboard Status Data***************************/
           var centerwiseData = response.data;
+          console.log('centerwiseData',centerwiseData)
           var totalindex = (centerwiseData.length)-2;
           var totalData = response.data[totalindex];
           var achievement_Reach      = totalData.achievement_Reach;
@@ -288,7 +289,7 @@ export default class Dashboard extends Component{
     } 
   }
 
-  getSectorwiseData(year, center_ID){
+  getSectorwiseData(year){
     console.log('year', year);
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
