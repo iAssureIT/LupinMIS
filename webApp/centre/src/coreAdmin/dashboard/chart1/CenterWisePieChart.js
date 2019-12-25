@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {Pie} from 'react-chartjs-2';
+import 'chartjs-plugin-labels';
 
 export default class PieChart extends Component {
   // constructor(props){
@@ -18,7 +19,7 @@ export default class PieChart extends Component {
   //           hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
   //           stack: '1',
   //           data: []
-  //         },          
+  //         },         
   //       ]
   //     }
   //   }
@@ -37,7 +38,7 @@ export default class PieChart extends Component {
       }
     }
   }
-  
+ 
 
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
@@ -59,16 +60,28 @@ export default class PieChart extends Component {
              data : data
           }
         }
-      
+     
      }
   }
 
   render() {
     return (
       <div>
-        <Pie height={120} data={this.state.data} options={{ legend: {display: false} }}/>
+        <Pie height={150} data={this.state.data} options={{ legend: {display: false},
+          plugins: {
+           labels: [{
+            render: 'label',
+            position: 'outside',
+            fontColor: '#000',
+            textMargin: 8
+          },
+          {
+            render: 'percentage',
+            fontColor: '#fff',
+          }
+           ]}
+         }}/>
       </div>
     );
   }
 }
-

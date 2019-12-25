@@ -84,6 +84,9 @@ class centerDetail extends Component{
   }
   handleChange(event){
     event.preventDefault();
+    // if(event.currentTarget.name==='district'){
+    //   this.state.pincode = '' 
+    // }
     this.setState({
       "typeOfCenter"             : this.refs.typeOfCenter.value,
       "nameOfCenter"             : this.refs.nameOfCenter.value,
@@ -100,6 +103,7 @@ class centerDetail extends Component{
       "districtCovered"          : this.refs.districtCovered.value,
       "blocksCovered"            : this.refs.blocksCovered.value,
     });
+    
   }
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -125,7 +129,7 @@ class centerDetail extends Component{
   }
   Submit(event){
     event.preventDefault();
-    if($("#Center_details").valid()){
+    if($("#Academic_details").valid()){
       var selectedVillages = this.state.selectedVillages;
       var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
       var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
@@ -192,7 +196,7 @@ class centerDetail extends Component{
   }
   Update(event){
     event.preventDefault();
-    if($("#Center_details").valid()){
+    if($("#Academic_details").valid()){
       var selectedVillages = this.state.selectedVillages;
       var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
       var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
@@ -397,14 +401,7 @@ class centerDetail extends Component{
       return formIsValid;
   }
   componentDidMount() {
-    $.validator.addMethod("regxcenterInchargeEmail", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter a valid Email.");
-    $.validator.addMethod("regxMISCoordinatorEmail", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter a valid Email.");
-
-    $("#Center_details").validate({
+    $("#Academic_details").validate({
       rules: {
         typeOfCenter: {
           required: true,
@@ -432,7 +429,6 @@ class centerDetail extends Component{
         },
         centerInchargeEmail: {
           required: true,
-          regxcenterInchargeEmail : /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/
         },
         MISCoordinatorName: {
           required: true,
@@ -442,7 +438,6 @@ class centerDetail extends Component{
         },
         MISCoordinatorEmail: {
           required: true,
-          regxMISCoordinatorEmail : /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/,
         },
       },
       errorPlacement: function(error, element) {
@@ -659,24 +654,14 @@ class centerDetail extends Component{
     },()=>{
       var stateCode = this.state.state.split('|')[1];
       // console.log('state', stateCode);
-      // if(this.state.editlistofVillages.length!==0){
-      //   var listofVillages = this.state.listofVillages
-      //   this.state.editlistofVillages.map((data,index) => {
-      //     var index = listofVillages.findIndex(v => v.cityName === data.cityName);
-      //     if(index<0){
-      //       listofVillages.push({'cityName' : data.cityName});
-      //     }
-      //   });
-      //   this.setState({
-      //     listofVillages : listofVillages
-      //   })
-      // }
+      var listofVillages = this.state.editlistofVillages
       this.setState({
         stateCode :stateCode,
-        pincode :'',
-        district : '--Select District--',
-        districtCovered : '--Select District--',
-        blocksCovered : '--Select Block--',
+        // pincode :'',
+        // district : '--Select District--',
+        // districtCovered : '--Select District--',
+        // blocksCovered : '--Select Block--',
+        // listofVillages : listofVillages
       },()=>{
         // console.log('stateCode',this.state.stateCode);
         this.getDistrict(this.state.stateCode);
@@ -755,7 +740,7 @@ class centerDetail extends Component{
       // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+blocksCovered+'/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
         // console.log('response ==========', response.data);
-        if(response&&response.data){
+        if(response&&response.data[0]){
           if(this.state.editlistofVillages.length!==0){
             var listofVillages = response.data
             // console.log('listofVillages',listofVillages)
@@ -862,7 +847,7 @@ class centerDetail extends Component{
                          </div>
                         <hr className="hr-head container-fluid row"/>
                       </div>
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Center_details">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
                         <div className="col-lg-12 ">
                            <h4 className="pageSubHeader">Center Details</h4>
                         </div>
@@ -930,7 +915,7 @@ class centerDetail extends Component{
                             <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                                <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onClick={this.handleclick.bind(this)}  onChange={this.handleChange.bind(this)} >
+                                <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onChange={this.handleChange.bind(this)} >
                                   <option disabled="disabled" selected="true" value="--Select District--" >--Select District--</option>
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 

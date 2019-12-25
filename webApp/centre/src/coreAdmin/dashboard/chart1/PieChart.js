@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {Pie} from 'react-chartjs-2';
+import 'chartjs-plugin-labels';
 
 export default class PieChart extends Component {
   // constructor(props){
@@ -18,7 +19,7 @@ export default class PieChart extends Component {
   //           hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
   //           stack: '1',
   //           data: []
-  //         },          
+  //         },         
   //       ]
   //     }
   //   }
@@ -32,12 +33,12 @@ export default class PieChart extends Component {
       datasets: [{
         data: [300000,170000,50000,200000,250000],
         backgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"],
-        hoverBackgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"] 
+        hoverBackgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
         }],
       }
     }
   }
-  
+ 
 
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
@@ -63,12 +64,24 @@ export default class PieChart extends Component {
   }
 
   render() {
-    console.log("in pie chart",this.props.annualPlanTotalBudget);
+    // console.log("in pie chart",this.props.annualPlanTotalBudget);
     return (
       <div>
-        <Pie height={120} data={this.state.data}  options={{ legend: {display: false} }}  />
+        <Pie height={150} data={this.state.data}  options={{ legend: {display: false},
+           plugins: {
+           labels: [{
+            render: 'label',
+            position: 'outside',
+            fontColor: '#000',
+            textMargin: 8
+          },
+          {
+            render: 'percentage',
+            fontColor: '#fff',
+          }
+           ]}
+         }}  />
       </div>
     );
   }
 }
-
