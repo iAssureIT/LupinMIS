@@ -67,6 +67,7 @@ export default class Dashboard extends Component{
       "monthlyAchievementReach"             : [],
       "achievementFamilyUpgradation" : [],
       "annualPlanTotalBudget"        : [],
+      "centerData" : [],
       'year'                : "FY 2019 - 2020",
       // 'months'              : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       // 'PlannedBeneficiaries': ['2000', '3500', '2000', '2100', '3000', '2300', '2500', '3100', '1800', '1600', '3000', '2000'],
@@ -126,6 +127,7 @@ export default class Dashboard extends Component{
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableCenters();
+    this.getcenter();
     this.getCountOfSectors();
     this.getCountOfActivities();
     this.getCenterwiseData(this.state.year);
@@ -133,6 +135,19 @@ export default class Dashboard extends Component{
     this.getMonthwiseData(this.state.year);
   }
 
+  getcenter(){
+    axios({
+      method: 'get',
+      url: '/api/centers/count/typeofcenter',
+    }).then((response)=> {
+      console.log('response', response);
+      this.setState({
+        centerData : response.data,
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
   componentWillReceiveProps(nextProps){
     this.getAvailableCenters();
     this.getCountOfSectors();
@@ -439,7 +454,13 @@ export default class Dashboard extends Component{
                 </div>
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
                   <StatusComponent 
-                    stats={{color:"#2FC0EF", icon:"building",heading1:"CSR Center",value1:"18", heading2:"Development",value2:"7"}} 
+                    stats={{color:"#2FC0EF", icon:"building",
+                    heading1:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[0].typeOfCenter : "" ,
+                    value1:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[0].count : "" , 
+                    heading2:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[1].typeOfCenter : "", 
+                    value2:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[1].count : 0, 
+                    heading3:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[2].typeOfCenter : "",
+                    value3:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[2].count : 0}} 
                   />
                   <StatusComponent 
                     stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Beneficiaries",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0}} 
