@@ -35,15 +35,18 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 3
+                    mergedColoums : 3,
+                    hide : false
                 },
                 {
                     heading : 'Annual Plan',
-                    mergedColoums : 4
+                    mergedColoums : 4,
+                    hide : false
                 },
                 {
                     heading : "Source of Financial Plan 'Rs'",
-                    mergedColoums : 10
+                    mergedColoums : 10,
+                    hide : true
                 },/*
                 {
                     heading : "",

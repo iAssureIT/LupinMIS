@@ -32,12 +32,14 @@ class UpgradedBeneficiaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Beneficiary Details',
-                    mergedColoums : 7
+                    mergedColoums : 7,
+                    hide : false
                 }, 
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 6
-                },     
+                    mergedColoums : 6,
+                    hide : false
+                },
             ]
         },
         "tableHeading"      : {

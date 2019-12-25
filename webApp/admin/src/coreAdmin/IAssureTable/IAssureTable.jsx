@@ -9,8 +9,10 @@ import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
 import './IAssureTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
+import './print.css';
+
 var sum = 0;
-class IAssureTable extends Component {
+class IAssureTable extends Component { 
 	constructor(props){
 		super(props);
 		this.state = {
@@ -31,23 +33,57 @@ class IAssureTable extends Component {
 		    "limitRange" 				: 10000,
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
+		    "printhideArray"			: [],
 		}
+		
 		this.delete = this.delete.bind(this);
 		this.printTable = this.printTable.bind(this);
+
+		var tableHeading = Object.keys(props.tableHeading);
+		var index = 0;
+		// console.log("props.twoLevelHeader.firstHeaderData",props.twoLevelHeader.firstHeaderData.length);
+       if (props.twoLevelHeader.firstHeaderData && props.twoLevelHeader.firstHeaderData.length > 0) {
+			for(let j=0; j< props.twoLevelHeader.firstHeaderData.length; j++){
+				var mergCol = props.twoLevelHeader.firstHeaderData[j].mergedColoums;
+				if(j===1){
+					mergCol--;
+				}
+
+				for(let k=0; k<mergCol; k++){
+					if(props.twoLevelHeader.firstHeaderData[j].hide){
+						var phElem = {col:tableHeading[index], printhide:"printhide"};
+					}else{
+						var phElem = {col:tableHeading[index], printhide:""};
+					}
+
+					this.state.printhideArray.push(phElem);
+					// console.log(index," this.state.printhideArray = ",phElem);
+					index++;
+				}
+			}
+
+			if(index === tableHeading.length){
+				// console.log("this.state.printhideArray = ",this.state.printhideArray);
+			}
+
+       }
+
+
 	}
+ 
 	componentDidMount() {
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    $("html,body").scrollTop(0); 
-    const center_ID = localStorage.getItem("center_ID");
-    const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
-    // console.log("localStorage =",localStorage);
-    this.setState({
-      center_ID    : center_ID,
-      centerName   : centerName,
-    },()=>{
-	    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-    }); 
+	    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+	    $("html,body").scrollTop(0); 
+	    const center_ID = localStorage.getItem("center_ID");
+	    const centerName = localStorage.getItem("centerName");
+	    // console.log("localStorage =",localStorage.getItem('centerName'));
+	    // console.log("localStorage =",localStorage);
+	    this.setState({
+	      center_ID    : center_ID,
+	      centerName   : centerName,
+	    },()=>{
+		    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    }); 
       
       // this.palindrome('Moam');
       this.setState({
@@ -57,10 +93,10 @@ class IAssureTable extends Component {
       	dataCount 		: this.props.dataCount,
       	id 				: this.props.id,
       });
+
       // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
-		// console.log('tableData',nextProps.tableData);
         this.setState({
             id	            : nextProps.id,
             tableData	    : nextProps.tableData,
@@ -87,12 +123,11 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 		let id = e.target.id;
-		console.log("tableObjects",tableObjects.apiLink+id);
-		
 		axios({
-	        method: this.props.deleteMethod ? this.props.deleteMethod :'delete',
+	        method: 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
+	    	this.props.isDeleted()
 	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        swal({
 	        	text : response.data.message,
@@ -494,21 +529,26 @@ class IAssureTable extends Component {
 				return paginationArray;
 			}			
 		});
-    }
+    } 
     printTable(event){
-    	// event.preventDefault();
-       
-        var DocumentContainer = document.getElementById('section-to-print');
+    	event.preventDefault();
+        // var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-	    var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
-	    WindowObject.document.write(DocumentContainer.innerHTML);
-	    WindowObject.document.close();
-	    WindowObject.focus();
-	    WindowObject.print();
-	    WindowObject.close();
+   
+		// mywindow.document.write(document.getElementById('section-to-print').innerHTML);
+		// mywindow.document.close(); // necessary for IE >= 10
+		// mywindow.focus(); // necessary for IE >= 10*/
+
+		// mywindow.print();
+		// mywindow.close();
+		// window.print();
+		var printContents = document.getElementById('section-to-screen').innerHTML;    
+   		var originalContents = document.body.innerHTML;      
+		document.body.innerHTML = printContents;     
+  		window.print();     
+  		document.body.innerHTML = originalContents;
     }
 	render() {
-		// console.log("this.state.tableData ",this.state.tableData );
 		// var x = Object.keys(this.state.tableHeading).length ;
 		// var y = 4;
 		// var z = 2;
@@ -526,10 +566,10 @@ class IAssureTable extends Component {
 	        	:
 	        	null
 	       	}
+	       
 	       	{ this.state.tableObjects.downloadApply === true ?
-            	this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 ?
-                	
-		       <React.Fragment>
+                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 ?
+                <React.Fragment>
           
                     <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
                         <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
@@ -542,10 +582,11 @@ class IAssureTable extends Component {
                                 buttonText=""/>
                     </div>
                 </React.Fragment>
-	                : null
+                    : null
                 
                 : null
-            }
+            }   
+	                
 	       	{
 	       		this.state.tableObjects.paginationApply === true ?
 		       		<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding pull-right">
@@ -566,36 +607,42 @@ class IAssureTable extends Component {
 				:
 				null        
 	       	}
-	       
-					
+		    
+		  
            
-	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
-	                <div className="table-responsive"  id="section-to-print">
-						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
+	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">
+	            	{/*==============================================================================
+	            			We will have two tables... One to display on screen and one to print.							
+					   ============================================================================== */}
+
+
+	            	{/* ===  Display Table === */}
+	                <div className="table-responsive" id="section-to-screen">
+						<table className="table iAssureITtable-bordered table-striped table-hover" id={this.state.id}>
 	                        <thead className="tempTableHeader fixedHeader">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
-												<th key={index} colSpan={data.mergedColoums} className="umDynamicHeader srpadd textAlignCenter">{data.heading}</th>			
-		                            		);		                            		
+												<th key={index} colSpan={data.mergedColoums} className={"umDynamicHeader srpadd textAlignCenter " + (data.hide ? "printhide" :"")}>{data.heading}</th>			
+		                            		);		                           		
 		                            	})	
 		                            	:
 		                            	null									
 									}
 	                            </tr>
-	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd text-center">Sr.No.</th>
+	                            <tr className="tablerow">
+	                            <th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
 													if(key === 'actions'){
 														return(
-															<th key={i} className="umDynamicHeader srpadd text-center">{value}</th>
+															<th key={i} id={key} className="umDynamicHeader srpadd textAlignLeft printhide">{value}</th>
 														);	
 													}else{
 														return(
-															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															<th key={i} id={key}  className={"umDynamicHeader srpadd textAlignLeft "+(this.state.printhideArray[i] ? this.state.printhideArray[i].printhide : "" )}>{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
 													}
 																							
@@ -611,7 +658,7 @@ class IAssureTable extends Component {
 	                           		this.state.tableData.map( 
 										(value, i)=> {
 											return(
-												<tr key={i} className="">
+												<tr key={i} className="tablerow">
 													<td className="textAlignCenter">{this.state.startRange+1+i}</td>
 													{
 														Object.entries(value).map( 
@@ -621,17 +668,18 @@ class IAssureTable extends Component {
 																	var value2 = value1 ? value1.replace(regex,'') : '';
 																	var aN = value2.replace(this.state.reA, "");
 																	if(aN && $.type( aN ) === 'string'){
-																		var textAlign = 'textAlignLeft noWrapText'
+																		var textAlign = 'textAlignLeft noWrapText '+ (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																	}else{
 																		var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
 																		if(bN){
-																			var textAlign = 'textAlignRight';
+																			var textAlign = 'textAlignRight ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																		}else{
-																			var textAlign = 'textAlignLeft noWrapText';
+																			var textAlign = 'textAlignLeft noWrapText ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																		}
 																	}
 																}else{
-																	var textAlign = 'textAlignRight';
+																	// console.log(i," printhide = ",this.state.printhideArray[i].printhide);
+																	var textAlign = 'textAlignRight ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "") ;
 																}	
 																var found = Object.keys(this.state.tableHeading).filter((k)=> {
 																  return k === key;
@@ -648,7 +696,7 @@ class IAssureTable extends Component {
 													{this.state.tableHeading && this.state.tableHeading.actions ? 
 														<td className="textAlignCenter">
 															<span>
-																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
+																<i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
 																{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id}></i>}
 															</span>
 															<div className="modal fade" id={"showDeleteModal-"+(value._id)} role="dialog">
@@ -674,9 +722,6 @@ class IAssureTable extends Component {
 		                                                            </div>
 		                                                          </div>
 		                                                        </div>
-		                              
-
-
 		                                                    </div>
 														</td>
 														:
@@ -735,9 +780,8 @@ class IAssureTable extends Component {
 								null
 							:
 							null
-	                    }
-	                    
-	                </div>                        
+	                    }	                    
+	                </div>
 	            </div>
             </div>
 	    );

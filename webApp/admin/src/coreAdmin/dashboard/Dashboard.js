@@ -311,7 +311,7 @@ export default class Dashboard extends Component{
     // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
     if(startDate, endDate){
         axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
-        .then((response)=>{
+        .then((response)=>{ 
           console.log("respgetData",response);
           var sector = [];
           var annualPlanReach = [];

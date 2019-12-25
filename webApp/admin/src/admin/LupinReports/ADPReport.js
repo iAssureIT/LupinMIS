@@ -29,15 +29,18 @@ class ADPReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'ADP Goal',
-                    mergedColoums : 2
+                    mergedColoums : 2,
+                    hide : false
                 }, 
                 {
                     heading : 'Details of Activity contributing ADP',
-                    mergedColoums : 5
+                    mergedColoums : 5,
+                    hide : false
                 },
                 {
                     heading : 'Financial Sharing "Rs"',
-                    mergedColoums : 9
+                    mergedColoums : 9,
+                    hide : false
                 },
             ]
         },

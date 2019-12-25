@@ -30,11 +30,13 @@ class CategorywiseReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Family Details',
-                    mergedColoums :4 
+                    mergedColoums :4,
+                    hide : false
                 }, 
                 {
                     heading : 'No of Families',
-                    mergedColoums : 2
+                    mergedColoums : 2,
+                    hide : false
                 },        
             ]
         },

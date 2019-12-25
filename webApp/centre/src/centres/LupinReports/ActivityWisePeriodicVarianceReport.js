@@ -37,11 +37,13 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 4
+                        mergedColoums : 4,
+                        hide : false
                     },
                     {
                         heading : 'Annual Plan',
-                        mergedColoums : 2
+                        mergedColoums : 2,
+                        hide : false
                     },
                     // {
                     //     heading : "Source of Financial Periodic Plan (Physical & Financial 'Lakh')",
@@ -54,15 +56,18 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     
                     {
                         heading : "Physical and Financial Plan",
-                        mergedColoums : 9
+                        mergedColoums : 9,
+                        hide : false
                     },
                     {
                         heading : "Physical and Financial Achievement",
-                        mergedColoums : 9
+                        mergedColoums : 9,
+                        hide : false
                     },
                     {
                         heading : "Agency wise Variance Periodic Report 'Lakh'",
-                        mergedColoums : 9
+                        mergedColoums : 9,
+                          hide : false
                     },
                 ]
             },

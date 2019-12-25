@@ -36,15 +36,18 @@ class GeographicalReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Activity Details',
-                    mergedColoums : 2
+                    mergedColoums : 2,
+                    hide : false
                 },
                 {
                     heading : "Achievements",
-                    mergedColoums : 2
+                    mergedColoums : 2,
+                    hide : false
                 },
                 {
                     heading : 'Expenditure(Rs. in Lakhs)',
-                    mergedColoums : 10
+                    mergedColoums : 10,
+                    hide : false
                 },
                
             ]

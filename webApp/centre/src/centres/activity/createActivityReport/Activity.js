@@ -51,25 +51,30 @@ class Activity extends Component{
       "listofVillages"    :[],
       fields              : {},
       errors              : {},
-       "twoLevelHeader"   : {
+      "twoLevelHeader"   : {
         apply             : true,
         firstHeaderData   : [
                             {
                               heading : 'Activity Details',
-                              mergedColoums : 13
+                              mergedColoums : 13,
+                              hide : false
                             },
                             {
                               heading : 'Source of Fund',
-                              mergedColoums : 8
+                              mergedColoums : 8,
+                              hide : false
                             },
                             {
                               heading : '',
-                              mergedColoums : 1
+                              mergedColoums : 1,
+                              hide : true
                             },
                             {
                               heading : '',
-                              mergedColoums : 1
-                            }]
+                              mergedColoums : 1,
+                              hide : true
+                            }
+                          ]
       },
       "tableHeading"      : {
         projectCategoryType        : "Category",
@@ -1619,7 +1624,7 @@ class Activity extends Component{
                       dataCount={this.state.dataCount}
                       tableData={this.state.tableData}
                       getData={this.getData.bind(this)}
-                      tableObjects={this.state.tableObjects}
+                      tableObjects={this.state.tableObjects} 
                       isDeleted={this.deleted.bind(this)}
                     />
                   </div> 

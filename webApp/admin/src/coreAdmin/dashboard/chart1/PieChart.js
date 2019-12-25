@@ -19,7 +19,7 @@ export default class PieChart extends Component {
   //           hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
   //           stack: '1',
   //           data: []
-  //         },          
+  //         },           
   //       ]
   //     }
   //   }
@@ -43,7 +43,7 @@ export default class PieChart extends Component {
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
      // console.log("data",data);
-     console.log("props.piechartcolor in pie",props.piechartcolor);
+     console.log("props.piechartcolor in pie",props.annualPlanTotalBudget);
      if (props.annualPlanTotalBudget && props.annualPlanTotalBudget.length > 0) {
         if (data) {
          // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);

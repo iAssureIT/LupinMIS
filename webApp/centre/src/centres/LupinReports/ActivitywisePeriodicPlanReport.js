@@ -37,25 +37,29 @@ class ActivitywisePeriodicPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums :4 
+                        mergedColoums :4,
+                        hide : false
                     },
                     {
                         heading : 'Annual Plan',
-                        mergedColoums : 5
+                        mergedColoums : 5,
+                        hide : false
                     },
                     {
                         heading : 'Periodic Plan',
-                        mergedColoums : 3
+                        mergedColoums : 3,
+                        hide : false
                     },
                     {
                         heading : "Source of Financial Plan 'Rs'",
-                        mergedColoums : 9
+                        mergedColoums : 9,
+                        hide : true
                     },/*
                     {
                         heading : "",
                         mergedColoums : 1
                     },*/
-                ]
+                ] 
             },
             "tableHeading"      : {
                 "achievement_projectCategory"               : 'Project',
@@ -486,7 +490,6 @@ class ActivitywisePeriodicPlanReport extends Component{
                                             <option value="all" >All</option>
                                             <option value="withUID" >With UID</option>
                                             <option value="withoutUID" >Without UID</option>
-                                            
                                           </select>
                                         </div>
                                     </div> 

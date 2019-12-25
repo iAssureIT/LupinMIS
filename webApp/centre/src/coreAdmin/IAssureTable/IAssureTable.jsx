@@ -5,12 +5,14 @@ import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
+
 import './IAssureTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 import './print.css';
+
 var sum = 0;
-class IAssureTable extends Component {
+class IAssureTable extends Component { 
 	constructor(props){
 		super(props);
 		this.state = {
@@ -31,9 +33,42 @@ class IAssureTable extends Component {
 		    "limitRange" 				: 10000,
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
+		    "printhideArray"			: [],
 		}
+		
 		this.delete = this.delete.bind(this);
 		this.printTable = this.printTable.bind(this);
+
+		var tableHeading = Object.keys(props.tableHeading);
+		var index = 0;
+		// console.log("props.twoLevelHeader.firstHeaderData",props.twoLevelHeader.firstHeaderData.length);
+       if (props.twoLevelHeader.firstHeaderData && props.twoLevelHeader.firstHeaderData.length > 0) {
+			for(let j=0; j< props.twoLevelHeader.firstHeaderData.length; j++){
+				var mergCol = props.twoLevelHeader.firstHeaderData[j].mergedColoums;
+				if(j===1){
+					mergCol--;
+				}
+
+				for(let k=0; k<mergCol; k++){
+					if(props.twoLevelHeader.firstHeaderData[j].hide){
+						var phElem = {col:tableHeading[index], printhide:"printhide"};
+					}else{
+						var phElem = {col:tableHeading[index], printhide:""};
+					}
+
+					this.state.printhideArray.push(phElem);
+					// console.log(index," this.state.printhideArray = ",phElem);
+					index++;
+				}
+			}
+
+			if(index === tableHeading.length){
+				// console.log("this.state.printhideArray = ",this.state.printhideArray);
+			}
+
+       }
+
+
 	}
  
 	componentDidMount() {
@@ -58,6 +93,7 @@ class IAssureTable extends Component {
       	dataCount 		: this.props.dataCount,
       	id 				: this.props.id,
       });
+
       // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
@@ -91,7 +127,7 @@ class IAssureTable extends Component {
 	        method: 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
-	    	// this.props.isDeleted()
+	    	this.props.isDeleted()
 	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        swal({
 	        	text : response.data.message,
@@ -102,7 +138,6 @@ class IAssureTable extends Component {
 	        console.log('error', error);
 	    });
     } 
-   
     sortNumber(key, tableData){
     	var nameA = '';
     	var nameB = '';
@@ -494,10 +529,10 @@ class IAssureTable extends Component {
 				return paginationArray;
 			}			
 		});
-    }
+    } 
     printTable(event){
     	event.preventDefault();
-  //   	 var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        // var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
    
 		// mywindow.document.write(document.getElementById('section-to-print').innerHTML);
@@ -506,14 +541,12 @@ class IAssureTable extends Component {
 
 		// mywindow.print();
 		// mywindow.close();
-       
-       var DocumentContainer = document.getElementById('section-to-print');
-	    var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
-	    WindowObject.document.write(DocumentContainer.innerHTML);
-	    WindowObject.document.close();
-	    WindowObject.focus();
-	    WindowObject.print();
-	    WindowObject.close();
+		// window.print();
+		var printContents = document.getElementById('section-to-screen').innerHTML;    
+   		var originalContents = document.body.innerHTML;      
+		document.body.innerHTML = printContents;     
+  		window.print();     
+  		document.body.innerHTML = originalContents;
     }
 	render() {
 		// var x = Object.keys(this.state.tableHeading).length ;
@@ -577,49 +610,55 @@ class IAssureTable extends Component {
 		    
 		  
            
-	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
-	                <div className="table-responsive" id="section-to-print">
-						<table className="table iAssureITtable-bordered customTable table-striped table-hover" id={this.state.id}>
-	                        <thead className="tempTableHeader  fixedHeader">	     
+	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">
+	            	{/*==============================================================================
+	            			We will have two tables... One to display on screen and one to print.							
+					   ============================================================================== */}
+
+
+	            	{/* ===  Display Table === */}
+	                <div className="table-responsive" id="section-to-screen">
+						<table className="table iAssureITtable-bordered table-striped table-hover" id={this.state.id}>
+	                        <thead className="tempTableHeader fixedHeader">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
-												<th key={index} colSpan={data.mergedColoums} className={data.hide ? "umDynamicHeader srpadd textAlignCenter section-to-hide fixedHeading" :"umDynamicHeader srpadd textAlignCenter fixedHeading"}>{data.heading}</th>			
-		                            		);		                           		
+												<th key={index} colSpan={data.mergedColoums} className={"umDynamicHeader srpadd textAlignCenter " + (data.hide ? "printhide" :"")}>{data.heading}</th>			
+		                            		);		                            		
 		                            	})	
 		                            	:
 		                            	null									
 									}
 	                            </tr>
-	                            <tr className="">
-	                            <th className="umDynamicHeader fixedHeading srpadd textAlignLeft">Sr.No.</th>
+	                            <tr className="tablerow">
+	                            <th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
 													if(key === 'actions'){
 														return(
-															<th key={i} className="umDynamicHeader fixedHeading srpadd textAlignLeft">{value}</th>
+															<th key={i} id={key} className="umDynamicHeader srpadd textAlignLeft printhide">{value}</th>
 														);	
 													}else{
 														return(
-															<th key={i} className="umDynamicHeader fixedHeading srpadd textAlignLeft">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															<th key={i} id={key}  className={"umDynamicHeader srpadd textAlignLeft "+(this.state.printhideArray[i] ? this.state.printhideArray[i].printhide : "" )}>{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
 													}
 																							
 											}
 										) 
 										:
-										<th className="umDynamicHeader fixedHeading srpadd textAlignLeft"></th>
+										<th className="umDynamicHeader srpadd textAlignLeft"></th>
 									}
 	                            </tr>
 	                        </thead>
 	                        <tbody className="scrollContent">
 	                           { this.state.tableData && this.state.tableData.length > 0 ?
 	                           		this.state.tableData.map( 
-										(value, i)=> {													
+										(value, i)=> {
 											return(
-												<tr key={i} className="">
+												<tr key={i} className="tablerow">
 													<td className="textAlignCenter">{this.state.startRange+1+i}</td>
 													{
 														Object.entries(value).map( 
@@ -629,17 +668,18 @@ class IAssureTable extends Component {
 																	var value2 = value1 ? value1.replace(regex,'') : '';
 																	var aN = value2.replace(this.state.reA, "");
 																	if(aN && $.type( aN ) === 'string'){
-																		var textAlign = 'textAlignLeft noWrapText';
+																		var textAlign = 'textAlignLeft noWrapText '+ (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																	}else{
 																		var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
 																		if(bN){
-																			var textAlign = 'textAlignRight';
+																			var textAlign = 'textAlignRight ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																		}else{
-																			var textAlign = 'textAlignLeft noWrapText';
+																			var textAlign = 'textAlignLeft noWrapText ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																		}
 																	}
 																}else{
-																	var textAlign = 'textAlignRight';
+																	// console.log(i," printhide = ",this.state.printhideArray[i].printhide);
+																	var textAlign = 'textAlignRight ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "") ;
 																}	
 																var found = Object.keys(this.state.tableHeading).filter((k)=> {
 																  return k === key;
@@ -740,9 +780,8 @@ class IAssureTable extends Component {
 								null
 							:
 							null
-	                    }
-	                    
-	                </div>                        
+	                    }	                    
+	                </div>
 	            </div>
             </div>
 	    );

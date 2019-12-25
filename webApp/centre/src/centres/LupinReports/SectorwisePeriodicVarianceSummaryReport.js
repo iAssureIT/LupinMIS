@@ -30,31 +30,38 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 3
+                    mergedColoums : 3,
+                    hide  : false
                 },
                 {
                     heading : 'Budget Plan',
-                    mergedColoums : 2
+                    mergedColoums : 2,
+                    hide  : false
                 },
                 {
                     heading : "Source of Financial Plan (Periodic) 'Lakh'",
-                    mergedColoums : 7
+                    mergedColoums : 7,
+                    hide  : true
                 },
                 {
                     heading : "Periodic Achievements",
-                    mergedColoums : 2
+                    mergedColoums : 2,
+                    hide  : false
                 },
                 {
                     heading : "Source of Financial Achievement (Periodic) 'Lakh'",
-                    mergedColoums : 7
+                    mergedColoums : 7,
+                    hide  : true
                 },
                 {
                     heading : "",
-                    mergedColoums : 1
+                    mergedColoums : 1,
+                    hide  : true
                 },
                 {
                     heading : "Source wise Financial Variance Report (Periodic) 'Lakh'",
-                    mergedColoums : 7
+                    mergedColoums : 7,
+                    hide  : true
                 },
             ]
         },

@@ -37,18 +37,22 @@ class ActivitywiseAnnualPlanReport extends Component{
                     {
                         heading : 'Activity Details',
                         mergedColoums : 4,
-                    },
+                        hide : false
+                     },
                     {
                         heading : 'Annual Plan',
                         mergedColoums : 5,
+                        hide : false
                     },
                     {
                         heading : "Source of Financial Plan 'Rs'",
                         mergedColoums : 7,
+                        hide : true
                     },
                     {
                         heading : "",
                         mergedColoums : 1,
+                        hide : true
                     },
                 ]
             },
@@ -325,7 +329,6 @@ class ActivitywiseAnnualPlanReport extends Component{
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                            {/*Activity wise Annual Plan Report  */}      
                              Activity Annual Plan Report
                         </div>
                     </div>
@@ -351,20 +354,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                           }
                           </select>
                         </div>
-                       {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                       </div>  
-                      {/*<div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                        <label className="formLable">Beneficiary</label><span className="asterix">*</span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                          <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                            <option  className="hidden" >--Select--</option>
-                            <option value="all" >All</option>
-                            <option value="withUID" >With UID</option>
-                            <option value="withoutUID" >Without UID</option>
-                            
-                          </select>
-                        </div>
-                      </div>*/}
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                         <label className="formLable">Project Category</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
@@ -415,22 +405,19 @@ class ActivitywiseAnnualPlanReport extends Component{
                         {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
                       </div>                     
                     </div> 
-                    <div className="marginTop11">
-                    
-                        <div className="">
-                            <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <IAssureTable 
-                                    tableName = "Activitywise Annual-Plan-Report"
-                                    id = "activitywiseAnnualPlanReport"
-                                    completeDataCount={this.state.tableDatas.length}
-                                    twoLevelHeader={this.state.twoLevelHeader} 
-                                    editId={this.state.editSubId} 
-                                    getData={this.getData.bind(this)} 
-                                    tableHeading={this.state.tableHeading} 
-                                    tableData={this.state.tableData} 
-                                    tableObjects={this.state.tableObjects}
-                                    getSearchText={this.getSearchText.bind(this)}/>
-                            </div>
+                    <div className="marginTop11">                    
+                        <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <IAssureTable 
+                                tableName = "Activitywise Annual-Plan-Report"
+                                id = "activitywiseAnnualPlanReport"
+                                completeDataCount={this.state.tableDatas.length}
+                                twoLevelHeader={this.state.twoLevelHeader} 
+                                editId={this.state.editSubId} 
+                                getData={this.getData.bind(this)} 
+                                tableHeading={this.state.tableHeading} 
+                                tableData={this.state.tableData} 
+                                tableObjects={this.state.tableObjects}
+                                getSearchText={this.getSearchText.bind(this)}/>
                         </div>
                     </div>
                 </div> 

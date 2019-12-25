@@ -35,13 +35,20 @@ class VillagewisefamilyReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Family Details',
-                    mergedColoums : 3
+                    mergedColoums : 3,
+                    hide : false
                 }, 
                
                 {
                     heading : 'Activity Details',
-                    mergedColoums : 5
+                    mergedColoums : 5,
+                    hide : false
                 },
+                {
+                    heading : 'Expenditure(Rs. in Lakhs)',
+                    mergedColoums : 10,
+                    hide : false
+                },               
             ]
         },
         "tableHeading"      : {

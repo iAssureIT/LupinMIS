@@ -28,12 +28,14 @@ class VillagewisefamilyReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Family Details',
-                    mergedColoums : 3
+                    mergedColoums : 3,
+                    hide : false
                 }, 
                
                 {
                     heading : 'Activity Details',
-                    mergedColoums : 6
+                    mergedColoums : 6,
+                     hide : false
                 },
                
             ]

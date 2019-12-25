@@ -36,19 +36,23 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 3
+                    mergedColoums : 3,
+                    hide  : false,
                 },
                 {
                     heading : 'Annual Plan',
-                    mergedColoums : 3
+                    mergedColoums : 3,
+                    hide  : false,
                 },
                 {
                     heading : "Annual Achievement",
-                    mergedColoums : 4
+                    mergedColoums : 4,
+                    hide  : false,
                 },
                 {
                     heading : "Source OF Financial Achievement",
-                    mergedColoums : 7
+                    mergedColoums : 7,
+                    hide  : true
                 },
                /* {
                     heading : "",

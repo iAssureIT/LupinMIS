@@ -3,7 +3,7 @@
     /*white-space: nowrap;*/
 }
 .table-striped>tbody>tr:nth-of-type(even) {
-    background-color: #fff;
+    background-color: #fff; 
 }
 .iAssureITtable-bordered{
   border: 1px solid #039BE5;

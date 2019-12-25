@@ -33,19 +33,23 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 3
+                    mergedColoums : 2,
+                    hide : false
                 },
                 {
                     heading : 'Annual Plan',
-                    mergedColoums : 4
+                    mergedColoums : 4,
+                    hide : false
                 },
                 {
                     heading : 'Periodic Plan',
-                    mergedColoums : 3
+                    mergedColoums : 3,
+                    hide : false
                 },
                 {
                     heading : "Source of Financial Periodic Plan 'Rs'",
-                    mergedColoums : 9
+                    mergedColoums : 9,
+                    hide : true
                 },/*
                 {
                     heading : "",

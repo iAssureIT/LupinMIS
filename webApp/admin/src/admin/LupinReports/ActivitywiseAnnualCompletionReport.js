@@ -34,7 +34,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Activity Details',
-                    mergedColoums : 4
+                    mergedColoums : 4,
+                    hide : false
                 },
                 // {
                 //     heading : 'Annual Plan',
@@ -42,11 +43,13 @@ class ActivitywiseAnnualCompletionReport extends Component{
                 // },
                 {
                     heading : "Annual Financial Achievement 'Lakh'",
-                    mergedColoums : 4
+                    mergedColoums : 4,
+                    hide : false
                 },
                 {
                     heading : "Source Of Financial Achievement",
-                    mergedColoums : 7
+                    mergedColoums : 7,
+                    hide : true
                 },
            /*     {
                     heading : "",

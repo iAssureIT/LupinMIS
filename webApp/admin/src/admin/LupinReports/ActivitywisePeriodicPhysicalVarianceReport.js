@@ -35,23 +35,28 @@ class ActivityWisePeriodicVarianceReport extends Component{
               firstHeaderData : [
                   {
                       heading : 'Activity Details',
-                      mergedColoums :4 
+                      mergedColoums :4,
+                      hide : false
                   },
                   {
                       heading : 'Annual Physical Plan',
-                      mergedColoums : 3
+                      mergedColoums : 3,
+                      hide : false
                   },
                   {
                       heading : "Periodic Physical Plan",
-                      mergedColoums : 3
+                      mergedColoums : 3,
+                      hide : false
                   },
                   {
                       heading : "Periodic Achievements",
-                      mergedColoums : 3
+                      mergedColoums : 3,
+                      hide : false
                   },
                   {
                       heading : "Periodic Variance Report",
-                      mergedColoums : 3
+                      mergedColoums : 3,
+                      hide : false
                   },
               ]
           },

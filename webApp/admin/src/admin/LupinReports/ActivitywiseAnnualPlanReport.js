@@ -42,19 +42,23 @@ class ActivitywiseAnnualPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 4
+                        mergedColoums : 4,
+                        hide : false
                     },
                     {
                         heading : 'Annual Plan',
-                        mergedColoums : 5
+                        mergedColoums : 5,
+                        hide : false
                     },
                     {
                         heading : "Source of Financial Plan 'Rs'",
-                        mergedColoums : 7
+                        mergedColoums : 7,
+                        hide : true
                     },
                     {
                         heading : "",
-                        mergedColoums : 1
+                        mergedColoums : 1,
+                        hide : true
                     },
                 ]
             },
