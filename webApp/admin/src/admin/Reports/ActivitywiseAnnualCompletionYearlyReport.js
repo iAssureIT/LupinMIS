@@ -106,12 +106,13 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                     var tableData = response.data.map((a, i)=>{
                     return {
                       _id                           : a._id,
+                      achievement_projectCategory   : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                          : a.name,
                       unit                          : a.unit,
-                      annualPlan_Reach              : a.annualPlan_Reach,
-                      annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
-                      annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
-                      annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
+                      // annualPlan_Reach              : a.annualPlan_Reach,
+                      // annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
+                      // annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
+                      // annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
                       achievement_Reach             : a.achievement_Reach,
                       achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
                       achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
@@ -140,6 +141,7 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                     var tableData = response.data.map((a, i)=>{
                     return {
                       _id                           : a._id,
+                      achievement_projectCategory   : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                          : a.name,
                       unit                          : a.unit,
                       // annualPlan_Reach              : a.annualPlan_Reach,

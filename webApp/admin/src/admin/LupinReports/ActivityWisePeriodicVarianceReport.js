@@ -40,7 +40,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 3
+                        mergedColoums : 4
                     },
                     {
                         heading : 'Annual Plan',
@@ -61,6 +61,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 ]
             },
             "tableHeading"      : {
+                "achievement_projectCategory"               : 'Project',
                 "name"                                      : 'Activity & Sub Activity',
                 "unit"                                      : 'Unit',
                 "annualPlan_PhysicalUnit"                   : 'Physical Units', 
@@ -224,7 +225,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
         },()=>{
             if(this.state.projectCategoryType === "LHWRF Grant"){
               this.setState({
-                projectName : "LHWRF Grant",
+                projectName : "all",
               })          
             }else if (this.state.projectCategoryType=== "all"){
               this.setState({
@@ -273,6 +274,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         var tableData = response.data.map((a, i)=>{
                         return {
                             _id                                       : a._id,            
+                            achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
@@ -323,6 +325,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         var tableData = response.data.map((a, i)=>{
                         return {
                             _id                                       : a._id,            
+                            achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
@@ -375,6 +378,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     var tableData = response.data.map((a, i)=>{
                     return {
                         _id                                       : a._id,            
+                        achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                                      : a.name,
                         unit                                      : a.unit,
                         annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,

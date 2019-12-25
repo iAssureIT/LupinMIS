@@ -35,7 +35,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
               firstHeaderData : [
                   {
                       heading : 'Activity Details',
-                      mergedColoums : 3
+                      mergedColoums :4 
                   },
                   {
                       heading : 'Annual Physical Plan',
@@ -56,6 +56,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
               ]
           },
           "tableHeading"      : {
+              "achievement_projectCategory"               : 'Project',
               "name"                               : 'Activity & Sub Activity',
               "unit"                               : 'Unit',
               "annualPlan_PhysicalUnit"            : 'Physical Units', 
@@ -261,7 +262,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                var tableData = response.data.map((a, i)=>{
                return {
                    _id                                       : a._id,            
-                   name                      : a.name,
+                   achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                   name                                      : a.name,
                    unit                                      : a.unit,
                    annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
                    annualPlan_Reach                          : a.annualPlan_Reach,
@@ -297,7 +299,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                var tableData = response.data.map((a, i)=>{
                return {
                    _id                                       : a._id,            
-                   name                      : a.name,
+                   achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                   name                                      : a.name,
                    unit                                      : a.unit,
                    annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
                    annualPlan_Reach                          : a.annualPlan_Reach,
@@ -333,8 +336,9 @@ class ActivityWisePeriodicVarianceReport extends Component{
              console.log("resp",response);
                var tableData = response.data.map((a, i)=>{
                return {
-                   _id                                       : a._id,            
-                   name                      : a.name,
+                   _id                                       : a._id,                
+                   achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                   name                                      : a.name,      
                    unit                                      : a.unit,
                    annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
                    annualPlan_Reach                          : a.annualPlan_Reach,

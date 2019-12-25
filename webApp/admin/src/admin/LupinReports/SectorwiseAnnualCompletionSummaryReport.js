@@ -36,7 +36,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 2
+                    mergedColoums : 3
                 },
                 {
                     heading : 'Annual Plan',
@@ -57,6 +57,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
+            "achievement_projectCategory"       : 'Project',
             "name"                              : 'Sector',
             "annualPlan_Reach"                  : 'OutReach', 
             "annualPlan_FamilyUpgradation"      : 'Family Upgradation', 
@@ -197,7 +198,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
-            projectName : "LHWRF Grant",
+            projectName : "all",
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({
@@ -247,6 +248,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                   var tableData = response.data.map((a, i)=>{
                   return {
                       _id                               : a._id,
+                      achievement_projectCategory       : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                              : a.name,
                       annualPlan_Reach                  : a.annualPlan_Reach, 
                       annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 
@@ -280,6 +282,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                   var tableData = response.data.map((a, i)=>{
                   return {
                       _id                               : a._id,
+                      achievement_projectCategory       : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                              : a.name,
                       annualPlan_Reach                  : a.annualPlan_Reach, 
                       annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 

@@ -57,7 +57,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "achievement_projectCategory"        : 'Project',
+            "achievement_projectCategory"       : 'Project',
             "name"                              : 'Sector',
             "annualPlan_Reach"                  : 'OutReach', 
             "annualPlan_FamilyUpgradation"      : 'Family Upgradation', 

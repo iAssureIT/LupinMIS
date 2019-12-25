@@ -238,36 +238,42 @@ class UpgradedBeneficiaryReport extends Component{
           console.log("resp",response);
           var data = response.data
           var tableData = [];
-          data.map((a, i)=>{
+          if(data.length>0){
+            data.map((a, i)=>{
 
-            axios.get('/api/beneficiaries/'+a.beneficiaryID)
-            .then((response)=>{
-              // console.log('response',response)
-              tableData.push({
-                _id             : a._id,            
-                date            : a.date,
-                projectCategoryType : a.projectCategoryType,
-                sectorName      : a.sectorName,
-                activityName    : a.activityName,
-                subactivityName : a.subactivityName,
-                familyID        : response.data[0].familyID,
-                beneficiaryID   : response.data[0].beneficiaryID,
-                namebeneficiary : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
-                uid             : response.data[0].uidNumber ? response.data[0].uidNumber : "NA",
-                village         : a.village,
-                block           : a.block,
-                district        : a.district,             
-              })
-              if(data.length===(i+1)){
-                this.setState({
-                  tableData : tableData
+              axios.get('/api/beneficiaries/'+a.beneficiaryID)
+              .then((response)=>{
+                // console.log('response',response)
+                tableData.push({
+                  _id             : a._id,            
+                  date            : a.date,
+                  projectCategoryType : a.projectCategoryType,
+                  sectorName      : a.sectorName,
+                  activityName    : a.activityName,
+                  subactivityName : a.subactivityName,
+                  familyID        : response.data[0].familyID,
+                  beneficiaryID   : response.data[0].beneficiaryID,
+                  namebeneficiary : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
+                  uid             : response.data[0].uidNumber ? response.data[0].uidNumber : "NA",
+                  village         : a.village,
+                  block           : a.block,
+                  district        : a.district,             
                 })
-              }
+                if(data.length===(i+1)){
+                  this.setState({
+                    tableData : tableData
+                  })
+                }
+              })
+              .catch(function(error){ 
+                console.log("error = ",error);
+              });
             })
-            .catch(function(error){ 
-              console.log("error = ",error);
-            });
-          })
+          }else{
+            this.setState({
+              tableData : []
+            })
+          }
         })
         .catch(function(error){  
           // console.log("error = ",error);

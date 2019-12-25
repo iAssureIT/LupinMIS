@@ -30,7 +30,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 2
+                    mergedColoums : 3
                 },
                 {
                     heading : 'Budget Plan',

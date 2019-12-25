@@ -34,7 +34,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Activity Details',
-                    mergedColoums : 3
+                    mergedColoums : 4
                 },
                 // {
                 //     heading : 'Annual Plan',
@@ -55,6 +55,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
             ]
         },
         "tableHeading"      : {
+            "achievement_projectCategory"   : 'Project',
             "name"                          : 'Activity & Sub Activity',
             "unit"                          : 'Unit',
             // "annualPlan_Reach"              : 'Reach', 

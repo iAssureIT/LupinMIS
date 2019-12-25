@@ -32,7 +32,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 2
+                    mergedColoums : 3
                 },
                 {
                     heading : 'Budget Plan',
@@ -62,7 +62,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         },
         "tableHeading"      : {
             // "SrNo"          : 'Sr No',
-            "name"                             : 'Sector',
+            "achievement_projectCategory"        : 'Project',
+            "name"                               : 'Sector',
             "annualPlan_TotalBudget_L"           : "Annual Budget Plan 'Lakh'",
             "monthlyPlan_TotalBudget_L"          : 'Periodic Budget plan "Lakh"', 
             "monthlyPlan_LHWRF_L"                : 'LHWRF',
@@ -280,6 +281,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                   var tableData = response.data.map((a, i)=>{
                     return {
                         _id                                       : a._id,            
+                        achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                                      : a.name,
                         annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
                         monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                
@@ -326,6 +328,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                   var tableData = response.data.map((a, i)=>{
                     return {
                         _id                                       : a._id,            
+                        achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                                      : a.name,
                         annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
                         monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                
@@ -386,7 +389,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
            [name] : event.target.value,
            startDate:startDate
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         console.log("dateUpdate",this.state.startDate);
         });
     }
@@ -408,7 +411,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
            endDate : endDate
         },()=>{
           console.log("dateUpdate",this.state.endDate);
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
     }
 

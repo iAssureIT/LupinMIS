@@ -37,7 +37,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 3
+                        mergedColoums : 4
                     },
                     {
                         heading : 'Annual Plan',

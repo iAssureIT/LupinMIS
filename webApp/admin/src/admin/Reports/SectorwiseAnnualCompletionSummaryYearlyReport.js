@@ -66,6 +66,7 @@ export default class YearlyReport extends Component{
         this.setState({
            [name] : event.target.value,
         },()=>{
+            this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
     }
     getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        
@@ -79,6 +80,7 @@ export default class YearlyReport extends Component{
                     var tableData = response.data.map((a, i)=>{
                     return {
                         _id                               : a._id,
+                        achievement_projectCategory       : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                              : a.name,
                         annualPlan_Reach                  : a.annualPlan_Reach, 
                         annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 
