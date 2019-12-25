@@ -23,16 +23,6 @@ export default class BarChart extends Component{
       "data" : {
         labels: [],
         datasets: [
-          // {
-          //   label: 'Achievement Reach',
-          //   backgroundColor: 'rgba(75, 192, 192, 1)',
-          //   borderColor:  'rgba(75, 192, 192, 0.5)',
-          //   borderWidth: 1,
-          //   hoverBackgroundColor:  'rgba(75, 192, 192, 0.5)',
-          //   hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
-          //   stack: '1',
-          //   data: []
-          // },          
           {
             label: 'Achievement Family Upgradation',
             backgroundColor:'rgba(255, 206, 86, 1)',
@@ -83,11 +73,10 @@ export default class BarChart extends Component{
   // }
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
-     // console.log("data",data);
-     // console.log("props",props);
+     
     if (data) {
-      data.datasets[0].data = props.achievementFamilyUpgradation;
-      data.datasets[1].data = props.annualPlanFamilyUpgradation;
+      data.datasets[0].data = props.achievementFamilyUpgradation.length>0 ? props.achievementFamilyUpgradation : [2000, 2000, 2000];
+      data.datasets[1].data = props.annualPlanFamilyUpgradation.length>0 ? props.annualPlanFamilyUpgradation : [1000, 1000, 1000];
       /*data.datasets[0].data = props.achievementFamilyUpgradation;
       data.datasets[1].data = props.achievementReach;
       data.datasets[2].data = props.annualPlanFamilyUpgradation;

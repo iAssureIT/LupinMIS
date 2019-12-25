@@ -68,7 +68,8 @@ export default class Dashboard extends Component{
       "achievementFamilyUpgradation" : [],
       "annualPlanTotalBudget"        : [],
       "centerData" : [],
-      'year'                : "FY 2019 - 2020",
+      'year'                          : "FY 2019 - 2020",
+      
       // 'months'              : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       // 'PlannedBeneficiaries': ['2000', '3500', '2000', '2100', '3000', '2300', '2500', '3100', '1800', '1600', '3000', '2000'],
       // 'ActualBeneficiaries' : ['1800', '3000', '1900', '2100', '2900', '2200', '2450', '3000', '1800', '1500', '2900', '2000'],
@@ -237,6 +238,7 @@ export default class Dashboard extends Component{
         axios.get('/api/report/center/'+startDate+'/'+endDate+'/all/all/all/all/all')
         .then((response)=>{
       /*******************************Dashboard Status Data***************************/
+        if(response.data){
           var centerwiseData = response.data;
           console.log('centerwiseData',centerwiseData)
           var totalindex = (centerwiseData.length)-2;
@@ -251,53 +253,49 @@ export default class Dashboard extends Component{
             annualPlan_TotalBudget   : annualPlan_TotalBudget,
             achievement_TotalBudget  : achievement_TotalBudget,
           })
-          // console.log("this.state",this.state);
-          // console.log("totalData",totalData);
+        }
+
       /***********************************for centerwise data*************************/
           var sector = [];
-          /*var annualPlanReach = [];
-          var annualPlanFamilyUpgradation = [];
-          var achievementReach = [];
-          var achievementFamilyUpgradation = [];*/
           var annualPlanTotalBudget = [];
           var piechartcolor =[];
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
-              sector.push(data.name);
-              /*annualPlanReach.push(data.annualPlan_Reach);
-              annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
-              achievementReach.push(data.achievement_Reach);
-              achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);*/
-              annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
-              piechartcolor.push(this.getRandomColor());
+              if(data.annualPlan_TotalBudget > 0){
+                sector.push(data.name);
+                annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
+                piechartcolor.push(this.getRandomColor());                
+              }
             })
-                    // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
-          this.setState({
-            "sector" : sector.splice(-2),
-            // "annualPlanReach1" : annualPlanReach.splice(-2),
-            // "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
-            // "achievementReach1" : achievementReach.splice(-2),
-            // "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
-            "annualPlan_TotalBudget1" : annualPlanTotalBudget.splice(-2),
-          },()=>{
-          // console.log("this.state.achievementFamilyUpgradation1",this.state.achievementFamilyUpgradation1);
-          // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
-          // console.log("this.state.annualPlan_TotalBudget1",this.state.annualPlan_TotalBudget1);
+            if(annualPlanTotalBudget.length > 0){
+              this.setState({
+                "sector" : sector.splice(-2),
+                "annualPlan_TotalBudget1" : annualPlanTotalBudget.splice(-2),
+              },()=>{
+                 this.setState({
+                  "center_sector"                 : sector,
+                  "center_annualPlanTotalBudget"  : annualPlanTotalBudget,
+                   piechartcolor                  : piechartcolor
+                });
+              })              
+            }else{
+               this.setState({
+                  "center_sector"                 : ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"],
+                  "center_annualPlanTotalBudget"  : [500000,150000,90000,100000,200000],
+                   piechartcolor                  : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
+                });
+
+            }
+
+        }else{
+
+
              this.setState({
-              "center_sector"                       : sector,
-              // "annualPlanReach"              : annualPlanReach,
-              // "annualPlanFamilyUpgradation"  : annualPlanFamilyUpgradation,
-              // "achievementReach"             : achievementReach,
-              // "achievementFamilyUpgradation" : achievementFamilyUpgradation,
-              "center_annualPlanTotalBudget"       : annualPlanTotalBudget,
-              piechartcolor                 : piechartcolor
-            },()=>{
-        // console.log('center', this.state.center_sector,"tb",this.state.center_annualPlanTotalBudget);
-                    
+              "center_sector"                 : ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"],
+              "center_annualPlanTotalBudget"  : [500000,150000,90000,100000,200000],
+               piechartcolor                  : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
             });
-          
-          })
-        } 
+        }
       }).catch(function (error) {
         console.log('error', error);
       });
@@ -314,44 +312,64 @@ export default class Dashboard extends Component{
         .then((response)=>{ 
           console.log("respgetData",response);
           var sector = [];
-          var annualPlanReach = [];
-          var annualPlanFamilyUpgradation = [];
-          var achievementReach = [];
-          var achievementFamilyUpgradation = [];
+          // var annualPlanReach = [];
+          // var annualPlanFamilyUpgradation = [];
+          // var achievementReach = [];
+          // var achievementFamilyUpgradation = [];
           var annualPlanTotalBudget = [];
           var piechartcolor =[];
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
-              sector.push(data.name);
-              annualPlanReach.push(data.annualPlan_Reach);
-              annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
-              achievementReach.push(data.achievement_Reach);
-              achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
-              annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
-              piechartcolor.push(this.getRandomColor_sector());
+              
+              if(data.annualPlan_TotalBudget > 0){
+                sector.push(data.name);
+                annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
+                piechartcolor.push(this.getRandomColor_sector());
+                // annualPlanReach.push(data.annualPlan_Reach);
+                // annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
+                // achievementReach.push(data.achievement_Reach);
+                // achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
+              }
+            
             })
-            console.log("annualPlanTotalBudget",annualPlanTotalBudget);
+
+          if (annualPlanTotalBudget.length > 0) {
+            this.setState({
+              // "annualPlanReach1" : annualPlanReach.splice(-2),
+              // "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
+              // "achievementReach1" : achievementReach.splice(-2),
+              // "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
+              "sector" : sector.splice(-2),
+              "annualPlan_TotalBudget1" : annualPlanTotalBudget.splice(-2),
+            },()=>{
+               this.setState({
+                // "annualPlanReach"              : annualPlanReach,
+                // "annualPlanFamilyUpgradation"  : annualPlanFamilyUpgradation,
+                // "achievementReach"             : achievementReach,
+                // "achievementFamilyUpgradation" : achievementFamilyUpgradation,
+                "sector"                       : sector,
+                "annualPlanTotalBudget"        : annualPlanTotalBudget,
+                "piechartcolor"                : piechartcolor
+              },()=>{  
+                // console.log("this",this.state.sector)                  
+              });          
+            })
+          }else{
+            this.setState({
+              "sector"                : ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"],
+              "annualPlanTotalBudget" : [300000,170000,50000,200000,250000],
+              "piechartcolor"         : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
+
+            })
+          }
+        }else{
           this.setState({
-            "sector" : sector.splice(-2),
-            "annualPlanReach1" : annualPlanReach.splice(-2),
-            "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
-            "achievementReach1" : achievementReach.splice(-2),
-            "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
-            "annualPlan_TotalBudget1" : annualPlanTotalBudget.splice(-2),
-          },()=>{
-             this.setState({
-              "sector"                       : sector,
-              "annualPlanReach"              : annualPlanReach,
-              "annualPlanFamilyUpgradation"  : annualPlanFamilyUpgradation,
-              "achievementReach"             : achievementReach,
-              "achievementFamilyUpgradation" : achievementFamilyUpgradation,
-              "annualPlanTotalBudget"        : annualPlanTotalBudget,
-              "piechartcolor"                : piechartcolor
-            },()=>{  
-          // console.log("this",this.state.sector)                  
-            });          
+            "sector"                : ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"],
+            "annualPlanTotalBudget" : [300000,170000,50000,200000,250000],
+            "piechartcolor"         : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
           })
-        }    
+          
+        }   
           var tableData = response.data.map((a, i)=>{
             return {
                 name                                    : a.name,
@@ -455,12 +473,13 @@ export default class Dashboard extends Component{
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
                   <StatusComponent 
                     stats={{color:"#2FC0EF", icon:"building",
-                    heading1:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[0].typeOfCenter : "" ,
-                    value1:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[0].count : "" , 
-                    heading2:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[1].typeOfCenter : "", 
-                    value2:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[1].count : 0, 
-                    heading3:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[2].typeOfCenter : "",
-                    value3:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[2].count : 0}} 
+                    heading1:   this.state.centerData[0] ? this.state.centerData[0].typeOfCenter  : "" ,
+                    value1:     this.state.centerData[0] ? this.state.centerData[0].count         : "" , 
+                    heading2:   this.state.centerData[1] ? this.state.centerData[1].typeOfCenter  : "", 
+                    value2:     this.state.centerData[1] ? this.state.centerData[1].count         : 0, 
+                    heading3:   this.state.centerData[2] ? this.state.centerData[2].typeOfCenter  : "",
+                    value3:     this.state.centerData[2] ? this.state.centerData[2].count         : 0
+                  }} 
                   />
                   <StatusComponent 
                     stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Beneficiaries",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0}} 
@@ -529,16 +548,18 @@ export default class Dashboard extends Component{
                           </div>
                         </div>
                       </div>
+
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="box2">
                           <div className="box-header with-border">
-                             <h3 className="box-title">Sector wise Family Upgradation</h3>
+                             <h3 className="box-title">Sector wise Outreach & Family Upgradation</h3>
                           </div>
                           <div className="box-body">
                             <BarChart annualPlanReach={this.state.annualPlanReach} sector={this.state.sector} annualPlanFamilyUpgradation={this.state.annualPlanFamilyUpgradation} achievementReach={this.state.achievementReach} achievementFamilyUpgradation={this.state.achievementFamilyUpgradation}/>
                           </div>
                         </div>
                       </div>
+
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
                         <div className="box2">
                           <div className="box-header with-border">

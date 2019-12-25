@@ -29,11 +29,11 @@ export default class PieChart extends Component {
     // console.log("props",props);
     this.state={
       "data" : {
-      labels: ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"],
+      labels: [],
       datasets: [{
-        data: [300000,170000,50000,200000,250000],
-        backgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"] ,
-        hoverBackgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
+        data: [],
+        backgroundColor: [] ,
+        hoverBackgroundColor: []
         }]
       }
     }

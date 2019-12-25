@@ -2,37 +2,15 @@ import React,{Component} from 'react';
 import {Pie} from 'react-chartjs-2';
 import 'chartjs-plugin-labels';
 export default class PieChart extends Component {
-  // constructor(props){
-  //   super(props);
-  //   // console.log("props",props);
-  //   this.state={
-  //     "data" : {
-  //       labels: [],
-  //       datasets: [
-  //         {
-  //           label: 'Achievement Reach',
-  //           backgroundColor: 'rgba(75, 192, 192, 1)',
-  //           borderColor:  'rgba(75, 192, 192, 0.5)',
-  //           borderWidth: 1,
-  //           hoverBackgroundColor:  'rgba(75, 192, 192, 0.5)',
-  //           hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
-  //           stack: '1',
-  //           data: []
-  //         },         
-  //       ]
-  //     }
-  //   }
-  // } 
   constructor(props){
     super(props);
-    // console.log("props",props);
     this.state={
       "data" : {
-      labels: ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"],
+      labels: [],
       datasets: [{
-        data: [500000,150000,90000,100000,200000],
-        backgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"],
-        hoverBackgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
+        data: [],
+        backgroundColor: [],
+        hoverBackgroundColor: []
         }]
       }
     }
