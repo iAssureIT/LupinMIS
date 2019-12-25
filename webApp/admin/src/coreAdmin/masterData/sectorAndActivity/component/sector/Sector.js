@@ -9,7 +9,6 @@ import "./Sector.css";
 
 
 class Sector extends Component{
-  
   constructor(props){
     super(props);
     this.state = {
@@ -41,18 +40,18 @@ class Sector extends Component{
     this.setState({
      "sector"   : this.refs.sector.value,  
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+    // let fields = this.state.fields;
+    // fields[event.target.name] = event.target.value;
+    // this.setState({
+    //   fields
+    // });
+    // if (this.validateForm()) {
+    //   let errors = {};
+    //   errors[event.target.name] = "";
+    //   this.setState({
+    //     errors: errors
+    //   });
+    // }
   }
 
   isTextKey(evt) {
@@ -169,16 +168,16 @@ class Sector extends Component{
 
   componentWillReceiveProps(nextProps){
   // console.log('componentWillReceiveProps');
-    var editId = nextProps.match.params.sectorId;
-    if(nextProps.match.params.sectorId){
-      this.setState({
-        editId : editId
-      },()=>{
-        this.edit(this.state.editId);
-
-      })
-    }
     if(nextProps){
+      var editId = nextProps.match.params.sectorId;
+      if(nextProps.match.params.sectorId){
+        this.setState({
+          editId : editId
+        },()=>{
+          this.edit(this.state.editId);
+
+        })
+      }
       this.getLength();
     }
   }

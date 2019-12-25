@@ -3,8 +3,7 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import validate               from 'jquery-validation';
 import swal                   from 'sweetalert';
-import {withRouter}    from 'react-router-dom';
-// import _                      from 'underscore';
+import {withRouter}           from 'react-router-dom';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./typeOfCenter.css";
 
@@ -12,8 +11,7 @@ axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class typeOfCenter extends Component{
-  
-  constructor(props){
+    constructor(props){
     super(props);
     this.state = {
       "typeofCenter"        :"",
@@ -45,20 +43,6 @@ class typeOfCenter extends Component{
     this.setState({
      "typeofCenter"   : this.refs.typeofCenter.value,  
     });
-    let fields = this.state.fields;
-        fields[event.target.name] = event.target.value;
-        this.setState({
-          fields
-        });
-        if (this.validateFormReq() && this.validateForm()) {
-          let errors = {};
-          errors[event.target.name] = "";
-          this.setState({
-            errors: errors
-          });
-        }
-
-  
   }
 
   isTextKey(evt) {
@@ -76,92 +60,72 @@ class typeOfCenter extends Component{
 
   SubmitType_Center(event){
     event.preventDefault();
-   // if($('#typeofCenterDetails').valid()){
-    if (this.validateFormReq() && this.validateForm()) {
+    if($('#typeofCenterDetails').valid()){
       var typeofCenterValues= {
       "typeofCenter"      :this.refs.typeofCenter.value,
       "user_ID"          : this.state.user_ID,
       };
    
       axios.post('/api/typeofcenters',typeofCenterValues)
-        .then((response)=>{
+      .then((response)=>{
+        this.setState({
+          "typeofCenter"    :"",
+        },()=>{
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
             text  : response.data.message
           });
-        })
-        .catch(function(error){
-          console.log("error = ",error);
         });
-       
-        let fields                 = {};
-        fields["typeofCenterRegX"] = "";
-        
-        this.setState({
-          "typeofCenter"    :"",
-          "fields"          :fields
-        });
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });      
     } 
   }
 
 
   updateType_Center(event){
     event.preventDefault();
-       console.log("validateForm",this.validateForm(),this.validateFormReq()  );
-      if (this.validateFormReq() && this.validateForm()) {
-        if(this.refs.typeofCenter.value ==="") {
-        }else{
-          // if (this.validateFormReq() && this.validateForm()) {
-        // if($('#typeofCenterDetails').valid()){
-          var typeofCenterValues= {
-            "ID"               : this.state.editId,
-            "typeofCenter"     : this.refs.typeofCenter.value,
-            "user_ID"          : this.state.user_ID,
-          };
-
-          
-          axios.patch('/api/typeofcenters/update',typeofCenterValues, this.state.editId)
-            .then((response)=>{
-              console.log("response",response );
-              if(response.data){
-                this.getData(this.state.startRange, this.state.limitRange);
-                  this.props.history.push('/type-center');
-                // window.location = '/type-center'
-                swal({
-                  title : response.data.message,
-                  text  : response.data.message
-                });
-                this.setState({
-                  editId : '',
-                  "typeofCenter"  :"",
-                  fields         :fields
-                },()=>{
-                })
-              }
-        })
-        .catch(function(error){
-          console.log("error = ",error);
-        });
-        let fields            = {};
-        fields["typeofCenter"] = "";
-    }   
-    // }  
-  }
+    if ($('#typeofCenterDetails').valid()) {
+      var typeofCenterValues= {
+        "ID"               : this.state.editId,
+        "typeofCenter"     : this.refs.typeofCenter.value,
+        "user_ID"          : this.state.user_ID,
+      };
+      axios.patch('/api/typeofcenters/update',typeofCenterValues, this.state.editId)
+        .then((response)=>{
+        if(response.data){
+          this.setState({
+            editId : '',
+            "typeofCenter"  :"",
+          },()=>{
+            this.getData(this.state.startRange, this.state.limitRange);
+            this.props.history.push('/type-center');
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });
+          })
+        }
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps){
-    // console.log('componentWillReceiveProps');
-    var editId = nextProps.match.params.typeofCenterId;
-    if(nextProps.match.params.typeofCenterId){
-      this.setState({
-        editId : editId
-      },()=>{
-        this.edit(this.state.editId);
-
-      })
-    }
+    // console.log('componentWillReceiveProps',nextProps);
     if(nextProps){
+      var editId = nextProps.match.params.typeofCenterId;
+      if(nextProps.match.params.typeofCenterId){
+        this.setState({
+          editId : editId
+        },()=>{
+          this.edit(this.state.editId);
+        })
+      }
       this.getLength();
     }
   }
@@ -183,7 +147,7 @@ class typeOfCenter extends Component{
       rules: {
         typeofCenter: {
           required: true,
-          regxtypeofCenter: /^[_A-z]*((-|\s)*[_A-z])*$|^$/,
+          regxtypeofCenter: /^[A-za-z']+( [A-Za-z']+)*$/,
         },
       },
       errorPlacement: function(error, element) {
@@ -191,9 +155,8 @@ class typeOfCenter extends Component{
           error.insertAfter("#typeofCenterErr");
         }
       }
-     
     });
-        }
+  }
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
@@ -237,19 +200,10 @@ class typeOfCenter extends Component{
         // console.log("editData",editData,id);   
       this.setState({
         "typeofCenter"     :editData.typeofCenter,
-      },()=>{
-        
       });
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
     }).catch(function (error) {
-        console.log("error = ",error);
-      });
+      console.log("error = ",error);
+    });
   }
   getData(startRange, limitRange){
     var data = {
@@ -257,7 +211,7 @@ class typeOfCenter extends Component{
       startRange : startRange,
     }
     // console.log('data', data);
-     axios.get('/api/typeofcenters/list',data)
+    axios.get('/api/typeofcenters/list',data)
     .then((response)=>{
       // console.log('tableData', response.data);
       this.setState({
@@ -269,27 +223,14 @@ class typeOfCenter extends Component{
     });
   }
   getLength(){
-   /* axios.get('/api/typeofcenters/count')
-    .then((response)=>{
-      // console.log('response', response.data);
-      this.setState({
-        dataCount : response.data.dataLength
-      },()=>{
-        // console.log('dataCount', this.state.dataCount);
-      })
-    })
-    .catch(function(error){
-      
-    });*/
   }
   componentWillMount(){
-    // console.l-og('componentWillMount');
     this.getLength();
   }
   getSearchText(searchText, startRange, limitRange){
-      this.setState({
-          tableData : []
-      });
+    this.setState({
+      tableData : []
+    });
   }
   componentWillUnmount(){
     this.setState({
@@ -299,7 +240,7 @@ class typeOfCenter extends Component{
   }
 
   render() {
-  // console.log('render');
+    // console.log('render');
     return (
         <div className="container-fluid">
           <div className="row">
@@ -323,7 +264,7 @@ class typeOfCenter extends Component{
                             <label className="formLable"> Type of Center</label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofCenterErr" >
                              
-                              <input type="text" className="form-control inputBox"  placeholder=""ref="typeofCenter" name="typeofCenterRegX" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                              <input type="text" className="form-control inputBox"  placeholder="" ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>
                             <div className="errorMsg">{this.state.errors.typeofCenterRegX}</div>
                           </div>

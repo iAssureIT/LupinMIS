@@ -158,8 +158,7 @@ class Activity extends Component{
         other                      : "Other",
         remark                     : "Remark",
         failedRemark               : "Failed Data Remark",
-      }
-    
+      }    
     }
     this.uploadedData = this.uploadedData.bind(this);
     this.handleTotalChange = this.handleTotalChange.bind(this);
@@ -230,7 +229,13 @@ class Activity extends Component{
                 }
               });
               this.setState({
-                availableSectors : array
+                availableSectors : array,
+                subActivityDetails : "",
+                subactivity : "-- Select --",
+                activity    : '-- Select --',
+                sector_ID : array[0]._id
+              },()=>{
+                this.getAvailableActivity(array[0]._id)
               })
             }
 
@@ -409,89 +414,93 @@ class Activity extends Component{
     var dateObj = new Date();
     var momentObj = moment(dateObj);
     var momentString = momentObj.format('YYYY-MM-DD');
-    var activityValues= {
-      "activityReport_ID" : this.state.editId,
-      "categoryType"      : this.state.projectCategoryType,
-      "center_ID"         : this.state.center_ID,
-      "centerName"        : this.state.centerName,
-      "date"              : this.refs.dateofIntervention.value,
-      "stateCode"         : this.state.stateCode,
-      "district"          : this.refs.district.value,
-      "block"             : this.refs.block.value,
-      "village"           : this.refs.village.value,
-      "sector_ID"         : this.refs.sector.value.split('|')[1],
-      "sectorName"        : this.refs.sector.value.split('|')[0],
-      "typeofactivity"    : this.refs.typeofactivity.value,
-      "activity_ID"       : this.refs.activity.value.split('|')[1],
-      "activityName"      : this.refs.activity.value.split('|')[0],
-      "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
-      "subactivityName"   : this.refs.subactivity.value.split('|')[0],
-      "unit"              : document.getElementById('unit').innerHTML,
-      "unitCost"          : this.refs.unitCost.value,
-      "quantity"          : this.refs.quantity.value,
-      "totalcost"         : this.state.totalcost,
-      "LHWRF"             : this.refs.LHWRF.value,
-      "NABARD"            : this.refs.NABARD.value,
-      "bankLoan"          : this.refs.bankLoan.value,
-      "govtscheme"        : this.refs.govtscheme.value,
-      "directCC"          : this.refs.directCC.value,
-      "indirectCC"        : this.refs.indirectCC.value,
-      "other"             : this.refs.other.value,
-      "total"             : this.state.total,
-      "remark"            : this.refs.remark.value,
-      "listofBeneficiaries" : this.state.selectedBeneficiaries,
-      "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
-      "projectCategoryType" : this.state.projectCategoryType,
-    };
-    // console.log('activityValues',activityValues)
-    axios.patch('/api/activityReport',activityValues)
-    .then((response)=>{
-      // console.log("update",response);
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
-      swal({
-        title : response.data.message,
-        text  : response.data.message,
+    if ($("#Academic_details").valid()){
+      var activityValues= {
+        "activityReport_ID" : this.state.editId,
+        "categoryType"      : this.state.projectCategoryType,
+        "center_ID"         : this.state.center_ID,
+        "centerName"        : this.state.centerName,
+        "date"              : this.refs.dateofIntervention.value,
+        "stateCode"         : this.state.stateCode,
+        "district"          : this.refs.district.value,
+        "block"             : this.refs.block.value,
+        "village"           : this.refs.village.value,
+        "sector_ID"         : this.refs.sector.value.split('|')[1],
+        "sectorName"        : this.refs.sector.value.split('|')[0],
+        "typeofactivity"    : this.refs.typeofactivity.value,
+        "activity_ID"       : this.refs.activity.value.split('|')[1],
+        "activityName"      : this.refs.activity.value.split('|')[0],
+        "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
+        "subactivityName"   : this.refs.subactivity.value.split('|')[0],
+        "unit"              : document.getElementById('unit').innerHTML,
+        "unitCost"          : this.refs.unitCost.value,
+        "quantity"          : this.refs.quantity.value,
+        "totalcost"         : this.state.totalcost,
+        "LHWRF"             : this.refs.LHWRF.value,
+        "NABARD"            : this.refs.NABARD.value,
+        "bankLoan"          : this.refs.bankLoan.value,
+        "govtscheme"        : this.refs.govtscheme.value,
+        "directCC"          : this.refs.directCC.value,
+        "indirectCC"        : this.refs.indirectCC.value,
+        "other"             : this.refs.other.value,
+        "total"             : this.state.total,
+        "remark"            : this.refs.remark.value,
+        "listofBeneficiaries" : this.state.selectedBeneficiaries,
+        "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
+        "projectCategoryType" : this.state.projectCategoryType,
+      };
+      // console.log('activityValues',activityValues)
+      axios.patch('/api/activityReport',activityValues)
+      .then((response)=>{
+        // console.log("update",response);
+        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
+        swal({
+          title : response.data.message,
+          text  : response.data.message,
+        });
+      })
+      .catch(function(error){ 
+        // console.log("error = ",error);
       });
-    })
-    .catch(function(error){ 
-      // console.log("error = ",error);
-    });
-    this.setState({
-      "projectName"        : "-- Select --",
-      "projectCategoryType" : "LHWRF Grant",
-      "district"          : "-- Select --",
-      "block"             : "-- Select --",
-      "village"           : "-- Select --",
-      "dateofIntervention": momentString,
-      "sector"            : "-- Select --",
-      "typeofactivity"    : "-- Select --",
-      "nameofactivity"    : "",
-      "activity"          : "-- Select --",
-      "subactivity"       : "-- Select --",
-      "unit"              : "",
-      "unitCost"          : "0",
-      "quantity"          : "0",
-      "totalcost"         : "0",
-      "LHWRF"             : "0",
-      "NABARD"            : "0",
-      "bankLoan"          : "0",
-      "govtscheme"        : "0",
-      "directCC"          : "0",
-      "indirectCC"        : "0",
-      "other"             : "0",
-      "total"             : "0",
-      "remark"            : "",
-      "selectedBeneficiaries" :[],
-      "selectedValues"         : [],    
-      "listofBeneficiaries": [],      
-      "subActivityDetails" : '',
-      // "availableSectors"   : [],
-      // "availableActivity"  : [],
-      // "availableSubActivity": [],
-      "sendBeneficiary"     : [],      
-      "editId"              : "",
-    });
-    this.props.history.push('/activity');
+      this.setState({
+        "projectName"        : "-- Select --",
+        "projectCategoryType" : "LHWRF Grant",
+        "district"          : "-- Select --",
+        "block"             : "-- Select --",
+        "village"           : "-- Select --",
+        "dateofIntervention": momentString,
+        "sector"            : "-- Select --",
+        "typeofactivity"    : "-- Select --",
+        "nameofactivity"    : "",
+        "activity"          : "-- Select --",
+        "subactivity"       : "-- Select --",
+        "unit"              : "",
+        "unitCost"          : "0",
+        "quantity"          : "0",
+        "totalcost"         : "0",
+        "LHWRF"             : "0",
+        "NABARD"            : "0",
+        "bankLoan"          : "0",
+        "govtscheme"        : "0",
+        "directCC"          : "0",
+        "indirectCC"        : "0",
+        "other"             : "0",
+        "total"             : "0",
+        "remark"            : "",
+        "selectedBeneficiaries" :[],
+        "selectedValues"         : [],    
+        "listofBeneficiaries": [],      
+        "subActivityDetails" : '',
+        // "availableSectors"   : [],
+        // "availableActivity"  : [],
+        // "availableSubActivity": [],
+        "sendBeneficiary"     : [],      
+        "editId"              : "",
+      });
+      this.props.history.push('/activity');
+    }else{
+      $("html,body").scrollTop(0)
+    }
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -698,7 +707,7 @@ class Activity extends Component{
     }
     axios.post('/api/activityReport/list/'+center_ID, data)
     .then((response)=>{
-      console.log("response",response);
+      // console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                        : a._id,
@@ -731,7 +740,7 @@ class Activity extends Component{
       })
     })
     .catch(function(error){      
-      // console.log("error = ",error); 
+      console.log("error = ",error); 
     });
   }
 
@@ -1028,7 +1037,9 @@ class Activity extends Component{
     var district = event.target.value;
      // console.log('district=', district);
     this.setState({
-      district: district
+      district: district,
+      block : '-- Select --',
+      village : '-- Select --',
     },()=>{
       var selectedDistrict = this.state.district;
       // console.log("selectedDistrict",selectedDistrict);
@@ -1274,7 +1285,7 @@ class Activity extends Component{
                         </div>
                        
                       </div>
-                        {console.log("projectCategoryType",this.state.projectCategoryType)}
+                        {/*console.log("projectCategoryType",this.state.projectCategoryType)*/}
                       {
                         this.state.projectCategoryType =="Project Fund" ? 
 
@@ -1312,7 +1323,7 @@ class Activity extends Component{
                             <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
                           </div>
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                              <label className="formLable">District</label>
+                              <label className="formLable">District<span className="asterix">*</span></label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                 <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
                                   <option disabled="disabled" selected="true" >-- Select --</option>
@@ -1332,7 +1343,7 @@ class Activity extends Component{
                               <div className="errorMsg">{this.state.errors.district}</div>
                             </div>
                           <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Block</label>
+                            <label className="formLable">Block<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                               <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
                                 <option disabled="disabled" selected="true">-- Select --</option>
@@ -1351,7 +1362,7 @@ class Activity extends Component{
                             <div className="errorMsg">{this.state.errors.block}</div>
                           </div>
                          <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Village</label>
+                            <label className="formLable">Village<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                               <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
                                 <option disabled="disabled" selected="true">-- Select --</option>
@@ -1374,7 +1385,7 @@ class Activity extends Component{
                       <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Sector </label>
+                            <label className="formLable">Sector<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                               <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
                                 <option disabled="disabled" selected="true">-- Select --</option>
@@ -1394,7 +1405,7 @@ class Activity extends Component{
                           </div>
 
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Activity</label>
+                            <label className="formLable">Activity<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                               <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
                                 <option disabled="disabled" selected="true">-- Select --</option>
@@ -1417,7 +1428,7 @@ class Activity extends Component{
 
 
                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Sub-Activity</label>
+                            <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                               <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
                                 <option disabled="disabled" selected="true">-- Select --</option>
@@ -1442,7 +1453,7 @@ class Activity extends Component{
 
 
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Activity Type</label>
+                            <label className="formLable">Activity Type<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                               <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
                                 <option disabled="disabled" selected="true">-- Select --</option>

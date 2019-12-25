@@ -39,6 +39,7 @@ class centerDetail extends Component{
       "listofDistrict"           : [],
       "listofBlocks"             : [],
       "listofVillages"           : [],
+      "editlistofVillages"       : [],
       "selectedVillages"         : [],
       "stateCode"                : [],
       "twoLevelHeader"           : {
@@ -84,9 +85,9 @@ class centerDetail extends Component{
   }
   handleChange(event){
     event.preventDefault();
-    // if(event.currentTarget.name==='district'){
-    //   this.state.pincode = '' 
-    // }
+    if(event.currentTarget.name==='district'){
+      this.refs.pincode.value = '' 
+    }
     this.setState({
       "typeOfCenter"             : this.refs.typeOfCenter.value,
       "nameOfCenter"             : this.refs.nameOfCenter.value,
@@ -102,8 +103,7 @@ class centerDetail extends Component{
       "MISCoordinatorEmail"      : this.refs.MISCoordinatorEmail.value,
       "districtCovered"          : this.refs.districtCovered.value,
       "blocksCovered"            : this.refs.blocksCovered.value,
-    });
-    
+    });    
   }
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -140,11 +140,11 @@ class centerDetail extends Component{
         "type_ID"                   : this.refs.typeOfCenter.value,
         "centerName"                : this.refs.nameOfCenter.value,
         "address"                   : {
-            "addressLine"           : this.refs.address.value,
-            "state"                 : this.refs.state.value.split('|')[0],
-            "district"              : this.refs.district.value,
-            "pincode"               : this.refs.pincode.value,
-            "stateCode"             : this.refs.state.value.split('|')[1],
+          "addressLine"           : this.refs.address.value,
+          "state"                 : this.refs.state.value.split('|')[0],
+          "district"              : this.refs.district.value,
+          "pincode"               : this.refs.pincode.value,
+          "stateCode"             : this.refs.state.value.split('|')[1],
         },
         "districtsCovered"          : districtsCovered,
         "blocksCovered"             : blocksCovered,
@@ -192,6 +192,8 @@ class centerDetail extends Component{
         "listofVillages"            : [],
       });
       selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
+    }else{
+      $('.error:first').focus()
     }
   }
   Update(event){
@@ -516,7 +518,7 @@ class centerDetail extends Component{
               [data.village] : true
             })
           })
-          console.log("editData",editData);
+          // console.log("editData",editData);
 
           this.setState({
             "typeOfCenter"             : editData.type_ID,
@@ -660,7 +662,7 @@ class centerDetail extends Component{
         district : '--Select District--',
         districtCovered : '--Select District--',
         blocksCovered : '--Select Block--',
-        // listofVillages : this.state.editlistofVillages
+        listofVillages : this.state.editlistofVillages
       },()=>{
         // console.log('stateCode',this.state.stateCode);
         this.getDistrict(this.state.stateCode);
@@ -694,8 +696,8 @@ class centerDetail extends Component{
       var selectedDistrict = this.state.districtCovered.split('|')[0];
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
-        selectedDistrict :selectedDistrict
-        // listofVillages : this.state.editlistofVillages
+        selectedDistrict :selectedDistrict,
+        listofVillages : this.state.editlistofVillages
       },()=>{
         // console.log('selectedDistrict',this.state.selectedDistrict);
         this.getBlock(this.state.stateCode, this.state.selectedDistrict);

@@ -33,7 +33,7 @@ class SectorAndActivity extends Component{
     $("link[href='/css/dashboard.css']").remove();
   }
   toglehidden(){
-   this.setState({
+    this.setState({
      shown: !this.state.shown
     });
   }
@@ -41,7 +41,6 @@ class SectorAndActivity extends Component{
     this.setState({
       tabtype : data,
     },()=>{
-
       this.props.history.push('/sector-and-activity');
     });
   }
