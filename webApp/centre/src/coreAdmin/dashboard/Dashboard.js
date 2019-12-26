@@ -457,16 +457,17 @@ export default class Dashboard extends Component{
               <div className="dashContent">
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
                     <h3>Dashboard</h3>
-                </div>
+                </div> 
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
                   <StatusComponent 
                     stats={{color:"#2FC0EF", icon:"building",
-                    heading1:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[0].typeOfCenter : "" ,
-                    value1:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[0].count : "" , 
-                    heading2:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[1].typeOfCenter : "", 
-                    value2:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[1].count : 0, 
-                    heading3:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[2].typeOfCenter : "",
-                    value3:this.state.centerData && this.state.centerData.length > 0 ? this.state.centerData[2].count : 0}} 
+                    heading1:   this.state.centerData[0] ? this.state.centerData[0].typeOfCenter  : "" ,
+                    value1:     this.state.centerData[0] ? this.state.centerData[0].count         : "" , 
+                    heading2:   this.state.centerData[1] ? this.state.centerData[1].typeOfCenter  : "", 
+                    value2:     this.state.centerData[1] ? this.state.centerData[1].count         : 0, 
+                    heading3:   this.state.centerData[2] ? this.state.centerData[2].typeOfCenter  : "",
+                    value3:     this.state.centerData[2] ? this.state.centerData[2].count         : 0
+                  }} 
                   />
                   <StatusComponent 
                     stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Beneficiaries",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0}} 
