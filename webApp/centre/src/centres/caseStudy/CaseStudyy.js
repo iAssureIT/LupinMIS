@@ -496,9 +496,6 @@ class addWorkspace extends Component{
               }
         });
   }
-
-
-
   submitWorkspaceInfo=(event)=>{
     event.preventDefault();
 
@@ -1035,7 +1032,7 @@ class addWorkspace extends Component{
               </div>
                 {/*<div className="border border-dark">
                   <img className="well" src={"https://qrickit.com/api/qr.php?d="+this.state.QRCode+"&addtext=Coffic&txtcolor=442EFF&fgdcolor=000000&bgdcolor=ffffff&logotext=Vendor&qrsize=50&margin=50&t=p&e=m"} alt="QR Code"/>
-                </div>*/}
+                </div>*/} 
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  marginBtmDiv noborder">
                 <button className="btn buttontAddEdit pull-right" id="btnCheck" onClick={this.submitWorkspaceInfo.bind(this)}>{this.props.match.params.id?"Update":"Submit"}</button>
               </div>

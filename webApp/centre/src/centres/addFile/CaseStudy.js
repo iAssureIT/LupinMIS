@@ -20,7 +20,7 @@ class CaseStudy extends Component{
       "centerName"        :"",
       "title"             :"",
       "dateofsubmission"  :"",
-      "sector"            :"",
+      "sector"            :"-- Select --",
       "config"            :"",
       "author"            :"",
       "caseStudy_Image"   :"",
@@ -80,6 +80,47 @@ class CaseStudy extends Component{
   
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    $.validator.addMethod("regxTitle", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Title.");
+    $.validator.addMethod("regxAuthor", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Author.");
+
+
+    $("#caseStudy").validate({
+      rules: {
+        title: {
+          required: true,
+          regxTitle:/^[A-za-z']+( [A-Za-z']+)*$/,
+        },  
+        author: {
+          required: true,
+          regxAuthor:/^[A-za-z']+( [A-Za-z']+)*$/,
+
+        },
+        dateofsubmission: {
+          required: true,
+        },
+        sector: {
+          required: true,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "title"){
+          error.insertAfter("#title");
+        }
+        if (element.attr("name") == "author"){
+          error.insertAfter("#author");
+        }
+        if (element.attr("name") == "dateofsubmission"){
+          error.insertAfter("#dateofsubmission");
+        }
+        if (element.attr("name") == "sector"){
+          error.insertAfter("#sector");
+        }
+      }
+    });
     // console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
@@ -103,9 +144,7 @@ class CaseStudy extends Component{
     this.getLength(this.state.center_ID);
     this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     });
-    var dateObj = new Date();
-    var momentObj = moment(dateObj);
-    var momentString = momentObj.format('YYYY-MM-DD');
+    var momentString =  moment(new Date()).format('YYYY-MM-DD');
 
     this.setState({
       dateofsubmission :momentString,
@@ -118,38 +157,19 @@ class CaseStudy extends Component{
         [event.target.name]: event.target.value,
         "dateofsubmission" :this.refs.dateofsubmission.value,
         // "sectorName"       :this.refs.sector.value, 
-        "sectorName"       : this.refs.sector.value.split('|')[0],
+        "sector"          : this.refs.sector.value.split('|')[0],
         "title"            :this.refs.title.value, 
         "author"           :this.refs.author.value, 
        /* "caseStudy_Image"  :this.refs.caseStudy_Image.value,
         "caseStudy_File"   :this.refs.caseStudy_File.value,*/
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+   
   }
 
   Submit(event){
-    // var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
-    // var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
-    // console.log("fileLocation ===============================",fileLocation);
-    // console.log("ImageLocation ===============================",ImageLocation);
+    
     event.preventDefault();
-    if(this.refs.dateofsubmission.value === "" || this.refs.title.value ==="" || this.refs.sector.value===""
-     || this.refs.author.value==="" )
-    {
-    if (this.validateFormReq() && this.validateForm()){
-     }
-    }else{
+    if($('#caseStudy').valid()){
       var caseStudyValues = {
         "center_ID"        :this.state.center_ID,
         // "centerName"       :this.state.centerName,
@@ -161,13 +181,13 @@ class CaseStudy extends Component{
         "caseStudy_Image"  :this.state.ImageLocation,
         "caseStudy_File"   :this.state.fileLocation,
       };
-      let fields = {};
+     /* let fields = {};
       fields["dateofsubmission"]      = "";
       fields["title"]                 = "";
       fields["sector"]                = "";
       fields["author"]                = "";
       fields["caseStudy_Image"]       = "";
-      fields["caseStudy_File"]        = "";
+      fields["caseStudy_File"]        = "";*/
         // console.log('caseStudyValues', caseStudyValues);
       axios.post('/api/caseStudies', caseStudyValues)
         .then((response)=>{
@@ -179,29 +199,23 @@ class CaseStudy extends Component{
           });
           this.setState({
             "title"             :"",
-            "dateofsubmission"  :"",
+            "dateofsubmission"  :moment(new Date()).format('YYYY-MM-DD'),
             "sector"            :"",
             "author"            :"",
             "ImageLocation"     :"",
             "fileLocation"      :"",
-            fields              :fields
           });
         })
         .catch(function(error){
           console.log("error = ",error);
     });
-      
-    }    
+ 
+    }
   }
 
   Update(event){
     event.preventDefault();
-    if(this.refs.dateofsubmission.value === "" || this.refs.title.value ==="" || this.refs.sector.value===""
-     || this.refs.author.value==="" )
-    {
-    if (this.validateFormReq() && this.validateForm()){
-     }
-    }else{
+    if($('#caseStudy').valid()){
       var caseStudyValues = {
         "caseStudy_ID"     :this.state.editId, 
         "center_ID"        :this.state.center_ID,
@@ -215,13 +229,8 @@ class CaseStudy extends Component{
         "caseStudy_Image"  :this.state.ImageLocation,
         "caseStudy_File"   :this.state.fileLocation,
       };
-      let fields = {};
-      fields["dateofsubmission"]    = "";
-      fields["title"]               = "";
-      fields["sector"]              = "";
-      fields["author"]              = "";
 
-      // console.log('caseStudyValues', caseStudyValues);
+       console.log('caseStudyValues', this.refs.sector.value);
 
       axios.patch('/api/caseStudies/update', caseStudyValues)
         .then((response)=>{
@@ -241,52 +250,14 @@ class CaseStudy extends Component{
         "author"               :"",
         "ImageLocation"        :"",
         "fileLocation"         :"",
-        fields                 :fields
       });
       this.props.history.push('/caseStudy');
       this.setState({
         "editId"               : "",
       });
-    }    
-  }
-
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    if (!fields["dateofsubmission"]) {
-      formIsValid = false;
-      errors["dateofsubmission"] = "This field is required.";
     }     
-    if (!fields["title"]) {
-      formIsValid = false;
-      errors["title"] = "This field is required.";
-    }
-    if (!fields["sector"]) {
-      formIsValid = false;
-      errors["sector"] = "This field is required.";
-    }
-    if (!fields["author"]) {
-      formIsValid = false;
-      errors["author"] = "This field is required.";
-    }          
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
   }
 
-  validateForm(){
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
 
   edit(id){
     axios({
@@ -298,17 +269,11 @@ class CaseStudy extends Component{
       this.setState({
         "dateofsubmission"  : editData.date,
         "title"             : editData.title, 
-        "sectorName"        : editData.sectorName,
+        "sector"            : editData.sectorName,
         "sector_ID"         : editData.sector_ID,
         "author"            : editData.author,
       });
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
+     
     })
     .catch(function(error){
       console.log("error = ",error);
@@ -397,11 +362,10 @@ class CaseStudy extends Component{
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12  ">
                         <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12  valid_box">
-                          <label className="formLable">Date of Submission</label>
+                          <label className="formLable">Date of Submission</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofsubmission" >
                             <input type="date" className="form-control inputBox toUpper" name="dateofsubmission" ref="dateofsubmission" value={this.state.dateofsubmission} onChange={this.handleChange.bind(this)}/>
                           </div>
-                          <div className="errorMsg">{this.state.errors.dateofsubmission}</div>
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">Title</label><span className="asterix">*</span>
@@ -411,10 +375,10 @@ class CaseStudy extends Component{
                           <div className="errorMsg">{this.state.errors.title}</div>
                         </div>
                         <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Sector </label>
+                          <label className="formLable">Sector </label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                             <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
+                              <option disabled="disabled" selected="true" >-- Select --</option>
                               {
                                 this.state.availableSectors && this.state.availableSectors.length >0 ?
                                 this.state.availableSectors.map((data, index)=>{
@@ -427,7 +391,6 @@ class CaseStudy extends Component{
                               }
                             </select>
                           </div>
-                          <div className="errorMsg">{this.state.errors.sector}</div>
                         </div>
                        {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">Sector</label><span className="asterix">*</span>

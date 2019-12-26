@@ -52,18 +52,7 @@ class Activity extends Component{
     this.setState({
       [event.target.name] : event.target.value
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+    
   }
 
   isTextKey(evt){
@@ -81,7 +70,7 @@ class Activity extends Component{
 
   submitActivity(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    if($('#Activity').valid()){
     var activityValues = {
       "sector_ID"            : this.refs.sector.value.split('|')[1],
       "sector"               : this.refs.sector.value.split('|')[0],
@@ -99,7 +88,6 @@ class Activity extends Component{
   
     axios.patch('/api/sectors/activity', activityValues)
       .then((response)=>{
-       console.log(this.validateForm());
        this.getData(this.state.startRange, this.state.limitRange);
         swal({
           title : response.data.message,
@@ -112,15 +100,10 @@ class Activity extends Component{
       });
     }
   }
-
   updateActivity(event){
     event.preventDefault();
-    if(this.refs.sector.value =="" && this.refs.activityName.value=="" )
-    {
-      // console.log('state validation');
-      if (this.validateFormReq() && this.validateForm()) {
-      }
-    }else{
+    if($('#Activity').valid()){
+
       var activityValues = {
         "sector_ID"            : this.refs.sector.value.split('|')[1],
         "sector"               : this.refs.sector.value.split('|')[0],
@@ -152,51 +135,13 @@ class Activity extends Component{
       fields["activityName"]     = "";
     
       this.setState({
-        "sector"        :"",
-        "activityName"      :"",
-        fields          :fields
+        "sector"            : "",
+        "activityName"      : "",
+        fields              : fields
       });
     }
   }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-
-      if (!fields["sector"]) {
-        formIsValid = false;
-        errors["sector"] = "This field is required.";
-      }     
-      if (!fields["activityName"]) {
-        formIsValid = false;
-        errors["activityName"] = "This field is required.";
-      }
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }   
-  
-  validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-
-      if (typeof fields["activityName"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["activityName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["activityName"] = "Please enter valid Activity Name.";
-        }
-      }
-    
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
+ 
 
   componentWillReceiveProps(nextProps){
     this.getAvailableSectors();
@@ -217,6 +162,30 @@ class Activity extends Component{
 
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Activity Name.");
+
+
+    $("#Activity").validate({
+      rules: {
+        sector: {
+          required: true,
+        },
+        activityName: {
+          required: true,
+          regxtypeofCenter: /^[A-za-z']+( [A-Za-z']+)*$/,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "sector"){
+          error.insertAfter("#sectorError");
+        }
+        if (element.attr("name") == "activityName"){
+          error.insertAfter("#activityName");
+        }
+      }
+    });
     this.getAvailableSectors();
     if(this.state.editId){      
       this.edit(this.state.editSectorId);
@@ -254,13 +223,7 @@ class Activity extends Component{
       },()=>{
         console.log('this.state', this.state.activityName)
       });      
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
+     
     }).catch(function (error) {
         console.log("error = ",error);
       });
@@ -325,7 +288,7 @@ class Activity extends Component{
                 <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                   <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
                     <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorError" >
                       <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)}>
                         <option  className="hidden" value="" >-- Select Sector--</option>
                         {
@@ -341,7 +304,6 @@ class Activity extends Component{
                         
                       </select>
                     </div>
-                    <div className="errorMsg">{this.state.errors.sector}</div>
                   </div>
                   <div className=" col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Activity</label><span className="asterix">*</span>
@@ -349,7 +311,6 @@ class Activity extends Component{
                       
                       <input type="text" className="form-control inputBox "  placeholder="" name="activityName"  value={this.state.activityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activityName" />
                     </div>
-                    <div className="errorMsg">{this.state.errors.activityName}</div>
                   </div>
                 </div> 
               </div><br/>

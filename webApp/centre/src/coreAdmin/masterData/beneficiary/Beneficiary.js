@@ -300,6 +300,18 @@ class Beneficiary extends Component{
     $.validator.addMethod("regxUIDNumber", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Aadhar Number.");
+    $.validator.addMethod("regxsurnameOfBeneficiary", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Surname.");
+    $.validator.addMethod("regxfirstNameOfBeneficiary", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid First Name.");
+    $.validator.addMethod("regxmiddleNameOfBeneficiary", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Middle Name.");
+    $.validator.addMethod("regxrelation", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Relation.");
 
 
         $("#createBeneficiary").validate({
@@ -313,15 +325,19 @@ class Beneficiary extends Component{
             },
             surnameOfBeneficiary: {
               required: true,
+              regxsurnameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
             },
             firstNameOfBeneficiary: {
               required: true,
+              regxfirstNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
             },
             middleNameOfBeneficiary: {
-              required: true,        
+              required: true,
+              regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
             },
             relation: {
-              required: true,        
+              required: true, 
+              regxrelation:/^[A-za-z']+( [A-Za-z']+)*$/,       
             },
           },
           errorPlacement: function(error, element) {
@@ -566,28 +582,24 @@ class Beneficiary extends Component{
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfBeneficiaryErr" >
                                 <input type="text" className="form-control inputBox" ref="surnameOfBeneficiary" name="surnameOfBeneficiary" value={this.state.surnameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
-                              <div className="errorMsg">{this.state.errors.surnameOfBeneficiary}</div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">First Name of Beneficiary </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfBeneficiaryErr" >
                                 <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
-                              <div className="errorMsg">{this.state.errors.firstNameOfBeneficiary}</div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Middle Name of Beneficiary </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfBeneficiaryErr" >
                                 <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
-                              <div className="errorMsg">{this.state.errors.middleNameOfBeneficiary}</div>
                             </div>
                             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uidNumberErr" >
                                 <input type="text" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
                               </div>
-                              <div className="errorMsg">{this.state.errors.uidNumber}</div>
                             </div>
                             <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
                               <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
@@ -597,7 +609,6 @@ class Beneficiary extends Component{
                                 </div>*/}
                                 <input type="text" className="form-control inputBox"  placeholder="" value={this.state.relation} ref="relation" name="relation" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
                               </div>
-                              <div className="errorMsg">{this.state.errors.relation}</div>
                             </div>
                           </div> 
                         </div>

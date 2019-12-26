@@ -92,8 +92,8 @@ class UMListOfUsers extends Component {
             })
         })
 	    .catch((error)=>{
-	      // console.log("error = ",error);
-	      alert("Something went wrong! Please check Get URL.");
+	      console.log("error = ",error);
+	      alert("Check .");
 	    }); 
     }
     getSearchText(searchText, startRange, limitRange){

@@ -451,6 +451,8 @@ class IAssureTableUM extends Component {
     	 
     }
     showNextPaginationButtons(){
+    			console.log("showNextPaginationButtons")
+
     	var beforeDataLength = this.state.dataLength > 0 ? this.state.dataLength : 20;
 		if(beforeDataLength !== this.state.completeDataCount){
 			this.setState({
@@ -488,7 +490,7 @@ class IAssureTableUM extends Component {
     }
     showPreviousPaginationButtons(){
     	var beforeDataLength = this.state.dataLength;
-		
+		console.log("showPreviousPaginationButtons")
 		this.setState({
 			dataLength : beforeDataLength > 20 ? beforeDataLength- this.state.paginationArray.length : 0,
 		},()=>{
@@ -524,7 +526,8 @@ class IAssureTableUM extends Component {
     }
     showFirstTweentyButtons(){
     	var beforeDataLength = this.state.completeDataCount;
-		
+		console.log("showFirstTweentyButtons")
+
 		this.setState({
 			dataLength : 20,
 		},()=>{
@@ -560,6 +563,7 @@ class IAssureTableUM extends Component {
     }
     showLastTweentyButtons(){
     	var beforeDataLength = this.state.dataLength;
+				console.log("showLastTweentyButtons")
 		
 		this.setState({
 			dataLength : this.state.completeDataCount,
@@ -590,6 +594,7 @@ class IAssureTableUM extends Component {
 						paginationArray : paginationArray,
 					});
 				}
+
 				return paginationArray;
 			}			
 		});
@@ -930,7 +935,7 @@ class IAssureTableUM extends Component {
 									}
 	                            </tr>
 	                        </thead>
-	                        <tbody>
+	                        <tbody className="scrollContent">
 	                           { this.state.tableData && this.state.tableData.length > 0 ?
 	                           		this.state.tableData.map( 
 										(value, i)=> {													
@@ -1117,7 +1122,8 @@ class IAssureTableUM extends Component {
 	                    </tbody>
 	                    </table>
 	                    </div>
-	                    {/*this.state.tableData && this.state.tableData.length > 0 ?
+	                    {this.state.tableData && this.state.tableData.length > 0 ?
+
 	                    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paginationAdminWrap">
 		                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 			                    	{ 
@@ -1159,7 +1165,7 @@ class IAssureTableUM extends Component {
 							</div>
 							:
 							null
-	                    */}
+	                    }
 	                    
 	                </div>                        
 	            </div>

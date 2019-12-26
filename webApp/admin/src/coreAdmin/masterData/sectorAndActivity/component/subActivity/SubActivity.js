@@ -13,10 +13,10 @@ class SubActivity extends Component{
     super(props);
    
     this.state = {
-      "sector"              :"",
-      "activityName"        :"",
+      "sector"              :"-- Select --",
+      "activityName"        :"-- Select --",
       "subActivityName"     :"",
-      "unit"                :"",
+      "unit"                :"-- Select --",
       "familyUpgradation"   :"No",
       "user_ID"             :"",
       "shown"               : true,
@@ -43,7 +43,52 @@ class SubActivity extends Component{
       "editSectorId"        : props.match.params ? props.match.params.sectorId : '',
     }
   }
+ componentDidMount() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+      $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Sub-Activity Name.");
 
+
+    $("#subActivityb").validate({
+      rules: {
+        sector: {
+          required: true,
+        },  
+        unit: {
+          required: true,
+        },
+        activityName: {
+          required: true,
+        },
+        subActivityName: {
+          required: true,
+          regxtypeofCenter: /^[A-za-z']+( [A-Za-z']+)*$/,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "sector"){
+          error.insertAfter("#sectorError");
+        }
+        if (element.attr("name") == "activityName"){
+          error.insertAfter("#activityNameError");
+        }
+        if (element.attr("name") == "unit"){
+          error.insertAfter("#unitError");
+        }
+        if (element.attr("name") == "subActivityName"){
+          error.insertAfter("#subActivityNameError");
+        }
+      }
+    });
+    this.getAvailableSectors();
+    if(this.state.editId){     
+      this.getAvailableActivity(this.state.editSectorId);
+      this.edit(this.state.editSectorId, this.state.editId);
+    }
+    this.getLength();
+    this.getData(this.state.startRange, this.state.limitRange);
+  }
   handleChange(event){
     event.preventDefault();
     this.setState({
@@ -52,18 +97,7 @@ class SubActivity extends Component{
       "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.refs.unit.value,
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+  
   }
   isTextKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -89,7 +123,7 @@ class SubActivity extends Component{
   }
   submitSubActivity(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    if($('#subActivityb').valid()){
     var subActivityValues = {
       "sector_ID"            :this.refs.sector.value.split('|')[1],
       "sector"               :this.refs.sector.value.split('|')[0],
@@ -100,18 +134,13 @@ class SubActivity extends Component{
       "familyUpgradation"    :this.state.familyUpgradation,
       "user_ID"              :this.state.user_ID,
     };
-    let fields                = {};
-    fields["sector"]          = "";
-    fields["activityName"]    = "";
-    fields["subActivityName"] = "";
-    fields["unit"]            = "";
+   
     this.setState({
-      "sector"                :"",
-      "activityName"          :"",
+      "sector"                :"-- Select --",
+      "activityName"          :"-- Select --",
       "subActivityName"       :"",      
-      "unit"                  :"",
+      "unit"                  :"-- Select --",
       "availableActivity"     :[],
-      fields                  :fields
     });
     axios.patch('/api/sectors/subactivity',subActivityValues)
       .then((response)=>{
@@ -124,15 +153,12 @@ class SubActivity extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
-    }   
+    }
   }
   updateSubActivity(event){
-    event.preventDefault();
-    if(this.refs.sector.value ==="" || this.refs.activityName.value==="" || this.refs.subActivityName.value ==="" || this.state.unit ==="")
-    {
-          if (this.validateFormReq() && this.validateForm()) {}
+        event.preventDefault();
 
-    }else{
+    if($('#subActivityb').valid()){
     var subActivityValues = {
       "sector_ID"            : this.refs.sector.value.split('|')[1],
       "sector"               : this.refs.sector.value.split('|')[0],
@@ -144,88 +170,32 @@ class SubActivity extends Component{
       "familyUpgradation"    : this.state.familyUpgradation,
       "user_ID"              : this.state.user_ID,
     };
-
-    let fields                = {};
-    fields["sector"]          = "";
-    fields["activityName"]    = "";
-    fields["subActivityName"] = "";
-    fields["unit"]            = "";
-    this.setState({
-      "sector"                :"",
-      "activityName"          :"",
-      "subActivityName"       :"",      
-      "unit"                  :"",
-      "availableActivity"     :[],
-      fields                  :fields
-    });
+    console.log("subActivityValues",subActivityValues);
     axios.patch('/api/sectors/subactivity/update',subActivityValues)
-        .then((response)=>{
+      .then((response)=>{
+        this.setState({
+          "sector"                :"-- Select --",
+          "activityName"          :"-- Select --",
+          "subActivityName"       :"",      
+          "unit"                  :"-- Select --",
+          "availableActivity"     :[],
+          editId : ''
+        },()=>{
+          console.log("this.props.history",this.props.history)
+         this.props.history.push('/sector-and-activity');
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
             text  : response.data.message
           });
-          this.setState({
-            editId : ''
-          })
-          this.props.history.push('/sector-and-activity');
-        })
-        .catch(function(error){
-          console.log("error = ",error);
         });
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      }); 
     } 
-    
   }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-      if (!fields["sector"]) {
-        formIsValid = false;
-        errors["sector"] = "This field is required.";
-      }     
-      if (!fields["activityName"]) {
-        formIsValid = false;
-        errors["activityName"] = "This field is required.";
-      }
-      if (!fields["subActivityName"]) {
-        formIsValid = false;
-        errors["subActivityName"] = "This field is required.";
-      }
-      if (!fields["unit"]) {
-        formIsValid = false;
-        errors["unit"] = "This field is required.";
-      }
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-  validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-      if (typeof fields["unit"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["unit"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["unit"] = "Please enter valid Center Name.";
-        }
-      }
-      if (typeof fields["subActivityName"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["subActivityName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["subActivityName"] = "Please enter valid Center Name.";
-        }
-      }
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
+ 
   componentWillReceiveProps(nextProps){
     this.getAvailableSectors();
     var editId = nextProps.match.params.subactivityId;
@@ -235,7 +205,6 @@ class SubActivity extends Component{
         editId : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
-    console.log("edi",this.state.editId , this.state.editSectorId); 
         this.getAvailableActivity(this.state.editSectorId);
         this.edit(this.state.editSectorId);
       })    
@@ -245,16 +214,7 @@ class SubActivity extends Component{
     }
   }
 
-  componentDidMount() {
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    this.getAvailableSectors();
-    if(this.state.editId){     
-      this.getAvailableActivity(this.state.editSectorId);
-      this.edit(this.state.editSectorId, this.state.editId);
-    }
-    this.getLength();
-    this.getData(this.state.startRange, this.state.limitRange);
-  }
+ 
   getAvailableSectors(){
     axios({
       method: 'get',
@@ -290,6 +250,7 @@ class SubActivity extends Component{
   }
 
 edit(id){
+    $('label.error').html('')
     var activity_id = this.props.match.params.activityId;
     var subactivity_id = this.props.match.params.subactivityId;
       console.log('this.activity_id',activity_id,subactivity_id);
@@ -419,9 +380,9 @@ edit(id){
                   <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorError" >
                         <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.selectSector.bind(this)}>
-                          <option  className="hidden" >--Select --</option>
+                          <option disabled="disabled" selected="true">-- Select --</option>
                           {
                           this.state.availableSectors && this.state.availableSectors.length >0 ?
                           this.state.availableSectors.map((data, index)=>{
@@ -434,13 +395,12 @@ edit(id){
                         }
                         </select>
                       </div>
-                      <div className="errorMsg">{this.state.errors.sector}</div>
                     </div>
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Select Activity Name</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityNameError" >
                         <select className="custom-select form-control inputBox" ref="activityName" name="activityName" value={this.state.activityName} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)} >
-                          <option  className="hidden" >-- Select --</option>
+                          <option disabled="disabled" selected="true" >-- Select --</option>
                           {
                           this.state.availableActivity && this.state.availableActivity.length >0 ?
                           this.state.availableActivity.map((data, index)=>{
@@ -455,18 +415,16 @@ edit(id){
                         }
                         </select>
                       </div>
-                      <div className="errorMsg">{this.state.errors.activityName}</div>
                     </div>
 
-                    <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                    <div className=" col-md-4 col-sm-6 col-xs-12 "  >
                       <label className="formLable">Name of Sub-Activity</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="subActivityName" >
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main  " id="subActivityNameError" >
                         {/*<div className="input-group-addon inputIcon">
                           <i className="fa fa-graduation-cap fa"></i>
                         </div>*/}
                         <input type="text" className="form-control inputBox " ref="subActivityName" name="subActivityName" value={this.state.subActivityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                       </div>
-                      <div className="errorMsg">{this.state.errors.subActivityName}</div>
                     </div>
                     <div className=" col-md-12 col-sm-6 col-xs-12 ">
                      
@@ -475,9 +433,9 @@ edit(id){
                   <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                      <div className=" col-md-4 col-sm-6 col-xs-12 ">
                       <label className="formLable">Unit</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unit" >
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unitError" >
                         <select className="custom-select form-control inputBox" ref="unit" name="unit" value={this.state.unit} onChange={this.handleChange.bind(this)} >
-                          <option  className="hidden" >-- Select--</option>
+                          <option  disabled="disabled" selected="true" >-- Select --</option>
                           <option  className="" >Number</option>
                           <option  className="" >Kilogram</option>
                           <option  className="" >Hectare</option>
@@ -503,7 +461,6 @@ edit(id){
                         </select>
                    {/*     <input type="text" className="form-control inputBox " ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />*/}
                       </div>
-                      <div className="errorMsg">{this.state.errors.unit}</div>
                     </div>
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
                       <label className="formLable">Family Upgradation</label><span className="asterix">*</span>

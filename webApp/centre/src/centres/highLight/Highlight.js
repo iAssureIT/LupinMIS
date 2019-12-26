@@ -69,6 +69,34 @@ class Highlight extends Component{
   
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    $.validator.addMethod("regxuserName", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Username.");
+  
+
+    $("#highlight").validate({
+      rules: {
+        userName: {
+          required: true,
+          regxuserName:/^[A-za-z']+( [A-Za-z']+)*$/,
+        },  
+        dateofsubmission: {
+          required: true,
+        },  
+
+     
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "userName"){
+          error.insertAfter("#userName");
+        }
+        if (element.attr("name") == "dateofsubmission"){
+          error.insertAfter("#dateofsubmission");
+        }
+       
+     
+      }
+    });
     // console.log('editId componentDidMount', this.state.editId);
    
     if(this.state.editId){      
@@ -95,10 +123,7 @@ class Highlight extends Component{
       this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     });
 
-    var dateObj = new Date();
-    var momentObj = moment(dateObj);
-    var momentString = momentObj.format('YYYY-MM');
-
+    var momentString =  moment(new Date()).format('YYYY-MM'); 
     this.setState({
       dateofsubmission :momentString,
     })
@@ -113,18 +138,7 @@ class Highlight extends Component{
        /* "highlight_Image"  :this.refs.highlight_Image.value,
         "highlight_File"   :this.refs.highlight_File.value,*/
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+  
   }
 
   isNumberKey(evt){
@@ -157,11 +171,7 @@ class Highlight extends Component{
     // console.log("fileLocation ===============================",fileLocation);
     // console.log("ImageLocation ===============================",ImageLocation);
     event.preventDefault();
-    if(this.refs.dateofsubmission.value === ""  || this.refs.userName.value==="" )
-    {
-    if (this.validateFormReq() && this.validateForm()){
-     }
-    }else{
+    if($('#highlight').valid()){
       var highlightValues = {
         "center_ID"        :this.state.center_ID,
         "centerName"       :this.state.centerName,
@@ -170,11 +180,7 @@ class Highlight extends Component{
         "highlight_Image"  :this.state.ImageLocation,
         "highlight_File"   :this.state.fileLocation,
       };
-      let fields = {};
-      fields["dateofsubmission"]      = "";
-      fields["userName"]              = "";
-      fields["highlight_Image"]       = "";
-      fields["highlight_File"]        = "";
+     
       axios.post('/api/highlights', highlightValues)
         .then((response)=>{
         // console.log('response', response);
@@ -188,22 +194,17 @@ class Highlight extends Component{
           console.log("error = ",error);
         });
       this.setState({
-        "dateofsubmission"  :"",
+        "dateofsubmission"  : moment(new Date()).format('YYYY-MM'),
         "userName"          :"",
         "ImageLocation"     :"",
         "fileLocation"      :"",
-        fields              :fields
       });
-    }    
+    }
   }
 
   Update(event){
     event.preventDefault();
-    if(this.refs.dateofsubmission.value === "" || this.refs.userName.value==="" )
-    {
-    if (this.validateFormReq() && this.validateForm()){
-     }
-    }else{
+    if($('#highlight').valid()){
       var highlightValues = {
         "highlight_ID"     :this.state.editId, 
         "center_ID"        :this.state.center_ID,
@@ -213,9 +214,6 @@ class Highlight extends Component{
       /*  "highlight_Image"  :this.refs.highlight_Image.value,
         "highlight_File"   :this.refs.highlight_File.value,*/
       };
-      let fields = {};
-      fields["dateofsubmission"]    = "";
-      fields["userName"]            = "";
 
       console.log('highlightValues', highlightValues);
 
@@ -231,49 +229,19 @@ class Highlight extends Component{
           console.log("error = ",error);
         });
       this.setState({
-        "dateofsubmission"     :"",
+        "dateofsubmission"     : moment(new Date()).format('YYYY-MM'),
         "userName"             :"",
         "highlight_Image"      :"",
         "highlight_File"       :"",
-        fields                 :fields
       });
       this.props.history.push('/highlight');
       this.setState({
         "editId"               : "",
       });
-    }    
+    }
   }
 
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    if (!fields["dateofsubmission"]) {
-      formIsValid = false;
-      errors["dateofsubmission"] = "This field is required.";
-    }     
-    if (!fields["userName"]) {
-      formIsValid = false;
-      errors["userName"] = "This field is required.";
-    }          
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
-
-  validateForm(){
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
-
+  
   edit(id){
     axios({
       method: 'get',
@@ -350,18 +318,16 @@ class Highlight extends Component{
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12  ">
                         <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12  valid_box">
-                          <label className="formLable">Date of Submission</label>
+                          <label className="formLable">Date of Submission</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofsubmission" >
                             <input type="month" className="form-control inputBox toUpper" name="dateofsubmission" ref="dateofsubmission" value={this.state.dateofsubmission} onChange={this.handleChange.bind(this)}/>
                           </div>
-                          <div className="errorMsg">{this.state.errors.dateofsubmission}</div>
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">User Name</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="userName" >
                             <input type="text" className="form-control inputBox " ref="userName" name="userName" value={this.state.userName} onChange={this.handleChange.bind(this)} />
                           </div>
-                          <div className="errorMsg">{this.state.errors.userName}</div>
                         </div>
                       </div><br/>
                       <AddFilePublic

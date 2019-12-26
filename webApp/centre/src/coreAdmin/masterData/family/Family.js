@@ -36,7 +36,7 @@ class Family extends Component{
       "specialCategory"      :"",
       "listofDistrict"       :"",
       "listofBlocks"         :"",
-      "listofVillages"       :"",
+      "listofVillages"       :"-- Select --",
       fields: {},
       errors: {},
       "tableObjects"         : {
@@ -140,6 +140,15 @@ class Family extends Component{
     $.validator.addMethod("regxcontact", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter a valid Contact Number.");
+       $.validator.addMethod("regxsurnameOfFH", function(value, element, regexpr) {         
+      return regexpr.test(value); 
+    }, "Please enter a valid Surname.");
+       $.validator.addMethod("regxfirstNameOfFH", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter a valid First Name.");
+       $.validator.addMethod("regxmiddleNameOfFH", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter a valid Middle Name.");
       
 
         $("#createFamily").validate({
@@ -152,22 +161,29 @@ class Family extends Component{
             },
             uID: {
               required: true,
-          regxUID: /^[_0-9]*((-|\s)*[_0-9]){12}$|^$/,
+              regxUID: /^[_0-9]*((-|\s)*[_0-9]){12}$|^$/,
             },
             caste: {
               required: true,
             },
             surnameOfFH: {
               required: true,
+              regxsurnameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
+
             },
             firstNameOfFH: {
               required: true,
+              regxfirstNameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
+
             },
             middleNameOfFH: {
               required: true,
+              regxmiddleNameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
+
             },
             village: {
               required: true,
+
             },
             contact: {
               required: true,
@@ -576,9 +592,13 @@ class Family extends Component{
       var selectedDistrict = this.state.district;
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
-        selectedDistrict :selectedDistrict
+        selectedDistrict :selectedDistrict,
+        //listofBlocks :"",
+        village : '-- Select --',
+        block : '-- Select --',
+        listofVillages :[]
       },()=>{
-      // console.log('selectedDistrict',this.state.selectedDistrict);
+       console.log('selectedDistrict,listofBlocks',this.state.selectedDistrict,this.state.listofVillages);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
@@ -843,6 +863,7 @@ class Family extends Component{
                                 <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   {
+
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                     this.state.listofBlocks.map((data, index)=>{
                                       return(
@@ -862,7 +883,7 @@ class Family extends Component{
                                 <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   {
-                                    this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                    this.state.listofVillages!== "-- Select --" && this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                     this.state.listofVillages.map((data, index)=>{
                                       return(
                                         <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>

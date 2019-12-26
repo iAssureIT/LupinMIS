@@ -15,7 +15,7 @@ class ProjectMapping extends Component{
       "startDate"          : "",
       "endDate"            : "",
       "projectName"        : "",
-      "projectType"        : "",
+      "projectType"        : "-- Select --",
       // "sector"             : "",
       // "activity"           : "",
       // "uID"                : "",
@@ -60,18 +60,7 @@ class ProjectMapping extends Component{
       "startDate"                 : this.refs.startDate.value,          
       "endDate"                   : this.refs.endDate.value,          
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+   
   }
 
 
@@ -140,7 +129,7 @@ class ProjectMapping extends Component{
  
   Submit(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    if($('#sectorMapping').valid()){
       if (this.state.sectorData.length===0){      
         swal({
           title: 'abc',
@@ -157,11 +146,7 @@ class ProjectMapping extends Component{
           "sector"       : this.state.sectorData                
         };
         // console.log("mappingValues",mappingValues);
-        let fields = {};
-        fields["projectName"]  = "";
-        fields["projectType"]  = "";
-        fields["startDate"]    = "";
-        fields["endDate"]      = "";
+      
         axios.post('/api/projectMappings',mappingValues)
           .then((response)=>{
             console.log("response",response)
@@ -178,11 +163,10 @@ class ProjectMapping extends Component{
 
         this.setState({
           "projectName"           :"",
-          "projectType"           :"",
+          "projectType"           :"-- Select --",
           "startDate"             :"",
           "endDate"               :"",
           "sectorData"            :[],
-          fields                  :fields
         });
         
       }
@@ -190,11 +174,7 @@ class ProjectMapping extends Component{
   }
   Update(event){
     event.preventDefault();
-    if(this.refs.projectName.value === "" || this.refs.projectType.value ==="")
-    {
-      if (this.validateFormReq() && this.validateForm()){
-      }
-    }else{
+    if($('#sectorMapping').valid()){
     var mappingValues= 
     {     
       "projectMapping_ID"   : this.state.editId,    
@@ -204,11 +184,6 @@ class ProjectMapping extends Component{
       "type_ID"             : this.refs.projectType.value,           
       "sector"              : this.state.sectorData             
     };
-    let fields = {};
-    fields["projectName"]  = "";
-    fields["projectType"]  = "";
-    fields["startDate"]    = "";
-    fields["endDate"]      = "";
 
     axios.patch('/api/projectMappings/update',mappingValues)
       .then((response)=>{
@@ -225,60 +200,19 @@ class ProjectMapping extends Component{
       });
       this.setState({
         "projectName"           : "",
-        "projectType"           : "",
+        "projectType"           : "-- Select --",
         "startDate"             :"",
         "endDate"               :"",
         "sectorData"            :[],
-        "fields"                : fields
       });
-    }   
-    
-    this.props.history.push('/project-mapping');
-    this.setState({
-      "editId"              : "",
-    });
+      this.props.history.push('/project-mapping');
+      this.setState({
+        "editId"              : "",
+      });
+    }
   }
 
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    
-      if (!fields["projectName"]) {
-        formIsValid = false;
-        errors["projectName"] = "This field is required.";
-      }     
-      if (!fields["projectType"]) {
-        formIsValid = false;
-        errors["projectType"] = "This field is required.";
-      } 
-    /*  
-      if (!fields["endDate"]) {
-        formIsValid = false;
-        errors["endDate"] = "This field is required.";
-      }     
-      if (!fields["startDate"]) {
-        formIsValid = false;
-        errors["startDate"] = "This field is required.";
-      } */
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-  
-  validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
+ 
 
   componentWillReceiveProps(nextProps){
     this.currentFromDate();
@@ -300,6 +234,30 @@ class ProjectMapping extends Component{
 
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Project Name.");
+
+
+    $("#sectorMapping").validate({
+      rules: {
+        projectType: {
+          required: true,
+        },
+        projectName: {
+          required: true,
+          regxtypeofCenter: /^[A-za-z']+( [A-Za-z']+)*$/,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "projectType"){
+          error.insertAfter("#projectType");
+        }
+        if (element.attr("name") == "projectName"){
+          error.insertAfter("#projectName");
+        }
+      }
+    });
     this.currentFromDate();
     this.currentToDate();
     this.getTypeOfGoal();
@@ -361,13 +319,7 @@ class ProjectMapping extends Component{
         "sectorData"                 :editData.sector, 
         "availableSectors"           :availableSectors
       });
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
+      
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -567,7 +519,7 @@ class ProjectMapping extends Component{
   }
 
   selectSubactivity(event){
-    var checkedValue = event.target.value;
+    var checkedValue         = event.target.value;
     var subActivityIndex     = event.target.getAttribute('data-index');
     var sectorIndex          = event.target.getAttribute('data-txt');
     var activityIndex        = event.target.getAttribute('data-actindex');
@@ -738,15 +690,12 @@ class ProjectMapping extends Component{
                     </div>
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable  ">
-                        <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
+                        <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">Type of Goal/Project</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectType" >
                             <select className="custom-select form-control inputBox" ref="projectType" name="projectType" value={this.state.projectType} onChange={this.selectType.bind(this)}>
-                              <option  className="hidden" >-- Select --</option>
-                              {/*<option>SDG Goal</option>
-                              <option>ADP Goal</option>
-                              <option>Empowerment Line Goal</option>
-                              <option>Project Name</option>*/}
+                              <option disabled="disabled" selected="true" >-- Select --</option>
+                             
                               {
                                 this.state.listofTypes ?
                                 this.state.listofTypes.map((data, index)=>{
@@ -759,7 +708,6 @@ class ProjectMapping extends Component{
                               }
                             </select>
                           </div>
-                          <div className="errorMsg">{this.state.errors.projectType}</div>
                         </div>
                         
                         <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
@@ -777,14 +725,12 @@ class ProjectMapping extends Component{
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" >
                                 <input onChange={this.handleFromChange.bind(this)}  onBlur={this.onBlurEventFrom.bind(this)} name="fromDateCustomised" id="startDate"  ref="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                             </div>
-                          <div className="errorMsg">{this.state.errors.startDate}</div>
                         </div>
                         <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">End Date</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main"  >
                                 <input onChange={this.handleToChange.bind(this)}  onBlur={this.onBlurEventTo.bind(this)} id="endDate" name="toDateCustomised" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                             </div>
-                          <div className="errorMsg">{this.state.errors.endDate}</div>
                         </div>  
                       </div> 
                     </div><br/>

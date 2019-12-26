@@ -100,16 +100,29 @@
 .totalrow{
   background-color: #ddd;
 }
+
+/*.scrollContent {
+  display: block;
+  height: 262px;
+  overflow: auto;
+  width: 100%
+}
+
+.fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}*/
+
 /*
 .scrollContent {
 
   height: 262px !important;
   overflow: auto !important;
-  width: 100% !important;
 }
 
 .fixedHeader {
   display: table !important;
   overflow: auto !important;
-  width: 100% !important;
-}*/
+}
+*/

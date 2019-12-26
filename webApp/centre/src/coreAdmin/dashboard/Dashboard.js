@@ -3,12 +3,6 @@ import React,{Component} from 'react';
 import axios             from 'axios';
 import { render } from 'react-dom';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
-
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
 import html2canvas from 'html2canvas';
 import Chart from 'chart.js';
 import StatusComponent from './StatusComponent/StatusComponent.js'
@@ -19,8 +13,14 @@ import BarChart from './chart1/BarChart.js';
 import PieChart from './chart1/PieChart.js';
 import CenterWisePieChart from './chart1/CenterWisePieChart.js';
 import {HorizontalBar} from 'react-chartjs-2';
-import './Dashboard.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
+
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
 import {Bar} from 'react-chartjs-2';
+import './Dashboard.css';
 
 
 const data = {

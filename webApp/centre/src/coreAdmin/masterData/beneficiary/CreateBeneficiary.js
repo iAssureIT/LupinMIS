@@ -232,19 +232,38 @@ class Beneficiary extends Component{
   }
 
   validateForm() {
-    let fields = this.state.fields;
+   let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+      if (typeof fields["surnameOfBeneficiary"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["surnameOfBeneficiary"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["surnameOfBeneficiary"] = "Please enter valid Surname.";
+        }
+      }
+      if (typeof fields["firstNameOfBeneficiary"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["firstNameOfBeneficiary"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["firstNameOfBeneficiary"] = "Please enter valid First Name.";
+        }
+      }
+      if (typeof fields["middleNameOfBeneficiary"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["middleNameOfBeneficiary"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["middleNameOfBeneficiary"] = "Please enter valid Middle Name.";
+        }
+      }
+      if (typeof fields["relation"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["relation"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["relation"] = "Please enter valid Relation.";
+        }
+      }
     $("html,body").scrollTop(0);
-   
-    // if (typeof fields["nameofbeneficiaries"] !== "undefined") {
-    //   // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-    //   if (!fields["nameofbeneficiaries"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-    //     formIsValid = false;
-    //     errors["nameofbeneficiaries"] = "Please enter valid Name.";
-    //   }
-    // }
-
       this.setState({
         errors: errors
       });

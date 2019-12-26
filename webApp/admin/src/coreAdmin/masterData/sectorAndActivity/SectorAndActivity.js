@@ -99,7 +99,7 @@ class SectorAndActivity extends Component{
                                   </a>
                               </li>
                               <li className="col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab cntry">
-                                  <a  href="#subactivity" data-toggle="tab"   onClick={()=>this.changeTab('subactivity')} >
+                                  <a  href="#subactivity" data-toggle="tab"   onClick={()=>this.changeTab('subactivity')}>
                                     Sub-Activity
                                   </a>
                               </li>
