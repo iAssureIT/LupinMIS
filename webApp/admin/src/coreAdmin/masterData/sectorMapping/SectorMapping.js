@@ -342,7 +342,7 @@ class SectorMapping extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> { 
-      console.log("sectors",response.data);
+      // console.log("sectors",response.data);
       var sortArray= (response.data).sort(function(a,b){
         return( (a.activity).length - (b.activity).length); //ASC, For Descending order use: b - a
       });  
@@ -395,17 +395,17 @@ class SectorMapping extends Component{
     var selectedType = event.currentTarget.value;
     var selectedTypeofGoal     =$(event.currentTarget).find('option:selected').attr('data-name')
     // var selectedTypeofGoal     = event.currentTarget.getAttribute('data-name');
-    console.log("selectedTypeofGoal",selectedTypeofGoal)
+    // console.log("selectedTypeofGoal",selectedTypeofGoal)
 
     this.setState({
       goalType : selectedType,
       selectedTypeofGoal : selectedTypeofGoal,
+      goalName : '-- Select --',
     });
   }
 
   render() {
-    console.log("selectedTypeofGoal",this.state.selectedTypeofGoal)
-
+    // console.log("selectedTypeofGoal",this.state.selectedTypeofGoal)
     return(
       <div className="container-fluid">
         <div className="row">

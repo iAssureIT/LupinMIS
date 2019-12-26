@@ -233,6 +233,7 @@ class Activity extends Component{
                 subActivityDetails : "",
                 subactivity : "-- Select --",
                 activity    : '-- Select --',
+                availableSubActivity : [],
                 sector_ID : array[0]._id
               },()=>{
                 this.getAvailableActivity(array[0]._id)
@@ -918,6 +919,7 @@ class Activity extends Component{
       activity           : '-- Select --',
       subActivityDetails : "",
       subactivity : "-- Select --",
+      availableSubActivity : []
     })
     this.handleChange(event);
     this.getAvailableActivity(sector_ID);
@@ -1040,6 +1042,7 @@ class Activity extends Component{
       district: district,
       block : '-- Select --',
       village : '-- Select --',
+      listofVillages : []
     },()=>{
       var selectedDistrict = this.state.district;
       // console.log("selectedDistrict",selectedDistrict);
@@ -1143,6 +1146,12 @@ class Activity extends Component{
     this.getAvailableSectors()
     this.setState({
       [event.target.name] : event.target.value,
+      sector : '-- Select --',
+      availableActivity: [],
+      availableSubActivity: [],
+      subActivityDetails : "",
+      subactivity : "-- Select --",
+      activity    : '-- Select --',
     },()=>{
       if (this.state.projectCategoryType == "LHWRF Grant") {
         this.setState({

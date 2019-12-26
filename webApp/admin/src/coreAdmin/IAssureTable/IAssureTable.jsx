@@ -128,7 +128,7 @@ class IAssureTable extends Component {
 	        method: 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
-	    	this.props.isDeleted()
+	    	// this.props.isDeleted()
 	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        swal({
 	        	text : response.data.message,

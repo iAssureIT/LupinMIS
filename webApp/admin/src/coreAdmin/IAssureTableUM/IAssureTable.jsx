@@ -383,6 +383,7 @@ class IAssureTableUM extends Component {
 			// "startRange":0
 		},()=>{
 			// this.paginationFunction();
+			console.log('this.state.normalData',this.state.normalData,this.state.searchData)
 			if(this.state.normalData === true){
 				this.props.getData(startRange, this.state.limitRange);
 			}	
@@ -769,28 +770,32 @@ class IAssureTableUM extends Component {
 
 
     checkAll(event) {
-      let allid =[];
       if(event.target.checked){
-        allid = this.state.tableData.map((a,i)=>{
+        let allid = this.state.tableData.map((a,i)=>{
         	this.setState({
 	        	[a._id] : true,
 	        })
         	return a._id;
         });
+        this.setState({
+    	  allid : allid
+        },()=>{
+    	  // console.log("here id=======================",this.state.allid);
+    	  this.props.selectedUser(this.state.allid);
+        })
       }else{
-        allid = this.state.tableData.map((a,i)=>{
+        this.state.tableData.map((a,i)=>{
         	this.setState({
 	        	[a._id] : false,
 	        })
-        	return a._id;
         });
+        this.setState({
+    	  allid : []
+        },()=>{
+    	 // console.log("here id=======================",this.state.allid);
+    	 this.props.selectedUser(this.state.allid);
+        })
       }
-      this.setState({
-    	allid : allid,
-      },()=>{
-    	// console.log("here id=======================",this.state.allid);
-    	this.props.selectedUser(this.state.allid);
-      })
     }
     
     uncheckAll(){
