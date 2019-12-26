@@ -42,32 +42,33 @@ class IAssureTable extends Component {
 		var tableHeading = Object.keys(props.tableHeading);
 		var index = 0;
 		// console.log("props.twoLevelHeader.firstHeaderData",props.twoLevelHeader.firstHeaderData.length);
-       if (props.twoLevelHeader.firstHeaderData && props.twoLevelHeader.firstHeaderData.length > 0) {
-			for(let j=0; j< props.twoLevelHeader.firstHeaderData.length; j++){
-				var mergCol = props.twoLevelHeader.firstHeaderData[j].mergedColoums;
-				if(j===1){
-					mergCol--;
-				}
-
-				for(let k=0; k<mergCol; k++){
-					if(props.twoLevelHeader.firstHeaderData[j].hide){
-						var phElem = {col:tableHeading[index], printhide:"printhide"};
-					}else{
-						var phElem = {col:tableHeading[index], printhide:""};
+		if (props.twoLevelHeader) {
+	       if (props.twoLevelHeader.firstHeaderData && props.twoLevelHeader.firstHeaderData.length > 0) {
+				for(let j=0; j< props.twoLevelHeader.firstHeaderData.length; j++){
+					var mergCol = props.twoLevelHeader.firstHeaderData[j].mergedColoums;
+					if(j===1){
+						mergCol--;
 					}
 
-					this.state.printhideArray.push(phElem);
-					// console.log(index," this.state.printhideArray = ",phElem);
-					index++;
+					for(let k=0; k<mergCol; k++){
+						if(props.twoLevelHeader.firstHeaderData[j].hide){
+							var phElem = {col:tableHeading[index], printhide:"printhide"};
+						}else{
+							var phElem = {col:tableHeading[index], printhide:""};
+						}
+
+						this.state.printhideArray.push(phElem);
+						// console.log(index," this.state.printhideArray = ",phElem);
+						index++;
+					}
 				}
-			}
 
-			if(index === tableHeading.length){
-				// console.log("this.state.printhideArray = ",this.state.printhideArray);
-			}
+				if(index === tableHeading.length){
+					// console.log("this.state.printhideArray = ",this.state.printhideArray);
+				}
 
-       }
-
+	       }
+	    }
 
 	}
  

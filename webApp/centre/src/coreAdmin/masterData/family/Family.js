@@ -897,7 +897,7 @@ class Family extends Component{
                           tableObjects={this.state.tableObjects}                          
                         />
                     </div>
-
+ 
                     </div>
                     <div id="bulk" className="tab-pane fade in ">
                       <BulkUpload url="/api/families/bulk_upload_families" 
