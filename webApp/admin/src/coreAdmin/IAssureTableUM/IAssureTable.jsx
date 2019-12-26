@@ -375,15 +375,18 @@ class IAssureTableUM extends Component {
 	}
 	setLimit(event){
 		event.preventDefault();
-		console.log('this.refs.limitRange.value',this.refs.limitRange.value)
-		var limitRange = parseInt(this.refs.limitRange.value);
+		// console.log('this.refs.limitRange.value',this.refs.limitRange.value)
+		if(this.refs.limitRange.value==='All'){
+			var limitRange = '';
+		}else{
+			var limitRange = parseInt(this.refs.limitRange.value);
+		}
 		var startRange = 0;
 		this.setState({
 			"limitRange":limitRange,
-			// "startRange":0
 		},()=>{
 			// this.paginationFunction();
-			console.log('this.state.normalData',this.state.normalData,this.state.searchData)
+			// console.log('this.state.normalData',this.state.normalData,this.state.searchData)
 			if(this.state.normalData === true){
 				this.props.getData(startRange, this.state.limitRange);
 			}	
@@ -864,6 +867,7 @@ class IAssureTableUM extends Component {
 							<option value={50}>50</option>
 							<option value={100}>100</option>
 							<option value={500}>500</option>
+							<option value='All'>All</option>
 						</select>
 					</div>
 				</div>           

@@ -33,8 +33,7 @@ class UMListOfUsers extends Component {
                 actions        	: 'Action',
             },
             "startRange"        : 0,
-            "limitRange"        : 100, 
-
+            "limitRange"        : 10, 
             blockActive			: "all",
             "listofRoles"	    : "",
 
@@ -64,44 +63,16 @@ class UMListOfUsers extends Component {
 			"startRange"        : this.state.startRange,
             "limitRange"        : this.state.limitRange, 
 		}
-		axios.post('/api/users/userslist', data)
-		.then( (res)=>{      
-			// console.log("res =============",res.data);
-			var tableData = res.data.map((a, i)=>{
-				return {
-					_id 			: a._id,
-					firstName		:a.firstName,
-					lastName		:a.lastName,
-					fullName        : a.fullName,
-	                emailId    		: a.emailId,
-	                mobileNumber    : a.mobileNumber, 
-	                status        	: a.status,	
-	                roles 			: a.roles,
-					centerName 	    : a.centerName,
-				}
-			})
-			this.setState({
-	          completeDataCount : res.data.length,
-	          tableData 		: tableData,          
-	        },()=>{
-	        	// console.log('tableData', this.state.tableData);
-	        })
-		})
-		.catch((error)=>{
-			// console.log("error = ",error);
-			// alert("Something went wrong! Please check Get URL.");
-		});
-		// this.getData(this.state.startRange, this.state.limitRange)
+		this.getData(this.state.startRange, this.state.limitRange)
 	}
 	getData(startRange, limitRange){    
-		console.log('startRange, limitRange',startRange, limitRange)
 		var data = {
-			"startRange"        : startRange,
-            "limitRange"        : limitRange, 
+			"startRange"        : parseInt(startRange),
+            "limitRange"        : parseInt(limitRange), 
 		}    
        axios.post('/api/users/userslist', data)
         .then( (res)=>{  
-        	console.log('res.data',res.data.length)
+        	// console.log('res.data',res.data.length)
         	var tableData = res.data.map((a, i)=>{
 				return {
 					_id 			: a._id,

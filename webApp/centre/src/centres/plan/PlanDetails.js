@@ -758,7 +758,7 @@ class PlanDetails extends Component{
     }
     axios.post('/api/sectors/activity',data)
     .then((response)=> {
-      console.log('response.data',response.data)
+      // console.log('response.data',response.data)
       if(response&&response.data){
         var newavailableSubActivity = response.data.map((data,index)=>{
           data.physicalUnit = 0;
