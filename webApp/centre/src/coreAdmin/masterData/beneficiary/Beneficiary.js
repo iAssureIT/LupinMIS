@@ -313,7 +313,6 @@ class Beneficiary extends Component{
       return regexpr.test(value);
     }, "Please enter valid Relation.");
 
-
         $("#createBeneficiary").validate({
           rules: {
             uidNumber: {

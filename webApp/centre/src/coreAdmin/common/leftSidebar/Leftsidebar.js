@@ -81,6 +81,18 @@ export default class Leftsidebar extends Component{
                         <i className="fa fa-pie-chart" />
                         Add New Plan
                       </Link>
+                    </li>
+                    <li className="sidebarMenuText">
+                      <Link to="/filewise-plan-list" >
+                        <i className="fa fa-circle-o" />
+                        Filewise Annual Plans
+                      </Link>
+                    </li>
+                    <li className="sidebarMenuText">
+                      <Link to="/filewise-monthly-plan-list" >
+                        <i className="fa fa-circle-o" />
+                        Filewise Monthly Plans
+                      </Link>
                     </li>                  
                     <li>
                       <Link to="/activitywise-annual-plan-report" title="Activity Annual Plan">
@@ -123,7 +135,14 @@ export default class Leftsidebar extends Component{
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Submit Activity</span>
                       </Link>
-                    </li>                   
+                    </li> 
+                    <li>
+                      <Link to="/Filewise-activity-list">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Filewise Activities</span>
+                      </Link>
+                    </li>  
+                                     
                     <li>
                       <Link to="/viewActivity" title="View all Activities">
                         <i className="fa fa-circle-o" />
@@ -254,11 +273,24 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
+                      <Link to="/Filewise-family-list">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Filewise Family List</span>
+                      </Link>
+                    </li>
+                    
+                    <li>
                       <Link to="beneficiary" title="Create Beneficiary">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Create Beneficiary</span>
                       </Link>
-                    </li>             
+                    </li> 
+                    <li>
+                      <Link to="/Filewise-beneficiary-list">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Filewise Beneficiary List</span>
+                      </Link>
+                    </li>            
                   </ul>
                 </li> 
 

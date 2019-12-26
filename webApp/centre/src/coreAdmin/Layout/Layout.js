@@ -24,13 +24,21 @@ import Leftsidebar                                from '../common/leftSidebar/Le
 import Rightsidebar                               from '../common/rightSidebar/Rightsidebar.js'
 
 import Family                                     from '../../coreAdmin/masterData/family/Family.js';
+import FilewiseFamilyList                         from '../../coreAdmin/masterData/family/FilewiseFamilyList.js';
+
 import Beneficiary                                from '../../coreAdmin/masterData/beneficiary/Beneficiary.js';
+import FilewiseBeneficiaryList                    from "../../coreAdmin/masterData/beneficiary/FilewiseBeneficiaryList.js";
 
 import Activity                                   from "../../centres/activity/createActivityReport/Activity.js";
+import FilewiseActivityList                       from "../../centres/activity/filewiselist/FilewiseActivityList.js";
+
 import ViewActivity                               from "../../centres/activity/viewActivity/ViewActivity.js";
 import ActivityReportView                         from "../../centres/activityReportView/ActivityReportView.js";
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import Plan                                       from "../../centres/plan/PlanDetails.js";
+import FileWisePlanList                           from "../../centres/plan/FileWisePlanList.js";
+import FileWiseMonthlyPlanList                    from "../../centres/plan/FileWiseMonthlyPlanList.js";
+
 import CaseStudyy                                 from "../../centres/caseStudy/CaseStudyy.js";
 import CaseStudy                                  from "../../centres/addFile/CaseStudy.js";
 import AddFilePrivate                             from "../../centres/addFile/AddFilePrivate.js";
@@ -135,15 +143,24 @@ class Layout extends Component{
                               <Route path="/beneficiary"                         exact strict component={ Beneficiary } />
                               <Route path="/beneficiary/"                        exact strict component={ Beneficiary } />
                               <Route path="/beneficiary/:id"                     exact strict component={ Beneficiary } />
+                              <Route path="/Filewise-beneficiary-list"           exact strict component={ FilewiseBeneficiaryList } />
+                              
                               <Route path="/family"                              exact strict component={ Family } />
                               <Route path="/family/"                             exact strict component={ Family } />
                               <Route path="/family/:id"                          exact strict component={ Family } />
+                              <Route path="/Filewise-family-list"                exact strict component={ FilewiseFamilyList } />
+                              
                              {/*Plans Routes*/}
                               <Route path="/plan-details"                        exact strict component={ Plan } />
                               <Route path="/plan-details/"                       exact strict component={ Plan } />
                               <Route path="/plan-details/:id"                    exact strict component={ Plan } />
-                {/*                    <Route path="/table"                               exact strict component={ table } />*/}                
+                              <Route path="/filewise-plan-list"                  exact strict component={ FileWisePlanList } />
+                              <Route path="/filewise-monthly-plan-list"          exact strict component={ FileWiseMonthlyPlanList } />
+                {/*            <Route path="/table"                               exact strict component={ table } />*/}                
                               <Route path="/activity"                            exact strict component={ Activity } />
+                              
+                              <Route path="/Filewise-activity-list"              exact strict component={ FilewiseActivityList } />
+                              
                               <Route path="/activity/"                           exact strict component={ Activity } />
                               <Route path="/activity/:id"                        exact strict component={ Activity } />
                               <Route path="/viewActivity"                        exact strict component={ ViewActivity } />

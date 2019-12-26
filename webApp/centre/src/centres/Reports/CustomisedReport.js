@@ -12,7 +12,6 @@ export default class CustomisedReport extends Component{
             "tableDatas"        : this.props.tableDatas,
             "startRange"        : 0,
             "limitRange"        : 10
-            
         }
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
