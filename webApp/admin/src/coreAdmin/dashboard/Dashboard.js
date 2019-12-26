@@ -427,7 +427,7 @@ export default class Dashboard extends Component{
     if(startYear, endYear){
         axios.get('/api/report/dashboard/'+startYear+'/'+endYear)
         .then((response)=>{
-          // console.log("respgetData",response)
+          console.log("respgetData===================================",response)
           var month = [];
           var monthlyPlanReach = [];
           var monthlyAchievementReach = [];

@@ -36,7 +36,10 @@ class BulkUpload extends Component{
          this.handleFile(files[0]);
       }else{
         this.fileInput.value = '';
-        swal({text: "Invalid file format."})
+        swal({
+          title : "Invalid file format.",
+          text: "Invalid file format."
+        })
       }
     }
   }
@@ -215,7 +218,10 @@ class BulkUpload extends Component{
             
             this.fileInput.value = '';
             this.setState({inputFileData:[]});
-            swal({text: response.data.message})
+            swal({
+              title : response.data.message,
+              text  : response.data.message,
+            })
                         
             $('.filedetailsDiv').show()
             this.props.getFileDetails(this.state.fileName) 

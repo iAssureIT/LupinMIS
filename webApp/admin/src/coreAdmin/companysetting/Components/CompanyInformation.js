@@ -362,9 +362,9 @@ class CompanyInformation extends Component{
                         <div className="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <h5 className="formLable col-lg-12 col-md-12 col-sm-12 col-xs-12 row">Logo <span className="astrick">*</span></h5>
                         </div>
-                        <div className="containerC">
+                        <div className="containerC row">
                           <label id="logoImage" className="pull-right custFaTimes1" title="Delete image" onClick={this.deleteimagelogoDirect.bind(this)}>X</label>
-                          <img src={this.state.companyLogo} alt="logo_Lupin" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imageC"/>
+                          <img src={this.state.companyLogo} alt="logo_Lupin" className="row imageC"/>
                         </div>
                       </div>
                       :
