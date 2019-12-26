@@ -34,24 +34,24 @@ class Sector extends Component{
       "editId"              : props.match.params ? props.match.params.sectorId : ''
     }
   }
- 
+
   handleChange(event){
     event.preventDefault();
     this.setState({
-     "sector"   : this.refs.sector.value,  
+     "sector"   : this.refs.sector.value, 
     });
-    // let fields = this.state.fields;
-    // fields[event.target.name] = event.target.value;
-    // this.setState({
-    //   fields
-    // });
-    // if (this.validateForm()) {
-    //   let errors = {};
-    //   errors[event.target.name] = "";
-    //   this.setState({
-    //     errors: errors
-    //   });
-    // }
+    let fields = this.state.fields;
+    fields[event.target.name] = event.target.value;
+    this.setState({
+      fields
+    });
+    if (this.validateFormReq() && this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
   }
 
   isTextKey(evt) {
@@ -64,7 +64,7 @@ class Sector extends Component{
     else{
       return true;
     }
- 
+
   }
 
   SubmitSector(event){
@@ -75,7 +75,7 @@ class Sector extends Component{
     "user_ID"     : this.state.user_ID,
     };
 
-    
+   
     axios.post('/api/sectors',sectorValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
@@ -89,26 +89,26 @@ class Sector extends Component{
       });
       let fields       = {};
       fields["sector"] = "";
-   
+  
       this.setState({
         "sector"  :"",
         fields    :fields
       });
-    } 
+    }
   }
 
 
   updateSector(event){
     event.preventDefault();
       if (this.validateFormReq() && this.validateForm()) {
-   
+  
       var sectorValues= {
         "sector_ID"   :this.state.editId,
         "sector"      :this.refs.sector.value,
         "user_ID"     : this.state.user_ID,
       };
 
-      
+     
       axios.patch('/api/sectors/update',sectorValues, this.state.editId)
         .then((response)=>{
           this.getData(this.state.startRange, this.state.limitRange);
@@ -126,12 +126,12 @@ class Sector extends Component{
         });
         let fields = {};
         fields["sector"] = "";
-   
+  
       this.setState({
         "sector"  :"",
         fields:fields
       });
-    }     
+    }    
   }
   validateFormReq() {
     let fields = this.state.fields;
@@ -141,7 +141,7 @@ class Sector extends Component{
       if (!fields["sector"]) {
         formIsValid = false;
         errors["sector"] = "This field is required.";
-      }     
+      }    
       this.setState({
         errors: errors
       });
@@ -181,12 +181,12 @@ class Sector extends Component{
       this.getLength();
     }
   }
-  
+ 
   componentDidMount(){
   axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
   // console.log('componentDidMount', this.state.tableData);
     var editId = this.props.match.params.sectorId;
-    if(editId){      
+    if(editId){     
       this.edit(editId);
     }
     this.getLength();
@@ -198,11 +198,11 @@ class Sector extends Component{
       method: 'get',
       url: '/api/sectors/'+id,
     }).then((response)=> {
-      var editData = response.data[0];      
+      var editData = response.data[0];     
       this.setState({
         "sector"                :editData.sector,
       },()=>{
-        
+       
       });
       let fields = this.state.fields;
       let errors = {};
@@ -215,7 +215,7 @@ class Sector extends Component{
         console.log("error = ",error);
       });
   }
-  
+ 
   getData(startRange, limitRange){
     var data = {
       limitRange : limitRange,
@@ -279,27 +279,27 @@ class Sector extends Component{
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Name of Sector</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sector" >
-                     
+                    
                       <input type="text" className="form-control inputBox"  placeholder=""ref="sector" name="sector" value={this.state.sector} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
                     <div className="errorMsg">{this.state.errors.sector}</div>
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     {
-                      this.state.editId ? 
+                      this.state.editId ?
                       <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.updateSector.bind(this)}> Update</button>
                       :
                       <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitSector.bind(this)}> Submit</button>
                     }
-                  </div> 
-                </div> 
+                  </div>
+                </div>
               </div><br/>
-            </form>    
+            </form>   
             <div className="col-lg-12 ">
                <hr className=""/>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-              <IAssureTable 
+              <IAssureTable
                 tableHeading={this.state.tableHeading}
                 dataCount={this.state.dataCount}
                 tableData={this.state.tableData}
@@ -307,7 +307,7 @@ class Sector extends Component{
                 tableObjects={this.state.tableObjects}
                 // getSearchText={this.getSearchText.bind(this)}
               />
-            </div>              
+            </div>             
           </div>
         </div>
       </div>
@@ -317,3 +317,4 @@ class Sector extends Component{
 
 }
 export default withRouter(Sector);
+

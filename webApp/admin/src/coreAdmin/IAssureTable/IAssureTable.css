@@ -1,3 +1,6 @@
+.wrapText{
+  white-space: normal !important;
+}
 .tableDwld{
   font-size: 25px;
   border: 1px solid #eee;
