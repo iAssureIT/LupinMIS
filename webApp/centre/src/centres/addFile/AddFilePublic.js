@@ -279,7 +279,7 @@ class AddFile extends Component{
                       <div  className="col-lg-3 col-md-4 col-sm-12 col-xs-12" >
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
                           <h5 className="h5Title col-lg-10 col-md-10 col-sm-12 col-xs-12"> Image {index+1}</h5>
-                          <label id={index} className="pull-right custFaTimes crossLabel" title="Delete image" data-id={data.imgPath} onClick={this.deleteImage.bind(this)}>X</label>
+                          <label id={index} className="pull-right custFaTimes crossLabel" title="Delete image" data-id={data.imgPath} onClick={this.deleteImage.bind(this)}><i className="fa fa-times"></i></label>
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                           <div className="imgcss" >

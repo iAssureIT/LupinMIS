@@ -22,6 +22,7 @@ class IAssureTable extends Component {
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
 		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
 		    "tableObjects" 				: props && props.tableObjects ? props.tableObjects : {},		    
+		    "deleteMethod" 				: props && props.deleteMethod ? props.deleteMethod : {},		    
 		    "id" 			      	    : props && props.id ? props.id : {},		    
 		    "reA" 						: /[^a-zA-Z]/g,
 		    "reN" 						: /[^0-9]/g,
@@ -68,9 +69,7 @@ class IAssureTable extends Component {
 				}
 
 	       }
-
-			
-		}
+	    }
 
 	}
  
@@ -125,9 +124,10 @@ class IAssureTable extends Component {
     delete(e){
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
+	  	var deleteMethod =  this.props.deleteMethod;
 		let id = e.target.id;
 		axios({
-	        method: 'delete',
+	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
 	    	// this.props.isDeleted()
@@ -628,7 +628,7 @@ class IAssureTable extends Component {
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
 												<th key={index} colSpan={data.mergedColoums} className={"umDynamicHeader srpadd textAlignCenter " + (data.hide ? "printhide" :"")}>{data.heading}</th>			
-		                            		);		                            		
+		                            		);		                           		
 		                            	})	
 		                            	:
 		                            	null									

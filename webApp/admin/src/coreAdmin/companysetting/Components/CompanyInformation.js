@@ -357,13 +357,12 @@ class CompanyInformation extends Component{
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                     {this.state.companyLogo 
                       ? 
-                        // <img src={this.state.companyLogo} className="imageC"/>
                       <div className=" padTopC">
                         <div className="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <h5 className="formLable col-lg-12 col-md-12 col-sm-12 col-xs-12 row">Logo <span className="astrick">*</span></h5>
                         </div>
                         <div className="containerC row">
-                          <label id="logoImage" className="pull-right custFaTimes1" title="Delete image" onClick={this.deleteimagelogoDirect.bind(this)}>X</label>
+                          <label id="logoImage" className="pull-right custFaTimes1" title="Delete image" onClick={this.deleteimagelogoDirect.bind(this)}><i className="fa fa-times"></i></label>
                           <img src={this.state.companyLogo} alt="logo_Lupin" className="row imageC"/>
                         </div>
                       </div>
@@ -380,7 +379,7 @@ class CompanyInformation extends Component{
               </div>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp">
-              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div className="form-group valid_box col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >
                     Organization Name
@@ -398,15 +397,13 @@ class CompanyInformation extends Component{
                   )} 
                 </div>  
               </div>
-              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              {/*<div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >Organization ID</label><span className="astrick"></span>
                   <input id="companyId" value={this.state.companyId} onChange={this.handleChange.bind(this)} type="text" name="companyId" ref="companyId" className="form-control areaStaes inputBox-main" title="Company ID" autoComplete="off" disabled />
                 </div>  
-              </div>               
-            </div>
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm">
-              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              </div>          */}     
+              <div className="form-group valid_box col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >Contact Number</label><span className="astrick">*</span>
                   {/* <input className="form-control areaStaes inputBox-main" data-text="companyMobile" title="Please enter valid mobile number only" id="companyContactNumber" type="text" name="companyContactNumber" ref="companyContactNumber" value={this.state.companyContactNumber} aria-required="true" onChange={this.handleChange.bind(this)} required /> */}
@@ -416,13 +413,13 @@ class CompanyInformation extends Component{
                   )}
                 </div> 
               </div>
-              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div className="form-group valid_box col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >Alternate Contact Number</label>
                   <InputMask  mask="9999999999" className="form-control areaStaes inputBox-main" id="companyAltContactNumber" type="text" name="companyAltContactNumber" ref="companyAltContactNumber" value={this.state.companyAltContactNumber} aria-required="true" onChange={this.handleChange.bind(this)} />
                 </div> 
               </div>
-              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div className="form-group valid_box col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >Organization EmailID</label><span className="astrick">*</span>
                   <input className="form-control areaStaes inputBox-main" 
@@ -438,7 +435,7 @@ class CompanyInformation extends Component{
                   )}
                </div> 
               </div>
-              <div className="form-group valid_box col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div className="form-group valid_box col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 <div className="form-group">
                   <label className="control-label statelabel locationlabel" >Organization Website</label><span className="astrick">*</span>
                   <input className="form-control areaStaes inputBox-main" title="Please enter valid webside address"   data-text="companywebsitename"  id="companywebsite" type="text" name="companywebsite" ref="companywebsite" value={this.state.companywebsite} aria-required="true" onChange={this.handleChange.bind(this)} required/>

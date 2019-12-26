@@ -213,7 +213,7 @@ class AddFile extends Component{
                 <h5 className="formLable col-lg-12 col-md-12 col-sm-12 col-xs-12 row">Logo <span className="astrick">*</span></h5>
               </div>
               <div className="containerC row">
-                <label id="logoImage" className="custFaTimes1" title="Delete image" onClick={this.deleteimagelogoDirect.bind(this)}>X</label>
+                <label id="logoImage" className="custFaTimes1" title="Delete image" onClick={this.deleteimagelogoDirect.bind(this)}><i className="fa fa-times"></i></label>
                 <img src={this.state.logo} alt="logo_Lupin" className=" imageC row"/>
                 {/*<div className="middleC">
                     <div className="textC">
