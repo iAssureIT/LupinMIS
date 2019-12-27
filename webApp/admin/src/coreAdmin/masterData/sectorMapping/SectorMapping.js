@@ -24,8 +24,8 @@ class SectorMapping extends Component{
       fields               : {},
       errors               : {},
       "tableHeading"       : {
-        type               : "Type of Goal/Project",
-        goal               : "Goal /Project Name",
+        type               : "Goal Type",
+        goal               : "Goal Name",
         sectorName         : "Sector",
         activityName       : "Activity", 
         actions            : 'Action',
@@ -421,12 +421,12 @@ class SectorMapping extends Component{
                   </div>
                   <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="sectorMapping">                   
                     <div className="col-lg-12 ">
-                       <h4 className="pageSubHeader">Sector Mapping</h4>
+                       <h4 className="pageSubHeader">Goal Sector Mapping</h4>
                     </div>
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                         <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
-                          <label className="formLable">Type of Goal/Project</label><span className="asterix">*</span>
+                          <label className="formLable">Goal Type</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
                             <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
                               <option selected="true" disabled="disabled">-- Select --</option>
@@ -447,7 +447,7 @@ class SectorMapping extends Component{
                         {
                           this.state.selectedTypeofGoal ? 
                             <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
-                              <label className="formLable">Enter Goal / Project Name</label><span className="asterix">*</span>
+                              <label className="formLable">Goal Name</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="goalName" >
                                 {
                                   this.state.selectedTypeofGoal==="Empowerment Line" ? 

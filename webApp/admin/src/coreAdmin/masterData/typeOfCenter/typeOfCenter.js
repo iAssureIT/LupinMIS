@@ -21,7 +21,7 @@ class typeOfCenter extends Component{
       "fields"                : {},
       "errors"                : {},
       "tableHeading"        : {
-        typeofCenter        : "Type Of Center",
+        typeofCenter        : "Center Type",
         actions             : 'Action',
       },
       "tableObjects"        : {
@@ -141,7 +141,7 @@ class typeOfCenter extends Component{
     this.getData(this.state.startRange, this.state.limitRange);
     $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
       return regexpr.test(value);
-    }, "Please enter valid Type of Center.");
+    }, "Please enter valid Center Type.");
 
     $("#typeofCenterDetails").validate({
       rules: {
@@ -256,12 +256,12 @@ class typeOfCenter extends Component{
                     </div>
                     <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable " id="typeofCenterDetails">
                       <div className="col-lg-12 ">
-                        <h4 className="pageSubHeader">Type of Center</h4>
+                        <h4 className="pageSubHeader">Center Type</h4>
                       </div>
                       <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                            <label className="formLable"> Type of Center</label><span className="asterix">*</span>
+                            <label className="formLable"> Center Type</label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofCenterErr" >
                              
                               <input type="text" className="form-control inputBox"  placeholder="" ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />

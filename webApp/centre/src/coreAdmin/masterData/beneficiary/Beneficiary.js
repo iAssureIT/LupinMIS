@@ -15,10 +15,10 @@ class Beneficiary extends Component{
     super(props);
    
     this.state = {
+      "relation"            :"-- Select --",
       "familyID"            :"",
       "beneficiaryID"       :"",
       "nameofbeneficiaries" :"",
-      "relation"            :"",
       "fields"              : {},
       "errors"              : {},
       "tableHeading"        : {
@@ -309,9 +309,9 @@ class Beneficiary extends Component{
     $.validator.addMethod("regxmiddleNameOfBeneficiary", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Middle Name.");
-    $.validator.addMethod("regxrelation", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter valid Relation.");
+    // $.validator.addMethod("regxrelation", function(value, element, regexpr) {         
+    //   return regexpr.test(value);
+    // }, "Please enter valid Relation.");
 
         $("#createBeneficiary").validate({
           rules: {
@@ -331,12 +331,12 @@ class Beneficiary extends Component{
               regxfirstNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
             },
             middleNameOfBeneficiary: {
-              required: true,
+              // required: true,
               regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
             },
             relation: {
               required: true, 
-              regxrelation:/^[A-za-z']+( [A-Za-z']+)*$/,       
+              // regxrelation:/^[A-za-z']+( [A-Za-z']+)*$/,       
             },
           },
           errorPlacement: function(error, element) {
@@ -603,10 +603,22 @@ class Beneficiary extends Component{
                             <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
                               <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
-                                {/*<div className="input-group-addon inputIcon">
-                                  <i className="fa fa-graduation-cap fa"></i>
-                                </div>*/}
-                                <input type="text" className="form-control inputBox"  placeholder="" value={this.state.relation} ref="relation" name="relation" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
+                                <select className="custom-select form-control inputBox"ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
+                                  <option>-- Select --</option>
+                                  <option>Self</option>
+                                  <option>Wife</option>
+                                  <option>Husband</option>
+                                  <option>Son</option>
+                                  <option>Daughter</option>
+                                  <option>Father</option>
+                                  <option>Mother</option>
+                                  <option>Brother</option>
+                                  <option>Sister</option>
+                                  <option>Daughter in Law</option>
+                                  <option>Brother in Law</option>
+                                  <option>Grandson</option>
+                                  <option>Granddaughter</option>
+                                </select>
                               </div>
                             </div>
                           </div> 

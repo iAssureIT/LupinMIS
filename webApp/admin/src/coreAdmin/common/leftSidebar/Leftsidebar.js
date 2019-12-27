@@ -72,22 +72,23 @@ export default class Leftsidebar extends Component{
                     Dashboard
                   </Link>
                 </li>
-                <li className="sidebarMenuText">
-                  <Link to="/plan-details" title="Plan Details">
-                    <i className="fa fa-pie-chart" />
-                    Plan Details
-                  </Link>
-                </li>
+                
 
                 <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
                   <Link to="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent" title="Plan Related Reports">
                     <i className="fa fa-file" />
-                    Plan Related Reports
+                    Planning Management
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i> 
 
                   {/*      <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>*/}
                   </Link>
                   <ul className="collapse   list-unstyled activeClass" id="planreport">
+                    <li className="sidebarMenuText">
+                      <Link to="/plan-details" title="Plan Details">
+                        <i className="fa fa-pie-chart" />
+                        Annual & Monthly Plan
+                      </Link>
+                    </li>
                     <li>
                       <Link to="/activitywise-annual-plan-report" title="Activity Annual Plan">
                         <i className="fa fa-circle-o" />
@@ -117,7 +118,7 @@ export default class Leftsidebar extends Component{
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
                   <Link to="#report" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Reports">
                     <i className="fa fa-book" />
-                    Reports
+                    Reporting Management
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
                   <ul className="collapse list-unstyled activeClass" id="report">
@@ -183,102 +184,6 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li> 
-              {/*  <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
-                  <Link to="#planreport" data-toggle="collapse" aria-expanded="false" className="menuContent">
-                    <i className="fa fa-file" />
-                    Plan Related Reports
-                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i> 
-                  </Link>
-                  <ul className="collapse   list-unstyled" id="planreport">
-                    <li>
-                      <Link to="/activitywise-annual-plan-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activity wise Annual Plan</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/activity-wise-periodic-plan-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activity wise Peri. Plan</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/sector-wise-annual-plan-summary-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector wise Annual Plan</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/sector-wise-periodic-plan-summary-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector wise Peri. Plan</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li> 
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#report" data-toggle="collapse" className="menuContent"  aria-expanded="false">
-                    <i className="fa fa-book" />
-                    Reports
-                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
-                  </Link>
-                  <ul className="collapse list-unstyled" id="report">
-                    <li>
-                      <Link to="/activitywise-annual-completion-report">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Activity wise Annual Report</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/sector-wise-annual-completion-summary-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector wise Annual Report</span>
-                      </Link>
-                    </li>
-                   <li>
-                      <Link to="/activity-wise-periodic-variance-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activity wise Peri. Variance</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/sectorwise-periodic-variance-summary-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector wise Peri. Variance</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/activity-wise-periodic-physical-variance-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activity wise Peri. Physi. Vari.</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/geographical-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Geographical Report</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/category-wise-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Category wise Report</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/villagewise-family-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Village wise Family Report</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/upgraded-beneficiary-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Upgraded Beneficiary Report</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li> */}
                 <li className="sidebarMenuText treeview menu-open"  onClick={this.eventclk1.bind(this)}>
                   <Link to="#sreport" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Special Reports">
                     <i className="fa fa-bars" />
@@ -314,9 +219,9 @@ export default class Leftsidebar extends Component{
                   </Link>
                   <ul className="collapse   list-unstyled activeClass" id="MasterData">
                     <li>
-                      <Link to="/type-center" title="Type of Center">
+                      <Link to="/type-center" title="Center Type">
                         <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Type of Center</span>
+                        <span className="sidebarMenuSubText">Center Type</span>
                       </Link>
                     </li>
                     <li>
@@ -333,15 +238,15 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
-                      <Link to="/type-goal" title="Type of Goal">
+                      <Link to="/type-goal" title="Goal Type">
                         <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Type of Goal</span>
+                        <span className="sidebarMenuSubText">Goal Type</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/sector-mapping" title="Sector Mapping">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector Mapping</span>
+                        <span className="sidebarMenuSubText">Goal Sector Mapping</span>
                       </Link>
                     </li>
                     <li>
@@ -370,25 +275,6 @@ export default class Leftsidebar extends Component{
                     Training Center
                   </Link>
                 </li>*/}
-                
-               {/* <li className="sidebarMenuText">
-                  <Link to="#Access" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-user-circle" />
-                    Access Management
-                  </Link>
-                  <ul className="collapse list-unstyled" id="Access">
-                    <li>
-                      <Link to="/admin/AddModuleFacility">
-                        <i className="fa fa-circle-o" /> <span className="sidebarMenuText">Add Module Facility</span>
-                      </Link>
-                    </li> 
-                    <li>
-                      <Link to="/admin/AssignPermissionToModule"> 
-                        <i className="fa fa-circle-o" /><span className="sidebarMenuText">Assign Permissions</span>
-                      </Link>
-                    </li>    
-                  </ul>
-                </li>  */}                  
               </ul>
             </nav>
           </div>

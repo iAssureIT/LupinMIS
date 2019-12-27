@@ -60,8 +60,8 @@ class centerDetail extends Component{
                                     ]
       },
       "tableHeading"                : {
-        type                      : "Type of Center",
-        centerName                : "Name of Center",
+        type                      : "Center Type",
+        centerName                : "Center Name",
         places                    : "Address",
         centerInchargeDetail      : "Center Incharge Details",
         misCoordinatorDetail      : "MIS Coordinator Details",
@@ -852,13 +852,10 @@ class centerDetail extends Component{
                         <div className="row">
                           <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
-                              <label className="formLable">Select Type of Center</label><span className="asterix">*</span>
+                              <label className="formLable">Center Type</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeOfCenter" >
                                 <select className="custom-select form-control inputBox" value={this.state.typeOfCenter} ref="typeOfCenter" name="typeOfCenter" onChange={this.selectType.bind(this)} >
                                   <option   disabled="disabled" selected="true" value="--Select Center--">--Select Center--</option>
-                                  {/*<option  className="" >Development Center</option>
-                                      <option  className="" >CSR Center</option>
-                                      <option  className="" >ADP</option>*/}
                                   {
                                     this.state.listofTypes ?
                                     this.state.listofTypes.map((data, index)=>{
@@ -874,7 +871,7 @@ class centerDetail extends Component{
                               <div className="errorMsg">{this.state.errors.typeOfCenter}</div>
                             </div>
                             <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Name of Center</label><span className="asterix">*</span>
+                              <label className="formLable">Center Name</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="nameOfCenter" >
                                 <input type="text"   className="form-control inputBox "  value={this.state.nameOfCenter}  name="nameOfCenter" placeholder="" ref="nameOfCenter"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                               </div>

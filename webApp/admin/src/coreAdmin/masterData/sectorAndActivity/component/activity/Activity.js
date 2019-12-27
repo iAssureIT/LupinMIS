@@ -287,7 +287,7 @@ class Activity extends Component{
               <div className="row">
                 <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                   <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
-                    <label className="formLable">Select Sector Name</label><span className="asterix">*</span>
+                    <label className="formLable">Sector</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorError" >
                       <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)}>
                         <option  className="hidden" value="" >-- Select Sector--</option>

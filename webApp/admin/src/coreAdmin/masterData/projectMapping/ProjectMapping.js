@@ -26,8 +26,7 @@ class ProjectMapping extends Component{
       fields               : {},
       errors               : {},
       "tableHeading"       : {
-        type               : "Type of Project",
-        // goal               : "Project Name",
+        type               : "Goal Type",
         projectName        : "Project Name",
         startDate          : "Start Date",
         endDate            : "End Date",
@@ -690,8 +689,19 @@ class ProjectMapping extends Component{
                     </div>
                     <div className="row">
                       <div className=" col-lg-12 col-sm-12 col-xs-12 formLable  ">
+                                              
+                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
+                          <label className="formLable">Project Name</label><span className="asterix">*</span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="projectName" >
+                            {/*<div className="input-group-addon inputIcon">
+                              <i className="fa fa-graduation-cap fa"></i>
+                            </div>*/}
+                            <input type="text" className="form-control inputBox" value={this.state.projectName} onChange={this.handleChange.bind(this)}   placeholder="" name="projectName" ref="projectName" />
+                          </div>
+                          <div className="errorMsg">{this.state.errors.projectName}</div>
+                        </div>
                         <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
-                          <label className="formLable">Type of Goal/Project</label><span className="asterix">*</span>
+                          <label className="formLable">Goal Type</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectType" >
                             <select className="custom-select form-control inputBox" ref="projectType" name="projectType" value={this.state.projectType} onChange={this.selectType.bind(this)}>
                               <option disabled="disabled" selected="true" >-- Select --</option>
@@ -708,18 +718,7 @@ class ProjectMapping extends Component{
                               }
                             </select>
                           </div>
-                        </div>
-                        
-                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Enter Project Name</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="projectName" >
-                            {/*<div className="input-group-addon inputIcon">
-                              <i className="fa fa-graduation-cap fa"></i>
-                            </div>*/}
-                            <input type="text" className="form-control inputBox" value={this.state.projectName} onChange={this.handleChange.bind(this)}   placeholder="" name="projectName" ref="projectName" />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.projectName}</div>
-                        </div>
+                        </div>  
                         <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">Start Date</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" >
