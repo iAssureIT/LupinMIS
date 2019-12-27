@@ -178,6 +178,7 @@ input, select{
 .formLable{
   font-family:'Montserrat',sans-serif !important;
   font-size: 12px !important;
+  text-align: left!important;
   color: #333333;
   font-weight: normal;
 }
@@ -224,11 +225,9 @@ input, select{
 /*input icon*/
 .inputIcon{
   height: 30px !important;
-  font-size: 18px !important;
-  color: #979797 !important;
   background-color: #ffffff !important;
   border: none !important;
-  border-right: 1px solid #979797 !important;
+  border-left: 1px solid #979797 !important;
 }
 .fa-calendar{
   font-size: 12px;

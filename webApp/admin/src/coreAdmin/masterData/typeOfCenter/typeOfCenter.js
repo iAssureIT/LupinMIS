@@ -43,6 +43,18 @@ class typeOfCenter extends Component{
     this.setState({
      "typeofCenter"   : this.refs.typeofCenter.value,  
     });
+      let fields = this.state.fields;
+    fields[event.target.name] = event.target.value;
+    this.setState({
+      fields
+    });
+    if (this.validateFormReq() && this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
   }
 
   isTextKey(evt) {
@@ -60,7 +72,7 @@ class typeOfCenter extends Component{
 
   SubmitType_Center(event){
     event.preventDefault();
-    if($('#typeofCenterDetails').valid()){
+    if (this.validateFormReq() && this.validateForm()) {
       var typeofCenterValues= {
       "typeofCenter"      :this.refs.typeofCenter.value,
       "user_ID"          : this.state.user_ID,
@@ -80,14 +92,20 @@ class typeOfCenter extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
-      });      
+      });  
+        let fields                 = {};
+        fields["typeofCenter"] = "";
+        
+        this.setState({
+          "fields"         :fields
+        });    
     } 
   }
 
 
   updateType_Center(event){
     event.preventDefault();
-    if ($('#typeofCenterDetails').valid()) {
+    if (this.validateFormReq() && this.validateForm()) {
       var typeofCenterValues= {
         "ID"               : this.state.editId,
         "typeofCenter"     : this.refs.typeofCenter.value,
@@ -112,6 +130,13 @@ class typeOfCenter extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
+       let fields                  = {};
+        fields["typeofCenter"] = "";
+        
+        this.setState({
+          "fields"         :fields
+        });    
+
     }
   }
 
@@ -139,7 +164,7 @@ class typeOfCenter extends Component{
     }
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
-    $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
+    /*$.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Center Type.");
 
@@ -155,15 +180,15 @@ class typeOfCenter extends Component{
           error.insertAfter("#typeofCenterErr");
         }
       }
-    });
+    });*/
   }
   validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-    if (!fields["typeofCenterRegX"]) {
+    if (!fields["typeofCenter"]) {
       formIsValid = false;
-      errors["typeofCenterRegX"] = "This field is required.";
+      errors["typeofCenter"] = "This field is required.";
     }   
   
     this.setState({
@@ -176,11 +201,11 @@ class typeOfCenter extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-      if (typeof fields["typeofCenterRegX"] !== "undefined") {
+      if (typeof fields["typeofCenter"] !== "undefined") {
         // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["typeofCenterRegX"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+        if (!fields["typeofCenter"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
           formIsValid = false;
-          errors["typeofCenterRegX"] = "Please enter valid Sector Name.";
+          errors["typeofCenter"] = "Please enter valid Center Name.";
         }
       }
     $("html,body").scrollTop(0);
@@ -266,7 +291,7 @@ class typeOfCenter extends Component{
                              
                               <input type="text" className="form-control inputBox"  placeholder="" ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>
-                            <div className="errorMsg">{this.state.errors.typeofCenterRegX}</div>
+                            <div className="errorMsg">{this.state.errors.typeofCenter}</div>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             {

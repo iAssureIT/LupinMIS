@@ -6,7 +6,6 @@ import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import 'bootstrap/js/tab.js';
 import validate               from 'jquery-validation';
-
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./centerDetail.css";
  
@@ -270,7 +269,7 @@ class centerDetail extends Component{
       });
     }
   }
-  validateFormReq() {
+/*  validateFormReq() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
@@ -307,6 +306,7 @@ class centerDetail extends Component{
       if (!fields["centerInchargeContact"]) {
         formIsValid = false;
         errors["centerInchargeContact"] = "This field is required.";
+
       }          
       if (!fields["centerInchargeEmail"]) {
         formIsValid = false;
@@ -328,8 +328,8 @@ class centerDetail extends Component{
         errors: errors
       });
       return formIsValid;
-  }
-  validateForm() {
+  }*/
+ /* validateForm() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
@@ -389,20 +389,17 @@ class centerDetail extends Component{
           formIsValid = false;
           errors["MISCoordinatorName"] = "Please enter valid Name.";
         }
-      }/*
-      if (typeof fields["address"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["address"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
-          formIsValid = false;
-          errors["address"] = "Please enter valid Address.";
-        }
-      }    */     
+      }  
       this.setState({
         errors: errors
       });
       return formIsValid;
-  }
+  }*/
   componentDidMount() {
+    $.validator.addMethod("RegExpEmail", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Email.");
+
     $("#Academic_details").validate({
       rules: {
         typeOfCenter: {
@@ -431,6 +428,8 @@ class centerDetail extends Component{
         },
         centerInchargeEmail: {
           required: true,
+          RegExpEmail: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/,
+
         },
         MISCoordinatorName: {
           required: true,
@@ -440,6 +439,8 @@ class centerDetail extends Component{
         },
         MISCoordinatorEmail: {
           required: true,
+          RegExpEmail: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/,
+
         },
       },
       errorPlacement: function(error, element) {
@@ -566,7 +567,6 @@ class centerDetail extends Component{
   getLength(){
     axios.get('/api/centers/count')
     .then((response)=>{
-      // console.log('response', response.data);
       if(response&&response.data){
         this.setState({
           dataCount : response.data.dataLength
@@ -577,7 +577,6 @@ class centerDetail extends Component{
       console.log("error = ",error);
     });
   }
-
   getData(startRange, limitRange){
     // console.log('/api/centers/list/'+startRange+'/'+limitRange);
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)

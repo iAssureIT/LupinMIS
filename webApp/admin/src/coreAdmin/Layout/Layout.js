@@ -41,10 +41,12 @@ import AddModuleFacility                          from '../accessManagement/AddM
 import AssignPermissionToModules                  from '../accessManagement/AssignPermissionToModules.js';
 
 import SectorAndActivity                          from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
+import Unit                                       from '../../coreAdmin/masterData/sectorAndActivity/component/unit/Unit.js';
 import BulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/BulkUpload/BulkUpload.js';
 import centerDetail                               from '../../coreAdmin/masterData/centerDetail/centerDetail.js';
 import Type_Center                                from '../../coreAdmin/masterData/typeOfCenter/typeOfCenter.js';
-import Type_Goal                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoal.js';
+// import Type_Goal                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoal.js';
+import TypeOfGoalContainer                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoalContainer.js';
 
 import ProjectMapping                             from '../../coreAdmin/masterData/projectMapping/ProjectMapping.js';
 import SectorMapping                              from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
@@ -137,14 +139,16 @@ componentDidMount(){
                           <Route path="/type-center"                                                  exact strict component={ Type_Center } />
                           <Route path="/type-center/"                                                  exact strict component={ Type_Center } />
                           <Route path="/type-center/:typeofCenterId"                                                  exact strict component={ Type_Center } />
-                          <Route path="/type-goal"                                                    exact strict component={ Type_Goal } />
-                          <Route path="/type-goal/"                                                    exact strict component={ Type_Goal } />
-                          <Route path="/type-goal/:typeofGoalId"                                                    exact strict component={ Type_Goal } />
+                          <Route path="/type-goal"                                                    exact strict component={ TypeOfGoalContainer } />
+                          <Route path="/type-goal/"                                                    exact strict component={ TypeOfGoalContainer } />
+                          <Route path="/type-goal/:typeofGoalId"                                                    exact strict component={ TypeOfGoalContainer } />
                           <Route path="/center-details"                                               exact strict component={ centerDetail } />
                           <Route path="/center-details/"                                              exact strict component={ centerDetail } />
                           <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />
                           <Route path="/sector-and-activity"                                          exact strict component={ SectorAndActivity } />
-                          <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivity } />
+
+                          <Route path="/unit"                                                         exact strict component={ Unit } />
+                          {<Route path="/sector-and-activity/"                                        exact strict component={ SectorAndActivity } />}
                           <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />

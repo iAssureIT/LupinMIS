@@ -5,7 +5,7 @@ import "./ListOfBeneficiaries.css";
 // import swal                   from 'sweetalert';
 
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
-import NewBeneficiary from "../addBeneficiary/NewBeneficiary.js";
+import NewBeneficiary         from "../addBeneficiary/NewBeneficiary.js";
 
 class ListOfBeneficiaries extends Component{
   
@@ -14,12 +14,12 @@ class ListOfBeneficiaries extends Component{
    
     this.state = {
       
-      "uID"                 :"",
-      "shown"                 : true,
+      "uID"                       :"",
+      "shown"                     : true,
       fields: {},
       errors: {},
       "twoLevelHeader"             : {
-        apply                     : false,
+        apply                      : false,
       },
       "tableHeading"                : {
         beneficiaryID               : "Beneficiary ID",

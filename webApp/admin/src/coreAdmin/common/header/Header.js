@@ -3,11 +3,11 @@ import React,{Component} from 'react';
 import $              from 'jquery';
 import { render } from 'react-dom';
 import { Route , withRouter} from 'react-router-dom';
+import Rightsidebar from '../rightSidebar/Rightsidebar.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 import './Header.css';
-import Rightsidebar from '../rightSidebar/Rightsidebar.js';
 
 export default class Header extends Component{
   
@@ -23,8 +23,8 @@ export default class Header extends Component{
     const emailId   = localStorage.getItem("emailId");
     const center_ID = localStorage.getItem("center_ID");
     const fullName  = localStorage.getItem("fullName");
-  /*  console.log("localStorage =",localStorage.getItem('fullName'));
-    console.log("localStorage =",localStorage);*/
+   console.log("localStorage =",localStorage.getItem('user_ID'));
+    console.log("localStorage =",localStorage);
     this.setState({
       emailId   : emailId,
       fullName  : fullName,

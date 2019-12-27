@@ -33,6 +33,7 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		    "printhideArray"			: [],
+
 		}
 		this.delete = this.delete.bind(this);
 		this.printTable = this.printTable.bind(this);
@@ -126,6 +127,7 @@ class IAssureTable extends Component {
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
+
 	    	// this.props.isDeleted()
 /*
 	        method: this.props.deleteMethod ? this.props.deleteMethod :'delete',
@@ -138,6 +140,9 @@ class IAssureTable extends Component {
 	        	title : response.data.message
 	        });
 	        this.props.history.push(tableObjects.editUrl);
+	        if(tableObjects.apiLink==='/api/units/'){
+		    	$('body').addClass( "modal-open" );
+	        }
 	    }).catch(function (error) {
 	        console.log('error', error);
 	    });
@@ -547,10 +552,6 @@ class IAssureTable extends Component {
 	    WindowObject.close();
     }
 	render() {
-		// console.log("this.state.tableData ",this.state.tableData );
-		// var x = Object.keys(this.state.tableHeading).length ;
-		// var y = 4;
-		// var z = 2;
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       	{

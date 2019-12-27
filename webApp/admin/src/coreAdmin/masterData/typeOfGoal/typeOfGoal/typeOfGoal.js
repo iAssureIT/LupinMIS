@@ -5,7 +5,7 @@ import swal                   from 'sweetalert';
 import validate               from 'jquery-validation';
 import {withRouter}           from 'react-router-dom';
 // import _                      from 'underscore';
-import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
+import IAssureTable             from "../../../IAssureTable/IAssureTable.jsx";
 import "./typeOfGoal.css";
  
 class typeOfGoal extends Component{
@@ -14,13 +14,13 @@ class typeOfGoal extends Component{
     super(props);
     this.state = {
       "typeofGoal"          :"",
-      "user_ID"             :"",
+      "user_ID"             :"",  
       "typeofGoal_id"       :"",
       "typeofGoalRegx"       :"",
       fields                : {},
       errors                : {},
       "tableHeading"        : {
-        typeofGoal          : "Goal Type",
+        typeofGoal          : "Type Of Goal",
         actions             : 'Action',
       },
       "tableObjects"        : {
@@ -272,63 +272,46 @@ class typeOfGoal extends Component{
   render() {
   // console.log('render');
     return (
-        <div className="container-fluid">
-          <div className="row">
-            <div className="formWrapper">
-              <section className="content">
-                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
-                  <div className="row">
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                          Master Data                                     
-                       </div>
-                      <hr className="hr-head container-fluid row"/>
+          <div>
+           <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable marginT50 " id="typeofGoalDetails">
+             
+              <div className="row">
+                <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
+                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                    <label className="formLable"> Type of Goal</label><span className="asterix">*</span>
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
+                     
+                      <input type="text" className="form-control inputBox"  placeholder="" ref="typeofGoal" name="typeofGoalRegx" value={this.state.typeofGoal} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
-                    <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable " id="typeofGoalDetails">
-                      <div className="col-lg-12 ">
-                        <h4 className="pageSubHeader">Goal Type</h4>
-                      </div>
-                      <div className="row">
-                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                            <label className="formLable">Goal Type</label><span className="asterix">*</span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
-                             
-                              <input type="text" className="form-control inputBox"  placeholder="" ref="typeofGoal" name="typeofGoalRegx" value={this.state.typeofGoal} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
-                            </div>
-                            <div className="errorMsg">{this.state.errors.typeofGoalRegx}</div>
+                    <div className="errorMsg">{this.state.errors.typeofGoalRegx}</div>
 
-                          </div>
-                          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            {
-                              this.state.editId ? 
-                              <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.updateType_Goal.bind(this)}> Update</button>
-                              :
-                              <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitType_Goal.bind(this)}> Submit</button>
-                            }
-                          </div> 
-                        </div> 
-                      </div><br/>
-                    </form>    
-                    <div className="col-lg-12 ">
-                       <hr className=""/>
-                    </div>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <IAssureTable 
-                        tableHeading={this.state.tableHeading}
-                        dataCount={this.state.dataCount}
-                        tableData={this.state.tableData}
-                        getData={this.getData.bind(this)}
-                        tableObjects={this.state.tableObjects}
-                        // getSearchText={this.getSearchText.bind(this)}
-                      />
-                    </div>              
                   </div>
-                </div>
-              </section>
+                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    {
+                      this.state.editId ? 
+                      <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.updateType_Goal.bind(this)}> Update</button>
+                      :
+                      <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitType_Goal.bind(this)}> Submit</button>
+                    }
+                  </div> 
+                </div> 
+              </div><br/>
+            </form>    
+            <div className="col-lg-12 ">
+               <hr className=""/>
             </div>
-          </div>
-        </div>
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+              <IAssureTable 
+                tableHeading={this.state.tableHeading}
+                dataCount={this.state.dataCount}
+                tableData={this.state.tableData}
+                getData={this.getData.bind(this)}
+                tableObjects={this.state.tableObjects}
+                // getSearchText={this.getSearchText.bind(this)}
+              />
+            </div> 
+            </div>             
+                 
     );
 
   }

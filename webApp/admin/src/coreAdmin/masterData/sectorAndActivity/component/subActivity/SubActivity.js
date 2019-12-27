@@ -5,6 +5,8 @@ import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import {Route, withRouter}    from 'react-router-dom';
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
+import Unit                   from '../unit/Unit.js';
+
 import "./SubActivity.css";
 
 class SubActivity extends Component{
@@ -19,6 +21,7 @@ class SubActivity extends Component{
       "unit"                :"-- Select --",
       "familyUpgradation"   :"No",
       "user_ID"             :"",
+      "unitList"           :"",
       "shown"               : true,
       fields                : {},
       errors                : {},
@@ -32,7 +35,7 @@ class SubActivity extends Component{
       },
       "tableObjects"        : {
         deleteMethod        : 'patch',
-        apiLink             : '/api/sectors/subactivity/delete/',
+        apiLink             : '/api/units/delete/',
         paginationApply     : false,
         searchApply         : false,
         editUrl             : '/sector-and-activity/'
@@ -87,6 +90,8 @@ class SubActivity extends Component{
       this.edit(this.state.editSectorId, this.state.editId);
     }
     this.getLength();
+    this.getUnits();
+
     this.getData(this.state.startRange, this.state.limitRange);
   }
   handleChange(event){
@@ -156,7 +161,7 @@ class SubActivity extends Component{
     }
   }
   updateSubActivity(event){
-        event.preventDefault();
+    event.preventDefault();
 
     if($('#subActivityb').valid()){
     var subActivityValues = {
@@ -338,6 +343,21 @@ edit(id){
       console.log("error = ",error);
     });
   }
+  getUnits(){
+      
+    axios.get('/api/units/list')
+    .then((unitList)=>{
+      console.log("unitList = ",unitList);
+
+      this.setState({
+        unitList : unitList.data
+      });
+      console.log("unitList",this.state.unitList);
+    })
+    .catch(function(error){
+      console.log("error = ",error);
+    });
+  }
   
   getSearchText(searchText, startRange, limitRange){
       this.setState({
@@ -429,39 +449,54 @@ edit(id){
                     <div className=" col-md-12 col-sm-6 col-xs-12 ">
                      
                     </div>
-                  </div> 
+                  </div>
+
                   <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                     <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                      <label className="formLable">Unit</label><span className="asterix">*</span>
+                 <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div className="form-group valid_box" >
+                      <label className="pghdr">Unit<span className="asterix">*</span></label>
+                        <div className="input-group inputBox-main nameParts" id="unitError">
+                          <select className="custom-select form-control inputBox" ref="unit" name="unit" value={this.state.unit} onChange={this.handleChange.bind(this)} >
+                            <option  disabled="disabled" selected="true" >-- Select --</option>
+                            {
+                            this.state.unitList && this.state.unitList.length >0 ?
+                            this.state.unitList.map((data, index)=>{
+                              return(
+                                <option key={data._id} value={data.unit+'|'+data._id}>{data.unit}</option>
+                              );
+                              
+                            })
+                            :
+                            null
+                           }
+                         </select>
+                          <div className="input-group-addon inputIcon" title="Add Unit"> <Unit /></div>
+                        </div>
+                      </div>
+                    </div>
+
+                {/*     <div className=" col-md-4 col-sm-6 col-xs-12 ">
+                      <label className="formLable">Unit</label><span className="asterix">*</span> 
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unitError" >
                         <select className="custom-select form-control inputBox" ref="unit" name="unit" value={this.state.unit} onChange={this.handleChange.bind(this)} >
                           <option  disabled="disabled" selected="true" >-- Select --</option>
-                          <option  className="" >Number</option>
-                          <option  className="" >Kilogram</option>
-                          <option  className="" >Hectare</option>
-                          <option  className="" >Acre</option>
-                          <option  className="" >Month</option>
-                          <option  className="" >Animals</option>
-                          <option  className="" >Family</option>
-                          <option  className="" >No. of Boxes</option>
-                          <option  className="" >Quintals</option>
-                          <option  className="" >Participant</option>
-                          <option  className="" >Amount, Rs.</option>
-                          <option  className="" >SHG Number</option>
-                          <option  className="" >Events</option>
-                          <option  className="" >Members</option>
-                          <option  className="" >No of Patients</option>
-                          <option  className="" >Village</option>
-                          <option  className="" >Student Nos</option>
-                          <option  className="" >School Nos</option>
-                          <option  className="" >Metre</option>
-                          <option  className="" >Days</option>
-                          <option  className="" >Lumpsum</option>
-                          <option  className="" >Amount</option>
+                          {
+                          this.state.unitList && this.state.unitList.length >0 ?
+                          this.state.unitList.map((data, index)=>{
+                            return(
+                              <option key={data._id} value={data.unit+'|'+data._id}>{data.unit}</option>
+                            );
+                            
+                          })
+                          :
+                          null
+                        }
                         </select>
-                   {/*     <input type="text" className="form-control inputBox " ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />*/}
+                      <div className=" col-lg-1">
+                          <Unit />
                       </div>
-                    </div>
+                      </div>
+                      </div>*/}
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
                       <label className="formLable">Family Upgradation</label><span className="asterix">*</span>
                        <div className="can-toggle genderbtn demo-rebrand-2 " onChange={this.getToggleValue.bind(this)}>
