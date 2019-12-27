@@ -9,23 +9,18 @@ import CompanyTaxDetails            from  '../Components/CompanyTaxDetails.js';
 import CompanyPaymentGateway        from  '../Components/CompanyPaymentGateway.js';
 // import AddPropertyType           from  '/imports/admin/companySetting/Add_Property_subproperty/AddPropertyType.jsx';
 
- class CompanySetting extends Component{
+ class OrganizationSetting extends Component{
     constructor(props) {
 		super(props)
 
 		this.state = {
-
 			companyinformation				: "Company Information",
-			
-
 		}
 		// this.handleChange = this.handleChange.bind(this);
 		// this.onChange 		= this.onChange.bind(this);
 
 	}
   componentDidMount() {
-   
-
   }
 
   
@@ -85,4 +80,4 @@ import CompanyPaymentGateway        from  '../Components/CompanyPaymentGateway.j
     );
   }
 }
-export default CompanySetting;
+export default OrganizationSetting;

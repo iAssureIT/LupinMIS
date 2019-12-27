@@ -1,6 +1,4 @@
 import React,{Component}                         from 'react';
-// import TrackerReact from 'meteor/ultimatejs:tracker-react';
-// import {browserHistory} from 'react-router-dom';
 import { render }                                from 'react-dom';
 import { Redirect }                              from 'react-router-dom';
 import { BrowserRouter as Router, Route,Switch } from 'react-router-dom';
@@ -15,7 +13,6 @@ import ForgotPassword                             from '../systemSecurity/Forgot
 import ResetPassword                              from '../systemSecurity/ResetPassword.js';
 import SignUp                                     from '../systemSecurity/SignUp.js';
 import VerifyAccount                              from '../systemSecurity/VerifyAccount.js';
-// import CommonPage                              from './components/layouts/CommonLayout.js';
 
 import CenterwiseBarChart                         from '../dashboard/chart1/CenterwiseBarChart1.js'
 import SourcewiseBarChart                         from '../dashboard/chart1/SourcewiseBarChart1.js'
@@ -27,20 +24,16 @@ import monthwiseCharts                            from '../dashboard/chart1/mont
 import Header                                     from '../common/header/Header.js'
 import Footer                                     from '../common/footer/Footer.js'
 import Dashboard                                  from '../dashboard/Dashboard.js'
-import DashboardNew                                  from '../dashboard/DashboardNew.js'
+import DashboardNew                               from '../dashboard/DashboardNew.js'
 import Leftsidebar                                from '../common/leftSidebar/Leftsidebar.js'
 import Rightsidebar                               from '../common/rightSidebar/Rightsidebar.js'
-// import UMListOfUsers                              from '../global/userManagementG/UM/UMListOfUsers.js';
 import UMListOfUsers                              from '../userManagement/UM/UMListOfUsers.js';
 import UMListOfEmp                                from '../userManagement/UM/OfficeEmpList.js';
 
-// import EditUserProfile                            from '../userManagementG/UM/EditUserProfile.js';
 import EditUserProfile                            from '../userManagement/UM/EditUserProfile.js';
 import UMRolesList                                from '../userManagement/Roles/UMRolesList.js';
-// import CompanySettingG                            from '../companysettingG/Components/CompanySetting.js';
-import CompanySetting                             from '../companysetting/Components/CompanySetting.js';
+import OrganizationSetting                        from '../companysetting/Components/OrganizationSetting.js';
 import ViewTemplates                              from '../NotificationManagement/ViewTemplates.jsx';
-// import horizontalBar                              from '../srcchart/components/horizontalBar.js';
 
 /**************************/
 
@@ -57,8 +50,6 @@ import ProjectMapping                             from '../../coreAdmin/masterDa
 import SectorMapping                              from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
 
 import plan                                       from '../../admin/annualPlan/PlanDetails.js';
-// import MonthlyPlan                                from '../../admin/monthlyPlan/MonthlyPlan.js';
-// import report                                     from "../../admin/Reports/Reports.js";
 import report                                     from "../../admin/LupinReports/Report.js";
 import report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
 import report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
@@ -87,30 +78,9 @@ import report16                                   from "../../admin/LupinReports
   }
    
 componentDidMount(){
-    $(document).ready(function () {
-       $('#sidebarCollapse').on('click', function () {
-        console.log('sidebar')
-           $('#sidebar').toggleClass('active');
-       });
-    });
-    $(document).ready(function () {
-       $('#sidebarCollapse').on('click', function () {
-        console.log('headerid')
-           $('#headerid').toggleClass('headereffect');
-       });
-    });
-    $(document).ready(function () {
-       $('#sidebarCollapse').on('click', function () {
-        console.log('dashbordid')
-           $('#dashbordid').toggleClass('dashboardeffect');
-       });
-    });
-
-
     const token = localStorage.getItem("token");
     // console.log("Dashboard Token = ",token);
     if(token!==null){
-    // console.log("*********===***********imin ",token);
       this.setState({
         loggedIn : true
       })
@@ -127,26 +97,10 @@ componentDidMount(){
       this.setState({
         loggedIn : false
       })
-      // browserHistory.push("/login");
-      // this.props.history.push("/login");
     }
   }
-/*                    <Router>
-                          <Switch>
-                          <Route path="/umlistofusers" component={UMListOfUsers} exact />
-                          <Route path="/umroleslist" component={UMRolesList} exact />
-                          <Route path="/edituserprofile" component={EditUserProfile} exact />
-
-                          <Route path="/ViewTemplates" component={ViewTemplates} exact />
-                          <Route path="/dashboard" component={Dashboard} exact />
-
-                          <Route path="/companysetting" component={CompanySetting} exact />
-                          </Switch>        
-                      </Router>  */
 
   render(){
-    // console.log("props = ",this.props);
-    // {console.log("loggedIn status layput = ", this.state.loggedIn)}
     if(this.state.loggedIn===true){
       return(
         <Router>
@@ -162,7 +116,6 @@ componentDidMount(){
                     <div className=" mainContentBottom">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground">                  
                       <Switch>
-                           {/*   <Route path="/horizontalBar" component={horizontalBar} exact />*/}
                           <Route path="/CenterwiseBarChart" component={CenterwiseBarChart} exact />
                           <Route path="/SourcewiseBarChart" component={SourcewiseBarChart} exact />
                           <Route path="/Chart" component={Chart} exact />
@@ -173,16 +126,10 @@ componentDidMount(){
                           <Route path="/DashboardNew" component={DashboardNew} exact />
                           <Route path="/dashboard" component={Dashboard} exact />
                           <Route path="/umlistofusers" component={UMListOfUsers} exact />
-                          {/* <Route path="/umlistofemp" component={UMListOfEmp} exact />*/}
                           <Route path="/umroleslist" component={UMRolesList} exact />
                           <Route path="/edituserprofile/:id" component={EditUserProfile} exact />
-
                           <Route path="/ViewTemplates" component={ViewTemplates} exact />
-
-                          <Route path="/companysetting" component={CompanySetting} exact />
-                          {/*      <Route path="/companysettingG" component={CompanySettingG} exact />*/}                              
-                          {/*----------------------------------------------*/}
-
+                          <Route path="/companysetting" component={OrganizationSetting} exact />
                           {/*Access Management*/}
                           <Route path="/admin/AddModuleFacility"                                      exact strict component={ AddModuleFacility } />
                           <Route path="/admin/AssignPermissionToModule"                               exact strict component={ AssignPermissionToModules } />
@@ -197,7 +144,7 @@ componentDidMount(){
                           <Route path="/center-details/"                                              exact strict component={ centerDetail } />
                           <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />
                           <Route path="/sector-and-activity"                                          exact strict component={ SectorAndActivity } />
-                          {<Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivity } />}
+                          <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
@@ -211,7 +158,6 @@ componentDidMount(){
                           <Route path="/plan-details"                                                 exact strict component={ plan } />
                           <Route path="/plan-details/"                                                exact strict component={ plan } />
                           <Route path="/plan-details/:id"                                             exact strict component={ plan } />
-                          {/*<Route path="/report/activitywise-annual-completion-report"                 exact strict component={ report } />*/}                          <Route path="/report/"                                                      exact strict component={ report } />
                           <Route path="/report/:url"                                                  exact strict component={ report } />
                           <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
                           <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
@@ -261,8 +207,6 @@ componentDidMount(){
               <Route path="/reset-pwd"      exact strict component={ ResetPassword } />
               <Route path="/verify-account" exact strict component={ VerifyAccount } />
               <Route path="/confirm-otp"    exact strict component={ ConfirmOtp } />
-              
-             
             </Switch>        
           </Router>
         </div>

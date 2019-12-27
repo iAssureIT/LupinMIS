@@ -28,7 +28,6 @@ export default class Leftsidebar extends Component{
       $('.activeClass li').on('click', function() {
         $('.activeClass li').removeClass('activeOne');
         $(this).addClass('activeOne');
-
       });
     });
   }    

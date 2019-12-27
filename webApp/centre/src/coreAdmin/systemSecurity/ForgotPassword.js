@@ -97,6 +97,13 @@ class ForgotPassword extends Component {
           })
           .catch(function (error) {
             console.log(error);
+            if(error.response.status===404){
+              console.log('this',this);
+              // this.setState({
+              //   buttonValue : 'Send Verification Code'
+              // })
+              swal('abc','Email Id does not exists.')
+            }
           })
         }else{
           swal('Email Address not found',"Please enter valid Email Id","warning");                  

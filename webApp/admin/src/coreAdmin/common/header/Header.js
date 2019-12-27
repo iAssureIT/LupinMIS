@@ -41,11 +41,17 @@ closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
-toggleNav(){
+toggleLeftNav(event){
+  event.preventDefault()
+  $('#sidebar').toggleClass('active')
+  $('#headerid').toggleClass('headereffect');
+  $('#dashbordid').toggleClass('dashboardeffect')
+}
 
+toggleNav(event){
+  event.preventDefault()
   var currentWidth =  document.getElementById("mySidenav").style.width;
   // console.log("currentWidth",currentWidth);
-
   if(currentWidth == "230px")
   {
    document.getElementById("mySidenav").style.width = "0"; 
@@ -86,16 +92,16 @@ logout(){
               <div className="col-lg-12 padd0 pageHeader">
                 <div className="col-lg-6 col-md-4 col-sm-4 col-xs-4 padd0">
                   <div className="">
-                    <div id="sidebarCollapse" className="col-lg-1 col-md-1 col-sm-1 col-xs-1 hover ">
+                    <div id="sidebarCollapse" onClick={this.toggleLeftNav.bind(this)} className="col-lg-1 col-md-1 col-sm-1 col-xs-1 hover ">
                     <i className="fa fa-bars headicon"></i>
                   </div>
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 padd0 pull-right">
                   <div className="">
-                   { <div onClick={this.toggleNav.bind(this)}className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
+                   <div onClick={this.toggleNav.bind(this)} className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
                     <i className="fa fa-cogs headicon "></i>
-                  </div>}
+                  </div>
                   <div className="col-lg-5 col-md-8 col-sm-8 col-xs-8 pull-right padd0">
                     <div className="col-lg-12 col-md-7 col-sm-9 col-xs-12  hover pull-right logoutAct">
                       <div className="row hover" onClick={this.LogoutSectionHover.bind(this)}>

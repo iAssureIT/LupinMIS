@@ -33,7 +33,6 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		    "printhideArray"			: [],
-		    
 		}
 		this.delete = this.delete.bind(this);
 		this.printTable = this.printTable.bind(this);
