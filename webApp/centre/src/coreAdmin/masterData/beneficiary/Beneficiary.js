@@ -331,7 +331,7 @@ class Beneficiary extends Component{
               regxfirstNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
             },
             middleNameOfBeneficiary: {
-              // required: true,
+              required: true,
               regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
             },
             relation: {

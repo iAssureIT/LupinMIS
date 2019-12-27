@@ -270,7 +270,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                         </div>
                     </div>
                     <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">Sector</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
@@ -338,7 +338,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
                         : 
                         ""
                         }                     
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                      </div>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12" >
                           <label className="formLable">Year</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                             <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
@@ -353,10 +355,10 @@ class ActivitywiseAnnualCompletionReport extends Component{
                           {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
                         </div>  
                     </div> 
-                    <div className="marginTop11">
+                    <div className="marginTop11 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     
                         <div className="">
-                            <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div className="report-list-downloadMain ">
                                 <IAssureTable 
                                     tableName = "Activitywise Annual-Plan-Report"
                                     id = "activitywiseAnnualPlanReport"

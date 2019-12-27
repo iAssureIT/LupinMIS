@@ -7,8 +7,6 @@ import {withRouter}           from 'react-router-dom';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./typeOfCenter.css";
 
-axios.defaults.baseURL = 'http://qalmisapi.iassureit.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class typeOfCenter extends Component{
     constructor(props){
