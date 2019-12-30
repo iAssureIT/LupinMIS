@@ -39,18 +39,7 @@ class Unit extends Component{
     this.setState({
      "unit"   : this.refs.unit.value, 
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateFormReq() && this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+   
   }
 
   isTextKey(evt) {
@@ -67,7 +56,7 @@ class Unit extends Component{
 
   SubmitUnit(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    if($("#unitDetails").valid()){
     var unitValues= {
     "unit"        : this.refs.unit.value,
     "createdBy"        : this.state.user_ID,
@@ -97,8 +86,7 @@ class Unit extends Component{
   }
   updateUnit(event){
     event.preventDefault();
-      if (this.validateFormReq() && this.validateForm()) {
-  
+    if($("#unitDetails").valid()){
       var unitValues= {
         "unit"        :this.refs.unit.value,
         "ID"         :this.state.editId
@@ -129,39 +117,7 @@ class Unit extends Component{
       });
     }    
   }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-      if (!fields["unit"]) {
-        formIsValid = false;
-        errors["unit"] = "This field is required.";
-      }    
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
-  validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-      if (typeof fields["unit"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["unit"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["unit"] = "Please enter valid Unit Name.";
-        }
-      }
-    $("html,body").scrollTop(0);
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
+ 
   componentWillReceiveProps(nextProps){
   // console.log('componentWillReceiveProps');
     if(nextProps){
@@ -182,6 +138,23 @@ class Unit extends Component{
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
   // console.log('componentDidMount', this.state.tableData);
+    $.validator.addMethod("regxunit", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Unit.");
+
+    $("#unitDetails").validate({
+      rules: {
+        unit: {
+          required: true,
+          regxunit: /^[_A-z]*((-|\s)*[_A-z])*$|^$/,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "unit"){
+          error.insertAfter("#unit");
+        }
+      }
+    });
     this.setState({
       user_ID : localStorage.getItem('user_ID')
     })
@@ -291,7 +264,7 @@ class Unit extends Component{
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                             <label className="formLable">Unit</label><span className="asterix">*</span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sector" >
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unit" >
                             
                               <input type="text" className="form-control inputBox"  placeholder=""ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>

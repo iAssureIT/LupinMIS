@@ -42,20 +42,6 @@ class Sector extends Component{
     this.setState({
      [event.target.name]: event.target.value
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateFormReq() && this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      },()=>{
-        console.log(this.state.errors)
-      });
-    }
   }
 
   isTextKey(evt) {
@@ -73,14 +59,12 @@ class Sector extends Component{
 
   SubmitSector(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    if($("#sectorDetails").valid()){
     var sectorValues= {
     "sector"               :this.refs.sector.value,
     "sectorShortName"      :this.refs.sectorShortName.value,
     "user_ID"              :this.state.user_ID,
     };
-
-   
     axios.post('/api/sectors',sectorValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
@@ -92,22 +76,17 @@ class Sector extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
-      let fields       = {};
-      fields["sector"] = "";
-      fields["sectorShortName"] = "";
-  
+    
       this.setState({
-        "sectorShortName"  :"",
-        "sector"  :"",
-        fields    :fields
+        "sectorShortName"   :"",
+        "sector"            :"",
       });
     }
   }
 
   updateSector(event){
     event.preventDefault();
-      if (this.validateFormReq() && this.validateForm()) {
- 
+    if($("#sectorDetails").valid()){
       var sectorValues= {
         "sector_ID"            :this.state.editId,
         "sector"               :this.refs.sector.value,
@@ -131,61 +110,14 @@ class Sector extends Component{
         .catch(function(error){
           console.log("error = ",error);
         });
-        let fields = {};
-        fields["sector"] = "";
-        fields["sectorShortName"] = "";
-  
+      
       this.setState({
         "sector"           :"",
         "sectorShortName"  :"",
-        fields:fields
       });
     }    
   }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-      if (!fields["sector"]) {
-        formIsValid = false;
-        errors["sector"] = "This field is required.";
-      }    
-      // if (!fields["sectorShortName"]) {
-      //   formIsValid = false;
-      //   errors["sectorShortName"] = "This field is required.";
-      // }    
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
-  validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-      if (typeof fields["sector"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["sector"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["sector"] = "Please enter valid Sector Name.";
-        }
-      }
-      if (typeof fields["sectorShortName"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["sectorShortName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["sectorShortName"] = "Please enter valid Sector Abbreviation Name.";
-        }
-      }
-    $("html,body").scrollTop(0);
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
+  
   componentWillReceiveProps(nextProps){
   // console.log('componentWillReceiveProps');
     if(nextProps){
@@ -205,6 +137,36 @@ class Sector extends Component{
   componentDidMount(){
   axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
   // console.log('componentDidMount', this.state.tableData);
+    $.validator.addMethod("regxsector", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Sector.");
+     
+  /*  $.validator.addMethod("regxsectorShortName", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Sector Short Name.");
+     */
+    $("#sectorDetails").validate({
+      rules: {
+        sector: {
+          required: true,
+          regxsector: /^[A-za-z']+( [A-Za-z']+)*$/,
+        },
+       /*sectorShortName: {
+          regxsectorShortName: /^[A-za-z']+( [A-Za-z']+)*$/,
+        },*/
+       
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "sector"){
+          error.insertAfter("#sectorError");
+        }
+        
+       /* if (element.attr("name") == "sectorShortName"){
+          error.insertAfter("#sectorShortName");
+        }*/
+        
+      }
+    });
     var editId = this.props.match.params.sectorId;
     if(editId){     
       this.edit(editId);
@@ -300,17 +262,15 @@ class Sector extends Component{
                 <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Sector</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sector" >
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorError" >
                       <input type="text" className="form-control inputBox"  placeholder=""ref="sector" name="sector" value={this.state.sector} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
-                    <div className="errorMsg">{this.state.errors.sector}</div>
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Sector Abbreviation</label><span className="asterix"></span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorShortName" >
                       <input type="text" className="form-control inputBox"  placeholder="" ref="sectorShortName" name="sectorShortName" value={this.state.sectorShortName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
-                    <div className="errorMsg">{this.state.errors.sectorShortName}</div>
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     {

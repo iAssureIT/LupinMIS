@@ -5,6 +5,8 @@ import swal                   from 'sweetalert';
 import validate               from 'jquery-validation';
 import {withRouter}           from 'react-router-dom';
 // import _                      from 'underscore';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+
 import IAssureTable             from "../../../IAssureTable/IAssureTable.jsx";
 import "./nameOfGoal.css";
  
@@ -14,8 +16,9 @@ class nameOfGoal extends Component{
     super(props);
     this.state = {
       "typeofGoal"          :"",
-      "goalName"          :"",
+      "goalName"            :"",
       "user_ID"             :"",  
+      "goalID"              :"",  
       "typeofGoal_id"       :"",
       "typeofGoalRegx"       :"",
       fields                : {},
@@ -42,22 +45,24 @@ class nameOfGoal extends Component{
  
   handleChange(event){
     event.preventDefault();
+  
+
     this.setState({
-     "typeofGoal"   : this.refs.typeofGoal.value,  
      "goalName"     : this.refs.goalName.value,  
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
+  
+  }
+
+  handleChangeSelect(event){
+    event.preventDefault();
+    var goalID = event.target.value.split('|');
+    console.log("goalID",goalID[1]);
+
     this.setState({
-      fields
+     "typeofGoal"   : this.refs.typeofGoal.value,  
+     "goalID"       : goalID[1]
     });
-    if (this.validateFormReq() && this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+  
   }
 
   isTextKey(evt) {
@@ -75,12 +80,12 @@ class nameOfGoal extends Component{
 
   SubmitType_Goal(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    if($("#typeofNameDetails").valid()){
       var typeofGoalValues= {
-      "typeofGoal"       :this.refs.typeofGoal.value,
+      "ID"               :this.state.goalID,
       "goalName"         :this.refs.goalName.value,
-      "user_ID"          : this.state.user_ID,
       };
+      console.log("typeofGoalValues",typeofGoalValues);
       axios.patch('/api/typeofgoals/goalName',typeofGoalValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
@@ -94,14 +99,10 @@ class nameOfGoal extends Component{
         console.log("error = ",error);
       });
 
-        let fields                 = {};
-        fields["typeofGoalRegx"] = "";
-        fields["goalNameRegx"] = "";
-        
+       
         this.setState({
           "goalName"       : "",
           "typeofGoal"     : "",
-          "fields"         :fields
         });
      
     } 
@@ -110,7 +111,7 @@ class nameOfGoal extends Component{
 
   updateType_Goal(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()){
+    if($("#typeofNameDetails").valid()){
       var typeofGoalValues= {
         "ID"              :this.refs.typeofGoal.value.split('|')[1],
         "typeofGoal"      :this.refs.typeofGoal.value.split('|')[0],
@@ -166,55 +167,31 @@ class nameOfGoal extends Component{
     this.getAvailableGoalType();
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
-    $.validator.addMethod("regxtypeofGoal", function(value, element, regexpr) {         
+    $.validator.addMethod("regxnameofGoal", function(value, element, regexpr) {         
       return regexpr.test(value);
-    }, "Please enter valid Type of Goal.");
+    }, "Please enter valid Goal Name.");
 
-    $("#typeofGoalDetails").validate({
+    $("#typeofNameDetails").validate({
       rules: {
-        typeofGoal: {
+        goalNameErr: {
           required: true,
-          regxtypeofGoal: /^[_A-z]*((-|\s)*[_A-z])*$|^$/,
+          regxnameofGoal: /^[_A-z]*((-|\s)*[_A-z])*$|^$/,
+        },
+        typeofGoalErr: {
+          required: true,
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "typeofGoal"){
+        if (element.attr("name") == "typeofGoalErr"){
           error.insertAfter("#typeofGoalErr");
         }
-      }
-    });
-  }
-   validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    if (!fields["typeofGoalRegx"]) {
-      formIsValid = false;
-      errors["typeofGoalRegx"] = "This field is required.";
-    }   
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
-
-   validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-      if (typeof fields["typeofGoalRegx"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["typeofGoalRegx"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["typeofGoalRegx"] = "Please enter valid Type of Goal.";
+        if (element.attr("name") == "goalNameErr"){
+          error.insertAfter("#goalNameErr");
         }
       }
-    $("html,body").scrollTop(0);
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
+    });
   }
+
   edit(id){
     axios({
       method: 'get',
@@ -237,9 +214,9 @@ class nameOfGoal extends Component{
       startRange : startRange,
     }
     console.log('data', data);
-     axios.get('/api/typeofgoals/list',data)
+     axios.post('/api/typeofgoals/goalName/list',data)
     .then((response)=>{
-      // console.log('tableData', response.data);
+       console.log('tableData==================', response);
       this.setState({
         tableData : response.data
       })
@@ -296,19 +273,19 @@ class nameOfGoal extends Component{
   // console.log('render');
     return (
           <div>
-           <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable marginT50 " id="typeofGoalDetails">
+           <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable marginT50 " id="typeofNameDetails">
               <div className="row">
                 <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable"> Type of Goal</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
-                      <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)}>
+                      <select className="custom-select form-control inputBox" ref="typeofGoal" name="typeofGoalErr" value={this.state.typeofGoal} disabled={this.state.editId?true:false} onChange={this.handleChangeSelect.bind(this)}>
                         <option  className="hidden" value="" >-- Select Goal--</option>
                         {
                           this.state.availableGoalType && this.state.availableGoalType.length >0 ?
                           this.state.availableGoalType.map((data, index)=>{
                             return(
-                              <option key={data._id} value={data.typeofgoal+'|'+data._id}>{data.typeofgoal}</option>
+                              <option key={data._id} value={data.typeofGoal+'|'+data._id} goalID={data._id}>{data.typeofGoal}</option>
                             );
                           })
                           :
@@ -322,7 +299,7 @@ class nameOfGoal extends Component{
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable"> Name of Goal</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="goalNameErr" >
-                      <input type="text" className="form-control inputBox"  placeholder="" ref="goalName" name="goalNameRegx" value={this.state.goalName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                      <input type="text" className="form-control inputBox"  placeholder="" ref="goalName" name="goalNameErr" value={this.state.goalName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
                     <div className="errorMsg">{this.state.errors.goalNameRegx}</div>
                   </div>

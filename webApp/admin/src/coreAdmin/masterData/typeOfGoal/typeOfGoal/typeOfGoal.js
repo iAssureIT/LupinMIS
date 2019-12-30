@@ -42,18 +42,7 @@ class typeOfGoal extends Component{
     this.setState({
      "typeofGoal"   : this.refs.typeofGoal.value,  
     });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateFormReq() && this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+   
   }
 
   isTextKey(evt) {
@@ -71,7 +60,7 @@ class typeOfGoal extends Component{
 
   SubmitType_Goal(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()) {
+    if($("#typeofGoalDetails").valid()){
       var typeofGoalValues= {
       "typeofGoal"       :this.refs.typeofGoal.value,
       "user_ID"          : this.state.user_ID,
@@ -89,12 +78,10 @@ class typeOfGoal extends Component{
         console.log("error = ",error);
       });
 
-        let fields                 = {};
-        fields["typeofGoalRegx"] = "";
+       
         
         this.setState({
           "typeofGoal"     : "",
-          "fields"         :fields
         });
      
     } 
@@ -103,7 +90,7 @@ class typeOfGoal extends Component{
 
   updateType_Goal(event){
     event.preventDefault();
-    if (this.validateFormReq() && this.validateForm()){
+    if($("#typeofGoalDetails").valid()){
       var typeofGoalValues= {
         "ID"              :this.state.editId,
         "typeofGoal"      :this.refs.typeofGoal.value,
@@ -163,49 +150,19 @@ class typeOfGoal extends Component{
 
     $("#typeofGoalDetails").validate({
       rules: {
-        typeofGoal: {
+        typeofGoalRegx: {
           required: true,
           regxtypeofGoal: /^[_A-z]*((-|\s)*[_A-z])*$|^$/,
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "typeofGoal"){
+        if (element.attr("name") == "typeofGoalRegx"){
           error.insertAfter("#typeofGoalErr");
         }
       }
     });
   }
-   validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    if (!fields["typeofGoalRegx"]) {
-      formIsValid = false;
-      errors["typeofGoalRegx"] = "This field is required.";
-    }   
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
 
-   validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-      if (typeof fields["typeofGoalRegx"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["typeofGoalRegx"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["typeofGoalRegx"] = "Please enter valid Type of Goal.";
-        }
-      }
-    $("html,body").scrollTop(0);
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
   edit(id){
     axios({
       method: 'get',
@@ -283,7 +240,6 @@ class typeOfGoal extends Component{
                      
                       <input type="text" className="form-control inputBox"  placeholder="" ref="typeofGoal" name="typeofGoalRegx" value={this.state.typeofGoal} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
-                    <div className="errorMsg">{this.state.errors.typeofGoalRegx}</div>
 
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">

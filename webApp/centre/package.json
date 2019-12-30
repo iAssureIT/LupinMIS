@@ -23,6 +23,7 @@
     "react-dom": "^16.12.0",
     "react-html-table-to-excel": "^2.0.0",
     "react-input-mask": "^2.0.4",
+    "react-multiselect-checkboxes": "^0.1.1",
     "react-print-component": "^0.1.8",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
