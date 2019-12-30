@@ -222,6 +222,7 @@ class NewBeneficiary extends Component{
   
     var centerID = this.state.center_ID;
     axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
+    // axios.get('/api/beneficiaries/list/'+centerID)
     .then((response)=>{
       // console.log('bbbbbbbbbbbbbbbbbbbresponse', response);
       var tableData = response.data.map((a, i)=>{
@@ -241,7 +242,7 @@ class NewBeneficiary extends Component{
       this.setState({
         tableData : tableData
       },()=>{
-        // console.log("tableData",this.state.tableData)
+        console.log("tableData",this.state.tableData)
       })
     })
     .catch(function(error){

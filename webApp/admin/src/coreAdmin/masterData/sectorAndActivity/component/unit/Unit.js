@@ -279,8 +279,10 @@ class Unit extends Component{
                 <div className=" ">
                   <div className="formWrapper">
 
-                    <button type="button" className="close" data-dismiss="modal"> <i className="fa fa-times"></i></button>
-                    <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="unitDetails">
+                    <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 addLoc ">
+                      <button type="button" className="close" data-dismiss="modal"> <i className="fa fa-times"></i></button>
+                    </div>
+                    <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="unitDetails">
                       <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
                         <span className="subHeader"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Unit</span>
                       </div>

@@ -146,9 +146,9 @@ class Family extends Component{
        $.validator.addMethod("regxfirstNameOfFH", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter a valid First Name.");
-       $.validator.addMethod("regxmiddleNameOfFH", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter a valid Middle Name.");
+    //    $.validator.addMethod("regxmiddleNameOfFH", function(value, element, regexpr) {         
+    //   return regexpr.test(value);
+    // }, "Please enter a valid Middle Name.");
       
 
         $("#createFamily").validate({
@@ -177,8 +177,8 @@ class Family extends Component{
 
             },
             middleNameOfFH: {
-              required: true,
-              regxmiddleNameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
+              // required: true,
+              // regxmiddleNameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
 
             },
             village: {
@@ -279,7 +279,7 @@ class Family extends Component{
     } 
   }
 
-  SubmitFamily(event){
+  SubmitFamily(event){    
     event.preventDefault();
     // if(this.refs.surnameOfFH.value ==="" || this.refs.contact.value===""
     //  || this.refs.middleNameOfFH.value==="" || this.refs.firstNameOfFH.value==="" 
@@ -762,7 +762,7 @@ class Family extends Component{
                               <div className="errorMsg">{this.state.errors.firstNameOfFH}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Middle Name of Family Head </label><span className="asterix">*</span>
+                              <label className="formLable">Middle Name of Family Head </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfFHErr" >
                                 <input type="text" className="form-control inputBox" ref="middleNameOfFH" name="middleNameOfFH" value={this.state.middleNameOfFH} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
@@ -771,7 +771,7 @@ class Family extends Component{
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uIDErr" >
-                                <input type="text" className="form-control inputBox "  placeholder=""ref="uID" name="uID" value={this.state.uID} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
+                                <input type="number" className="form-control inputBox "  placeholder=""ref="uID" name="uID" value={this.state.uID}  maxLength = "12" onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.uID}</div>
                             </div>
@@ -779,7 +779,7 @@ class Family extends Component{
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Contact Number </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contactErr" >
-                                <input type="text" className="form-control inputBox "  placeholder=""ref="contact" name="contact" value={this.state.contact} onKeyDown={this.isNumberKey.bind(this)} maxLength="10" onChange={this.handleChange.bind(this)} />
+                                <input type="number" className="form-control inputBox "  placeholder=""ref="contact" name="contact" value={this.state.contact}  maxLength="10" onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.contact}</div>
                             </div>  

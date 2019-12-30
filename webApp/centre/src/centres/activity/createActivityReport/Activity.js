@@ -61,7 +61,7 @@ class Activity extends Component{
                             },
                             {
                               heading : 'Source of Fund',
-                              mergedColoums : 8,
+                              mergedColoums : 7,
                               hide : false
                             },
                             {
@@ -96,7 +96,7 @@ class Activity extends Component{
         directCC                   : "Direct Community Contribution",
         indirectCC                 : "Indirect Community Contribution",
         other                      : "Other",
-        total                      : "Total",
+        // total                      : "Total",
         remark                     : "Remark",
         actions                    : 'Action',
       },
@@ -258,14 +258,31 @@ class Activity extends Component{
     this.setState({
        [name]: target.value,
     },()=>{
+
+
       if (this.state.unitCost > 0 & this.state.quantity > 0) {
         // console.log("this.state.unitCost = ",this.state.unitCost);
         // console.log("this.state.quantity = ",this.state.quantity);
         var totalcost = parseInt(this.state.unitCost) * parseInt(this.state.quantity);
+        this.state.LHWRF = 0;
+        this.state.NABARD = 0;
+        this.state.bankLoan = 0;
+        this.state.govtscheme = 0;
+        this.state.directCC = 0;
+        this.state.indirectCC = 0;
+        this.state.other = 0;
+        this.setState({
+        });   
         this.setState({
           "total"     : totalcost,
           "totalcost" : totalcost,
-          "LHWRF"     : totalcost
+          "LHWRF"     : totalcost,
+          "NABARD"    : 0,
+          "bankLoan"  : 0,
+          "govtscheme": 0,
+          "directCC"  : 0,
+          "indirectCC" : 0,
+          "other"     : 0,
         });
       }else{
         this.setState({
@@ -351,10 +368,14 @@ class Activity extends Component{
       
       // console.log("activityValues", activityValues);
       if (parseInt(this.state.total) === parseInt(this.state.totalcost)) {
+
         axios.post('/api/activityReport',activityValues)
         .then((response)=>{
           // console.log("response", response);
           this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            this.setState({
+              selectedValues : this.state.selectedBeneficiaries 
+            })    
             swal({
               title : response.data.message,
               text  : response.data.message,
@@ -608,8 +629,10 @@ class Activity extends Component{
         method: 'get',
         url: '/api/activityReport/'+id,
       }).then((response)=> {
+        console.log("editDataresponse",response);
+
         var editData = response.data[0];
-        // console.log("editData",editData);
+        console.log("editData",editData);
         if(editData){
           var bentableData = []
           if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
@@ -632,7 +655,7 @@ class Activity extends Component{
                 })
                 if(editData.listofBeneficiaries.length===(i+1)){
                   this.setState({
-                    bentableData : bentableData
+                    selectedBeneficiaries : bentableData
                   })
                 }
               })
@@ -666,8 +689,10 @@ class Activity extends Component{
             "other"             : editData.sourceofFund.other,
             "total"             : editData.sourceofFund.total,
             "remark"            : editData.remark,
-            "listofBeneficiaries"   : this.state.bentableData,
-            "selectedBeneficiaries" : this.state.bentableData,
+            // "listofBeneficiaries"   : this.state.bentableData,
+            // "selectedBeneficiaries" : this.state.bentableData,
+            "listofBeneficiaries" : editData.listofBeneficiaries,
+            "selectedBeneficiaries" : editData.listofBeneficiaries,
             "projectCategoryType"   : editData.projectCategoryType,
             "projectName"           : editData.projectName==='all'?'-- Select --':editData.projectName,
             "sectorId"   : editData.sector_ID,
@@ -991,8 +1016,8 @@ class Activity extends Component{
             return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
           })
         }
+        console.log('availableDistInCenter ==========',response);
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
@@ -1335,7 +1360,7 @@ class Activity extends Component{
                               <label className="formLable">District<span className="asterix">*</span></label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                 <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
-                                  <option disabled="disabled" selected="true" >-- Select --</option>
+                                  <option disabled="disabled" value={true} >-- Select --</option>
                                   {
                                     this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
                                     this.state.availableDistInCenter.map((data, index)=>{
@@ -1355,7 +1380,7 @@ class Activity extends Component{
                             <label className="formLable">Block<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                               <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                <option disabled="disabled" selected="true">-- Select --</option>
+                                <option disabled="disabled" value={true}>-- Select --</option>
                                 {
                                   this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                   this.state.listofBlocks.map((data, index)=>{
@@ -1374,7 +1399,7 @@ class Activity extends Component{
                             <label className="formLable">Village<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                               <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                <option disabled="disabled" selected="true">-- Select --</option>
+                                <option disabled="disabled" value={true}>-- Select --</option>
                                 {
                                   this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                   this.state.listofVillages.map((data, index)=>{
@@ -1397,7 +1422,7 @@ class Activity extends Component{
                             <label className="formLable">Sector<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                               <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                                <option disabled="disabled" selected="true">-- Select --</option>
+                                <option disabled="disabled" value={true}>-- Select --</option>
                                 {
                                   this.state.availableSectors && this.state.availableSectors.length >0 ?
                                   this.state.availableSectors.map((data, index)=>{
@@ -1417,7 +1442,7 @@ class Activity extends Component{
                             <label className="formLable">Activity<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                               <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                                <option disabled="disabled" selected="true">-- Select --</option>
+                                <option disabled="disabled" value={true}>-- Select --</option>
                                 {
                                   this.state.availableActivity && this.state.availableActivity.length >0 ?
                                   this.state.availableActivity.map((data, index)=>{
@@ -1440,7 +1465,7 @@ class Activity extends Component{
                             <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                               <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                                <option disabled="disabled" selected="true">-- Select --</option>
+                                <option disabled="disabled" value={true}>-- Select --</option>
                                   {
                                     this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
                                     this.state.availableSubActivity.map((data, index)=>{
@@ -1465,7 +1490,7 @@ class Activity extends Component{
                             <label className="formLable">Activity Type<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                               <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                                <option disabled="disabled" selected="true">-- Select --</option>
+                                <option disabled="disabled" value={true}>-- Select --</option>
                                 <option>Common Level Activity</option>
                                  <option>Family Level Activity</option>
                               </select>
@@ -1492,21 +1517,21 @@ class Activity extends Component{
                           {/*<div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <div className=""  >
                               <label className="formLable">Unit :</label>
-                              <input type="text" className="form-control inputBox inputBox-main" id="unit" name="unit " placeholder="" ref="unit" onKeyDown={this.isNumberKey.bind(this)} value={this.state.subActivityDetails ? this.state.subActivityDetails: ""} disabled />
+                              <input type="text" className="form-control inputBox inputBox-main" id="unit" name="unit " placeholder="" ref="unit"  value={this.state.subActivityDetails ? this.state.subActivityDetails: ""} disabled />
                             </div>
                             <div className="errorMsg">{this.state.errors.unit}</div>
                           </div>*/}
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <label className="formLable">Unit Cost</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
-                              <input type="text"   className="form-control inputBox" name="unitCost" placeholder="" ref="unitCost" value={this.numberWithCommas(this.state.unitCost)} onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleTotalChange.bind(this)}/>
+                              <input type="number"   className="form-control inputBox" name="unitCost" placeholder="" ref="unitCost" value={this.numberWithCommas(this.state.unitCost)}   onChange={this.handleTotalChange.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.unitCost}</div>
                           </div>
                           <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <label className="formLable">Quantity</label>
                             <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
-                              <input type="text" className="form-control inputBox" name="quantity" placeholder="" ref="quantity" onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.quantity)}  onChange={this.handleTotalChange.bind(this)}/>
+                              <input type="number" className="form-control inputBox" name="quantity" placeholder="" ref="quantity"  value={this.numberWithCommas(this.state.quantity)}  onChange={this.handleTotalChange.bind(this)}/>
                             </div>
                             <div className="errorMsg">{this.state.errors.quantity}</div>
                           </div>
@@ -1515,7 +1540,7 @@ class Activity extends Component{
 
                               <label className="formLable">Total Cost of Activity :</label>
                             
-                              <input type="text" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost" onKeyDown={this.isNumberKey.bind(this)} value={this.numberWithCommas(this.state.totalcost)} disabled />
+                              <input type="number" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost"  value={this.numberWithCommas(this.state.totalcost)} disabled />
                               
                             </div>
                             <div className="errorMsg">{this.state.errors.totalcost}</div>

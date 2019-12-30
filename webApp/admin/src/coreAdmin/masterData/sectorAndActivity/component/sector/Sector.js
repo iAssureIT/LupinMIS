@@ -13,12 +13,14 @@ class Sector extends Component{
     super(props);
     this.state = {
       "sector"              :"",
+      // "sectorShortName"     :"",
       "user_ID"             :"",
       "sector_id"           :"",
       fields                : {},
       errors                : {},
       "tableHeading"        : {
         sector              : "Sector",
+        sectorShortName     : "Sector Abbreviation",
         actions             : 'Action',
       },
       "tableObjects"        : {
@@ -38,7 +40,7 @@ class Sector extends Component{
   handleChange(event){
     event.preventDefault();
     this.setState({
-     "sector"   : this.refs.sector.value, 
+     [event.target.name]: event.target.value
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -50,6 +52,8 @@ class Sector extends Component{
       errors[event.target.name] = "";
       this.setState({
         errors: errors
+      },()=>{
+        console.log(this.state.errors)
       });
     }
   }
@@ -71,8 +75,9 @@ class Sector extends Component{
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()) {
     var sectorValues= {
-    "sector"      :this.refs.sector.value,
-    "user_ID"     : this.state.user_ID,
+    "sector"               :this.refs.sector.value,
+    "sectorShortName"      :this.refs.sectorShortName.value,
+    "user_ID"              :this.state.user_ID,
     };
 
    
@@ -89,23 +94,25 @@ class Sector extends Component{
       });
       let fields       = {};
       fields["sector"] = "";
+      fields["sectorShortName"] = "";
   
       this.setState({
+        "sectorShortName"  :"",
         "sector"  :"",
         fields    :fields
       });
     }
   }
 
-
   updateSector(event){
     event.preventDefault();
       if (this.validateFormReq() && this.validateForm()) {
-  
+ 
       var sectorValues= {
-        "sector_ID"   :this.state.editId,
-        "sector"      :this.refs.sector.value,
-        "user_ID"     : this.state.user_ID,
+        "sector_ID"            :this.state.editId,
+        "sector"               :this.refs.sector.value,
+        "sectorShortName"      :this.refs.sectorShortName.value,
+        "user_ID"              :this.state.user_ID,
       };
 
      
@@ -126,9 +133,11 @@ class Sector extends Component{
         });
         let fields = {};
         fields["sector"] = "";
+        fields["sectorShortName"] = "";
   
       this.setState({
-        "sector"  :"",
+        "sector"           :"",
+        "sectorShortName"  :"",
         fields:fields
       });
     }    
@@ -142,6 +151,10 @@ class Sector extends Component{
         formIsValid = false;
         errors["sector"] = "This field is required.";
       }    
+      // if (!fields["sectorShortName"]) {
+      //   formIsValid = false;
+      //   errors["sectorShortName"] = "This field is required.";
+      // }    
       this.setState({
         errors: errors
       });
@@ -157,6 +170,13 @@ class Sector extends Component{
         if (!fields["sector"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
           formIsValid = false;
           errors["sector"] = "Please enter valid Sector Name.";
+        }
+      }
+      if (typeof fields["sectorShortName"] !== "undefined") {
+        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
+        if (!fields["sectorShortName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
+          formIsValid = false;
+          errors["sectorShortName"] = "Please enter valid Sector Abbreviation Name.";
         }
       }
     $("html,body").scrollTop(0);
@@ -201,6 +221,7 @@ class Sector extends Component{
       var editData = response.data[0];     
       this.setState({
         "sector"                :editData.sector,
+        "sectorShortName"       :editData.sectorShortName,
       },()=>{
        
       });
@@ -258,6 +279,7 @@ class Sector extends Component{
   }
   componentWillUnmount(){
     this.setState({
+      "sectorShortName" :"",
       "sector" :"",
       "editId" : ""
     })
@@ -270,21 +292,27 @@ class Sector extends Component{
         <div className="row">
           <div className="formWrapper">
             <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="sectorDetails">
-              <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
+              <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 addLoc ">
                 <span className="subHeader"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sector</span>
               </div>
               <div className="marginBottom col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
               <div className="row">
                 <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                  <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable">Sector</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sector" >
-                    
                       <input type="text" className="form-control inputBox"  placeholder=""ref="sector" name="sector" value={this.state.sector} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
                     <div className="errorMsg">{this.state.errors.sector}</div>
                   </div>
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
+                    <label className="formLable">Sector Abbreviation</label><span className="asterix"></span>
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorShortName" >
+                      <input type="text" className="form-control inputBox"  placeholder="" ref="sectorShortName" name="sectorShortName" value={this.state.sectorShortName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                    </div>
+                    <div className="errorMsg">{this.state.errors.sectorShortName}</div>
+                  </div>
+                  <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     {
                       this.state.editId ?
                       <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.updateSector.bind(this)}> Update</button>

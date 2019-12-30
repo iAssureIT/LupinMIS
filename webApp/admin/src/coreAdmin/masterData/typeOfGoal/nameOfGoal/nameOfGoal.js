@@ -14,13 +14,15 @@ class nameOfGoal extends Component{
     super(props);
     this.state = {
       "typeofGoal"          :"",
+      "goalName"          :"",
       "user_ID"             :"",  
       "typeofGoal_id"       :"",
       "typeofGoalRegx"       :"",
       fields                : {},
       errors                : {},
       "tableHeading"        : {
-        typeofGoal          : "Type Of Goal",
+        typeofGoal          : "Goal Type",
+        goalName            : "Goal Name",
         actions             : 'Action',
       },
       "tableObjects"        : {
@@ -34,6 +36,7 @@ class nameOfGoal extends Component{
       "startRange"          : 0,
       "limitRange"          : 10000,
       "editId"              : props.match.params ? props.match.params.typeofGoalId : ''
+
     }
   }
  
@@ -41,6 +44,7 @@ class nameOfGoal extends Component{
     event.preventDefault();
     this.setState({
      "typeofGoal"   : this.refs.typeofGoal.value,  
+     "goalName"     : this.refs.goalName.value,  
     });
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
@@ -74,12 +78,13 @@ class nameOfGoal extends Component{
     if (this.validateFormReq() && this.validateForm()) {
       var typeofGoalValues= {
       "typeofGoal"       :this.refs.typeofGoal.value,
+      "goalName"         :this.refs.goalName.value,
       "user_ID"          : this.state.user_ID,
       };
-      axios.post('/api/typeofgoals',typeofGoalValues)
+      axios.patch('/api/typeofgoals/goalName',typeofGoalValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
-        console.log("typeofGoalValues",response );
+        console.log("nameGoalValues",response );
         swal({
           title : response.data.message,
           text  : response.data.message
@@ -91,8 +96,10 @@ class nameOfGoal extends Component{
 
         let fields                 = {};
         fields["typeofGoalRegx"] = "";
+        fields["goalNameRegx"] = "";
         
         this.setState({
+          "goalName"       : "",
           "typeofGoal"     : "",
           "fields"         :fields
         });
@@ -105,11 +112,12 @@ class nameOfGoal extends Component{
     event.preventDefault();
     if (this.validateFormReq() && this.validateForm()){
       var typeofGoalValues= {
-        "ID"              :this.state.editId,
-        "typeofGoal"      :this.refs.typeofGoal.value,
+        "ID"              :this.refs.typeofGoal.value.split('|')[1],
+        "typeofGoal"      :this.refs.typeofGoal.value.split('|')[0],
+        "goalName"        :this.refs.goalName.value,
         "user_ID"         : this.state.user_ID,
       };
-      axios.patch('/api/typeofgoals/update',typeofGoalValues, this.state.editId)
+      axios.patch('/api/typeofgoals/goalName/update',typeofGoalValues, this.state.editId)
         .then((response)=>{
           console.log("response",response );
           this.getData(this.state.startRange, this.state.limitRange);
@@ -155,6 +163,7 @@ class nameOfGoal extends Component{
     if(editId){      
       this.edit(editId);
     }
+    this.getAvailableGoalType();
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
     $.validator.addMethod("regxtypeofGoal", function(value, element, regexpr) {         
@@ -268,6 +277,20 @@ class nameOfGoal extends Component{
       "editId"      : ""
     })
   }
+  getAvailableGoalType(){
+    axios({
+      method: 'get',
+      url: '/api/typeofgoals/list',
+    }).then((response)=> {
+        console.log("typeofgoals = ",response);
+        
+        this.setState({
+          availableGoalType: response.data
+        })
+    }).catch(function (error) {
+        console.log("error = ",error);
+      });
+  }
 
   render() {
   // console.log('render');
@@ -282,10 +305,10 @@ class nameOfGoal extends Component{
                       <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)}>
                         <option  className="hidden" value="" >-- Select Goal--</option>
                         {
-                          this.state.availableSectors && this.state.availableSectors.length >0 ?
-                          this.state.availableSectors.map((data, index)=>{
+                          this.state.availableGoalType && this.state.availableGoalType.length >0 ?
+                          this.state.availableGoalType.map((data, index)=>{
                             return(
-                              <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                              <option key={data._id} value={data.typeofgoal+'|'+data._id}>{data.typeofgoal}</option>
                             );
                           })
                           :
@@ -298,11 +321,10 @@ class nameOfGoal extends Component{
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable"> Name of Goal</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
-                     
-                      <input type="text" className="form-control inputBox"  placeholder="" ref="typeofGoal" name="typeofGoalRegx" value={this.state.typeofGoal} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="goalNameErr" >
+                      <input type="text" className="form-control inputBox"  placeholder="" ref="goalName" name="goalNameRegx" value={this.state.goalName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div>
-                    <div className="errorMsg">{this.state.errors.typeofGoalRegx}</div>
+                    <div className="errorMsg">{this.state.errors.goalNameRegx}</div>
                   </div>
                   <div className="col-lg-12 col-md-6 col-sm-6 col-xs-12">
                     {

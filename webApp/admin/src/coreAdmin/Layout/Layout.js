@@ -46,7 +46,7 @@ import BulkUpload                                 from '../../coreAdmin/masterDa
 import centerDetail                               from '../../coreAdmin/masterData/centerDetail/centerDetail.js';
 import Type_Center                                from '../../coreAdmin/masterData/typeOfCenter/typeOfCenter.js';
 import Type_Goal                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoalP.js';
-// import TypeOfGoalContainer                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoalContainer.js';
+import TypeOfGoalContainer                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoalContainer.js';
 
 import ProjectMapping                             from '../../coreAdmin/masterData/projectMapping/ProjectMapping.js';
 import SectorMapping                              from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
@@ -138,10 +138,14 @@ componentDidMount(){
                            {/*Master Data*/}
                           <Route path="/type-center"                                                  exact strict component={ Type_Center } />
                           <Route path="/type-center/"                                                  exact strict component={ Type_Center } />
-                          <Route path="/type-center/:typeofCenterId"                                                  exact strict component={ Type_Center } />
-                          <Route path="/type-goal"                                                    exact strict component={ Type_Goal } />
+                          <Route path="/type-center/:typeofCenterId"                                  exact strict component={ Type_Center } />
+                         {/* <Route path="/type-goal"                                                    exact strict component={ Type_Goal } />
                           <Route path="/type-goal/"                                                    exact strict component={ Type_Goal } />
-                          <Route path="/type-goal/:typeofGoalId"                                                    exact strict component={ Type_Goal } />
+                          <Route path="/type-goal/:typeofGoalId"                                      exact strict component={ Type_Goal } />*/}
+
+                          <Route path="/type-goal"                                                    exact strict component={ TypeOfGoalContainer } />
+                          <Route path="/type-goal/"                                                   exact strict component={ TypeOfGoalContainer } />
+                          <Route path="/type-goal/:typeofGoalId"                                      exact strict component={ TypeOfGoalContainer } />
                           <Route path="/center-details"                                               exact strict component={ centerDetail } />
                           <Route path="/center-details/"                                              exact strict component={ centerDetail } />
                           <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />

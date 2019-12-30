@@ -39,6 +39,7 @@ class Beneficiary extends Component{
     // console.log('params', this.props.match.params);
   }
 
+
   handleChange(event){
     event.preventDefault();
     if(event.currentTarget.name==='familyID'){
@@ -65,13 +66,7 @@ class Beneficiary extends Component{
     this.setState({
       fields
     });
-    if (this.validateForm()) {
-      let errors                = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
+  
   }
 
   isTextKey(evt){
@@ -85,12 +80,11 @@ class Beneficiary extends Component{
       return true;
     }
   }
-
   SubmitBeneficiary(event){
     event.preventDefault();
-    var beneficaryArray=[];
     var id2 = this.state.uidNumber;
-    if (this.validateFormReq() && this.validateForm()){
+    if($('#createBeneficiary').valid()){
+    // if (this.validateFormReq() && this.validateForm()){
     var beneficiaryValue= 
     {
       "center_ID"                 : this.state.center_ID,
@@ -104,14 +98,14 @@ class Beneficiary extends Component{
       "uidNumber"                 : this.refs.uidNumber.value,
       "relation"                  : this.refs.relation.value,
     };
-    let fields                          = {};
-    fields["familyID"]                  = "";
-    fields["beneficiaryID"]             = "";
-    fields["uidNumber"]                 = "";
-    fields["relation"]                  = "";
-    fields["surnameOfBeneficiary"]      = "";
-    fields["firstNameOfBeneficiary"]    = "";
-    fields["middleNameOfBeneficiary"]   = "";
+    // let fields                          = {};
+    // fields["familyID"]                  = "";
+    // fields["beneficiaryID"]             = "";
+    // fields["uidNumber"]                 = "";
+    // fields["relation"]                  = "";
+    // fields["surnameOfBeneficiary"]      = "";
+    // fields["firstNameOfBeneficiary"]    = "";
+    // fields["middleNameOfBeneficiary"]   = "";
 
     this.setState({
       "familyID"                 :"",
@@ -121,12 +115,11 @@ class Beneficiary extends Component{
       "middleNameOfBeneficiary"  :"",   
       "uidNumber"                :"",   
       "relation"                 :"",   
-      fields:fields
+      // fields:fields
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
       this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-      // this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
         swal({
           title : response.data.message,
           text  : response.data.message,
@@ -137,16 +130,15 @@ class Beneficiary extends Component{
       });
     }
   }
-
   Update(event){
     event.preventDefault();
-      if(this.refs.familyID.value === "" ||  this.refs.relation.value==="" ||  this.refs.uidNumber.value==="" 
+      /*if(this.refs.familyID.value === "" ||  this.refs.relation.value===""
         || this.refs.surnameOfBeneficiary.value===""|| this.refs.firstNameOfBeneficiary.value===""|| this.refs.middleNameOfBeneficiary.value==="")
       {
         if (this.validateFormReq() && this.validateForm()){
         }
-      }else{
-     
+      }else{*/
+    if($('#createBeneficiary').valid()){
       var beneficiaryValue= 
       {
         "center_ID"             : this.state.center_ID,
@@ -161,16 +153,6 @@ class Beneficiary extends Component{
         "uidNumber"                 : this.refs.uidNumber.value,
         "relation"                  : this.refs.relation.value,
       };
-
-      let fields                    = {};
-      fields["familyID"]            = "";
-      fields["nameofbeneficiaries"] = "";      
-      fields["uidNumber"]           = "";   
-      fields["relation"]            = "";   
-      fields["surnameOfBeneficiary"]      = "";
-      fields["firstNameOfBeneficiary"]    = "";
-      fields["middleNameOfBeneficiary"]   = "";
-   
       console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
@@ -192,7 +174,6 @@ class Beneficiary extends Component{
         "surnameOfBeneficiary"     :"",   
         "firstNameOfBeneficiary"   :"",   
         "middleNameOfBeneficiary"  :"",   
-        fields:fields
       });
       this.props.history.push('/beneficiary');
       this.setState({
@@ -200,76 +181,6 @@ class Beneficiary extends Component{
       });
     }
   }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-      if (!fields["familyID"]) {
-        formIsValid = false;
-        errors["familyID"] = "This field is required.";
-      }     
-       if (!fields["surnameOfBeneficiary"]) {
-        formIsValid = false;
-        errors["surnameOfBeneficiary"] = "This field is required.";
-      }        
-       if (!fields["firstNameOfBeneficiary"]) {
-        formIsValid = false;
-        errors["firstNameOfBeneficiary"] = "This field is required.";
-      }        
-       if (!fields["middleNameOfBeneficiary"]) {
-        formIsValid = false;
-        errors["middleNameOfBeneficiary"] = "This field is required.";
-      }       
-       if (!fields["relation"]) {
-        formIsValid = false;
-        errors["relation"] = "This field is required.";
-      }     
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
-  validateForm() {
-   let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-      if (typeof fields["surnameOfBeneficiary"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["surnameOfBeneficiary"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["surnameOfBeneficiary"] = "Please enter valid Surname.";
-        }
-      }
-      if (typeof fields["firstNameOfBeneficiary"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["firstNameOfBeneficiary"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["firstNameOfBeneficiary"] = "Please enter valid First Name.";
-        }
-      }
-      if (typeof fields["middleNameOfBeneficiary"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["middleNameOfBeneficiary"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["middleNameOfBeneficiary"] = "Please enter valid Middle Name.";
-        }
-      }
-      if (typeof fields["relation"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["relation"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["relation"] = "Please enter valid Relation.";
-        }
-      }
-    $("html,body").scrollTop(0);
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
   componentWillReceiveProps(nextProps){
     var editId = this.props.editId;
     if(nextProps.editId){
@@ -290,7 +201,7 @@ class Beneficiary extends Component{
       this.edit(this.state.editId);
     }
     this.getLength();
-    // this.getData();
+    // this.props.getData();
     this.props.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableFamilyId();
     const center_ID = localStorage.getItem("center_ID");
@@ -303,11 +214,69 @@ class Beneficiary extends Component{
     },()=>{
     console.log("center_ID =",this.state.center_ID);
      this.getLength(this.state.center_ID);
-    // this.getData();
     this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-    // this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     this.getAvailableFamilyId(this.state.center_ID);
-    });    
+    });   
+
+    $.validator.addMethod("regxUIDNumber", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Aadhar Number.");
+    // $.validator.addMethod("regxsurnameOfBeneficiary", function(value, element, regexpr) {         
+    //   return regexpr.test(value);
+    // }, "Please enter valid Surname.");
+    // $.validator.addMethod("regxfirstNameOfBeneficiary", function(value, element, regexpr) {         
+    //   return regexpr.test(value);
+    // }, "Please enter valid First Name.");
+    // $.validator.addMethod("regxmiddleNameOfBeneficiary", function(value, element, regexpr) {         
+    //   return regexpr.test(value);
+    // }, "Please enter valid Middle Name.");
+
+        $("#createBeneficiary").validate({
+          rules: {
+            uidNumber: {
+              // required: true,
+              regxUIDNumber: /^[_0-9]*((-|\s)*[_0-9]){12}$|^$/,
+            },
+            familyID: {
+              required: true,
+            },
+            relation: {
+              required: true,
+            },
+            surnameOfBeneficiary: {
+              required: true,
+              // regxsurnameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
+            },
+            firstNameOfBeneficiary: {
+              required: true,
+              // regxfirstNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
+            },
+            middleNameOfBeneficiary: {
+              // required: true,
+              // regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
+            },
+          },
+          errorPlacement: function(error, element) {
+            if (element.attr("name") == "familyID"){
+              error.insertAfter("#familyIDErr");
+            }
+            if (element.attr("name") == "relation"){
+              error.insertAfter("#relationErr");
+            }
+            if (element.attr("name") == "surnameOfBeneficiary"){
+              error.insertAfter("#surnameOfBeneficiaryErr");
+            }
+            if (element.attr("name") == "uidNumber"){
+              error.insertAfter("#uidNumberErr");
+            }
+            if (element.attr("name") == "firstNameOfBeneficiary"){
+              error.insertAfter("#firstNameOfBeneficiaryErr");
+            }
+            if (element.attr("name") == "middleNameOfBeneficiary"){
+              error.insertAfter("#middleNameOfBeneficiaryErr");
+            }
+          }
+        }); 
   }
 
   edit(id){
@@ -418,84 +387,92 @@ class Beneficiary extends Component{
   }
 
   render() {
-    return (
-    
-            <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                 <h4 className="pageSubHeader">Create New Beneficiary</h4>
-              </div>
-              <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
-                <label className="formLable">Family ID</label><span className="asterix">*</span>
-                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
-                  <select className="custom-select form-control inputBox" value={this.state.familyID} ref="familyID" name="familyID" onChange={this.handleChange.bind(this)} >
-                    <option value="" className="hidden" >-- Select --</option>
-                    {
-                      this.state.availableFamilies ? this.state.availableFamilies.map((data, index)=>{
-                        return(
-                          <option key={data._id} value={data.familyID+'|'+data._id} data-id={data._id}>{data.familyID}</option>
-                          );
-                      }) 
-                      : 
-                      null                            
-                    }
-                  </select>
-                </div>
-                <div className="errorMsg">{this.state.errors.familyID}</div>
-              </div>
-             {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
-                <label className="formLable">Beneficiary ID</label><span className="asterix">*</span>
-                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficiaryID" >
-                  <input type="text" className="form-control inputBox"  placeholder=""value={this.state.beneficiaryID} ref="beneficiaryID" name="beneficiaryID" onChange={this.handleChange.bind(this)} />
-                </div>
-                <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
-              </div>*/}
-              <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                <label className="formLable">Surname of Beneficiary </label><span className="asterix">*</span>
-                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfBeneficiary" >
-                  <input type="text" className="form-control inputBox" ref="surnameOfBeneficiary" name="surnameOfBeneficiary" value={this.state.surnameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
-                </div>
-                <div className="errorMsg">{this.state.errors.surnameOfBeneficiary}</div>
-              </div>
-              <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                <label className="formLable">First Name of Beneficiary </label><span className="asterix">*</span>
-                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfBeneficiary" >
-                  <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
-                </div>
-                <div className="errorMsg">{this.state.errors.firstNameOfBeneficiary}</div>
-              </div>
-              <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                <label className="formLable">Middle Name of Beneficiary </label><span className="asterix">*</span>
-                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfBeneficiary" >
-                  <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
-                </div>
-                <div className="errorMsg">{this.state.errors.middleNameOfBeneficiary}</div>
-              </div>
-              <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
-                <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix"></span>
-                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uidNumber" >
-                  <input type="text" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
-                </div>
-                <div className="errorMsg">{this.state.errors.uidNumber}</div>
-              </div>
-              <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
-                <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
-                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relation" >
-                  {/*<div className="input-group-addon inputIcon">
-                    <i className="fa fa-graduation-cap fa"></i>
-                  </div>*/}
-                  <input type="text" className="form-control inputBox"  placeholder="" value={this.state.relation} ref="relation" name="relation" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
-                </div>
-                <div className="errorMsg">{this.state.errors.relation}</div>
-              </div>
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+    return (    
+      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box" id="createBeneficiary">
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+           <h4 className="pageSubHeader">Create New Beneficiary</h4>
+        </div>
+        <div className=" ">
+          <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
+            <label className="formLable">Family ID</label><span className="asterix">*</span>
+            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyIDErr" >
+              <select className="custom-select form-control inputBox" value={this.state.familyID} ref="familyID" name="familyID" onChange={this.handleChange.bind(this)} >
+                <option value="" className="hidden" >-- Select --</option>
                 {
-                  this.state.editId ? 
-                  <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
-                  :
-                  <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
+                  this.state.availableFamilies && this.state.availableFamilies.length>0 ? this.state.availableFamilies.map((data, index)=>{
+                  // console.log(data)
+                    return(
+                      <option key={data._id} value={data.familyID+'|'+data._id} data-id={data._id}>{data.familyID}</option>
+                      );
+                  }) 
+                  : 
+                  null                            
                 }
-              </div> 
-            </div> 
+              </select>
+            </div>
+          </div>
+         {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
+            <label className="formLable">Beneficiary ID</label><span className="asterix">*</span>
+            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficiaryID" >
+              <input type="text" className="form-control inputBox"  placeholder=""value={this.state.beneficiaryID} ref="beneficiaryID" name="beneficiaryID" onChange={this.handleChange.bind(this)} />
+            </div>
+            <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
+          </div>*/}
+          <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
+            <label className="formLable">Surname </label><span className="asterix">*</span>
+            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfBeneficiaryErr" >
+              <input type="text" className="form-control inputBox" ref="surnameOfBeneficiary" name="surnameOfBeneficiary" value={this.state.surnameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+            </div>
+          </div>
+          <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
+            <label className="formLable">First Name </label><span className="asterix">*</span>
+            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfBeneficiaryErr" >
+              <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+            </div>
+          </div>
+          <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
+            <label className="formLable">Middle Name </label><span className="asterix"></span>
+            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfBeneficiaryErr" >
+              <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+            </div>
+          </div>
+          <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
+            <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix"></span>
+            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uidNumberErr" >
+              <input type="number" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber} maxLength = "12" onChange={this.handleChange.bind(this)} />
+            </div>
+          </div>
+          <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
+            <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
+            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
+              <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
+                <option  value="">-- Select --</option>
+                <option>Self</option>
+                <option>Wife</option>
+                <option>Husband</option>
+                <option>Son</option>
+                <option>Daughter</option>
+                <option>Father</option>
+                <option>Mother</option>
+                <option>Brother</option>
+                <option>Sister</option>
+                <option>Daughter in Law</option>
+                <option>Brother in Law</option>
+                <option>Grandson</option>
+                <option>Granddaughter</option>
+              </select>
+            </div>
+          </div>
+        </div> 
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+          {
+            this.state.editId ? 
+            <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
+            :
+            <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
+          }
+        </div> 
+      </form>
     );
   }
 }

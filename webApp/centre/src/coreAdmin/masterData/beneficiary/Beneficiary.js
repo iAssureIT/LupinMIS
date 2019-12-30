@@ -15,9 +15,13 @@ class Beneficiary extends Component{
     super(props);
    
     this.state = {
-      "relation"            :"-- Select --",
+      // "relation"            :"-- Select --",
+      "relation"            :"",
       "familyID"            :"",
       "beneficiaryID"       :"",
+      "firstNameOfBeneficiary"  :"",
+      "middleNameOfBeneficiary" :"",
+      "surnameOfBeneficiary"    :"",
       "nameofbeneficiaries" :"",
       "fields"              : {},
       "errors"              : {},
@@ -63,6 +67,7 @@ class Beneficiary extends Component{
 
   handleChange(event){
     event.preventDefault();
+    console.log(event);
     if(event.currentTarget.name==='familyID'){
       let id = $(event.currentTarget).find('option:selected').attr('data-id')
       axios.get('/api/families/'+id)
@@ -82,7 +87,6 @@ class Beneficiary extends Component{
       "uidNumber"                 : this.refs.uidNumber.value,
       "relation"                  : this.refs.relation.value,
     });
-  
   }
 
   isTextKey(evt){
@@ -173,16 +177,6 @@ class Beneficiary extends Component{
         "uidNumber"                 : this.refs.uidNumber.value,
         "relation"                  : this.refs.relation.value,
       };
-
-      let fields                    = {};
-      fields["familyID"]            = "";
-      fields["nameofbeneficiaries"] = "";      
-      fields["uidNumber"]           = "";   
-      fields["relation"]            = "";   
-      fields["surnameOfBeneficiary"]      = "";
-      fields["firstNameOfBeneficiary"]    = "";
-      fields["middleNameOfBeneficiary"]   = "";
-   
       console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
@@ -204,7 +198,6 @@ class Beneficiary extends Component{
         "surnameOfBeneficiary"     :"",   
         "firstNameOfBeneficiary"   :"",   
         "middleNameOfBeneficiary"  :"",   
-        fields:fields
       });
       this.props.history.push('/beneficiary');
       this.setState({
@@ -300,18 +293,15 @@ class Beneficiary extends Component{
     $.validator.addMethod("regxUIDNumber", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Aadhar Number.");
-    $.validator.addMethod("regxsurnameOfBeneficiary", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter valid Surname.");
-    $.validator.addMethod("regxfirstNameOfBeneficiary", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter valid First Name.");
-    $.validator.addMethod("regxmiddleNameOfBeneficiary", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter valid Middle Name.");
-    // $.validator.addMethod("regxrelation", function(value, element, regexpr) {         
+    // $.validator.addMethod("regxsurnameOfBeneficiary", function(value, element, regexpr) {         
     //   return regexpr.test(value);
-    // }, "Please enter valid Relation.");
+    // }, "Please enter valid Surname.");
+    // $.validator.addMethod("regxfirstNameOfBeneficiary", function(value, element, regexpr) {         
+    //   return regexpr.test(value);
+    // }, "Please enter valid First Name.");
+    // $.validator.addMethod("regxmiddleNameOfBeneficiary", function(value, element, regexpr) {         
+    //   return regexpr.test(value);
+    // }, "Please enter valid Middle Name.");
 
         $("#createBeneficiary").validate({
           rules: {
@@ -322,26 +312,28 @@ class Beneficiary extends Component{
             familyID: {
               required: true,
             },
+            relation: {
+              required: true,
+            },
             surnameOfBeneficiary: {
               required: true,
-              regxsurnameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
+              // regxsurnameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
             },
             firstNameOfBeneficiary: {
               required: true,
-              regxfirstNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
+              // regxfirstNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
             },
             middleNameOfBeneficiary: {
-              required: true,
-              regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
-            },
-            relation: {
-              required: true, 
-              // regxrelation:/^[A-za-z']+( [A-Za-z']+)*$/,       
+              // required: true,
+              // regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
             },
           },
           errorPlacement: function(error, element) {
             if (element.attr("name") == "familyID"){
               error.insertAfter("#familyIDErr");
+            }
+            if (element.attr("name") == "relation"){
+              error.insertAfter("#relationErr");
             }
             if (element.attr("name") == "surnameOfBeneficiary"){
               error.insertAfter("#surnameOfBeneficiaryErr");
@@ -354,9 +346,6 @@ class Beneficiary extends Component{
             }
             if (element.attr("name") == "middleNameOfBeneficiary"){
               error.insertAfter("#middleNameOfBeneficiaryErr");
-            }
-            if (element.attr("name") == "relation"){
-              error.insertAfter("#relationErr");
             }
           }
         });
@@ -419,18 +408,6 @@ class Beneficiary extends Component{
     .catch(function(error){
       
     });
-  }
-
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
   }
 
   getData(startRange, limitRange, center_ID){
@@ -589,7 +566,7 @@ class Beneficiary extends Component{
                               </div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Middle Name of Beneficiary </label><span className="asterix">*</span>
+                              <label className="formLable">Middle Name of Beneficiary </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfBeneficiaryErr" >
                                 <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
@@ -597,14 +574,14 @@ class Beneficiary extends Component{
                             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uidNumberErr" >
-                                <input type="text" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber} onKeyDown={this.isNumberKey.bind(this)}  maxLength = "12" onChange={this.handleChange.bind(this)} />
+                                <input type="number" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber} maxLength = "12" onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
                               <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
-                                <select className="custom-select form-control inputBox"ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
-                                  <option>-- Select --</option>
+                                <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
+                                  <option  value="">-- Select --</option>
                                   <option>Self</option>
                                   <option>Wife</option>
                                   <option>Husband</option>

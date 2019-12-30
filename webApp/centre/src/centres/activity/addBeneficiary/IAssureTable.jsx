@@ -731,7 +731,9 @@ class IAssureTable extends Component {
 										}
 									) 	
 									:
-									<tr className="trAdmin"><td colSpan={this.state.tableHeading&&this.state.showUpgradation === 'Yes' ? Object.keys(this.state.tableHeading).length+2 : this.state.showUpgradation === 'Yes'? 2 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
+									<tr className="trAdmin"><td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+3 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
+
+									// <tr className="trAdmin"><td colSpan={this.state.tableHeading && this.state.showUpgradation === 'Yes' ? Object.keys(this.state.tableHeading).length+2 : this.state.showUpgradation === 'Yes'? 2 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
 								}
 	                    </tbody>
 	                    </table>
