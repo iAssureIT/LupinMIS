@@ -457,7 +457,7 @@ class Beneficiary extends Component{
                 <option>Brother</option>
                 <option>Sister</option>
                 <option>Daughter in Law</option>
-                <option>Brother in Law</option>
+                <option>Son in Law</option>
                 <option>Grandson</option>
                 <option>Granddaughter</option>
               </select>

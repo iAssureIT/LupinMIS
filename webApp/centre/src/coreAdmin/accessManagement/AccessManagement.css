@@ -43,8 +43,8 @@
 }
 /* When the checkbox is checked, add a blue background */
 .checkboxAccessContainer input:checked ~ .checkboxMark {
-  background-color: #039BE5;
-  border:2px solid #039BE5;
+  background-color: #4ca75a;
+  border:2px solid #4ca75a;
 }
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkboxMark:after {
@@ -191,7 +191,7 @@
     margin-top: -23px;
     font-size: 20px;
     cursor: pointer;
-    color: #039BE5;
+    color: #4ca75a;
 }
 
 
@@ -228,7 +228,7 @@
   text-align: left !important;
 }
 .swal-button--cancel{
-  background-color: #039BE5;
+  background-color: #4ca75a;
   border: none !important;
   color: #fff;
   text-decoration: none !important;
@@ -236,7 +236,7 @@
   
 }
 .swal-button--cancel:hover  {
-  background-color: #039BE5 !important;
+  background-color: #4ca75a !important;
   border: none !important;
   color: #fff;
   

@@ -231,7 +231,7 @@
 }
 .ETELoginTit,.ETESignTit{
   font-size: 34px;
-    color: #337ab7;
+    color: #4ca75a;
     margin-top: 10px !important;
     font-family: 'Roboto', sans-serif !important;
     padding: 0px;
@@ -240,7 +240,7 @@
 
 .ETELoginSignTit,.ETESignSubTit{
   margin-top: 2px !important;
-  color: #337ab7;
+  color: #4ca75a;
   font-size: 20px;
   font-family: 'Roboto', sans-serif !important;
   text-align: center;
@@ -349,13 +349,13 @@
 }
 
 .login h1{
-  color: #337ab7 !important;
+  color: #4ca75a !important;
 }
 .tmsUserAccForm{
   border: 1px solid #eee !important;
 }
 .TMSLoginBTN{
-  background-color: #337ab7 !important;
+  background-color: #4ca75a !important;
   font-size: 18px !important;
   margin-bottom: 10px !important;
 }
@@ -414,7 +414,7 @@
   padding-top: 6px;
   bottom: 0px;
   color: #fff;
-  background-color: #3c8dbc;
+  background-color: #4ca75a;
   -webkit-transition: .4s;
   transition: .4s;
   content: 'No, Its not!';
@@ -515,7 +515,7 @@
   float: left;
 }
 /*.UMGrey:hover{
-  color: #337ab7;
+  color: #4ca75a;
   text-decoration: underline;
 }*/
 
@@ -1341,7 +1341,7 @@ input[type="radio"]:checked:before {
 }
 .ETELoginTit,.ETESignTit{
   font-size: 34px;
-    color: #337ab7;
+    color: #4ca75a;
     margin-top: 10px !important;
     font-family:'Roboto', sans-serif !important;
     padding: 0px;
@@ -1350,7 +1350,7 @@ input[type="radio"]:checked:before {
 
 .ETELoginSignTit,.ETESignSubTit{
   margin-top: 2px !important;
-  color: #337ab7;
+  color: #4ca75a;
   font-size: 20px;
   font-family: 'Roboto', sans-serif !important;
   text-align: center;
@@ -1470,13 +1470,13 @@ input[type="radio"]:checked:before {
 }
 
 .login h1{
-  color: #337ab7 !important;
+  color: #4ca75a !important;
 }
 .tmsUserAccForm{
   border: 1px solid #eee !important;
 }
 .TMSLoginBTN{
-  background-color: #337ab7 !important;
+  background-color: #4ca75a !important;
   font-size: 18px !important;
   margin-bottom: 10px !important;
 }
@@ -1535,7 +1535,7 @@ input[type="radio"]:checked:before {
   padding-top: 6px;
   bottom: 0px;
   color: #fff;
-  background-color: #3c8dbc;
+  background-color: #4ca75a;
   -webkit-transition: .4s;
   transition: .4s;
   content: 'No, Its not!';
@@ -1699,7 +1699,7 @@ input[type="radio"]:checked:before {
   float: left;
 }
 /*.UMGrey:hover{
-  color: #337ab7;
+  color: #4ca75a;
   text-decoration: underline;
 }*/
 

@@ -212,13 +212,13 @@ input, select{
   font-size: 12px !important;
 }
 .form-line-active input:focus, .form-line-active textarea:focus {
-    border: 1px solid #039BE5 !important; 
+    border: 1px solid #4ca75a !important; 
     box-shadow: none !important;
     
  }
 
 .inputBox-main:hover{
-  border: 1px solid #039BE5 !important;
+  border: 1px solid #4ca75a !important;
   box-shadow: 0 3px 10px 0 rgba(0,0,0,.15);
 }
 
@@ -246,20 +246,20 @@ input, select{
 .clear{
   height: 40px;
   background: none;
-  border: 1px solid #039BE5 !important;
+  border: 1px solid #4ca75a !important;
   font-family:'Montserrat',sans-serif;
   font-size: 12px;
-  color: #039BE5;
+  color: #4ca75a;
 }
 .clear:hover{
-  color: #039BE5;
+  color: #4ca75a;
 
 }
 
 /*All submit buttons*/
 .submit{
   height: 40px;
-  background-color: #039BE5;
+  background-color: #4ca75a;
   color: #fff;
   font-weight: 600 !important;
   font-family:'Montserrat',sans-serif;
@@ -326,7 +326,7 @@ input, select{
 /*React table css for all react tables*/
 .ReactTable .rt-thead.-header {
   font-family:'Montserrat',sans-serif !important;
-  background-color: #039BE5 !important;
+  background-color: #4ca75a !important;
   color      :#f2f2f2 !important;
   font-size  : 14px !important;
   text-align : right !important;
@@ -469,8 +469,8 @@ input, select{
 }
 
 .signInput:hover{
-  border: 1px solid #039BE5 !important;
-  box-shadow: 1px 1px 1.5px #039BE5;
+  border: 1px solid #4ca75a !important;
+  box-shadow: 1px 1px 1.5px #4ca75a;
 }
 .inputhgt{
   height: 45px;
@@ -520,7 +520,7 @@ input, select{
 }
 .msgModalHeader{
     /*border-bottom-color: #f4f4f4;*/
-    background: #039BE5;
+    background: #4ca75a;
     padding: 30px;
     border-radius: 2px ;
 }
@@ -529,7 +529,7 @@ input, select{
   color:#fff;
 }
 .updateBTNModal{
-  background-color: #039BE5;
+  background-color: #4ca75a;
   color: #fff;
 }
 
@@ -570,7 +570,7 @@ background-color: #039be5 !important;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
   /*margin-bottom: 28px;*/
   /*border-bottom: 1px solid #E9EEF1 !important;*/
-  background-color: #039BE5 !important;
+  background-color: #4ca75a !important;
   height: 40px;
   color:transparent;
   margin-top: -15px !important;
@@ -599,7 +599,7 @@ background-color: #039be5 !important;
 }
 .swal-button {
   padding: 10px 40px 10px 40px;
-  background-color: #039BE5 !important;
+  background-color: #4ca75a !important;
   font-size: 12px;
 
   /*text-align-last: center;*/
@@ -623,7 +623,7 @@ margin-right: 12px;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
   /*margin-bottom: 28px;*/
   /*border-bottom: 1px solid #E9EEF1 !important;*/
-  background-color: #039BE5 !important;
+  background-color: #4ca75a !important;
   height: 40px;
   color:transparent;
   margin-top: -15px !important;
@@ -652,7 +652,7 @@ margin-right: 12px;
 }
 .swal-button {
   padding: 10px 40px 10px 40px;
-  background-color: #039BE5 !important;
+  background-color: #4ca75a !important;
   font-size: 12px;
 
 }
@@ -673,7 +673,7 @@ margin-right: 12px;
   }
   .adminModal-header {
       border-radius: 9px 9px 0 0;
-      background: #039BE5;
+      background: #4ca75a;
       color: #fff;
       border: none;
   }
@@ -693,15 +693,15 @@ margin-right: 12px;
   }
   .btnUpdate{
       color: #fff;
-      background: #039BE5;
+      background: #4ca75a;
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #039BE5;
+      box-shadow: 2px 2px 9px -2px #4ca75a;
   }
 /*  .btnSubmit{
       color: #fff;
-      background: #039BE5;
+      background: #4ca75a;
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #039BE5; 
+      box-shadow: 2px 2px 9px -2px #4ca75a; 
   }*/
   .adminCloseCircleDiv {
       display: inline-grid;

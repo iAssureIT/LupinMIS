@@ -126,7 +126,7 @@
 	width:30px;
 	padding: 0px;
 	border-radius: 100px;
-	border: 1px solid #039BE5;
+	border: 1px solid #4ca75a;
 	color:#000;
 }
 .addContainerMPV:hover{
@@ -134,7 +134,7 @@
 }
 .addContainerMPV i{
 	font-size:19px;
-	color: #039BE5;
+	color: #4ca75a;
 	padding-left:6px;
 	padding-top: 6px;
 }
@@ -155,7 +155,7 @@
 }
 /*.ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td{
 	 font-family:'Montserrat',sans-serif !important;
-  background-color: #039BE5 !important;
+  background-color: #4ca75a !important;
   color      :#f2f2f2 !important;
   font-size  : 14px !important;
   height     : 40px !important;

@@ -554,19 +554,19 @@ class Beneficiary extends Component{
                               <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
                             </div>*/}
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Surname of Beneficiary </label><span className="asterix">*</span>
+                              <label className="formLable">Surname  </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfBeneficiaryErr" >
                                 <input type="text" className="form-control inputBox" ref="surnameOfBeneficiary" name="surnameOfBeneficiary" value={this.state.surnameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">First Name of Beneficiary </label><span className="asterix">*</span>
+                              <label className="formLable">First Name  </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfBeneficiaryErr" >
                                 <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Middle Name of Beneficiary </label><span className="asterix"></span>
+                              <label className="formLable">Middle Name  </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfBeneficiaryErr" >
                                 <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
@@ -592,7 +592,7 @@ class Beneficiary extends Component{
                                   <option>Brother</option>
                                   <option>Sister</option>
                                   <option>Daughter in Law</option>
-                                  <option>Brother in Law</option>
+                                  <option>Son in Law</option>
                                   <option>Grandson</option>
                                   <option>Granddaughter</option>
                                 </select>

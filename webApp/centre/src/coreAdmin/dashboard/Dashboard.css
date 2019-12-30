@@ -151,7 +151,7 @@
     position: relative;
     border-radius: 3px;
     background: #ffffff;
-    border-top: 3px solid #039BE5;
+    border-top: 3px solid #4ca75a;
     margin-bottom: 20px;
     width: 100%;
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
@@ -314,7 +314,7 @@
 .box8{
     height: 411px;
     background-color: #ffffff;
-    border-top: 3px solid  #3c8dbc; 
+    border-top: 3px solid  #4ca75a; 
     border-radius: 2px 2px 2px 2px;
 }
 

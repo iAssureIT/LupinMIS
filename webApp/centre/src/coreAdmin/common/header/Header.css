@@ -4,7 +4,7 @@
 
 }
 .colorbox{
-  background: #039BE5;
+  background: #4ca75a;
   height: 50px
 }
 .headicon{
@@ -322,18 +322,18 @@ padding: 5px 5px !important;
   padding-bottom: 0px;
 }
 .profilebtn{
-  background: #0689ca;
+  background: #4ca75a;
   color: #fff;
 }
 .profilebtn:hover{
-  background: #0689ca;
+  background: #4ca75a;
   color: #fff;
 }
 .profileTitle{
   cursor: pointer;
 }
 .hover:hover{
-    background-color: #039BE5;
+    background-color: #4ca75a;
     height: 50px;
     color: #fff !important;
 }

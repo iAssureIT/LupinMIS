@@ -129,7 +129,7 @@
 	width:30px;
 	padding: 0px;
 	border-radius: 100px;
-	border: 1px solid #039BE5;
+	border: 1px solid #4ca75a;
 	margin-left:917px;
 	color:#000;
 }
@@ -138,7 +138,7 @@
 }
 .addContainer i{
 	font-size:19px;
-	color: #039BE5;
+	color: #4ca75a;
 	padding-left:6px;
 	padding-top: 6px;
 }
@@ -156,7 +156,7 @@
 
 .addBtn{
 	height: 32px;
-    background-color: #039BE5;
+    background-color: #4ca75a;
     color: #fff;
     font-weight: 600 !important;
     font-family: 'Montserrat',sans-serif;
@@ -165,7 +165,7 @@
     border: none;
 }
 .addBtn:hover{
-    background-color: #039BE5;
+    background-color: #4ca75a;
     color: #fff;
 }
 .addContainerAct{
@@ -173,7 +173,7 @@
 	width:30px;
 	padding: 0px;
 	/*border-radius: 100px;*/
-	border: 1px solid #039BE5;
+	border: 1px solid #4ca75a;
 /*	margin-left:917px;
 */	color:#000;
 }
@@ -182,7 +182,7 @@
 }
 .addContainerAct i{
 	font-size:19px;
-	color: #039BE5;
+	color: #4ca75a;
 	padding-left:6px;
 	padding-top: 6px;
 }

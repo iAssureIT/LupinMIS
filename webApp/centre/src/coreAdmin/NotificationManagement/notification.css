@@ -109,7 +109,7 @@
 .create-email-template-wrapper{
     height: auto;
     padding: 1.3%;
-    /*border: 5px solid #3c8dbc;*/
+    /*border: 5px solid #4ca75a;*/
     margin-bottom: 5%;
 }
 .sidertemplatebar{
@@ -144,7 +144,7 @@
     height: 600px;
     background: rgba(179,220,237,1);
     padding: 1.3%;
-    border: 7px solid #3c8dbc  ;
+    border: 7px solid #4ca75a  ;
     display: none;
 }
 
@@ -152,7 +152,7 @@
     height: 600px;
     background: rgba(179,220,237,1);
     padding: 1.3%;
-    border: 7px solid #3c8dbc  ;
+    border: 7px solid #4ca75a  ;
     display: none; 
 }
 
@@ -161,7 +161,7 @@
     height: 600px;
     background: #fff;
     padding: 1.3%;
-    border: 7px solid #3c8dbc  ;
+    border: 7px solid #4ca75a  ;
 
 }
 
@@ -169,7 +169,7 @@
     display: none;
 }
 .newTemplate{
-    background: #3c8dbc;
+    background: #4ca75a;
     height: 50px;
     padding: 5%;
     text-align: center;
@@ -180,7 +180,7 @@
     margin-bottom: 2%;
 }
 .notificationTemplate{
-    background: #3c8dbc;
+    background: #4ca75a;
     height: 50px;
     padding: 5%;
     text-align: center;
@@ -191,7 +191,7 @@
     margin-bottom: 2%;
 }
 .smsTemplate{
-    background: #3c8dbc;
+    background: #4ca75a;
     height: 50px;
     padding: 5%;
     text-align: center;
@@ -237,7 +237,7 @@
 }
 .tempactive .iconCss {
     border-radius: 18px;
-    background: #337ab7;
+    background: #4ca75a;
     padding: 0.7em;
     color: #fff;
 }
@@ -434,7 +434,7 @@
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 .tempCategory{
-     /*background: #3c8dbc !important;*/
+     /*background: #4ca75a !important;*/
     /* height: 40px; */
     /* padding: 3%; */
     text-align: left;

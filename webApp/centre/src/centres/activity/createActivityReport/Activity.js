@@ -1018,11 +1018,22 @@ class Activity extends Component{
         }
         console.log('availableDistInCenter ==========',response);
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+        var availableblockInCenter= removeDuplicates(response.data[0].villagesCovered, "block");
+        var availablevillageInCenter= removeDuplicates(response.data[0].villagesCovered, "village");
         this.setState({
+          availablevillageInCenter  : availablevillageInCenter  ,
+          availableblockInCenter  : availableblockInCenter  ,
           availableDistInCenter  : availableDistInCenter,
+          district               : availableDistInCenter[0].district.split('|')[0],
+          block               : availableblockInCenter[0].block.split('|')[0],
+          village               : availablevillageInCenter[0].village.split('|')[0],
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
           // districtsCovered : response.data[0].districtsCovered
         },()=>{
+        console.log('availableblockInCenter ==========',this.state.availableblockInCenter);
+        console.log('availablevillageInCenter ==========',this.state.availablevillageInCenter);
+        console.log('availableDistInCenter ==========',this.state.availableDistInCenter);
+        console.log('block ==========',this.state.block);
           var stateCode =this.state.address.split('|')[0];
           this.setState({
             stateCode  : stateCode,
@@ -1087,10 +1098,11 @@ class Activity extends Component{
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-      // console.log('response ==========', response.data);
+      console.log('response ==========', response.data);
       if(response&&response.data){
         this.setState({
-          listofBlocks : response.data
+          listofBlocks : response.data,
+          // block : response.data[0].blockName
         })
       }
     }).catch(function (error) {
@@ -1382,10 +1394,10 @@ class Activity extends Component{
                               <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
                                 <option disabled="disabled" value={true}>-- Select --</option>
                                 {
-                                  this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                  this.state.listofBlocks.map((data, index)=>{
+                                  this.state.availableblockInCenter && this.state.availableblockInCenter.length > 0  ? 
+                                  this.state.availableblockInCenter.map((data, index)=>{
                                     return(
-                                      <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                      <option key={index} value={this.camelCase(data.block)}>{this.camelCase(data.block)}</option>
                                     );
                                   })
                                   :
@@ -1401,10 +1413,10 @@ class Activity extends Component{
                               <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
                                 <option disabled="disabled" value={true}>-- Select --</option>
                                 {
-                                  this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                                  this.state.listofVillages.map((data, index)=>{
+                                  this.state.availablevillageInCenter && this.state.availablevillageInCenter.length > 0  ? 
+                                  this.state.availablevillageInCenter.map((data, index)=>{
                                     return(
-                                      <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                      <option key={index} value={this.camelCase(data.village)}>{this.camelCase(data.village)}</option>
                                     );
                                   })
                                   :

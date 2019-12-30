@@ -20,16 +20,16 @@
     margin-right: 248px;
     font-size: 11px;
     font-weight: 800;
-    color: #039BE5;
+    color: #4ca75a;
     text-transform: uppercase;
-    border: 1px solid #039BE5;
+    border: 1px solid #4ca75a;
     border-radius: 0px;
     overflow: hidden;
     z-index: 1;
     position: relative;
     text-align: center;
     margin-top: 20px;
-    color: #039BE5;
+    color: #4ca75a;
     width: 180px;
 
 }
@@ -37,7 +37,7 @@
 .notifTab li a:focus,
 .notifTab li.active a{
   background: transparent;
-  border: 1px solid #039BE5 !important;
+  border: 1px solid #4ca75a !important;
   color: #fff !important ;
 }
 
@@ -46,7 +46,7 @@
   content: "";
   width: 520%;
   height: 0;
-  background: #039BE5;
+  background: #4ca75a;
   position: absolute;
   top: 56%;
   left: 35%;
@@ -306,7 +306,7 @@ display: block;
 }
 .tempactive .iconCss {
     border-radius: 18px;
-    background: #337ab7;
+    background: #4ca75a;
     padding: 0.7em;
     color: #fff;
 }
@@ -918,7 +918,7 @@ display: block;
   }
   .adminModal-header {
       border-radius: 9px 9px 0 0;
-      background: #039BE5;
+      background: #4ca75a;
       color: #fff;
       border: none;
   }
@@ -935,17 +935,17 @@ display: block;
   }
   .adminCancel-btn, .adminFinish-btn {
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #039BE5;
+      box-shadow: 2px 2px 9px -2px #4ca75a;
   }
   .btnUpdate{
       color: #fff;
-      background: #039BE5;
+      background: #4ca75a;
       margin-bottom: 15px;
-      box-shadow: 2px 2px 9px -2px #039BE5;
+      box-shadow: 2px 2px 9px -2px #4ca75a;
   }
 .btnSubmit{
     height: 40px;
-    background-color: #039BE5;
+    background-color: #4ca75a;
     color: #fff;
     font-weight: 600 !important;
     font-family:'Montserrat',sans-serif;
@@ -990,8 +990,8 @@ display: block;
     text-align: center;
     color: #fff;
     border-radius: 3px;
-    background: #0689ca;
-    border: 1px solid #039BE5;
+    background: #4ca75a;
+    border: 1px solid #4ca75a;
     padding: 8px;
     cursor: pointer;
     box-shadow: 0 1px 2px 0 rgba(60,64,67,.302), 0 1px 3px 1px rgba(60,64,67,.149);
