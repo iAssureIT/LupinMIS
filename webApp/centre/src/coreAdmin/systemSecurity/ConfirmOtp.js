@@ -154,7 +154,7 @@ import './SignUp.css';
       var sentEmailOTP = localStorage.getItem('emailotp')
       var email = localStorage.getItem('email')
       axios
-      .patch('/api/users/setotp/'+email,{'emailotp' : sentEmailOTP})
+      .patch('/api/users/setotp/'+email,{'emailotp' : sentEmailOTP,'type':'center'})
       .then((response)=> {
         axios
         .get('/api/users/email/'+email)
@@ -314,7 +314,7 @@ import './SignUp.css';
                               <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 pdcls">
                                 <Link to='/' className="UMGreyy"><u>Sign In</u></Link>  
                               </div>
-                              <div id="resendOtpBtn" className={"col-lg-6 col-md-6 col-sm-12 col-xs-12  resendOtpColor "+resendOtpWrap}>
+                              <div id="resendOtpBtn" className={"col-lg-6 col-md-6 col-sm-12 col-xs-12 resendOtpColor "+resendOtpWrap}>
                                 {resendOtp}
                               </div>
                             </div>

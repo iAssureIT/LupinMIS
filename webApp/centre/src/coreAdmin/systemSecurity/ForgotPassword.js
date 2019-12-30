@@ -58,13 +58,14 @@ class ForgotPassword extends Component {
           localStorage.setItem('emailotp',emailotp)
           localStorage.setItem('email',this.state.email)
           // console.log('this.state.email',this.state.email)
+          var that = this
           axios
-          .patch('/api/users/setotp/'+this.state.email,{'emailotp' : emailotp})
+          .patch('/api/users/setotp/'+this.state.email,{'emailotp' : emailotp,'type' : 'center'})
           .then((response)=> {
             axios
             .get('/api/users/email/'+this.state.email)
             .then((response)=> {
-              console.log("-------name------>>",response);
+              // console.log("-------name------>>",response);
               if(response&&response.data){
                 var msgvariable = {
                   '[User]'    : response.data.profile.firstName+' '+response.data.profile.lastName,
@@ -79,7 +80,7 @@ class ForgotPassword extends Component {
                 axios
                 .post('/api/masternotification/send-mail',inputObj)
                 .then((response)=> {
-                  console.log("-------mail------>>",response);
+                  // console.log("-------mail------>>",response);
                   this.setState({
                     buttonValue : 'Send Verification Code'
                   },()=>{
@@ -96,19 +97,21 @@ class ForgotPassword extends Component {
             })
           })
           .catch(function (error) {
-            console.log(error);
+            // console.log(error);
             if(error.response.status===404){
-              console.log('this',this);
-              // this.setState({
-              //   buttonValue : 'Send Verification Code'
-              // })
-              swal('abc','Email Id does not exists.')
+              swal('abc','Email Id does not exists.').then(() => {
+                // console.log('that',that)
+                that.setState({
+                  buttonValue : 'Send Verification Code'
+                })
+              });
             }
           })
         }else{
           swal('Email Address not found',"Please enter valid Email Id","warning");                  
         }
        });
+
         
         //       // Session.set('mobotp',mobileotp);
         ///////////////

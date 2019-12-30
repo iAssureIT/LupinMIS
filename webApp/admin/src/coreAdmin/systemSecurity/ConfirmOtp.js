@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import $ from "jquery";
-
+import axios from 'axios';
 
 import './SignUp.css';
 
@@ -15,11 +15,34 @@ import './SignUp.css';
         // }
       }
     }
+    componentDidMount(){
+      $("#OTPMobMail").validate({
+        rules: {
+          emailotp: {
+            required: true,
+          }
+        },
+        errorPlacement: function(error, element) {
+          if (element.attr("name") == "emailotp"){
+            error.insertAfter("#emailotpErr");
+          }
+        }
+      });
+    }
     confirmOTP(event){
-      console.log('confirm otp');
+      // console.log('confirm otp');
       event.preventDefault();
-      var url = this.props.match.params;
-      console.log('url = ',url);
+      if($('#OTPMobMail').valid()){
+        var url = this.props.match.params;
+        // console.log('url = ',url);
+        var sentEmailOTP = localStorage.getItem('emailotp')
+        var currentOTP = this.refs.emailotp.value
+        if(sentEmailOTP===currentOTP){
+          this.props.history.push('/reset-pwd')
+        }else{
+          swal('abc',"OTP doesn't match with sent OTP");                  
+        }
+      }
 
       // var checkUserExist = FlowRouter.getParam("mailId");
       // var userData = Meteor.users.findOne({"_id":checkUserExist});
@@ -128,6 +151,42 @@ import './SignUp.css';
       var element = document.getElementById("resendOtpBtn");
       element.classList.add("btn-success");
       element.classList.remove("resendOtpColor");
+      var sentEmailOTP = localStorage.getItem('emailotp')
+      var email = localStorage.getItem('email')
+      axios
+      .patch('/api/users/setotp/'+email,{'emailotp' : sentEmailOTP,'type':'admin'})
+      .then((response)=> {
+        axios
+        .get('/api/users/email/'+email)
+        .then((response)=> {
+          // console.log("-------name------>>",response);
+          if(response&&response.data){
+            var msgvariable = {
+              '[User]'    : response.data.profile.firstName+' '+response.data.profile.lastName,
+              '[OTP]'     : sentEmailOTP
+            }
+            // console.log("msgvariable :"+JSON.stringify(msgvariable));
+            var inputObj = {  
+              to           : email,
+              templateName : 'User - Forgot Password OTP',
+              variables    : msgvariable,
+            }
+            axios
+            .post('/api/masternotification/send-mail',inputObj)
+            .then((response)=> {
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
       // var checkUserExist = FlowRouter.getParam("mailId");
       // var userData = Meteor.users.findOne({"_id":checkUserExist});
       // if(userData){
@@ -171,53 +230,99 @@ import './SignUp.css';
     // }else{
       var resendOtpWrap = "resendOtpWrap resendOtpWrapcss";
       var mobileEmail = 'Mobile Number';
-      var resendOtp = <span onClick={this.resendOtp.bind(this)}>Resend OTP</span>;
+      var resendOtp = <span className="pull-right" onClick={this.resendOtp.bind(this)}><u>Resend OTP</u></span>;
     // }
 
-    var winHeight = window.innerHeight;
-    var divHeight = winHeight/4.5+'px';
+    var y = 380;
+    var h = y + 'px';
+
+    var x = $(window).height();   
+    var z = 0;
+    var winHeight =(x-z) + 'px';
+    var winHeight1 =(x-z) ;
+    console.log('x',$(window).height());
+    console.log('winHeight',winHeight1);
+
+    var innerheight = winHeight1-80 + 'px';
+    var innerheight1 = winHeight1-80 ;
+   
+    var margin = parseInt( innerheight1-y );
+    var margint = (margin/2);
+    console.log('margint',margint);
+    console.log('margin',margin);
+    var windowWidth = $(window).width();
+    // console.log('ww',windowWidth);
+    if(windowWidth>=320&&windowWidth<=992){
+    var backImage = "visible-xs col-xs-12 visible-sm col-sm-12 noBackImage"
+    }else{
+    var backImage = "signUpBackground hidden-xs hidden-sm"
+    }
+    if(this.state.loggedIn===true){
+      return <div></div>
+    }
+
+  
 
     return(
-      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
-        <div className="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 signupPadding signUpFormWrap bg-success" style={{"height": winHeight}}>
-          <div className="divConfirmOtpModalWrap">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" className="firstverification">
-              <div className="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
-                <span>We have sent you a Verification Code to your registered <b>mobile and Email </b>.<br/><br/></span>
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-right" id="contentsroll" style={{"height": innerheight}}>
+        <div className="row">
+          <div id="scrollcont" className={backImage} style={{"height": winHeight}}>
+            <div className="col-lg-12 systemHeader   ">
+              <div className="col-lg-6 col-md-6 col-sm-6 ">
+                <img className="lupinImage" src="images/lupin.png" height="70px"/>
               </div>
-              <form id="OTPMobMail" onSubmit={this.confirmOTP.bind(this)}>
-                <div className="col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail">
-                  <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
-                    <span>Enter six digit verification code received on <b>Email</b>.<br/></span>
-                  </div>
-                  <div className="input-effect input-group veribtm1">
-                    <input type="text" className="effect-21 form-control loginInputs " ref="emailotp" name="emailotp" onBlur={this.inputEffect.bind(this)} aria-describedby="basic-addon1" title="Please enter numbers only!" maxLength="6" pattern="(0|[0-9]*)" required/>
-                    <span className="input-group-addon glyphi-custommm"><i className="fa fa-key" aria-hidden="true"></i></span>
-                    <span className="focus-border">
-                      <i></i>
-                    </span>
-                  </div>
-                  <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
-                    <span>Enter four digit verification code received on <b>Mobile</b>.<br/></span>
-                  </div>
-                  <div className="input-effect input-group veribtm1">
-                    <input type="text" className="effect-21 form-control loginInputs " ref="emailotp" name="emailotp" onBlur={this.inputEffect.bind(this)} aria-describedby="basic-addon1" title="Please enter numbers only!" maxLength="4" pattern="(0|[0-9]*)" required/>
-                    <span className="input-group-addon glyphi-custommm"><i className="fa fa-key" aria-hidden="true"></i></span>
-                    <span className="focus-border">
-                      <i></i>
-                    </span>
-                  </div>
+              <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
+                Admin <br/>Management Information System
+              </div>
+            </div>
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">   
+              <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signUpFormWrap " style={{ "marginTop": margint , "height": h}}>
+                <div className="divLoginInWrap">
+                  
+                      <div className="divConfirmOtpModalWrap">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" className="firstverification">
+                          <div className="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
+                            <span>We have sent you a Verification Code to your registered <b>Email</b>.<br/><br/></span>
+                          </div>
+                          <form id="OTPMobMail" onSubmit={this.confirmOTP.bind(this)}>
+                            <div className="col-lg-12 col-md-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail veribtm1">
+                              <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
+                                <span>Enter six digit verification code received on <b>Email<label className="sign asterix">*</label></b>.<br/></span>
+                              </div>
+                              <div className="input-effect input-group" id="emailotpErr">
+                                <input type="text" className="effect-21 form-control loginInputs " ref="emailotp" name="emailotp" onBlur={this.inputEffect.bind(this)} aria-describedby="basic-addon1" title="Please enter numbers only!" maxLength="6" pattern="(0|[0-9]*)" required/>
+                                <span className="input-group-addon glyphi-custommm"><i className="fa fa-key" aria-hidden="true"></i></span>
+                                <span className="focus-border">
+                                  <i></i>
+                                </span>
+                              </div>
+                             {/* <div className="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12 otpHeader">
+                                <span>Enter four digit verification code received on <b>Mobile</b>.<br/></span>
+                              </div>
+                              <div className="input-effect input-group veribtm1">
+                                <input type="text" className="effect-21 form-control loginInputs " ref="emailotp" name="emailotp" onBlur={this.inputEffect.bind(this)} aria-describedby="basic-addon1" title="Please enter numbers only!" maxLength="4" pattern="(0|[0-9]*)" required/>
+                                <span className="input-group-addon glyphi-custommm"><i className="fa fa-key" aria-hidden="true"></i></span>
+                                <span className="focus-border">
+                                  <i></i>
+                                </span>
+                              </div>*/}
+                            </div>
+                            <div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail">
+                              <button type="submit" className="btn btn-info submitBtn col-lg-12 col-md-12 col-sm-12 col-xs-12 UMloginbutton">Submit</button>
+                            </div>
+                            <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail">
+                              <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 pdcls">
+                                <Link to='/' className="UMGreyy"><u>Sign In</u></Link>  
+                              </div>
+                              <div id="resendOtpBtn" className={"col-lg-6 col-md-6 col-sm-12 col-xs-12 resendOtpColor "+resendOtpWrap}>
+                                {resendOtp}
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
                 </div>
-                <div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12 veriemail">
-                  <button type="submit" className="btn btn-info submitBtn col-lg-12 col-md-12 col-sm-12 col-xs-12 UMloginbutton">Submit</button>
-                </div>
-                <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdcls">
-                  <Link to='/' className="UMGrey signInbtn veriemailmr veriemail col-lg-12">Sign In</Link>  
-                </div>
-                <div id="resendOtpBtn" className={"col-lg-4 col-md-4 col-sm-4 col-xs-4 resendOtpColor "+resendOtpWrap}>
-                  {resendOtp}
-                </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

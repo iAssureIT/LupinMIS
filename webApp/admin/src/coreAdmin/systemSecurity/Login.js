@@ -193,12 +193,12 @@ class Login extends Component {
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  customFl pdcls ">
                           {/*<div className="col-lg-6 col-md-6 col-sm-6">
                             <Link to='/signup' className="UMGreyy UMGreyy_l pull-left"> <u>Sign Up</u></Link>
-                          </div>
-                          <div className="col-lg-6 col-md-6 col-sm-6 ">
+                          </div>*/}
+                          <div className="col-lg-6 col-md-6 col-sm-6 pull-right">
                             <Link to='/forgot-pwd' className="UMGreyy UMGreyy_l pull-right">
                               <u>Forgot Password?</u>
                             </Link>
-                          </div>*/}
+                          </div>
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 pdcls btn">
                         {/*  <div className="col-lg-12 col-md-12 col-sm-12 ">
