@@ -238,6 +238,8 @@ class SectorMapping extends Component{
     this.getTypeOfGoal();
     this.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableSector(this.state.editSectorId);  
+    this.getNameOfGoal(this.state.goalType)
+
   }
 
   edit(id){
@@ -370,6 +372,54 @@ class SectorMapping extends Component{
       // console.log("error = ",error);
     });
   }
+  selectType(event){
+    event.preventDefault();
+    var selectedType = event.currentTarget.value;
+    var selectedTypeofGoal     =$(event.currentTarget).find('option:selected').attr('data-name')
+    // var selectedTypeofGoal     = event.currentTarget.getAttribute('data-name');
+    // console.log("selectedTypeofGoal",selectedTypeofGoal)
+
+    this.setState({
+      goalType : selectedType,
+      selectedTypeofGoal : selectedTypeofGoal,
+      goalName : '-- Select --',
+    },()=>{
+      this.getNameOfGoal(this.state.goalType)
+    });
+  }
+  getNameOfGoal(goalType){
+    if(goalType){
+      axios({
+        method: 'get',
+        url: '/api/typeofgoals/'+goalType,
+      }).then((response)=> {
+        if(response&&response.data[0]){
+          console.log("response = ",response);
+          this.setState({
+            listofGoalNames : response.data[0].goal
+          })
+        }
+      }).catch(function (error) {
+        // console.log("error = ",error);
+      });
+    }
+  }
+  selectNameofGoal(event){
+    event.preventDefault();
+    var selectedType = event.currentTarget.value;
+    var selectedTypeofGoal     =$(event.currentTarget).find('option:selected').attr('data-name')
+    // var selectedTypeofGoal     = event.currentTarget.getAttribute('data-name');
+    // console.log("selectedTypeofGoal",selectedTypeofGoal)
+
+    this.setState({
+      goalType : selectedType,
+      selectedTypeofGoal : selectedTypeofGoal,
+      goalName : '-- Select --',
+    },()=>{
+      this.getNameOfGoal(this.state.goalType)
+    });
+  }
+  
   handleChange(event){
     event.preventDefault();
     this.setState({
@@ -390,22 +440,10 @@ class SectorMapping extends Component{
     }
   }
 
-  selectType(event){
-    event.preventDefault();
-    var selectedType = event.currentTarget.value;
-    var selectedTypeofGoal     =$(event.currentTarget).find('option:selected').attr('data-name')
-    // var selectedTypeofGoal     = event.currentTarget.getAttribute('data-name');
-    // console.log("selectedTypeofGoal",selectedTypeofGoal)
 
-    this.setState({
-      goalType : selectedType,
-      selectedTypeofGoal : selectedTypeofGoal,
-      goalName : '-- Select --',
-    });
-  }
 
   render() {
-    // console.log("selectedTypeofGoal",this.state.selectedTypeofGoal)
+    console.log("this.state.listofGoalNames",this.state.listofGoalNames)
     return(
       <div className="container-fluid">
         <div className="row">
@@ -444,7 +482,27 @@ class SectorMapping extends Component{
                           </div>
                           <div className="errorMsg">{this.state.errors.goalType}</div>
                         </div>
-                        {
+                        <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
+                          <label className="formLable">Goal Name</label><span className="asterix">*</span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalName" >
+                            <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
+                              <option selected="true" disabled="disabled">-- Select --</option>
+                              {
+                                this.state.listofGoalNames ?
+                                this.state.listofGoalNames.map((data, index)=>{
+                                  console.log(data)
+                                  return(
+                                    <option key={index} data-name={data.goalName} value={data.goalName}>{data.goalName}</option> 
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
+                          </div>
+                          <div className="errorMsg">{this.state.errors.goalName}</div>
+                        </div>
+                       {/* {
                           this.state.selectedTypeofGoal ? 
                             <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
                               <label className="formLable">Goal Name</label><span className="asterix">*</span>
@@ -505,7 +563,7 @@ class SectorMapping extends Component{
                               <div className="errorMsg">{this.state.errors.goalName}</div>
                             </div>
                         : null 
-                        }
+                        }*/}
                       </div> 
                     </div><br/>
                     <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above goal</label></div>
