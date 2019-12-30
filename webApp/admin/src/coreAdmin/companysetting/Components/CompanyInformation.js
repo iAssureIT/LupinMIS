@@ -149,7 +149,7 @@ class CompanyInformation extends Component{
         logoFilename            : res.data.logoFilename, 
         companyLogo             : res.data.companyLogo, 
       },()=>{
-          console.log("1. companyLogo = ", this.state.companyLogo);
+        console.log("1. companyLogo = ", this.state.companyLogo);
       });
       console.log("this.this.state.companyName",this.state.companyName)
     })
@@ -329,10 +329,38 @@ class CompanyInformation extends Component{
         })
         .then((success) => {
             if (success) {
-              swal("abc","Your image is deleted!");
-              this.setState({
-                companyLogo : ""
+              var companyInfoFormValueUpdate = {
+                companyId               : 1,
+                companyName             : this.state.companyName,
+                companyContactNumber    : this.state.companyContactNumber,
+                companyMobileNumber     : this.state.companyAltContactNumber,
+                companyEmail            : this.state.companyEmail,
+                companyAltEmail         : "",
+                companywebsite          : this.state.companywebsite,
+                companyaddress          : this.state.companyAddressLine1,
+                logoFilename            : '',
+                companyLogo             : '',
+                country                 : this.state.companyCountry,
+                state                   : this.state.companyState,
+                district                : this.state.companyDist,
+                city                    : this.state.companyCity,
+                pincode                 : this.state.companyPincode,
+                taluka                  : this.state.taluka,
+                defaultPassword         : this.state.defaultPassword
+              }
+              axios.patch('/api/companysettings/information',companyInfoFormValueUpdate)
+              .then( (response)=> {
+                // handle success
+                // console.log("this is response===>>>",response);
+                swal("abc","Your image is deleted!");
+                this.setState({
+                  companyLogo : ""
+                })
               })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              });
             } else {
             swal("abc","Your image is safe!");
           }
