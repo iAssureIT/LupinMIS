@@ -17,7 +17,7 @@ class Activity extends Component{
   constructor(props){
     super(props);
     this.state = {
-      "center_ID`"        : "",
+      "center_ID"         : "",
       "centerName"        : "",
       "district"          : "-- Select --",
       "block"             : "-- Select --",
@@ -700,8 +700,8 @@ class Activity extends Component{
           }, ()=>{
             // console.log("edit", this.state.editData)
             this.getAvailableCenter(this.state.center_ID);
-            this.getBlock(this.state.stateCode, this.state.district);
-            this.getVillages(this.state.stateCode, this.state.district, this.state.block);
+            // this.getBlock(this.state.stateCode, this.state.district);
+            // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
             this.getAvailableActivity(this.state.sectorId);
             this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
           });
@@ -843,16 +843,17 @@ class Activity extends Component{
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableSectors();
-    if(this.state.editId){      
-      this.getAvailableActivity(this.state.editSectorId);
-      this.edit(this.state.editId);
-    }
     var editId = this.props.match.params ? this.props.match.params.id : '';
     this.setState({
       editId : editId
+    },()=>{
+      if(this.state.editId){      
+        this.getAvailableActivity(this.state.editSectorId);
+        this.edit(this.state.editId);
+      }
     })
     this.getLength();
-    this.getBlock(this.state.stateCode, this.state.district);
+    // this.getBlock(this.state.stateCode, this.state.district);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -861,10 +862,10 @@ class Activity extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    this.getLength(this.state.center_ID);
     // this.getToggleValue();
+    this.getLength(this.state.center_ID);
     this.getAvailableProjectName();
-    this.getAvailableCenter(this.state.center_ID, this.state.stateCode);
+    this.getAvailableCenter(this.state.center_ID);
     this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     // console.log("center_ID =",this.state.center_ID);
     });
@@ -875,8 +876,8 @@ class Activity extends Component{
     if(nextProps){
       var editId = nextProps.match.params.id;
       this.getAvailableSectors();      
-      this.getAvailableCenter(this.state.center_ID, this.state.stateCode);      
-      this.getBlock(this.state.stateCode, this.state.district);
+      this.getAvailableCenter(this.state.center_ID);      
+      // this.getBlock(this.state.stateCode, this.state.district);
       this.setState({
         "editId" : editId,
       })  
@@ -1005,35 +1006,33 @@ class Activity extends Component{
   }
 
   getAvailableCenter(center_ID){
-    // console.log("CID"  ,center_ID);
+    console.log("CID"  ,center_ID);
     if(center_ID){
       axios({
         method: 'get',
         url: '/api/centers/'+center_ID,
         }).then((response)=> {
+        // console.log('availableDistInCenter ==========',response);
         function removeDuplicates(data, param){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
           })
         }
-        console.log('availableDistInCenter ==========',response);
-        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        var availableblockInCenter= removeDuplicates(response.data[0].villagesCovered, "block");
-        var availablevillageInCenter= removeDuplicates(response.data[0].villagesCovered, "village");
+        var availableDistInCenter = removeDuplicates(response.data[0].villagesCovered, "district");
+        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block");
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village");
+        // console.log('availableblockInCenter',availableblockInCenter)
         this.setState({
-          availablevillageInCenter  : availablevillageInCenter  ,
-          availableblockInCenter  : availableblockInCenter  ,
-          availableDistInCenter  : availableDistInCenter,
-          district               : availableDistInCenter[0].district.split('|')[0],
-          block               : availableblockInCenter[0].block.split('|')[0],
-          village               : availablevillageInCenter[0].village.split('|')[0],
+          listofVillages   : availablevillageInCenter,
+          listofBlocks     : availableblockInCenter,
+          listofDistrict   : availableDistInCenter,
+          // district         : availableDistInCenter[0].district.split('|')[0],
+          // block            : availableblockInCenter[0].block.split('|')[0],
+          // village          : availablevillageInCenter[0].village.split('|')[0],
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
           // districtsCovered : response.data[0].districtsCovered
         },()=>{
-        console.log('availableblockInCenter ==========',this.state.availableblockInCenter);
-        console.log('availablevillageInCenter ==========',this.state.availablevillageInCenter);
-        console.log('availableDistInCenter ==========',this.state.availableDistInCenter);
-        console.log('block ==========',this.state.block);
+        // console.log('block ==========',this.state.block);
           var stateCode =this.state.address.split('|')[0];
           this.setState({
             stateCode  : stateCode,
@@ -1065,7 +1064,7 @@ class Activity extends Component{
         selectedDistrict :selectedDistrict
       },()=>{
         // console.log('selectedDistrict',this.state.district);
-        this.getBlock(this.state.stateCode, this.state.district);
+        // this.getBlock(this.state.stateCode, this.state.district);
       })
     });
     this.handleChange(event);
@@ -1078,7 +1077,7 @@ class Activity extends Component{
       district: district,
       block : '-- Select --',
       village : '-- Select --',
-      listofVillages : []
+      // listofVillages : []
     },()=>{
       var selectedDistrict = this.state.district;
       // console.log("selectedDistrict",selectedDistrict);
@@ -1086,7 +1085,7 @@ class Activity extends Component{
         district :selectedDistrict
       },()=>{
         // console.log('selectedDistrict',this.state.district);
-        this.getBlock(this.state.stateCode, this.state.district);
+        // this.getBlock(this.state.stateCode, this.state.district);
       })
     });
     this.handleChange(event);
@@ -1116,7 +1115,7 @@ class Activity extends Component{
       block : block
     },()=>{
       // console.log("block",block);
-      this.getVillages(this.state.stateCode, this.state.district, this.state.block);
+      // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
     });
     this.handleChange(event);
   }
@@ -1338,8 +1337,8 @@ class Activity extends Component{
                         <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">Project Name</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName"  value={this.state.projectName} onChange={this.handleChange.bind(this)} >
-                                <option  className="hidden" >-- Select --</option>
+                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.handleChange.bind(this)} >
+                                <option className="hidden" >-- Select --</option>
                                 {
                                   this.state.availableProjects && this.state.availableProjects.length > 0  ? 
                                   this.state.availableProjects.map((data, index)=>{
@@ -1372,13 +1371,13 @@ class Activity extends Component{
                               <label className="formLable">District<span className="asterix">*</span></label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                 <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
-                                  <option disabled="disabled" value={true} >-- Select --</option>
+                                  <option disabled="disabled" selected="true">-- Select --</option>
                                   {
-                                    this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                    this.state.availableDistInCenter.map((data, index)=>{
+                                    this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                                    this.state.listofDistrict.map((data, index)=>{
                                       // console.log('dta', data);
                                       return(
-                                        <option key={index} value={(data.district.split('|')[0])}>{this.camelCase(data.district.split('|')[0])}</option>
+                                        <option key={index} value={data.district.split('|')[0]}>{this.camelCase(data.district.split('|')[0])}</option>
                                       );
                                     })
                                     :
@@ -1392,12 +1391,12 @@ class Activity extends Component{
                             <label className="formLable">Block<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                               <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                <option disabled="disabled" value={true}>-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 {
-                                  this.state.availableblockInCenter && this.state.availableblockInCenter.length > 0  ? 
-                                  this.state.availableblockInCenter.map((data, index)=>{
+                                  this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                  this.state.listofBlocks.map((data, index)=>{
                                     return(
-                                      <option key={index} value={this.camelCase(data.block)}>{this.camelCase(data.block)}</option>
+                                      <option key={index} value={data.block}>{this.camelCase(data.block)}</option>
                                     );
                                   })
                                   :
@@ -1411,12 +1410,12 @@ class Activity extends Component{
                             <label className="formLable">Village<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                               <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                <option disabled="disabled" value={true}>-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 {
-                                  this.state.availablevillageInCenter && this.state.availablevillageInCenter.length > 0  ? 
-                                  this.state.availablevillageInCenter.map((data, index)=>{
+                                  this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                  this.state.listofVillages.map((data, index)=>{
                                     return(
-                                      <option key={index} value={this.camelCase(data.village)}>{this.camelCase(data.village)}</option>
+                                      <option key={index} value={data.village}>{this.camelCase(data.village)}</option>
                                     );
                                   })
                                   :
@@ -1434,7 +1433,7 @@ class Activity extends Component{
                             <label className="formLable">Sector<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                               <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                                <option disabled="disabled" value={true}>-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 {
                                   this.state.availableSectors && this.state.availableSectors.length >0 ?
                                   this.state.availableSectors.map((data, index)=>{
@@ -1454,7 +1453,7 @@ class Activity extends Component{
                             <label className="formLable">Activity<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                               <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                                <option disabled="disabled" value={true}>-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 {
                                   this.state.availableActivity && this.state.availableActivity.length >0 ?
                                   this.state.availableActivity.map((data, index)=>{
@@ -1477,7 +1476,7 @@ class Activity extends Component{
                             <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                               <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                                <option disabled="disabled" value={true}>-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                   {
                                     this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
                                     this.state.availableSubActivity.map((data, index)=>{
@@ -1502,7 +1501,7 @@ class Activity extends Component{
                             <label className="formLable">Activity Type<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                               <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                                <option disabled="disabled" value={true}>-- Select --</option>
+                                <option disabled="disabled" selected="true">-- Select --</option>
                                 <option>Common Level Activity</option>
                                  <option>Family Level Activity</option>
                               </select>
