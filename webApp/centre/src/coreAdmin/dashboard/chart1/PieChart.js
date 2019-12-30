@@ -1,32 +1,12 @@
 import React,{Component} from 'react';
 import {Pie} from 'react-chartjs-2';
 import 'chartjs-plugin-labels';
+import axios             from 'axios';
 
 export default class PieChart extends Component {
-  // constructor(props){
-  //   super(props);
-  //   // console.log("props",props);
-  //   this.state={
-  //     "data" : {
-  //       labels: [],
-  //       datasets: [
-  //         {
-  //           label: 'Achievement Reach',
-  //           backgroundColor: 'rgba(75, 192, 192, 1)',
-  //           borderColor:  'rgba(75, 192, 192, 0.5)',
-  //           borderWidth: 1,
-  //           hoverBackgroundColor:  'rgba(75, 192, 192, 0.5)',
-  //           hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
-  //           stack: '1',
-  //           data: []
-  //         },           
-  //       ] 
-  //     }
-  //   }
-  // }
+
   constructor(props){
     super(props);
-    // console.log("props",props);
     this.state={
       "data" : {
       labels: [],
@@ -36,31 +16,105 @@ export default class PieChart extends Component {
         hoverBackgroundColor: []
         }]
       }
-    }
+    } 
   }
  
 
-  static getDerivedStateFromProps(props,state){
-     var data = {...state.data};
-     // console.log("data",data);
-     // console.log("props.piechartcolor in pie",props.annualPlanTotalBudget);
-     if (props.annualPlanTotalBudget && props.annualPlanTotalBudget.length > 0) {
-        if (data) {
-         // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);
-          data.datasets[0].data = props.annualPlanTotalBudget ? props.annualPlanTotalBudget : [];
-          // data.datas/ets[1].data = props.annualPlanFamilyUpgradation;
-          data.labels = props.sector;
-          // data.labels = props.priorities;
-          // data.datasets[0].data = props.count;
-          data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];
-          data.datasets[0].hoverBackgroundColor = props.piechartcolor ? props.piechartcolor : [];
-          return{
-             data : data
-          }
-        }
-     }
-  }
+  // static getDerivedStateFromProps(props,state){
+  //    var data = {...state.data};
 
+  //     if (data) {
+  //       data.datasets[0].data = props.annualPlanTotalBudget ? props.annualPlanTotalBudget : [];
+  //       data.labels = props.sector;
+  //       data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];
+  //       data.datasets[0].hoverBackgroundColor = props.piechartcolor ? props.piechartcolor : [];
+  //       return{
+  //          data : data
+  //       }
+  //     }
+  // }
+  componentDidMount(){
+    this.getSectorwiseData(this.props.year);
+  }
+  getSectorwiseData(year){
+    var sectordata = {...this.state.data};
+    // console.log('year', year);
+    var startDate = year.substring(3, 7)+"-04-01";
+    var endDate = year.substring(10, 15)+"-03-31";
+    // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
+    if(startDate && endDate){
+        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
+        .then((response)=>{ 
+          console.log("respgetData------------->",response.data) ;
+          response.data.splice(-2);
+          var sector = [];
+          var piechartcolor =[];
+          var annualPlanTotalBudget = [];
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{ 
+              if(data.annualPlan_TotalBudget > 0){
+                sector.push(data.name);
+                annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
+                piechartcolor.push(this.getRandomColor_sector());
+              }
+            })
+            // console.log("real ",sector);
+            // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
+          if (annualPlanTotalBudget.length > 0) {
+            sectordata.datasets[0].data = annualPlanTotalBudget;
+            sectordata.labels = sector;
+            sectordata.datasets[0].backgroundColor = piechartcolor;
+            sectordata.datasets[0].hoverBackgroundColor = piechartcolor;
+            this.setState({
+              "data" : sectordata
+            })
+            
+          }else{
+            sectordata.datasets[0].data = [300000,170000,50000,200000,250000];
+            sectordata.labels = ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"];
+            sectordata.datasets[0].backgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+            sectordata.datasets[0].hoverBackgroundColor =["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+            this.setState({
+              "data" : sectordata
+            })
+          }
+        }else{
+          sectordata.datasets[0].data = [300000,170000,50000,200000,250000];
+          sectordata.labels = ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"];
+          sectordata.datasets[0].backgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+          sectordata.datasets[0].hoverBackgroundColor =["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+          this.setState({
+            "data" : sectordata
+          })
+        }   
+      })
+      .catch(function(error){        
+      });
+    }else{
+      sectordata.datasets[0].data = [300000,170000,50000,200000,250000];
+      sectordata.labels = ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"];
+      sectordata.datasets[0].backgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+      sectordata.datasets[0].hoverBackgroundColor =["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+      this.setState({
+        "data" : sectordata
+      })
+ 
+    }
+  }
+  getRandomColor_sector(){
+      var letters = '01234ABCDEF56789';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+      //  var letters = 'BCDEF'.split('');
+      // var color = '#';
+      // for (var i = 0; i < 6; i++ ) {
+      //     color += letters[Math.floor(Math.random() * letters.length)];
+      // }
+      // return color;
+    }
   render() {
     return ( 
       <div>
