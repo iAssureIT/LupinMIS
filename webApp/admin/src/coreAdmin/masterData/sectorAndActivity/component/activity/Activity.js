@@ -221,7 +221,7 @@ class Activity extends Component{
         "activityName"      : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName,
         // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
       },()=>{
-        console.log('this.state', this.state.activityName)
+        console.log('this.state', this.state.sector, this.state.activityName)
       });      
      
     }).catch(function (error) {

@@ -29,8 +29,8 @@ class nameOfGoal extends Component{
         actions             : 'Action',
       },
       "tableObjects"        : {
-        deleteMethod        : 'delete',
-        apiLink             : '/api/typeofgoals/',
+        deleteMethod        : 'patch',
+        apiLink             : '/api/typeofgoals/goalName/delete/',
         editUrl             : '/type-goal/',
         paginationApply     : false,
         searchApply         : false,
@@ -38,7 +38,8 @@ class nameOfGoal extends Component{
       "dataCount"           : 0,
       "startRange"          : 0,
       "limitRange"          : 10000,
-      "editId"              : props.match.params ? props.match.params.typeofGoalId : ''
+      "edittypeofGoalId"    : props.match.params ? props.match.params.typeofGoalId : '',
+      "editId"              : props.match.params ? props.match.params.goalNameId : ''
 
     }
   }
@@ -50,7 +51,6 @@ class nameOfGoal extends Component{
     this.setState({
      "goalName"     : this.refs.goalName.value,  
     });
-  
   }
 
   handleChangeSelect(event){
@@ -83,6 +83,7 @@ class nameOfGoal extends Component{
     if($("#typeofNameDetails").valid()){
       var typeofGoalValues= {
       "ID"               :this.state.goalID,
+      "typeofGoal"       :this.refs.typeofGoal.value.split('|')[0],
       "goalName"         :this.refs.goalName.value,
       };
       console.log("typeofGoalValues",typeofGoalValues);
@@ -114,11 +115,11 @@ class nameOfGoal extends Component{
     if($("#typeofNameDetails").valid()){
       var typeofGoalValues= {
         "ID"              :this.refs.typeofGoal.value.split('|')[1],
-        "typeofGoal"      :this.refs.typeofGoal.value.split('|')[0],
+      "typeofGoal"        :this.refs.typeofGoal.value.split('|')[0],
         "goalName"        :this.refs.goalName.value,
-        "user_ID"         : this.state.user_ID,
+        "goal_ID"         :this.state.editId,
       };
-      axios.patch('/api/typeofgoals/goalName/update',typeofGoalValues, this.state.editId)
+      axios.patch('/api/typeofgoals/goalName/update',typeofGoalValues)
         .then((response)=>{
           console.log("response",response );
           this.getData(this.state.startRange, this.state.limitRange);
@@ -135,20 +136,24 @@ class nameOfGoal extends Component{
         });
       this.setState({
         "typeofGoal"  :"",
+        "goalName"    :"",
       });
           this.props.history.push('/type-goal');
     }     
   }
- 
+
 
   componentWillReceiveProps(nextProps){
   // console.log('componentWillReceiveProps');
-    var editId = nextProps.match.params.typeofGoalId;
-    if(nextProps.match.params.typeofGoalId){
+    var editId = nextProps.match.params.goalNameId;
+    console.log("editId",editId);
+    if(nextProps.match.params.goalNameId){
       this.setState({
-        editId : editId
+        editId : editId,
+        edittypeofGoalId : nextProps.match.params.typeofGoalId,
+
       },()=>{
-        this.edit(this.state.editId);
+        this.edit(this.state.edittypeofGoalId);
 
       })
     }
@@ -159,10 +164,8 @@ class nameOfGoal extends Component{
   
   componentDidMount(){
   axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-  // console.log('componentDidMount', this.state.tableData);
-    var editId = this.props.match.params.typeofGoalId;
-    if(editId){      
-      this.edit(editId);
+     if(this.state.editId){      
+      this.edit(this.state.edittypeofGoalId);
     }
     this.getAvailableGoalType();
     this.getLength();
@@ -193,19 +196,33 @@ class nameOfGoal extends Component{
   }
 
   edit(id){
-    axios({
-      method: 'get',
-      url: '/api/typeofgoals/'+id,
-    }).then((response)=> {
-      var editData = response.data[0];      
-      this.setState({
-        "typeofGoal"     :editData.typeofGoal,
-      },()=>{
+    var goal_id =this.props.match.params.goalNameId;
+    if(id){
+    console.log('editId',id);
+      axios({
+        method: 'get',
+        url: '/api/typeofgoals/'+id,
+      }).then((response)=> {
+
+        var editData = response.data[0];  
+        console.log("editData==",editData,goal_id);  
+/*        console.log("editData==",(editData.goal.filter((a)=>{return a._id == goal_id ? a.goalName : ''}))[0]);  
+        console.log("editData==",editData.typeofGoal+'|'+editData._id);  
+*/        if(editData)
+        { 
+         this.setState({
+          "typeofGoal"        : editData ? editData.typeofGoal+'|'+editData._id: "",
+          "goalName"          : editData.goal.find((a)=>{return a._id == goal_id }).goalName,
+          // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
+        },()=>{
+          console.log('this.state', this.state.typeofGoal, this.state.goalName )
+        });         
+      } 
+        
+      }).catch(function (error) {
+          console.log("error = ",error);
       });
-    }).catch(function (error) {
-        console.log("error = ",error);
-       
-      });
+    }
   }
   
   getData(startRange, limitRange){
@@ -279,8 +296,9 @@ class nameOfGoal extends Component{
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                     <label className="formLable"> Type of Goal</label><span className="asterix">*</span>
                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
+                    {console.log("typeofGoal",this.state.typeofGoal)}
                       <select className="custom-select form-control inputBox" ref="typeofGoal" name="typeofGoalErr" value={this.state.typeofGoal} disabled={this.state.editId?true:false} onChange={this.handleChangeSelect.bind(this)}>
-                        <option  className="hidden" value="" >-- Select Goal--</option>
+                        <option  className="hidden" value="" >-- Select --</option>
                         {
                           this.state.availableGoalType && this.state.availableGoalType.length >0 ?
                           this.state.availableGoalType.map((data, index)=>{
@@ -303,15 +321,15 @@ class nameOfGoal extends Component{
                     </div>
                     <div className="errorMsg">{this.state.errors.goalNameRegx}</div>
                   </div>
+                </div> 
                   <div className="col-lg-12 col-md-6 col-sm-6 col-xs-12">
                     {
                       this.state.editId ? 
-                      <button className=" col-lg-3 btn submit pull-right marginT18" onClick={this.updateType_Goal.bind(this)}> Update</button>
+                      <button className=" col-lg-2 btn submit pull-right marginT18" onClick={this.updateType_Goal.bind(this)}> Update</button>
                       :
-                      <button className=" col-lg-3 btn submit pull-right marginT18" onClick={this.SubmitType_Goal.bind(this)}> Submit</button>
+                      <button className=" col-lg-2 btn submit pull-right marginT18" onClick={this.SubmitType_Goal.bind(this)}> Submit</button>
                     }
                   </div> 
-                </div> 
               </div><br/>
             </form>    
             <div className="col-lg-12 ">
@@ -324,6 +342,8 @@ class nameOfGoal extends Component{
                 tableData={this.state.tableData}
                 getData={this.getData.bind(this)}
                 tableObjects={this.state.tableObjects}
+                deleteMethod      = 'patch'
+                
                 // getSearchText={this.getSearchText.bind(this)}
               />
             </div> 

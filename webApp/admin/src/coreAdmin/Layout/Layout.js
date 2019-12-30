@@ -145,7 +145,8 @@ componentDidMount(){
 
                           <Route path="/type-goal"                                                    exact strict component={ TypeOfGoalContainer } />
                           <Route path="/type-goal/"                                                   exact strict component={ TypeOfGoalContainer } />
-                          <Route path="/type-goal/:typeofGoalId"                                      exact strict component={ TypeOfGoalContainer } />
+                          <Route path="/type-goal/:typeofGoalId"                                                   exact strict component={ TypeOfGoalContainer } />
+                          <Route path="/type-goal/:typeofGoalId/:goalNameId"                                      exact strict component={ TypeOfGoalContainer } />
                           <Route path="/center-details"                                               exact strict component={ centerDetail } />
                           <Route path="/center-details/"                                              exact strict component={ centerDetail } />
                           <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />

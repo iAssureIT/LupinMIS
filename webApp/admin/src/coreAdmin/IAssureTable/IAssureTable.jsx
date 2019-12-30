@@ -113,20 +113,22 @@ class IAssureTable extends Component {
 		$("html,body").scrollTop(0);
 		var tableObjects =  this.props.tableObjects;
 		var id = event.target.id;
+		// console.log('tableObjects.editUrl+id',tableObjects.editUrl,id)
 		this.props.history.push(tableObjects.editUrl+id);
 	}
     delete(e){
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
-	  	var deleteMethod =  this.props.deleteMethod;
 		let id = e.target.id;
 		console.log("tableObjects",tableObjects.apiLink+id);
-		
+	  	var deleteMethod =  this.props.deleteMethod;
+	        console.log('tableObjects', tableObjects);
 		axios({
 
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
+	       // console.log('deleteMethodresponse', response);
 
 	    	// this.props.isDeleted()
 /*
