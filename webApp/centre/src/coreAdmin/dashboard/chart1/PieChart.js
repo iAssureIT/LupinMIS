@@ -19,8 +19,8 @@ export default class PieChart extends Component {
   //           hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
   //           stack: '1',
   //           data: []
-  //         },         
-  //       ]
+  //         },           
+  //       ] 
   //     }
   //   }
   // }
@@ -29,12 +29,12 @@ export default class PieChart extends Component {
     // console.log("props",props);
     this.state={
       "data" : {
-      labels: ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"],
+      labels: [],
       datasets: [{
-        data: [300000,170000,50000,200000,250000],
-        backgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"],
-        hoverBackgroundColor: ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
-        }],
+        data: [],
+        backgroundColor: [] ,
+        hoverBackgroundColor: []
+        }]
       }
     }
   }
@@ -43,8 +43,8 @@ export default class PieChart extends Component {
   static getDerivedStateFromProps(props,state){
      var data = {...state.data};
      // console.log("data",data);
-     // console.log("props",props);
-     if (props.annualPlanTotalBudget  && props.annualPlanTotalBudget.length > 0) {
+     // console.log("props.piechartcolor in pie",props.annualPlanTotalBudget);
+     if (props.annualPlanTotalBudget && props.annualPlanTotalBudget.length > 0) {
         if (data) {
          // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);
           data.datasets[0].data = props.annualPlanTotalBudget ? props.annualPlanTotalBudget : [];
@@ -54,21 +54,18 @@ export default class PieChart extends Component {
           // data.datasets[0].data = props.count;
           data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];
           data.datasets[0].hoverBackgroundColor = props.piechartcolor ? props.piechartcolor : [];
-          // data.datasets[0].hoverBackgroundColor = props.priorities.length === 4 ? ['#FF0000','#ffbf00','#4682B4','#3CB371'] : ['#FF0000','#ffbf00','#3CB371'];
           return{
              data : data
           }
         }
-
      }
   }
 
   render() {
-    // console.log("in pie chart",this.props.annualPlanTotalBudget);
-    return (
+    return ( 
       <div>
-        <Pie height={150} data={this.state.data}  options={{ legend: {display: false},
-           plugins: {
+        <Pie height={130} data={this.state.data} options={{legend: {display: false},
+        plugins: {
            labels: [{
             render: 'label',
             position: 'outside',
@@ -79,8 +76,7 @@ export default class PieChart extends Component {
             render: 'percentage',
             fontColor: '#fff',
           }
-           ]}
-         }}  />
+           ]} }} />
       </div>
     );
   }

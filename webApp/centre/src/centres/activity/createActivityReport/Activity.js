@@ -62,7 +62,7 @@ class Activity extends Component{
                             {
                               heading : 'Source of Fund',
                               mergedColoums : 7,
-                              hide : false
+                              hide : true
                             },
                             {
                               heading : '',

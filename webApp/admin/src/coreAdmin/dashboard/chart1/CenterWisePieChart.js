@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import {Pie} from 'react-chartjs-2';
 import 'chartjs-plugin-labels';
-export default class PieChart extends Component {
+
+export default class CenterWisePieChart extends Component {
   constructor(props){
     super(props);
     this.state={
@@ -21,19 +22,17 @@ export default class PieChart extends Component {
      var data = {...state.data};
      // console.log("data",data);
      // console.log("props",props);
-    if (props.center_annualPlanTotalBudget && props.center_annualPlanTotalBudget.length > 0) {
-      if (data) {
-       // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);
-        data.datasets[0].data = props.center_annualPlanTotalBudget ? props.center_annualPlanTotalBudget : [];
-        // data.datas/ets[1].data = props.annualPlanFamilyUpgradation;
-        data.labels           = props.center_sector ? props.center_sector : [];
-        // data.labels = props.priorities;
-        // data.datasets[0].data = props.count;
-        data.datasets[0].backgroundColor      = props.piechartcolor ? props.piechartcolor : [];
-        data.datasets[0].hoverBackgroundColor = props.piechartcolor ? props.piechartcolor : [];
-        return{
-           data : data
-        }
+    if (data) {
+     // console.log(" props.annualPlanTotalBudget", props.annualPlanTotalBudget);
+      data.datasets[0].data = props.center_annualPlanTotalBudget ? props.center_annualPlanTotalBudget : [];
+      // data.datas/ets[1].data = props.annualPlanFamilyUpgradation;
+      data.labels           = props.center_sector ? props.center_sector : [];
+      // data.labels = props.priorities;
+      // data.datasets[0].data = props.count;
+      data.datasets[0].backgroundColor      = props.piechartcolor ? props.piechartcolor : [];
+      data.datasets[0].hoverBackgroundColor = props.piechartcolor ? props.piechartcolor : [];
+      return{
+         data : data
       }
     }
   }

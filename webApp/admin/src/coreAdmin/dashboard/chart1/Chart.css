@@ -1,17 +1,18 @@
 
 .mainicon{
-    height: 85px;
+    height: 100px;
 border-radius: 2px 2px 2px 2px;
     background-color: #eee;
 }
 .ccon1{
-    height: 85px;
+        height: 99px;
     background-color: #00c0ef;
     font-size: 38px;
-    padding-top: 16px;
-    padding-left: 37px;
+    padding-top: 22px;
+    padding-left: 42px;
     color: #fff;
-border-radius: 2px 0px 0px 2px;
+    /* padding: 9%; */
+    border-radius: 2px 0px 0px 2px;
 }
 .ccon2{
    height: 85px;

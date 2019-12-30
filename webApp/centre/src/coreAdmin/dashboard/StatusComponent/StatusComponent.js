@@ -29,7 +29,7 @@ export default class StatusComponent extends Component{
 
     
   render(){
-    console.log("heading3",this.props.stats)
+    // console.log("heading3",this.props.stats)
     return(
         <main className="col-lg-3">
 {/*      <div className="emptyclass"></div>

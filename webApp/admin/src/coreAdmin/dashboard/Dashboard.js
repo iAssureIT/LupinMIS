@@ -12,8 +12,8 @@ import 'font-awesome/css/font-awesome.min.css';
 import html2canvas from 'html2canvas';
 import Chart from 'chart.js';
 import StatusComponent from './StatusComponent/StatusComponent.js'
-import DummyBarChart   from './chart1/DummyBarChart.js'
-import MonthBarChartbudget   from './chart1/MonthBarChartbudget.js'
+import MonthwiseGoalCompletion   from './chart1/MonthwiseGoalCompletion.js'
+import MonthwiseExpenditure   from './chart1/MonthwiseExpenditure.js'
 
 import BarChart from './chart1/BarChart.js';
 import PieChart from './chart1/PieChart.js';
@@ -75,7 +75,9 @@ export default class Dashboard extends Component{
       // 'ActualBeneficiaries' : ['1800', '3000', '1900', '2100', '2900', '2200', '2450', '3000', '1800', '1500', '2900', '2000'],
       // 'expenditure'         : ['18000', '30000', '19000', '21000', '29000', '20200', '24500', '30000', '18000', '15000', '20900', '20000'],
       // 'budget'              : ['20000', '35000', '20000', '21000', '30000', '23000', '25000', '31000', '19800', '16500', '30000', '20000'],
-      "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"], 
+      "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+      "annualPlan_TotalBudget_L" : 0,
+      "achievement_Total_L"      : 0,
     /*  "data1"               : {
         labels: [],
         datasets: [
@@ -134,6 +136,8 @@ export default class Dashboard extends Component{
     this.getCenterwiseData(this.state.year);
     this.getSectorwiseData(this.state.year);
     this.getMonthwiseData(this.state.year);
+    this.getSectorwiseFamilyupg(this.state.year);
+    this.getmonthwiseExpen(this.state.year);
   }
 
   getcenter(){
@@ -156,6 +160,8 @@ export default class Dashboard extends Component{
     this.getCenterwiseData(this.state.year);
     this.getMonthwiseData(this.state.year);
     this.getSectorwiseData(this.state.year);
+    this.getSectorwiseFamilyupg(this.state.year);
+    this.getmonthwiseExpen(this.state.year);
   }
   handleChange(event){
     event.preventDefault();
@@ -231,27 +237,31 @@ export default class Dashboard extends Component{
   } 
  
   getCenterwiseData(year){
-    console.log('year', year);
+    // console.log('year', year);
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
-    if(startDate, endDate){
+    if(startDate && endDate){
         axios.get('/api/report/center/'+startDate+'/'+endDate+'/all/all/all/all/all')
         .then((response)=>{
       /*******************************Dashboard Status Data***************************/
         if(response.data){
           var centerwiseData = response.data;
-          console.log('centerwiseData',centerwiseData)
+          // console.log('centerwiseData',centerwiseData)
           var totalindex = (centerwiseData.length)-2;
           var totalData = response.data[totalindex];
-          var achievement_Reach      = totalData.achievement_Reach;
-          var annualPlan_Reach       = totalData.annualPlan_Reach;
-          var annualPlan_TotalBudget = totalData.annualPlan_TotalBudget;
+          var achievement_Reach       = totalData.achievement_Reach;
+          var annualPlan_Reach        = totalData.annualPlan_Reach;
+          var annualPlan_TotalBudget  = totalData.annualPlan_TotalBudget;
           var achievement_TotalBudget = totalData.achievement_TotalBudget;
-          this.setState({
+          var annualPlan_TotalBudget_L = totalData.annualPlan_TotalBudget_L;
+          var achievement_Total_L      = totalData.achievement_Total_L;
+            this.setState({
             achievement_Reach        : achievement_Reach,
             annualPlan_Reach         : annualPlan_Reach,
             annualPlan_TotalBudget   : annualPlan_TotalBudget,
             achievement_TotalBudget  : achievement_TotalBudget,
+            annualPlan_TotalBudget_L : annualPlan_TotalBudget_L,
+            achievement_Total_L      : achievement_Total_L
           })
         }
 
@@ -288,36 +298,37 @@ export default class Dashboard extends Component{
             }
 
         }else{
-
-
-             this.setState({
-              "center_sector"                 : ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"],
-              "center_annualPlanTotalBudget"  : [500000,150000,90000,100000,200000],
-               piechartcolor                  : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
-            });
+           this.setState({
+            "center_sector"                 : ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"],
+            "center_annualPlanTotalBudget"  : [500000,150000,90000,100000,200000],
+             piechartcolor                  : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
+          });
         }
       }).catch(function (error) {
         console.log('error', error);
       });
-    } 
+    }else{
+      this.setState({
+        "center_sector"                 : ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"],
+        "center_annualPlanTotalBudget"  : [500000,150000,90000,100000,200000],
+         piechartcolor                  : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
+      });
+
+    }
   }
 
   getSectorwiseData(year){
-    console.log('year', year);
+    // console.log('year', year);
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
     // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
-    if(startDate, endDate){
+    if(startDate && endDate){
         axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
         .then((response)=>{ 
-          console.log("respgetData",response);
+          // console.log("respgetData",response);
           var sector = [];
-          // var annualPlanReach = [];
-          // var annualPlanFamilyUpgradation = [];
-          // var achievementReach = [];
-          // var achievementFamilyUpgradation = [];
-          var annualPlanTotalBudget = [];
           var piechartcolor =[];
+          var annualPlanTotalBudget = [];
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
               
@@ -325,33 +336,18 @@ export default class Dashboard extends Component{
                 sector.push(data.name);
                 annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
                 piechartcolor.push(this.getRandomColor_sector());
-                // annualPlanReach.push(data.annualPlan_Reach);
-                // annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
-                // achievementReach.push(data.achievement_Reach);
-                // achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);
               }
-            
             })
 
           if (annualPlanTotalBudget.length > 0) {
             this.setState({
-              // "annualPlanReach1" : annualPlanReach.splice(-2),
-              // "annualPlanFamilyUpgradation1" : annualPlanFamilyUpgradation.splice(-2),
-              // "achievementReach1" : achievementReach.splice(-2),
-              // "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
-              "sector" : sector.splice(-2),
-              "annualPlan_TotalBudget1" : annualPlanTotalBudget.splice(-2),
+              "sector"                        : sector.splice(-2),
+              "annualPlan_TotalBudget1"       : annualPlanTotalBudget.splice(-2),
             },()=>{
                this.setState({
-                // "annualPlanReach"              : annualPlanReach,
-                // "annualPlanFamilyUpgradation"  : annualPlanFamilyUpgradation,
-                // "achievementReach"             : achievementReach,
-                // "achievementFamilyUpgradation" : achievementFamilyUpgradation,
                 "sector"                       : sector,
                 "annualPlanTotalBudget"        : annualPlanTotalBudget,
                 "piechartcolor"                : piechartcolor
-              },()=>{  
-                // console.log("this",this.state.sector)                  
               });          
             })
           }else{
@@ -363,30 +359,88 @@ export default class Dashboard extends Component{
             })
           }
         }else{
-          this.setState({
-            "sector"                : ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"],
-            "annualPlanTotalBudget" : [300000,170000,50000,200000,250000],
-            "piechartcolor"         : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"]
-          })
-          
-        }   
-          var tableData = response.data.map((a, i)=>{
-            return {
-                name                                    : a.name,
-                annualPlan_Reach                        : a.annualPlan_Reach,
-                annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation, 
-                achievement_Reach                       : a.achievement_Reach,
-                achievement_FamilyUpgradation           : a.achievement_FamilyUpgradation,            
-                annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,            
-            } 
-        })  
-        this.setState({
-          tableData : tableData
-        },()=>{
-          // console.log("resp",this.state.tableData)
-        })
+            this.setState({
+              "sector"                      : ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"],
+              "annualPlanTotalBudget"       : [300000,170000,50000,200000,250000],
+              "piechartcolor"               : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"],
+            })          
+        }     
       })
       .catch(function(error){        
+      });
+    }else{
+      this.setState({
+        "sector"                      : ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"],
+        "annualPlanTotalBudget"       : [300000,170000,50000,200000,250000],
+        "piechartcolor"               : ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"],
+      })   
+    }
+  }
+  getSectorwiseFamilyupg(year){
+    var startDate = year.substring(3, 7)+"-04-01";
+    var endDate = year.substring(10, 15)+"-03-31";
+    if(startDate, endDate){
+        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
+        .then((response)=>{ 
+          // console.log("data==>",data);
+          var sector = [];
+          var annualPlanReach = [];
+          var annualPlanFamilyUpgradation = [];
+
+          var achievementReach = [];
+          var achievementFamilyUpgradation = [];
+
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{
+              if(data.achievement_Reach > 0 || data.achievement_FamilyUpgradation > 0){ 
+                sector.push(data.name);
+                annualPlanReach.push(data.annualPlan_Reach);
+                annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
+                achievementReach.push(data.achievement_Reach);
+                achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);                
+              }            
+            })
+
+            if(achievementReach.length > 0 || achievementFamilyUpgradation.length > 0 ){
+              this.setState({
+                 "sector"                        : sector.splice(-2),
+                "annualPlanReach1"              : annualPlanReach.splice(-2),
+                "achievementReach1"             : achievementReach.splice(-2),
+                "annualPlanFamilyUpgradation1"  : annualPlanFamilyUpgradation.splice(-2),
+                "achievementFamilyUpgradation1" : achievementFamilyUpgradation.splice(-2),
+              },()=>{
+                     this.setState({
+                            "sector"                       : sector,
+                            "annualPlanReach"              : annualPlanReach,
+                            "achievementReach"             : achievementReach,
+                            "annualPlanFamilyUpgradation"  : annualPlanFamilyUpgradation,
+                            "achievementFamilyUpgradation" : achievementFamilyUpgradation,
+                    });
+              })
+            }else{
+              this.setState({
+                    // "sector"                       : ["Agriculture Development","Natural Resource Management","Animal Husbandry","Education","Health","Rural Infrastructure","Women Empowerment","Rural Industries"],
+                    "sector"                       : ["AG","NRM","AH","Edu","Health","Infra","WE","RI"],
+                    "annualPlanReach"              : [],
+                    "annualPlanFamilyUpgradation"  : [],
+
+                    "achievementReach"             : [2000, 1000, 1500, 5000, 2700, 4800, 5400, 2100],
+                    "achievementFamilyUpgradation" : [200, 100, 500, 750, 300,600,900,150],
+              })
+            }
+          }else{
+            this.setState({
+                    "sector"                       : ["AG","NRM","AH","Edu","Health","Infra","WE","RI"],
+                    "annualPlanReach"              : [],
+                    "annualPlanFamilyUpgradation"  : [],
+
+                    "achievementReach"             : [2000, 1000, 1500, 5000, 2700, 4800, 5400, 2100],
+                    "achievementFamilyUpgradation" : [200, 100, 500, 750, 300,600,900,150],
+            })          
+          }   
+      })
+      .catch(function(error){        
+        console.log(error);
       });
     }
   }
@@ -420,43 +474,106 @@ export default class Dashboard extends Component{
       // return color;
     }
 
-  getMonthwiseData(year, center_ID){
-    console.log('year', year, 'center_ID', center_ID);
+  getmonthwiseExpen(year){
+    // console.log('year', year, 'center_ID', center_ID);
     var startYear = year.substring(3, 7);
     var endYear = year.substring(10, 15);
-    if(startYear, endYear){
-        axios.get('/api/report/dashboard/'+startYear+'/'+endYear)
+    if(startYear && endYear){
+        axios.get('/api/report/dashboard/'+startYear+'/'+endYear+'/all')
         .then((response)=>{
-          console.log("respgetData===================================",response)
           var month = [];
-          var monthlyPlanReach = [];
-          var monthlyAchievementReach = [];
           var monthlyPlanTotalBudget = [];
           var achievementTotalBudget = [];
-          var piechartcolor =[];
+
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
+              // console.log("real data",data);
               month.push(data.month);
-              monthlyPlanReach.push(data.monthlyPlan_Reach);
-              monthlyAchievementReach.push(data.curr_achievement_Reach);
               monthlyPlanTotalBudget.push(data.monthlyPlan_TotalBudget);
               achievementTotalBudget.push(data.curr_achievement_TotalBudget);
             })
-          this.setState({
-            "month"                        : month,
-            "monthlyPlanReach"             : monthlyPlanReach,
-            "monthlyAchievementReach"      : monthlyAchievementReach,
-            "monthlyPlanTotalBudget"       : monthlyPlanTotalBudget,
-            "achievementTotalBudget"       : achievementTotalBudget,
-          },()=>{
-                  // console.log(this.state.month)
-                         // { console.log("this.state",this.state.monthlyAchievementReach , this.state.month, this.state.monthlyAchievementReach)}
+            if (monthlyPlanTotalBudget.length > 0 || achievementTotalBudget.length > 0 ) {
+                this.setState({
+                  "month"                        : month,
+                  "monthlyPlanTotalBudget"       : monthlyPlanTotalBudget,
+                  "achievementTotalBudget"       : achievementTotalBudget,
+              }); 
 
-          });          
-        }    
+            }else{
+                this.setState({
+                  "month"                        : ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar'],
+                  "monthlyPlanTotalBudget"       : [1000,1500,2000,2300,2500,500,900,1700,1600,1500,1300,1000],
+                  "achievementTotalBudget"       : [2000,1400,1500,1000,2500,1000,200,1200,1000,800,600,400],
+              }); 
+            }
+        }else{
+           this.setState({
+                  "month"                        : ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar'],
+                  "monthlyPlanTotalBudget"       : [1000,1500,2000,2300,2500,500,900,1700,1600,1500,1300,1000],
+                  "achievementTotalBudget"       : [2000,1400,1500,1000,2500,1000,200,1200,1000,800,600,400],
+              }); 
+        }  
       })
       .catch(function(error){        
       });
+    }else{
+      this.setState({
+          "month"                        : ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar'],
+          "monthlyPlanTotalBudget"       : [1000,1500,2000,2300,2500,500,900,1700,1600,1500,1300,1000],
+          "achievementTotalBudget"       : [2000,1400,1500,1000,2500,1000,200,1200,1000,800,600,400],
+      }); 
+    }
+  }
+
+  getMonthwiseData(year){
+    // console.log('year', year, 'center_ID', center_ID);
+    var startYear = year.substring(3, 7);
+    var endYear = year.substring(10, 15);
+    if(startYear && endYear){
+        axios.get('/api/report/dashboard/'+startYear+'/'+endYear+'/all')
+        .then((response)=>{
+          // console.log("monthlyreach data",response.data)
+          var month = [];
+          var monthlyPlanReach = [];
+          var monthlyAchievementReach = [];
+
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{
+              // console.log("real data",data);
+
+              month.push(data.month);
+              monthlyPlanReach.push(data.monthlyPlan_Reach);
+              monthlyAchievementReach.push(data.curr_achievement_Reach);                
+            })
+            if (monthlyPlanReach.length > 0 || monthlyAchievementReach.length > 0 ) {        
+                this.setState({
+                  "month"                        : month,
+                  "monthlyPlanReach"             : monthlyPlanReach,
+                  "monthlyAchievementReach"      : monthlyAchievementReach,
+              }); 
+            }else{
+                this.setState({
+                  "month"                        : ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar'],
+                  "monthlyPlanReach"             : [500,1500,2000,2300,2500,500,3000,1700],
+                  "monthlyAchievementReach"      : [500,1400,1500,1000,2500,1000,200,1200],
+              }); 
+            }
+        }else{
+           this.setState({
+                  "month"                        : ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar'],
+                  "monthlyPlanReach"             : [1000,1500,2000,2300,2500,500,3000,1700],
+                  "monthlyAchievementReach"      : [2000,1400,1500,1000,2500,1000,200,1200],
+              }); 
+        }  
+      })
+      .catch(function(error){        
+      });
+    }else{
+      this.setState({
+          "month"                        : ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar'],
+          "monthlyPlanReach"             : [1000,1500,2000,2300,2500,500,3000,1700],
+          "monthlyAchievementReach"      : [2000,1400,1500,1000,2500,1000,200,1200],
+      }); 
     }
   }
 
@@ -482,10 +599,10 @@ export default class Dashboard extends Component{
                   }} 
                   />
                   <StatusComponent 
-                    stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Beneficiaries",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0}} 
+                    stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Upgraded Beneficiary",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0}} 
                   />
                   <StatusComponent 
-                    stats={{color:"#4CA75A", icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget ? this.state.annualPlan_TotalBudget : 0, heading2:"Expenditure",value2:this.state.achievement_TotalBudget ? this.state.achievement_TotalBudget : 0}} 
+                    stats={{color:"#4CA75A", icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget_L ? "Rs. "+this.state.annualPlan_TotalBudget_L+" L" : "Rs. 0 L", heading2:"Expenditure",value2:this.state.achievement_Total_L ? "Rs. "+this.state.achievement_Total_L : "Rs. 0 L"}} 
                   />
                   <StatusComponent 
                     stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:this.state.sectorCount ? this.state.sectorCount : 0, heading2:"Activities",value2:this.state.activityCount ? this.state.activityCount : 0}}
@@ -566,7 +683,7 @@ export default class Dashboard extends Component{
                              <h3 className="box-title">Month wise Goal Completion</h3>
                           </div>
                           <div className="box-body">
-                            <DummyBarChart months={this.state.month ? this.state.month : []} ActualBeneficiaries={this.state.monthlyAchievementReach ? this.state.monthlyAchievementReach : []} PlannedBeneficiaries={this.state.monthlyPlanReach ? this.state.monthlyPlanReach : []}/>
+                            <MonthwiseGoalCompletion months={this.state.month ? this.state.month : []} ActualBeneficiaries={this.state.monthlyAchievementReach ? this.state.monthlyAchievementReach : []} PlannedBeneficiaries={this.state.monthlyPlanReach ? this.state.monthlyPlanReach : []}/>
                           </div>
                         </div>
                       </div>
@@ -576,7 +693,7 @@ export default class Dashboard extends Component{
                              <h3 className="box-title">Month wise Expenditure V/s Budget</h3>
                           </div>
                           <div className="box-body">
-                            <MonthBarChartbudget months={this.state.month ? this.state.month : []} expenditure={this.state.achievementTotalBudget ? this.state.achievementTotalBudget : []} budget={this.state.monthlyPlanTotalBudget ? this.state.monthlyPlanTotalBudget : []}/>
+                            <MonthwiseExpenditure months={this.state.month ? this.state.month : []} expenditure={this.state.achievementTotalBudget ? this.state.achievementTotalBudget : []} budget={this.state.monthlyPlanTotalBudget ? this.state.monthlyPlanTotalBudget : []}/>
                           </div>
                         </div>                             
                       </div>

@@ -754,7 +754,8 @@ class PlanDetails extends Component{
       "activity_ID" : activity_ID,
       "planFor"     : this.state.month === "Annual Plan" ? "Annual" : "Monthly",
       "month"       : this.state.month,
-      "year"        : this.state.year
+      "year"        : this.state.year,
+      "dataFor"     : this.state.editId ? "edit" : "add",
     }
     axios.post('/api/sectors/activity',data)
     .then((response)=> {
@@ -776,7 +777,7 @@ class PlanDetails extends Component{
           data.remark       = '';
           return data;
         });
-        console.log("newavailableSubActivity",newavailableSubActivity);
+        // console.log("newavailableSubActivity",newavailableSubActivity);
         this.setState({
           availableSubActivity : newavailableSubActivity
         })
@@ -795,12 +796,11 @@ class PlanDetails extends Component{
         }).then((response)=> {
         var editData = response.data[0];
         if(editData){
-          // console.log("editData :",editData);
-          this.getAvailableActivity(editData.sector_ID);
-          this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID);
+          // this.getAvailableActivity(editData.sector_ID);
+          // this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID);
           this.setState({
             "availableSubActivity"    : [{
-              _id                   : editData.subactivity_ID,
+              "_id"                   : editData.subactivity_ID,
               "subActivityName"     : editData.subactivityName,
               "unit"                : editData.unit,
               "physicalUnit"        : editData.physicalUnit,
@@ -832,6 +832,8 @@ class PlanDetails extends Component{
       });
     }
   }
+
+
   toglehidden(){   
     this.setState({
      shown: !this.state.shown
@@ -912,7 +914,6 @@ class PlanDetails extends Component{
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
-    // console.log("after edit", this.state.subActivityDetails);
     return ( 
       <div className="container-fluid">
         <div className="row">

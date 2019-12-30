@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Bar} from 'react-chartjs-2';
-// import {Radar} from 'react-chartjs-2';
+import 'chartjs-plugin-labels';
+
 const options = {
     scales: {
       xAxes: [{
@@ -10,11 +11,19 @@ const options = {
         stacked: true,
           }],
     },
+    plugins: {
+      labels: [{
+        render: 'value',
+        showActualPercentages: false,
+        fontSize: 9,
+        // fontColor: '#fff',
+      }]
+    },
     responsive: true,
     maintainAspectRatio: false     
 };
 
-export default class BarChart extends Component{
+export default class MonthwiseGoalCompletion extends Component{
   // displayName: 'BarExample',
   constructor(props){
     super(props);
@@ -22,37 +31,32 @@ export default class BarChart extends Component{
     this.state={
       "data" : {
         labels: [],
-        datasets: [
+        datasets: [   
           {
-            label: 'Achievement Family Upgradation',
-            backgroundColor:'rgba(255, 206, 86, 1)',
-            borderColor: 'rgba(255, 206, 86, 0.5)',
+            label: 'Upgraded Beneficiaries',
+                // 'rgba(54, 162, 235, 0.5)',
+            backgroundColor: 'rgba(15,222,25, 1)',
+            borderColor:  'rgba(255, 255,102, 0)',
             borderWidth: 1,
-            hoverBackgroundColor:'rgba(255, 206, 86, 0.5)',
-            hoverBorderColor:'rgba(255, 206, 86, 0.5)',
+            hoverBackgroundColor:  'rgba(255, 255,102, 1)',
+            hoverBorderColor:  'rgba(255, 255,102, 0)',
             stack: '1',
             data: []
           },
           {
-            label: 'Achievement Reach',
-            backgroundColor:'rgba(54, 162, 235, 1)',
-            borderColor: 'rgba(54, 162, 235, 0.5)',
+            label: 'Outreach',
+            // backgroundColor:'rgba(54, 162, 235, 1)',
+            // borderColor: 'rgba(54, 162, 235, 0.5)',
             borderWidth: 1,
-            hoverBackgroundColor: 'rgba(54, 162, 235, 0.5)',
-            hoverBorderColor: 'rgba(54, 162, 235, 0.5)',
-            stack: '1',
+            // hoverBackgroundColor: 'rgba(54, 162, 235, 0.5)',
+            // hoverBorderColor: 'rgba(54, 162, 235, 0.5)',
+            backgroundColor: 'rgba(255, 190, 0, 1)',
+            borderColor: 'rgba(75, 192, 192, 0)',
+            hoverBackgroundColor: 'rgba(75, 192, 192, 1)',
+            hoverBorderColor: 'rgba(75, 192, 192, 0)',
+            stack: '2',
             data: []
           },
-          // {
-          //   label: 'AnnualReach',
-          //   backgroundColor: 'rgba(255, 99, 132, 1)',
-          //   borderColor: 'rgba(255, 99, 132, 0.5)',
-          //   borderWidth: 1,
-          //   hoverBackgroundColor: 'rgba(255, 99, 132, 0.5)',
-          //   hoverBorderColor: 'rgba(255, 99, 132, 0.5)',
-          //   stack: '2',
-          //   data: []
-          // },
         ]
       }
     }
@@ -72,20 +76,18 @@ export default class BarChart extends Component{
 
   // }
   static getDerivedStateFromProps(props,state){
-     var data = {...state.data};
-    console.log("props.sector",props.sector);
+     var data = {...state.data}; 
+     // console.log("data",data);
+     // console.log("props",props);
     if (data) {
-      // data.datasets[0].data = props.achievementFamilyUpgradation;
-      // data.datasets[1].data = props.achievementReach;
-
-      data.datasets[0].data = props.achievementFamilyUpgradation;
-      data.datasets[1].data = props.achievementReach;
+      data.datasets[0].data = props.ActualBeneficiaries;
+      data.datasets[1].data = props.PlannedBeneficiaries;
       /*data.datasets[0].data = props.achievementFamilyUpgradation;
       data.datasets[1].data = props.achievementReach;
       data.datasets[2].data = props.annualPlanFamilyUpgradation;
       data.datasets[3].data = props.annualPlanReach;
       */
-      data.labels = props.sector;
+      data.labels = props.months;
       return{
          data : data
       }
@@ -101,7 +103,6 @@ export default class BarChart extends Component{
   render() {
     return (
       <div>
-{/*       <Radar data={this.state.data} height={350}  options={options} />*/}
        <Bar data={this.state.data} height={300}  options={options} />
       </div>
     );
