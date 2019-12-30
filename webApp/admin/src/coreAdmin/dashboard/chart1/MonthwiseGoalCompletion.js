@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Bar} from 'react-chartjs-2';
 import 'chartjs-plugin-labels';
+import axios             from 'axios';
 
 const options = {
     scales: {
@@ -9,7 +10,7 @@ const options = {
       }],
       yAxes: [{
         stacked: true,
-          }],
+          }], 
     },
     plugins: {
       labels: [{
@@ -36,10 +37,10 @@ export default class MonthwiseGoalCompletion extends Component{
             label: 'Upgraded Beneficiaries',
                 // 'rgba(54, 162, 235, 0.5)',
             backgroundColor: 'rgba(15,222,25, 1)',
-            borderColor:  'rgba(255, 255,102, 0)',
+            borderColor:  'rgba(15,222,25, 1)',
             borderWidth: 1,
-            hoverBackgroundColor:  'rgba(255, 255,102, 1)',
-            hoverBorderColor:  'rgba(255, 255,102, 0)',
+            hoverBackgroundColor:  'rgba(15,222,25, 1)',
+            hoverBorderColor:  'rgba(15,222,25, 1)',
             stack: '1',
             data: []
           },
@@ -51,9 +52,9 @@ export default class MonthwiseGoalCompletion extends Component{
             // hoverBackgroundColor: 'rgba(54, 162, 235, 0.5)',
             // hoverBorderColor: 'rgba(54, 162, 235, 0.5)',
             backgroundColor: 'rgba(255, 190, 0, 1)',
-            borderColor: 'rgba(75, 192, 192, 0)',
-            hoverBackgroundColor: 'rgba(75, 192, 192, 1)',
-            hoverBorderColor: 'rgba(75, 192, 192, 0)',
+            borderColor: 'rgba(255, 190, 0, 1)',
+            hoverBackgroundColor:'rgba(255, 190, 0, 1)',
+            hoverBorderColor: 'rgba(255, 190, 0, 1)',
             stack: '2',
             data: []
           },
@@ -61,44 +62,75 @@ export default class MonthwiseGoalCompletion extends Component{
       }
     }
   }
-  // componentDidMount(){
-  //   var data = {...this.state.data};
+  // static getDerivedStateFromProps(props,state){
+  //    var data = {...state.data}; 
   //   if (data) {
-  //     data.labels = this.props.userNames;
-  //     data.datasets[0].data = this.props.openCount;
-  //     data.datasets[1].data = this.props.closeCount;
-  //     this.setState({
-  //       data : data
-  //     },()=>{
-  //       console.log("componentDidMount data",this.state.data);
-  //     })
+  //     data.datasets[0].data = props.ActualBeneficiaries;
+  //     data.datasets[1].data = props.PlannedBeneficiaries;
+  //     data.labels = props.months;
+  //     return{
+  //        data : data
+  //     }
   //   }
-
   // }
-  static getDerivedStateFromProps(props,state){
-     var data = {...state.data}; 
-     // console.log("data",data);
-     // console.log("props",props);
-    if (data) {
-      data.datasets[0].data = props.ActualBeneficiaries;
-      data.datasets[1].data = props.PlannedBeneficiaries;
-      /*data.datasets[0].data = props.achievementFamilyUpgradation;
-      data.datasets[1].data = props.achievementReach;
-      data.datasets[2].data = props.annualPlanFamilyUpgradation;
-      data.datasets[3].data = props.annualPlanReach;
-      */
-      data.labels = props.months;
-      return{
-         data : data
-      }
-      /* console.log("this.state.sector",sector);
-      /* console.log("this.state.annualPlanReach",annualPlanReach);
-           console.log("this.state.annualPlanFamilyUpgradation",annualPlanFamilyUpgradation);
-          console.log("this.state.achievementReach",achievementReach);
-          console.log("this.state.achievementFamilyUpgradation",achievementFamilyUpgradation);
-          */
+
+  componentDidMount(){
+    this.getMonthwiseData(this.props.year);
+  }
+  getMonthwiseData(year){
+    // console.log('year', year, 'center_ID', center_ID);
+    var monthlydata = {...this.state.data};
+    var startYear = year.substring(3, 7);
+    var endYear = year.substring(10, 15);
+    if(startYear && endYear){
+        axios.get('/api/report/dashboard/'+startYear+'/'+endYear+'/all')
+        .then((response)=>{
+          var month = [];
+          var monthlyPlanReach = [];
+          var monthlyAchievementReach = [];
+
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{
+              month.push(data.month);
+              monthlyPlanReach.push(data.monthlyPlan_Reach);
+              monthlyAchievementReach.push(data.curr_achievement_Reach);                
+            })
+            if (monthlyPlanReach.length > 0 || monthlyAchievementReach.length > 0 ) {        
+              monthlydata.datasets[0].data = monthlyAchievementReach;
+              monthlydata.datasets[1].data = monthlyPlanReach;
+              monthlydata.labels           = month;
+              this.setState({
+                "data" : monthlydata
+              })
+            }else{
+              monthlydata.datasets[0].data = [500,1400,1500,1000,2500,1000,200,1200];
+              monthlydata.datasets[1].data = [500,1500,2000,2300,2500,500,3000,1700];
+              monthlydata.labels           = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar'];
+              this.setState({
+                "data" : monthlydata
+              })
+            }
+        }else{
+           monthlydata.datasets[0].data = [500,1400,1500,1000,2500,1000,200,1200];
+            monthlydata.datasets[1].data = [500,1500,2000,2300,2500,500,3000,1700];
+            monthlydata.labels           = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar'];
+            this.setState({
+              "data" : monthlydata
+            })
+        }  
+      })
+      .catch(function(error){        
+      });
+    }else{
+       monthlydata.datasets[0].data = [500,1400,1500,1000,2500,1000,200,1200];
+        monthlydata.datasets[1].data = [500,1500,2000,2300,2500,500,3000,1700];
+        monthlydata.labels           = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar'];
+        this.setState({
+          "data" : monthlydata
+        })
     }
   }
+
 
   render() {
     return (

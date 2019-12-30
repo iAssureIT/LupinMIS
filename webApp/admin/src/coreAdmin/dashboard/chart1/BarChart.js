@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Bar} from 'react-chartjs-2';
-// import {Radar} from 'react-chartjs-2';
+import axios             from 'axios';
+
 const options = {
     scales: {
       xAxes: [{
@@ -42,59 +43,85 @@ export default class BarChart extends Component{
             hoverBorderColor: 'rgba(54, 162, 235, 0.5)',
             stack: '1',
             data: []
-          },
-          // {
-          //   label: 'AnnualReach',
-          //   backgroundColor: 'rgba(255, 99, 132, 1)',
-          //   borderColor: 'rgba(255, 99, 132, 0.5)',
-          //   borderWidth: 1,
-          //   hoverBackgroundColor: 'rgba(255, 99, 132, 0.5)',
-          //   hoverBorderColor: 'rgba(255, 99, 132, 0.5)',
-          //   stack: '2',
-          //   data: []
-          // },
+          }
         ]
       }
     }
   }
-  // componentDidMount(){
-  //   var data = {...this.state.data};
+
+  // static getDerivedStateFromProps(props,state){
+  //    var data = {...state.data};
+  //   // console.log("props.sector",props.sector);
   //   if (data) {
-  //     data.labels = this.props.userNames;
-  //     data.datasets[0].data = this.props.openCount;
-  //     data.datasets[1].data = this.props.closeCount;
-  //     this.setState({
-  //       data : data
-  //     },()=>{
-  //       console.log("componentDidMount data",this.state.data);
-  //     })
+  //     data.datasets[0].data = props.achievementFamilyUpgradation;
+  //     data.datasets[1].data = props.achievementReach;
+  //     data.labels = props.sector;
+  //     return{
+  //        data : data
+  //     }
   //   }
-
   // }
-  static getDerivedStateFromProps(props,state){
-     var data = {...state.data};
-    console.log("props.sector",props.sector);
-    if (data) {
-      // data.datasets[0].data = props.achievementFamilyUpgradation;
-      // data.datasets[1].data = props.achievementReach;
+  componentDidMount(){
+    this.getSectorwiseFamilyupg(this.props.year)
+  }
+  getSectorwiseFamilyupg(year){
+    var oudata = {...this.state.data};
+    var startDate = year.substring(3, 7)+"-04-01";
+    var endDate = year.substring(10, 15)+"-03-31";
+    if(startDate, endDate){
+        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
+        .then((response)=>{ 
+          console.log("response ==>",response);
+          response.data.splice(-2);
+          var sector = [];
+          var annualPlanReach = [];
+          var annualPlanFamilyUpgradation = [];
 
-      data.datasets[0].data = props.achievementFamilyUpgradation;
-      data.datasets[1].data = props.achievementReach;
-      /*data.datasets[0].data = props.achievementFamilyUpgradation;
-      data.datasets[1].data = props.achievementReach;
-      data.datasets[2].data = props.annualPlanFamilyUpgradation;
-      data.datasets[3].data = props.annualPlanReach;
-      */
-      data.labels = props.sector;
-      return{
-         data : data
-      }
-      /* console.log("this.state.sector",sector);
-      /* console.log("this.state.annualPlanReach",annualPlanReach);
-           console.log("this.state.annualPlanFamilyUpgradation",annualPlanFamilyUpgradation);
-          console.log("this.state.achievementReach",achievementReach);
-          console.log("this.state.achievementFamilyUpgradation",achievementFamilyUpgradation);
-          */
+          var achievementReach = [];
+          var achievementFamilyUpgradation = [];
+
+         if(response.data&&response.data.length >0){
+            response.data.map((data,index)=>{
+              if(data.achievement_Reach > 0 || data.achievement_FamilyUpgradation > 0){ 
+                sector.push(data.name);
+                annualPlanReach.push(data.annualPlan_Reach);
+                annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
+                achievementReach.push(data.achievement_Reach);
+                achievementFamilyUpgradation.push(data.achievement_FamilyUpgradation);                
+              }            
+            })
+
+            if(achievementReach.length > 0 || achievementFamilyUpgradation.length > 0 ){
+              oudata.datasets[0].data = achievementFamilyUpgradation;
+              oudata.datasets[1].data = achievementReach;
+              oudata.labels           = sector;
+            }else{
+              oudata.datasets[0].data = [200, 100, 500, 750, 300,600,900,150];
+              oudata.datasets[1].data = [2000, 1000, 1500, 5000, 2700, 4800, 5400, 2100];
+              oudata.labels           = ["AG","NRM","AH","Edu","Health","Infra","WE","RI"];
+              this.setState({
+                "data" : oudata
+              })
+            }
+          }else{
+            oudata.datasets[0].data = [200, 100, 500, 750, 300,600,900,150];
+            oudata.datasets[1].data = [2000, 1000, 1500, 5000, 2700, 4800, 5400, 2100];
+            oudata.labels           = ["AG","NRM","AH","Edu","Health","Infra","WE","RI"];
+            this.setState({
+              "data" : oudata
+            })     
+          }   
+      })
+      .catch(function(error){        
+        console.log(error);
+      });
+    }else{
+       oudata.datasets[0].data = [200, 100, 500, 750, 300,600,900,150];
+        oudata.datasets[1].data = [2000, 1000, 1500, 5000, 2700, 4800, 5400, 2100];
+        oudata.labels           = ["AG","NRM","AH","Edu","Health","Infra","WE","RI"];
+        this.setState({
+          "data" : oudata
+        })
     }
   }
 
