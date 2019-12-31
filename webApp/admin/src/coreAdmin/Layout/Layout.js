@@ -152,8 +152,11 @@ componentDidMount(){
                           <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />
                           <Route path="/sector-and-activity"                                          exact strict component={ SectorAndActivity } />
 
-                          <Route path="/unit"                                                         exact strict component={ Unit } />
-                          {<Route path="/sector-and-activity/"                                        exact strict component={ SectorAndActivity } />}
+                         {/* <Route path="/unit"                                                         exact strict component={ Unit } />
+                         */} 
+                          <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivity } />
+                          <Route path="/sector-and-activity/unit/"                                    exact strict component={ SectorAndActivity } />
+                          <Route path="/sector-and-activity/unit/:unitID"                           exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />

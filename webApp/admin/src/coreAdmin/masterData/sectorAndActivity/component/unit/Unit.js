@@ -23,14 +23,14 @@ class Unit extends Component{
       "tableObjects"        : {
         deleteMethod        : 'delete',
         apiLink             : '/api/units/',
-        editUrl             : '/sector-and-activity/',
+        editUrl             : '/sector-and-activity/unit/',
         paginationApply     : false,
         searchApply         : false,
       },
       "dataCount"           : 0,
       "startRange"          : 0,
       "limitRange"          : 10000,
-      "editId"              : props.match.params ? props.match.params.sectorId : ''
+      "editId"              : props.match.params ? props.match.params.unitID : ''
     }
   }
 
@@ -121,8 +121,8 @@ class Unit extends Component{
   componentWillReceiveProps(nextProps){
   // console.log('componentWillReceiveProps');
     if(nextProps){
-      var editId = nextProps.match.params.sectorId;
-      if(nextProps.match.params.sectorId){
+      var editId = nextProps.match.params.unitID;
+      if(nextProps.match.params.unitID){
         this.setState({
           editId : editId
         },()=>{
@@ -158,7 +158,7 @@ class Unit extends Component{
     this.setState({
       user_ID : localStorage.getItem('user_ID')
     })
-    var editId = this.props.match.params.sectorId;
+    var editId = this.props.match.params.unitID;
     if(editId){     
       this.edit(editId);
     }
@@ -167,6 +167,8 @@ class Unit extends Component{
   }
 
   edit(id){
+    $('label.error').html('')
+
     console.log("id",id);
     axios.get('/api/units/'+id)
     .then((response)=> {
@@ -246,11 +248,11 @@ class Unit extends Component{
          <div className="" data-toggle="modal" data-target="#myModal">
             <i className=" fa fa-plus-circle"></i>          
           </div>
-          <div className="modal fade in " id="myModal" role="dialog">
-            <div className="modal-dialog modal-lg" >
-              <div className="modal-content  customModalUnit">
+          <div className="modal fade in  col-lg-12 col-md-12 col-sm-12 col-xs-12" id="myModal" role="dialog">
+            <div className="modal-dialog modal-lg customModalUnit " >
+              <div className="modal-content ">
                 <div className=" ">
-                  <div className="formWrapper">
+                  <div className="formWrapper fixedModalHeight ">
 
                     <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 addLoc ">
                       <button type="button" className="close" data-dismiss="modal"> <i className="fa fa-times"></i></button>

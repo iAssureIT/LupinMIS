@@ -248,3 +248,85 @@ input[type="checkbox"] .styled:checked + label::after {
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }
+.css-1r4vtzz {
+    width: 460px !important;
+    padding: 3px 3px 3px 3px !important;
+    background-color: #FFF;
+    border-radius: 2px;
+    border-width: 0;
+    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.08);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px !important;
+    line-height: 1.36;
+ 
+    align-items: baseline;
+    background: #FFF;
+    box-sizing: border-box;
+    height: 30px;
+    border-color: hsl(0,0%,80%);
+    color: #515151;
+    cursor: pointer;
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    margin: 0;
+    max-width: 100%;
+ 
+    flex-wrap: nowrap;
+    outline: currentcolor none medium !important;
+    text-align: left;
+  
+    text-decoration: none;
+    transition: background 0.1s ease-out 0s,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38) 0s;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+}
+.css-48ayfv {
+    width: 460px !important;
+    height: 30px !important;
+    padding: 3px 3px 3px 3px !important;
+    background-color: #FFF;
+    border-radius: 2px;
+    border-width: 0;
+    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.08);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px !important;
+    line-height: 1.36;
+    -webkit-align-items: baseline;
+    -webkit-box-align: baseline;
+    -ms-flex-align: baseline;
+    align-items: baseline;
+    box-sizing: border-box;
+    border-color: hsl(0,0%,80%);
+    color: #515151;
+    cursor: pointer;
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    margin: 0;
+    max-width: 100%;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    outline: currentcolor none medium !important;
+    text-align: left;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    -webkit-transition: background 0.1s ease-out 0s,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38) 0s;
+    transition: background 0.1s ease-out 0s,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38) 0s;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+}.css-1jllj6i-control{
+  display: none !important;
+}
+.css-1pcexqc-container{
+ border:1px solid #aaa;
+ margin-top: -8px !important;
+ width: 460px;
+} 

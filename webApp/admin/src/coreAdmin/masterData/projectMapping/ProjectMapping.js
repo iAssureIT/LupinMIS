@@ -1,11 +1,12 @@
-import React, { Component }   from 'react';
-import $                      from 'jquery';
-import moment                 from 'moment';
-import axios                  from 'axios';
-import swal                   from 'sweetalert';
-import _                      from 'underscore';
+import React, { Component }       from 'react';
+import $                          from 'jquery';
+import moment                     from 'moment';
+import axios                      from 'axios';
+import swal                       from 'sweetalert';
+import _                          from 'underscore';
+import IAssureTable               from "../../IAssureTable/IAssureTable.jsx";
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
-import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./ProjectMapping.css";
 
 class ProjectMapping extends Component{
@@ -15,14 +16,8 @@ class ProjectMapping extends Component{
       "startDate"          : "",
       "endDate"            : "",
       "projectName"        : "",
-      "projectType"        : "-- Select --",
-      // "sector"             : "",
-      // "activity"           : "",
-      // "uID"                : "",
-      // "activityName"       : "",
-      // "selectedSector"     : [],
-      // "selectedActivities" : [],
-      // "selectedSubActivities" : [],
+      "listofTypesArray"   : "",
+      "projectType"        : [],
       fields               : {},
       errors               : {},
       "tableHeading"       : {
@@ -55,13 +50,17 @@ class ProjectMapping extends Component{
     console.log("this",$("input:checkbox:checked").data('typechecked'));
     this.setState({
       "projectName"               : this.refs.projectName.value,          
-      "projectType"               : this.refs.projectType.value,          
       "startDate"                 : this.refs.startDate.value,          
       "endDate"                   : this.refs.endDate.value,          
     });
    
-  }
-
+  } 
+ /* handleChangeSelect(event){
+    this.setState({
+      "projectType"  : this.state.projectType,          
+    });
+  console.log("projectType",this.state.projectType);
+  }*/
 
   handleFromChange(event){
     event.preventDefault();
@@ -76,10 +75,10 @@ class ProjectMapping extends Component{
     },()=>{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
     console.log("dateUpdate",this.state.startDate);
- });
+  });
      // localStorage.setItem('newFromDate',dateUpdate);
   }
-   onBlurEventFrom(){
+  onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
     console.log("startDate",startDate,endDate)
@@ -129,23 +128,36 @@ class ProjectMapping extends Component{
   Submit(event){
     event.preventDefault();
     if($('#sectorMapping').valid()){
+      console.log("sectorData",this.state.sectorData);
       if (this.state.sectorData.length===0){      
         swal({
           title: 'abc',
-          text: "Please select any Activity",
+          text: "Please select appropriate Activity from the list.",
           button: true,
         });
-      }else{        
+      }else if(this.state.projectType.length === 0){
+        swal({
+          title: 'abc',
+          text: "Please select A Goal Type from the dropdown List",
+          button: true,
+        });        
+      }else{    
+        var listofTypesArray = this.state.projectType.map((data, index)=>{
+              return({
+                  label : data.label,
+                  goal_ID : data.value
+                 });
+            })    
         var mappingValues= 
         {     
           "projectName"  : this.refs.projectName.value,          
-          "type_ID"      : this.refs.projectType.value,           
+          "type_ID"      : listofTypesArray,           
           "startDate"    : this.refs.startDate.value,          
           "endDate"      : this.refs.endDate.value,              
           "sector"       : this.state.sectorData                
         };
         // console.log("mappingValues",mappingValues);
-      
+   
         axios.post('/api/projectMappings',mappingValues)
           .then((response)=>{
             console.log("response",response)
@@ -162,7 +174,7 @@ class ProjectMapping extends Component{
 
         this.setState({
           "projectName"           :"",
-          "projectType"           :"-- Select --",
+          "projectType"           :[],
           "startDate"             :"",
           "endDate"               :"",
           "sectorData"            :[],
@@ -199,7 +211,7 @@ class ProjectMapping extends Component{
       });
       this.setState({
         "projectName"           : "",
-        "projectType"           : "-- Select --",
+        "projectType"           :[],
         "startDate"             :"",
         "endDate"               :"",
         "sectorData"            :[],
@@ -210,9 +222,6 @@ class ProjectMapping extends Component{
       });
     }
   }
-
- 
-
   componentWillReceiveProps(nextProps){
     this.currentFromDate();
     this.currentToDate();
@@ -230,7 +239,6 @@ class ProjectMapping extends Component{
       this.getLength();
     }
   }
-
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
@@ -277,7 +285,6 @@ class ProjectMapping extends Component{
       console.log(data);
     }); */
   }
-
   edit(id){
     axios({
       method: 'get',
@@ -323,7 +330,6 @@ class ProjectMapping extends Component{
       console.log("error = ",error);
     });
   }
-  
   getLength(){
     axios.get('/api/projectMappings/count')
     .then((response)=>{
@@ -338,7 +344,6 @@ class ProjectMapping extends Component{
       console.log("error = ",error);
     });
   }
-  
   getData(startRange, limitRange){
     // console.log('/api/projectMappings/list/'+startRange+'/'+limitRange);
     axios.get('/api/projectMappings/list/'+startRange+'/'+limitRange)
@@ -353,7 +358,6 @@ class ProjectMapping extends Component{
       console.log("error = ",error);
     });
   }
-
   selectSector(event){
     var checkedValue = event.target.value;
     var index     = event.target.getAttribute('data-index');
@@ -444,7 +448,6 @@ class ProjectMapping extends Component{
       sectorData: sectorData
     })
   }
-
   selectActivity(event){
     var checkedValue = event.target.value;
     var activityIndex     = event.target.getAttribute('data-index');
@@ -516,7 +519,6 @@ class ProjectMapping extends Component{
       sectorData : sectorData
     })
   }
-
   selectSubactivity(event){
     var checkedValue         = event.target.value;
     var subActivityIndex     = event.target.getAttribute('data-index');
@@ -600,14 +602,11 @@ class ProjectMapping extends Component{
       console.log("error = ",error);
     });
   }
-
-
   getSearchText(searchText, startRange, limitRange){
     this.setState({
       tableData : []
     })
   }
-
   currentFromDate(){
      /* if(localStorage.getItem('newFromDate')){
           var today = localStorage.getItem('newFromDate');
@@ -632,7 +631,6 @@ class ProjectMapping extends Component{
       return today;
       // this.handleFromChange()
   }
-
   currentToDate(){
       if(this.state.endDate){
           var today = this.state.endDate;
@@ -655,22 +653,31 @@ class ProjectMapping extends Component{
         this.setState({
           listofTypes : response.data
         })
+        var label = "";
+        var value = "";
+        if(this.state.listofTypes.length > 0)
+        {
+          var listofTypesArray = response.data.map((data, index)=>{
+            return({
+                label : data.typeofGoal,
+                value : data._id
+               });
+          })
+          console.log("listofTypesArray",listofTypesArray);
+          this.setState({
+            listofTypesArray : listofTypesArray
+          })
+        }
     }).catch(function (error) {
       console.log("error = ",error);
     });
   }
-
-  selectType(event){
-    event.preventDefault();
-    var selectedType = event.target.value;
-    this.setState({
-      projectType : selectedType,
-    });
-    this.handleChange(event);
-  }
-
+  handleChangeSelect = (projectType) => {
+    this.setState({ projectType : projectType }, ()=>{console.log("projecttype = ", this.state.projectType) });
+  };
   render() {
-    return(
+
+      return(
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
@@ -683,6 +690,7 @@ class ProjectMapping extends Component{
                       </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
+
                   <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="sectorMapping">                   
                     <div className="col-lg-12 ">
                        <h4 className="pageSubHeader">Project Definition</h4>
@@ -702,21 +710,20 @@ class ProjectMapping extends Component{
                         </div>
                         <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">Goal Type</label><span className="asterix">*</span>
+                          {console.log("this.state.projectType",this.state.projectType)}
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectType" >
-                            <select className="custom-select form-control inputBox" ref="projectType" name="projectType" value={this.state.projectType} onChange={this.selectType.bind(this)}>
+                          {/*  <select className="custom-select form-control inputBox" ref="projectType" name="projectType" value={this.state.projectType} onChange={this.selectType.bind(this)}>
                               <option disabled="disabled" selected="true" >-- Select --</option>
                              
+
+                            </select>*/}
                               {
-                                this.state.listofTypes ?
-                                this.state.listofTypes.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={data._id}>{data.typeofGoal}</option>   
-                                  );
-                                })
+                                this.state.listofTypesArray ?
+                             
+                                <ReactMultiSelectCheckboxes options={this.state.listofTypesArray} value={this.state.projectType} name="projectType" onChange={this.handleChangeSelect}/>
                                 :
                                 null
                               }
-                            </select>
                           </div>
                         </div>  
                         <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">

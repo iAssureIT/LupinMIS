@@ -5,7 +5,6 @@ import swal                   from 'sweetalert';
 import validate               from 'jquery-validation';
 import {withRouter}           from 'react-router-dom';
 // import _                      from 'underscore';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 import IAssureTable             from "../../../IAssureTable/IAssureTable.jsx";
 import "./nameOfGoal.css";

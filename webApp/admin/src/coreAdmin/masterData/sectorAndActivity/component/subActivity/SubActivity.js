@@ -84,6 +84,9 @@ class SubActivity extends Component{
         }
       }
     });
+    this.setState({
+      user_ID : localStorage.getItem('user_ID')
+    })
     this.getAvailableSectors();
     if(this.state.editId){     
       this.getAvailableActivity(this.state.editSectorId);
@@ -139,6 +142,7 @@ class SubActivity extends Component{
       "familyUpgradation"    :this.state.familyUpgradation,
       "user_ID"              :this.state.user_ID,
     };
+    
    
     this.setState({
       "sector"                :"-- Select --",
@@ -470,7 +474,7 @@ edit(id){
                             null
                            }
                          </select>
-                          <div className="input-group-addon inputIcon" title="Add Unit"> <Unit /></div>
+                          <div className="input-group-addon inputIcon" title="Add Unit"><Unit/></div>
                         </div>
                       </div>
                     </div>
