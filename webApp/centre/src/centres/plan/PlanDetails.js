@@ -733,7 +733,13 @@ class PlanDetails extends Component{
         this.setState({
           availableActivity : response.data[0].activity,
           // activityName      : "-- Select --",
-          availableSubActivity : []
+        },()=>{
+          if(!this.state.editId){
+            this.setState({
+                availableSubActivity : []
+              
+            })
+          }
         })
       }).catch(function (error) {
         console.log("error"+error);
@@ -796,7 +802,7 @@ class PlanDetails extends Component{
         }).then((response)=> {
         var editData = response.data[0];
         if(editData){
-          // this.getAvailableActivity(editData.sector_ID);
+          this.getAvailableActivity(editData.sector_ID);
           // this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID);
           this.setState({
             "availableSubActivity"    : [{

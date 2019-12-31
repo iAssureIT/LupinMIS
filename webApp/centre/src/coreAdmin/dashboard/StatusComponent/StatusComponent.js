@@ -29,7 +29,7 @@ export default class StatusComponent extends Component{
 
     
   render(){
-    // console.log("heading3",this.props.stats)
+    // console.log(thi s.props.stats);
     return(
         <main className="col-lg-3">
 {/*      <div className="emptyclass"></div>
@@ -40,13 +40,19 @@ export default class StatusComponent extends Component{
               </div>
               <div className="col-lg-7 statusBox">
               {
-                this.props.stats.heading3 ?  
-                <div>
-                    <div> <b> Centers </b> </div>
-                    <div className="dashboardHeading1">{this.props.stats.heading1.split(' ')[0]}  : <strong>{this.props.stats.value1}</strong></div>
-                    <div className="dashboardHeading1">{this.props.stats.heading2.split(' ')[0]} : <strong>{this.props.stats.value2}</strong></div>
-                    <div className="dashboardHeading1">{this.props.stats.heading3.split(' ')[0]} : <strong>{this.props.stats.value3}</strong></div>
-                </div>
+                this.props.stats.multipleValues ?  
+                <React.Fragment>
+                  <div> <b> Centers : {this.props.stats.centerCount}  </b> </div>
+                   {this.props.stats.centerData && this.props.stats.centerData.length > 0 ?
+                    this.props.stats.centerData.map((center,i)=>{
+                      return(  
+                        <div className="dashboardHeading1" key={i}>{center.typeOfCenter.split(' ')[0]}  : <strong>{center.count}</strong></div>
+                      )
+                    })
+                    : null
+                  }
+                </React.Fragment>
+              
               :
                 <div>
                   <div className="dashboardHeading">{this.props.stats.heading1}</div>

@@ -67,7 +67,20 @@ export default class Dashboard extends Component{
       "monthlyAchievementReach"             : [],
       "achievementFamilyUpgradation" : [],
       "annualPlanTotalBudget"        : [],
-      "centerData" : [],
+      "centerData" : [
+        {"typeOfCenter" :"ADP Program",
+          "count"       : 0
+        },{
+          "typeOfCenter" :"DDP Program",
+          "count"       : 0,
+       },
+       {
+          "typeOfCenter" :"Websites Program",
+          "count"       : 0,
+       }], 
+      "centerCounts" :[],
+      "centerCount" : 0,
+
       'year'                          : "FY 2019 - 2020",
       
       // 'months'              : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -141,9 +154,14 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/centers/count/typeofcenter',
     }).then((response)=> {
-      console.log('response', response);
+      // console.log('response', response);
       this.setState({
         centerData : response.data,
+        centerCounts : response.data.map((o,i)=>{return o.count})
+      },()=>{
+        this.setState({
+          "centerCount" : this.state.centerCounts.reduce((a,b)=>{return a + b})
+        })
       })
     }).catch(function (error) {
       console.log('error', error);
@@ -306,22 +324,19 @@ export default class Dashboard extends Component{
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
                   <StatusComponent 
                     stats={{color:"#2FC0EF", icon:"building",
-                    heading1:   this.state.centerData[0] ? this.state.centerData[0].typeOfCenter  : "" ,
-                    value1:     this.state.centerData[0] ? this.state.centerData[0].count         : "" , 
-                    heading2:   this.state.centerData[1] ? this.state.centerData[1].typeOfCenter  : "", 
-                    value2:     this.state.centerData[1] ? this.state.centerData[1].count         : 0, 
-                    heading3:   this.state.centerData[2] ? this.state.centerData[2].typeOfCenter  : "",
-                    value3:     this.state.centerData[2] ? this.state.centerData[2].count         : 0
-                  }} 
+                      centerData : this.state.centerData,
+                      centerCount : this.state.centerCount,
+                      multipleValues : true}} 
+                  />
+                    
+                  <StatusComponent 
+                    stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Upgraded Beneficiary",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0,multipleValues : false}} 
                   />
                   <StatusComponent 
-                    stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Upgraded Beneficiary",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0}} 
+                    stats={{color:"#4CA75A", icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget_L ? "Rs. "+this.state.annualPlan_TotalBudget_L+" L" : "Rs. 0 L", heading2:"Expenditure",value2:this.state.achievement_Total_L ? "Rs. "+this.state.achievement_Total_L : "Rs. 0 L"multipleValues : false}} 
                   />
                   <StatusComponent 
-                    stats={{color:"#4CA75A", icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget_L ? "Rs. "+this.state.annualPlan_TotalBudget_L+" L" : "Rs. 0 L", heading2:"Expenditure",value2:this.state.achievement_Total_L ? "Rs. "+this.state.achievement_Total_L : "Rs. 0 L"}} 
-                  />
-                  <StatusComponent 
-                    stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:this.state.sectorCount ? this.state.sectorCount : 0, heading2:"Activities",value2:this.state.activityCount ? this.state.activityCount : 0}}
+                    stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:this.state.sectorCount ? this.state.sectorCount : 0, heading2:"Activities",value2:this.state.activityCount ? this.state.activityCount : 0,multipleValues : false}}
                   /> 
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
