@@ -76,8 +76,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             "achievement_Govt"                  : 'Government',
             "achievement_DirectCC"              : 'DirectCC',
             "achievement_IndirectCC"            : 'IndirectCC',
-            "achievement_Other"                 : 'Others',/*
-            "aaaa"                             : 'Remarks',   */        
+            "achievement_Other"                 : 'Others',        
         },
         "tableObjects"        : {
             paginationApply     : false,

@@ -40,14 +40,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         mergedColoums : 2,
                         hide : false
                     },
-                    // {
-                    //     heading : "Source of Financial Periodic Plan (Physical & Financial 'Lakh')",
-                    //     mergedColoums : 9
-                    // },
-                    // {
-                    //     heading : "Source wise Financial Periodic Achievements",
-                    //     mergedColoums : 9
-                    // },
                     
                     {
                         heading : "Physical and Financial Plan 'Lakh'",

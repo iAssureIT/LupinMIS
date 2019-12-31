@@ -61,21 +61,21 @@ class ActivityWisePeriodicVarianceReport extends Component{
               ]
           },
           "tableHeading"      : {
-              "achievement_projectCategory"               : 'Project',
-              "name"                               : 'Activity & Sub Activity',
-              "unit"                               : 'Unit',
-              "annualPlan_PhysicalUnit"            : 'Physical Units', 
-              "annualPlan_Reach"                   : "Reach",
-              "annualPlan_FamilyUpgradation"       : 'Family Upgradation plan', 
-              "monthlyPlan_PhysicalUnit"           : 'Physical Units', 
-              "monthlyPlan_Reach"                  : "Reach",
-              "monthlyPlan_FamilyUpgradation"      : 'Family Upgradation plan', 
-              "achievement_PhysicalUnit"           : 'Physical Units', 
-              "achievement_Reach"                  : "Reach",
-              "achievement_FamilyUpgradation"      : 'Family Upgraded', 
-              "variance_monthlyPlan_PhysicalUnit"  : 'Physical Units', 
-              "variance_monthlyPlan_Reach"         : "Reach",
-              "variance_monthlyPlan_FamilyUpgradation" : 'Family Upgraded', 
+            "achievement_projectCategory"        : 'Project',
+            "name"                               : 'Activity & Sub Activity',
+            "unit"                               : 'Unit',
+            "annualPlan_PhysicalUnit"            : 'Phy Units', 
+            "annualPlan_Reach"                   : "Reach",
+            "annualPlan_FamilyUpgradation"       : 'Family Upgradation plan', 
+            "monthlyPlan_PhysicalUnit"           : 'Phy Units', 
+            "monthlyPlan_Reach"                  : "Reach",
+            "monthlyPlan_FamilyUpgradation"      : 'Family Upgradation plan', 
+            "achievement_PhysicalUnit"           : 'Phy Units', 
+            "achievement_Reach"                  : "Reach",
+            "achievement_FamilyUpgradation"      : 'Family Upgraded', 
+            "variance_monthlyPlan_PhysicalUnit"  : 'Phy Units', 
+            "variance_monthlyPlan_Reach"         : "Reach",
+            "variance_monthlyPlan_FamilyUpgradation" : 'Family Upgraded', 
           },
           "tableObjects"        : {
             downloadApply       : true,
@@ -256,6 +256,9 @@ class ActivityWisePeriodicVarianceReport extends Component{
     })
   }
 
+  addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
     console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
     if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
@@ -266,24 +269,23 @@ class ActivityWisePeriodicVarianceReport extends Component{
              console.log("resp",response);
                var tableData = response.data.map((a, i)=>{
                return {
-                   _id                                       : a._id,            
-                   achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
-                   name                                      : a.name,
-                   unit                                      : a.unit,
-                   annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                   annualPlan_Reach                          : a.annualPlan_Reach,
-                   annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
-                   monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
-                   monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                   monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
-                   achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
-                   achievement_Reach                         : a.achievement_Reach,
-                   achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
-                   variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
-                   variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
-                   variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
-                   
-               }
+                  _id                                       : a._id,            
+                  achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                  name                                      : a.name,
+                  unit                                      : a.unit,
+                  annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
+                  annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
+                  annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
+                  monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
+                  monthlyPlan_Reach                         : this.addCommas(a.monthlyPlan_Reach),
+                  monthlyPlan_FamilyUpgradation             : this.addCommas(a.monthlyPlan_FamilyUpgradation),
+                  achievement_PhysicalUnit                  : this.addCommas(a.achievement_PhysicalUnit),
+                  achievement_Reach                         : this.addCommas(a.achievement_Reach),
+                  achievement_FamilyUpgradation             : this.addCommas(a.achievement_FamilyUpgradation),
+                  variance_monthlyPlan_PhysicalUnit         : this.addCommas(a.variance_monthlyPlan_PhysicalUnit),
+                  variance_monthlyPlan_Reach                : this.addCommas(a.variance_monthlyPlan_Reach),
+                  variance_monthlyPlan_FamilyUpgradation    : this.addCommas(a.variance_monthlyPlan_FamilyUpgradation),
+              }
                
             })
              this.setState({
@@ -303,24 +305,23 @@ class ActivityWisePeriodicVarianceReport extends Component{
              console.log("resp",response);
                var tableData = response.data.map((a, i)=>{
                return {
-                   _id                                       : a._id,            
-                   achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
-                   name                                      : a.name,
-                   unit                                      : a.unit,
-                   annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                   annualPlan_Reach                          : a.annualPlan_Reach,
-                   annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
-                   monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
-                   monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                   monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
-                   achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
-                   achievement_Reach                         : a.achievement_Reach,
-                   achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
-                   variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
-                   variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
-                   variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
-                   
-               }
+                _id                                       : a._id,            
+                achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                name                                      : a.name,
+                unit                                      : a.unit,
+                annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
+                annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
+                annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
+                monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
+                monthlyPlan_Reach                         : this.addCommas(a.monthlyPlan_Reach),
+                monthlyPlan_FamilyUpgradation             : this.addCommas(a.monthlyPlan_FamilyUpgradation),
+                achievement_PhysicalUnit                  : this.addCommas(a.achievement_PhysicalUnit),
+                achievement_Reach                         : this.addCommas(a.achievement_Reach),
+                achievement_FamilyUpgradation             : this.addCommas(a.achievement_FamilyUpgradation),
+                variance_monthlyPlan_PhysicalUnit         : this.addCommas(a.variance_monthlyPlan_PhysicalUnit),
+                variance_monthlyPlan_Reach                : this.addCommas(a.variance_monthlyPlan_Reach),
+                variance_monthlyPlan_FamilyUpgradation    : this.addCommas(a.variance_monthlyPlan_FamilyUpgradation),
+              }
                
             })
              this.setState({
@@ -341,24 +342,23 @@ class ActivityWisePeriodicVarianceReport extends Component{
              console.log("resp",response);
                var tableData = response.data.map((a, i)=>{
                return {
-                   _id                                       : a._id,                
-                   achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
-                   name                                      : a.name,      
-                   unit                                      : a.unit,
-                   annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                   annualPlan_Reach                          : a.annualPlan_Reach,
-                   annualPlan_FamilyUpgradation                  : a.annualPlan_FamilyUpgradation,
-                   monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
-                   monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                   monthlyPlan_FamilyUpgradation                 : a.monthlyPlan_FamilyUpgradation,
-                   achievement_PhysicalUnit                  : a.achievement_PhysicalUnit,
-                   achievement_Reach                         : a.achievement_Reach,
-                   achievement_FamilyUpgradation                   : a.achievement_FamilyUpgradation,
-                   variance_monthlyPlan_PhysicalUnit         : a.variance_monthlyPlan_PhysicalUnit,
-                   variance_monthlyPlan_Reach                : a.variance_monthlyPlan_Reach,
-                   variance_monthlyPlan_FamilyUpgradation        : a.variance_monthlyPlan_FamilyUpgradation,
-                   
-               }
+                  _id                                       : a._id,            
+                  achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                  name                                      : a.name,
+                  unit                                      : a.unit,
+                  annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
+                  annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
+                  annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
+                  monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
+                  monthlyPlan_Reach                         : this.addCommas(a.monthlyPlan_Reach),
+                  monthlyPlan_FamilyUpgradation             : this.addCommas(a.monthlyPlan_FamilyUpgradation),
+                  achievement_PhysicalUnit                  : this.addCommas(a.achievement_PhysicalUnit),
+                  achievement_Reach                         : this.addCommas(a.achievement_Reach),
+                  achievement_FamilyUpgradation             : this.addCommas(a.achievement_FamilyUpgradation),
+                  variance_monthlyPlan_PhysicalUnit         : this.addCommas(a.variance_monthlyPlan_PhysicalUnit),
+                  variance_monthlyPlan_Reach                : this.addCommas(a.variance_monthlyPlan_Reach),
+                  variance_monthlyPlan_FamilyUpgradation    : this.addCommas(a.variance_monthlyPlan_FamilyUpgradation),
+              }
                
             })
              this.setState({

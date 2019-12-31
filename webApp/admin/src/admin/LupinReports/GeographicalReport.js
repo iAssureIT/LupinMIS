@@ -45,7 +45,7 @@ class GeographicalReport extends Component{
                     hide : false
                 },
                 {
-                    heading : 'Expenditure(Rs. in Lakhs)',
+                    heading : "Expenditure 'Lakhs'",
                     mergedColoums : 10,
                     hide : false
                 },
@@ -59,10 +59,10 @@ class GeographicalReport extends Component{
           "achievement_FamilyUpgradation"    : 'Upgradation', 
           "achievement_LHWRF_L"              : 'LHWRF',
           "achievement_NABARD_L"             : 'NABARD',
-          "achievement_Bank_Loan_L"          : 'Bank Loan',
-          "achievement_DirectCC_L"           : 'Direct Community  Contribution',
-          "achievement_IndirectCC_L"         : 'Indirect Community  Contribution',
-          "achievement_Govt_L"               : 'Govt',
+          "achievement_Bank_Loan_L"          : 'Bank',
+          "achievement_Govt_L"               : 'Government',
+          "achievement_DirectCC_L"           : 'DirectCC',
+          "achievement_IndirectCC_L"         : 'IndirectCC',
           "achievement_Other_L"              : 'Others',
           "achievement_TotalBudget_L"        : 'Total',           
         },
@@ -349,6 +349,10 @@ class GeographicalReport extends Component{
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
   }
+  
+  addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType){        
     console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType);
     if(center_ID){
@@ -363,14 +367,14 @@ class GeographicalReport extends Component{
                   _id                                   : a._id,            
                   achievement_projectCategory           : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                  : a.name,
-                  achievement_Reach                     : a.achievement_Reach,
-                  achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
+                  achievement_Reach                     : this.addCommas(a.achievement_Reach),
+                  achievement_FamilyUpgradation         : this.addCommas(a.achievement_FamilyUpgradation),
                   achievement_LHWRF_L                   : a.achievement_LHWRF_L,
                   achievement_NABARD_L                  : a.achievement_NABARD_L,
                   achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
+                  achievement_Govt_L                    : a.achievement_Govt_L,
                   achievement_DirectCC_L                : a.achievement_DirectCC_L,
                   achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
-                  achievement_Govt_L                    : a.achievement_Govt_L,
                   achievement_Other_L                   : a.achievement_Other_L,
                   achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
                 }
@@ -394,14 +398,14 @@ class GeographicalReport extends Component{
                   _id                                   : a._id,            
                   achievement_projectCategory           : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                  : a.name,
-                  achievement_Reach                     : a.achievement_Reach,
-                  achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
+                  achievement_Reach                     : this.addCommas(a.achievement_Reach),
+                  achievement_FamilyUpgradation         : this.addCommas(a.achievement_FamilyUpgradation),
                   achievement_LHWRF_L                   : a.achievement_LHWRF_L,
                   achievement_NABARD_L                  : a.achievement_NABARD_L,
                   achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
+                  achievement_Govt_L                    : a.achievement_Govt_L,
                   achievement_DirectCC_L                : a.achievement_DirectCC_L,
                   achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
-                  achievement_Govt_L                    : a.achievement_Govt_L,
                   achievement_Other_L                   : a.achievement_Other_L,
                   achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
                 }
@@ -426,14 +430,14 @@ class GeographicalReport extends Component{
                   _id                                   : a._id,            
                   achievement_projectCategory           : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                  : a.name,
-                  achievement_Reach                     : a.achievement_Reach,
-                  achievement_FamilyUpgradation         : a.achievement_FamilyUpgradation,
+                  achievement_Reach                     : this.addCommas(a.achievement_Reach),
+                  achievement_FamilyUpgradation         : this.addCommas(a.achievement_FamilyUpgradation),
                   achievement_LHWRF_L                   : a.achievement_LHWRF_L,
                   achievement_NABARD_L                  : a.achievement_NABARD_L,
                   achievement_Bank_Loan_L               : a.achievement_Bank_Loan_L,
+                  achievement_Govt_L                    : a.achievement_Govt_L,
                   achievement_DirectCC_L                : a.achievement_DirectCC_L,
                   achievement_IndirectCC_L              : a.achievement_IndirectCC_L,
-                  achievement_Govt_L                    : a.achievement_Govt_L,
                   achievement_Other_L                   : a.achievement_Other_L,
                   achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
                 }

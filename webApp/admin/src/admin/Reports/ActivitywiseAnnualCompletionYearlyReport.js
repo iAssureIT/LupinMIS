@@ -91,6 +91,9 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
         });
     }
 
+    addCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     getData(year, center, sector, projectCategoryType, projectName, beneficiaryType){        
       if(year){
         console.log( center, sector, projectCategoryType, projectName, beneficiaryType);
@@ -109,21 +112,17 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                       achievement_projectCategory   : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                          : a.name,
                       unit                          : a.unit,
-                      // annualPlan_Reach              : a.annualPlan_Reach,
-                      // annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
-                      // annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
-                      // annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
-                      achievement_Reach             : a.achievement_Reach,
-                      achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
-                      achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
+                      achievement_Reach             : this.addCommas(a.achievement_Reach),
+                      achievement_FamilyUpgradation : this.addCommas(a.achievement_FamilyUpgradation), 
+                      achievement_PhysicalUnit      : this.addCommas(a.achievement_PhysicalUnit),
                       achievement_TotalBudget_L     : a.achievement_TotalBudget_L,
-                      achievement_LHWRF             : a.achievement_LHWRF,
-                      achievement_NABARD            : a.achievement_NABARD,
-                      achievement_Bank_Loan         : a.achievement_Bank_Loan,
-                      achievement_DirectCC          : a.achievement_DirectCC,
-                      achievement_IndirectCC        : a.achievement_IndirectCC,
-                      achievement_Govt              : a.achievement_Govt,
-                      achievement_Other             : a.achievement_Other,
+                      achievement_LHWRF             : this.addCommas(a.achievement_LHWRF),
+                      achievement_NABARD            : this.addCommas(a.achievement_NABARD),
+                      achievement_Bank_Loan         : this.addCommas(a.achievement_Bank_Loan),
+                      achievement_DirectCC          : this.addCommas(a.achievement_DirectCC),
+                      achievement_IndirectCC        : this.addCommas(a.achievement_IndirectCC),
+                      achievement_Govt              : this.addCommas(a.achievement_Govt),
+                      achievement_Other             : this.addCommas(a.achievement_Other),
                       remark                        : a.remark,
                     }
                   })
@@ -144,21 +143,17 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                       achievement_projectCategory   : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                          : a.name,
                       unit                          : a.unit,
-                      // annualPlan_Reach              : a.annualPlan_Reach,
-                      // annualPlan_FamilyUpgradation  : a.annualPlan_FamilyUpgradation,
-                      // annualPlan_PhysicalUnit       : a.annualPlan_PhysicalUnit,
-                      // annualPlan_TotalBudget        : a.annualPlan_TotalBudget,
-                      achievement_Reach             : a.achievement_Reach,
-                      achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
-                      achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
+                      achievement_Reach             : this.addCommas(a.achievement_Reach),
+                      achievement_FamilyUpgradation : this.addCommas(a.achievement_FamilyUpgradation), 
+                      achievement_PhysicalUnit      : this.addCommas(a.achievement_PhysicalUnit),
                       achievement_TotalBudget_L     : a.achievement_TotalBudget_L,
-                      achievement_LHWRF             : a.achievement_LHWRF,
-                      achievement_NABARD            : a.achievement_NABARD,
-                      achievement_Bank_Loan         : a.achievement_Bank_Loan,
-                      achievement_DirectCC          : a.achievement_DirectCC,
-                      achievement_IndirectCC        : a.achievement_IndirectCC,
-                      achievement_Govt              : a.achievement_Govt,
-                      achievement_Other             : a.achievement_Other,
+                      achievement_LHWRF             : this.addCommas(a.achievement_LHWRF),
+                      achievement_NABARD            : this.addCommas(a.achievement_NABARD),
+                      achievement_Bank_Loan         : this.addCommas(a.achievement_Bank_Loan),
+                      achievement_DirectCC          : this.addCommas(a.achievement_DirectCC),
+                      achievement_IndirectCC        : this.addCommas(a.achievement_IndirectCC),
+                      achievement_Govt              : this.addCommas(a.achievement_Govt),
+                      achievement_Other             : this.addCommas(a.achievement_Other),
                       remark                        : a.remark,
                     }
                   })

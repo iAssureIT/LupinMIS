@@ -60,20 +60,20 @@ class PlanDetails extends Component{
         activityName        : "Activity",
         subactivityName     : "Sub-Activity",
         unit                : "Unit",
-        physicalUnit        : "Physical Unit",
+        physicalUnit        : "Phy Unit",
         unitCost            : "Unit Cost",
         totalBudget         : "Total Cost",
-        noOfBeneficiaries   : "No. Of Beneficiaries",
-        noOfFamilies        : "No. Of Families",
+        noOfBeneficiaries   : "Beneficiary",
+        noOfFamilies        : "Families",
         LHWRF               : "LHWRF",
         NABARD              : "NABARD",
-        bankLoan            : "Bank Loan",
-        govtscheme          : "Govt. Scheme",
-        directCC            : "Direct Community Contribution",
-        indirectCC          : "Indirect Community Contribution",
+        bankLoan            : "Bank",
+        govtscheme          : "Government",
+        directCC            : "DirectCC",
+        indirectCC          : "IndirectCC",
         other               : "Other",
         remark              : "Remark",
-        // actions             : 'Action',
+        actions             : 'Action',
       },
       "tableObjects"        : {
         deleteMethod        : 'delete',
@@ -237,6 +237,10 @@ class PlanDetails extends Component{
       });
     }
   }
+  
+  addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getData(center_ID, month, year, startRange, limitRange ){
     var data = {
     center_ID  : center_ID,
@@ -250,27 +254,27 @@ class PlanDetails extends Component{
           // console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
-        _id                 : a._id,
-        month               : a.month,
-        year                : a.year,
-        sectorName          : a.sectorName,
-        activityName        : a.activityName,
-        subactivityName     : a.subactivityName,
-        unit                : a.unit,
-        physicalUnit        : a.physicalUnit,
-        unitCost            : a.unitCost,
-        totalBudget         : a.totalBudget,
-        noOfBeneficiaries   : a.noOfBeneficiaries,
-        noOfFamilies        : a.noOfFamilies,
-        LHWRF               : a.LHWRF,
-        NABARD              : a.NABARD,
-        bankLoan            : a.bankLoan,
-        govtscheme          : a.govtscheme,
-        directCC            : a.directCC,
-        indirectCC          : a.indirectCC,
-        other               : a.other,
-        remark              : a.remark,
-        
+          _id                 : a._id,
+          month               : a.month,
+          year                : a.year,
+          sectorName          : a.sectorName,
+          activityName        : a.activityName,
+          subactivityName     : a.subactivityName,
+          unit                : a.unit,
+          physicalUnit        : this.addCommas(a.physicalUnit),
+          unitCost            : this.addCommas(a.unitCost),
+          totalBudget         : this.addCommas(a.totalBudget),
+          noOfBeneficiaries   : this.addCommas(a.noOfBeneficiaries),
+          noOfFamilies        : this.addCommas(a.noOfFamilies),
+          LHWRF               : this.addCommas(a.LHWRF),
+          NABARD              : this.addCommas(a.NABARD),
+          bankLoan            : this.addCommas(a.bankLoan),
+          govtscheme          : this.addCommas(a.govtscheme),
+          directCC            : this.addCommas(a.directCC),
+          indirectCC          : this.addCommas(a.indirectCC),
+          other               : this.addCommas(a.other),
+          remark              : a.remark,
+          
         }
       })
 

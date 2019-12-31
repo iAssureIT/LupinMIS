@@ -65,7 +65,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
             "achievement_IndirectCC"        : 'IndirectCC',
             "achievement_Govt"              : 'Government',
             "achievement_Other"             : 'Others',
-            // "yiyi"                          : 'Remarks',
         },
             "tableObjects"        : {
               paginationApply     : false,

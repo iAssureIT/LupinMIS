@@ -66,7 +66,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            // "SrNo"          : 'Sr No',
             "achievement_projectCategory"        : 'Project',
             "name"                               : 'Sector',
             "annualPlan_TotalBudget_L"           : "Annual Budget Plan 'Lakh'",

@@ -57,7 +57,8 @@ class VillagewisefamilyReport extends Component{
             "activityName"        : 'Activity',
             "subactivityName"     : 'Subactivity',
             "familyID"            : 'Family ID',
-            "name_family"         : 'Name of Family Head',
+            "name_family"         : 'Family Head Name',
+                
         },
         "tableObjects"        : {
           paginationApply     : false,

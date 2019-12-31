@@ -72,12 +72,11 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             "Per_Annual"                        : '% Achievements',
             "achievement_LHWRF"                 : 'LHWRF',
             "achievement_NABARD"                : 'NABARD',
-            "achievement_Bank_Loan"             : 'Bank Loan',
-            "achievement_DirectCC"              : 'Direct Community  Contribution',
-            "achievement_IndirectCC"            : 'Indirect Community  Contribution',
-            "achievement_Govt"                  : 'Govt',
-            "achievement_Other"                 : 'Others',/*
-            "aaaa"                             : 'Remarks',   */        
+            "achievement_Bank_Loan"             : 'Bank',
+            "achievement_Govt"                  : 'Government',
+            "achievement_DirectCC"              : 'DirectCC',
+            "achievement_IndirectCC"            : 'IndirectCC',
+            "achievement_Other"                 : 'Others',      
         },
         "tableObjects"        : {
           paginationApply     : false,
@@ -239,7 +238,10 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
-
+    
+  addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        
     if(year){
       var startDate = year.substring(3, 7)+"-04-01";
@@ -251,24 +253,24 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                   console.log('response', response);
                   var tableData = response.data.map((a, i)=>{
                   return {
-                      _id                               : a._id,
-                      achievement_projectCategory       : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
-                      name                              : a.name,
-                      annualPlan_Reach                  : a.annualPlan_Reach, 
-                      annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 
-                      annualPlan_TotalBudget            : a.annualPlan_TotalBudget,
-                      achievement_Reach                 : a.achievement_Reach, 
-                      achievement_FamilyUpgradation     : a.achievement_FamilyUpgradation, 
-                      achievement_TotalBudget           : a.achievement_TotalBudget, 
-                      Per_Annual                        : a.Per_Annual,
-                      achievement_LHWRF                 : a.achievement_LHWRF,
-                      achievement_NABARD                : a.achievement_NABARD,
-                      achievement_Bank_Loan             : a.achievement_Bank_Loan,
-                      achievement_DirectCC              : a.achievement_DirectCC,
-                      achievement_IndirectCC            : a.achievement_IndirectCC,
-                      achievement_Govt                  : a.achievement_Govt,
-                      achievement_Other                 : a.achievement_Other,
-                  }
+                        _id                               : a._id,
+                        achievement_projectCategory       : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                        name                              : a.name,
+                        annualPlan_Reach                  : this.addCommas(a.annualPlan_Reach), 
+                        annualPlan_FamilyUpgradation      : this.addCommas(a.annualPlan_FamilyUpgradation), 
+                        annualPlan_TotalBudget            : this.addCommas(a.annualPlan_TotalBudget),
+                        achievement_Reach                 : this.addCommas(a.achievement_Reach), 
+                        achievement_FamilyUpgradation     : this.addCommas(a.achievement_FamilyUpgradation), 
+                        achievement_TotalBudget           : this.addCommas(a.achievement_TotalBudget), 
+                        Per_Annual                        : a.Per_Annual,
+                        achievement_LHWRF                 : this.addCommas(a.achievement_LHWRF),
+                        achievement_NABARD                : this.addCommas(a.achievement_NABARD),
+                        achievement_Bank_Loan             : this.addCommas(a.achievement_Bank_Loan),
+                        achievement_Govt                  : this.addCommas(a.achievement_Govt),
+                        achievement_DirectCC              : this.addCommas(a.achievement_DirectCC),
+                        achievement_IndirectCC            : this.addCommas(a.achievement_IndirectCC),
+                        achievement_Other                 : this.addCommas(a.achievement_Other),
+                    }
               })
                   this.setState({
                       tableData : tableData
@@ -285,24 +287,24 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                   console.log('response', response);
                   var tableData = response.data.map((a, i)=>{
                   return {
-                      _id                               : a._id,
-                      achievement_projectCategory       : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
-                      name                              : a.name,
-                      annualPlan_Reach                  : a.annualPlan_Reach, 
-                      annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 
-                      annualPlan_TotalBudget            : a.annualPlan_TotalBudget,
-                      achievement_Reach                 : a.achievement_Reach, 
-                      achievement_FamilyUpgradation     : a.achievement_FamilyUpgradation, 
-                      achievement_TotalBudget           : a.achievement_TotalBudget, 
-                      Per_Annual                        : a.Per_Annual,
-                      achievement_LHWRF                 : a.achievement_LHWRF,
-                      achievement_NABARD                : a.achievement_NABARD,
-                      achievement_Bank_Loan             : a.achievement_Bank_Loan,
-                      achievement_DirectCC              : a.achievement_DirectCC,
-                      achievement_IndirectCC            : a.achievement_IndirectCC,
-                      achievement_Govt                  : a.achievement_Govt,
-                      achievement_Other                 : a.achievement_Other,
-                  }
+                        _id                               : a._id,
+                        achievement_projectCategory       : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                        name                              : a.name,
+                        annualPlan_Reach                  : this.addCommas(a.annualPlan_Reach), 
+                        annualPlan_FamilyUpgradation      : this.addCommas(a.annualPlan_FamilyUpgradation), 
+                        annualPlan_TotalBudget            : this.addCommas(a.annualPlan_TotalBudget),
+                        achievement_Reach                 : this.addCommas(a.achievement_Reach), 
+                        achievement_FamilyUpgradation     : this.addCommas(a.achievement_FamilyUpgradation), 
+                        achievement_TotalBudget           : this.addCommas(a.achievement_TotalBudget), 
+                        Per_Annual                        : a.Per_Annual,
+                        achievement_LHWRF                 : this.addCommas(a.achievement_LHWRF),
+                        achievement_NABARD                : this.addCommas(a.achievement_NABARD),
+                        achievement_Bank_Loan             : this.addCommas(a.achievement_Bank_Loan),
+                        achievement_Govt                  : this.addCommas(a.achievement_Govt),
+                        achievement_DirectCC              : this.addCommas(a.achievement_DirectCC),
+                        achievement_IndirectCC            : this.addCommas(a.achievement_IndirectCC),
+                        achievement_Other                 : this.addCommas(a.achievement_Other),
+                    }
               })
                   this.setState({
                       tableData : tableData

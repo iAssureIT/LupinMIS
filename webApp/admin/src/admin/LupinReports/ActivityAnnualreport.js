@@ -13,6 +13,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
         'tableDatas'        : [],
         'reportData'        : {},
         'tableData'         : [],
+        "center"            : "all",
+        "center_ID"         : "all",
         "sector"            : "all",
         "sector_ID"         : "all",
         "projectCategoryType": "all",
@@ -35,12 +37,12 @@ class ActivitywiseAnnualCompletionReport extends Component{
                 //     mergedColoums : 4
                 // },
                 {
-                    heading : "Annual Financial Achievement 'Lakh'",
+                    heading : "Annual Financial Achievement ",
                     mergedColoums : 4,
                     hide :false,
                 },
                 {
-                    heading : "Source OF Financial Achievement",
+                    heading : "Source Of Financial Achievement",
                     mergedColoums : 7,
                     hide :true,
                 },
@@ -56,16 +58,15 @@ class ActivitywiseAnnualCompletionReport extends Component{
             "unit"                          : 'Unit',
             "achievement_Reach"             : 'Reach', 
             "achievement_FamilyUpgradation" : 'Families Upgradation', 
-            "achievement_PhysicalUnit"      : 'Physical Units', 
-            "achievement_TotalBudget_L"     : "Total Expenditure 'Rs'",
+            "achievement_PhysicalUnit"      : 'Phy Units', 
+            "achievement_TotalBudget_L"     : "Total Expenditure 'Lakh'",
             "achievement_LHWRF"             : 'LHWRF',
             "achievement_NABARD"            : 'NABARD',
-            "achievement_Bank_Loan"         : 'Bank Loan',
-            "achievement_DirectCC"          : 'Direct Community  Contribution',
-            "achievement_IndirectCC"        : 'Indirect Community  Contribution',
-            "achievement_Govt"              : 'Govt',
+            "achievement_Bank_Loan"         : 'Bank',
+            "achievement_DirectCC"          : 'DirectCC',
+            "achievement_IndirectCC"        : 'IndirectCC',
+            "achievement_Govt"              : 'Government',
             "achievement_Other"             : 'Others',
-            // "yiyi"                          : 'Remarks',
         },
             "tableObjects"        : {
               paginationApply     : false,
@@ -79,19 +80,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
     }
 
     componentDidMount(){
-      const center_ID = localStorage.getItem("center_ID");
-      const centerName = localStorage.getItem("centerName");
-      // console.log("localStorage =",localStorage.getItem('centerName'));
-      // console.log("localStorage =",localStorage);
-      this.setState({
-        center_ID    : center_ID,
-        centerName   : centerName,
-      },()=>{
-      // console.log("center_ID =",this.state.center_ID);
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      });
       axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.getAvailableProjects();
+        this.getAvailableCenters();
         this.getAvailableSectors();
         this.setState({
           // "center"  : this.state.center[0],
@@ -102,6 +93,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
         })  
     }
     componentWillReceiveProps(nextProps){
+      this.getAvailableCenters();
       this.getAvailableSectors();
       this.getAvailableProjects();
       this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
@@ -116,6 +108,45 @@ class ActivitywiseAnnualCompletionReport extends Component{
       // console.log('name', this.state)
     });
   }
+
+  getAvailableCenters(){
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      this.setState({
+        availableCenters : response.data,
+        // center           : response.data[0].centerName+'|'+response.data[0]._id
+      },()=>{
+        // console.log('availableCenters', this.state.availableCenters);
+        // console.log('center', this.state.center);
+      })
+    }).catch(function (error) {
+        console.log("error = ",error);
+       
+      });
+  } 
+
+  selectCenter(event){
+      var selectedCenter = event.target.value;
+      this.setState({
+        [event.target.name] : event.target.value,
+        selectedCenter : selectedCenter,
+      },()=>{
+        if(this.state.selectedCenter==="all"){
+          var center = this.state.selectedCenter;
+        }else{
+          var center = this.state.selectedCenter.split('|')[1];
+        }
+        console.log('center', center);
+        this.setState({
+          center_ID :center,            
+        },()=>{
+          this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        })
+      });
+  } 
   getAvailableSectors(){
     axios({
       method: 'get',
@@ -204,6 +235,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
+  addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
     if(year){
       if( center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
@@ -212,9 +246,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
         var endDate = year.substring(10, 15)+"-03-31";
         console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(sector_ID==="all"){
-          var url = '/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
+          var url = '/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
         }else{
-          var url ='/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
+          var url ='/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
         }   
         axios.get(url)
         // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
@@ -226,17 +260,17 @@ class ActivitywiseAnnualCompletionReport extends Component{
               achievement_projectCategory   : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
               name                          : a.name,
               unit                          : a.unit,
-              achievement_Reach             : a.achievement_Reach,
-              achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
-              achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
+              achievement_Reach             : this.addCommas(a.achievement_Reach),
+              achievement_FamilyUpgradation : this.addCommas(a.achievement_FamilyUpgradation), 
+              achievement_PhysicalUnit      : this.addCommas(a.achievement_PhysicalUnit),
               achievement_TotalBudget_L     : a.achievement_TotalBudget_L,
-              achievement_LHWRF             : a.achievement_LHWRF,
-              achievement_NABARD            : a.achievement_NABARD,
-              achievement_Bank_Loan         : a.achievement_Bank_Loan,
-              achievement_DirectCC          : a.achievement_DirectCC,
-              achievement_IndirectCC        : a.achievement_IndirectCC,
-              achievement_Govt              : a.achievement_Govt,
-              achievement_Other             : a.achievement_Other,
+              achievement_LHWRF             : this.addCommas(a.achievement_LHWRF),
+              achievement_NABARD            : this.addCommas(a.achievement_NABARD),
+              achievement_Bank_Loan         : this.addCommas(a.achievement_Bank_Loan),
+              achievement_DirectCC          : this.addCommas(a.achievement_DirectCC),
+              achievement_IndirectCC        : this.addCommas(a.achievement_IndirectCC),
+              achievement_Govt              : this.addCommas(a.achievement_Govt),
+              achievement_Other             : this.addCommas(a.achievement_Other),
               remark                        : a.remark,
             }
           })
@@ -270,91 +304,113 @@ class ActivitywiseAnnualCompletionReport extends Component{
                         </div>
                     </div>
                     <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Sector</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
-                              <option  className="hidden" >--Select Sector--</option>
-                              <option value="all">All</option>
-                              {
-                              this.state.availableSectors && this.state.availableSectors.length >0 ?
-                              this.state.availableSectors.map((data, index)=>{
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <label className="formLable">Center</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                          <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                            <option value="all">All</option>
+                            {
+                              this.state.availableCenters && this.state.availableCenters.length >0 ?
+                              this.state.availableCenters.map((data, index)=>{
                                 return(
-                                  <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                  <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
                                 );
                               })
                               :
                               null
                             }
-                            </select>
-                          </div>
-                          {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
-                        </div> 
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                          <label className="formLable">Beneficiary</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                            <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                              <option  className="hidden" >--Select--</option>
+                          </select>
+                        </div>
+                        {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
+                      </div>
+                    
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
+                        <label className="formLable">Sector</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                          <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                            <option  className="hidden" >--Select Sector--</option>
+                            <option value="all">All</option>
+                            {
+                            this.state.availableSectors && this.state.availableSectors.length >0 ?
+                            this.state.availableSectors.map((data, index)=>{
+                              return(
+                                <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                              );
+                            })
+                            :
+                            null
+                          }
+                          </select>
+                        </div>
+                       {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+                      </div>
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                        <label className="formLable">Beneficiary</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                          <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="withUID" >With UID</option>
+                            <option value="withoutUID" >Without UID</option>
+                            
+                          </select>
+                        </div>
+                      </div>                    
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                        <label className="formLable">Project Category</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                          <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="LHWRF Grant" >LHWRF Grant</option>
+                            <option value="Project Fund">Project Fund</option>
+                            
+                          </select>
+                        </div>
+                      </div>
+                    </div>  
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    
+                      {
+                        this.state.projectCategoryType === "Project Fund" ?
+
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                          <label className="formLable">Project Name</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
                               <option value="all" >All</option>
-                              <option value="withUID" >With UID</option>
-                              <option value="withoutUID" >Without UID</option>
-                              
-                            </select>
-                          </div>
-                        </div>  
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                          <label className="formLable">Project Category</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                            <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                              <option  className="hidden" >--Select--</option>
-                              <option value="all" >All</option>
-                              <option value="LHWRF Grant" >LHWRF Grant</option>
-                              <option value="Project Fund">Project Fund</option>
-                              
+                              {
+                                this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                this.state.availableProjects.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
                             </select>
                           </div>
                         </div>
-                        {
-                          this.state.projectCategoryType === "Project Fund" ?
-                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                            <label className="formLable">Project Name</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                <option value="all" >All</option>
-                                {
-                                  this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                  this.state.availableProjects.map((data, index)=>{
-                                    return(
-                                      <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                }
-                              </select>
-                            </div>
-                          </div>
-                        : 
-                        ""
-                        }                     
-                      </div>
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12" >
-                          <label className="formLable">Year</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                            <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                             <option className="hidden" >-- Select Year --</option>
-                             {
-                              this.state.years.map((data, i)=>{
-                                return <option key={i}>{data}</option>
-                              })
-                             }
-                            </select>
-                          </div>
-                          {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
-                        </div>  
-                    </div> 
+                      : 
+                      ""
+                      } 
+                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <label className="formLable">Year</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                          <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                            <option className="hidden" >-- Select Year --</option>
+                           {
+                            this.state.years.map((data, i)=>{
+                              return <option key={i}>{data}</option>
+                            })
+                           }
+                          </select>
+                        </div>
+                        {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+                      </div>  
+                    </div>  
                     <div className="marginTop11 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     
                         <div className="">

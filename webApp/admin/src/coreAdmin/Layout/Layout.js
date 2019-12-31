@@ -53,7 +53,8 @@ import SectorMapping                              from '../../coreAdmin/masterDa
 
 import plan                                       from '../../admin/annualPlan/PlanDetails.js';
 import report                                     from "../../admin/LupinReports/Report.js";
-import report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
+// import report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
+import report1                                    from "../../admin/LupinReports/ActivityAnnualreport.js";
 import report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
 import report3                                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
 import report4                                    from "../../admin/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";

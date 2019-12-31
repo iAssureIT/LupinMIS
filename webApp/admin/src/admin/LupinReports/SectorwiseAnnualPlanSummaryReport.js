@@ -56,7 +56,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-
             "achievement_projectCategory"     : 'Project',
             "name"                            : 'Sector',
             "annualPlan_TotalBudget"          : 'Total Budget', 
@@ -66,10 +65,10 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             "annualPlan_TotalBudget"          : 'Total Budget', 
             "annualPlan_LHWRF"                : 'LHWRF',
             "annualPlan_NABARD"               : 'NABARD',
-            "annualPlan_Bank_Loan"            : 'Bank Loan',
-            "annualPlan_Govt"                 : 'Govt',
-            "annualPlan_DirectCC"             : 'Direct Community  Contribution',
-            "annualPlan_IndirectCC"           : 'Indirect Community  Contribution',
+            "annualPlan_Bank_Loan"            : 'Bank',
+            "annualPlan_Govt"                 : 'Government',
+            "annualPlan_DirectCC"             : 'DirectCC',
+            "annualPlan_IndirectCC"           : 'IndirectCC',
             "annualPlan_Other"                : 'Others',
         },
         "tableObjects"        : {
@@ -249,6 +248,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     })
   }
 
+  addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        
     if(year){
       var startDate = year.substring(3, 7)+"-04-01";
@@ -260,23 +262,22 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
                 return {
-
                   _id                                    : a._id,            
                   achievement_projectCategory            : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                   : a.name,
-                  annualPlan_TotalBudget                 : a.annualPlan_TotalBudget,
+                  annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
                   Per_Annual                             : a.Per_Annual,
-                  annualPlan_Reach                       : a.annualPlan_Reach,
-                  annualPlan_FamilyUpgradation           : a.annualPlan_FamilyUpgradation,                
-                  annualPlan_TotalBudget                 : a.annualPlan_TotalBudget,
-                  annualPlan_LHWRF                       : a.annualPlan_LHWRF,
-                  annualPlan_NABARD                      : a.annualPlan_NABARD,
-                  annualPlan_Bank_Loan                   : a.annualPlan_Bank_Loan,
-                  annualPlan_DirectCC                    : a.annualPlan_DirectCC,
-                  annualPlan_IndirectCC                  : a.annualPlan_IndirectCC,
-                  annualPlan_Govt                        : a.annualPlan_Govt,
-                  annualPlan_Other                       : a.annualPlan_Other,
-                } 
+                  annualPlan_Reach                       : this.addCommas(a.annualPlan_Reach),
+                  annualPlan_FamilyUpgradation           : this.addCommas(a.annualPlan_FamilyUpgradation), 
+                  annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
+                  annualPlan_LHWRF                       : this.addCommas(a.annualPlan_LHWRF),
+                  annualPlan_NABARD                      : this.addCommas(a.annualPlan_NABARD),
+                  annualPlan_Bank_Loan                   : this.addCommas(a.annualPlan_Bank_Loan),
+                  annualPlan_DirectCC                    : this.addCommas(a.annualPlan_DirectCC),
+                  annualPlan_IndirectCC                  : this.addCommas(a.annualPlan_IndirectCC),
+                  annualPlan_Govt                        : this.addCommas(a.annualPlan_Govt),
+                  annualPlan_Other                       : this.addCommas(a.annualPlan_Other),
+              } 
             })  
               this.setState({
                 tableData : tableData
@@ -296,21 +297,21 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
                 return {
-                    _id                                     : a._id,            
-                    achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
-                    name                                    : a.name,
-                    annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
-                    Per_Annual                              : a.Per_Annual,
-                    annualPlan_Reach                        : a.annualPlan_Reach,
-                    annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation,                
-                    monthlyPlan_TotalBudget                 : a.monthlyPlan_TotalBudget,
-                    monthlyPlan_LHWRF                       : a.monthlyPlan_LHWRF,
-                    monthlyPlan_NABARD                      : a.monthlyPlan_NABARD,
-                    monthlyPlan_Bank_Loan                   : a.monthlyPlan_Bank_Loan,
-                    monthlyPlan_DirectCC                    : a.monthlyPlan_DirectCC,
-                    monthlyPlan_IndirectCC                  : a.monthlyPlan_IndirectCC,
-                    monthlyPlan_Govt                        : a.monthlyPlan_Govt,
-                    monthlyPlan_Other                       : a.monthlyPlan_Other,
+                    _id                                    : a._id,            
+                    achievement_projectCategory            : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                    name                                   : a.name,
+                    annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
+                    Per_Annual                             : a.Per_Annual,
+                    annualPlan_Reach                       : this.addCommas(a.annualPlan_Reach),
+                    annualPlan_FamilyUpgradation           : this.addCommas(a.annualPlan_FamilyUpgradation), 
+                    annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
+                    annualPlan_LHWRF                       : this.addCommas(a.annualPlan_LHWRF),
+                    annualPlan_NABARD                      : this.addCommas(a.annualPlan_NABARD),
+                    annualPlan_Bank_Loan                   : this.addCommas(a.annualPlan_Bank_Loan),
+                    annualPlan_DirectCC                    : this.addCommas(a.annualPlan_DirectCC),
+                    annualPlan_IndirectCC                  : this.addCommas(a.annualPlan_IndirectCC),
+                    annualPlan_Govt                        : this.addCommas(a.annualPlan_Govt),
+                    annualPlan_Other                       : this.addCommas(a.annualPlan_Other),
                 } 
             })  
               this.setState({
