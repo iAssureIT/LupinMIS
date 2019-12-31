@@ -150,12 +150,12 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">View all Activities</span>
                       </Link>
                     </li>
-                    <li>
+                    {/*<li>
                       <Link to="/activityReportView" title="Activity Report View">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activity Report View</span>
                       </Link>
-                    </li>
+                    </li>*/}
                   </ul>
                 </li>                 
 

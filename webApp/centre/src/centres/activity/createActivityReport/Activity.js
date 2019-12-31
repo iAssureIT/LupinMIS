@@ -1687,7 +1687,8 @@ class Activity extends Component{
                       getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects} 
                       isDeleted={this.deleted.bind(this)}
-                    />
+                      activityTable = {true}
+                    /> 
                   </div> 
                   </div>
                     <div id="bulkactivity" className="tab-pane fade in ">
@@ -1717,4 +1718,4 @@ class Activity extends Component{
     );
   }
 }
-export default Activity
+export default Activity;

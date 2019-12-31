@@ -5,6 +5,7 @@ import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
+import { Link } from 'react-router-dom';
 
 import './IAssureTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -555,9 +556,6 @@ class IAssureTable extends Component {
   		document.body.innerHTML = originalContents;
     }
 	render() {
-		// var x = Object.keys(this.state.tableHeading).length ;
-		// var y = 4;
-		// var z = 2;
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       	{
@@ -702,6 +700,15 @@ class IAssureTable extends Component {
 													{this.state.tableHeading && this.state.tableHeading.actions ? 
 														<td className="textAlignCenter">
 															<span>
+																{this.props.activityTable ? 
+																	<React.Fragment>
+																		<Link to={"/activityReportView/"+value._id}>
+															     			<i className="fa fa-eye" title="View"></i>&nbsp; &nbsp;
+															     		</Link>
+															     	</React.Fragment>
+																	: 
+																null}
+
 																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
 															{/*	{this.props.editId ? <i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i> : null }&nbsp; &nbsp; */}
 																{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "") }></i>}
