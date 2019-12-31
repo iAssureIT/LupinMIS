@@ -51,8 +51,6 @@ class CompanyInformation extends Component{
       data                    : [],
       submitVal               : true,
       imgArrayWSaws           : [],
-      logoFilename               : "",    
-      logo_Image              :"",
       "configData" : {
         dirName         : 'CompanySetting',
         deleteMethod    : 'delete',
@@ -236,28 +234,27 @@ class CompanyInformation extends Component{
           // handle success
           console.log("this is response===>>>",response);
         
-           swal({
-                    title: "Company Information submitted Successfully",
-                    text: "Company Information submitted Successfully",
-                  });
+          swal({
+            title: "Company Information submitted Successfully",
+            text: "Company Information submitted Successfully",
+          });
           this.setState({
-        
-          companyName             : "",
-          companyContactNumber    : "",
-          companyAltContactNumber : "",
-          companyEmail            : "",
-          companyAddressLine1     : "",
-          companyDist             : "",
-          companyPincode          : "",
-          companyCity             : "",
-          companyState            : "",
-          companyCountry          : "",
-          companyLogo             : "",
-          logoFilename            : "",
-          taluka                  : "",
-          companywebsite          : "",
-          defaultPassword         : "",
-          },()=>{
+            companyName             : "",
+            companyContactNumber    : "",
+            companyAltContactNumber : "",
+            companyEmail            : "",
+            companyAddressLine1     : "",
+            companyDist             : "",
+            companyPincode          : "",
+            companyCity             : "",
+            companyState            : "",
+            companyCountry          : "",
+            companyLogo             : "",
+            logoFilename            : "",
+            taluka                  : "",
+            companywebsite          : "",
+            defaultPassword         : "",
+            },()=>{
             // this.getCompanySettingsData()
           });
         })
@@ -274,7 +271,6 @@ class CompanyInformation extends Component{
         });
     }else{
       // upate function
-
       console.log("update axios = ",companyInfoFormValueUpdate);
       axios.patch('/api/companysettings/information',companyInfoFormValueUpdate)
         .then( (response)=> {
@@ -288,11 +284,10 @@ class CompanyInformation extends Component{
         .catch(function (error) {
           // handle error
           console.log(error);
-             swal({
-                    title: "Company Information updation failed!",
-                    text: "Company Information updation failed!",
-                  });
-
+          swal({
+            title: "Company Information updation failed!",
+            text: "Company Information updation failed!",
+          });
         });
     }
   }
@@ -313,10 +308,36 @@ class CompanyInformation extends Component{
       "companyLogo" : logo,
       "logoFilename" : filename,
     },()=>{
-      console.log("logoFilename",this.state.logoFilename);
-      console.log("companyLogo",this.state.companyLogo)
+      // console.log("logoFilename",this.state.logoFilename);
+      // console.log("companyLogo",this.state.companyLogo)
+      var companyInfoFormValueUpdate = {
+        companyId               : 1,
+        companyName             : this.state.companyName,
+        companyContactNumber    : this.state.companyContactNumber,
+        companyMobileNumber     : this.state.companyAltContactNumber,
+        companyEmail            : this.state.companyEmail,
+        companyAltEmail         : "",
+        companywebsite          : this.state.companywebsite,
+        companyaddress          : this.state.companyAddressLine1,
+        logoFilename            : this.state.logoFilename,
+        companyLogo             : this.state.companyLogo,
+        country                 : this.state.companyCountry,
+        state                   : this.state.companyState,
+        district                : this.state.companyDist,
+        city                    : this.state.companyCity,
+        pincode                 : this.state.companyPincode,
+        taluka                  : this.state.taluka,
+        defaultPassword         : this.state.defaultPassword
+      }
+      axios.patch('/api/companysettings/information',companyInfoFormValueUpdate)
+      .then( (response)=> {
+        // handle success
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
     })
-
   }
   
   deleteimagelogoDirect(event){
@@ -396,11 +417,11 @@ class CompanyInformation extends Component{
                       </div>
                       :
                         <AddImgPublicCompanySetting
-                            getLogo={this.getLogo.bind(this)}
-                            configData = {this.state.configData} 
-                            logo  = {this.state.logo} 
-                            fileType   = "Image" 
-                          />   
+                          getLogo={this.getLogo.bind(this)}
+                          configData = {this.state.configData} 
+                          logo  = {this.state.companyLogo} 
+                          fileType   = "Image" 
+                        />   
                     }
                   </div>
                 </div>

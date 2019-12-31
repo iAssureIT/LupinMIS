@@ -17,7 +17,7 @@ class AddFile extends Component{
       "config"            :"",
       "author"            :"",
       "caseStudy_Image"   :"",
-      logo                : "",
+      logo                :"",
       "caseStudy_File"    :"",
       "configData"        : props && props.configData ? props.configData : {},        
       "fileArray"         : props && props.fileArray ? props.fileArray : {},        
@@ -33,7 +33,6 @@ class AddFile extends Component{
   }
   
   componentDidMount() {
-    localStorage.setItem("logo",this.state.logo);
     var configData =  this.props.configData;
     var fileType   =  this.props.fileType;
     this.setState({
@@ -118,7 +117,6 @@ class AddFile extends Component{
                               logo : Data.location
                             },()=>{
                               var logo = JSON.stringify(this.state.logo);
-                              localStorage.setItem("logo",logo);
                               this.props.getLogo(this.state.logo);
                             })
                             this.deleteimageLogo(index)
