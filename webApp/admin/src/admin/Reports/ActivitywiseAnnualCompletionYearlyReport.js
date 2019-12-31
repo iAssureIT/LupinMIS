@@ -100,7 +100,7 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
         if( startDate && endDate && center && sector && projectCategoryType  && beneficiaryType){ 
         console.log(startDate, endDate, center, sector, projectCategoryType, projectName, beneficiaryType);
             if(center==="all"){
-              axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+              axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/all/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                     console.log('response', response.data);
                     var tableData = response.data.map((a, i)=>{
@@ -135,7 +135,7 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                     console.log('error', error);
                 })
             }else{
-                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center+'/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center+'/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                     console.log('response', response);
                     var tableData = response.data.map((a, i)=>{

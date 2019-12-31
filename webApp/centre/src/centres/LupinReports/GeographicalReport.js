@@ -349,7 +349,7 @@ class GeographicalReport extends Component{
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType){
         if(sector_ID==="all"){
-          axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+          axios.get('/api/report/geographical_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
           .then((response)=>{
             console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
@@ -384,7 +384,7 @@ class GeographicalReport extends Component{
             }
           });
         }else{
-          axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+          axios.get('/api/report/geographical_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
               console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{

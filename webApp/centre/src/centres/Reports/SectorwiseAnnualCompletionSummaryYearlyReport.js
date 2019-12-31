@@ -68,7 +68,7 @@ export default class YearlyReport extends Component{
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
             if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
-                axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/sector_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                     console.log('response', response);
                     var tableData = response.data.map((a, i)=>{

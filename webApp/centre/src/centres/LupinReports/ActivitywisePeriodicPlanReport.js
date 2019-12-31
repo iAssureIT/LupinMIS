@@ -237,7 +237,7 @@ class ActivitywisePeriodicPlanReport extends Component{
         // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(sector_ID==="all"){
-                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
                 .then((response)=>{
                   console.log("resp",response);
@@ -282,7 +282,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 });
             }else{             
                 // console.log(startDate, endDate, center_ID, sector_ID);
-                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
                 .then((response)=>{
                   console.log("resp",response);

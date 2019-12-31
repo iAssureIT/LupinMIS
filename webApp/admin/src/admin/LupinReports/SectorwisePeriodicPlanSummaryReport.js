@@ -214,7 +214,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
             if(center_ID==="all"){
-                axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
           
                 .then((response)=>{
                   console.log("resp",response);
@@ -250,7 +250,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                  
                 });
             }else{
-                axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                   console.log("resp",response);
                   var tableData = response.data.map((a, i)=>{

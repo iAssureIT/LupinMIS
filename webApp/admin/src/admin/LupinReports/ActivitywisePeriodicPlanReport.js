@@ -264,7 +264,7 @@ class ActivitywisePeriodicPlanReport extends Component{
             if(center_ID==="all"){
                 console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
                 if(sector_ID==="all"){
-                    axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                     .then((response)=>{
                       console.log("resp",response);
                         var tableData = response.data.map((a, i)=>{
@@ -302,7 +302,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                        
                     });            
                 }else{
-                    axios.get('/api/report/activity/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                     .then((response)=>{
                       console.log("resp",response);
                         var tableData = response.data.map((a, i)=>{
@@ -341,7 +341,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                     });      
                 }
             }else{
-                axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                   console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{
