@@ -34,9 +34,9 @@ class Family extends Component{
       "incomeCategory"       :"",
       "landCategory"         :"",
       "specialCategory"      :"",
-      "listofDistrict"       :"",
-      "listofBlocks"         :"",
-      "listofVillages"       :"-- Select --",
+      "listofDistrict"       :[],
+      "listofBlocks"         :[],
+      "listofVillages"       :[],
       fields: {},
       errors: {},
       "tableObjects"         : {
@@ -450,9 +450,9 @@ class Family extends Component{
       // console.log("editData",editData);
       this.getAvailableCenter(this.state.center_ID);
       // console.log("stateCode",this.state.stateCode);
-      this.getBlock(this.state.stateCode, editData.dist);
+      // this.getBlock(this.state.stateCode, editData.dist);
       // console.log(this.state.stateCode, editData.dist, editData.block);
-      this.getVillages(this.state.stateCode, editData.dist, editData.block);
+      // this.getVillages(this.state.stateCode, editData.dist, editData.block);
 
       this.setState({
       "familyID"              : editData.familyID,
@@ -551,17 +551,14 @@ class Family extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
-          availableDistInCenter  : availableDistInCenter,
-          // availableDistInCenter  : response.data[0].districtsCovered,
+          listofDistrict  : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
           // districtsCovered : response.data[0].districtsCovered
         },()=>{
         var stateCode =this.state.address.split('|')[0];
          this.setState({
           stateCode  : stateCode,
-
         },()=>{
         // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
         });
@@ -589,13 +586,29 @@ class Family extends Component{
       // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict,
-        //listofBlocks :"",
         village : '-- Select --',
         block : '-- Select --',
         listofVillages :[]
       },()=>{
-       console.log('selectedDistrict,listofBlocks',this.state.selectedDistrict,this.state.listofVillages);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+        axios({
+          method: 'get',
+          url: '/api/centers/'+this.state.center_ID,
+          }).then((response)=> {
+          // console.log('availableblockInCenter ==========',response);
+          function removeDuplicates(data, param, district){
+            return data.filter(function(item, pos, array){
+              return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+            })
+          }
+          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+          this.setState({
+            listofBlocks     : availableblockInCenter,
+          })
+        }).catch(function (error) {
+          console.log("error = ",error);
+        });
+        // console.log('selectedDistrict,listofBlocks',this.state.selectedDistrict,this.state.listofVillages);
+        // this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
@@ -622,8 +635,24 @@ class Family extends Component{
     this.setState({
       block : block
     },()=>{
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
       // console.log("block",block);
-      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
   getVillages(stateCode, selectedDistrict, block){
@@ -778,7 +807,6 @@ class Family extends Component{
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <div className=" col-lg-12 col-sm-12 col-xs-12 border_Box ">
-                        
                             {/*<div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Family ID</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="familyID" >
@@ -880,13 +908,10 @@ class Family extends Component{
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                       
                                     {
-                                    this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                    this.state.availableDistInCenter.map((data, index)=>{
-                                      console.log("data",data)
+                                    this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                                    this.state.listofDistrict.map((data, index)=>{
                                       return(
-                                        /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                        <option key={index} value={(data.district.split('|')[0])}>{this.camelCase(data.district.split('|')[0])}</option>
-
+                                        <option key={index} value={(data.district).split('|')[0]}>{this.camelCase(data.district).split('|')[0]}</option>
                                       );
                                     })
                                     :
@@ -906,7 +931,7 @@ class Family extends Component{
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                     this.state.listofBlocks.map((data, index)=>{
                                       return(
-                                        <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                        <option key={index} value={data.block}>{this.camelCase(data.block)}</option>
                                       );
                                     })
                                     :
@@ -922,10 +947,10 @@ class Family extends Component{
                                 <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   {
-                                    this.state.listofVillages!== "-- Select --" && this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                    this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                     this.state.listofVillages.map((data, index)=>{
                                       return(
-                                        <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                        <option key={index} value={data.village}>{this.camelCase(data.village)}</option>
                                       );
                                     })
                                     :
