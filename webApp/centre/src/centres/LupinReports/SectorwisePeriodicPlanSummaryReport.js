@@ -69,10 +69,10 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             "Per_Periodic"                     : 'Proportion to Total %', 
             "monthlyPlan_LHWRF"                : 'LHWRF',
             "monthlyPlan_NABARD"               : 'NABARD',
-            "monthlyPlan_Bank_Loan"            : 'Bank Loan',
-            "monthlyPlan_Govt"                 : 'Govt',
-            "monthlyPlan_DirectCC"             : 'Direct Community  Contribution',
-            "monthlyPlan_IndirectCC"           : 'Indirect Community  Contribution',
+            "monthlyPlan_Bank_Loan"            : 'Bank',
+            "monthlyPlan_Govt"                 : 'Government',
+            "monthlyPlan_DirectCC"             : 'DirectCC',
+            "monthlyPlan_IndirectCC"           : 'IndirectCC',
             "monthlyPlan_Other"                : 'Others',
         },
         
@@ -228,6 +228,9 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         })
     }
 
+    addCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){        
         console.log(startDate, endDate, center_ID,projectCategoryType);
         // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
@@ -240,20 +243,20 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                     _id                                     : a._id,            
                     achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                     name                                    : a.name,
-                    annualPlan_TotalBudget                  : a.annualPlan_TotalBudget,
-                    Per_Annual                              : a.Per_Annual,
-                    annualPlan_Reach                        : a.annualPlan_Reach,
-                    annualPlan_FamilyUpgradation            : a.annualPlan_FamilyUpgradation,                
-                    monthlyPlan_TotalBudget                 : a.monthlyPlan_TotalBudget,                
-                    monthlyPlan_Reach                       : a.monthlyPlan_Reach,
+                    annualPlan_TotalBudget                  : this.addCommas(a.annualPlan_TotalBudget),
+                    Per_Annual                              : this.addCommas(a.Per_Annual),
+                    annualPlan_Reach                        : this.addCommas(a.annualPlan_Reach),
+                    annualPlan_FamilyUpgradation            : this.addCommas(a.annualPlan_FamilyUpgradation),                
+                    monthlyPlan_TotalBudget                 : this.addCommas(a.monthlyPlan_TotalBudget),                
+                    monthlyPlan_Reach                       : this.addCommas(a.monthlyPlan_Reach),
                     Per_Periodic                            : a.Per_Periodic,
-                    monthlyPlan_LHWRF                       : a.monthlyPlan_LHWRF,
-                    monthlyPlan_NABARD                      : a.monthlyPlan_NABARD,
-                    monthlyPlan_Bank_Loan                   : a.monthlyPlan_Bank_Loan,
-                    monthlyPlan_DirectCC                    : a.monthlyPlan_DirectCC,
-                    monthlyPlan_IndirectCC                  : a.monthlyPlan_IndirectCC,
-                    monthlyPlan_Govt                        : a.monthlyPlan_Govt,
-                    monthlyPlan_Other                       : a.monthlyPlan_Other,
+                    monthlyPlan_LHWRF                       : this.addCommas(a.monthlyPlan_LHWRF),
+                    monthlyPlan_NABARD                      : this.addCommas(a.monthlyPlan_NABARD),
+                    monthlyPlan_Bank_Loan                   : this.addCommas(a.monthlyPlan_Bank_Loan),
+                    monthlyPlan_DirectCC                    : this.addCommas(a.monthlyPlan_DirectCC),
+                    monthlyPlan_IndirectCC                  : this.addCommas(a.monthlyPlan_IndirectCC),
+                    monthlyPlan_Govt                        : this.addCommas(a.monthlyPlan_Govt),
+                    monthlyPlan_Other                       : this.addCommas(a.monthlyPlan_Other),
                 } 
             })  
               this.setState({

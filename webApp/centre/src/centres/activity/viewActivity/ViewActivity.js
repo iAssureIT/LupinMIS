@@ -107,48 +107,9 @@ class ViewActivity extends Component{
       
     // });
   }
-  getDataa(startRange, limitRange){ 
-   var data = {
-      limitRange : limitRange,
-      startRange : startRange,
-    }
-    axios.post('/api/activityReport/list', data)
-    .then((response)=>{
-
-      var tableData = response.data.map((a, i)=>{
-        return {
-          _id                        : a._id,
-          date                       : moment(a.date).format('YYYY-MM-DD'),
-          place                      : a.place,
-          sectorName                 : a.sectorName,
-          typeofactivity             : a.typeofactivity,
-          activityName               : a.activityName,
-          subactivityName            : a.subactivityName,
-          unit                       : a.unit,
-          unitCost                   : a.unitCost,
-          quantity                   : a.quantity,
-          totalcost                  : a.totalcost,
-          numofBeneficiaries         : a.numofBeneficiaries,
-          LHWRF                      : a.LHWRF,
-          NABARD                     : a.NABARD,
-          bankLoan                   : a.bankLoan,
-          govtscheme                 : a.govtscheme,
-          directCC                   : a.directCC,
-          indirectCC                 : a.indirectCC,
-          other                      : a.other,
-          total                      : a.total,
-          remark                     : a.remark,
-        }
-      })
-      this.setState({
-        tableData : tableData
-      })
-    })
-    .catch(function(error){  
-      console.log("error = ",error);
-    });
+  addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-
   getData(startRange, limitRange, center_ID){ 
    var data = {
       limitRange : limitRange,
@@ -161,7 +122,7 @@ class ViewActivity extends Component{
         return {
           _id                        : a._id,
           projectCategoryType        : a.projectCategoryType,
-          projectName                : a.projectName,
+          projectName                : a.projectName==='all'?'-':a.projectName,
           date                       : moment(a.date).format('YYYY-MM-DD'),
           place                      : a.place,
           sectorName                 : a.sectorName,
@@ -169,18 +130,18 @@ class ViewActivity extends Component{
           activityName               : a.activityName,
           subactivityName            : a.subactivityName,
           unit                       : a.unit,
-          unitCost                   : a.unitCost,
-          quantity                   : a.quantity,
-          totalcost                  : a.totalcost,
-          numofBeneficiaries         : a.numofBeneficiaries,
-          LHWRF                      : a.LHWRF,
-          NABARD                     : a.NABARD,
-          bankLoan                   : a.bankLoan,
-          govtscheme                 : a.govtscheme,
-          directCC                   : a.directCC,
-          indirectCC                 : a.indirectCC,
-          other                      : a.other,
-          total                      : a.total,
+          unitCost                   : this.addCommas(a.unitCost),
+          quantity                   : this.addCommas(a.quantity),
+          totalcost                  : this.addCommas(a.totalcost),
+          numofBeneficiaries         : this.addCommas(a.numofBeneficiaries),
+          LHWRF                      : this.addCommas(a.LHWRF),
+          NABARD                     : this.addCommas(a.NABARD),
+          bankLoan                   : this.addCommas(a.bankLoan),
+          govtscheme                 : this.addCommas(a.govtscheme),
+          directCC                   : this.addCommas(a.directCC),
+          indirectCC                 : this.addCommas(a.indirectCC),
+          other                      : this.addCommas(a.other),
+          total                      : this.addCommas(a.total),
           remark                     : a.remark,
         }
       })

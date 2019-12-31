@@ -46,7 +46,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                         hide : false
                     },
                     {
-                        heading : "Source of Financial Plan 'Rs'",
+                        heading : "Source of Financial Plan 'Lakh'",
                         mergedColoums : 9,
                         hide : true
                     },/*
@@ -58,22 +58,22 @@ class ActivitywisePeriodicPlanReport extends Component{
             },
             "tableHeading"      : {
                 "achievement_projectCategory"               : 'Project',
-                "name"                                      : 'Activity & Sub Activity',
+                "name"                                      : 'Activity & Sub-Activity',
                 "unit"                                      : 'Unit',
                 "annualPlan_Reach"                          : 'Reach', 
                 "annualPlan_FamilyUpgradation"              : "Families Upgradation",
-                "annualPlan_PhysicalUnit"                   : 'Physical Units', 
+                "annualPlan_PhysicalUnit"                   : 'Phy Units', 
                 "annualPlan_UnitCost"                       : 'Unit Cost "Rs"',
-                "annualPlan_TotalBudget"                    : "Total Budget 'Lakh'",
+                "annualPlan_TotalBudget_L"                  : "Total Budget 'Lakh'",
                 "monthlyPlan_Reach"                         : 'Reach', 
-                "monthlyPlan_PhysicalUnit"                  : 'Physical Units', 
-                "monthlyPlan_TotalBudget_L"                 : "Total Budget",
+                "monthlyPlan_PhysicalUnit"                  : 'Phy Units', 
+                "monthlyPlan_TotalBudget_L"                 : "Total Budget 'Lakh'",
                 "monthlyPlan_LHWRF_L"                       : 'LHWRF',
                 "monthlyPlan_NABARD_L"                      : 'NABARD',
-                "monthlyPlan_Bank_Loan_L"                   : 'Bank Loan',
-                "monthlyPlan_Govt_L"                        : 'Govt',
-                "monthlyPlan_DirectCC_L"                    : 'Direct Community  Contribution',
-                "monthlyPlan_IndirectCC_L"                  : 'Indirect Community  Contribution',
+                "monthlyPlan_Bank_Loan_L"                   : 'Bank',
+                "monthlyPlan_Govt_L"                        : 'Government',
+                "monthlyPlan_DirectCC_L"                    : 'DirectCC',
+                "monthlyPlan_IndirectCC_L"                  : 'IndirectCC',
                 "monthlyPlan_Other_L"                       : 'Others',/*
                 "monthlyPlan_Other_L"                       : 'Remark',*/
             },
@@ -228,6 +228,9 @@ class ActivitywisePeriodicPlanReport extends Component{
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
     }
+    addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
         // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
@@ -242,13 +245,13 @@ class ActivitywisePeriodicPlanReport extends Component{
                         achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                                      : a.name,
                         unit                                      : a.unit,
-                        annualPlan_Reach                          : a.annualPlan_Reach,
-                        annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
-                        annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                        annualPlan_UnitCost                       : a.annualPlan_UnitCost,
-                        annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
-                        monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                        monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
+                        annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
+                        annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
+                        annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
+                        annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
+                        annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                        monthlyPlan_Reach                         : this.addCommas(a.monthlyPlan_Reach),
+                        monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
                         monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,
                         monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
                         monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
@@ -257,7 +260,6 @@ class ActivitywisePeriodicPlanReport extends Component{
                         monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
                         monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                         monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
-                        // monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
                     }
                 })
                   this.setState({
@@ -287,13 +289,13 @@ class ActivitywisePeriodicPlanReport extends Component{
                         achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                                      : a.name,
                         unit                                      : a.unit,
-                        annualPlan_Reach                          : a.annualPlan_Reach,
-                        annualPlan_FamilyUpgradation              : a.annualPlan_FamilyUpgradation,
-                        annualPlan_PhysicalUnit                   : a.annualPlan_PhysicalUnit,
-                        annualPlan_UnitCost                       : a.annualPlan_UnitCost,
-                        annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
-                        monthlyPlan_Reach                         : a.monthlyPlan_Reach,
-                        monthlyPlan_PhysicalUnit                  : a.monthlyPlan_PhysicalUnit,
+                        annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
+                        annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
+                        annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
+                        annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
+                        annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                        monthlyPlan_Reach                         : this.addCommas(a.monthlyPlan_Reach),
+                        monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
                         monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,
                         monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
                         monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
@@ -302,7 +304,6 @@ class ActivitywisePeriodicPlanReport extends Component{
                         monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
                         monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                         monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
-                        // monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
                     }
                 })
                   this.setState({

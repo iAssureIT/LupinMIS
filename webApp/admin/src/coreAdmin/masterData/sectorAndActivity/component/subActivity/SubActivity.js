@@ -462,7 +462,7 @@ edit(id){
                             this.state.unitList && this.state.unitList.length >0 ?
                             this.state.unitList.map((data, index)=>{
                               return(
-                                <option key={data._id} value={data.unit+'|'+data._id}>{data.unit}</option>
+                                <option key={data._id} value={data.unit}>{data.unit}</option>
                               );
                               
                             })
