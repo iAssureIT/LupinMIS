@@ -140,7 +140,7 @@ class SubActivity extends Component{
       "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.state.unit,
       "familyUpgradation"    :this.state.familyUpgradation,
-      "user_ID"              :this.state.user_ID,
+      // "user_ID"              :this.state.user_ID,
     };
     
    
@@ -177,7 +177,7 @@ class SubActivity extends Component{
       "subActivityName"      : this.refs.subActivityName.value.split('|')[0],
       "unit"                 : this.state.unit,
       "familyUpgradation"    : this.state.familyUpgradation,
-      "user_ID"              : this.state.user_ID,
+      // "user_ID"              : this.state.user_ID,
     };
     console.log("subActivityValues",subActivityValues);
     axios.patch('/api/sectors/subactivity/update',subActivityValues)

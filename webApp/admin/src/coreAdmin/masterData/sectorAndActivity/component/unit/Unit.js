@@ -59,8 +59,8 @@ class Unit extends Component{
     if($("#unitDetails").valid()){
     var unitValues= {
     "unit"        : this.refs.unit.value,
-    "createdBy"        : this.state.user_ID,
-    };
+/*    "createdBy"    : this.state.user_ID,
+*/    };
 
    console.log("unitValues",unitValues);
     axios.post('/api/units',unitValues)

@@ -127,6 +127,8 @@ class IAssureTable extends Component {
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
+			$('#myModal').css({"display": "block"})
+
 	       // console.log('deleteMethodresponse', response);
 
 	    	// this.props.isDeleted()
