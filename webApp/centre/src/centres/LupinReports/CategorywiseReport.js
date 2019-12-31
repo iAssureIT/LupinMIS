@@ -41,12 +41,12 @@ class CategorywiseReport extends Component{
             ]
         },
         "tableHeading"      : {
-          "projectCategoryType": 'projectCategoryType',
+          "projectCategoryType": 'Project',
           "incomeCategory"    : 'Income Category',
           "landCategory"      : 'Land Holding Category',
           "specialCategory"   : 'Special Category',
-          "Reach"             : 'No of Families Reached',
-          "FamilyUpgradation" : 'No of Families Upgraded',        
+          "Reach"             : 'Families Reached',
+          "FamilyUpgradation" : 'Families Upgraded',        
         },
         "tableObjects"        : {
           paginationApply     : false,
@@ -222,6 +222,10 @@ class CategorywiseReport extends Component{
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
   }
+  
+  addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType){        
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && projectCategoryType  && beneficiaryType){
@@ -235,8 +239,8 @@ class CategorywiseReport extends Component{
               incomeCategory         : a.incomeCategory,
               landCategory           : a.landCategory,
               specialCategory        : a.specialCategory,
-              Reach                  : a.Reach,
-              FamilyUpgradation      : a.FamilyUpgradation,
+              Reach                  : this.addCommas(a.Reach),
+              FamilyUpgradation      : this.addCommas(a.FamilyUpgradation),
             }
           })
           this.setState({

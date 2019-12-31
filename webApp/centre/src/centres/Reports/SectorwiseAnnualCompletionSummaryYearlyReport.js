@@ -63,6 +63,10 @@ export default class YearlyReport extends Component{
            [name] : event.target.value,
         });
     }
+    
+    addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        
         if(year){
             var startDate = year.substring(3, 7)+"-04-01";
@@ -76,20 +80,20 @@ export default class YearlyReport extends Component{
                         _id                               : a._id,
                         achievement_projectCategory       : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                         name                              : a.name,
-                        annualPlan_Reach                  : a.annualPlan_Reach, 
-                        annualPlan_FamilyUpgradation      : a.annualPlan_FamilyUpgradation, 
-                        annualPlan_TotalBudget            : a.annualPlan_TotalBudget,
-                        achievement_Reach                 : a.achievement_Reach, 
-                        achievement_FamilyUpgradation     : a.achievement_FamilyUpgradation, 
-                        achievement_TotalBudget           : a.achievement_TotalBudget, 
+                        annualPlan_Reach                  : this.addCommas(a.annualPlan_Reach), 
+                        annualPlan_FamilyUpgradation      : this.addCommas(a.annualPlan_FamilyUpgradation), 
+                        annualPlan_TotalBudget            : this.addCommas(a.annualPlan_TotalBudget),
+                        achievement_Reach                 : this.addCommas(a.achievement_Reach), 
+                        achievement_FamilyUpgradation     : this.addCommas(a.achievement_FamilyUpgradation), 
+                        achievement_TotalBudget           : this.addCommas(a.achievement_TotalBudget), 
                         Per_Annual                        : a.Per_Annual,
-                        achievement_LHWRF                 : a.achievement_LHWRF,
-                        achievement_NABARD                : a.achievement_NABARD,
-                        achievement_Bank_Loan             : a.achievement_Bank_Loan,
-                        achievement_DirectCC              : a.achievement_DirectCC,
-                        achievement_IndirectCC            : a.achievement_IndirectCC,
-                        achievement_Govt                  : a.achievement_Govt,
-                        achievement_Other                 : a.achievement_Other,
+                        achievement_LHWRF                 : this.addCommas(a.achievement_LHWRF),
+                        achievement_NABARD                : this.addCommas(a.achievement_NABARD),
+                        achievement_Bank_Loan             : this.addCommas(a.achievement_Bank_Loan),
+                        achievement_Govt                  : this.addCommas(a.achievement_Govt),
+                        achievement_DirectCC              : this.addCommas(a.achievement_DirectCC),
+                        achievement_IndirectCC            : this.addCommas(a.achievement_IndirectCC),
+                        achievement_Other                 : this.addCommas(a.achievement_Other),
                     }
                 })
                     this.setState({

@@ -602,6 +602,10 @@ class PlanDetails extends Component{
     //   });
     // }
   }
+  
+  addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getData(center_ID, month, year, startRange, limitRange ){
     var data = {
       center_ID  : center_ID,
@@ -918,9 +922,6 @@ class PlanDetails extends Component{
   }
 
 
-  addCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
 
 
 

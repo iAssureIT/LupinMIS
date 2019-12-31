@@ -35,7 +35,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                 //     mergedColoums : 4
                 // },
                 {
-                    heading : "Annual Financial Achievement 'Lakh'",
+                    heading : "Annual Financial Achievement ",
                     mergedColoums : 4,
                     hide :false,
                 },
@@ -56,14 +56,14 @@ class ActivitywiseAnnualCompletionReport extends Component{
             "unit"                          : 'Unit',
             "achievement_Reach"             : 'Reach', 
             "achievement_FamilyUpgradation" : 'Families Upgradation', 
-            "achievement_PhysicalUnit"      : 'Physical Units', 
-            "achievement_TotalBudget_L"     : "Total Expenditure 'Rs'",
+            "achievement_PhysicalUnit"      : 'Phy Units', 
+            "achievement_TotalBudget_L"     : "Total Expenditure 'Lakh'",
             "achievement_LHWRF"             : 'LHWRF',
             "achievement_NABARD"            : 'NABARD',
-            "achievement_Bank_Loan"         : 'Bank Loan',
-            "achievement_DirectCC"          : 'Direct Community  Contribution',
-            "achievement_IndirectCC"        : 'Indirect Community  Contribution',
-            "achievement_Govt"              : 'Govt',
+            "achievement_Bank_Loan"         : 'Bank',
+            "achievement_DirectCC"          : 'DirectCC',
+            "achievement_IndirectCC"        : 'IndirectCC',
+            "achievement_Govt"              : 'Government',
             "achievement_Other"             : 'Others',
             // "yiyi"                          : 'Remarks',
         },
@@ -204,6 +204,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
+  addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
     if(year){
       if( center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
@@ -226,17 +229,17 @@ class ActivitywiseAnnualCompletionReport extends Component{
               achievement_projectCategory   : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
               name                          : a.name,
               unit                          : a.unit,
-              achievement_Reach             : a.achievement_Reach,
-              achievement_FamilyUpgradation : a.achievement_FamilyUpgradation,    
-              achievement_PhysicalUnit      : a.achievement_PhysicalUnit,
+              achievement_Reach             : this.addCommas(a.achievement_Reach),
+              achievement_FamilyUpgradation : this.addCommas(a.achievement_FamilyUpgradation), 
+              achievement_PhysicalUnit      : this.addCommas(a.achievement_PhysicalUnit),
               achievement_TotalBudget_L     : a.achievement_TotalBudget_L,
-              achievement_LHWRF             : a.achievement_LHWRF,
-              achievement_NABARD            : a.achievement_NABARD,
-              achievement_Bank_Loan         : a.achievement_Bank_Loan,
-              achievement_DirectCC          : a.achievement_DirectCC,
-              achievement_IndirectCC        : a.achievement_IndirectCC,
-              achievement_Govt              : a.achievement_Govt,
-              achievement_Other             : a.achievement_Other,
+              achievement_LHWRF             : this.addCommas(a.achievement_LHWRF),
+              achievement_NABARD            : this.addCommas(a.achievement_NABARD),
+              achievement_Bank_Loan         : this.addCommas(a.achievement_Bank_Loan),
+              achievement_DirectCC          : this.addCommas(a.achievement_DirectCC),
+              achievement_IndirectCC        : this.addCommas(a.achievement_IndirectCC),
+              achievement_Govt              : this.addCommas(a.achievement_Govt),
+              achievement_Other             : this.addCommas(a.achievement_Other),
               remark                        : a.remark,
             }
           })

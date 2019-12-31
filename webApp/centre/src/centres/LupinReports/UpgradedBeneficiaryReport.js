@@ -20,6 +20,7 @@ class UpgradedBeneficiaryReport extends Component{
         "projectCategoryType": "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
+        "upgraded"           : "all",
        "twoLevelHeader"    : {
             apply           : false,
             firstHeaderData : [
@@ -37,7 +38,7 @@ class UpgradedBeneficiaryReport extends Component{
         },
         "tableHeading"      : {
             "date"               : 'Date Of Intervention',
-            "projectCategoryType": 'projectCategoryType',
+            "projectCategoryType": 'Project',
             "sectorName"         : 'Sector',
             "activityName"       : 'Activity',
             "subactivityName"    : 'Sub-Activity',
@@ -72,7 +73,7 @@ class UpgradedBeneficiaryReport extends Component{
     },()=>{
     this.getAvailableCenterData(this.state.center_ID);
     // console.log("center_ID =",this.state.center_ID);
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableProjects();
@@ -84,7 +85,7 @@ class UpgradedBeneficiaryReport extends Component{
       tableData : this.state.tableData,
     },()=>{
     // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
@@ -94,7 +95,7 @@ class UpgradedBeneficiaryReport extends Component{
       this.getAvailableProjects();
       this.currentFromDate();
       this.currentToDate();
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
       console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
@@ -102,7 +103,7 @@ class UpgradedBeneficiaryReport extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
       console.log('name', this.state)
     });
   }
@@ -160,7 +161,7 @@ class UpgradedBeneficiaryReport extends Component{
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
       // console.log('selectedDistrict',this.state.selectedDistrict);
       })
     });
@@ -192,10 +193,12 @@ class UpgradedBeneficiaryReport extends Component{
         }
         console.log("shown",this.state.shown, this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
       },()=>{
     })
   }
+  
+
   getAvailableProjects(){
     axios({
       method: 'get',
@@ -221,19 +224,19 @@ class UpgradedBeneficiaryReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
   }
   
-  getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType){        
-    // console.log(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType);
+  getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType, upgraded){        
+    console.log(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType, upgraded);
     if(center_ID){
-      if(startDate && endDate && selectedDistrict && projectCategoryType  && beneficiaryType){
+      if(startDate && endDate && selectedDistrict && projectCategoryType  && beneficiaryType && upgraded){
         if(selectedDistrict==="all"){
-          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
+          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+upgraded
         }else{
-          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
+          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+upgraded
         }
         axios.get(url)
         .then((response)=>{
@@ -305,7 +308,7 @@ class UpgradedBeneficiaryReport extends Component{
       startDate:startDate
     },()=>{
     console.log(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
     console.log("dateUpdate",this.state.startDate);
     });
   }
@@ -324,7 +327,7 @@ class UpgradedBeneficiaryReport extends Component{
          endDate : endDate
       },()=>{
       console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
      });
   }
 
@@ -482,6 +485,17 @@ class UpgradedBeneficiaryReport extends Component{
                         } 
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">                      
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                          <label className="formLable">Upgraded</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="upgraded" >
+                            <select className="custom-select form-control inputBox" ref="upgraded" name="upgraded" value={this.state.upgraded} onChange={this.handleChange.bind(this)}>
+                              <option  className="hidden" >--Select--</option>
+                              <option value="all" >All</option>
+                              <option value="upgraded">Upgraded</option>
+                              <option value="not_upgraded" >Not Upgraded</option>
+                            </select>
+                          </div>
+                        </div>
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">From</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >

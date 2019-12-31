@@ -72,10 +72,10 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             "Per_Annual"                        : '% Achievements',
             "achievement_LHWRF"                 : 'LHWRF',
             "achievement_NABARD"                : 'NABARD',
-            "achievement_Bank_Loan"             : 'Bank Loan',
-            "achievement_DirectCC"              : 'Direct Community  Contribution',
-            "achievement_IndirectCC"            : 'Indirect Community  Contribution',
-            "achievement_Govt"                  : 'Govt',
+            "achievement_Bank_Loan"             : 'Bank',
+            "achievement_Govt"                  : 'Government',
+            "achievement_DirectCC"              : 'DirectCC',
+            "achievement_IndirectCC"            : 'IndirectCC',
             "achievement_Other"                 : 'Others',/*
             "aaaa"                             : 'Remarks',   */        
         },
