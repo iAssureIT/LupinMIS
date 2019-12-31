@@ -72,7 +72,7 @@ class IAssureTableUM extends Component {
 	    // });
 	}
 	componentWillReceiveProps(nextProps) {
-		console.log('nextProps',nextProps)
+		// console.log('nextProps',nextProps)
 		if(nextProps){
 	        this.setState({
 	            tableData	    : nextProps.tableData,

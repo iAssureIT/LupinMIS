@@ -1007,7 +1007,7 @@ class Activity extends Component{
   }
 
   getAvailableCenter(center_ID){
-    console.log("CID"  ,center_ID);
+    // console.log("CID"  ,center_ID);
     if(center_ID){
       axios({
         method: 'get',
@@ -1020,24 +1020,14 @@ class Activity extends Component{
           })
         }
         var availableDistInCenter = removeDuplicates(response.data[0].villagesCovered, "district");
-        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block");
-        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village");
+        // var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block");
+        // var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village");
         // console.log('availableblockInCenter',availableblockInCenter)
         this.setState({
-          listofVillages   : availablevillageInCenter,
-          listofBlocks     : availableblockInCenter,
+          // listofVillages   : availablevillageInCenter,
+          // listofBlocks     : availableblockInCenter,
           listofDistrict   : availableDistInCenter,
-          // district         : availableDistInCenter[0].district.split('|')[0],
-          // block            : availableblockInCenter[0].block.split('|')[0],
-          // village          : availablevillageInCenter[0].village.split('|')[0],
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-          // districtsCovered : response.data[0].districtsCovered
-        },()=>{
-        // console.log('block ==========',this.state.block);
-          var stateCode =this.state.address.split('|')[0];
-          this.setState({
-            stateCode  : stateCode,
-          });
         })
       }).catch(function (error) {
         console.log("error = ",error);
@@ -1078,16 +1068,33 @@ class Activity extends Component{
       district: district,
       block : '-- Select --',
       village : '-- Select --',
-      // listofVillages : []
+      listofVillages : []
     },()=>{
-      var selectedDistrict = this.state.district;
-      // console.log("selectedDistrict",selectedDistrict);
-      this.setState({
-        district :selectedDistrict
-      },()=>{
-        // console.log('selectedDistrict',this.state.district);
-        // this.getBlock(this.state.stateCode, this.state.district);
-      })
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        // console.log('availableblockInCenter ==========',response);
+        function removeDuplicates(data, param, district){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+          })
+        }
+        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+        this.setState({
+          listofBlocks     : availableblockInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+      // var selectedDistrict = this.state.district;
+      // // console.log("selectedDistrict",selectedDistrict);
+      // this.setState({
+      //   district :selectedDistrict
+      // },()=>{
+      //   // console.log('selectedDistrict',this.state.district);
+      //   // this.getBlock(this.state.stateCode, this.state.district);
+      // })
     });
     this.handleChange(event);
   }
@@ -1115,6 +1122,22 @@ class Activity extends Component{
     this.setState({
       block : block
     },()=>{
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
       // console.log("block",block);
       // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
     });

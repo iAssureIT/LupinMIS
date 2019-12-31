@@ -99,15 +99,17 @@ class IAssureTable extends Component {
       // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
-        this.setState({
-            id	            : nextProps.id,
-            tableData	    : nextProps.tableData,
-            tableName	    : nextProps.tableName,
-            dataCount 		: nextProps.dataCount,
-        },()=>{
-        	this.paginationFunction();
-        })
-        
+		// console.log('nextProps',nextProps)
+		if(nextProps){
+	        this.setState({
+	            id	            : nextProps.id,
+	            tableData	    : nextProps.tableData,
+	            tableName	    : nextProps.tableName,
+	            dataCount 		: nextProps.dataCount,
+	        },()=>{
+	        	this.paginationFunction();
+	        })
+		}
     }
 	componentWillUnmount(){
     	$("script[src='/js/adminSide.js']").remove();
@@ -346,7 +348,7 @@ class IAssureTable extends Component {
 		});
 	}
 	getStartEndNum(event){	
-		console.log('getStartEndNum');	
+		// console.log('getStartEndNum');	
 		var limitRange = $(event.target).attr('id').split('|')[0];
 		var limitRange2     = parseInt(limitRange);
 		var startRange = parseInt($(event.target).attr('id').split('|')[1]);
@@ -377,13 +379,14 @@ class IAssureTable extends Component {
 		});	
 	}
 	tableSearch(){
-    	var searchText = this.refs.tableSearch.value;
+		// console.log('this.props',this.props)
+    	var searchText = this.refs.tableSearch.value.trim();
 		if(searchText && searchText.length !== 0) {
 			this.setState({
 				"normalData"  : false,
 				"searchData"  : true,
 			},()=>{
-				this.props.getSearchText(searchText, this.state.startRange, this.state.limitRange);
+				this.props.getSearchText(searchText);
 			});	    	
 	    }else{
 			this.props.getData(this.state.startRange, this.state.limitRange);

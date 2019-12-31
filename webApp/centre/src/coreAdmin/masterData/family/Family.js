@@ -43,7 +43,7 @@ class Family extends Component{
         apiLink               : '/api/families/',
         editUrl               : '/family/',      
         paginationApply       : false,
-        searchApply           : false,
+        searchApply           : true,
       },
       "tableHeading"          : {
         familyID              : "Family ID",
@@ -96,6 +96,7 @@ class Family extends Component{
     // console.log('editId' , this.state.editId);
     this.uploadedData = this.uploadedData.bind(this);
     this.getFileDetails = this.getFileDetails.bind(this);
+    this.getSearchText = this.getSearchText.bind(this);
   }
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
@@ -326,7 +327,7 @@ class Family extends Component{
       fields["specialCategory"]   = "";
       axios.post('/api/families',familyValues)
         .then((response)=>{
-        console.log('response', response);
+        // console.log('response', response);
           this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
@@ -402,7 +403,7 @@ class Family extends Component{
       fields["landCategory"]      = "";
       fields["specialCategory"]   = "";
 
-      console.log('familyValues', familyValues);
+      // console.log('familyValues', familyValues);
 
       axios.patch('/api/families/update', familyValues)
         .then((response)=>{
@@ -445,16 +446,13 @@ class Family extends Component{
       method: 'get',
       url: '/api/families/'+id,
     }).then((response)=> {
-
       var editData = response.data[0];
-      console.log("editData",editData);
+      // console.log("editData",editData);
       this.getAvailableCenter(this.state.center_ID);
-
-      console.log("stateCode",this.state.stateCode);
+      // console.log("stateCode",this.state.stateCode);
       this.getBlock(this.state.stateCode, editData.dist);
-      console.log(this.state.stateCode, editData.dist, editData.block);
+      // console.log(this.state.stateCode, editData.dist, editData.block);
       this.getVillages(this.state.stateCode, editData.dist, editData.block);
-
 
       this.setState({
       "familyID"              : editData.familyID,
@@ -507,14 +505,14 @@ class Family extends Component{
     });
   }
   getData(startRange, limitRange, center_ID){ 
-   var data = {
+    var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
     if (center_ID){
       axios.post('/api/families/list/'+center_ID,data)
       .then((response)=>{
-        console.log('response', response.data);
+        // console.log('response', response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                   : a._id,
@@ -533,8 +531,6 @@ class Family extends Component{
         })
         this.setState({
           tableData : tableData
-        },()=>{
-          console.log("tableData",this.state.tableData)
         })
       })    
       .catch(function(error){      
@@ -712,6 +708,49 @@ class Family extends Component{
             
       }) 
   } 
+  getSearchText(searchText){
+    var searchText = searchText;
+    // console.log('searchText',searchText)
+    var formValues ={
+      searchText : searchText,
+    }
+    if(searchText) {
+      axios
+      .post('/api/families/searchValue',formValues)
+      .then(
+        (res)=>{
+          // console.log('res', res);
+          if(res.data.data&&res.data.data.length>0){
+            var tableData = res.data.data.map((a, i)=>{
+              return {
+                _id                   : a._id,
+                familyID              : a.familyID,
+                nameOfFH              : a.surnameOfFH+" "+a.firstNameOfFH+" "+a.middleNameOfFH,
+                uidNumber             : a.uidNumber,
+                contactNumber         : a.contactNumber,
+                caste                 : a.caste,
+                incomeCategory        : a.incomeCategory,
+                landCategory          : a.landCategory,
+                specialCategory       : a.specialCategory,
+                dist                  : a.dist,
+                block                 : a.block,
+                village               : a.village,
+              }
+            })
+          }
+        this.setState({
+          tableData     : tableData,          
+        })
+      }).catch((error)=>{ 
+        console.log('error',error)
+        // swal("No results found","","error");
+        this.setState({
+          tableData     : [],          
+        })
+      });
+    }
+  }
+
   render() {     
     return (
       <div className="container-fluid">
@@ -916,6 +955,7 @@ class Family extends Component{
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}                          
+                          getSearchText={this.getSearchText}
                         />
                     </div>
  

@@ -350,16 +350,17 @@ class IAssureTable extends Component {
 		});	
 	}
 	tableSearch(){
-    	var searchText = this.refs.tableSearch.value;
+    	var searchText = this.refs.tableSearch.value.trim();
 		if(searchText && searchText.length !== 0) {
 			this.setState({
 				"normalData"  : false,
 				"searchData"  : true,
 			},()=>{
-				this.props.getSearchText(searchText, this.state.startRange, this.state.limitRange);
+				this.props.getSearchText(searchText);
 			});	    	
 	    }else{
-			this.props.getData(this.state.startRange, this.state.limitRange);
+			this.props.getSearchText(searchText);
+			// this.props.getData(this.state.startRange, this.state.limitRange);
 	    }    	 
     }
     showNextPaginationButtons(){

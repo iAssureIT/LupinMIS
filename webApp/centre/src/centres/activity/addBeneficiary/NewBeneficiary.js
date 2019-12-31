@@ -48,10 +48,10 @@ class NewBeneficiary extends Component{
       shown                 : true,
       fields: {},
       errors: {},
-      " tableObjects"       : {
+      "tableObjects"       : {
         apiLink             : '/api/activityReport/',
         paginationApply     : false,
-        searchApply         : false,
+        searchApply         : true,
         editUrl             : '/activity/'
       },
      
@@ -60,7 +60,8 @@ class NewBeneficiary extends Component{
       "limitRange"          : 10000,
       // "editId"             : this.props.match.params ? this.props.match.params.id : '',
       fields: {},
-      errors: {},    
+      errors: {},
+      prevtableData: []    
     }
   }
   
@@ -240,9 +241,8 @@ class NewBeneficiary extends Component{
         }
       })
       this.setState({
-        tableData : tableData
-      },()=>{
-        // console.log("tableData",this.state.tableData)
+        tableData : tableData,
+        prevtableData : tableData
       })
     })
     .catch(function(error){
@@ -353,7 +353,8 @@ class NewBeneficiary extends Component{
           }
         })
           this.setState({
-            tableData : tableData
+            tableData : tableData,
+            prevtableData : tableData
           })
         })
         .catch(function(error){ 
@@ -403,7 +404,8 @@ class NewBeneficiary extends Component{
           }
         })
           this.setState({
-            tableData : tableData
+            tableData : tableData,
+            prevtableData : tableData
           })
         })
         .catch(function(error){ 
@@ -451,13 +453,54 @@ class NewBeneficiary extends Component{
           }
         })
           this.setState({
-            tableData : tableData
+            tableData : tableData,
+            prevtableData : tableData
           })
         })
         .catch(function(error){ 
           console.log("error = ",error);
         });
     });
+  }
+  getSearchText(searchText){
+    var searchText = searchText;
+    // console.log('searchText',searchText)
+    var tableData = [...this.state.prevtableData]
+    if(searchText) {
+      if(tableData&&tableData.length>0){
+        tableData.map((a,i)=>{
+          if(a.familyID.toUpperCase().includes(searchText.toUpperCase())||
+            a.beneficiaryID.toUpperCase().includes(searchText.toUpperCase())||
+            a.nameofbeneficiaries.toUpperCase().includes(searchText.toUpperCase())||
+            a.relation.toUpperCase().includes(searchText.toUpperCase())||
+            a.dist.toUpperCase().includes(searchText.toUpperCase())||
+            a.block.toUpperCase().includes(searchText.toUpperCase())||
+            a.village.toUpperCase().includes(searchText.toUpperCase())){
+            return {
+              _id                       : a._id,
+              beneficiary_ID            : a.beneficiary_ID,
+              beneficiaryID             : a.beneficiaryID,
+              family_ID                 : a.family_ID,
+              familyID                  : a.familyID,
+              nameofbeneficiaries       : a.nameofbeneficiaries,
+              relation                  : a.relation,
+              dist                      : a.dist,
+              block                     : a.block,
+              village                   : a.village,
+            }
+          }else{
+            tableData.splice(i)
+          }
+        })
+        this.setState({
+          tableData     : tableData
+        })
+      }
+    }else{
+      this.setState({
+        tableData     : tableData,          
+      })
+    }
   }
 
 
@@ -636,6 +679,7 @@ class NewBeneficiary extends Component{
                                 selectedValues = {this.state.selectedValues}  
                                 sendBeneficiary={this.state.sendBeneficiary}
                                 showUpgradation={$('select[name="subactivity"]').find('option:selected').attr('data-upgrade')}
+                                getSearchText={this.getSearchText.bind(this)}
                               />
                             </div>
                           </div> 

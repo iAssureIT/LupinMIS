@@ -37,7 +37,7 @@ class Beneficiary extends Component{
         apiLink             : '/api/beneficiaries/',
         editUrl             : '/beneficiary/',        
         paginationApply     : false,
-        searchApply         : false,
+        searchApply         : true,
       },
       "startRange"          : 0,
       "limitRange"          : 10000,
@@ -415,7 +415,7 @@ class Beneficiary extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
-    console.log(center_ID);
+    // console.log(center_ID);
     // var centerID = this.state.center_ID;
     if (center_ID){
       axios.post('/api/beneficiaries/list/'+center_ID,data)
@@ -502,6 +502,42 @@ class Beneficiary extends Component{
             
       }) 
   } 
+  getSearchText(searchText){
+    var searchText = searchText;
+    // console.log('searchText',searchText)
+    var formValues ={
+      searchText : searchText,
+    }
+    if(searchText) {
+      axios
+      .post('/api/beneficiaries/searchValue',formValues)
+      .then(
+        (res)=>{
+          // console.log('res', res);
+          if(res.data.data&&res.data.data.length>0){
+            var tableData = res.data.data.map((a, i)=>{
+              return {
+                _id                       : a._id,
+                beneficiaryID             : a.beneficiaryID,
+                familyID                  : a.familyID,
+                nameofbeneficiaries       : a.surnameOfBeneficiary+" "+a.firstNameOfBeneficiary+" " +a.middleNameOfBeneficiary,
+                uidNumber                 : a.uidNumber,
+                relation                  : a.relation,
+              }
+            })
+          }
+        this.setState({
+          tableData     : tableData,          
+        })
+      }).catch((error)=>{ 
+        console.log('error',error)
+        // swal("No results found","","error");
+        this.setState({
+          tableData     : [],          
+        })
+      });
+    }
+  }
   render() {
     return (
       <div className="container-fluid">
@@ -617,6 +653,7 @@ class Beneficiary extends Component{
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
+                          getSearchText={this.getSearchText.bind(this)}
                         />
                       </div>
                     </div>
