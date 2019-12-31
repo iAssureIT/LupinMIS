@@ -1041,25 +1041,6 @@ class Activity extends Component{
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
   }
-
-  districtChange(event){    
-    event.preventDefault();
-    var district = event.target.value;
-    // console.log('district', district);
-    this.setState({
-      district: district
-    },()=>{
-      var selectedDistrict = this.state.district;
-      // console.log("selectedDistrict",selectedDistrict);
-      this.setState({
-        selectedDistrict :selectedDistrict
-      },()=>{
-        // console.log('selectedDistrict',this.state.district);
-        // this.getBlock(this.state.stateCode, this.state.district);
-      })
-    });
-    this.handleChange(event);
-  }
   distChange(event){    
     event.preventDefault();
     var district = event.target.value;
