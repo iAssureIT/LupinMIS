@@ -245,10 +245,10 @@ class Unit extends Component{
     return (
       <div className="container-fluid">
         <div className="row">
-         <div className="" data-toggle="modal" data-target="#myModal">
+         <div className="" data-toggle="modal" data-target="#unitModal">
             <i className=" fa fa-plus-circle"></i>          
           </div>
-          <div className="modal fade in  col-lg-12 col-md-12 col-sm-12 col-xs-12" id="myModal" role="dialog">
+          <div className="modal fade in  col-lg-12 col-md-12 col-sm-12 col-xs-12" id="unitModal" role="dialog">
             <div className="modal-dialog modal-lg customModalUnit " >
               <div className="modal-content ">
                 <div className=" ">

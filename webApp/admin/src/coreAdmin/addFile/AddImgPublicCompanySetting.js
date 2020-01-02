@@ -208,7 +208,7 @@ class AddFile extends Component{
           :
             <div className=" padTopC">
               <div className="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h5 className="formLable col-lg-12 col-md-12 col-sm-12 col-xs-12 row">Logo <span className="astrick">*</span></h5>
+{/*                <h5 className="formLable col-lg-12 col-md-12 col-sm-12 col-xs-12 row">Logo <span className="astrick">*</span></h5>*/}
               </div>
               <div className="containerC row">
                 <label id="logoImage" className="custFaTimes1" title="Delete image" onClick={this.deleteimagelogoDirect.bind(this)}><i className="fa fa-times"></i></label>

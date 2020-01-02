@@ -119,17 +119,18 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 		let id = e.target.id;
+	       console.log('deleteMethodresponse', id);
 		console.log("tableObjects",tableObjects.apiLink+id);
-	  	var deleteMethod =  this.props.deleteMethod;
 	        console.log('tableObjects', tableObjects);
 		axios({
-
-	        method: deleteMethod ? deleteMethod : 'delete',
+	        method: tableObjects.deleteMethod ? tableObjects.deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
-			$('#myModal').css({"display": "block"})
+	        if(tableObjects.apiLink==='/api/units/'){
+				$('#'+id).css({"display": "none"})
+				$('#unitModal').css({"display": "block"})
+	        }
 
-	       // console.log('deleteMethodresponse', response);
 
 	    	// this.props.isDeleted()
 /*
@@ -143,9 +144,6 @@ class IAssureTable extends Component {
 	        	title : response.data.message
 	        });
 	        this.props.history.push(tableObjects.editUrl);
-	        if(tableObjects.apiLink==='/api/units/'){
-		    	$('body').addClass( "modal-open" );
-	        }
 	    }).catch(function (error) {
 	        console.log('error', error);
 	    });

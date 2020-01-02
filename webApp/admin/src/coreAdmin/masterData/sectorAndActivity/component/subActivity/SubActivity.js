@@ -35,7 +35,7 @@ class SubActivity extends Component{
       },
       "tableObjects"        : {
         deleteMethod        : 'patch',
-        apiLink             : '/api/units/delete/',
+        apiLink             : '/api/sectors/subactivity/delete/',
         paginationApply     : false,
         searchApply         : false,
         editUrl             : '/sector-and-activity/'
@@ -534,7 +534,7 @@ edit(id){
                   getData={this.getData.bind(this)}
                   tableObjects={this.state.tableObjects}
                   getSearchText={this.getSearchText.bind(this)}
-                  deleteMethod='patch'
+                 
                 />
               </div>              
             </div>
