@@ -21,7 +21,7 @@ class ProjectMapping extends Component{
       fields               : {},
       errors               : {},
       "tableHeading"       : {
-        type               : "Goal Type",
+        type_ID               : "Goal Type",
         projectName        : "Project Name",
         startDate          : "Start Date",
         endDate            : "End Date",
@@ -348,11 +348,23 @@ class ProjectMapping extends Component{
     // console.log('/api/projectMappings/list/'+startRange+'/'+limitRange);
     axios.get('/api/projectMappings/list/'+startRange+'/'+limitRange)
     .then((response)=>{
-      this.setState({
-        tableData : response.data
-      },()=>{
-        console.log("tableData",this.state.tableData);
-      })
+      if(response&&response.data&&response.data.length>0){
+        var tableData = response.data.map((a, i)=>{
+        return {
+            _id                       : a._id,
+            type_ID                   : a.type_ID,
+            projectName               : a.projectName,
+            startDate                 : a.startDate,
+            endDate                   : a.endDate,
+            sectorName                : a.sectorName,
+            activityName              : a.activityName,
+            subActivityName           : a.subActivityName,
+          }
+        })
+        this.setState({
+          tableData : tableData
+        })
+      }
     })
     .catch(function(error){
       console.log("error = ",error);
