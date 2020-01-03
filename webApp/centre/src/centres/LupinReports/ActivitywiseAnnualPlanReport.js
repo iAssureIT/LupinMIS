@@ -247,9 +247,9 @@ class ActivitywiseAnnualPlanReport extends Component{
                   annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
                   annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
                   annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
+                  annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
                   annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
                   annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
-                  annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
                   annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
                   annualPlan_Remark                         : a.annualPlan_Remark,
                   }
@@ -290,9 +290,9 @@ class ActivitywiseAnnualPlanReport extends Component{
                   annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
                   annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
                   annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
+                  annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
                   annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
                   annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
-                  annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
                   annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
                   annualPlan_Remark                         : a.annualPlan_Remark,
                 }

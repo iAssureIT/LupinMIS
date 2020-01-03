@@ -63,9 +63,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
             "achievement_LHWRF"             : 'LHWRF',
             "achievement_NABARD"            : 'NABARD',
             "achievement_Bank_Loan"         : 'Bank',
+            "achievement_Govt"              : 'Government',
             "achievement_DirectCC"          : 'DirectCC',
             "achievement_IndirectCC"        : 'IndirectCC',
-            "achievement_Govt"              : 'Government',
             "achievement_Other"             : 'Others',
         },
             "tableObjects"        : {
@@ -267,9 +267,9 @@ class ActivitywiseAnnualCompletionReport extends Component{
               achievement_LHWRF             : this.addCommas(a.achievement_LHWRF),
               achievement_NABARD            : this.addCommas(a.achievement_NABARD),
               achievement_Bank_Loan         : this.addCommas(a.achievement_Bank_Loan),
+              achievement_Govt              : this.addCommas(a.achievement_Govt),
               achievement_DirectCC          : this.addCommas(a.achievement_DirectCC),
               achievement_IndirectCC        : this.addCommas(a.achievement_IndirectCC),
-              achievement_Govt              : this.addCommas(a.achievement_Govt),
               achievement_Other             : this.addCommas(a.achievement_Other),
               remark                        : a.remark,
             }

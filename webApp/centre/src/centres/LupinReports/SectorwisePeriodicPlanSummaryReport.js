@@ -253,9 +253,9 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                     monthlyPlan_LHWRF                       : this.addCommas(a.monthlyPlan_LHWRF),
                     monthlyPlan_NABARD                      : this.addCommas(a.monthlyPlan_NABARD),
                     monthlyPlan_Bank_Loan                   : this.addCommas(a.monthlyPlan_Bank_Loan),
+                    monthlyPlan_Govt                        : this.addCommas(a.monthlyPlan_Govt),
                     monthlyPlan_DirectCC                    : this.addCommas(a.monthlyPlan_DirectCC),
                     monthlyPlan_IndirectCC                  : this.addCommas(a.monthlyPlan_IndirectCC),
-                    monthlyPlan_Govt                        : this.addCommas(a.monthlyPlan_Govt),
                     monthlyPlan_Other                       : this.addCommas(a.monthlyPlan_Other),
                 } 
             })  

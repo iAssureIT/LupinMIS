@@ -115,9 +115,9 @@ export default class YearlyReport extends Component{
                 achievement_LHWRF             : a.achievement_LHWRF,
                 achievement_NABARD            : a.achievement_NABARD,
                 achievement_Bank_Loan         : a.achievement_Bank_Loan,
+                achievement_Govt              : a.achievement_Govt,
                 achievement_DirectCC          : a.achievement_DirectCC,
                 achievement_IndirectCC        : a.achievement_IndirectCC,
-                achievement_Govt              : a.achievement_Govt,
                 achievement_Other             : a.achievement_Other,
                 remark                        : a.remark,
               }

@@ -283,9 +283,9 @@ class ActivitywisePeriodicPlanReport extends Component{
                             monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
                             monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
                             monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
+                            monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                             monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
                             monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
-                            monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                             monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
                         }
                     })
@@ -320,9 +320,9 @@ class ActivitywisePeriodicPlanReport extends Component{
                             monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
                             monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
                             monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
+                            monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                             monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
                             monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
-                            monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                             monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
                         }
                     })
@@ -358,9 +358,9 @@ class ActivitywisePeriodicPlanReport extends Component{
                             monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
                             monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
                             monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
+                            monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                             monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
                             monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
-                            monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                             monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
                         }
                 })
