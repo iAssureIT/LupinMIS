@@ -54,13 +54,7 @@ class ProjectMapping extends Component{
       "endDate"                   : this.refs.endDate.value,          
     });
    
-  } 
- /* handleChangeSelect(event){
-    this.setState({
-      "projectType"  : this.state.projectType,          
-    });
-  console.log("projectType",this.state.projectType);
-  }*/
+  }
 
   handleFromChange(event){
     event.preventDefault();
@@ -156,7 +150,7 @@ class ProjectMapping extends Component{
           "endDate"      : this.refs.endDate.value,              
           "sector"       : this.state.sectorData                
         };
-        // console.log("mappingValues",mappingValues);
+        console.log("mappingValues",mappingValues);
    
         axios.post('/api/projectMappings',mappingValues)
           .then((response)=>{
@@ -186,15 +180,23 @@ class ProjectMapping extends Component{
   Update(event){
     event.preventDefault();
     if($('#sectorMapping').valid()){
+      console.log("sectorData",this.state.sectorData);       
+      var listofTypesArray = this.state.projectType.map((data, index)=>{
+              return({
+                  label : data.label,
+                  goal_ID : data.value
+                 });
+            })   
     var mappingValues= 
     {     
       "projectMapping_ID"   : this.state.editId,    
+      "projectName"         : this.refs.projectName.value,
+      "type_ID"             : listofTypesArray,           
       "startDate"           : this.refs.startDate.value,          
       "endDate"             : this.refs.endDate.value,              
-      "projectName"         : this.refs.projectName.value,
-      "type_ID"             : this.refs.projectType.value,           
       "sector"              : this.state.sectorData             
     };
+        console.log("mappingValues",mappingValues);
 
     axios.patch('/api/projectMappings/update',mappingValues)
       .then((response)=>{
@@ -316,6 +318,7 @@ class ProjectMapping extends Component{
           }
         })
       }
+
       console.log('availableSectors',availableSectors)
       this.setState({
         "projectName"                :editData.projectName,     

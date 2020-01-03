@@ -372,7 +372,7 @@ class IAssureTable extends Component {
 		},()=>{
 			this.paginationFunction();
 			if(this.state.normalData === true){
-				this.props.getData(startRange, this.state.limitRange);
+				this.props.getData(this.state.startRange, this.state.limitRange);
 			}	
 			if(this.state.searchData === true){
 				this.tableSearch();
@@ -390,7 +390,7 @@ class IAssureTable extends Component {
 				this.props.getSearchText(searchText);
 			});	    	
 	    }else{
-			this.props.getData(this.state.startRange, this.state.limitRange);
+			this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }    	 
     }
     showNextPaginationButtons(){

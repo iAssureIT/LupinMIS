@@ -510,7 +510,7 @@ class Beneficiary extends Component{
     }
     if(searchText) {
       axios
-      .post('/api/beneficiaries/searchValue',formValues)
+      .post('/api/beneficiaries/searchValue/'+this.state.center_ID, formValues)
       .then(
         (res)=>{
           // console.log('res', res);

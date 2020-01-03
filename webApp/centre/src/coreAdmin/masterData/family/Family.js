@@ -745,7 +745,7 @@ class Family extends Component{
     }
     if(searchText) {
       axios
-      .post('/api/families/searchValue',formValues)
+      .post('/api/families/searchValue/'+this.state.center_ID,formValues)
       .then(
         (res)=>{
           // console.log('res', res);

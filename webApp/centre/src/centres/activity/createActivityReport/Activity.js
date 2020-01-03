@@ -694,7 +694,7 @@ class Activity extends Component{
             "sectorId"   : editData.sector_ID,
             "activityId" : editData.activity_ID,
           }, ()=>{
-            // console.log("edit", this.state.editData)
+            console.log("edit", this.state.editData);
             this.getAvailableCenter(this.state.center_ID);
             // this.getBlock(this.state.stateCode, this.state.district);
             // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
@@ -810,34 +810,34 @@ class Activity extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "dateofIntervention"){
+        if (element.attr("name") === "dateofIntervention"){
           error.insertAfter("#dateofIntervention");
         }
-        if (element.attr("name") == "district"){
+        if (element.attr("name") === "district"){
           error.insertAfter("#district");
         }
-        if (element.attr("name") == "block"){
+        if (element.attr("name") === "block"){
           error.insertAfter("#block");
         }
-        if (element.attr("name") == "village"){
+        if (element.attr("name") === "village"){
           error.insertAfter("#village");
         }
-        if (element.attr("name") == "sector"){
+        if (element.attr("name") === "sector"){
           error.insertAfter("#sector");
         }
-        if (element.attr("name") == "typeofactivity"){
+        if (element.attr("name") === "typeofactivity"){
           error.insertAfter("#typeofactivity");
         }
-        if (element.attr("name") == "activity"){
+        if (element.attr("name") === "activity"){
           error.insertAfter("#activity");
         }
-        if (element.attr("name") == "subactivity"){
+        if (element.attr("name") === "subactivity"){
           error.insertAfter("#subactivity");
         }
-        if (element.attr("name") == "unitCost"){
+        if (element.attr("name") === "unitCost"){
           error.insertAfter("#unitCost");
         }
-        if (element.attr("name") == "quantity"){
+        if (element.attr("name") === "quantity"){
           error.insertAfter("#quantity");
         }
       }
