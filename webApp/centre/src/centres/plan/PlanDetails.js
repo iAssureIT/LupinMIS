@@ -6,6 +6,8 @@ import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.js
 import "./PlanDetails.css";
 import BulkUpload             from "../bulkupload/BulkUpload.js";
 import $ from 'jquery';
+import moment                 from "moment";
+
 var add=0
 class PlanDetails extends Component{
   constructor(props){
@@ -32,13 +34,13 @@ class PlanDetails extends Component{
       "uID"                 :"",
       "month"               :"Annual Plan", 
       "heading"             :"Annual Plan",
-      "months"              :["Annual Plan","All Months","April","May","June","July","August","September","October","November","December","January","February","March"],
+      "months"              :["Annual Plan","Till Date","April","May","June","July","August","September","October","November","December","January","February","March"],
       "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       "year"                :"FY 2019 - 2020",
       "shown"               : true,
       "twoLevelHeader"     : {
-        apply               : true,
-        firstHeaderData     : [
+      "apply"               : true,
+      "firstHeaderData"     : [
                                 {
                                     heading : 'Activity Details',
                                     mergedColoums : 12
@@ -83,16 +85,16 @@ class PlanDetails extends Component{
       "startRange"          : 0,
       "limitRange"          : 10000,
       "editId"              : this.props.match.params ? this.props.match.params.id : '',
-      fields                : {},
-      errors                : {},
-      subActivityDetails    : [],
-      apiCall               : '/api/annualPlans',
-      totalBud              : 0,
-      annualFileDetailUrl   : "/api/annualPlans/get/filedetails/",
-      monthlyFileDetailUrl  : "/api/monthlyplans/get/filedetails/",
-      goodRecordsTable      : [],
-      failedRecordsTable    : [],
-      goodRecordsHeading :{
+      "fields"                : {},
+      "errors"                : {},
+      "subActivityDetails"    : [],
+      "apiCall"               : '/api/annualPlans',
+      "totalBud"              : 0,
+      "annualFileDetailUrl"   : "/api/annualPlans/get/filedetails/",
+      "monthlyFileDetailUrl"  : "/api/monthlyplans/get/filedetails/",
+      "goodRecordsTable"      : [],
+      "failedRecordsTable"    : [],
+      "goodRecordsHeading" :{
         month               : "Month",
         year                : "Year",
         sectorName          : "Sector",
@@ -113,7 +115,7 @@ class PlanDetails extends Component{
         other               : "Other",
         remark              : "Remark"
     },
-    failedtableHeading :{
+    "failedtableHeading" :{
       sectorName          : "Sector",
       activityName        : "Activity",
       subactivityName     : "Sub-Activity",
@@ -132,7 +134,7 @@ class PlanDetails extends Component{
       remark              : "Remark",
       failedRemark        : 'Failed Data Remark',
     },
-    availableSubActivity : []
+    "availableSubActivity" : []
     }
     this.uploadedData = this.uploadedData.bind(this);
     this.remainTotal  = this.remainTotal.bind(this);
@@ -506,7 +508,7 @@ class PlanDetails extends Component{
           "activityName"        : "-- Select --",
           "editId"              :"",
           "availableSubActivity":[],
-          "months"              :["Annual Plan","All Months", "April","May","June","July","August","September","October","November","December","January","February","March"],
+          "months"              :["Annual Plan","Till Date", "April","May","June","July","August","September","October","November","December","January","February","March"],
           "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
           "shown"               : true,
           "apiCall"             : '/api/annualPlans'
@@ -612,7 +614,9 @@ class PlanDetails extends Component{
       month      : month,
       year       : year,
       startRange : startRange,
-      limitRange : limitRange
+      limitRange : limitRange,
+      startDate  : moment().year()+"-04-01",
+      endDate    : moment(new Date()).format("YYYY-MM-DD"),
     }
     // console.log("data",data);
     axios.post(this.state.apiCall+'/list', data)
@@ -667,7 +671,7 @@ class PlanDetails extends Component{
           })
         }else if(this.state.editId && this.state.month !== 'Annual Plan'){
           this.setState({
-            "months"              :["All Months", "April","May","June","July","August","September","October","November","December","January","February","March"],
+            "months"              :["Till Date", "April","May","June","July","August","September","October","November","December","January","February","March"],
             "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
             "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
           })
@@ -955,6 +959,7 @@ class PlanDetails extends Component{
                           )}
                           
                         </select>
+
                       </div>
                       <div className="errorMsg">{this.state.errors.month}</div>
                     </div>

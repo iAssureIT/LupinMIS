@@ -73,7 +73,11 @@ export default class MonthwiseGoalCompletion extends Component{
   //     }
   //   }
   // }
-
+  componentDidUpdate(prevProps, prevState){
+    if (prevProps.year !== this.props.year) {
+      this.getMonthwiseData(this.props.year,this.props.center_ID);
+    }
+  }
   componentDidMount(){
     this.getMonthwiseData(this.props.year,this.props.center_ID);
   }

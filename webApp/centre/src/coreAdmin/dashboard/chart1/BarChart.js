@@ -60,6 +60,11 @@ export default class BarChart extends Component{
   //     }
   //   }
   // }
+  componentDidUpdate(prevProps, prevState){
+    if (prevProps.year !== this.props.year) {
+      this.getSectorwiseFamilyupg(this.props.year,this.state.center_ID);
+    }
+  }
   componentDidMount(){
     this.getSectorwiseFamilyupg(this.props.year,this.state.center_ID);
   }

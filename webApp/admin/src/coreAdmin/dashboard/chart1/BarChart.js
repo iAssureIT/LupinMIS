@@ -24,7 +24,7 @@ export default class BarChart extends Component{
       "data" : {
         labels: [],
         datasets: [
-          {
+          { 
             label: 'Achievement Family Upgradation',
             backgroundColor:'rgba(255, 206, 86, 1)',
             borderColor: 'rgba(255, 206, 86, 0.5)',
@@ -61,8 +61,13 @@ export default class BarChart extends Component{
   //     }
   //   }
   // }
+  componentDidUpdate(prevProps, prevState){
+    if (prevProps.year !== this.props.year) {
+      this.getSectorwiseFamilyupg(this.props.year);
+    }
+  }
   componentDidMount(){
-    this.getSectorwiseFamilyupg(this.props.year)
+    this.getSectorwiseFamilyupg(this.props.year);
   }
   getSectorwiseFamilyupg(year){
     var oudata = {...this.state.data};
@@ -123,7 +128,7 @@ export default class BarChart extends Component{
           "data" : oudata
         })
     }
-  }
+  } 
 
   render() {
     return (

@@ -33,19 +33,24 @@ export default class PieChart extends Component {
   //       }
   //     }
   // }
-  componentDidMount(){
-    this.getSectorwiseData(this.props.year);
+  componentDidUpdate(prevProps, prevState){
+    if (prevProps.year !== this.props.year) {
+       this.getSectorwiseData(this.props.year,this.props.center_ID);
+    }
   }
-  getSectorwiseData(year){
+  componentDidMount(){
+    this.getSectorwiseData(this.props.year,this.props.center_ID);
+  }
+  getSectorwiseData(year,center_ID){
     var sectordata = {...this.state.data};
     // console.log('year', year);
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
     // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
     if(startDate && endDate){
-        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
+        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all')
         .then((response)=>{ 
-          console.log("respgetData------------->",response.data) ;
+          // console.log("respgetData------------->",response.data) ;
           response.data.splice(-2);
           var sector = [];
           var piechartcolor =[];

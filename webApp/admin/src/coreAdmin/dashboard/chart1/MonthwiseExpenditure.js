@@ -43,18 +43,23 @@ export default class MonthwiseExpenditure extends Component{
   //     }
   //   }
   // }
+   componentDidUpdate(prevProps,prevState){
+    if (prevProps.year !== this.props.year) {
+      this.getmonthwiseExpen(this.props.year);
+    }
+  }
   componentDidMount(){
-    this.getmonthwiseExpen(this.props.year,this.props.center_ID);
+    this.getmonthwiseExpen(this.props.year);
   }
   getmonthwiseExpen(year,center_ID){
     // console.log('year', year, 'center_ID', center_ID);
     var monthexp = {...this.state.data};
     var startYear = year.substring(3, 7);
     var endYear = year.substring(10, 15);
-    if(startYear && endYear && center_ID){
-        axios.get('/api/report/dashboard/'+startYear+'/'+endYear+'/'+center_ID)
+    if(startYear && endYear){
+        axios.get('/api/report/dashboard/'+startYear+'/'+endYear+'/all')
         .then((response)=>{
-          console.log("response",response.data);
+          // console.log("response",response.data);
           var month = [];
           var monthlyPlanTotalBudget = [];
           var achievementTotalBudget = [];

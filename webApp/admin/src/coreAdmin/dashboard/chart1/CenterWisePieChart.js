@@ -36,6 +36,11 @@ export default class CenterWisePieChart extends Component {
   //     }
   //   }
   // }
+  componentDidUpdate(prevProps,prevState){
+    if (prevProps.year !== this.props.year) {
+      this.getCenterwiseData(this.props.year);
+    }
+  }
   componentDidMount(){
     this.getCenterwiseData(this.props.year);
   }

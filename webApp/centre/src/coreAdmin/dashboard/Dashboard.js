@@ -53,7 +53,7 @@ const options = {
     maintainAspectRatio: false     
 };
 export default class Dashboard extends Component{
-  constructor(props) {
+  constructor(props){
    super(props);
     this.state = {
       center_annualPlanTotalBudget  :[],
@@ -495,7 +495,7 @@ export default class Dashboard extends Component{
 
                             <div className="info-box-content">
                               <span className="info-box-text">Districts</span>
-      {/*                              <span className="info-box-number">5,200</span>*/}
+                                {/*  <span className="info-box-number">5,200</span>*/}
                             <ul className="classTolist">
                               {this.state.districtCovered && this.state.districtCovered.length > 0 ?
                                 this.state.districtCovered.map((district,index)=>{
@@ -551,7 +551,7 @@ export default class Dashboard extends Component{
                           </div>
                           <div className="box-body">
                             <PieChart year={this.state.year} center_ID={this.state.center_ID}/>
-                          </div>
+                          </div> 
                         </div>
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
