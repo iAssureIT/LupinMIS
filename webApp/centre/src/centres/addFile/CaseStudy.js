@@ -323,26 +323,38 @@ class CaseStudy extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
-    axios.get('/api/caseStudies/list/'+center_ID)
-    .then((response)=>{
-      console.log("response",response);
-      var tableData = response.data.map((a, i)=>{
-        return {
-          _id          : a._id,
-          date         : a.date,
-          title        : a.title,
-          sectorName   : a.sectorName,
-          author       : a.author,
-        }
+    if(center_ID){
+      axios.get('/api/caseStudies/list/'+center_ID)
+      .then((response)=>{
+        console.log("response",response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id          : a._id,
+            date         : a.date,
+            title        : a.title,
+            sectorName   : a.sectorName,
+            author       : a.author,
+          }
+        })
+        this.setState({
+          tableData : tableData
+        })
       })
-      this.setState({
-        tableData : tableData
-      })
-    })
-    .catch(function(error){      
-      console.log("error = ",error);
-    });
+      .catch(function(error){      
+        console.log("error = ",error);
+      });
+    }
   }
+    getFile(fileArray, filenames){
+      console.log("fileArray",fileArray ,"filenames",filenames)
+    this.setState({
+      "fileArray" : fileArray,
+      "filenames" : filenames,
+    },()=>{
+
+    })
+  }
+  
 
   render() {     
     return (
@@ -407,14 +419,15 @@ class CaseStudy extends Component{
                           <div className="errorMsg">{this.state.errors.author}</div>
                         </div>
                       </div><br/>
-
                       <AddFilePublic
+                        getFile    = {this.getFile.bind(this)}
                         configData = {this.state.configData} 
                         fileArray  = {this.state.fileArray} 
                         fileType   = "Image" 
 
                       />      
                       <AddFilePublic
+                        getFile    = {this.getFile.bind(this)}
                         configData = {this.state.configData} 
                         fileArray  = {this.state.fileArray} 
                         fileType   = "File"

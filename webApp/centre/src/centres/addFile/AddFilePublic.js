@@ -1,5 +1,5 @@
 import React, { Component }   from 'react';
-import $                      from 'jquery';
+// import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import S3FileUpload           from 'react-s3';
@@ -64,19 +64,6 @@ class AddFile extends Component{
                    this.props.history.push("/");
               }
       })
-      $("#filePublic").validate({
-      rules: {
-        userPic: {
-          required: true,
-        },
-      },
-      errorPlacement: function(error, element) {
-       
-        if (element.attr("name") == "userPic"){
-          error.insertAfter("#userPic");
-        }
-      }
-    });
   }
   
   handleChange(event){
@@ -138,6 +125,7 @@ class AddFile extends Component{
                     newFile : newFile,
                   })
       if (newFile) {
+      // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
 
         if(ext==="DOC" || ext==="DOCX" || ext==="PDF" || ext==="XLS" || ext==="XLSX"  || ext==="PPT" || ext==="PPTX" || ext==="TXT"|| 
@@ -263,10 +251,10 @@ class AddFile extends Component{
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp ">
             <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 row padTopC">
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add {this.state.fileType} {this.state.fileType == "File" ? <span className="asterix">*</span>:""}</h5>
+                <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add {this.state.fileType} <span className="astrick">*</span></h5>
               </div>
-              <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="filePublic">
-                <div className="clr_k " id="fileError">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                <div className="clr_k ">
                   <div className="col-lg-offset-1 col-lg-2 col-md-12 col-sm-12 col-xs-12 hand_icon">
                     <img src="/images/Upload-Icon.png"/>
                   </div>
@@ -276,7 +264,7 @@ class AddFile extends Component{
                   </div>     
                   <input  type="file" title="Click to attach file" multiple name="userPic" onChange={this.state.fileType === "Image" ? this.uploadImage.bind(this) : this.uploadFiles.bind(this)} ref="workspaceImg"  className="form-control click_input" id="upload-file2" />
                 </div>
-              </form>
+              </div>
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imgdetails">{this.state.fileType=== "Image" ? "(Max size: 1 Mb, Format: JPEG, PNG)" : "(Max size: 1 Mb, Format: DOC, PDF, XLS)"} </div>
             </div>
             {
@@ -322,6 +310,7 @@ class AddFile extends Component{
                               return(
                                 <div  key={index}>
                                   <p  className="">{a.fileName}</p>
+                                    {     console.log("ext",this.state.ext)}
                                   <div>
                                   {/*
                                    ( this.state.ext==="XLS" || "XLSX"||"xls" || "xlsx") ?
