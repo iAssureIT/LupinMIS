@@ -1079,24 +1079,22 @@ class Activity extends Component{
     });
     this.handleChange(event);
   }
-  getBlock(stateCode, selectedDistrict){
-    // console.log("stateCode",stateCode,selectedDistrict);
-    axios({
-      method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/MH/IN',
-      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-    }).then((response)=> {
-      console.log('response ==========', response.data);
-      if(response&&response.data){
-        this.setState({
-          listofBlocks : response.data,
-          // block : response.data[0].blockName
-        })
-      }
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
+  // getBlock(stateCode, selectedDistrict){
+  //   axios({
+  //     method: 'get',
+  //     url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+  //   }).then((response)=> {
+  //     console.log('response ==========', response.data);
+  //     if(response&&response.data){
+  //       this.setState({
+  //         listofBlocks : response.data,
+  //         // block : response.data[0].blockName
+  //       })
+  //     }
+  //   }).catch(function (error) {
+  //     console.log('error', error);
+  //   });
+  // }
   selectBlock(event){
     event.preventDefault();
     var block = event.target.value;
@@ -1124,21 +1122,21 @@ class Activity extends Component{
     });
     this.handleChange(event);
   }
-  getVillages(stateCode, selectedDistrict, block){
-    // console.log(stateCode, selectedDistrict, block);
-    axios({
-      method: 'get',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
-      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
-    }).then((response)=> {
-      // console.log('response ==========', response.data);
-      this.setState({
-        listofVillages : response.data
-      })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
+  // getVillages(stateCode, selectedDistrict, block){
+  //   // console.log(stateCode, selectedDistrict, block);
+  //   axios({
+  //     method: 'get',
+  //     url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
+  //     // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
+  //   }).then((response)=> {
+  //     // console.log('response ==========', response.data);
+  //     this.setState({
+  //       listofVillages : response.data
+  //     })
+  //   }).catch(function (error) {
+  //     console.log('error', error);
+  //   });
+  // }
   selectVillage(event){
     event.preventDefault();
     var village = event.target.value;
@@ -1391,7 +1389,7 @@ class Activity extends Component{
                                 </select>
                               </div>
                               <div className="errorMsg">{this.state.errors.district}</div>
-                            </div>
+                          </div>
                           <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">Block<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
@@ -1411,7 +1409,7 @@ class Activity extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.block}</div>
                           </div>
-                         <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                          <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <label className="formLable">Village<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                               <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >

@@ -14,12 +14,9 @@ class NewBeneficiary extends Component{
     super(props);
 
     this.state = {
-      "familyID"            : "",
-      "beneficiaryID"       : "",
-      "nameofbeneficiaries" : "",
-      "relation"            : "",
-      "fields"              : {},
-      "errors"              : {},
+      "district"            : "all",
+      "block"               : "all",
+      "village"             : "all",
       "uID"                 : "",
       "shown"               : true,
       "twoLevelHeader"      : {
@@ -38,7 +35,7 @@ class NewBeneficiary extends Component{
       "tableHeading"        : {
         beneficiaryID       : "Beneficiary ID",
         familyID            : "Family ID",
-        nameofbeneficiaries : "Name of Beneficiary",
+        nameofbeneficiaries : "Beneficiary Name",
         relation            : "Relation with Family Head",
         dist                : "District",
         block               : "Block",
@@ -65,126 +62,6 @@ class NewBeneficiary extends Component{
     }
   }
   
-  handleChange(event){
-    event.preventDefault();
-    this.setState({
-      "familyID"              : this.refs.familyID.value,          
-      "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
-      "relation"              : this.refs.relation.value,
-    });
-    let fields                = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-    if (this.validateForm()) {
-      let errors                = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
-  }
-  isTextKey(evt){
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-
-  SubmitBeneficiary(event){
-    event.preventDefault();
-    var beneficaryArray=[];
-    var id2 = this.state.uID;
-    if (this.validateFormReq() && this.validateForm()){
-    var beneficiaryValue= 
-    {
-      "center_ID"             : this.state.center_ID,
-      "center"                : this.state.centerName,
-      "family_ID"             : this.refs.familyID.value.split('|')[1],          
-      "familyID"              : this.refs.familyID.value.split('|')[0],          
-      "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
-      "relation"              : this.refs.relation.value,
-    };
-    let fields                    = {};
-    fields["familyID"]            = "";
-    fields["relation"]            = "";
-    fields["nameofbeneficiaries"] = "";
-
-    this.setState({
-      "familyID"                 :"",
-      "beneficiaryID"            :"",
-      "nameofbeneficiaries"      :"",   
-      "relation"                 :"",   
-      fields:fields
-    });
-    axios.post('/api/beneficiaries',beneficiaryValue)
-      .then((response)=>{
-        this.getData(this.state.startRange, this.state.limitRange);
-        swal({
-          title : response.data.message,
-          text  : response.data.message,
-        });
-      })
-      .catch((error)=>{
-        console.log("error = ",error);
-      });
-    }
-  }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-      if (!fields["familyID"]) {
-        formIsValid = false;
-        errors["familyID"] = "This field is required.";
-      }     
-       if (!fields["relation"]) {
-        formIsValid = false;
-        errors["relation"] = "This field is required.";
-      }     
-       if (!fields["nameofbeneficiaries"]) {
-        formIsValid = false;
-        errors["nameofbeneficiaries"] = "This field is required.";
-      }     
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
-  validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    // if (typeof fields["beneficiaryID"] !== "undefined") {
-    //   // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-    //   if (!fields["beneficiaryID"].match(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$|^$/)) {
-    //     formIsValid = false;
-    //     errors["beneficiaryID"] = "Please enter valid Beneficiary ID.";
-    //   }
-    // }
-    // if (typeof fields["nameofbeneficiaries"] !== "undefined") {
-    //   // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-    //   if (!fields["nameofbeneficiaries"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-    //     formIsValid = false;
-    //     errors["nameofbeneficiaries"] = "Please enter valid Name.";
-    //   }
-    // }
-
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }
-
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     if(this.state.editId){      
@@ -201,12 +78,13 @@ class NewBeneficiary extends Component{
     },()=>{
     this.getAvailableFamilyId(this.state.center_ID);
     this.getAvailableCenter(this.state.center_ID);
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
     // console.log("center_ID =",this.state.center_ID);
     });
   }
 
   componentWillReceiveProps(nextProps){
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
     if(nextProps){
       this.setState({
         selectedValues : nextProps.selectedValues,
@@ -215,39 +93,41 @@ class NewBeneficiary extends Component{
       })
     }
   }
-  getData(startRange, limitRange, center_ID){
+  getData(startRange, limitRange, center_ID, district, block, village){
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-  
-    var centerID = this.state.center_ID;
-    axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
-    // axios.get('/api/beneficiaries/list/'+centerID)
-    .then((response)=>{
-      // console.log('bbbbbbbbbbbbbbbbbbbresponse', response);
-      var tableData = response.data.map((a, i)=>{
-        return {
-          _id                       : a._id,
-          beneficiary_ID            : a.beneficiary_ID,
-          beneficiaryID             : a.beneficiaryID,
-          family_ID                 : a.family_ID,
-          familyID                  : a.familyID,
-          nameofbeneficiaries       : a.nameofbeneficiaries,
-          relation                  : a.relation,
-          dist                      : a.dist,
-          block                     : a.block,
-          village                   : a.village,
-        }
+    
+    if(center_ID && district && block && village){
+      // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
+      axios.get('/api/beneficiaries/get/beneficiary/list/'+center_ID+'/'+district+'/'+block+'/'+village)
+      // axios.get('/api/beneficiaries/list/'+centerID)
+      .then((response)=>{
+        // console.log('bbbbbbbbbbbbbbbbbbbresponse', response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                       : a._id,
+            beneficiary_ID            : a.beneficiary_ID,
+            beneficiaryID             : a.beneficiaryID,
+            family_ID                 : a.family_ID,
+            familyID                  : a.familyID,
+            nameofbeneficiaries       : a.nameofbeneficiaries,
+            relation                  : a.relation,
+            dist                      : a.dist,
+            block                     : a.block,
+            village                   : a.village,
+          }
+        })
+        this.setState({
+          tableData : tableData,
+          prevtableData : tableData
+        })
       })
-      this.setState({
-        tableData : tableData,
-        prevtableData : tableData
-      })
-    })
-    .catch(function(error){
-      console.log("error = ",error);
-    });
+      .catch(function(error){
+        console.log("error = ",error);
+      }); 
+    }      
   }
 
   toglehidden(){
@@ -287,32 +167,105 @@ class NewBeneficiary extends Component{
     });
   }
   getAvailableCenter(center_ID){
-    axios({
-      method: 'get',
-      url: '/api/centers/'+center_ID,
-      }).then((response)=> {
+    // console.log("CID"  ,center_ID);
+    if(center_ID){
+      axios({
+        method: 'get',
+        url: '/api/centers/'+center_ID,
+        }).then((response)=> {
+        // console.log('availableDistInCenter ==========',response);
         function removeDuplicates(data, param){
-            return data.filter(function(item, pos, array){
-                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
-            })
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+          })
         }
-        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+        var availableDistInCenter = removeDuplicates(response.data[0].villagesCovered, "district");
+        // var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block");
+        // var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village");
+        // console.log('availableblockInCenter',availableblockInCenter)
         this.setState({
-          availableDistInCenter  : availableDistInCenter,
+          // listofVillages   : availablevillageInCenter,
+          // listofBlocks     : availableblockInCenter,
+          listofDistrict   : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-        },()=>{
-        var stateCode =this.state.address.split('|')[0];
-         this.setState({
-          stateCode  : stateCode,
-
-        },()=>{
-        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
-        });
         })
-    }).catch(function (error) {
-      console.log("error = ",error);
-      
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+    }
+  }
+
+
+  distChange(event){    
+    event.preventDefault();
+    var district = event.target.value;
+     // console.log('district=', district);
+    this.setState({
+      district: district,
+      block : '-- Select --',
+      village : '-- Select --',
+      listofVillages : []
+    },()=>{      
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, "all", "all");
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        // console.log('availableblockInCenter ==========',response);
+        function removeDuplicates(data, param, district){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+          })
+        }
+        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+        this.setState({
+          listofBlocks     : availableblockInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
     });
+    
+  }
+ 
+  selectBlock(event){
+    event.preventDefault();
+    var block = event.target.value;
+    this.setState({
+      block : block
+    },()=>{
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, "all");
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+      // console.log("block",block);
+      // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
+    });
+    
+  }
+
+  selectVillage(event){
+    event.preventDefault();
+    var village = event.target.value;
+    this.setState({
+      village : village
+    },()=>{
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
+    });
+    
   }
   camelCase(str){
     return str
@@ -322,146 +275,6 @@ class NewBeneficiary extends Component{
     .join(' ');
   }
 
-  districtChange(event){    
-    event.preventDefault();
-    var district = event.target.value;
-    this.setState({
-      district: district
-    },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
-      this.setState({
-        selectedDistrict :selectedDistrict
-      },()=>{
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
-      var district = this.state.selectedDistrict;
-      var centerID = this.state.center_ID;
-        axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/all/all")
-        .then((response)=>{
-        // console.log('response.district',response.data);
-        var tableData = response.data.map((a, i)=>{
-          return {
-            _id                       : a._id,
-            beneficiary_ID            : a.beneficiary_ID,
-            beneficiaryID             : a.beneficiaryID,
-            family_ID                 : a.family_ID,
-            familyID                  : a.familyID,
-            nameofbeneficiaries       : a.nameofbeneficiaries,
-            relation                  : a.relation,
-            dist                      : a.dist,
-            block                     : a.block,
-            village                   : a.village,
-          }
-        })
-          this.setState({
-            tableData : tableData,
-            prevtableData : tableData
-          })
-        })
-        .catch(function(error){ 
-          console.log("error = ",error);
-        });
-      })
-    });
-  }
-  getBlock(stateCode, selectedDistrict){
-    axios({
-      method: 'get',
-      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-    }).then((response)=> {
-        this.setState({
-          listofBlocks : response.data
-        },()=>{
-        })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
-  selectBlock(event){
-    event.preventDefault();
-    var block = event.target.value;
-    this.setState({
-      block : block
-    },()=>{
-      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
-      
-      var block = this.state.block;
-      var district = this.state.selectedDistrict;
-      var centerID = this.state.center_ID;
-        axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/"+block+"/all")
-        .then((response)=>{
-        var tableData = response.data.map((a, i)=>{
-          return {
-            _id                       : a._id,
-            beneficiary_ID            : a.beneficiary_ID,
-            beneficiaryID             : a.beneficiaryID,
-            family_ID                 : a.family_ID,
-            familyID                  : a.familyID,
-            nameofbeneficiaries       : a.nameofbeneficiaries,
-            relation                  : a.relation,
-            dist                      : a.dist,
-            block                     : a.block,
-            village                   : a.village,
-          }
-        })
-          this.setState({
-            tableData : tableData,
-            prevtableData : tableData
-          })
-        })
-        .catch(function(error){ 
-          console.log("error = ",error);
-        });
-    });
-  }
-  getVillages(stateCode, selectedDistrict, block){
-    axios({
-      method: 'get',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
-    }).then((response)=> {
-        this.setState({
-          listofVillages : response.data
-        },()=>{
-        })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
-  selectVillage(event){
-    event.preventDefault();
-    var village = event.target.value;
-    this.setState({
-      village : village
-    },()=>{
-      var village = this.state.village;
-      var block = this.state.block;
-      var district = this.state.selectedDistrict;
-      var centerID = this.state.center_ID;
-        axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+'/'+district+"/"+block+"/"+village)
-        .then((response)=>{
-        var tableData = response.data.map((a, i)=>{
-          return {
-            _id                       : a._id,
-            beneficiary_ID            : a.beneficiary_ID,
-            beneficiaryID             : a.beneficiaryID,
-            family_ID                 : a.family_ID,
-            familyID                  : a.familyID,
-            nameofbeneficiaries       : a.nameofbeneficiaries,
-            relation                  : a.relation,
-            dist                      : a.dist,
-            block                     : a.block,
-            village                   : a.village,
-          }
-        })
-          this.setState({
-            tableData : tableData,
-            prevtableData : tableData
-          })
-        })
-        .catch(function(error){ 
-          console.log("error = ",error);
-        });
-    });
-  }
   getSearchText(searchText){
     var searchText = searchText;
     // console.log('searchText',searchText)
@@ -542,111 +355,68 @@ class NewBeneficiary extends Component{
                         </div>
                        
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style={hidden}>
-                       {/*   <h4 className="pageSubHeader col-lg-12 col-md-12 col-sm-12 col-xs-12">Create Beneficiary</h4>
-                          <div className="borderBox ">
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Family ID</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyID" >
-                                <select className="custom-select form-control inputBox" value={this.state.familyID} ref="familyID" name="familyID" onChange={this.handleChange.bind(this)} >
-                                  <option value="" className="hidden" >-- Select --</option>
-                                  {
-                                    this.state.availableFamilies ? this.state.availableFamilies.map((data, index)=>{
-                                      return(
-                                        <option key={data._id} value={data.familyID+'|'+data._id}>{data.familyID}</option>
-                                        );
-                                    }) 
-                                    : 
-                                    null                            
-                                  }
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.familyID}</div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12  valid_box">
-                              <label className="formLable">Name of Beneficiary</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="nameofbeneficiaries" >
-                                <input type="text" className="form-control inputBox"  placeholder="" value={this.state.nameofbeneficiaries} ref="nameofbeneficiaries" name="nameofbeneficiaries" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
-                              </div>
-                              <div className="errorMsg">{this.state.errors.nameofbeneficiaries}</div>
-                            </div>
-                            <div className=" col-lg-4 col-md-6 col-sm-6 col-xs-12  valid_box">
-                              <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relation" >
-                                <input type="text" className="form-control inputBox"  placeholder="" value={this.state.relation} ref="relation" name="relation" onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)} />
-                              </div>
-                              <div className="errorMsg">{this.state.errors.relation}</div>
-                            </div>
-                          </div> 
-                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
-                              <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
-                            </div>       
-                          </div> */}
                           <CreateBeneficiary getData={this.getData.bind(this)} />
-
                         </div><br/>
-
                         <div className=" col-lg-12 col-sm-12 col-xs-12  ">
                           <div className="borderBoxHeight border_Box"> 
                             <div className="row"> 
-                              <div className=" col-lg-3  col-lg-offset-1 col-md-4 col-sm-6 col-xs-12 ">
-                                <label className="formLable">District</label>
-                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                                  <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)} >
-                                    <option  className="hidden" >-- Select --</option>
-                                    {
-                                      this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                      this.state.availableDistInCenter.map((data, index)=>{
-                                        return(
-                                          <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
-                                        );
-                                      })
-                                      :
-                                      null
-                                    }
-                                    {/*<option>Pune</option>
-                                    <option>Thane</option>*/}
-                                  </select>
-                                </div>
+                              <div className=" col-lg-3 col-lg-offset-1 col-md-3 col-sm-12 col-xs-12  ">
+                                  <label className="formLable">District<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                                    <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
+                                      <option  selected="true">-- Select --</option>
+                                      {
+                                        this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                                        this.state.listofDistrict.map((data, index)=>{
+                                          // console.log('dta', data);
+                                          return(
+                                            <option key={index} value={data.district.split('|')[0]}>{this.camelCase(data.district.split('|')[0])}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.district}</div>
                               </div>
-                              <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
-                                <label className="formLable">Block</label>
+                              <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                <label className="formLable">Block<span className="asterix">*</span></label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                                  <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                    <option  className="hidden" >-- Select --</option>
+                                  <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                                    <option disabled="disabled" selected="true">-- Select --</option>
                                     {
                                       this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                       this.state.listofBlocks.map((data, index)=>{
-                                        // console.log('dta', data);
                                         return(
-                                          <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                          <option key={index} value={data.block}>{this.camelCase(data.block)}</option>
                                         );
                                       })
                                       :
                                       null
-                                    }
-                                   
+                                    }  
                                   </select>
                                 </div>
+                                <div className="errorMsg">{this.state.errors.block}</div>
                               </div>
-                              <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
-                                <label className="formLable">Village</label>
+                              <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                <label className="formLable">Village<span className="asterix">*</span></label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                                   <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                    <option  className="hidden" >-- Select --</option>
+                                    <option disabled="disabled" selected="true">-- Select --</option>
                                     {
                                       this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                       this.state.listofVillages.map((data, index)=>{
                                         return(
-                                          <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                          <option key={index} value={data.village}>{this.camelCase(data.village)}</option>
                                         );
                                       })
                                       :
                                       null
-                                    }
-                                   
+                                    } 
                                   </select>
                                 </div>
+                                <div className="errorMsg">{this.state.errors.village}</div>
                               </div>
                             </div>
                             {/*<div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight row">

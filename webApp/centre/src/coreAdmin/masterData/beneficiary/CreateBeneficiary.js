@@ -372,18 +372,20 @@ class Beneficiary extends Component{
   //   }
   // }
   getAvailableFamilyId(center_ID){
-    axios({
-      method: 'get',
-      url: '/api/families/list/'+center_ID,
-    }).then((response)=> {
-        
-        this.setState({
-          availableFamilies : response.data
-        })
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
-    console.log("availableFamilies", this.state.availableFamilies)
+    if(center_ID){
+      axios({
+        method: 'get',
+        url: '/api/families/list/'+center_ID,
+      }).then((response)=> {
+          
+          this.setState({
+            availableFamilies : response.data
+          })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+      console.log("availableFamilies", this.state.availableFamilies)
+    }
   }
 
   render() {

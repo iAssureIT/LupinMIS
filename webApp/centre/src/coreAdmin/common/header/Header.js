@@ -23,25 +23,27 @@ export default class Header extends Component{
     const emailId   = localStorage.getItem("emailId");
     const center_ID = localStorage.getItem("center_ID");
     const fullName  = localStorage.getItem("fullName");
+    const centerName  = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('fullName'));
     // console.log("localStorage =",localStorage);
     this.setState({
       emailId   : emailId,
       fullName  : fullName,
+      centerName: centerName,
     },()=>{
-      console.log("fullName =",this.state.fullName);
+      // console.log("fullName =",this.state.fullName);
     });   
   }
     
 openNav() {
   var currentWidth =  document.getElementById("mySidenav").style.width;
-  console.log("currentWidth",currentWidth);
+  // console.log("currentWidth",currentWidth);
   document.getElementById("mySidenav").style.width = "250px";
 }
 
 closeNav() {
   var currentWidth =  document.getElementById("mySidenav").style.width;
-  console.log("currentWidth",currentWidth);
+  // console.log("currentWidth",currentWidth);
   document.getElementById("mySidenav").style.width = "0";
 
 }
@@ -49,7 +51,7 @@ closeNav() {
 toggleNav(){
 
   var currentWidth =  document.getElementById("mySidenav").style.width;
-  console.log("currentWidth",currentWidth);
+  // console.log("currentWidth",currentWidth);
 
   if(currentWidth == "230px")
   {
@@ -101,11 +103,11 @@ logout(){
                   <div className="col-lg-5 col-md-7 col-sm-9 col-xs-12 pull-right hover logoutAct">
                     <div className="row hover" onClick={this.LogoutSectionHover.bind(this)}>
 {/*                      <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText mailtext"> {this.state.emailId ? this.state.emailId : ""}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i className="fa fa-angle-down"></i>  </span>  */}
-                      <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText "> 
-                        <span className="col-lg-10 ">
-                          <label className="mailtext" >{this.state.emailId ? this.state.emailId : ""}</label>
+                      <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText hover "> 
+                        <span className="col-lg-10 col-md-10 col-sm-12 col-xs-12 text-center ">
+                          <label className="CenterName" > {this.state.centerName ? this.state.centerName : ""}</label>&nbsp; &nbsp;
                         </span>  
-                        <span className="col-lg-2">
+                        <span className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                           <i className="fa fa-angle-down"></i> 
                         </span>  
                       </span>  

@@ -5,7 +5,8 @@
 }
 .colorbox{
   background: #4ca75a;
-  height: 50px
+  height: 50px;
+  color: #fff !important;
 }
 .headicon{
     font-size: 1.1vw;
@@ -154,13 +155,16 @@
   margin-bottom: 35px;
 }
 
-.mailtext:hover{
+.CenterName:hover{
   color: #fff;
 }
-.mailtext{
-  overflow: hidden;
-  position: absolute; 
-  text-overflow: ellipsis;
+.CenterName{
+  /*overflow: hidden;*/
+  /*text-overflow: ellipsis;*/
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+  /*text-decoration: underline;*/
 }
 #headerid {
   position: fixed;
