@@ -41,6 +41,9 @@ import AddModuleFacility                          from '../accessManagement/AddM
 import AssignPermissionToModules                  from '../accessManagement/AssignPermissionToModules.js';
 
 import SectorAndActivity                          from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
+
+import SectorAndActivityRedirect                  from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
+
 import Unit                                       from '../../coreAdmin/masterData/sectorAndActivity/component/unit/Unit.js';
 import BulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/BulkUpload/BulkUpload.js';
 import centerDetail                               from '../../coreAdmin/masterData/centerDetail/centerDetail.js';
@@ -151,16 +154,15 @@ componentDidMount(){
                           <Route path="/center-details"                                               exact strict component={ centerDetail } />
                           <Route path="/center-details/"                                              exact strict component={ centerDetail } />
                           <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />
+                          
                           <Route path="/sector-and-activity"                                          exact strict component={ SectorAndActivity } />
-
-                         {/* <Route path="/unit"                                                         exact strict component={ Unit } />
-                         */} 
                           <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/unit/"                                    exact strict component={ SectorAndActivity } />
-                          <Route path="/sector-and-activity/unit/:unitID"                           exact strict component={ SectorAndActivity } />
+                          <Route path="/sector-and-activity/unit/:unitID"                             exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
+   
                           <Route path="/project-mapping"                                              exact strict component={ ProjectMapping } />
                           <Route path="/project-mapping/"                                              exact strict component={ ProjectMapping } />
                           <Route path="/project-mapping/:projectMappingId"                                              exact strict component={ ProjectMapping } />

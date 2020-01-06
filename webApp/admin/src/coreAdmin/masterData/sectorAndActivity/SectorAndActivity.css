@@ -324,6 +324,10 @@ tr.odd {
 /*    font-family: 'MYRIADPROREGULAR';
     letter-spacing: 1px;*/
 }
+.masterDataTab a{
+  cursor: pointer !important;
+}
+
 .MasterTitle{
   font-family:'Montserrat';
 }
@@ -397,6 +401,9 @@ tr.odd {
 .contactdeilsmg{
   padding-top: 15px;
   padding-bottom: 15px;
+}
+.active{
+  cursor: pointer !important;
 }
 /*********button css***********/
 .nav-pills > li.active > a,
