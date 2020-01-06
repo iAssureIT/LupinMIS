@@ -119,7 +119,7 @@ class Beneficiary extends Component{
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
-      this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+      this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
         swal({
           title : response.data.message,
           text  : response.data.message,
@@ -156,7 +156,7 @@ class Beneficiary extends Component{
       console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
-        this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+        this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
           swal({
             title : response.data.message,
             text  : response.data.message,
@@ -214,7 +214,7 @@ class Beneficiary extends Component{
     },()=>{
     console.log("center_ID =",this.state.center_ID);
      this.getLength(this.state.center_ID);
-    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
     this.getAvailableFamilyId(this.state.center_ID);
     });   
 

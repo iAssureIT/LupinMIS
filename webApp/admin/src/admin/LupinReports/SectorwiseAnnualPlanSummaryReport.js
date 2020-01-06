@@ -260,13 +260,15 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
               console.log("resp",response);
+              var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+              // console.log('value',value)
               var tableData = response.data.map((a, i)=>{
                 return {
                   _id                                    : a._id,            
                   achievement_projectCategory            : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                   name                                   : a.name,
                   annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
-                  Per_Annual                             : a.Per_Annual,
+                  Per_Annual                             : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
                   annualPlan_Reach                       : this.addCommas(a.annualPlan_Reach),
                   annualPlan_FamilyUpgradation           : this.addCommas(a.annualPlan_FamilyUpgradation), 
                   annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
@@ -295,13 +297,15 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
               console.log("resp",response);
+              var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+              // console.log('value',value)
               var tableData = response.data.map((a, i)=>{
                 return {
                     _id                                    : a._id,            
                     achievement_projectCategory            : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                     name                                   : a.name,
                     annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
-                    Per_Annual                             : a.Per_Annual,
+                    Per_Annual                             : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
                     annualPlan_Reach                       : this.addCommas(a.annualPlan_Reach),
                     annualPlan_FamilyUpgradation           : this.addCommas(a.annualPlan_FamilyUpgradation), 
                     annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),

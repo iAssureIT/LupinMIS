@@ -447,41 +447,43 @@ class Family extends Component{
       url: '/api/families/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      // console.log("editData",editData);
+      console.log("editData",editData);
       this.getAvailableCenter(this.state.center_ID);
       // console.log("stateCode",this.state.stateCode);
       // this.getBlock(this.state.stateCode, editData.dist);
       // console.log(this.state.stateCode, editData.dist, editData.block);
       // this.getVillages(this.state.stateCode, editData.dist, editData.block);
-
+    if(editData){
       this.setState({
-      "familyID"              : editData.familyID,
-      "surnameOfFH"           : editData.surnameOfFH,
-      "firstNameOfFH"         : editData.firstNameOfFH,
-      "middleNameOfFH"        : editData.middleNameOfFH,
-      "contact"               : editData.contactNumber,
-      "uID"                   : editData.uidNumber,
-      "caste"                 : editData.caste,
-      "category"              : editData.familyCategory, 
-      "incomeCategory"        : editData.incomeCategory,
-      "landCategory"          : editData.landCategory,
-      "specialCategory"       : editData.specialCategory,
-      // "LHWRFCentre"           : editData.center, 
-      // "state"                 : editData.state, 
-      "district"              : editData.dist, 
-      "block"                 : editData.block, 
-      "village"               : editData.village, 
+        "familyID"              : editData.familyID,
+        "surnameOfFH"           : editData.surnameOfFH,
+        "firstNameOfFH"         : editData.firstNameOfFH,
+        "middleNameOfFH"        : editData.middleNameOfFH,
+        "contact"               : editData.contactNumber,
+        "uID"                   : editData.uidNumber,
+        "caste"                 : editData.caste,
+        "category"              : editData.familyCategory, 
+        "incomeCategory"        : editData.incomeCategory,
+        "landCategory"          : editData.landCategory,
+        "specialCategory"       : editData.specialCategory,
+        // "LHWRFCentre"           : editData.center, 
+        // "state"                 : editData.state, 
+        "district"              : editData.dist, 
+        "block"                 : editData.block, 
+        "village"               : editData.village, 
 
-      });
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-    })
-    .catch(function(error){ 
+        });
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+        this.setState({
+          errors: errors
+        });
+        return formIsValid;
+    }
+      })
+
+      .catch(function(error){ 
       console.log("error"+error);
     });
   }
@@ -545,27 +547,29 @@ class Family extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
       }).then((response)=> {
-        function removeDuplicates(data, param){
-            return data.filter(function(item, pos, array){
-                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
-            })
+        if(response.data){
+          function removeDuplicates(data, param){
+              return data.filter(function(item, pos, array){
+                  return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+              })
+          }
+          var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+          this.setState({
+            listofDistrict  : availableDistInCenter,
+            address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+            // districtsCovered : response.data[0].districtsCovered
+          },()=>{
+          var stateCode =this.state.address.split('|')[0];
+           this.setState({
+            stateCode  : stateCode,
+            },()=>{
+            // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
+            });
+          })
         }
-        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        this.setState({
-          listofDistrict  : availableDistInCenter,
-          address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-          // districtsCovered : response.data[0].districtsCovered
-        },()=>{
-        var stateCode =this.state.address.split('|')[0];
-         this.setState({
-          stateCode  : stateCode,
-        },()=>{
-        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
-        });
-        })
-    }).catch(function (error) {
-      console.log("error"+error);
-    });
+      }).catch(function (error) {
+        console.log("error"+error);
+      });
   }
   
   camelCase(str){
@@ -612,23 +616,23 @@ class Family extends Component{
       })
     });
   }
-  getBlock(stateCode, selectedDistrict){
-    console.log("sd", stateCode,selectedDistrict);
-    axios({
-      method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
-      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
-        this.setState({
-          listofBlocks : response.data
-        },()=>{
-        // console.log('listofBlocks', this.state.listofBlocks);
-        })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
+  // getBlock(stateCode, selectedDistrict){
+  //   console.log("sd", stateCode,selectedDistrict);
+  //   axios({
+  //     method: 'get',
+  //     // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
+  //     url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+  //   }).then((response)=> {
+  //       // console.log('response ==========', response.data);
+  //       this.setState({
+  //         listofBlocks : response.data
+  //       },()=>{
+  //       // console.log('listofBlocks', this.state.listofBlocks);
+  //       })
+  //   }).catch(function (error) {
+  //     console.log('error', error);
+  //   });
+  // }
   selectBlock(event){
     event.preventDefault();
     var block = event.target.value;
@@ -655,23 +659,23 @@ class Family extends Component{
       // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
-  getVillages(stateCode, selectedDistrict, block){
-    // console.log(stateCode, selectedDistrict, block);
-    axios({
-      method: 'get',
-      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
-        this.setState({
-          listofVillages : response.data
-        },()=>{
-        // console.log('listofVillages', this.state.listofVillages);
-        })
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
+  // getVillages(stateCode, selectedDistrict, block){
+  //   // console.log(stateCode, selectedDistrict, block);
+  //   axios({
+  //     method: 'get',
+  //     // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
+  //     url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
+  //   }).then((response)=> {
+  //       // console.log('response ==========', response.data);
+  //       this.setState({
+  //         listofVillages : response.data
+  //       },()=>{
+  //       // console.log('listofVillages', this.state.listofVillages);
+  //       })
+  //   }).catch(function (error) {
+  //     console.log('error', error);
+  //   });
+  // }
   selectVillage(event){
     event.preventDefault();
     var village = event.target.value;
@@ -924,7 +928,7 @@ class Family extends Component{
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Block</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
-                                <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                                <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block?this.state.block:""} onChange={this.selectBlock.bind(this)} >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   {
 
@@ -944,7 +948,8 @@ class Family extends Component{
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Village</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
-                                <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
+                              {console.log("this.state.village",this.state.village)}
+                                <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village?this.state.village:""} onChange={this.selectVillage.bind(this)}  >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   {
                                     this.state.listofVillages && this.state.listofVillages.length > 0  ? 

@@ -65,8 +65,8 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             "annualPlan_Reach"                 : 'Reach', 
             "annualPlan_FamilyUpgradation"     : "Families Upgradation",
             "monthlyPlan_TotalBudget"          : 'Total Budget', 
-            "monthlyPlan_Reach"                : 'Reach', 
             "Per_Periodic"                     : 'Proportion to Total %', 
+            "monthlyPlan_Reach"                : 'Reach', 
             "monthlyPlan_LHWRF"                : 'LHWRF',
             "monthlyPlan_NABARD"               : 'NABARD',
             "monthlyPlan_Bank_Loan"            : 'Bank',
@@ -221,18 +221,20 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
           
                 .then((response)=>{
                   console.log("resp",response);
+                  var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                  console.log('value',value)
                   var tableData = response.data.map((a, i)=>{
                     return {
                       _id                                     : a._id,            
                       achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                                    : a.name,
                       annualPlan_TotalBudget                  : this.addCommas(a.annualPlan_TotalBudget),
-                      Per_Annual                              : this.addCommas(a.Per_Annual),
+                      Per_Annual                              : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
                       annualPlan_Reach                        : this.addCommas(a.annualPlan_Reach),
                       annualPlan_FamilyUpgradation            : this.addCommas(a.annualPlan_FamilyUpgradation),                
                       monthlyPlan_TotalBudget                 : this.addCommas(a.monthlyPlan_TotalBudget),                
+                      Per_Periodic                            : (((a.monthlyPlan_TotalBudget/value.monthlyPlan_TotalBudget)*100).toFixed(2)) + "%" ,
                       monthlyPlan_Reach                       : this.addCommas(a.monthlyPlan_Reach),
-                      Per_Periodic                            : a.Per_Periodic,
                       monthlyPlan_LHWRF                       : this.addCommas(a.monthlyPlan_LHWRF),
                       monthlyPlan_NABARD                      : this.addCommas(a.monthlyPlan_NABARD),
                       monthlyPlan_Bank_Loan                   : this.addCommas(a.monthlyPlan_Bank_Loan),
@@ -256,18 +258,20 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                 axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                   console.log("resp",response);
+                  var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                  console.log('value',value)
                   var tableData = response.data.map((a, i)=>{
                     return {
                       _id                                     : a._id,            
                       achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
                       name                                    : a.name,
                       annualPlan_TotalBudget                  : this.addCommas(a.annualPlan_TotalBudget),
-                      Per_Annual                              : this.addCommas(a.Per_Annual),
+                      Per_Annual                              : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
                       annualPlan_Reach                        : this.addCommas(a.annualPlan_Reach),
                       annualPlan_FamilyUpgradation            : this.addCommas(a.annualPlan_FamilyUpgradation),                
                       monthlyPlan_TotalBudget                 : this.addCommas(a.monthlyPlan_TotalBudget),                
+                      Per_Periodic                            : (((a.monthlyPlan_TotalBudget/value.monthlyPlan_TotalBudget)*100).toFixed(2)) + "%" ,
                       monthlyPlan_Reach                       : this.addCommas(a.monthlyPlan_Reach),
-                      Per_Periodic                            : a.Per_Periodic,
                       monthlyPlan_LHWRF                       : this.addCommas(a.monthlyPlan_LHWRF),
                       monthlyPlan_NABARD                      : this.addCommas(a.monthlyPlan_NABARD),
                       monthlyPlan_Bank_Loan                   : this.addCommas(a.monthlyPlan_Bank_Loan),

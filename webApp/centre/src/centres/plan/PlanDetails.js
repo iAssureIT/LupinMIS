@@ -618,7 +618,7 @@ class PlanDetails extends Component{
       startDate  : moment().year()+"-04-01",
       endDate    : moment(new Date()).format("YYYY-MM-DD"),
     }
-    // console.log("data",data);
+    console.log("data",data);
     axios.post(this.state.apiCall+'/list', data)
     .then((response)=>{
       // console.log("response",response);

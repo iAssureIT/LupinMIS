@@ -226,9 +226,9 @@ class ActivitywiseAnnualPlanReport extends Component{
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
         // console.log(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(sector_ID==="all"){
-          // console.log("year",year);
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
+          console.log("startDate",startDate);
          
           axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
           .then((response)=>{
