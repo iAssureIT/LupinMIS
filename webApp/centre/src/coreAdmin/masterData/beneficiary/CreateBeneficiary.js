@@ -41,12 +41,11 @@ class Beneficiary extends Component{
 
 
   handleChange(event){
-    event.preventDefault();
+      event.preventDefault();
     if(event.currentTarget.name==='familyID'){
       let id = $(event.currentTarget).find('option:selected').attr('data-id')
       axios.get('/api/families/'+id)
       .then((response)=>{
-        // console.log('response',response)
         this.setState({"surnameOfBeneficiary":response.data[0].surnameOfFH})
       })
       .catch(function(error){ 

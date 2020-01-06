@@ -443,42 +443,42 @@ class Family extends Component{
     getAvailableVillages()
   {
     axios({
-        method: 'get',
-        url: '/api/centers/'+this.state.center_ID,
-        }).then((response)=> {
-        function removeDuplicates(data, param, district, block){
-          return data.filter(function(item, pos, array){
-            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
-          })
-        }
-        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
-        this.setState({
-          listofVillages   : availablevillageInCenter,
+      method: 'get',
+      url: '/api/centers/'+this.state.center_ID,
+      }).then((response)=> {
+      function removeDuplicates(data, param, district, block){
+        return data.filter(function(item, pos, array){
+          return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
         })
-      }).catch(function (error) {
-        console.log("error = ",error);
-      });
+      }
+      var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+      this.setState({
+        listofVillages   : availablevillageInCenter,
+      })
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });
   }
   getAvailableBlocks()
   {
     axios({
-          method: 'get',
-          url: '/api/centers/'+this.state.center_ID,
-          }).then((response)=> {
-          // console.log('availableblockInCenter ==========',response);
-          function removeDuplicates(data, param, district){
-            return data.filter(function(item, pos, array){
-              return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
-            })
-          }
-          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
-          this.setState({
-            listofBlocks     : availableblockInCenter,
-          })
-          console.log("availableblockInCenter",availableblockInCenter);
-        }).catch(function (error) {
-          console.log("error = ",error);
-        });
+      method: 'get',
+      url: '/api/centers/'+this.state.center_ID,
+      }).then((response)=> {
+      // console.log('availableblockInCenter ==========',response);
+      function removeDuplicates(data, param, district){
+        return data.filter(function(item, pos, array){
+          return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+        })
+      }
+      var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+      this.setState({
+        listofBlocks     : availableblockInCenter,
+      })
+      console.log("availableblockInCenter",availableblockInCenter);
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });
   }
   edit(id){
     axios({

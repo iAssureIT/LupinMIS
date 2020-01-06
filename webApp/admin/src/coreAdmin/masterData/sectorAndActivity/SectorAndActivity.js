@@ -14,14 +14,18 @@ class SectorAndActivity extends Component{
     super(props)
     this.state = {
       "tabtype" : "sector" ,
-      "shown"       : true,
+      "editId"  : "" ,
+      "shown"   : true,
     }
     this.changeTab = this.changeTab.bind(this); 
 
   }
   componentDidMount(){
-    var editId = this.props.match.params;
-    // console.log('editId', editId);
+    var editId = this.props.match.params.tabName;
+    console.log('editId', editId);
+    this.setState({
+      editId : editId,
+    })
     // this.setState({
     //   tabtype : editId.subactivityId ? 'subactivity' : (editId.activityId ? "activity" : "sector" )
     // },()=>{
@@ -41,13 +45,14 @@ class SectorAndActivity extends Component{
     this.setState({
       tabtype : data,
     },()=>{
-      this.props.history.push('/sector-and-activity');
+      console.log("tabtype",this.state.tabtype);
+      this.props.history.push('/SectorAndActivityRedirect/'+this.state.tabtype);
     });
   }
   render() {
     var shown = {
       display: this.state.shown ? "block" : "none"
-    };
+    };  
     
     var hidden = {
       display: this.state.shown ? "none" : "block"
@@ -86,30 +91,36 @@ class SectorAndActivity extends Component{
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={shown} >                            
                     <div className="row">
                       <div className="nav-center manageLocationTabs col-lg-12 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 marginTop30">
+                        {
+                          this.state.editId !=="" ?
                          <ul className="nav nav-tabs nav-pills locNavTab">
                               
-                              <li className=" active col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab dis">
+                              <li className={this.state.editId == "sector" || this.state.editId == undefined ?"col-lg-2 col-md-2 col-sm-12 col-xs-12 active transactionTab masterDataTab dis":"col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab dis"}>
                                   <a href="#sector" data-toggle="tab"  onClick={()=>this.changeTab('sector')} >
                                     Sector
                                   </a>
                               </li>
-                               <li className="col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab st">
+                               <li className={this.state.editId == "activity"?"col-lg-2 col-md-2 col-sm-12 col-xs-12 active transactionTab masterDataTab st":"col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab st"}>
                                   <a href="#activity" data-toggle="tab"      onClick={()=>this.changeTab('activity')} >
                                     Activity
                                   </a>
                               </li>
-                              <li className="col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab cntry">
+                              <li className={this.state.editId == "subactivity"?"col-lg-2 col-md-2 col-sm-12 col-xs-12 active transactionTab masterDataTab cntry":"col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab cntry"} >
                                   <a  href="#subactivity" data-toggle="tab"   onClick={()=>this.changeTab('subactivity')}>
                                     Sub-Activity
                                   </a>
                               </li>
                               
                          </ul>
+                         :
+                         null
+                       }
                       </div>
                       <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-                        <div className="tab-pane active" id="sector">
+                      {console.log(" this.state.editId ", this.state.editId )}
+                        <div className="tab-pane" id="sector">
                         {
-                          this.state.tabtype === "sector" ?
+                          this.state.tabtype === "sector"?
                           <div className="row"><Sector dataVal={this.state.tabtype} /></div>       
                           :
                           null
@@ -117,7 +128,7 @@ class SectorAndActivity extends Component{
                         </div>
                         <div className="tab-pane" id="activity">
                         {
-                          this.state.tabtype === "activity" ?
+                          this.state.tabtype === "activity"?
                           <div className="row"><Activity dataVal={this.state.tabtype} /></div>        
                           :
                           null

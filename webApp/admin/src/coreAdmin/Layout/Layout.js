@@ -162,7 +162,16 @@ componentDidMount(){
                           <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
-   
+            
+                          <Route path="/SectorAndActivityRedirect/:tabName"                                          exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/SectorAndActivityRedirect/"                                          exact strict component={ SectorAndActivityRedirect } />
+                        {/*  <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/sector-and-activity/unit/"                                    exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/sector-and-activity/unit/:unitID"                             exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivityRedirect } />
+   */}
                           <Route path="/project-mapping"                                              exact strict component={ ProjectMapping } />
                           <Route path="/project-mapping/"                                              exact strict component={ ProjectMapping } />
                           <Route path="/project-mapping/:projectMappingId"                                              exact strict component={ ProjectMapping } />
