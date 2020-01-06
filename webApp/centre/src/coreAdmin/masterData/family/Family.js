@@ -327,34 +327,43 @@ class Family extends Component{
       fields["specialCategory"]   = "";
       axios.post('/api/families',familyValues)
         .then((response)=>{
-        // console.log('response', response);
-          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-          swal({
-            title : response.data.message,
-            text  : response.data.message
-          });
+          if(response.data.message==="UID Already Exists"){
+            console.log('response', response);
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });  
+          }else{
+            console.log('response', response);
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });
+            this.setState({
+              "familyID"             :"",
+              "caste"                :"-- Select --",
+              "district"             :"-- Select --",
+              "block"                :"-- Select --",
+              "village"              :"-- Select --",
+              "uID"                  :"",
+              "LHWRFCentre"          :"",
+              "state"                :"",
+              "contact"              :"",        
+              "surnameOfFH"          :"",
+              "firstNameOfFH"        :"",
+              "middleNameOfFH"       :"",
+              "incomeCategory"       :"",
+              "landCategory"         :"",
+              "specialCategory"      :"",
+              fields:fields
+            });
+          }
         })
         .catch(function(error){
           console.log("error = ",error);
         });
-      this.setState({
-        "familyID"             :"",
-        "caste"                :"-- Select --",
-        "district"             :"-- Select --",
-        "block"                :"-- Select --",
-        "village"              :"-- Select --",
-        "uID"                  :"",
-        "LHWRFCentre"          :"",
-        "state"                :"",
-        "contact"              :"",        
-        "surnameOfFH"          :"",
-        "firstNameOfFH"        :"",
-        "middleNameOfFH"       :"",
-        "incomeCategory"       :"",
-        "landCategory"         :"",
-        "specialCategory"      :"",
-        fields:fields
-      });
     }    
   }
 
