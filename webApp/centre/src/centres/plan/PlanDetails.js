@@ -334,101 +334,132 @@ class PlanDetails extends Component{
       return data.totalBudget > 0;
     });   
     // console.log("subActivityDetails",subActivityDetails);
+    var nooffamily = false;
+    var subactivityname = '';
     if(subActivityDetails.length > 0){
-      for(var i=0; i<subActivityDetails.length; i++){
-        var planValues = {
-          "month"               : this.state.month,          
-          "year"                : this.state.year,          
-          "center_ID"           : this.state.center_ID,
-          "center"              : this.state.centerName,
-          "sector_ID"           : this.state.sectorName.split('|')[1],
-          "sectorName"          : this.state.sectorName.split('|')[0],
-          "activity_ID"         : this.state.activityName.split('|')[1],
-          "activityName"        : this.state.activityName.split('|')[0],
-          "subactivity_ID"      : subActivityDetails[i]._id,
-          "subactivityName"     : subActivityDetails[i].subActivityName,
-          "unit"                : subActivityDetails[i].unit,
-          "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
-          "unitCost"            : parseInt(subActivityDetails[i].unitCost),
-          "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
-          "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
-          "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
-          "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
-          "NABARD"              : parseInt(subActivityDetails[i].NABARD),
-          "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
-          "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
-          "directCC"            : parseInt(subActivityDetails[i].directCC),
-          "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
-          "other"               : parseInt(subActivityDetails[i].other),
-          "remark"              : subActivityDetails[i].remark,
-        };
-        axios.post(this.state.apiCall, planValues)
-          .then((response)=>{
-            // console.log("response",response);
-            if (response.status === 200 ) {
-              swal({
-                title : response.data.message,
-                text  : response.data.message
+      for (var j = 0; j < subActivityDetails.length; j++) {
+        if (subActivityDetails[j].noOfFamilies === 0) {
+          nooffamily = true;
+          subactivityname = subActivityDetails[j].subActivityName;
+          break;
+        } 
+      }
+      if (!nooffamily) {
+        for(var i=0; i<subActivityDetails.length; i++){
+          var planValues = {
+            "month"               : this.state.month,          
+            "year"                : this.state.year,          
+            "center_ID"           : this.state.center_ID,
+            "center"              : this.state.centerName,
+            "sector_ID"           : this.state.sectorName.split('|')[1],
+            "sectorName"          : this.state.sectorName.split('|')[0],
+            "activity_ID"         : this.state.activityName.split('|')[1],
+            "activityName"        : this.state.activityName.split('|')[0],
+            "subactivity_ID"      : subActivityDetails[i]._id,
+            "subactivityName"     : subActivityDetails[i].subActivityName,
+            "unit"                : subActivityDetails[i].unit,
+            "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
+            "unitCost"            : parseInt(subActivityDetails[i].unitCost),
+            "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
+            "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
+            "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
+            "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
+            "NABARD"              : parseInt(subActivityDetails[i].NABARD),
+            "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
+            "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
+            "directCC"            : parseInt(subActivityDetails[i].directCC),
+            "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
+            "other"               : parseInt(subActivityDetails[i].other),
+            "remark"              : subActivityDetails[i].remark,
+          };
+          axios.post(this.state.apiCall, planValues)
+            .then((response)=>{
+              // console.log("response",response);
+              if (response.status === 200 ) {
+                swal({
+                  title : response.data.message,
+                  text  : response.data.message
+                });
+                // swal("Plan created successfully");
+              }
+              if(this.state.month ==='Annual'){
+                var email = localStorage.getItem('email')
+                var msgvariable = {
+                  '[User]'    : localStorage.getItem('fullName'),
+                  '[FY]'    : this.refs.year.value,
+                }
+                // console.log("msgvariable :"+JSON.stringify(msgvariable));
+                var inputObj = {  
+                  to           : email,
+                  templateName : 'User - Annual Plan Submitted',
+                  variables    : msgvariable,
+                }
+                // axios
+                // .post('/api/masternotification/send-mail',inputObj)
+                // .then((response)=> {
+                //   // console.log("-------mail------>>",response);
+                  
+                // })
+                // .catch(function (error) {
+                //     console.log(error);
+                // })
+                this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+              }else{
+                var email = localStorage.getItem('email')
+                var msgvariable = {
+                  '[User]'    : localStorage.getItem('fullName'),
+                  '[FY]'    : this.refs.year.value,
+                  '[monthName]' : this.refs.month.value
+                }
+                // console.log("msgvariable :"+JSON.stringify(msgvariable));
+                var inputObj = {  
+                  to           : email,
+                  templateName : 'User - Monthly Plan Submitted',
+                  variables    : msgvariable,
+                }
+                // axios
+                // .post('/api/masternotification/send-mail',inputObj)
+                // .then((response)=> {
+                //   // console.log("-------mail------>>",response);
+                  
+                // })
+                // .catch(function (error) {
+                //     console.log(error);
+                // })
+                this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+              }
+              this.setState({
+                "year"                : "FY 2019 - 2020",
+                "month"               : "Annual Plan",
+                "center"              :"",
+                "sector_id"           :"",
+                "sectorName"          :"-- Select --",
+                "activityName"        :"-- Select --",
+                // "fields"              :fields,
+                "editId"              :"",
+                "subActivityDetails"  :[],
+                "availableSubActivity":[],
+                "availableActivity"   :[],
+                "subActivityDetails[i][name]":"",
+                "shown"               : true,
               });
-              // swal("Plan created successfully");
-            }
-            if(this.state.month ==='Annual'){
-              var email = localStorage.getItem('email')
-              var msgvariable = {
-                '[User]'    : localStorage.getItem('fullName'),
-                '[FY]'    : this.refs.year.value,
-              }
-              // console.log("msgvariable :"+JSON.stringify(msgvariable));
-              var inputObj = {  
-                to           : email,
-                templateName : 'User - Annual Plan Submitted',
-                variables    : msgvariable,
-              }
-              // axios
-              // .post('/api/masternotification/send-mail',inputObj)
-              // .then((response)=> {
-              //   // console.log("-------mail------>>",response);
-                
-              // })
-              // .catch(function (error) {
-              //     console.log(error);
-              // })
-              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-            }else{
-              var email = localStorage.getItem('email')
-              var msgvariable = {
-                '[User]'    : localStorage.getItem('fullName'),
-                '[FY]'    : this.refs.year.value,
-                '[monthName]' : this.refs.month.value
-              }
-              // console.log("msgvariable :"+JSON.stringify(msgvariable));
-              var inputObj = {  
-                to           : email,
-                templateName : 'User - Monthly Plan Submitted',
-                variables    : msgvariable,
-              }
-              // axios
-              // .post('/api/masternotification/send-mail',inputObj)
-              // .then((response)=> {
-              //   // console.log("-------mail------>>",response);
-                
-              // })
-              // .catch(function (error) {
-              //     console.log(error);
-              // })
-              this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-            }
-          })
-          .catch(function(error){
-            console.log("error"+error);
-        });
-        Object.entries(planValues).map( 
-          ([key, value], i)=> {
-            this.setState({
-              [key+'-'+this.state.subactivity_ID] : ""
             })
-          }
-        );
+            .catch(function(error){
+              console.log("error"+error);
+          });
+          Object.entries(planValues).map( 
+            ([key, value], i)=> {
+              this.setState({
+                [key+'-'+this.state.subactivity_ID] : ""
+              })
+            }
+          );
+        }
+      }else{
+         swal({
+            title : "abc",
+            text  : "No. of families of "+subactivityname+" is zero. It must not be zero."
+          });
       }
     }else{
       this.validateFormReq();
@@ -437,84 +468,87 @@ class PlanDetails extends Component{
         text  : "Please fill atleast one SubActivity Details."
       });
     }
-    this.setState({
-      "year"                : "FY 2019 - 2020",
-      "month"               : "Annual Plan",
-      "center"              :"",
-      "sector_id"           :"",
-      "sectorName"          :"-- Select --",
-      "activityName"        :"-- Select --",
-      // "fields"              :fields,
-      "editId"              :"",
-      "subActivityDetails"  :[],
-      "availableSubActivity":[],
-      "availableActivity"   :[],
-      "subActivityDetails[i][name]":"",
-      "shown"               : true,
-    });
+    
   }
   Update(event){    
     event.preventDefault();
     var subActivityDetails = this.state.availableSubActivity;
+    var nooffamily = false;
+    var subactivityname = '';
     if(subActivityDetails&&subActivityDetails.length > 0){
-      for(var i=0; i<subActivityDetails.length; i++){
-        var planValues = {
-          "annualPlan_ID"       : this.state.editId,
-          "monthlyPlan_ID"      : this.state.editId,
-          "month"               : this.state.month,          
-          "year"                : this.state.year,           
-          "center_ID"           : this.state.center_ID,
-          "center"              : this.state.centerName,
-          "sector_ID"           : this.state.sectorName.split('|')[1],
-          "sectorName"          : this.state.sectorName.split('|')[0],
-          "activity_ID"         : this.state.activityName.split('|')[1],
-          "activityName"        : this.state.activityName.split('|')[0],
-          "subactivity_ID"      : subActivityDetails[i]._id,
-          "subactivityName"     : subActivityDetails[i].subActivityName,
-          "unit"                : subActivityDetails[i].unit,
-          "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
-          "unitCost"            : parseInt(subActivityDetails[i].unitCost),
-          "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
-          "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
-          "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
-          "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
-          "NABARD"              : parseInt(subActivityDetails[i].NABARD),
-          "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
-          "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
-          "directCC"            : parseInt(subActivityDetails[i].directCC),
-          "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
-          "other"               : parseInt(subActivityDetails[i].other),
-          "remark"              : subActivityDetails[i].remark,
-        };
-        // console.log('planValues',planValues)
-        axios.patch(this.state.apiCall+'/update', planValues)
-        .then((response)=>{
-          // console.log('response',response)
-          swal({
-            title : response.data.message,
-            text  : response.data.message
+      for (var j = 0; j < subActivityDetails.length; j++) {
+        if (subActivityDetails[j].noOfFamilies === 0) {
+          nooffamily = true;
+          subactivityname = subActivityDetails[j].subActivityName;
+          break;
+        } 
+      }
+      if (!nooffamily) {
+        for(var i=0; i<subActivityDetails.length; i++){
+          var planValues = {
+            "annualPlan_ID"       : this.state.editId,
+            "monthlyPlan_ID"      : this.state.editId,
+            "month"               : this.state.month,          
+            "year"                : this.state.year,           
+            "center_ID"           : this.state.center_ID,
+            "center"              : this.state.centerName,
+            "sector_ID"           : this.state.sectorName.split('|')[1],
+            "sectorName"          : this.state.sectorName.split('|')[0],
+            "activity_ID"         : this.state.activityName.split('|')[1],
+            "activityName"        : this.state.activityName.split('|')[0],
+            "subactivity_ID"      : subActivityDetails[i]._id,
+            "subactivityName"     : subActivityDetails[i].subActivityName,
+            "unit"                : subActivityDetails[i].unit,
+            "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
+            "unitCost"            : parseInt(subActivityDetails[i].unitCost),
+            "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
+            "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
+            "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
+            "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
+            "NABARD"              : parseInt(subActivityDetails[i].NABARD),
+            "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
+            "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
+            "directCC"            : parseInt(subActivityDetails[i].directCC),
+            "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
+            "other"               : parseInt(subActivityDetails[i].other),
+            "remark"              : subActivityDetails[i].remark,
+          };
+          // console.log('planValues',planValues)
+          axios.patch(this.state.apiCall+'/update', planValues)
+          .then((response)=>{
+            // console.log('response',response)
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });
+            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+          })
+          .catch(function(error){
+              console.log("error"+error);
+          }); 
+          this.setState({
+            "year"                : "FY 2019 - 2020",
+            "month"               : "Annual Plan",
+            "center"              : "",
+            "sector_id"           : "",
+            "sectorName"          : "-- Select --",
+            "activityName"        : "-- Select --",
+            "editId"              :"",
+            "availableSubActivity":[],
+            "months"              :["Annual Plan","Till Date", "April","May","June","July","August","September","October","November","December","January","February","March"],
+            "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+            "shown"               : true,
+            "apiCall"             : '/api/annualPlans'
+          },()=>{
+            this.props.history.push('/plan-details');
           });
-          this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-        })
-        .catch(function(error){
-            console.log("error"+error);
-        }); 
-        this.setState({
-          "year"                : "FY 2019 - 2020",
-          "month"               : "Annual Plan",
-          "center"              : "",
-          "sector_id"           : "",
-          "sectorName"          : "-- Select --",
-          "activityName"        : "-- Select --",
-          "editId"              :"",
-          "availableSubActivity":[],
-          "months"              :["Annual Plan","Till Date", "April","May","June","July","August","September","October","November","December","January","February","March"],
-          "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
-          "shown"               : true,
-          "apiCall"             : '/api/annualPlans'
-        },()=>{
-          this.props.history.push('/plan-details');
-        });
+        }
+
+      }else{
+         swal({
+            title : "abc",
+            text  : "No. of families of "+subactivityname+" is zero. It must not be zero."
+          });
       }
     }
   }
@@ -621,7 +655,7 @@ class PlanDetails extends Component{
     console.log("data",data);
     axios.post(this.state.apiCall+'/list', data)
     .then((response)=>{
-      // console.log("response",response);
+      // console.log("response plan Details===>",response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                 : a._id,
@@ -738,14 +772,15 @@ class PlanDetails extends Component{
         method: 'get',
         url: '/api/sectors/'+sector_ID,
       }).then((response)=> {
+        console.log("response for edit",response.data);
         this.setState({
           availableActivity : response.data[0].activity,
           // activityName      : "-- Select --",
         },()=>{
+          // console.log("this.state.editId",this.state.editId);
           if(!this.state.editId){
             this.setState({
                 availableSubActivity : []
-              
             })
           }
         })
@@ -808,6 +843,7 @@ class PlanDetails extends Component{
         method: 'get',
         url: this.state.apiCall+'/'+id,
         }).then((response)=> {
+          console.log("")
         var editData = response.data[0];
         if(editData){
           this.getAvailableActivity(editData.sector_ID);
@@ -839,6 +875,8 @@ class PlanDetails extends Component{
             "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
             "activityName"            : editData.activityName+'|'+editData.activity_ID,
             "subactivity_ID"          : editData.subactivity_ID,
+          },()=>{
+            // console.log("availableSubActivity in func",this.state.availableSubActivity);
           })      
         }
       }).catch(function (error) {
@@ -925,11 +963,9 @@ class PlanDetails extends Component{
     }) 
   }
 
-
-
-
-
   render() {
+                // console.log("availableSubActivity",this.state.availableSubActivity);
+
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
