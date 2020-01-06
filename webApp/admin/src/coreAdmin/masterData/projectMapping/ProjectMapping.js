@@ -44,7 +44,6 @@ class ProjectMapping extends Component{
     }
   }
 
- 
   handleChange(event){
     event.preventDefault();
     console.log("this",$("input:checkbox:checked").data('typechecked'));
@@ -53,24 +52,22 @@ class ProjectMapping extends Component{
       "startDate"                 : this.refs.startDate.value,          
       "endDate"                   : this.refs.endDate.value,          
     });
-   
-  }
+  } 
 
   handleFromChange(event){
     event.preventDefault();
-    const target = event.target;
-    const name = target.name;
-    var dateVal = event.target.value;
-    var dateUpdate = new Date(dateVal);
-    var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+    const target    = event.target;
+    const name      = target.name;
+    var dateVal     = event.target.value;
+    var dateUpdate  = new Date(dateVal);
+    var startDate   = moment(dateUpdate).format('YYYY-MM-DD');
     this.setState({
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
-    console.log("dateUpdate",this.state.startDate);
-  });
-     // localStorage.setItem('newFromDate',dateUpdate);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      console.log("dateUpdate",this.state.startDate);
+    });
   }
   onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
@@ -118,11 +115,9 @@ class ProjectMapping extends Component{
       return true;
     } 
   }
- 
   Submit(event){
     event.preventDefault();
     if($('#sectorMapping').valid()){
-      console.log("sectorData",this.state.sectorData);
       if (this.state.sectorData.length===0){      
         swal({
           title: 'abc',
@@ -137,11 +132,11 @@ class ProjectMapping extends Component{
         });        
       }else{    
         var listofTypesArray = this.state.projectType.map((data, index)=>{
-              return({
-                  label : data.label,
-                  goal_ID : data.value
-                 });
-            })    
+          return({
+              label : data.label,
+              goal_ID : data.value
+             });
+          })    
         var mappingValues= 
         {     
           "projectName"  : this.refs.projectName.value,          
@@ -150,8 +145,6 @@ class ProjectMapping extends Component{
           "endDate"      : this.refs.endDate.value,              
           "sector"       : this.state.sectorData                
         };
-        console.log("mappingValues",mappingValues);
-   
         axios.post('/api/projectMappings',mappingValues)
           .then((response)=>{
             console.log("response",response)
@@ -165,7 +158,6 @@ class ProjectMapping extends Component{
           .catch(function(error){
             console.log('error',error);
           });
-
         this.setState({
           "projectName"           :"",
           "projectType"           :[],
@@ -173,50 +165,45 @@ class ProjectMapping extends Component{
           "endDate"               :"",
           "sectorData"            :[],
         });
-        
       }
     }  
   }
   Update(event){
     event.preventDefault();
     if($('#sectorMapping').valid()){
-      console.log("sectorData",this.state.sectorData);       
       var listofTypesArray = this.state.projectType.map((data, index)=>{
-              return({
-                  label : data.label,
-                  goal_ID : data.value
-                 });
-            })   
-    var mappingValues= 
-    {     
-      "projectMapping_ID"   : this.state.editId,    
-      "projectName"         : this.refs.projectName.value,
-      "type_ID"             : listofTypesArray,           
-      "startDate"           : this.refs.startDate.value,          
-      "endDate"             : this.refs.endDate.value,              
-      "sector"              : this.state.sectorData             
-    };
-        console.log("mappingValues",mappingValues);
-
-    axios.patch('/api/projectMappings/update',mappingValues)
-      .then((response)=>{
-        // console.log("Uresponse",response)
-        swal({
-          title : response.data.message,
-          text  : response.data.message
-        });
-        this.getAvailableSector();
-        this.getData(this.state.startRange, this.state.limitRange);
+      return({
+          goalName  : data.label,
+          goal_ID   : data.value
+         });
+      })   
+      var mappingValues = 
+      {     
+        "projectMapping_ID"   : this.state.editId,    
+        "projectName"         : this.refs.projectName.value,
+        "type_ID"             : listofTypesArray,           
+        "startDate"           : this.refs.startDate.value,          
+        "endDate"             : this.refs.endDate.value,              
+        "sector"              : this.state.sectorData             
+      };
+      axios.patch('/api/projectMappings/update',mappingValues)
+        .then((response)=>{
+          swal({
+            title : response.data.message,
+            text  : response.data.message
+          });
+          this.getAvailableSector();
+          this.getData(this.state.startRange, this.state.limitRange);
       })
       .catch(function(error){
         console.log("error = ",error);
       });
       this.setState({
         "projectName"           : "",
-        "projectType"           :[],
-        "startDate"             :"",
-        "endDate"               :"",
-        "sectorData"            :[],
+        "projectType"           : [],
+        "startDate"             : "",
+        "endDate"               : "",
+        "sectorData"            : [],
       });
       this.props.history.push('/project-mapping');
       this.setState({
@@ -230,7 +217,7 @@ class ProjectMapping extends Component{
     var editId = nextProps.match.params.projectMappingId;
     if(nextProps.match.params.projectMappingId){
       this.setState({
-        editId : editId,
+        editId       : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
         this.edit(this.state.editId);
@@ -293,12 +280,14 @@ class ProjectMapping extends Component{
       url: '/api/projectMappings/'+id,
     }).then((response)=> {
       var editData = response.data[0];
+      // console.log('editData',editData);
       var availableSectors = this.state.availableSectors
-      if(editData.sector&&editData.sector.length>0){
+      if(editData.sector && editData.sector.length>0){
+        // console.log('editData.sector==============',editData.sector,availableSectors)
         editData.sector.map((element)=>{
           if(availableSectors&&availableSectors.length>0){
             var checkSector = availableSectors.findIndex(x=>x._id===element.sector_ID) 
-            if(checkSector>=0){
+           if(checkSector>=0){
               availableSectors[checkSector].checked = "Y"
             }
             availableSectors.map((data,i)=>{
@@ -319,16 +308,42 @@ class ProjectMapping extends Component{
         })
       }
 
-      console.log('availableSectors',availableSectors)
-      this.setState({
-        "projectName"                :editData.projectName,     
-        "projectType"                :editData.type_ID,      
-        "startDate"                  :editData.startDate,      
-        "endDate"                    :editData.endDate,      
-        "sectorData"                 :editData.sector, 
-        "availableSectors"           :availableSectors
-      });
-      
+      if(editData.type_ID.length>1)
+      {
+         var listofTypesArray = editData.type_ID.map((data, index)=>{
+          return({
+              label  : data.goalName,
+              value   : data.goal_ID
+             });
+          })
+        this.setState({
+          "projectName"                :editData.projectName,     
+          "projectType"                :listofTypesArray,      
+          "startDate"                  :editData.startDate,      
+          "endDate"                    :editData.endDate,      
+          "sectorData"                 :editData.sector, 
+          "availableSectors"           :availableSectors
+        });
+      console.log('projectType',this.state.projectType);
+      }else{
+         var listofTypesArray = editData.type_ID.map((data, index)=>{
+          return({
+              label  : data.goalName,
+              value   : data.goal_ID
+             });
+          })
+         console.log("listofTypesArray",listofTypesArray);
+         this.setState({
+          "projectName"                :editData.projectName,     
+          "projectType"                :listofTypesArray[0],      
+          "startDate"                  :editData.startDate,      
+          "endDate"                    :editData.endDate,      
+          "sectorData"                 :editData.sector, 
+          "availableSectors"           :availableSectors
+        });
+      console.log('projectTypeelse',this.state.projectType);
+      }
+
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -548,12 +563,16 @@ class ProjectMapping extends Component{
       var subActivitySelected = activitySelected.subActivity[subActivityIndex];
       subActivitySelected.checked=checkedValue;
       if(checkedValue==="Y"){
+        var checkCheckedActivity = data.activity.filter((item)=>{return item.checked==="Y"});
         var checkChecked =  activitySelected.subActivity.filter((item)=>{return item.checked==="Y"});
-        if(activitySelected.subActivity.length===checkChecked.length){
+        if((activitySelected.subActivity.length+data.activity.length)===(checkChecked.length+checkCheckedActivity.length)){
           data.checked="Y";
-          activitySelected.checked = "Y"
         }else{
           data.checked="N";
+        }
+        if(activitySelected.subActivity.length===checkChecked.length){
+          activitySelected.checked = "Y"
+        }else{
           activitySelected.checked = "N"
         }
         var checkExists =  sectorData.filter((item)=>{return item.subActivity_ID===subActivitySelected._id});
@@ -691,8 +710,8 @@ class ProjectMapping extends Component{
     this.setState({ projectType : projectType }, ()=>{console.log("projecttype = ", this.state.projectType) });
   };
   render() {
-
-      return(
+    console.log('this.state.availableSectors',this.state.availableSectors)
+    return(
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
