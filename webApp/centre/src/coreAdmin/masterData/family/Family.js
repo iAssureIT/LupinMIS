@@ -161,7 +161,7 @@ class Family extends Component{
               required: true,
             },
             uID: {
-              required: true,
+              // required: true,
               regxUID: /^[_0-9]*((-|\s)*[_0-9]){12}$|^$/,
             },
             caste: {
@@ -877,7 +877,7 @@ class Family extends Component{
                               <div className="errorMsg">{this.state.errors.middleNameOfFH}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix">*</span>
+                              <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uIDErr" >
                                 <input type="number" className="form-control inputBox "  placeholder=""ref="uID" name="uID" value={this.state.uID}  maxLength = "12" onChange={this.handleChange.bind(this)} />
                               </div>
