@@ -32,34 +32,34 @@ export default class StatusComponent extends Component{
     return(
         <main className="col-lg-3">
 {/*      <div className="emptyclass"></div>
-*/}         <div className="col-lg-12 mainicon NOpadding" >
+*/}          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mainicon NOpadding" >
             <div className="row">
-              <div className="col-lg-4 ccon1 " style={{backgroundColor:this.props.stats.color}} >
+              <div className="col-lg-4 ccon1" style={{backgroundColor:this.props.stats.color}} >
                 <div className="row"><i className={"fa fa-"+this.props.stats.icon}></i></div>
               </div>
               <div className="col-lg-7 statusBox">
-                {
-
-                  this.props.stats.multipleValues ?  
-                    <React.Fragment>
-                      <div> <b> Centers : {this.props.stats.centerCount}</b> </div>
-                       {this.props.stats.centerData && this.props.stats.centerData.length > 0 ?
-                        this.props.stats.centerData.map((center,i)=>{
-                          return(  
-                            <div className="dashboardHeading1" key={i}>{center.typeOfCenter.split(' ')[0]}  : <strong>{center.count}</strong></div>
-                          )
-                        })
-                        : null
-                      }
-                    </React.Fragment>
-                  :
-                    <div>
-                      <div className="dashboardHeading">{this.props.stats.heading1}</div>
-                      <div className="per"><strong>{this.props.stats.value1}</strong></div>
-                      <div className="dashboardHeading">{this.props.stats.heading2}</div>
-                      <div className="per"><strong>{this.props.stats.value2}</strong></div>
-                    </div>              
-                }
+              {
+                this.props.stats.multipleValues ?  
+                <React.Fragment>
+                  <div> <strong> Centers </strong>: {this.props.stats.centerCount}   </div>
+                   {this.props.stats.centerData && this.props.stats.centerData.length > 0 ?
+                    this.props.stats.centerData.map((center,i)=>{
+                      return(  
+                        <div className="dashboardHeading1" key={i}> <strong>{center.typeOfCenter.split(' ')[0]} </strong>  :{center.count}</div>
+                      )
+                    })
+                    : null
+                  }
+                </React.Fragment>
+              
+              :
+                <div>
+                  <div className="dashboardHeading"><strong>{this.props.stats.heading1}</strong></div>
+                  <div className="per">{this.props.stats.value1}</div>
+                  <div className="dashboardHeading"><strong>{this.props.stats.heading2}</strong></div>
+                  <div className="per">{this.props.stats.value2}</div>
+                </div>
+              }
               </div>
             </div>
           </div>

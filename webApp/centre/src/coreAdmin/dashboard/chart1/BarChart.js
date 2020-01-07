@@ -24,7 +24,7 @@ export default class BarChart extends Component{
         labels: [],
         datasets: [
           {
-            label: 'Achievement Family Upgradation',
+            label: 'Family Upgradation',
             backgroundColor:'rgba(255, 206, 86, 1)',
             borderColor: 'rgba(255, 206, 86, 0.5)',
             borderWidth: 1,
@@ -34,7 +34,7 @@ export default class BarChart extends Component{
             data: []
           },
           {
-            label: 'Achievement Reach',
+            label: 'Outreach',
             backgroundColor:'rgba(54, 162, 235, 1)',
             borderColor: 'rgba(54, 162, 235, 0.5)',
             borderWidth: 1,

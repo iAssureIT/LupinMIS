@@ -42,11 +42,11 @@ export default class StatusComponent extends Component{
               {
                 this.props.stats.multipleValues ?  
                 <React.Fragment>
-                  <div> <b> Centers : {this.props.stats.centerCount}  </b> </div>
+                  <div> <strong> Centers </strong>: {this.props.stats.centerCount}   </div>
                    {this.props.stats.centerData && this.props.stats.centerData.length > 0 ?
                     this.props.stats.centerData.map((center,i)=>{
                       return(  
-                        <div className="dashboardHeading1" key={i}>{center.typeOfCenter.split(' ')[0]}  : <strong>{center.count}</strong></div>
+                        <div className="dashboardHeading1" key={i}> <strong>{center.typeOfCenter.split(' ')[0]} </strong>  :{center.count}</div>
                       )
                     })
                     : null
@@ -55,10 +55,10 @@ export default class StatusComponent extends Component{
               
               :
                 <div>
-                  <div className="dashboardHeading">{this.props.stats.heading1}</div>
-                  <div className="per"><strong>{this.props.stats.value1}</strong></div>
-                  <div className="dashboardHeading">{this.props.stats.heading2}</div>
-                  <div className="per"><strong>{this.props.stats.value2}</strong></div>
+                  <div className="dashboardHeading"><strong>{this.props.stats.heading1}</strong></div>
+                  <div className="per">{this.props.stats.value1}</div>
+                  <div className="dashboardHeading"><strong>{this.props.stats.heading2}</strong></div>
+                  <div className="per">{this.props.stats.value2}</div>
                 </div>
               }
               </div>
