@@ -4,6 +4,8 @@ import axios                from 'axios';
 import swal                 from 'sweetalert';
 import moment               from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader               from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 
 class ActivitywisePeriodicPlanReport extends Component{
@@ -270,9 +272,13 @@ class ActivitywisePeriodicPlanReport extends Component{
             if(center_ID==="all"){
                 console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
                 if(sector_ID==="all"){
+                    $(".fullpageloader").show();
+
                     axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                     .then((response)=>{
                       console.log("resp",response);
+                       $(".fullpageloader").hide();
+
                         var tableData = response.data.map((a, i)=>{
                             return {
                             _id                                       : a._id,            
@@ -486,6 +492,7 @@ class ActivitywisePeriodicPlanReport extends Component{
   render(){
     return(    
         <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <Loader type="fullpageloader" />
             <div className="row">
                 <div className="formWrapper"> 
                     <section className="content">

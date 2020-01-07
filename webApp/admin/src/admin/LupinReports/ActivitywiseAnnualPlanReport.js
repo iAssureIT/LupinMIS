@@ -8,6 +8,7 @@ import WeeklyReport         from '../Reports/WeeklyReport.js';
 import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
+import Loader               from "../../common/Loader.js";
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 
@@ -260,9 +261,13 @@ class ActivitywiseAnnualPlanReport extends Component{
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
             console.log(startDate, endDate, year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);  
+            $(".fullpageloader").show();
+
             axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
               .then((response)=>{
                 console.log("resp",response);
+                $(".fullpageloader").hide();
+
                   var tableData = response.data.map((a, i)=>{
                   return {
                   _id                                       : a._id,            
@@ -392,6 +397,7 @@ class ActivitywiseAnnualPlanReport extends Component{
     console.log("in render all",this.state.tableData);
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">

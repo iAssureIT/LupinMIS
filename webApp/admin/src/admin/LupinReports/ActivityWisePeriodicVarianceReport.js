@@ -9,6 +9,8 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader               from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 
 class ActivityWisePeriodicVarianceReport extends Component{
@@ -284,9 +286,13 @@ class ActivityWisePeriodicVarianceReport extends Component{
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(center_ID==="all"){
                 if(sector_ID==="all"){
+                    $(".fullpageloader").show();
+
                     axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                     .then((response)=>{
                       console.log("resp",response);
+                       $(".fullpageloader").hide();
+
                         var tableData = response.data.map((a, i)=>{
                         return {
                             _id                                       : a._id,            
@@ -550,6 +556,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
   render(){
     return(  
         <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <Loader type="fullpageloader" />
+
             <div className="row">
                 <div className="formWrapper"> 
                     <section className="content">

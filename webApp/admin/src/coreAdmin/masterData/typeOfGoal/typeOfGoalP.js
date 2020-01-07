@@ -4,8 +4,9 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import validate               from 'jquery-validation';
 import {withRouter}           from 'react-router-dom';
-// import _                      from 'underscore';
+
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
+import Loader                 from "../../../common/Loader.js";
 // import "./typeOfGoal.css";
  
 class typeOfGoal extends Component{
@@ -76,8 +77,12 @@ class typeOfGoal extends Component{
       "typeofGoal"       :this.refs.typeofGoal.value,
       "user_ID"          : this.state.user_ID,
       };
+      $(".fullpageloader").show();
+
       axios.post('/api/typeofgoals',typeofGoalValues)
       .then((response)=>{
+       //$(".fullpageloader").hide();
+
         this.getData(this.state.startRange, this.state.limitRange);
         console.log("typeofGoalValues",response );
         swal({
@@ -274,6 +279,7 @@ class typeOfGoal extends Component{
     return (
         <div className="container-fluid">
           <div className="row">
+            <Loader type="fullpageloader" />
             <div className="formWrapper">
               <section className="content">
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">

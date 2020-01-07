@@ -3,7 +3,6 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import validate               from 'jquery-validation';
-
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import CreateBeneficiary      from "./CreateBeneficiary.js";
 import "./Beneficiary.css";
@@ -74,6 +73,7 @@ class Beneficiary extends Component{
     console.log(event);
     if(event.currentTarget.name==='familyID'){
       let id = $(event.currentTarget).find('option:selected').attr('data-id')
+      // $(".fullpageloader").show();
       axios.get('/api/families/'+id)
       .then((response)=>{
         console.log('response families',response)
@@ -87,6 +87,8 @@ class Beneficiary extends Component{
           "uidNumber"                 :"",
           "relation"                  : "-- Select --",
         })
+        // $(".fullpageloader").hide();
+
       })
       .catch(function(error){ 
         console.log("error = ",error);
@@ -134,8 +136,9 @@ class Beneficiary extends Component{
     else{
       return true;
     }*/
-    // var optionValue = evt.target.options[1].value;
-    // console.log("optionValue",optionValue);
+    let idx = evt.target.selectedIndex;
+    var optionValue = evt.target.options[idx].id;
+    console.log("optionValue",optionValue);
   }
 
   SubmitBeneficiary(event){
@@ -308,6 +311,7 @@ class Beneficiary extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
+
     this.getLength();
     // this.getData();
     this.getData(this.state.startRange, this.state.limitRange);
@@ -675,16 +679,16 @@ class Beneficiary extends Component{
                             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uidNumberErr" >
-                                <input type="number" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber} disabled={this.state.Check == true &&  this.state.uidNumber !== ""   ? true :false} maxLength = "12" onChange={this.handleChange.bind(this)} />
+                                <input type="number" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber} maxLength = "12" onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
                               <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
-                                <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)} disabled={this.state.Check == true ? true :false} >
+                                <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.isTextKey.bind(this)}  >
                                   <option  value="">-- Select --</option>
-                                  <option>Self</option>
-                                  <option>Wife</option>
+                                  <option id="1">Self</option>
+                                  <option id="2">Wife</option>
                                   <option>Husband</option>
                                   <option>Son</option>
                                   <option>Daughter</option>

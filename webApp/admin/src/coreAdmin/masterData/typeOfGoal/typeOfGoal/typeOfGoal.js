@@ -4,8 +4,8 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import validate               from 'jquery-validation';
 import {withRouter}           from 'react-router-dom';
-// import _                      from 'underscore';
-import IAssureTable             from "../../../IAssureTable/IAssureTable.jsx";
+import Loader                 from "../../../../common/Loader.js";
+import IAssureTable           from "../../../IAssureTable/IAssureTable.jsx";
 import "./typeOfGoal.css";
  
 class typeOfGoal extends Component{
@@ -185,9 +185,11 @@ class typeOfGoal extends Component{
       startRange : startRange,
     }
     console.log('data', data);
+      $(".fullpageloader").show();
+
      axios.get('/api/typeofgoals/list',data)
     .then((response)=>{
-      // console.log('tableData', response.data);
+      $(".fullpageloader").hide();
       this.setState({
         tableData : response.data
       })
@@ -230,6 +232,8 @@ class typeOfGoal extends Component{
   // console.log('render');
     return (
           <div>
+          <Loader type="fullpageloader" />
+
            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable marginT50 " id="typeofGoalDetails">
              
               <div className="row">

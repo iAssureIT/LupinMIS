@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-// import $                    from 'jquery';
+import $                    from 'jquery';
 import axios                from 'axios';
 import swal                 from 'sweetalert';
-// import moment               from 'moment';
+import Loader               from "../../common/Loader.js";
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 
@@ -256,11 +256,14 @@ class ActivitywiseAnnualCompletionReport extends Component{
           var url = '/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
         }else{
           var url ='/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
-        }   
+        }
+        $(".fullpageloader").show();
         axios.get(url)
         // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
         .then((response)=>{
             console.log('response', response);
+            $(".fullpageloader").hide();
+
             var tableData = response.data.map((a, i)=>{
             return {
               _id                           : a._id,
@@ -300,6 +303,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
   render(){ 
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">
