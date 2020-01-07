@@ -16,10 +16,14 @@ class Beneficiary extends Component{
    
     this.state = {
       // "relation"            :"-- Select --",
+      "Check"            :false,
       "relation"            :"",
       "familyID"            :"",
       "beneficiaryID"       :"",
+      "uidNumberCheck"        :"",
       "firstNameOfBeneficiary"  :"",
+      "middleNameOfBeneficiaryCheck"  :"",
+      "firstNameOfBeneficiaryCheck"  :"",
       "middleNameOfBeneficiary" :"",
       "surnameOfBeneficiary"    :"",
       "nameofbeneficiaries" :"",
@@ -72,8 +76,20 @@ class Beneficiary extends Component{
       let id = $(event.currentTarget).find('option:selected').attr('data-id')
       axios.get('/api/families/'+id)
       .then((response)=>{
-        // console.log('response',response)
-        this.setState({"surnameOfBeneficiary":response.data[0].surnameOfFH})
+        console.log('response families',response)
+        this.setState({
+          "surnameOfBeneficiary"          :response.data[0].surnameOfFH,
+          "firstNameOfBeneficiaryCheck"   :response.data[0].firstNameOfFH,
+          "uidNumberCheck"                :response.data[0].uidNumber,
+          "middleNameOfBeneficiaryCheck"  :response.data[0].middleNameOfFH,
+          "firstNameOfBeneficiary"        : "",
+          "middleNameOfBeneficiary"       : "",
+          "uidNumber"                     : "",
+          "relation"                      : "-- Select --",
+
+        },()=>{
+          console.log("middleNameOfBeneficiaryCheck",response.data[0].middleNameOfFH);
+        })
       })
       .catch(function(error){ 
         console.log("error = ",error);
@@ -87,7 +103,54 @@ class Beneficiary extends Component{
       "uidNumber"                 : this.refs.uidNumber.value,
       "relation"                  : this.refs.relation.value,
     });
-  }
+    if(this.refs.firstNameOfBeneficiary.value === this.state.firstNameOfBeneficiaryCheck )
+      {   
+        var uidNumber = "";
+        var middleNameOfBeneficiaryCheck = "";
+         if(this.state.uidNumberCheck != "")
+         {
+          uidNumber = this.state.uidNumberCheck;
+         }else{
+          uidNumber = this.refs.uidNumber.value;
+
+         }
+         console.log("middleNameOfBeneficiaryCheck",this.state.middleNameOfBeneficiaryCheck)
+         if(this.state.middleNameOfBeneficiaryCheck != "")
+         {
+          middleNameOfBeneficiaryCheck = this.state.middleNameOfBeneficiaryCheck;
+         }else{
+          middleNameOfBeneficiaryCheck = this.refs.middleNameOfBeneficiary.value; 
+
+         }
+        this.setState({
+            uidNumber : uidNumber,
+            relation  : "Self",
+            middleNameOfBeneficiary : middleNameOfBeneficiaryCheck,
+            Check     : false,
+        },()=>{
+          console.log("middleNameOfBeneficiaryCheck",this.state.middleNameOfBeneficiaryCheck)
+        })
+            
+      }
+      else if(this.refs.firstNameOfBeneficiary.value == ""){
+        this.setState({ 
+            uidNumber : "",
+            relation  : "-- Select --",
+            middleNameOfBeneficiary : "",
+            Check     : false,
+        })
+
+      }
+      else{
+         this.setState({ 
+            uidNumber : this.refs.uidNumber.value,
+            relation  : this.refs.relation.value,
+            middleNameOfBeneficiary : this.refs.middleNameOfBeneficiary.value,
+            Check     : false,
+        })
+
+      }
+    }
 
   isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -128,23 +191,35 @@ class Beneficiary extends Component{
     // fields["firstNameOfBeneficiary"]    = "";
     // fields["middleNameOfBeneficiary"]   = "";
 
-    this.setState({
-      "familyID"                 :"",
-      "beneficiaryID"            :"",
-      "surnameOfBeneficiary"     :"",   
-      "firstNameOfBeneficiary"   :"",   
-      "middleNameOfBeneficiary"  :"",   
-      "uidNumber"                :"",   
-      "relation"                 :"",   
-      // fields:fields
-    });
+    
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-        swal({
-          title : response.data.message,
-          text  : response.data.message,
-        });
+        if(response.data.message==="UID already exists"){
+          console.log('response', response);
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+          swal({
+            title : response.data.message,
+            text  : response.data.message
+          });  
+          this.setState({
+            "uidNumber"                :"",   
+          });
+        }else{
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            swal({
+              title : response.data.message,
+              text  : response.data.message,
+            });
+          this.setState({
+            "familyID"                 :"",
+            "beneficiaryID"            :"",
+            "surnameOfBeneficiary"     :"",   
+            "firstNameOfBeneficiary"   :"",   
+            "middleNameOfBeneficiary"  :"",   
+            "uidNumber"                :"",   
+            "relation"                 :"",   
+          });
+        }
       })
       .catch((error)=>{
         console.log("error = ",error);
@@ -180,25 +255,36 @@ class Beneficiary extends Component{
       console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-          swal({
-            title : response.data.message,
-            text  : response.data.message,
-          });
-          
+          if(response.data.message==="UID already exists"){
+            console.log('response', response);
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });  
+            this.setState({
+              "uidNumber"                :"",   
+            });
+          }else{
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            swal({
+              title : response.data.message,
+              text  : response.data.message,
+            });
+            this.setState({
+              "familyID"                 :"",
+              "nameofbeneficiaries"      :"",   
+              "uidNumber"                :"",
+              "relation"                 :"",
+              "surnameOfBeneficiary"     :"",   
+              "firstNameOfBeneficiary"   :"",   
+              "middleNameOfBeneficiary"  :"",   
+            });
+          }          
         })
         .catch((error)=>{
           console.log("error = ",error);
         });
-      this.setState({
-        "familyID"                 :"",
-        "nameofbeneficiaries"      :"",   
-        "uidNumber"                :"",
-        "relation"                 :"",
-        "surnameOfBeneficiary"     :"",   
-        "firstNameOfBeneficiary"   :"",   
-        "middleNameOfBeneficiary"  :"",   
-      });
       this.props.history.push('/beneficiary');
       this.setState({
         "editId"              : "",
@@ -540,6 +626,31 @@ class Beneficiary extends Component{
       });
     }
   }
+  getUID(event)
+  {
+    /*if(this.state.firstNameOfBeneficiary === this.state.firstNameOfBeneficiaryCheck )
+    {
+       
+      var uidNumber = this.state.uidNumberCheck;
+      var middleNameOfBeneficiaryCheck = this.state.middleNameOfBeneficiaryCheck;
+      this.setState({
+          uidNumber : uidNumber,
+          relation  : "Self",
+          middleNameOfBeneficiary : middleNameOfBeneficiaryCheck,
+          Check     : false,
+      })
+          
+    }
+    else{
+      this.setState({
+          uidNumber : "",
+          relation  : "-- Select --",
+          middleNameOfBeneficiary : "",
+          Check     : false,
+      })
+
+    }*/
+  }
   render() {
     return (
       <div className="container-fluid">
@@ -600,19 +711,19 @@ class Beneficiary extends Component{
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">First Name  </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfBeneficiaryErr" >
-                                <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                                <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onBlur={this.getUID.bind(this)} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Middle Name  </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfBeneficiaryErr" >
-                                <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                                <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary}  onBlur={this.getUID.bind(this)} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">UID No (Aadhar Card No)  </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="uidNumberErr" >
-                                <input type="number" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber} maxLength = "12" onChange={this.handleChange.bind(this)} />
+                                <input type="number" className="form-control inputBox "  placeholder=""ref="uidNumber" name="uidNumber" value={this.state.uidNumber}  maxLength = "12" onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
