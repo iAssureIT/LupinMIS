@@ -746,11 +746,7 @@ class ProjectMapping extends Component{
                           <label className="formLable">Goal Type</label><span className="asterix">*</span>
                           {console.log("this.state.projectType",this.state.projectType)}
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectType" >
-                          {/*  <select className="custom-select form-control inputBox" ref="projectType" name="projectType" value={this.state.projectType} onChange={this.selectType.bind(this)}>
-                              <option disabled="disabled" selected="true" >-- Select --</option>
-                             
-
-                            </select>*/}
+                         
                               {
                                 this.state.listofTypesArray ?
                              
