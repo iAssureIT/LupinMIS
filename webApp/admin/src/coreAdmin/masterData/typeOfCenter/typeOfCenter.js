@@ -136,7 +136,7 @@ class typeOfCenter extends Component{
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
      $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
       return regexpr.test(value);
-    }, "Please enter valid Email.");
+    }, "Please enter valid Center Type.");
      
     $("#typeofCenterDetails").validate({
       rules: {
@@ -191,7 +191,6 @@ class typeOfCenter extends Component{
         "typeofCenter"     :editData.typeofCenter,
       });
     }).catch(function (error) {
-      console.log("error = ",error);
     });
   }
   getData(startRange, limitRange){
