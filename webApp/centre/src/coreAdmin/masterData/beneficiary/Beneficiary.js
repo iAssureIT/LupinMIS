@@ -194,7 +194,7 @@ class Beneficiary extends Component{
     
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
-        if(response.data.message==="UID already exists"){
+        if(response.data.message==="UID already exist"){
           console.log('response', response);
           this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
@@ -255,7 +255,7 @@ class Beneficiary extends Component{
       console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
-          if(response.data.message==="UID already exists"){
+          if(response.data.message==="UID already exist"){
             console.log('response', response);
             this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
             swal({
