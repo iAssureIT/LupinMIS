@@ -656,7 +656,8 @@ class PlanDetails extends Component{
       year       : year,
       startRange : startRange,
       limitRange : limitRange,
-      startDate  : moment().year()+"-04-01",
+      startDate  : year+"-04-01",
+      // startDate  : moment().year()+"-04-01",
       endDate    : moment(new Date()).format("YYYY-MM-DD"),
     }
     console.log("data",data);
