@@ -89,6 +89,12 @@ class ForgotPassword extends Component {
                 })
                 .catch(function (error) {
                   console.log(error);
+                  swal("abc","Email ID is Invalid.").then(() => {
+                    // console.log('that',that)
+                    that.setState({
+                      buttonValue : 'Send Verification Code'
+                    })
+                  });                  
                 })
               }
             })

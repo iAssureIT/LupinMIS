@@ -334,6 +334,9 @@ class Family extends Component{
               title : response.data.message,
               text  : response.data.message
             });  
+            this.setState({
+              "uID"                  :"",
+            });
           }else{
             console.log('response', response);
             this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
@@ -416,33 +419,45 @@ class Family extends Component{
 
       axios.patch('/api/families/update', familyValues)
         .then((response)=>{
-          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-          swal({
-            title : response.data.message,
-            text  : response.data.message
-          });
+          if(response.data.message==="UID Already Exists"){
+            console.log('response', response);
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });  
+            this.setState({
+              "uID"                  :"",
+            });
+          }else{
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });
+            this.setState({
+              "familyID"             :"",
+              "uID"                  :"",
+              "caste"                :"-- Select --",
+              "district"             :"-- Select --",
+              "block"                :"-- Select --",
+              "village"              :"-- Select --",
+              "LHWRFCentre"          :"",
+              "state"                :"",
+              "contact"              :"",        
+              "surnameOfFH"          :"",
+              "firstNameOfFH"        :"",
+              "middleNameOfFH"       :"",
+              "incomeCategory"       :"",
+              "landCategory"         :"",
+              "specialCategory"      :"",
+              fields:fields
+            });
+          }
         })
         .catch(function(error){
           console.log("error"+error);
         });
-      this.setState({
-        "familyID"             :"",
-        "uID"                  :"",
-        "caste"                :"-- Select --",
-        "district"             :"-- Select --",
-        "block"                :"-- Select --",
-        "village"              :"-- Select --",
-        "LHWRFCentre"          :"",
-        "state"                :"",
-        "contact"              :"",        
-        "surnameOfFH"          :"",
-        "firstNameOfFH"        :"",
-        "middleNameOfFH"       :"",
-        "incomeCategory"       :"",
-        "landCategory"         :"",
-        "specialCategory"      :"",
-        fields:fields
-      });
       this.props.history.push('/family');
       this.setState({
         "editId"               : "",
@@ -452,42 +467,42 @@ class Family extends Component{
     getAvailableVillages()
   {
     axios({
-      method: 'get',
-      url: '/api/centers/'+this.state.center_ID,
-      }).then((response)=> {
-      function removeDuplicates(data, param, district, block){
-        return data.filter(function(item, pos, array){
-          return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
         })
-      }
-      var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
-      this.setState({
-        listofVillages   : availablevillageInCenter,
-      })
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
   }
   getAvailableBlocks()
   {
     axios({
-      method: 'get',
-      url: '/api/centers/'+this.state.center_ID,
-      }).then((response)=> {
-      // console.log('availableblockInCenter ==========',response);
-      function removeDuplicates(data, param, district){
-        return data.filter(function(item, pos, array){
-          return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
-        })
-      }
-      var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
-      this.setState({
-        listofBlocks     : availableblockInCenter,
-      })
-      console.log("availableblockInCenter",availableblockInCenter);
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
+          method: 'get',
+          url: '/api/centers/'+this.state.center_ID,
+          }).then((response)=> {
+          // console.log('availableblockInCenter ==========',response);
+          function removeDuplicates(data, param, district){
+            return data.filter(function(item, pos, array){
+              return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+            })
+          }
+          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+          this.setState({
+            listofBlocks     : availableblockInCenter,
+          })
+          console.log("availableblockInCenter",availableblockInCenter);
+        }).catch(function (error) {
+          console.log("error = ",error);
+        });
   }
   edit(id){
     axios({
