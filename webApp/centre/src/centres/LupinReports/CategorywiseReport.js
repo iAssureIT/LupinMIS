@@ -9,6 +9,8 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader               from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 class CategorywiseReport extends Component{
 	constructor(props){
@@ -236,8 +238,11 @@ class CategorywiseReport extends Component{
   getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType){        
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && projectCategoryType  && beneficiaryType){
+        $(".fullpageloader").show();
         axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
         .then((response)=>{
+          $(".fullpageloader").hide();
+
           console.log("resp",response);
             var tableData = response.data.map((a, i)=>{
             return {
@@ -377,6 +382,7 @@ class CategorywiseReport extends Component{
   render(){
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">

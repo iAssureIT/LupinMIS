@@ -144,10 +144,13 @@ class EMPReport extends Component{
     console.log(startDate, endDate, center_ID);
     if(startDate && endDate && center_ID && beneficiaryType){
       if(center_ID==="all"){
-        if(beneficiaryType==="all"){     
+        if(beneficiaryType==="all"){  
+          $(".fullpageloader").show();
           axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/Empowerment Line Goal/all')
           .then((response)=>{
             console.log("resp",response);
+            $(".fullpageloader").hide();
+
             var tableData = response.data.map((a, i)=>{
               return {
                   _id             : a._id,            
@@ -176,9 +179,13 @@ class EMPReport extends Component{
             
           });
         }else{
+          $(".fullpageloader").show();
+
           axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/'+ "Empowerment Line Goal/"+beneficiaryType)
           .then((response)=>{
             console.log("resp",response);
+            $(".fullpageloader").hide();
+
             var tableData = response.data.map((a, i)=>{
               return {
                   _id             : a._id,            
@@ -207,10 +214,14 @@ class EMPReport extends Component{
         
           });
         }
-      }else{        
+      }else{      
+          $(".fullpageloader").show();
+  
           axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "Empowerment Line Goal/"+beneficiaryType)
           .then((response)=>{
             console.log("resp",response);
+            $(".fullpageloader").hide();
+
             var tableData = response.data.map((a, i)=>{
               return {
                   _id             : a._id,            
@@ -238,7 +249,6 @@ class EMPReport extends Component{
             console.log("error = ",error);
             
           });
-        
       }
     }
   }

@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/tab.js';
 import "./SectorAndActivity.css";
 
-class SectorAndActivity extends Component{
+class SandA extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -18,14 +18,25 @@ class SectorAndActivity extends Component{
       "shown"   : true,
     }
     this.changeTab = this.changeTab.bind(this); 
+    console.log("In constructor")
+
 
   }
   componentDidMount(){
+    console.log("In componentDidMount")
+    this.props.history.push('/SectorAndActivityRedirect/'+this.state.tabtype);
+
+  }
+  componentWillMount(){
+
     var editId = this.props.match.params.tabName;
+        this.changeTab = this.changeTab.bind(this); 
+
     console.log('editId', editId);
     this.setState({
       editId : editId,
     })
+    console.log("In componentWillMount")
     // this.setState({
     //   tabtype : editId.subactivityId ? 'subactivity' : (editId.activityId ? "activity" : "sector" )
     // },()=>{
@@ -35,6 +46,8 @@ class SectorAndActivity extends Component{
   componentWillUnmount(){
     $("script[src='/js/adminLte.js']").remove();
     $("link[href='/css/dashboard.css']").remove();
+        console.log("In componentWillUnmount")
+
   }
   toglehidden(){
     this.setState({
@@ -42,6 +55,7 @@ class SectorAndActivity extends Component{
     });
   }
   changeTab = (data)=>{
+    console.log("in changeTab ")
     this.setState({
       tabtype : data,
     },()=>{
@@ -50,6 +64,7 @@ class SectorAndActivity extends Component{
     });
   }
   render() {
+    console.log("In Render")
     var shown = {
       display: this.state.shown ? "block" : "none"
     };  
@@ -117,11 +132,12 @@ class SectorAndActivity extends Component{
                        }
                       </div>
                       <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-                      {console.log(" this.state.editId ", this.state.editId )}
                         <div className="tab-pane" id="sector">
                         {
-                          this.state.tabtype === "sector"?
-                          <div className="row"><Sector dataVal={this.state.tabtype} /></div>       
+                          this.state.tabtype == "sector"?
+                          <div className="row"><Sector dataVal={this.state.tabtype} />
+                            {console.log("In sector")}
+                          </div>       
                           :
                           null
                         } 
@@ -161,4 +177,4 @@ class SectorAndActivity extends Component{
   }
 
 }
-export default SectorAndActivity
+export default SandA

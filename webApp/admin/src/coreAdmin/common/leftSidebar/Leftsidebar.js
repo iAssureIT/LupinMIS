@@ -236,6 +236,12 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Sector & Activity</span>
                       </Link>
                     </li>
+                    {/*<li>
+                      <Link to="/SectorAndActivityRedirect/" title="Sector & Activity">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Sector & Activity R</span>
+                      </Link>
+                    </li>*/}
                     <li>
                       <Link to="/type-goal" title="Goal Type">
                         <i className="fa fa-circle-o" /> 

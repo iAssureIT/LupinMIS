@@ -4,6 +4,8 @@ import axios                from 'axios';
 import swal                 from 'sweetalert';
 import moment               from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader               from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 class UpgradedBeneficiaryReport extends Component{
   constructor(props){
@@ -238,8 +240,10 @@ class UpgradedBeneficiaryReport extends Component{
         }else{
           var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+upgraded
         }
+        $(".fullpageloader").show();
         axios.get(url)
         .then((response)=>{
+          $(".fullpageloader").hide();
           console.log("resp",response);
           var data = response.data
           var tableData = [];
@@ -401,6 +405,7 @@ class UpgradedBeneficiaryReport extends Component{
   render(){
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">

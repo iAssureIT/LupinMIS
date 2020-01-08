@@ -8,6 +8,8 @@ import WeeklyReport                                from '../Reports/WeeklyReport
 import MonthlyReport                               from '../Reports/MonthlyReport.js';
 import CustomisedReport                            from '../Reports/CustomisedReport.js';
 import ActivitywiseAnnualCompletionYearlyReport    from '../Reports/ActivitywiseAnnualCompletionYearlyReport.js';
+import Loader                                      from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 
 class ActivitywiseAnnualCompletionReport extends Component{
@@ -209,8 +211,10 @@ class ActivitywiseAnnualCompletionReport extends Component{
       var startDate = year.substring(3, 7)+"-04-01";
       var endDate = year.substring(10, 15)+"-03-31";    
       if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
+        $(".fullpageloader").show();
         axios.get('/api/report/activity_annual_achievement_report/:startDate/:endDate/:center_ID/:sector/:projectCategoryType/:projectName/:beneficiaryType')
         .then((response)=>{
+          $(".fullpageloader").hide();
           console.log("resp",response);
           this.setState({
             tableDatas : response.data
@@ -234,6 +238,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">

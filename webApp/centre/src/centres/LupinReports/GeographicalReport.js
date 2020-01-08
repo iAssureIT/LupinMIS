@@ -4,6 +4,8 @@ import swal                 from 'sweetalert';
 import axios                from 'axios';
 import moment               from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader               from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 class GeographicalReport extends Component{
 	constructor(props){
@@ -355,9 +357,11 @@ class GeographicalReport extends Component{
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType){
         if(sector_ID==="all"){
+          $(".fullpageloader").show();
           axios.get('/api/report/geographical_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
           .then((response)=>{
             console.log("resp",response);
+              $(".fullpageloader").hide();
               var tableData = response.data.map((a, i)=>{
               return {
                 _id                                   : a._id,            
@@ -532,6 +536,7 @@ class GeographicalReport extends Component{
   render(){
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">

@@ -9,6 +9,8 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader               from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 class SDGReport extends Component{
   constructor(props){
@@ -146,26 +148,29 @@ class SDGReport extends Component{
     if(startDate && endDate && center_ID && beneficiaryType){
       if(center_ID==="all"){
         if(beneficiaryType==="all"){
-        axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/'+ "SDG Goal/all")         
-        .then((response)=>{
-          console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-                _id             : a._id,            
-                goalName        : a.goalName,
-                activityName    : a.activityName,
-                unit            : a.unit,
-                Quantity        : a.Quantity,
-                Amount          : a.Amount,
-                Beneficiaries   : a.Beneficiaries,
-                LHWRF           : a.LHWRF,
-                NABARD          : a.NABARD,
-                Govt            : a.Govt,
-                Bank            : a.Bank,
-                Community       : a.Community,
-                Other           : a.Other,
-            }
-        })  
+          $(".fullpageloader").show();
+          axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/'+ "SDG Goal/all")         
+          .then((response)=>{
+            console.log("resp",response);
+            $(".fullpageloader").hide();
+
+            var tableData = response.data.map((a, i)=>{
+              return {
+                  _id             : a._id,            
+                  goalName        : a.goalName,
+                  activityName    : a.activityName,
+                  unit            : a.unit,
+                  Quantity        : a.Quantity,
+                  Amount          : a.Amount,
+                  Beneficiaries   : a.Beneficiaries,
+                  LHWRF           : a.LHWRF,
+                  NABARD          : a.NABARD,
+                  Govt            : a.Govt,
+                  Bank            : a.Bank,
+                  Community       : a.Community,
+                  Other           : a.Other,
+              }
+          })  
           this.setState({
             tableData : tableData
           },()=>{
@@ -353,6 +358,7 @@ class SDGReport extends Component{
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">

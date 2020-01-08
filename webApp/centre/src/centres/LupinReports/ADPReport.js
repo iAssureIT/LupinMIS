@@ -9,6 +9,8 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader               from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 class ADPReport extends Component{
   constructor(props){
@@ -110,8 +112,12 @@ class ADPReport extends Component{
    
     getData(startDate, endDate,center_ID, goal, beneficiaryType){
         console.log(startDate, endDate, center_ID);
+       // $(".fullpageloader").show();
+
         axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "ADP Goal/"+beneficiaryType)
         .then((response)=>{
+          //$(".fullpageloader").hide();
+
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
             return {
@@ -259,6 +265,7 @@ class ADPReport extends Component{
   render(){
     return(     
         <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <Loader type="fullpageloader" />
             <div className="row">
                 <div className="formWrapper"> 
                     <section className="content">

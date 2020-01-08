@@ -42,7 +42,7 @@ import AssignPermissionToModules                  from '../accessManagement/Assi
 
 import SectorAndActivity                          from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
 
-import SectorAndActivityRedirect                  from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
+import SectorAndActivityRedirect                  from '../../coreAdmin/masterData/sectorAndActivity/SandA.js';
 
 import Unit                                       from '../../coreAdmin/masterData/sectorAndActivity/component/unit/Unit.js';
 import BulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/BulkUpload/BulkUpload.js';

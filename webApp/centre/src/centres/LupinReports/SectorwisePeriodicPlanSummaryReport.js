@@ -9,6 +9,8 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader               from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 
 class SectorwisePeriodicPlanSummaryReport extends Component{
@@ -242,12 +244,15 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         console.log(startDate, endDate, center_ID,projectCategoryType);
         // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
+            $(".fullpageloader").show();
             axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-            .then((response)=>{
-            console.log("resp",response);
-            var value = response.data.filter((a)=>{return a.name == "Total"})[0];
-            console.log('value',value)
-            var tableData = response.data.map((a, i)=>{
+                .then((response)=>{
+                 $(".fullpageloader").hide();
+
+                console.log("resp",response);
+                var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                console.log('value',value)
+                var tableData = response.data.map((a, i)=>{
                 return {
                     _id                                     : a._id,            
                     achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
@@ -397,6 +402,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
   render(){
     return(     
         <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <Loader type="fullpageloader" />
             <div className="row">
                 <div className="formWrapper"> 
                     <section className="content">

@@ -9,6 +9,8 @@ import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader               from "../../common/Loader.js";
+
 import "../Reports/Reports.css";
 
 class SectorwiseAnnualPlanSummaryReport extends Component{
@@ -264,9 +266,12 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       var endDate = year.substring(10, 15)+"-03-31";    
       if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
         if(center_ID==="all"){
-            axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+           $(".fullpageloader").show();
+             axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
               console.log("resp",response);
+              $(".fullpageloader").hide();
+
               var value = response.data.filter((a)=>{return a.name == "Total"})[0];
               // console.log('value',value)
               var tableData = response.data.map((a, i)=>{
@@ -428,6 +433,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
+
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">

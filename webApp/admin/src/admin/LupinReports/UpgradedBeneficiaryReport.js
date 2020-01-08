@@ -8,6 +8,8 @@ import WeeklyReport         from '../Reports/WeeklyReport.js';
 import MonthlyReport        from '../Reports/MonthlyReport.js';
 import YearlyReport         from '../Reports/YearlyReport.js';
 import CustomisedReport     from '../Reports/CustomisedReport.js';
+import Loader               from "../../common/Loader.js";
+
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 class UpgradedBeneficiaryReport extends Component{
@@ -316,8 +318,11 @@ class UpgradedBeneficiaryReport extends Component{
         }else{
           var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+upgraded
         }
+      $(".fullpageloader").show();
       axios.get(url)
         .then((response)=>{
+          $(".fullpageloader").hide();
+
           console.log("resp",response);
           var data = response.data
           var tableData = [];
@@ -326,6 +331,8 @@ class UpgradedBeneficiaryReport extends Component{
 
             axios.get('/api/beneficiaries/'+a.beneficiaryID)
             .then((response)=>{
+              $(".fullpageloader").hide();
+
               // console.log('response',response)
               tableData.push({
                 _id             : a._id,            
@@ -473,7 +480,9 @@ class UpgradedBeneficiaryReport extends Component{
   render(){
     console.log("tableData in render",this.state.tableData);
     return( 
+
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">
