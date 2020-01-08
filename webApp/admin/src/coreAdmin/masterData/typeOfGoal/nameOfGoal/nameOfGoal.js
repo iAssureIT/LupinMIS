@@ -38,8 +38,8 @@ class nameOfGoal extends Component{
       "startRange"          : 0,
       "limitRange"          : 10000,
       "edittypeofGoalId"    : props.match.params ? props.match.params.typeofGoalId : '',
-      "editId"              : props.match.params ? props.match.params.goalNameId : ''
-
+      "editId"              : props.match.params ? props.match.params.goalNameId : '',
+      "role"                : localStorage.getItem("role")
     }
   }
  
@@ -288,66 +288,69 @@ class nameOfGoal extends Component{
   render() {
   // console.log('render');
     return (
-          <div>
-           <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable marginT50 " id="typeofNameDetails">
-              <div className="row">
-                <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                    <label className="formLable"> Type of Goal</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
-                    {console.log("typeofGoal",this.state.typeofGoal)}
-                      <select className="custom-select form-control inputBox" ref="typeofGoal" name="typeofGoalErr" value={this.state.typeofGoal} disabled={this.state.editId?true:false} onChange={this.handleChangeSelect.bind(this)}>
-                        <option  className="hidden" value="" >-- Select --</option>
-                        {
-                          this.state.availableGoalType && this.state.availableGoalType.length >0 ?
-                          this.state.availableGoalType.map((data, index)=>{
-                            return(
-                              <option key={data._id} value={data.typeofGoal+'|'+data._id} goalID={data._id}>{data.typeofGoal}</option>
-                            );
-                          })
-                          :
-                          null
-                        }
-                        
-                      </select>                     
+      <div>
+        {this.state.role !== "viwer" ?
+          <React.Fragment>
+            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable marginT50 " id="typeofNameDetails">
+                <div className="row">
+                  <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                      <label className="formLable"> Type of Goal</label><span className="asterix">*</span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
+                      {console.log("typeofGoal",this.state.typeofGoal)}
+                        <select className="custom-select form-control inputBox" ref="typeofGoal" name="typeofGoalErr" value={this.state.typeofGoal} disabled={this.state.editId?true:false} onChange={this.handleChangeSelect.bind(this)}>
+                          <option  className="hidden" value="" >-- Select --</option>
+                          {
+                            this.state.availableGoalType && this.state.availableGoalType.length >0 ?
+                            this.state.availableGoalType.map((data, index)=>{
+                              return(
+                                <option key={data._id} value={data.typeofGoal+'|'+data._id} goalID={data._id}>{data.typeofGoal}</option>
+                              );
+                            })
+                            :
+                            null
+                          }
+                          
+                        </select>                     
+                      </div>
+                      <div className="errorMsg">{this.state.errors.typeofGoalRegx}</div>
                     </div>
-                    <div className="errorMsg">{this.state.errors.typeofGoalRegx}</div>
-                  </div>
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                    <label className="formLable"> Name of Goal</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="goalNameErr" >
-                      <input type="text" className="form-control inputBox"  placeholder="" ref="goalName" name="goalNameErr" value={this.state.goalName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                      <label className="formLable"> Name of Goal</label><span className="asterix">*</span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="goalNameErr" >
+                        <input type="text" className="form-control inputBox"  placeholder="" ref="goalName" name="goalNameErr" value={this.state.goalName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                      </div>
+                      <div className="errorMsg">{this.state.errors.goalNameRegx}</div>
                     </div>
-                    <div className="errorMsg">{this.state.errors.goalNameRegx}</div>
-                  </div>
-                </div> 
-                  <div className="col-lg-12 col-md-6 col-sm-6 col-xs-12">
-                    {
-                      this.state.editId ? 
-                      <button className=" col-lg-2 btn submit pull-right marginT18" onClick={this.updateType_Goal.bind(this)}> Update</button>
-                      :
-                      <button className=" col-lg-2 btn submit pull-right marginT18" onClick={this.SubmitType_Goal.bind(this)}> Submit</button>
-                    }
                   </div> 
-              </div><br/>
+                    <div className="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+                      {
+                        this.state.editId ? 
+                        <button className=" col-lg-2 btn submit pull-right marginT18" onClick={this.updateType_Goal.bind(this)}> Update</button>
+                        :
+                        <button className=" col-lg-2 btn submit pull-right marginT18" onClick={this.SubmitType_Goal.bind(this)}> Submit</button>
+                      }
+                    </div> 
+                </div><br/>
             </form>    
             <div className="col-lg-12 ">
                <hr className="marginT50"/>
             </div>
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-              <IAssureTable 
-                tableHeading={this.state.tableHeading}
-                dataCount={this.state.dataCount}
-                tableData={this.state.tableData}
-                getData={this.getData.bind(this)}
-                tableObjects={this.state.tableObjects}
-                deleteMethod      = 'patch'
-                
-                // getSearchText={this.getSearchText.bind(this)}
-              />
-            </div> 
-            </div>             
-                 
+          </React.Fragment>
+          :null
+        }
+
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+          <IAssureTable 
+            tableHeading={this.state.tableHeading}
+            dataCount={this.state.dataCount}
+            tableData={this.state.tableData}
+            getData={this.getData.bind(this)}
+            tableObjects={this.state.tableObjects}
+            deleteMethod      = 'patch'
+            />
+        </div> 
+      </div>                            
     );
 
   }

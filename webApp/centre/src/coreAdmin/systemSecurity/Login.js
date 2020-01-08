@@ -54,12 +54,12 @@ class Login extends Component {
       var auth= {
         email       : this.refs.loginusername.value,
         password    : this.refs.loginpassword.value,
-        roles       : 'MIS Coordinator'
+        roles       : ['MIS Coordinator']
       }
 
       // console.log("auth value",auth);
 
-      axios
+      axios 
       .post('/api/users/login',auth)
       .then((response)=> {
         // console.log("-------userData------>>",response);

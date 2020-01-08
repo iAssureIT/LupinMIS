@@ -33,6 +33,7 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		    "printhideArray"			: [],
+		    "role"						: localStorage.getItem("role"),
 		}
 		this.delete = this.delete.bind(this);
 		this.printTable = this.printTable.bind(this);
@@ -69,27 +70,27 @@ class IAssureTable extends Component {
 	    }
 	}
 	componentDidMount() {
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    $("html,body").scrollTop(0); 
-    const center_ID = localStorage.getItem("center_ID");
-    const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
-    // console.log("localStorage =",localStorage);
-    this.setState({
-      center_ID    : center_ID,
-      centerName   : centerName,
-    },()=>{
-	    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-    }); 
-      
-      // this.palindrome('Moam');
-      this.setState({
-      	tableHeading	: this.props.tableHeading,
-      	tableData 		: this.props.tableData,
-      	tableName 		: this.props.tableName,
-      	dataCount 		: this.props.dataCount,
-      	id 				: this.props.id,
-      });
+	    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+	    $("html,body").scrollTop(0); 
+	    const center_ID = localStorage.getItem("center_ID");
+	    const centerName = localStorage.getItem("centerName");
+	    // console.log("localStorage =",localStorage.getItem('centerName'));
+	    // console.log("localStorage =",localStorage);
+	    this.setState({
+	      center_ID    : center_ID,
+	      centerName   : centerName,
+	    },()=>{
+		    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    }); 
+	      
+	      // this.palindrome('Moam');
+	      this.setState({
+	      	tableHeading	: this.props.tableHeading,
+	      	tableData 		: this.props.tableData,
+	      	tableName 		: this.props.tableName,
+	      	dataCount 		: this.props.dataCount,
+	      	id 				: this.props.id,
+	      });
       // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
@@ -119,9 +120,9 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 		let id = e.target.id;
-	       console.log('deleteMethodresponse', id);
-		console.log("tableObjects",tableObjects.apiLink+id);
-	        console.log('tableObjects', tableObjects);
+	       // console.log('deleteMethodresponse', id);
+		// console.log("tableObjects",tableObjects.apiLink+id);
+	        // console.log('tableObjects', tableObjects);
 		axios({
 	        method: tableObjects.deleteMethod ? tableObjects.deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
@@ -553,6 +554,7 @@ class IAssureTable extends Component {
 	    WindowObject.close();
     }
 	render() {
+		console.log("role :", this.state.role);
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       	{
@@ -631,9 +633,12 @@ class IAssureTable extends Component {
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
 													if(key === 'actions'){
-														return(
-															<th key={i} className="umDynamicHeader srpadd text-center">{value}</th>
-														);	
+														if (this.state.role !== "viwer") {
+															return(
+																<th key={i} className="umDynamicHeader srpadd text-center">{value}</th>
+															);	
+															
+														}
 													}else{
 														return(
 															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
@@ -686,7 +691,7 @@ class IAssureTable extends Component {
 															}
 														)
 													}
-													{this.state.tableHeading && this.state.tableHeading.actions ? 
+													{this.state.tableHeading && this.state.tableHeading.actions && this.state.role !== "viwer"? 
 														<td className="textAlignCenter">
 															<span>
 																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 

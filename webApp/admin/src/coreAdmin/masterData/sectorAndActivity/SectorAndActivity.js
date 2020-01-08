@@ -15,6 +15,7 @@ class SectorAndActivity extends Component{
     this.state = {
       "tabtype" : "sector" ,
       "shown"       : true,
+      "role"                : localStorage.getItem("role")
     }
     this.changeTab = this.changeTab.bind(this); 
 
@@ -55,7 +56,7 @@ class SectorAndActivity extends Component{
 
     return (
       <div className="container-fluid"> 
-        <div className="row">
+        <div className="row"> 
           <div className="formWrapper">
              <section className="content">
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
@@ -69,7 +70,7 @@ class SectorAndActivity extends Component{
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div className="row">
                         <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                          <h4 className="pageSubHeader add15">Create Sector & Activity</h4>
+                          <h4 className="pageSubHeader add15">{this.state.role !== "viwer" ? "Create" : null } Sector & Activity</h4>
                         </div>
                         {/*<div className=" col-lg-3 col-lg-offset-3 col-md-6 col-sm-6 col-xs-6">
                           <div className="can-toggleSA genderbtn demo-rebrand-2 marginL21 ">

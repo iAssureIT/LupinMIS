@@ -253,7 +253,7 @@ export default class Dashboard extends Component{
       this.setState({
         activityCount : response.data.dataCount,
       })
-    }).catch(function (error) {
+    }).catch((error)=> {
       console.log('error', error);
     });
   } 
@@ -291,7 +291,7 @@ export default class Dashboard extends Component{
         var piechartcolor =[];
         if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
-              if(data.annualPlan_TotalBudget > 0){
+              if(data.annualPlan_TotalBudget > 0){              
                 sector.push(data.name);
                 annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
                 piechartcolor.push(this.getRandomColor());                

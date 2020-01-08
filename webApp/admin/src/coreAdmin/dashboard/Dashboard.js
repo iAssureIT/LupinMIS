@@ -55,16 +55,15 @@ export default class Dashboard extends Component{
   constructor(props) {
    super(props);
     this.state = {
-      center_annualPlanTotalBudget  :[],
-      "center_sector"                  : [],
-      "month"                         : [],
-      "piechartcolor"                  : [],
+      "center_sector"                : [],
+      "month"                        : [],
+      "piechartcolor"                : [],
       "sector"                       : [],
       "annualPlanReach"              : [],
       "annualPlanFamilyUpgradation"  : [],
       "achievementReach"             : [],
-      "achievementTotalBudget"             : [],
-      "monthlyAchievementReach"             : [],
+      "achievementTotalBudget"       : [],
+      "monthlyAchievementReach"      : [],
       "achievementFamilyUpgradation" : [],
       "annualPlanTotalBudget"        : [],
       "centerData" : [
@@ -78,64 +77,12 @@ export default class Dashboard extends Component{
           "typeOfCenter" :"Websites Program",
           "count"       : 0,
        }], 
-      "centerCounts" :[],
-      "centerCount" : 0,
-
+      "centerCounts"                  :[],
+      "centerCount"                   : 0,
       'year'                          : "FY 2019 - 2020",
-      
-      // 'months'              : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      // 'PlannedBeneficiaries': ['2000', '3500', '2000', '2100', '3000', '2300', '2500', '3100', '1800', '1600', '3000', '2000'],
-      // 'ActualBeneficiaries' : ['1800', '3000', '1900', '2100', '2900', '2200', '2450', '3000', '1800', '1500', '2900', '2000'],
-      // 'expenditure'         : ['18000', '30000', '19000', '21000', '29000', '20200', '24500', '30000', '18000', '15000', '20900', '20000'],
-      // 'budget'              : ['20000', '35000', '20000', '21000', '30000', '23000', '25000', '31000', '19800', '16500', '30000', '20000'],
-      "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
-      "annualPlan_TotalBudget_L" : 0,
-      "achievement_Total_L"      : 0,
-    /*  "data1"               : {
-        labels: [],
-        datasets: [
-          // {
-          //   label: 'Achievement Reach',
-          //   backgroundColor: 'rgba(75, 192, 192, 1)',
-          //   borderColor:  'rgba(75, 192, 192, 0.5)',
-          //   borderWidth: 1,
-          //   hoverBackgroundColor:  'rgba(75, 192, 192, 0.5)',
-          //   hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
-          //   stack: '1',
-          //   data: []
-          // },          
-          {
-            label: 'Achievement Family Upgradation',
-            backgroundColor:'rgba(255, 206, 86, 1)',
-            borderColor: 'rgba(255, 206, 86, 0.5)',
-            borderWidth: 1,
-            hoverBackgroundColor:'rgba(255, 206, 86, 0.5)',
-            hoverBorderColor:'rgba(255, 206, 86, 0.5)',
-            stack: '1',
-            data: []
-          },
-          {
-            label: 'Annual Family Upgradation',
-            backgroundColor:'rgba(54, 162, 235, 1)',
-            borderColor: 'rgba(54, 162, 235, 0.5)',
-            borderWidth: 1,
-            hoverBackgroundColor: 'rgba(54, 162, 235, 0.5)',
-            hoverBorderColor: 'rgba(54, 162, 235, 0.5)',
-            stack: '1',
-            data: []
-          },
-          // {
-          //   label: 'AnnualReach',
-          //   backgroundColor: 'rgba(255, 99, 132, 1)',
-          //   borderColor: 'rgba(255, 99, 132, 0.5)',
-          //   borderWidth: 1,
-          //   hoverBackgroundColor: 'rgba(255, 99, 132, 0.5)',
-          //   hoverBorderColor: 'rgba(255, 99, 132, 0.5)',
-          //   stack: '2',
-          //   data: []
-          // },
-        ]
-      }*/
+      "years"                         :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+      "annualPlan_TotalBudget_L"      : 0,
+      "achievement_Total_L"           : 0,
     }
   }
    

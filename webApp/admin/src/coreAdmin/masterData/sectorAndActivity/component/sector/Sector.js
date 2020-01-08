@@ -33,7 +33,8 @@ class Sector extends Component{
       "dataCount"           : 0,
       "startRange"          : 0,
       "limitRange"          : 10000,
-      "editId"              : props.match.params ? props.match.params.sectorId : ''
+      "editId"              : props.match.params ? props.match.params.sectorId : '',
+      "role"                : localStorage.getItem("role")
     }
   }
 
@@ -253,40 +254,45 @@ class Sector extends Component{
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
-            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="sectorDetails">
-              <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 addLoc ">
-                <span className="subHeader"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sector</span>
-              </div>
-              <div className="marginBottom col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
-              <div className="row">
-                <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                  <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
-                    <label className="formLable">Sector</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorError" >
-                      <input type="text" className="form-control inputBox"  placeholder=""ref="sector" name="sector" value={this.state.sector} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+            {this.state.role !== "viwer" ? 
+            <React.Fragment>
+                <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="sectorDetails">
+                  <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 addLoc ">
+                    <span className="subHeader"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sector</span>
+                  </div>
+                  <div className="marginBottom col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+                  <div className="row">
+                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
+                      <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
+                        <label className="formLable">Sector</label><span className="asterix">*</span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorError" >
+                          <input type="text" className="form-control inputBox"  placeholder=""ref="sector" name="sector" value={this.state.sector} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        </div>
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
+                        <label className="formLable">Sector Abbreviation</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorShortName" >
+                          <input type="text" className="form-control inputBox"  placeholder="" ref="sectorShortName" name="sectorShortName" value={this.state.sectorShortName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        </div>
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        {
+                          this.state.editId ?
+                          <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.updateSector.bind(this)}> Update</button>
+                          :
+                          <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitSector.bind(this)}> Submit</button>
+                        }
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
-                    <label className="formLable">Sector Abbreviation</label><span className="asterix"></span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorShortName" >
-                      <input type="text" className="form-control inputBox"  placeholder="" ref="sectorShortName" name="sectorShortName" value={this.state.sectorShortName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                    {
-                      this.state.editId ?
-                      <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.updateSector.bind(this)}> Update</button>
-                      :
-                      <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitSector.bind(this)}> Submit</button>
-                    }
-                  </div>
+                  </div><br/>
+                </form>   
+                <div className="col-lg-12 ">
+                   <hr className=""/>
                 </div>
-              </div><br/>
-            </form>   
-            <div className="col-lg-12 ">
-               <hr className=""/>
-            </div>
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+            </React.Fragment>
+            : null}
+
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
               <IAssureTable
                 tableHeading={this.state.tableHeading}
                 dataCount={this.state.dataCount}

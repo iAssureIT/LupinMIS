@@ -9,7 +9,7 @@ import "./typeOfCenter.css";
 
 
 class typeOfCenter extends Component{
-    constructor(props){
+  constructor(props){
     super(props);
     this.state = {
       "typeofCenter"        :"",
@@ -32,7 +32,8 @@ class typeOfCenter extends Component{
       "dataCount"           : 0,
       "startRange"          : 0,
       "limitRange"          : 10000,
-      "editId"              : props.match.params ? props.match.params.typeofCenterId : ''
+      "editId"              : props.match.params ? props.match.params.typeofCenterId : '',
+      "role"                : localStorage.getItem("role")
     }
   }
  
@@ -246,29 +247,37 @@ class typeOfCenter extends Component{
                       <div className="col-lg-12 ">
                         <h4 className="pageSubHeader">Center Type</h4>
                       </div>
-                      <div className="row">
-                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 " >
-                            <label className="formLable"> Center Type</label><span className="asterix">*</span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeOfCenterError" >
-                             
-                              <input type="text" className="form-control inputBox"  placeholder="" ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
-                            </div>
+                      {this.state.role !== "viwer" ?
+                        <React.Fragment>
+                          <div className="row">
+                            <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
+                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 " >
+                                <label className="formLable"> Center Type</label><span className="asterix">*</span>
+                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeOfCenterError" >
+                                 
+                                  <input type="text" className="form-control inputBox"  placeholder="" ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                                </div>
+                              </div>
+                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                {
+                                  this.state.editId ? 
+                                  <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.updateType_Center.bind(this)}> Update</button>
+                                  :
+                                  <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitType_Center.bind(this)}> Submit</button>
+                                }
+                              </div> 
+                            </div> 
                           </div>
-                          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            {
-                              this.state.editId ? 
-                              <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.updateType_Center.bind(this)}> Update</button>
-                              :
-                              <button className=" col-lg-4 btn submit pull-right marginT18" onClick={this.SubmitType_Center.bind(this)}> Submit</button>
-                            }
-                          </div> 
-                        </div> 
-                      </div><br/>
+                          <br/>
+                          <div className="col-lg-12 ">
+                             <hr className=""/>
+                          </div>
+                        </React.Fragment>
+                        :
+                        null
+
+                      }
                     </form>    
-                    <div className="col-lg-12 ">
-                       <hr className=""/>
-                    </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       <IAssureTable 
                         tableHeading={this.state.tableHeading}

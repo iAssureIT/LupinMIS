@@ -44,6 +44,7 @@ class SubActivity extends Component{
       "limitRange"          : 10000,
       "editId"              : props.match.params ? props.match.params.subactivityId : '',
       "editSectorId"        : props.match.params ? props.match.params.sectorId : '',
+      "role"                : localStorage.getItem("role")
     }
   }
  componentDidMount() {
@@ -395,6 +396,8 @@ edit(id){
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
+            {this.state.role !== "viwer" ?
+            <React.Fragment>
               <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="subActivityb">
                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
                   <span className="subHeader"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Sub-Activity</span>
@@ -479,28 +482,7 @@ edit(id){
                       </div>
                     </div>
 
-                {/*     <div className=" col-md-4 col-sm-6 col-xs-12 ">
-                      <label className="formLable">Unit</label><span className="asterix">*</span> 
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unitError" >
-                        <select className="custom-select form-control inputBox" ref="unit" name="unit" value={this.state.unit} onChange={this.handleChange.bind(this)} >
-                          <option  disabled="disabled" selected="true" >-- Select --</option>
-                          {
-                          this.state.unitList && this.state.unitList.length >0 ?
-                          this.state.unitList.map((data, index)=>{
-                            return(
-                              <option key={data._id} value={data.unit+'|'+data._id}>{data.unit}</option>
-                            );
-                            
-                          })
-                          :
-                          null
-                        }
-                        </select>
-                      <div className=" col-lg-1">
-                          <Unit />
-                      </div>
-                      </div>
-                      </div>*/}
+                
                     <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
                       <label className="formLable">Family Upgradation</label><span className="asterix">*</span>
                        <div className="can-toggle genderbtn demo-rebrand-2 " onChange={this.getToggleValue.bind(this)}>
@@ -525,6 +507,9 @@ edit(id){
               <div className="col-lg-12 mt">
                  <hr className=""/>
               </div>
+              </React.Fragment>
+              :null
+            }
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                 <IAssureTable 
                   tableHeading={this.state.tableHeading}

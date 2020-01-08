@@ -39,6 +39,7 @@ class Activity extends Component{
       "limitRange"          : 10000,
       "editId"              : props.match.params ? props.match.params.activityId : '',
       "editSectorId"        : props.match.params ? props.match.params.sectorId : '',
+      "role"                : localStorage.getItem("role")
     }
   }
  
@@ -279,54 +280,59 @@ class Activity extends Component{
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
-            <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt"  id="Activity">
-              <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
-                <span className="subHeader"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Activity</span>
-              </div>
-              <div className="marginBottom col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
-              <div className="row">
-                <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
-                  <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
-                    <label className="formLable">Sector</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorError" >
-                      <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)}>
-                        <option  className="hidden" value="" >-- Select Sector--</option>
-                        {
-                          this.state.availableSectors && this.state.availableSectors.length >0 ?
-                          this.state.availableSectors.map((data, index)=>{
-                            return(
-                              <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                            );
-                          })
-                          :
-                          null
-                        }
-                        
-                      </select>
-                    </div>
+            {this.state.role !== "viwer" ?
+              <React.Fragment>
+                <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt"  id="Activity">
+                  <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">
+                    <span className="subHeader"><i className="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Activity</span>
                   </div>
-                  <div className=" col-md-6 col-sm-6 col-xs-12 ">
-                    <label className="formLable">Activity</label><span className="asterix">*</span>
-                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activityName" >
-                      
-                      <input type="text" className="form-control inputBox "  placeholder="" name="activityName"  value={this.state.activityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activityName" />
-                    </div>
-                  </div>
-                </div> 
-              </div><br/>
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                {
-                  this.state.editId ? 
-                  <button className=" col-lg-2 btn submit pull-right" onClick={this.updateActivity.bind(this)}> Update </button>
-                  :
-                  <button className=" col-lg-2 btn submit pull-right" onClick={this.submitActivity.bind(this)}> Submit </button>
-                }
-              </div> 
-            </form>
-            <div className="col-lg-12 mt ">
-               <hr className=""/>
-            </div>
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                  <div className="marginBottom col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+                  <div className="row">
+                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
+                      <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
+                        <label className="formLable">Sector</label><span className="asterix">*</span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorError" >
+                          <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} disabled={this.state.editId?true:false} onChange={this.handleChange.bind(this)}>
+                            <option  className="hidden" value="" >-- Select Sector--</option>
+                            {
+                              this.state.availableSectors && this.state.availableSectors.length >0 ?
+                              this.state.availableSectors.map((data, index)=>{
+                                return(
+                                  <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                );
+                              })
+                              :
+                              null
+                            }
+                            
+                          </select>
+                        </div>
+                      </div>
+                      <div className=" col-md-6 col-sm-6 col-xs-12 ">
+                        <label className="formLable">Activity</label><span className="asterix">*</span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activityName" >
+                          
+                          <input type="text" className="form-control inputBox "  placeholder="" name="activityName"  value={this.state.activityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activityName" />
+                        </div>
+                      </div>
+                    </div> 
+                  </div><br/>
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    {
+                      this.state.editId ? 
+                      <button className=" col-lg-2 btn submit pull-right" onClick={this.updateActivity.bind(this)}> Update </button>
+                      :
+                      <button className=" col-lg-2 btn submit pull-right" onClick={this.submitActivity.bind(this)}> Submit </button>
+                    }
+                  </div> 
+                </form>
+                <div className="col-lg-12 mt ">
+                   <hr className=""/>
+                </div>
+              </React.Fragment>
+              :null
+            }
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
               <div className="mt " >  
                 <IAssureTable 
                   tableHeading={this.state.tableHeading}

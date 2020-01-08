@@ -41,6 +41,7 @@ class ProjectMapping extends Component{
       "limitRange"         : 10000,
       "sectorData"         : [],
       "editId"             : this.props.match.params ? this.props.match.params.projectMappingId : '',
+      "role"                : localStorage.getItem("role")
     }
   }
 
@@ -724,21 +725,24 @@ class ProjectMapping extends Component{
                       </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-
                   <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="sectorMapping">                   
                     <div className="col-lg-12 ">
                        <h4 className="pageSubHeader">Project Definition</h4>
                     </div>
-                    <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 formLable  ">
-                                              
-                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Project Name</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="projectName" >
-                            {/*<div className="input-group-addon inputIcon">
-                              <i className="fa fa-graduation-cap fa"></i>
-                            </div>*/}
-                            <input type="text" className="form-control inputBox" value={this.state.projectName} onChange={this.handleChange.bind(this)}   placeholder="" name="projectName" ref="projectName" />
+                  {this.state.role !== "viwer" ?
+                    <React.Fragment>
+                      <div className="row">
+                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable  ">
+                                                
+                          <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
+                            <label className="formLable">Project Name</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="projectName" >
+                              {/*<div className="input-group-addon inputIcon">
+                                <i className="fa fa-graduation-cap fa"></i>
+                              </div>*/}
+                              <input type="text" className="form-control inputBox" value={this.state.projectName} onChange={this.handleChange.bind(this)}   placeholder="" name="projectName" ref="projectName" />
+                            </div>
+                            <div className="errorMsg">{this.state.errors.projectName}</div>
                           </div>
                           <div className="errorMsg">{this.state.errors.projectName}</div>
                         </div>
@@ -767,87 +771,105 @@ class ProjectMapping extends Component{
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main"  >
                                 <input onChange={this.handleToChange.bind(this)}  onBlur={this.onBlurEventTo.bind(this)} id="endDate" name="toDateCustomised" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                             </div>
-                        </div>  
+                          </div>  
+                          <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
+                              <label className="formLable">Start Date</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" >
+                                  <input onChange={this.handleFromChange.bind(this)}  onBlur={this.onBlurEventFrom.bind(this)} name="fromDateCustomised" id="startDate"  ref="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                              </div>
+                          </div>
+                          <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
+                              <label className="formLable">End Date</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main"  >
+                                  <input onChange={this.handleToChange.bind(this)}  onBlur={this.onBlurEventTo.bind(this)} id="endDate" name="toDateCustomised" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                              </div>
+                          </div>  
+                        </div> 
+                      <br/>
+                      <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above{/* {this.state.projectType}*/}</label></div>
+                        <div className=" col-lg-12 col-sm-12 col-xs-12 ">
+                          <div className=" col-md-12  col-lg-12 col-sm-12 col-xs-12">
+                            {
+                              this.state.availableSectors ?
+                              this.state.availableSectors.map((data, index)=>{
+                                if(data.activity.length>0){
+                                    return(
+                                      <div key={index} className="col-md-4  col-lg-4 col-sm-12 col-xs-12 blockheight noPadding">
+                                        <div className="row"> 
+                                          <div className="actionDiv col-lg-12 col-md-12 col-xs-12 col-sm-12 noPadding" id="sector">
+                                            <div className="sectorContainer col-lg-1">
+                                              <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} data-txt={data._id} value={data.checked=="N"?"Y":"N"} id={data._id +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
+                                              <span className="sectorCheck"></span>
+                                            </div>
+                                            <label  className="fz14 faintColor col-lg-10">{data.sector}</label>                                   
+                                          </div>                            
+                                          {
+                                            data.activity.map((a, i)=>{
+      
+                                              return(
+                                                <div key ={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                                  <div className={data._id +"|"+data.sector}> 
+                                                    <div className="actionDiv" id="activityName">
+                                                      <div className="SDGContainer col-lg-1">
+                                                        <input type="checkbox" name="activityName"  data-typechecked={a.activityName} data-index={i} data-txt={index} value={a.checked=="N"?"Y":"N"} className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={a.checked==="Y"?true:false} onChange={this.selectActivity.bind(this)} />
+                                                        <span className="SDGCheck"></span>
+                                                      </div>
+                                                      <label className="actListItem col-lg-10">{a.activityName}</label>
+                                                    </div>                            
+                                                  </div>  
+                                                    {
+                                                      a.subActivity.length>0?
+                                                      a.subActivity.map((b,j)=>{
+                                                        return(
+                                                          <div key ={j} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                                            <div className={data._id +"|"+data.sector} id="subactivityDiv"> 
+                                                              <div className="actionDiv" id="subActivityName">
+                                                                <div className="subContainer col-lg-1">                                                         
+                                                                  <input type="checkbox" name="subActivityName" className ="subActivityName" data-typechecked={a.subActivityName}  data-index={j} data-actindex={i} data-txt={index} value={b.checked=="N"?"Y":"N"}  data-typechecked="subActivityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName+"|"+b._id+"|"+b.subActivityName}  checked={b.checked==="Y"?true:false} onChange={this.selectSubactivity.bind(this)} />
+                                                                  <span className="subCheck"></span>
+                                                                </div>
+                                                                <label className="subActivitylistItem col-lg-10">{b.subActivityName}</label>
+                                                              </div>                            
+                                                            </div>   
+                                                          </div>
+                                                        );
+                                                      })
+                                                      :
+                                                      null
+                                                    }
+                                                </div>
+                                              );
+                                            })
+                                          }
+                                        </div> 
+                                      </div>                             
+                                    );
+                                  }
+                                })
+                              :
+                              null
+                            }
+                          </div>  
+                        </div>                                      
+                      <br/>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        {
+                          this.state.editId ? 
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
+                          :
+                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Submit </button>
+                        }
                       </div> 
-                    </div><br/>
-                    <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above{/* {this.state.projectType}*/}</label></div>
-                      <div className=" col-lg-12 col-sm-12 col-xs-12 ">
-                        <div className=" col-md-12  col-lg-12 col-sm-12 col-xs-12">
-                          {
-                            this.state.availableSectors ?
-                            this.state.availableSectors.map((data, index)=>{
-                              if(data.activity.length>0){
-                                  return(
-                                    <div key={index} className="col-md-4  col-lg-4 col-sm-12 col-xs-12 blockheight noPadding">
-                                      <div className="row"> 
-                                        <div className="actionDiv col-lg-12 col-md-12 col-xs-12 col-sm-12 noPadding" id="sector">
-                                          <div className="sectorContainer col-lg-1">
-                                            <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} data-txt={data._id} value={data.checked=="N"?"Y":"N"} id={data._id +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
-                                            <span className="sectorCheck"></span>
-                                          </div>
-                                          <label  className="fz14 faintColor col-lg-10">{data.sector}</label>                                   
-                                        </div>                            
-                                        {
-                                          data.activity.map((a, i)=>{
-    
-                                            return(
-                                              <div key ={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                                <div className={data._id +"|"+data.sector}> 
-                                                  <div className="actionDiv" id="activityName">
-                                                    <div className="SDGContainer col-lg-1">
-                                                      <input type="checkbox" name="activityName"  data-typechecked={a.activityName} data-index={i} data-txt={index} value={a.checked=="N"?"Y":"N"} className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={a.checked==="Y"?true:false} onChange={this.selectActivity.bind(this)} />
-                                                      <span className="SDGCheck"></span>
-                                                    </div>
-                                                    <label className="actListItem col-lg-10">{a.activityName}</label>
-                                                  </div>                            
-                                                </div>  
-                                                  {
-                                                    a.subActivity.length>0?
-                                                    a.subActivity.map((b,j)=>{
-                                                      return(
-                                                        <div key ={j} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                                          <div className={data._id +"|"+data.sector} id="subactivityDiv"> 
-                                                            <div className="actionDiv" id="subActivityName">
-                                                              <div className="subContainer col-lg-1">                                                         
-                                                                <input type="checkbox" name="subActivityName" className ="subActivityName" data-typechecked={a.subActivityName}  data-index={j} data-actindex={i} data-txt={index} value={b.checked=="N"?"Y":"N"}  data-typechecked="subActivityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName+"|"+b._id+"|"+b.subActivityName}  checked={b.checked==="Y"?true:false} onChange={this.selectSubactivity.bind(this)} />
-                                                                <span className="subCheck"></span>
-                                                              </div>
-                                                              <label className="subActivitylistItem col-lg-10">{b.subActivityName}</label>
-                                                            </div>                            
-                                                          </div>   
-                                                        </div>
-                                                      );
-                                                    })
-                                                    :
-                                                    null
-                                                  }
-                                              </div>
-                                            );
-                                          })
-                                        }
-                                      </div> 
-                                    </div>                             
-                                  );
-                                }
-                              })
-                            :
-                            null
-                          }
-                        </div>  
-                      </div>                                      
-                    <br/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      {
-                        this.state.editId ? 
-                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
-                        :
-                        <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Submit.bind(this)}> Submit </button>
-                      }
-                    </div> 
+                    </React.Fragment>
+                    :null
+                  }
                   </form>
-                  <div className="col-lg-12 ">
-                     <hr className=""/>
-                  </div>
+                  {this.state.role !== "viwer" ?
+                    <div className="col-lg-12 ">
+                       <hr className=""/>
+                    </div>
+                  :null}
+                     
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
                       tableHeading={this.state.tableHeading}
