@@ -9,14 +9,19 @@ export default class Loader extends Component {
     render(){
       //var tempdata = [1,2,3];
       var tempdata = [];
-      //alert();
+      //alert(this.props.percentage );
       for (var i = 0; i < this.props.productLoaderNo; i++) {
         tempdata.push(i);
       }
       if (this.props.type == "fullpageloader" ) {
         return(
           <div>
-            <div className="fullpageloader">Loading&#8230;</div>
+            <div className="fullpageloader">Loading&#8230;
+            { this.props.percentage ?
+              <span className="percentage">{this.props.percentage}%</span>
+              : null
+            }
+            </div>
           </div>
         );
       }

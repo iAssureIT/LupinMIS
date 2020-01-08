@@ -6,7 +6,7 @@ import swal  from 'sweetalert';
 import $ from 'jquery';
 import IAssureTable           from "./IAssureTable.js";
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
-
+import Loader  from '../../common/Loader.js'; 
 class BulkUpload extends Component{
 	constructor(props) {
     super(props);
@@ -205,30 +205,88 @@ class BulkUpload extends Component{
     else reader.readAsArrayBuffer(file);
   }
   bulkUpload() {
-    var formValues = {
-      data    : this.state.inputFileData,
-      reqdata : this.props.data,
-      fileName : this.state.fileName
-    };
-    console.log('formValues',formValues);
-
     $('.fullpageloader').show();
-    axios.post(this.props.url, formValues)
-        .then((response) => {
+    var initialLmt = 0;
+    var factor = 200;
+    var endLmt = initialLmt+factor;
+    var totalrows = this.state.inputFileData.length;
+    var chunkData = [];
+    var excelChunkData = [];
+
+    
+    
+    const startProcess = async (data)=>{
+      for (var i = initialLmt; i < endLmt; i++) {
+        if (this.state.inputFileData[i]) {
+          chunkData.push(this.state.inputFileData[i]);
+          //excelChunkData.push(excelData[i])   
+        }
+        //console.log('i',i)
+        //console.log('endLmt',endLmt)
+        if (i == endLmt-1 && i != totalrows && chunkData.length>0) {
+          var formValues = {
+            data      : chunkData,
+            reqdata   : this.props.data,
+            fileName  : this.state.fileName,
+            totalRecords : totalrows
+          };
+          console.log('formValues',formValues);
+          //console.log('chunkData',chunkData)
+          // var formValues ={
+          // "finaldata"     : chunkData,
+          // "invalidData"   : invalidData,
+          // "reqData"       : data,
+          // "excelData"     : excelChunkData,
+          // "totalRecords"  : totalRecords
+          // }
+          //console.log('formValues',formValues);
+          await axios({
+            method: 'post',
+            url: this.props.url,
+            data: formValues
+          })
+          .then((response)=> {
+            //console.log('response',response.data)
+            if (response.data.completed) {
+
+              //console.log('endLmt',endLmt)
+              
+              var percentage = Math.round((endLmt*100/totalrows))
+              console.log('perc',percentage)
+              if (percentage > 99 ) {
+                percentage = 100;
+                $('.fullpageloader').hide();
+                $('.filedetailsDiv').show()
+                this.props.getFileDetails(this.state.fileName) 
+              }
+              this.setState({percentage:percentage},()=>{})
+              chunkData = [];
+              initialLmt += factor;  
+              endLmt = initialLmt+factor; 
+            }
+          })
+        }
+      }
+    }
+    startProcess(this.props.data);
+
+    
+    // axios.post(this.props.url, formValues)
+    //     .then((response) => {
             
-            this.fileInput.value = '';
-            this.setState({inputFileData:[]});
-            swal({
-              title : response.data.message,
-              text  : response.data.message,
-            })
+    //         this.fileInput.value = '';
+    //         this.setState({inputFileData:[]});
+    //         swal({
+    //           title : response.data.message,
+    //           text  : response.data.message,
+    //         })
                         
-            $('.filedetailsDiv').show()
-            this.props.getFileDetails(this.state.fileName) 
-        })
-        .catch((error) => {
-            console.log('error', error);
-        })
+    //         $('.filedetailsDiv').show()
+    //         this.props.getFileDetails(this.state.fileName) 
+    //     })
+    //     .catch((error) => {
+    //         console.log('error', error);
+    //     })
   }
   getData(){
 
@@ -241,6 +299,7 @@ class BulkUpload extends Component{
     ]
     return (
     	 <div className=" container-fluid">
+       <Loader type="fullpageloader" percentage={this.state.percentage}/>
 	        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent">
 	          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 bulkEmployeeImg">
 	            <a href={this.props.fileurl} download>

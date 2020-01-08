@@ -11,7 +11,7 @@ import $ from 'jquery';
 // console.log("process.env.REACT_APP_BASE_URL = ",process.env.REACT_APP_BASE_URL);
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-
+ 
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 
