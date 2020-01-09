@@ -26,7 +26,9 @@ class CaseStudy extends Component{
       "caseStudy_Image"   :"",
       "caseStudy_File"    :"",
       imgArrayWSaws       : [],
+      fileArrayEmpty      : [],
       fileArray           : [],
+      imageArray          : [],
       fields              : {},
       errors              : {},
       "tableObjects"       : {
@@ -57,12 +59,7 @@ class CaseStudy extends Component{
   }
   
   componentWillReceiveProps(nextProps){
-    const fileArray = localStorage.getItem("fileArray");
-    this.setState({
-      fileArray : fileArray
-    },()=>{
-      // console.log("fileArray====props",this.state.fileArray)
-    })
+   
     var editId = nextProps.match.params.id;
     // console.log('editId' , editId);
     if(nextProps.match.params.id){
@@ -74,7 +71,7 @@ class CaseStudy extends Component{
     if(nextProps){
       this.getLength();
     }      
-    this.getData(this.state.startRange, this.state.limitRange);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     }
   }
   
@@ -126,10 +123,6 @@ class CaseStudy extends Component{
       this.edit(this.state.editId);
     }
     this.getAvailableSectors();
-    var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
-    var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
-    // console.log("fileLocation ===============================",fileLocation);
-    // console.log("ImageLocation ===============================",ImageLocation);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("fileArray ===============================",localStorage.getItem('fileArray'));
@@ -137,8 +130,7 @@ class CaseStudy extends Component{
     this.setState({
       center_ID       : center_ID,
       centerName      : centerName,
-      fileLocation    : fileLocation,
-      ImageLocation   : ImageLocation,
+   
     },()=>{
       // console.log("fileArray =",this.state.fileArray);
     this.getLength(this.state.center_ID);
@@ -150,7 +142,7 @@ class CaseStudy extends Component{
       dateofsubmission :momentString,
     })
   }
-  
+
   handleChange(event){
     event.preventDefault();
     this.setState({
@@ -172,27 +164,20 @@ class CaseStudy extends Component{
     if($('#caseStudy').valid()){
       var caseStudyValues = {
         "center_ID"        :this.state.center_ID,
-        // "centerName"       :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
         "sector_ID"        :this.refs.sector.value.split('|')[1],
         "sectorName"       :this.refs.sector.value.split('|')[0],
         "title"            :this.refs.title.value, 
         "author"           :this.refs.author.value, 
-        "caseStudy_Image"  :this.state.ImageLocation,
-        "caseStudy_File"   :this.state.fileLocation,
+        "caseStudy_Image"  :this.state.imageArray,
+        "caseStudy_File"   :this.state.fileArray,
+       
       };
-     /* let fields = {};
-      fields["dateofsubmission"]      = "";
-      fields["title"]                 = "";
-      fields["sector"]                = "";
-      fields["author"]                = "";
-      fields["caseStudy_Image"]       = "";
-      fields["caseStudy_File"]        = "";*/
-        // console.log('caseStudyValues', caseStudyValues);
+
       axios.post('/api/caseStudies', caseStudyValues)
         .then((response)=>{
-        // console.log('response', response);
-          this.getData(this.state.startRange, this.state.limitRange);
+          console.log('response', response);
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -202,8 +187,11 @@ class CaseStudy extends Component{
             "dateofsubmission"  :moment(new Date()).format('YYYY-MM-DD'),
             "sector"            :"",
             "author"            :"",
-            "ImageLocation"     :"",
-            "fileLocation"      :"",
+            "action"            :"Submit",
+            "caseStudy_Image"   :"",
+            "caseStudy_File"    :"",
+            "imageArray"        : [],
+            "fileArray"         : []
           });
         })
         .catch(function(error){
@@ -219,22 +207,18 @@ class CaseStudy extends Component{
       var caseStudyValues = {
         "caseStudy_ID"     :this.state.editId, 
         "center_ID"        :this.state.center_ID,
-        // "centerName"       :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
         "title"            :this.refs.title.value, 
-        "sector_ID"        : this.refs.sector.value.split('|')[1],
-        "sectorName"       : this.refs.sector.value.split('|')[0],
-        // "sectorName"       :this.refs.sector.value, 
+        "sector_ID"        :this.refs.sector.value.split('|')[1],
+        "sectorName"       :this.refs.sector.value.split('|')[0],
         "author"           :this.refs.author.value, 
-        "caseStudy_Image"  :this.state.ImageLocation,
-        "caseStudy_File"   :this.state.fileLocation,
+        "caseStudy_Image"  :this.state.imageArray,
+        "caseStudy_File"   :this.state.fileArray,
       };
-
-       console.log('caseStudyValues', this.refs.sector.value);
 
       axios.patch('/api/caseStudies/update', caseStudyValues)
         .then((response)=>{
-          this.getData(this.state.startRange, this.state.limitRange);
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -246,10 +230,10 @@ class CaseStudy extends Component{
       this.setState({
         "dateofsubmission"     :"",
         "title"                :"",
-        "sector"               :"",
+        "sector"               :"-- Select --",
         "author"               :"",
-        "ImageLocation"        :"",
-        "fileLocation"         :"",
+        "imageArray"           :[],
+        "fileArray"            :[],
       });
       this.props.history.push('/caseStudy');
       this.setState({
@@ -272,6 +256,8 @@ class CaseStudy extends Component{
         "sector"            : editData.sectorName,
         "sector_ID"         : editData.sector_ID,
         "author"            : editData.author,
+        "imageArray"        : editData.caseStudy_Image,
+        "fileArray"         : editData.caseStudy_File,
       });
      
     })
@@ -345,11 +331,12 @@ class CaseStudy extends Component{
       });
     }
   }
-    getFile(fileArray, filenames){
-      console.log("fileArray",fileArray ,"filenames",filenames)
+    getFile(fileArray, filenames,imageArray){
+     console.log("fileArray",fileArray ,"filenames",filenames,"imageArray",imageArray)
     this.setState({
-      "fileArray" : fileArray,
-      "filenames" : filenames,
+      "fileArray"   : fileArray,
+      "filenames"   : filenames,
+      "imageArray"  : imageArray,
     },()=>{
 
     })
@@ -423,16 +410,32 @@ class CaseStudy extends Component{
                         getFile    = {this.getFile.bind(this)}
                         configData = {this.state.configData} 
                         fileArray  = {this.state.fileArray} 
+                        imageArray = {this.state.imageArray} 
                         fileType   = "Image" 
 
-                      />      
+                      />   
+                      <hr/>
+   
                       <AddFilePublic
                         getFile    = {this.getFile.bind(this)}
                         configData = {this.state.configData} 
                         fileArray  = {this.state.fileArray} 
+                        imageArray = {this.state.imageArray} 
                         fileType   = "File"
-                      />                     
-                      
+                      />
+                      {/*
+                        this.state.action == "Submit" ?
+                          <AddFilePublic
+                            getFile    = {this.getFile.bind(this)}
+                            configData = {this.state.configData} 
+                            action     = {this.state.action}
+                            fileArray  = {this.state.fileArray} 
+                            fileType   = "File"
+                          />       
+                          :
+                          null              
+                          
+                      */}
                     </div><br/>
                     <div className="col-lg-12">
                       <br/>

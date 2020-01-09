@@ -124,8 +124,7 @@ class Beneficiary extends Component{
       })
 
     }*/
-  }
-
+  } 
 
   SubmitBeneficiary(event){
     event.preventDefault();
@@ -570,7 +569,7 @@ class Beneficiary extends Component{
   }
   getUID(event)
   {
-    if(this.state.firstNameOfBeneficiary === this.state.firstNameOfBeneficiaryCheck )
+  /*  if(this.state.firstNameOfBeneficiary === this.state.firstNameOfBeneficiaryCheck )
     {
        
       var uidNumber = this.state.uidNumberCheck;
@@ -592,7 +591,7 @@ class Beneficiary extends Component{
           Check     : false,
       })
 
-    }
+    }*/
   }
   render() {
     return (
@@ -676,6 +675,7 @@ class Beneficiary extends Component{
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   <option>Self</option>
                                   <option>Wife</option>
+
                                   <option>Husband</option>
                                   <option>Son</option>
                                   <option>Daughter</option>

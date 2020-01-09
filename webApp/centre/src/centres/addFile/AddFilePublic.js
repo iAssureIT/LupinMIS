@@ -17,23 +17,33 @@ class AddFile extends Component{
       "config"            :"",
       "author"            :"",
       "caseStudy_Image"   :"",
-      "caseStudy_File"    :"",
-      "configData"        : props && props.configData ? props.configData : {},        
-      "fileArray"         : props && props.fileArray ? props.fileArray : {},        
-      "fileType"          : props && props.fileType ? props.fileType : {},        
-      filenames            : [],
+      "CheckFile"         :false,
+      "caseStudy_File"    :"",  
+      "configData"        : props && props.configData  ? props.configData : {},        
+      "fileArray"         : props && props.fileArray   ? props.fileArray : [],        
+      "imageArray"        : props && props.imageArray  ? props.imageArray : [],        
+      "fileType"          : props && props.fileType    ? props.fileType : {},
+      "action"            : props && props.action      ? props.action : "",
+      "filenames"         : [],
       // fileArray           : [],
     }
+
   }
   
   componentWillReceiveProps(nextProps){
-   
+    console.log('nextProps.imageArray', nextProps);  
+    if(nextProps){
+      this.setState({      
+          "imageArray"      : nextProps.imageArray, 
+          "fileArray"       : nextProps.fileArray
+      })
+    }
   }
   
   componentDidMount() {
-    localStorage.setItem("fileArray",this.state.fileArray);
     var configData =  this.props.configData;
     var fileType   =  this.props.fileType;
+
     this.setState({
       fileType : fileType
     },()=>{console.log("fileType",this.state.fileType)})
@@ -86,22 +96,19 @@ class AddFile extends Component{
             S3FileUpload
               .uploadFile(newFile,this.state.config)
               .then((Data)=>{
-                // console.log("Data = ",Data);
                   var obj1={
                     imgPath : Data.location,
                   }
-                  var fileArray = this.state.fileArray;
-                  fileArray.push(obj1);
+                  var imageArray = this.state.imageArray;
+                  imageArray.push(obj1);
                   this.setState({
-                    fileArray : fileArray
+                    imageArray : imageArray
                   },()=>{
-                    var ImageLocation = JSON.stringify(this.state.fileArray);
-                    localStorage.setItem("ImageLocation",ImageLocation);
-                    // console.log("fileArray",this.state.fileArray)
+                    this.props.getFile(this.state.fileArray, this.state.filenames,this.state.imageArray)
+                    console.log("imageArray",this.state.imageArray)
                   })
               })
               .catch((error)=>{
-                console.log("formErrors");
                 console.log(error);
               })
           }else{         
@@ -142,6 +149,8 @@ class AddFile extends Component{
                   }
                   var obj1={
                     filePath : Data.location,
+                    fileName : fileName
+
                   }
                   var filenames =this.state.filenames;
                   var fileArray = this.state.fileArray;
@@ -149,11 +158,13 @@ class AddFile extends Component{
                   fileArray.push(obj1);
                   this.setState({
                     ext       :ext,
+                    CheckFile : true,   
                     filenames : filenames,
                     fileArray : fileArray
                   },()=>{
-                    // console.log("filenames",this.state.filenames);
-                    // console.log("fileArray",this.state.fileArray)
+                    console.log("filenames",this.state.fileArray);
+                    this.props.getFile(this.state.fileArray, this.state.filenames,this.state.imageArray)
+                    console.log("fileArray",this.state.fileArray)
                     var fileLocation = JSON.stringify(this.state.fileArray);
                     localStorage.setItem("fileLocation",fileLocation);
                   })
@@ -172,13 +183,15 @@ class AddFile extends Component{
     }
   }
 
-  deleteImage(e){
+  deleteFile(e){
     e.preventDefault();
-    var index = e.target.getAttribute('id');
-    var filePath = e.target.getAttribute('data-id');
+    var index        = e.target.getAttribute('id');
+    var filePath     = e.target.getAttribute('data-id');
+    console.log("this.state.fileArray",this.state.fileArray,"index",index,"filePath",filePath);
+    var index = e.currentTarget.getAttribute('id');
+    var filePath = e.currentTarget.getAttribute('data-id');
     var data = filePath.split("/");
     var imageName = data[4];
-    // console.log("imageName===",imageName);
     if(index){
       swal({
         title: "Are you sure you want to delete this image?",
@@ -189,14 +202,46 @@ class AddFile extends Component{
       })
       .then((willDelete) => {
         if (willDelete) {
-          var array = this.state.fileArray; // make a separate copy of the array
-          array.splice(index, 1);
-          swal("abc", "Image deleted successfully");
+          var fileArray = this.state.fileArray; // make a separate copy of the array
+          fileArray.splice(index, 1);
+          swal("abc", "document deleted successfully");
           this.setState({
-            fileArray: array
+            fileArray: fileArray
+          },()=>{
           });
         }else {
-          swal("Are you sure you want to delete this image?","Your image is safe!");
+          swal("Are you sure you want to deletimageArraye this image?","Your image is safe!");
+        }
+      });
+    }
+  }
+
+  deleteImage(e){
+    e.preventDefault();
+    var index = e.currentTarget.getAttribute('id');
+    var filePath = e.currentTarget.getAttribute('data-id');
+   console.log("filePath===",filePath);
+    var data = filePath.split("/");
+    var imageName = data[4];
+    if(index){
+      swal({
+        title: "Are you sure you want to delete this image?",
+        text: "Once deleted, you will not be able to recover this image!",
+       /* icon: "warning",*/
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          var imageArray = this.state.imageArray; // make a separate copy of the array
+          imageArray.splice(index, 1);
+          swal("abc", "document deleted successfully");
+          this.setState({
+            imageArray: imageArray
+          },()=>{
+          });
+        }else {
+          swal("Are you sure you want to deletimageArraye this image?","Your image is safe!");
         }
       });
     }
@@ -245,10 +290,10 @@ class AddFile extends Component{
   }
 
   render() {
-
+    console.log("this.state.fileArray",this.state.fileArray)
     return (
       <div className="">
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp ">
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp mt20 ">
             <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 row padTopC">
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
                 <h5 className="h5Title col-lg-12 col-md-12 col-sm-12 col-xs-12">Add {this.state.fileType} <span className="astrick">*</span></h5>
@@ -267,11 +312,13 @@ class AddFile extends Component{
               </div>
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imgdetails">{this.state.fileType=== "Image" ? "(Max size: 1 Mb, Format: JPEG, PNG)" : "(Max size: 1 Mb, Format: DOC, PDF, XLS)"} </div>
             </div>
+
             {
-              this.state.fileArray===null?
+              this.state.imageArray===null?
               null
               :
-              this.state.fileArray.map((data,index)=>{
+              this.state.imageArray && this.state.imageArray.length > 0 ?
+              this.state.imageArray.map((data,index)=>{
                 return(
                   <div  key={index} >
                     {
@@ -292,6 +339,8 @@ class AddFile extends Component{
                   </div>
                 )
               })
+              :
+              null  
             }
             {
               this.state.fileArray.length<=0?
@@ -302,31 +351,46 @@ class AddFile extends Component{
                     <div>
                       {
                         this.state.fileType ==="File" ? 
-                        <div  className="col-lg-4 col-md-4 col-sm-12 col-xs-12 row padTopC">
+                        <div  className="col-lg-9 col-md-9 col-sm-12 col-xs-12 row fileContainer textAlignCenter">
+                       {/* {
+                          this.state.CheckFile ?
                           <p className="fileName">File Uploaded</p>
+                          :
+                          null
+
+                          }*/}
                           {
-                            this.state.filenames && this.state.filenames.length > 0 ? 
-                            this.state.filenames.map((a, index)=>{
+                            this.state.fileArray && this.state.fileArray.length > 0 ? 
+                            this.state.fileArray.map((a, index)=>{
                               return(
-                                <div  key={index}>
-                                  <p  className="">{a.fileName}</p>
-                                    {     console.log("ext",this.state.ext)}
-                                  <div>
-                                  {/*
-                                   ( this.state.ext==="XLS" || "XLSX"||"xls" || "xlsx") ?
-                                    <img className="fileExt" src="/images/exel2.png"/> : ""
-                                  
-                                   ( this.state.ext==="PPT" || "PPTX" || "ppt" || "pptx") ? 
+                                <div className="col-lg-3"  key={index}>
+                                     <label id={index} className="pull-right custFaTimes crossLabel" title="Delete image" data-id={a.filePath} onClick={this.deleteFile.bind(this)}><i className="fa fa-times"></i></label>
+                                <div >
+                                 {
+                                   a.fileName.split('.').pop()==="XLS" || a.fileName.split('.').pop() ==="XLSX"||a.fileName.split('.').pop() ==="xls" || a.fileName.split('.').pop() ==="xlsx"
+                                   ?
+                                    <img className="fileExt" src="/images/exel2.png"/> 
+                                    :
+                                     ""
+                                  }
+                                  {
+                                   ( a.fileName.split('.').pop() ==="PPT" || a.fileName.split('.').pop() === "PPTX" || a.fileName.split('.').pop() === "ppt" || a.fileName.split('.').pop() ==="pptx") ? 
                                     <img className="fileExt" src="/images/powerpoint.jpeg"/> :""
+                                  }
+                                  {
                                  
-                                    (this.state.ext==="pdf" || "PDF") ? 
-                                    <img className="fileExt" src="/images/pdf.png"/> :""
-                                 
-                                    (this.state.ext==="doc" || "docx" || "DOC" || "DOCX"|| "txt" || "TXT") ? 
+                                    (a.fileName.split('.').pop() ==="pdf" ||a.fileName.split('.').pop() === "PDF") ? 
+                                    <img className="fileExt" src="/images/pdf.png"/> 
+                                    :
+                                    ""
+                                  }
+                                  {
+                                    (a.fileName.split('.').pop() ==="doc" || a.fileName.split('.').pop() === "docx" || a.fileName.split('.').pop() === "DOC" || a.fileName.split('.').pop() ==="DOCX"|| a.fileName.split('.').pop() ==="txt" || a.fileName.split('.').pop() === "TXT") ? 
                                     <img className="fileExt" src="/images/docs.png"/> : ""
-                                  */}
+                                  }
                                  
                                   </div>
+                                  <p  className="">{a.fileName}</p>
                                 </div>
                               )
                             }) 

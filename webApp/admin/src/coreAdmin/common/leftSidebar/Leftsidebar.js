@@ -237,12 +237,12 @@ export default class Leftsidebar extends Component{
                     </li> 
 
                     <li>
-                      <Link to="/sector-and-activity" title="Sector & Activity">
+                      <Link to="/sector-and-activity/" title="Sector & Activity">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector & Activity</span>
                       </Link>
                     </li>
-                    {/*<li>
+                 {/*  <li>
                       <Link to="/SectorAndActivityRedirect/" title="Sector & Activity">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector & Activity R</span>

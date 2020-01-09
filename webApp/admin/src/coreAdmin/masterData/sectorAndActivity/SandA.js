@@ -3,7 +3,7 @@ import $                    from 'jquery';
 import Activity             from "./component/activity/Activity.js";
 import Sector               from "./component/sector/Sector.js";
 import SubActivity          from "./component/subActivity/SubActivity.js";
-import _                        from 'underscore';
+import _                    from 'underscore';
 import BulkUpload           from "./component/BulkUpload/BulkUpload.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/tab.js';
@@ -13,26 +13,28 @@ class SandA extends Component{
   constructor(props){
     super(props)
     this.state = {
-      "tabtype" : "sector" ,
       "editId"  : "" ,
       "shown"   : true,
+      "tabtype" : this.props.match.params.tabName? this.props.match.params.tabName :"sector" ,
     }
     this.changeTab = this.changeTab.bind(this); 
-    console.log("In constructor")
-
-
   }
   componentDidMount(){
     console.log("In componentDidMount")
-    this.props.history.push('/SectorAndActivityRedirect/'+this.state.tabtype);
-
+    if(this.state.editId !== undefined)
+    {
+      $("#"+this.props.match.params.tabName).addClass("active");
+    }else{
+      $("#sector").addClass("active");
+    }
   }
   componentWillMount(){
 
     var editId = this.props.match.params.tabName;
-        this.changeTab = this.changeTab.bind(this); 
-
     console.log('editId', editId);
+    localStorage.setItem("tabName",editId);
+    this.changeTab = this.changeTab.bind(this); 
+
     this.setState({
       editId : editId,
     })
@@ -46,7 +48,6 @@ class SandA extends Component{
   componentWillUnmount(){
     $("script[src='/js/adminLte.js']").remove();
     $("link[href='/css/dashboard.css']").remove();
-        console.log("In componentWillUnmount")
 
   }
   toglehidden(){
@@ -144,7 +145,7 @@ class SandA extends Component{
                         </div>
                         <div className="tab-pane" id="activity">
                         {
-                          this.state.tabtype === "activity"?
+                          this.state.tabtype == "activity"?
                           <div className="row"><Activity dataVal={this.state.tabtype} /></div>        
                           :
                           null
@@ -152,7 +153,7 @@ class SandA extends Component{
                         </div>
                         <div className="tab-pane" id="subactivity">
                         {
-                          this.state.tabtype === "subactivity" ?
+                          this.state.tabtype == "subactivity" ?
                           <div className="row"><SubActivity dataVal={this.state.tabtype} /></div>        
                           :
                           null

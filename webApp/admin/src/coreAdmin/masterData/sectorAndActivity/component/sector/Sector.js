@@ -2,7 +2,7 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
-import {withRouter}    from 'react-router-dom';
+import {withRouter}           from 'react-router-dom';
 // import _                      from 'underscore';
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./Sector.css";

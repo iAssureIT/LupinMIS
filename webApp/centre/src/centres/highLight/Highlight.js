@@ -25,6 +25,7 @@ class Highlight extends Component{
       "highlight_File"    :"",
       imgArrayWSaws       : [],
       fileArray           : [],
+      imageArray          : [],
       fields              : {},
       errors              : {},
       "tableObjects"       : {
@@ -177,13 +178,13 @@ class Highlight extends Component{
         "centerName"       :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
         "userName"         :this.refs.userName.value, 
-        "highlight_Image"  :this.state.ImageLocation,
-        "highlight_File"   :this.state.fileLocation,
+        "highlight_Image"  :this.state.imageArray,
+        "highlight_File"   :this.state.fileArray,
       };
      
       axios.post('/api/highlights', highlightValues)
         .then((response)=>{
-        // console.log('response', response);
+         console.log('response', response);
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
@@ -196,8 +197,8 @@ class Highlight extends Component{
       this.setState({
         "dateofsubmission"  : moment(new Date()).format('YYYY-MM'),
         "userName"          :"",
-        "ImageLocation"     :"",
-        "fileLocation"      :"",
+        "fileArray"         :[],
+        "imageArray"        :[],
       });
     }
   }
@@ -230,9 +231,9 @@ class Highlight extends Component{
         });
       this.setState({
         "dateofsubmission"     : moment(new Date()).format('YYYY-MM'),
-        "userName"             :"",
-        "highlight_Image"      :"",
-        "highlight_File"       :"",
+        "userName"             : "",
+        "imageArray"           : [],
+        "fileArray"            : [],
       });
       this.props.history.push('/highlight');
       this.setState({
@@ -299,6 +300,15 @@ class Highlight extends Component{
     });
     }
   }
+  getFile(fileArray, filenames,imageArray){
+     console.log("fileArray",fileArray ,"filenames",filenames,"imageArray",imageArray)
+    this.setState({
+      "fileArray"   : fileArray,
+      "filenames"   : filenames,
+      "imageArray"  : imageArray,
+    })
+  }
+  
 
   render() {     
     return (
@@ -331,18 +341,20 @@ class Highlight extends Component{
                         </div>
                       </div><br/>
                       <AddFilePublic
+                        getFile    = {this.getFile.bind(this)}
                         configData = {this.state.configData} 
                         fileArray  = {this.state.fileArray} 
+                        imageArray = {this.state.imageArray} 
                         fileType   = "Image" 
 
-                      />      
-                      <AddFilePublic
+                      />        
+                       <AddFilePublic
+                        getFile    = {this.getFile.bind(this)}
                         configData = {this.state.configData} 
                         fileArray  = {this.state.fileArray} 
+                        imageArray = {this.state.imageArray} 
                         fileType   = "File"
-
-                      />      
-
+                      />
                         
                
                     </div><br/>

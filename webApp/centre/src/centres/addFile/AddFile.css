@@ -40,3 +40,11 @@
 .fileExt{
     height: 70px;
 }
+.fileContainer{
+    margin-top: 20px;
+}
+.customCircle{
+    font-size: 20px;
+    color:#f00;
+    cursor: pointer;
+}

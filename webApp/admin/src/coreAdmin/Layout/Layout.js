@@ -49,7 +49,7 @@ import BulkUpload                                 from '../../coreAdmin/masterDa
 import centerDetail                               from '../../coreAdmin/masterData/centerDetail/centerDetail.js';
 import Type_Center                                from '../../coreAdmin/masterData/typeOfCenter/typeOfCenter.js';
 import Type_Goal                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoalP.js';
-import TypeOfGoalContainer                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoalContainer.js';
+import TypeOfGoalContainer                        from '../../coreAdmin/masterData/typeOfGoal/typeOfGoalContainer.js';
 
 import ProjectMapping                             from '../../coreAdmin/masterData/projectMapping/ProjectMapping.js';
 import SectorMapping                              from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
@@ -123,20 +123,20 @@ componentDidMount(){
                     <div className=" mainContentBottom">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground">                  
                       <Switch>
-                          <Route path="/CenterwiseBarChart" component={CenterwiseBarChart} exact />
-                          <Route path="/SourcewiseBarChart" component={SourcewiseBarChart} exact />
-                          <Route path="/Chart" component={Chart} exact />
-                          <Route path="/monthwiseCharts" component={monthwiseCharts} exact />
-                          <Route path="/CenterwiseBudget" component={CenterwiseBudget} exact />
-                          <Route path="/Chart1" component={Chart1} exact />
-                          <Route path="/" component={Dashboard} exact />
-                          <Route path="/DashboardNew" component={DashboardNew} exact />
-                          <Route path="/dashboard" component={Dashboard} exact />
-                          <Route path="/umlistofusers" component={UMListOfUsers} exact />
-                          <Route path="/umroleslist" component={UMRolesList} exact />
-                          <Route path="/edituserprofile/:id" component={EditUserProfile} exact />
-                          <Route path="/ViewTemplates" component={ViewTemplates} exact />
-                          <Route path="/companysetting" component={OrganizationSetting} exact />
+                          <Route path="/CenterwiseBarChart"         component={CenterwiseBarChart} exact />
+                          <Route path="/SourcewiseBarChart"         component={SourcewiseBarChart} exact />
+                          <Route path="/Chart"                      component={Chart} exact />
+                          <Route path="/monthwiseCharts"            component={monthwiseCharts} exact />
+                          <Route path="/CenterwiseBudget"           component={CenterwiseBudget} exact />
+                          <Route path="/Chart1"                     component={Chart1} exact />
+                          <Route path="/"                           component={Dashboard} exact />
+                          <Route path="/DashboardNew"               component={DashboardNew} exact />
+                          <Route path="/dashboard"                  component={Dashboard} exact />
+                          <Route path="/umlistofusers"              component={UMListOfUsers} exact />
+                          <Route path="/umroleslist"                component={UMRolesList} exact />
+                          <Route path="/edituserprofile/:id"        component={EditUserProfile} exact />
+                          <Route path="/ViewTemplates"              component={ViewTemplates} exact />
+                          <Route path="/companysetting"             component={OrganizationSetting} exact />
                           {/*Access Management*/}
                           <Route path="/admin/AddModuleFacility"                                      exact strict component={ AddModuleFacility } />
                           <Route path="/admin/AssignPermissionToModule"                               exact strict component={ AssignPermissionToModules } />
@@ -155,7 +155,7 @@ componentDidMount(){
                           <Route path="/center-details"                                               exact strict component={ centerDetail } />
                           <Route path="/center-details/"                                              exact strict component={ centerDetail } />
                           <Route path="/center-details/:id"                                           exact strict component={ centerDetail } />
-                          
+                         
                           <Route path="/sector-and-activity"                                          exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/unit/"                                    exact strict component={ SectorAndActivity } />
@@ -163,16 +163,16 @@ componentDidMount(){
                           <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivity } />
                           <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivity } />
-            
+                          
+                          <Route path="/SectorAndActivityRedirect/"                                                  exact strict component={ SectorAndActivityRedirect } />
                           <Route path="/SectorAndActivityRedirect/:tabName"                                          exact strict component={ SectorAndActivityRedirect } />
-                          <Route path="/SectorAndActivityRedirect/"                                          exact strict component={ SectorAndActivityRedirect } />
-                        {/*  <Route path="/sector-and-activity/"                                         exact strict component={ SectorAndActivityRedirect } />
-                          <Route path="/sector-and-activity/unit/"                                    exact strict component={ SectorAndActivityRedirect } />
-                          <Route path="/sector-and-activity/unit/:unitID"                             exact strict component={ SectorAndActivityRedirect } />
-                          <Route path="/sector-and-activity/:sectorId"                                exact strict component={ SectorAndActivityRedirect } />
-                          <Route path="/sector-and-activity/:sectorId/:activityId"                    exact strict component={ SectorAndActivityRedirect } />
-                          <Route path="/sector-and-activity/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivityRedirect } />
-   */}
+                          <Route path="/SectorAndActivityRedirect/:tabName/"                                         exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/SectorAndActivityRedirect/:tabName/unit/"                                    exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/SectorAndActivityRedirect/:tabName/unit/:unitID"                             exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/SectorAndActivityRedirect/:tabName/:sectorId"                                exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/SectorAndActivityRedirect/:tabName/:sectorId/:activityId"                    exact strict component={ SectorAndActivityRedirect } />
+                          <Route path="/SectorAndActivityRedirect/:tabName/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivityRedirect } />
+  
                           <Route path="/project-mapping"                                              exact strict component={ ProjectMapping } />
                           <Route path="/project-mapping/"                                              exact strict component={ ProjectMapping } />
                           <Route path="/project-mapping/:projectMappingId"                                              exact strict component={ ProjectMapping } />
