@@ -64,7 +64,7 @@
     font-size: 12px;
 }
 .dashboardHeading{
-    font-size: 13px;
+    font-size: 12px;
 }
 .dashboardHeading1{
     font-size: 12px;
@@ -349,3 +349,16 @@
   top:50px;
   /* background-color: #eee; */
   }
+  .circleFont{
+    font-size: 5px;
+  }
+.listfont{
+    margin-right: 1%!important;
+    width: 31%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-left: 1%;
+    height: 15px;
+
+} 

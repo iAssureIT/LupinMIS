@@ -140,8 +140,9 @@ export default class Dashboard extends Component{
         this.setState({
           availableCenters : response.data[0],
           villagesCovered  : response.data[0].villagesCovered.length,
-          blocksCovered    : response.data[0].blocksCovered.slice(0, 3).map((o,i)=>{return o.block}),
-          districtCovered  : response.data[0].districtsCovered.slice(0, 3).map((d,i)=>{return d.split('|')[0]}),  
+          blocksCovered    : response.data[0].blocksCovered.slice(0, 8).map((o,i)=>{return o.block}),
+          districtCovered  : response.data[0].districtsCovered(0, 8).map((d,i)=>{return d.split('|')[0]}),  
+          // districtCovered  : this.state.districtCovered.slice(0, 8).map((d,i)=>{return d}),  
         },()=>{
           // console.log("districtCovered",this.state.districtCovered);
           // console.log('center', this.state.center);
@@ -454,7 +455,7 @@ export default class Dashboard extends Component{
                             <div className="info-box-content">
                               <span className="info-box-text">Districts</span>
                                 {/*  <span className="info-box-number">5,200</span>*/}
-                            <ul className="classTolist">
+                            {/*<ul className="classTolist">
                               {this.state.districtCovered && this.state.districtCovered.length > 0 ?
                                 this.state.districtCovered.map((district,index)=>{
                                   return(
@@ -466,7 +467,23 @@ export default class Dashboard extends Component{
                               :
                               null }
                               
-                            </ul>
+                            </ul>*/}
+                              {this.state.districtCovered && this.state.districtCovered.length > 0 ?
+                                this.state.districtCovered.map((district,index)=>{
+                                  return(
+                                      <span className="listfont" key={index}>
+                                           <i className="fa fa-circle-o circleFont" aria-hidden="true"></i> {district}
+                                      </span>
+                                    )
+                                }) 
+                              :
+                              null }
+                              {this.state.districtCovered.length >= 7 ?
+                                  <span><a href="#">{this.state.districtCovered.length - 7} More..</a></span>
+                                :
+                                null
+                              }
+                              <span></span>
                          </div>
 
                         </div>
@@ -475,19 +492,22 @@ export default class Dashboard extends Component{
 
                           <div className="info-box-content">
                             <span className="info-box-text">Blocks</span>
-                            <ul className="classTolist">
                               {this.state.blocksCovered && this.state.blocksCovered.length > 0 ?
                                 this.state.blocksCovered.map((block,index)=>{
-                                  return(
-                                      <li className="listfont" key={index}>
-                                            {block}
-                                      </li>
+                                   return(
+                                      <span className="listfont" key={index}>
+                                           <i className="fa fa-circle-o circleFont" aria-hidden="true"></i> {block}
+                                      </span>
                                     )
                                 }) 
+
                               :
                               null }
-                              
-                            </ul>
+                               {this.state.blocksCovered.length >= 7 ?
+                                  <span><a href="#">{this.state.blocksCovered.length - 7} More..</a></span>
+                                :
+                                null
+                              }
                           </div>
                         </div>
                         <div className="info-box bg-red">
