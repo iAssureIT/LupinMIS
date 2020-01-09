@@ -181,9 +181,15 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Beneficiary Report</span>
                       </Link>
                     </li>
+                    <li>
+                      <Link to="/goal-sector-report" title="Goal Report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Goal Report</span>
+                      </Link>
+                    </li>
                   </ul>
                 </li> 
-                <li className="sidebarMenuText treeview menu-open"  onClick={this.eventclk1.bind(this)}>
+                {/*<li className="sidebarMenuText treeview menu-open"  onClick={this.eventclk1.bind(this)}>
                   <Link to="#sreport" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Special Reports">
                     <i className="fa fa-bars" />
                     Special Reports
@@ -209,7 +215,7 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                   </ul>
-                </li> 
+                </li>*/ }
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
                   <Link to="#MasterData" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Master Data">
                     <i className="fa fa-database" />

@@ -66,7 +66,8 @@ import report6                                    from "../../admin/LupinReports
 import report7                                    from "../../admin/LupinReports/VillagewisefamilyReport.js";
 import report8                                    from "../../admin/LupinReports/CategorywiseReport.js";
 import report9                                    from "../../admin/LupinReports/UpgradedBeneficiaryReport.js";
-import report10                                   from "../../admin/LupinReports/SDGReport.js";
+// import report10                                   from "../../admin/LupinReports/SDGReport.js";
+import report10                                   from "../../admin/LupinReports/GoalSectorReport.js";
 import report11                                   from "../../admin/LupinReports/ADPReport.js";
 import report12                                   from "../../admin/LupinReports/EMPReport.js";
 import report13                                   from "../../admin/LupinReports/ActivitywiseAnnualPlanReport.js";
@@ -192,7 +193,7 @@ componentDidMount(){
                           <Route path="/villagewise-family-report"                                    exact strict component={ report7 } />
                           <Route path="/category-wise-report"                                         exact strict component={ report8 } />
                           <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
-                          <Route path="/SDG-report"                                                   exact strict component={ report10 } />
+                          <Route path="/goal-sector-report"                                                   exact strict component={ report10 } />
                           <Route path="/ADP-report"                                                   exact strict component={ report11 } />
                           <Route path="/EMP-report"                                                   exact strict component={ report12 } />
                           <Route path="/activitywise-annual-plan-report"                              exact strict component={ report13 } />

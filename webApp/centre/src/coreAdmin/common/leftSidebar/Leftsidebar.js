@@ -48,7 +48,7 @@ export default class Leftsidebar extends Component{
  
   }   
   render(){
-    console.log('nkhjh',  window.screen.height );  
+    // console.log('nkhjh',  window.screen.height );  
     var sidebarHeight = window.screen.height - 155;
     return(
       <div className="">
@@ -219,7 +219,7 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
-                      <Link to="/goal-report" title="Goal Report">
+                      <Link to="/goal-sector-report" title="Goal Report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Goal Report</span>
                       </Link>

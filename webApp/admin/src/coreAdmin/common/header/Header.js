@@ -23,8 +23,8 @@ export default class Header extends Component{
     const emailId   = localStorage.getItem("emailId");
     const center_ID = localStorage.getItem("center_ID");
     const fullName  = localStorage.getItem("fullName");
-   console.log("localStorage =",localStorage.getItem('user_ID'));
-    console.log("localStorage =",localStorage);
+   // console.log("localStorage =",localStorage.getItem('user_ID'));
+    // console.log("localStorage =",localStorage);
     this.setState({
       emailId   : emailId,
       fullName  : fullName,

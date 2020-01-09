@@ -212,6 +212,7 @@ class Activity extends Component{
         let id = $(event.currentTarget).find('option:selected').attr('data-id')
         axios.get('/api/projectMappings/'+id)
         .then((response)=>{
+          console.log(response);
           if(response.data[0].sector&&response.data[0].sector.length>0){
             var returnData = [...new Set(response.data[0].sector.map(a => a.sector_ID))]
             if(returnData&&returnData.length>0){
