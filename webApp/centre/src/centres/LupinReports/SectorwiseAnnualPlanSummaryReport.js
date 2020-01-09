@@ -57,7 +57,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "achievement_projectCategory"     : 'Project',
+            "projectCategoryType"     : 'Project',
+            "projectName"     : 'Project Name',
             "name"                            : 'Sector',
             "annualPlan_TotalBudget"          : 'Total Budget', 
             "Per_Annual"                      : 'Proportion to Total %', 
@@ -249,8 +250,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           // console.log('value',value)
           var tableData = response.data.map((a, i)=>{
             return {
-                _id                                    : a._id,            
-                achievement_projectCategory            : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                _id                                    : a._id,     
+                projectCategoryType            : a.projectCategoryType ? a.projectCategoryType : "-",
+                projectName                                   : a.projectName,
                 name                                   : a.name,
                 annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
                 Per_Annual                             : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,

@@ -57,9 +57,9 @@ import report6                                    from "../../centres/LupinRepor
 import report7                                    from "../../centres/LupinReports/VillagewisefamilyReport.js";
 import report8                                    from "../../centres/LupinReports/CategorywiseReport.js";
 import report9                                    from "../../centres/LupinReports/UpgradedBeneficiaryReport.js";
-import report10                                   from "../../centres/LupinReports/GoalReport.js";
+import report10                                   from "../../centres/LupinReports/ProjectReport.js";
 import report11                                   from "../../centres/LupinReports/GoalSectorReport.js";
-import report12                                   from "../../centres/LupinReports/EMPReport.js";
+// import report12                                   from "../../centres/LupinReports/EMPReport.js";
 import report13                                   from "../../centres/LupinReports/ActivitywiseAnnualPlanReport.js";
 import report14                                   from "../../centres/LupinReports/ActivitywisePeriodicPlanReport.js";
 import report15                                   from "../../centres/LupinReports/SectorwisePeriodicPlanSummaryReport.js";
@@ -185,9 +185,9 @@ class Layout extends Component{
                               <Route path="/villagewise-family-report"                                    exact strict component={ report7 } />
                               <Route path="/category-wise-report"                                         exact strict component={ report8 } />
                               <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
-                              <Route path="/goal-report"                                                   exact strict component={ report10 } />
+                              <Route path="/GoalReport"                                                   exact strict component={ report10 } />
                               <Route path="/goal-sector-report"                                                   exact strict component={ report11 } />
-                              <Route path="/EMP-report"                                                   exact strict component={ report12 } />
+                             {/* <Route path="/EMP-report"                                                   exact strict component={ report12 } />*/}
                               <Route path="/activitywise-annual-plan-report"                              exact strict component={ report13 } />
                               <Route path="/activity-wise-periodic-plan-report"                           exact strict component={ report14 } />
                               <Route path="/sector-wise-periodic-plan-summary-report"                     exact strict component={ report15 } />

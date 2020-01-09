@@ -20,8 +20,6 @@ class ProjectReport extends Component{
         "center_ID"         : "all",
         'tableData'         : [],
         "startRange"        : 0,
-        "center"            : "all",
-        "center_ID"         : "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
         "limitRange"        : 10000,
@@ -73,7 +71,18 @@ class ProjectReport extends Component{
     this.currentToDate       = this.currentToDate.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount(){    
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    // console.log("localStorage =",localStorage);
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+    // console.log("center_ID =",this.state.center_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);
+    });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.setState({
       tableData : this.state.tableData,
@@ -82,7 +91,6 @@ class ProjectReport extends Component{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);
     });
     this.getAvailableProjects();       
-    this.getAvailableCenters();       
     this.currentFromDate();
     this.currentToDate();
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);
@@ -91,47 +99,11 @@ class ProjectReport extends Component{
     this.handleToChange = this.handleToChange.bind(this);
   }   
   componentWillReceiveProps(nextProps){
-    this.getAvailableCenters();       
+    this.getAvailableProjects();       
     this.currentFromDate();
     this.currentToDate();
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);
   }
-  getAvailableCenters(){
-      axios({
-        method: 'get',
-        url: '/api/centers/list',
-      }).then((response)=> {
-        this.setState({
-          availableCenters : response.data,
-          // center           : response.data[0].centerName+'|'+response.data[0]._id
-        },()=>{
-        })
-      }).catch(function (error) { 
-          console.log("error = ",error);
-       
-      });
-  } 
-  selectCenter(event){
-      var selectedCenter = event.target.value;
-      this.setState({
-        [event.target.name] : event.target.value,
-        selectedCenter : selectedCenter,
-      },()=>{
-        if(this.state.selectedCenter==="all"){
-          var center = this.state.selectedCenter;
-        }else{
-          var center = this.state.selectedCenter.split('|')[1];
-        }
-        // var center = this.state.selectedCenter.split('|')[1];
-        console.log('center', center);
-        this.setState({
-          center_ID :center,            
-        },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);
-          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        })
-      });
-  } 
   handleChange(event){
       event.preventDefault();
       this.setState({
@@ -334,25 +306,6 @@ class ProjectReport extends Component{
                   </div>
                   <hr className="hr-head"/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-                    <div className=" col-lg-4  col-md-4 col-sm-12 col-xs-12">
-                      <label className="formLable">Center</label><span className="asterix"></span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                          <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                              <option className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
-                              {
-                                this.state.availableCenters && this.state.availableCenters.length >0 ?
-                                this.state.availableCenters.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                          </select>
-                      </div>
-                    </div>
                     <div className="col-lg-4  col-md-4 col-sm-12 col-xs-12  ">
                       <label className="formLable">Project Name</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
