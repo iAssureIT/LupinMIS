@@ -29,25 +29,25 @@ class GoalSectorReport extends Component{
             apply           : true,
             firstHeaderData : [
                 {
-                    heading : 'ADP Goal',
+                    heading : 'Goal',
                     mergedColoums : 2
                 }, 
                 {
-                    heading : 'Details of Activity contributing ADP',
+                    heading : 'Details of Activity',
                     mergedColoums : 5
                 },
                 {
-                    heading : 'Financial Sharing "Rs"',
+                    heading : 'Financial Sharing "Lakh"',
                     mergedColoums : 9
                 },
             ]
         },
         "tableHeading"      : {
-            "goalName"        : 'ADP Indicator',
+            "goalName"        : 'Goal Name',
             "activityName"    : 'Activity',
             "unit"            : 'Unit',
             "Quantity"        : 'Quantity',
-            "Amount"          : 'Amount',
+            "Amount"          : 'Amount "Lakh"',
             "Beneficiaries"   : 'Beneficiaries',
             "LHWRF"           : 'LHWRF',
             "NABARD"          : 'NABARD',
