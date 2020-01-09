@@ -15,11 +15,11 @@ class Beneficiary extends Component{
    
     this.state = {
       // "relation"            :"-- Select --",
-      "Check"            :false,
-      "relation"            :"",
+      "Check"               :false,
+      "relation"            :"-- Select --",
       "familyID"            :"",
       "beneficiaryID"       :"",
-      "uidNumberCheck"        :"",
+      "uidNumberCheck"      :"",
       "firstNameOfBeneficiary"  :"",
       "middleNameOfBeneficiaryCheck"  :"",
       "firstNameOfBeneficiaryCheck"  :"",
@@ -126,20 +126,6 @@ class Beneficiary extends Component{
     }*/
   }
 
-  isTextKey(evt){
-/*   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }*/
-    let idx = evt.target.selectedIndex;
-    var optionValue = evt.target.options[idx].id;
-    console.log("optionValue",optionValue);
-  }
 
   SubmitBeneficiary(event){
     event.preventDefault();
@@ -340,9 +326,9 @@ class Beneficiary extends Component{
     $.validator.addMethod("regxfirstNameOfBeneficiary", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid First Name.");
-    $.validator.addMethod("regxmiddleNameOfBeneficiary", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter valid Middle Name.");
+    // $.validator.addMethod("regxmiddleNameOfBeneficiary", function(value, element, regexpr) {         
+    //   return regexpr.test(value);
+    // }, "Please enter valid Middle Name.");
 
         $("#createBeneficiary").validate({
           rules: {
@@ -366,7 +352,8 @@ class Beneficiary extends Component{
             },
             middleNameOfBeneficiary: {
               // required: true,
-              regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
+               // regxmiddleNameOfBeneficiary: /^( [a-zA-Z ])*$/,
+               // regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
             },
           },
           errorPlacement: function(error, element) {
@@ -661,19 +648,19 @@ class Beneficiary extends Component{
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Surname  </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfBeneficiaryErr" >
-                                <input type="text" className="form-control inputBox" ref="surnameOfBeneficiary" name="surnameOfBeneficiary" value={this.state.surnameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                                <input type="text" className="form-control inputBox" ref="surnameOfBeneficiary" name="surnameOfBeneficiary" value={this.state.surnameOfBeneficiary}  onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">First Name  </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfBeneficiaryErr" >
-                                <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onBlur={this.getUID.bind(this)} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                                <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onBlur={this.getUID.bind(this)}  onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Middle Name  </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfBeneficiaryErr" >
-                                <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary}   onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                                <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary}    onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
@@ -685,10 +672,10 @@ class Beneficiary extends Component{
                             <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
                               <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
-                                <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.isTextKey.bind(this)}  >
-                                  <option  value="">-- Select --</option>
-                                  <option id="1">Self</option>
-                                  <option id="2">Wife</option>
+                                <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option>Self</option>
+                                  <option>Wife</option>
                                   <option>Husband</option>
                                   <option>Son</option>
                                   <option>Daughter</option>
