@@ -7,6 +7,7 @@
   background: #4ca75a;
   height: 50px;
   color: #fff !important;
+  cursor: pointer;
 }
 .headicon{
     font-size: 1.1vw;
@@ -155,16 +156,14 @@
   margin-bottom: 35px;
 }
 
-.CenterName:hover{
-  color: #fff;
-}
+
 .CenterName{
   /*overflow: hidden;*/
   /*text-overflow: ellipsis;*/
   font-size: 15px;
   font-weight: bold;
   white-space: nowrap;
-  /*text-decoration: underline;*/
+  cursor: pointer;
 }
 #headerid {
   position: fixed;

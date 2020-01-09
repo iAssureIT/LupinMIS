@@ -744,32 +744,18 @@ class ProjectMapping extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.projectName}</div>
                           </div>
-                          <div className="errorMsg">{this.state.errors.projectName}</div>
-                        </div>
-                        <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
-                          <label className="formLable">Goal Type</label><span className="asterix">*</span>
-                          {console.log("this.state.projectType",this.state.projectType)}
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectType" >
-                         
-                              {
-                                this.state.listofTypesArray ?
-                             
-                                <ReactMultiSelectCheckboxes options={this.state.listofTypesArray} value={this.state.projectType} name="projectType" onChange={this.handleChangeSelect}/>
-                                :
-                                null
-                              }
-                          </div>
-                        </div>  
-                        <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">Start Date</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" >
-                                <input onChange={this.handleFromChange.bind(this)}  onBlur={this.onBlurEventFrom.bind(this)} name="fromDateCustomised" id="startDate"  ref="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                            </div>
-                        </div>
-                        <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">End Date</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main"  >
-                                <input onChange={this.handleToChange.bind(this)}  onBlur={this.onBlurEventTo.bind(this)} id="endDate" name="toDateCustomised" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                          <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
+                            <label className="formLable">Goal Type</label><span className="asterix">*</span>
+                            {console.log("this.state.projectType",this.state.projectType)}
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectType" >
+                           
+                                {
+                                  this.state.listofTypesArray ?
+                               
+                                  <ReactMultiSelectCheckboxes options={this.state.listofTypesArray} value={this.state.projectType} name="projectType" onChange={this.handleChangeSelect}/>
+                                  :
+                                  null
+                                }
                             </div>
                           </div>  
                           <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 valid_box">
@@ -784,6 +770,8 @@ class ProjectMapping extends Component{
                                   <input onChange={this.handleToChange.bind(this)}  onBlur={this.onBlurEventTo.bind(this)} id="endDate" name="toDateCustomised" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                               </div>
                           </div>  
+                          </div>
+                          
                         </div> 
                       <br/>
                       <div className="col-lg-12 col-xs-12 col-sm-12 col-md-12 "><label className="fbold">Please Select Activities to be mapped with above{/* {this.state.projectType}*/}</label></div>
