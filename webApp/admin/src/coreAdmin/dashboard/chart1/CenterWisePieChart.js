@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import {Pie} from 'react-chartjs-2';
 import 'chartjs-plugin-labels';
 import axios             from 'axios';
+import moment            from 'moment';
+import Loader            from "../../../common/Loader.js";
 
 export default class CenterWisePieChart extends Component {
   constructor(props){
@@ -107,6 +109,17 @@ export default class CenterWisePieChart extends Component {
       })
     }
   }
+  // gatAllYear(){
+  //  const years = []
+  //  const dateStart = moment()
+  //  const dateEnd = moment().add(10, 'y');
+  //  // while (dateEnd.diff(dateStart, 'years') >= 0) {
+  //  //   years.push(dateStart.subtract(1, 'years').format('YYYY')+"-"+dateStart.format('YYYY'))
+  //  //   dateStart.add(1, 'year')
+  //  // }
+  //  // return years
+  //   // console.log("arr ===>",years);
+  // }
    getRandomColor(){
       var letters = '01234ABCDEF56789';
       var color = '#';
@@ -124,6 +137,8 @@ export default class CenterWisePieChart extends Component {
   render() {
     return (
       <div>
+              <Loader type="fullpageloader" />
+
         <Pie height={150} data={this.state.data} options={{legend: {display: false},
         plugins: {
            labels: [{
@@ -136,7 +151,7 @@ export default class CenterWisePieChart extends Component {
             render: 'percentage',
             fontColor: '#fff',
           }
-           ]}}
+          ]}}
           } />
       </div>
     );

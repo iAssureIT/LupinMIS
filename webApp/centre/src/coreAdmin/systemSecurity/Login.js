@@ -54,7 +54,7 @@ class Login extends Component {
       var auth= {
         email       : this.refs.loginusername.value,
         password    : this.refs.loginpassword.value,
-        roles       : ['MIS Coordinator']
+        roles       : ['MIS Coordinator','Center Incharge']
       }
 
       // console.log("auth value",auth);
