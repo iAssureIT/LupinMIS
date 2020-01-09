@@ -67,11 +67,11 @@ class Login extends Component {
 
       
         if(axios.defaults.headers.common.Authorization){
-          console.log("axios.defaults.headers.common.Authorization",axios.defaults.headers.common.Authorization);
+          // console.log("axios.defaults.headers.common.Authorization",axios.defaults.headers.common.Authorization);
          /* alert("Authorization check ",);*/
           if(response.data.status==="Blocked"){
               swal("Invalid Email or Password","User is Blocked, Please contact with Admin");
-              console.log("blocked user")
+              // console.log("blocked user")
           }else{
              this.props.history.push("/dashboard");
             if(localStorage==null){
@@ -88,7 +88,7 @@ class Login extends Component {
               this.setState({
                   loggedIn  :   true
               },()=>{
-                console.log("loggedIn", this.state.loggedIn);
+                // console.log("loggedIn", this.state.loggedIn);
               })
             }
           }

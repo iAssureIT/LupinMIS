@@ -93,51 +93,8 @@ export default class Dashboard extends Component{
       "villagesCovered"          : 0,
       "blocksCovered"            :["Nagbhir","Bhadravati","Mozri"],
       "districtCovered"          : ["Chandrapur","Amaravati","Gondia"],
-      /*  "data1"               : {
-        labels: [],
-        datasets: [
-          // {
-          //   label: 'Achievement Reach',
-          //   backgroundColor: 'rgba(75, 192, 192, 1)',
-          //   borderColor:  'rgba(75, 192, 192, 0.5)',
-          //   borderWidth: 1,
-          //   hoverBackgroundColor:  'rgba(75, 192, 192, 0.5)',
-          //   hoverBorderColor:  'rgba(75, 192, 192, 0.5)',
-          //   stack: '1',
-          //   data: []
-          // },          
-          {
-            label: 'Achievement Family Upgradation',
-            backgroundColor:'rgba(255, 206, 86, 1)',
-            borderColor: 'rgba(255, 206, 86, 0.5)',
-            borderWidth: 1,
-            hoverBackgroundColor:'rgba(255, 206, 86, 0.5)',
-            hoverBorderColor:'rgba(255, 206, 86, 0.5)',
-            stack: '1',
-            data: []
-          },
-          {
-            label: 'Annual Family Upgradation',
-            backgroundColor:'rgba(54, 162, 235, 1)',
-            borderColor: 'rgba(54, 162, 235, 0.5)',
-            borderWidth: 1,
-            hoverBackgroundColor: 'rgba(54, 162, 235, 0.5)',
-            hoverBorderColor: 'rgba(54, 162, 235, 0.5)',
-            stack: '1',
-            data: []
-          },
-          // {
-          //   label: 'AnnualReach',
-          //   backgroundColor: 'rgba(255, 99, 132, 1)',
-          //   borderColor: 'rgba(255, 99, 132, 0.5)',
-          //   borderWidth: 1,
-          //   hoverBackgroundColor: 'rgba(255, 99, 132, 0.5)',
-          //   hoverBorderColor: 'rgba(255, 99, 132, 0.5)',
-          //   stack: '2',
-          //   data: []
-          // },
-        ]
-      }*/
+      "center_ID"    : localStorage.getItem("center_ID"),
+      "centerName"   : localStorage.getItem("centerName"),
     }
   }
    
@@ -147,15 +104,15 @@ export default class Dashboard extends Component{
     this.getcenter();
     this.getCountOfSectors();
     this.getCountOfActivities();
-    const center_ID = localStorage.getItem("center_ID");
-    const centerName = localStorage.getItem("centerName");
-    this.setState({
-      center_ID    : center_ID,
-      centerName   : centerName,
-    },()=>{
-      this.getAvailableCenters(center_ID);
+    // const center_ID = localStorage.getItem("center_ID");
+    // const centerName = localStorage.getItem("centerName");
+    // this.setState({
+    //   center_ID    : center_ID,
+    //   centerName   : centerName,
+    // },()=>{
+      this.getAvailableCenters(this.state.center_ID);
       this.getCenterwiseData(this.state.year, this.state.center_ID);
-    })
+    // })
   }
 
   componentWillReceiveProps(nextProps){
@@ -417,6 +374,7 @@ export default class Dashboard extends Component{
 
 
   render(){
+  // console.log("this.state.center_ID",this.state.center_ID);
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
