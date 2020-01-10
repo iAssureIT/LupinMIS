@@ -850,7 +850,7 @@ class centerDetail extends Component{
                         <div className="col-lg-12 ">
                            <h4 className="pageSubHeader">Center Details</h4>
                         </div>
-                        {this.state.role !== "viwer" ? 
+                        {this.state.role !== "viewer" ? 
 
                           <React.Fragment>
                           <div className="row">
@@ -1142,7 +1142,7 @@ class centerDetail extends Component{
                          </React.Fragment>                         
                         : null}
                       </form>
-                      {this.state.role !== "viwer" ? 
+                      {this.state.role !== "viewer" ? 
                           <div className="col-lg-12 ">
                              <hr className="hr-head"/>
                           </div>

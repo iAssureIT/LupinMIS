@@ -289,7 +289,7 @@ class nameOfGoal extends Component{
   // console.log('render');
     return (
       <div>
-        {this.state.role !== "viwer" ?
+        {this.state.role !== "viewer" ?
           <React.Fragment>
             <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable marginT50 " id="typeofNameDetails">
                 <div className="row">

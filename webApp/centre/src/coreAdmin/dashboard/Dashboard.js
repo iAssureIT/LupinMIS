@@ -496,7 +496,7 @@ export default class Dashboard extends Component{
                                 }) 
                               :
                               null }
-                              {this.state.districtCovered.length >= 7 ?
+                              {this.state.districtCovered.length > 7 ?
                                   <span><a href="#"  data-toggle="modal"  onClick={()=> this.dataShow("Districts")}>View All..</a></span>
                                 :
                                 null
@@ -521,7 +521,7 @@ export default class Dashboard extends Component{
 
                               :
                               null }
-                               {this.state.blocksCovered.length >= 7 ?
+                               {this.state.blocksCovered.length > 7 ?
                                   <span className=""><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Blocks")}>View All..</a></span>
                                 :
                                 null
@@ -560,7 +560,7 @@ export default class Dashboard extends Component{
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" > 
                         <div className="box2">
                           <div className="box-header with-border">
                               <h3 className="box-title">Month wise Goal Completion</h3>

@@ -280,7 +280,7 @@ class Activity extends Component{
       <div className="container-fluid">
         <div className="row">
           <div className="formWrapper">
-            {this.state.role !== "viwer" ?
+            {this.state.role !== "viewer" ?
               <React.Fragment>
                 <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt"  id="Activity">
                   <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 addLoc ">

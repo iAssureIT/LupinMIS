@@ -462,7 +462,7 @@ class SectorMapping extends Component{
                       <div className="col-lg-12 ">
                          <h4 className="pageSubHeader">Goal Sector Mapping</h4>
                       </div>
-                        {this.state.role !== "viwer" ?
+                        {this.state.role !== "viewer" ?
                           <React.Fragment>
                             <div className="row">
                               <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
@@ -616,7 +616,7 @@ class SectorMapping extends Component{
                           : null
                         }
                     </form>
-                    {this.state.role !== "viwer" ?
+                    {this.state.role !== "viewer" ?
                         <div className="col-lg-12 ">
                            <hr className=""/>
                         </div>

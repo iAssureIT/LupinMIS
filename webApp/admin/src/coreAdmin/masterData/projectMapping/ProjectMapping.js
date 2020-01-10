@@ -729,7 +729,7 @@ class ProjectMapping extends Component{
                     <div className="col-lg-12 ">
                        <h4 className="pageSubHeader">Project Definition</h4>
                     </div>
-                  {this.state.role !== "viwer" ?
+                  {this.state.role !== "viewer" ?
                     <React.Fragment>
                       <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable  ">
@@ -852,7 +852,7 @@ class ProjectMapping extends Component{
                     :null
                   }
                   </form>
-                  {this.state.role !== "viwer" ?
+                  {this.state.role !== "viewer" ?
                     <div className="col-lg-12 ">
                        <hr className=""/>
                     </div>

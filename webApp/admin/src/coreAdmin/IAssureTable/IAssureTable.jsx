@@ -633,7 +633,7 @@ class IAssureTable extends Component {
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
 													if(key === 'actions'){
-														if (this.state.role !== "viwer") {
+														if (this.state.role !== "viewer") {
 															return(
 																<th key={i} className="umDynamicHeader srpadd text-center">{value}</th>
 															);	
@@ -691,7 +691,7 @@ class IAssureTable extends Component {
 															}
 														)
 													}
-													{this.state.tableHeading && this.state.tableHeading.actions && this.state.role !== "viwer"? 
+													{this.state.tableHeading && this.state.tableHeading.actions && this.state.role !== "viewer"? 
 														<td className="textAlignCenter">
 															<span>
 																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
