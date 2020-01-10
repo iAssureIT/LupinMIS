@@ -3,7 +3,9 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
 import ReactTable             from "react-table";
-import FamilyName from './FamilyName.js';
+import BenificiaryName from './BenificiaryName.js';
+import moment                 from "moment";
+
 import 'react-table/react-table.css';
 import "./ActivityReportView.css";
 
@@ -28,7 +30,7 @@ class ActivityReportView extends Component{
       method: 'get',
       url: '/api/activityReport/'+this.state.activty_ID,
     }).then((response)=> {
-      // console.log("response",response.data);
+      console.log("response",response.data);
       if (response.data && response.data[0]) {
         this.setState({
           "activity" :  response.data[0]
@@ -74,7 +76,7 @@ class ActivityReportView extends Component{
                             <p><b>Date</b></p>
                           </div>
                           <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                             <p>07/07/2019</p>
+                             <p>{this.state.activity  ? moment(this.state.activity.createdAt).format('YYYY-MM-DD') : "-"}</p>
                           </div>
                         </div>
                         <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
@@ -260,7 +262,7 @@ class ActivityReportView extends Component{
                                     <tr key={index}>
                                       <td>{index+1}</td>
                                       <td>{beneficiery.familyID}</td>
-                                      <td><FamilyName family_ID={beneficiery.family_ID} /></td>
+                                      <td><BenificiaryName beni_ID={beneficiery.beneficiary_ID} /></td>
                                       <td>{beneficiery.beneficiaryID}</td>
                                     </tr>
                                   )
