@@ -75,7 +75,7 @@ import report14                                   from "../../admin/LupinReports
 import report15                                   from "../../admin/LupinReports/SectorwisePeriodicPlanSummaryReport.js";
 import report16                                   from "../../admin/LupinReports/SectorwiseAnnualPlanSummaryReport.js";
 
-import GoalReport                                   from "../../admin/LupinReports/GoalReport.js";
+import ProjectReport                                   from "../../admin/LupinReports/ProjectReport.js";
  class Layout extends Component{
   
   constructor(props) {
@@ -203,7 +203,7 @@ componentDidMount(){
                           <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
                           <Route path="/Report"                                                       exact strict component={ report } />
                           <Route path="/Report/:id"                                                   exact strict component={ report } />
-                          <Route path="/GoalReport"                                                       exact strict component={ GoalReport } />
+                          <Route path="/Project-report"                                                       exact strict component={ ProjectReport } />
                       </Switch>        
                       </div>
                     </div>

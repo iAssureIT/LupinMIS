@@ -32,12 +32,12 @@ class GoalSectorReport extends Component{
             apply           : true,
             firstHeaderData : [
                 {
-                    heading : 'ADP Goal',
-                    mergedColoums : 2
+                    heading : 'Goal',
+                    mergedColoums : 3
                 }, 
                 {
                     heading : 'Details of Activity contributing ADP',
-                    mergedColoums : 5
+                    mergedColoums : 7
                 },
                 {
                     heading : 'Financial Sharing "Rs"',
@@ -364,11 +364,14 @@ class GoalSectorReport extends Component{
       method: 'get',
       url: '/api/typeofgoals/list',
     }).then((response)=> {
+    var getheader = {...this.state.twoLevelHeader};
     this.setState({
       listofTypes : response.data,
-      goalType    : response.data[0]._id
+      goalType    : response.data[0]._id,
+      selectedTypeofGoal    : response.data[0].typeofGoal
     },()=>{
-      console.log("goalType",this.state.goalType)
+      // console.log("goalType",this.state.goalType)
+      getheader.firstHeaderData[0].heading = this.state.selectedTypeofGoal+" Goal ";
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
     })
     }).catch(function (error) {
@@ -379,14 +382,14 @@ class GoalSectorReport extends Component{
     event.preventDefault();
     var selectedType = event.currentTarget.value;
     var selectedTypeofGoal     =$(event.currentTarget).find('option:selected').attr('data-name')
-    // var selectedTypeofGoal     = event.currentTarget.getAttribute('data-name');
-    // console.log("selectedTypeofGoal",selectedTypeofGoal)
-
+    var getheader = {...this.state.twoLevelHeader};
     this.setState({
       goalType : selectedType,
       selectedTypeofGoal : selectedTypeofGoal,
       goalName : 'all',
+      twoLevelHeader : getheader
     },()=>{
+      getheader.firstHeaderData[0].heading = this.state.selectedTypeofGoal+" Goal ";
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
       this.getNameOfGoal(this.state.goalType)
     });

@@ -187,6 +187,12 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Goal Report</span>
                       </Link>
                     </li>
+                    <li>
+                      <Link to="/Project-report" title="Project Achievement Report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Project Achievement Report</span>
+                      </Link>
+                    </li>
                   </ul>
                 </li> 
                 {/*<li className="sidebarMenuText treeview menu-open"  onClick={this.eventclk1.bind(this)}>

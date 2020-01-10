@@ -41,10 +41,10 @@ export default class Leftsidebar extends Component{
 
    Addclass(event){
      // $(".menuContent").toggleClass("openContent");
-   /*   if ($('menuContent').attr('aria-expanded') === true) {
-      $(this).find(".menuContent").toggleClass("openContent");
-  }*/
-    $("pull-right-container").children('i').css({"transform": "rotate(-90deg)"});
+  //     if ($('.activeClass').attr('aria-expanded') === true) {
+  //     $(this).find(".activeClass").toggleClass("openContent");
+  // }
+    // $("pull-right-container").children('i').css({"transform": "rotate(-90deg)"});
  
   }   
   render(){
@@ -222,6 +222,12 @@ export default class Leftsidebar extends Component{
                       <Link to="/goal-sector-report" title="Goal Report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Goal Report</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/Project-report" title="Project Achievement Report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Project Achievement Report</span>
                       </Link>
                     </li>
                   </ul>

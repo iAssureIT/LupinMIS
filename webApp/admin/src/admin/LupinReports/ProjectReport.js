@@ -30,28 +30,25 @@ class ProjectReport extends Component{
             apply           : true,
             firstHeaderData : [
                 {
-                    heading : 'ADP Goal',
+                    heading : 'Project',
                     mergedColoums : 2
                 }, 
                 {
-                    heading : 'Details of Activity contributing ADP',
+                    heading : 'Activity Details ',
                     mergedColoums : 5
                 },
                 {
-                    heading : 'Financial Sharing "Rs"',
+                    heading : 'Financial Sharing "Lakh"',
                     mergedColoums : 9
                 },
             ]
         },
         "tableHeading"      : { 
-            "goalType"              : "Goal Type",
-            "goalName"              : 'Goal Name',
-            "projectCategoryType"   : "Project Category",
-            "projectName"           : "Project Name",
+            "projectName"     : "Project Name",
             "activityName"    : 'Activity',
             "unit"            : 'Unit',
             "Quantity"        : 'Quantity',
-            "Amount"          : 'Amount',
+            "Amount"          : 'Amount "Lakh"',
             "Beneficiaries"   : 'Beneficiaries',
             "LHWRF"           : 'LHWRF',
             "NABARD"          : 'NABARD',
@@ -154,11 +151,8 @@ class ProjectReport extends Component{
         console.log("resp",response);
         var tableData = response.data.map((a, i)=>{
           return {
-              _id                   : a._id,            
-              goalType              : a.goalType,
-              goalName              : a.goalName,
-              projectCategoryType   : a.projectCategoryType,
-              projectName           : a.projectName,
+              _id             : a._id,   
+              projectName     : a.projectName,
               activityName    : a.activityName,
               unit            : a.unit,
               Quantity        : a.Quantity,
