@@ -73,7 +73,7 @@ export default class BarChart extends Component{
     var oudata = {...this.state.data};
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
-    if(startDate, endDate){
+    if(startDate && endDate){
         axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
         .then((response)=>{ 
           // console.log("response ==>",response);
