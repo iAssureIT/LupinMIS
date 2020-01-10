@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 // import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import axios             from 'axios';
 import { render } from 'react-dom';
-
+import $ from "jquery";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import html2canvas from 'html2canvas';
@@ -93,8 +93,12 @@ export default class Dashboard extends Component{
       "villagesCovered"          : 0,
       "blocksCovered"            :["Nagbhir","Bhadravati","Mozri"],
       "districtCovered"          : ["Chandrapur","Amaravati","Gondia"],
+      "allblocks"                : [],
+      "alldistrict"              : [],
+      "dataShow"                 : [],
       "center_ID"    : localStorage.getItem("center_ID"),
       "centerName"   : localStorage.getItem("centerName"),
+      "dataHeading"              : '',
     }
   }
    
@@ -141,8 +145,9 @@ export default class Dashboard extends Component{
           availableCenters : response.data[0],
           villagesCovered  : response.data[0].villagesCovered.length,
           blocksCovered    : response.data[0].blocksCovered.slice(0, 8).map((o,i)=>{return o.block}),
-          districtCovered  : response.data[0].districtsCovered(0, 8).map((d,i)=>{return d.split('|')[0]}),  
-          // districtCovered  : this.state.districtCovered.slice(0, 8).map((d,i)=>{return d}),  
+          allblocks        : response.data[0].blocksCovered.map((o,i)=>{return o.block}),
+          districtCovered  : response.data[0].districtsCovered.slice(0, 8).map((d,i)=>{return d.split('|')[0]}),  
+          alldistrict      : response.data[0].districtsCovered.map((d,i)=>{return d.split('|')[0]}),
         },()=>{
           // console.log("districtCovered",this.state.districtCovered);
           // console.log('center', this.state.center);
@@ -372,7 +377,20 @@ export default class Dashboard extends Component{
         }); 
     }
   }
-
+  dataShow(id){
+    var getData = id === "Districts" ? this.state.alldistrict : this.state.allblocks;
+    this.setState({
+      "dataShow" : getData,
+      "dataHeading" : id
+    },()=>{
+      $('#dataShow').css({"display": "block"});
+      $('#dataShow').addClass('in');  
+    })
+   }
+  closeModal(){
+      $('#dataShow').css({"display": "none"});
+      $('#dataShow').removeClass('in');  
+  }
 
   render(){
   // console.log("this.state.center_ID",this.state.center_ID);
@@ -479,7 +497,7 @@ export default class Dashboard extends Component{
                               :
                               null }
                               {this.state.districtCovered.length >= 7 ?
-                                  <span><a href="#">{this.state.districtCovered.length - 7} More..</a></span>
+                                  <span><a href="#"  data-toggle="modal"  onClick={()=> this.dataShow("Districts")}>View All..</a></span>
                                 :
                                 null
                               }
@@ -504,7 +522,7 @@ export default class Dashboard extends Component{
                               :
                               null }
                                {this.state.blocksCovered.length >= 7 ?
-                                  <span><a href="#">{this.state.blocksCovered.length - 7} More..</a></span>
+                                  <span className=""><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Blocks")}>View All..</a></span>
                                 :
                                 null
                               }
@@ -561,6 +579,31 @@ export default class Dashboard extends Component{
                               <MonthwiseExpenditure year={this.state.year} center_ID={this.state.center_ID}/>
                             </div>
                         </div>                             
+                      </div>
+                      <div className="modal fade" id="dataShow" role="dialog">
+                        <div className="modal-dialog">                        
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <button type="button" className="close" onClick={()=> this.closeModal()}>&times;</button>
+                              <h4 className="modal-title">{this.state.dataHeading}</h4>
+                            </div>
+                            <div className="modal-body">
+                              {this.state.dataShow && this.state.dataShow.length > 0 ?
+                                this.state.dataShow.map((data,index)=>{
+                                   return(
+                                      <span className="listfontInmodal" key={index}>
+                                           <i className="fa fa-circle-o circleFont" aria-hidden="true"></i> {data}
+                                      </span>
+                                    )
+                                }) 
+
+                              :
+                              null }
+                            </div>
+                            <div className="modal-footer">
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div> 

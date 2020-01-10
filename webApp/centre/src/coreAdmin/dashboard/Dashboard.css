@@ -362,3 +362,12 @@
     height: 15px;
 
 } 
+.listfontInmodal{
+    margin-right: 1%!important;
+    width: 31%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-left: 1%;
+    color: "#000";
+} 

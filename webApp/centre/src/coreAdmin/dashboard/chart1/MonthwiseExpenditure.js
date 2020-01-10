@@ -59,7 +59,7 @@ export default class MonthwiseExpenditure extends Component{
     if(startYear && endYear && center_ID){
         axios.get('/api/report/dashboard/'+startYear+'/'+endYear+'/'+center_ID)
         .then((response)=>{
-          console.log("response",response.data);
+          // console.log("response",response.data);
           var month = [];
           var monthlyPlanTotalBudget = [];
           var achievementTotalBudget = [];
