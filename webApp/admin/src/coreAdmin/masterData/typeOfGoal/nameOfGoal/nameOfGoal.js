@@ -318,7 +318,7 @@ class nameOfGoal extends Component{
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                       <label className="formLable"> Name of Goal</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="goalNameErr" >
-                        <input type="text" className="form-control inputBox"  placeholder="" ref="goalName" name="goalNameErr" value={this.state.goalName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <input type="text" className="form-control inputBox"  placeholder="" ref="goalName" name="goalNameErr" value={this.state.goalName} onChange={this.handleChange.bind(this)} />
                       </div>
                       <div className="errorMsg">{this.state.errors.goalNameRegx}</div>
                     </div>

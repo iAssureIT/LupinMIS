@@ -104,7 +104,7 @@ class NewBeneficiary extends Component{
       axios.get('/api/beneficiaries/get/beneficiary/list/'+center_ID+'/'+district+'/'+block+'/'+village)
       // axios.get('/api/beneficiaries/list/'+centerID)
       .then((response)=>{
-        // console.log('bbbbbbbbbbbbbbbbbbbresponse', response);
+        console.log('bbbbbbbbbbbbbbbbbbbresponse', response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
@@ -277,11 +277,13 @@ class NewBeneficiary extends Component{
 
   getSearchText(searchText){
     var searchText = searchText;
-    // console.log('searchText',searchText)
+    console.log('searchText',searchText)
     var tableData = [...this.state.prevtableData]
     if(searchText) {
       if(tableData&&tableData.length>0){
         tableData.map((a,i)=>{
+          console.log(a);
+          console.log(a.nameofbeneficiaries.toUpperCase().includes(searchText.toUpperCase()))
           if(a.familyID.toUpperCase().includes(searchText.toUpperCase())||
             a.beneficiaryID.toUpperCase().includes(searchText.toUpperCase())||
             a.nameofbeneficiaries.toUpperCase().includes(searchText.toUpperCase())||
@@ -307,6 +309,8 @@ class NewBeneficiary extends Component{
         })
         this.setState({
           tableData     : tableData
+        },()=>{
+          console.log('this.state.tableData',this.state.tableData)
         })
       }
     }else{
