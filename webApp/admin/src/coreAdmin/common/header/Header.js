@@ -72,8 +72,9 @@ logout(){
         localStorage.removeItem("center_ID")
         localStorage.removeItem("centerName")
         localStorage.removeItem("fullName")
+        localStorage.removeItem('role')
       })
-      // browserHistory.push("/login");
+      // browserHistory.push("/login"); 
       // this.props.history.push("/login");
     }
   }

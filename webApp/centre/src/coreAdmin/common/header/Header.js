@@ -70,11 +70,12 @@ logout(){
       console.log("Header Token = ",token);
       this.setState({
         loggedIn : false
-      },()=>{
+      },()=>{ 
         localStorage.removeItem("emailId");
         localStorage.removeItem("center_ID");
         localStorage.removeItem("centerName");
         localStorage.removeItem("fullName");
+        localStorage.removeItem('')
       })
       // browserHistory.push("/login");
       // this.props.history.push("/login");
