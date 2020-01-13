@@ -253,13 +253,16 @@ class ActivityWisePeriodicVarianceReport extends Component{
     }
     addCommas(x) {
         x=x.toString();
-        var lastThree = x.substring(x.length-3);
-        var otherNumbers = x.substring(0,x.length-3);
-        if(otherNumbers != '')
-            lastThree = ',' + lastThree;
-        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        return(res);
-          // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        if(x.includes('%')){
+            return x;
+        }else{
+            var lastThree = x.substring(x.length-3);
+            var otherNumbers = x.substring(0,x.length-3);
+            if(otherNumbers != '')
+                lastThree = ',' + lastThree;
+            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            return(res);
+        }
     }
     getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
         console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);

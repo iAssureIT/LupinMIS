@@ -54,7 +54,7 @@ export default class CenterWisePieChart extends Component {
     if(startDate && endDate){
         axios.get('/api/report/center/'+startDate+'/'+endDate+'/all/all/all/all/all')
         .then((response)=>{
-          // console.log("response-===>",response.data);
+          console.log("response-===>",response.data);
           response.data.splice(-2); 
           var sector = [];
           var annualPlanTotalBudget = [];
@@ -135,6 +135,7 @@ export default class CenterWisePieChart extends Component {
       // return color;
     }
   render() {
+    console.log("this.state.data = ",this.state.data);
     return (
       <div>
               <Loader type="fullpageloader" />

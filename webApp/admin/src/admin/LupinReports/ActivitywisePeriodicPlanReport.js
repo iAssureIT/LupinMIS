@@ -37,7 +37,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 4,
+                        mergedColoums : 5,
                         hide : false
                     },
                     {
@@ -62,7 +62,8 @@ class ActivitywisePeriodicPlanReport extends Component{
                 ]
             },
             "tableHeading"      : {
-                "achievement_projectCategory"               : 'Project',
+                "projectCategoryType"                       : 'Project Category',
+                "projectName"                               : 'Project Name',
                 "name"                                      : 'Activity & Sub-Activity',
                 "unit"                                      : 'Unit',
                 "annualPlan_Reach"                          : 'Reach', 
@@ -259,13 +260,16 @@ class ActivitywisePeriodicPlanReport extends Component{
     
     addCommas(x) {
         x=x.toString();
-        var lastThree = x.substring(x.length-3);
-        var otherNumbers = x.substring(0,x.length-3);
-        if(otherNumbers != '')
-            lastThree = ',' + lastThree;
-        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        return(res);
-          // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        if(x.includes('%')){
+            return x;
+        }else{
+            var lastThree = x.substring(x.length-3);
+            var otherNumbers = x.substring(0,x.length-3);
+            if(otherNumbers != '')
+                lastThree = ',' + lastThree;
+            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            return(res);
+        }
     }
     getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
@@ -281,8 +285,9 @@ class ActivitywisePeriodicPlanReport extends Component{
 
                         var tableData = response.data.map((a, i)=>{
                             return {
-                            _id                                       : a._id,            
-                            achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                            _id                                       : a._id,               
+                            projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                            projectName                               : a.projectName === 0 ? "-" :a.projectName,        
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -318,8 +323,9 @@ class ActivitywisePeriodicPlanReport extends Component{
                       console.log("resp",response);
                         var tableData = response.data.map((a, i)=>{
                             return {
-                            _id                                       : a._id,            
-                            achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                            _id                                       : a._id,                
+                            projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                            projectName                               : a.projectName === 0 ? "-" :a.projectName,        
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -356,8 +362,9 @@ class ActivitywisePeriodicPlanReport extends Component{
                   console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{
                         return {
-                            _id                                       : a._id,            
-                            achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                            _id                                       : a._id,                
+                            projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                            projectName                               : a.projectName === 0 ? "-" :a.projectName,        
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),

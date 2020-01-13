@@ -38,7 +38,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 3,
+                    mergedColoums : 4,
                     hide  : false,
                 },
                 {
@@ -63,7 +63,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "achievement_projectCategory"       : 'Project',
+            "projectCategoryType"                       : 'Project Category',
+            "projectName"                               : 'Project Name',
             "name"                              : 'Sector',
             "annualPlan_Reach"                  : 'OutReach', 
             "annualPlan_FamilyUpgradation"      : 'Family Upgradation', 

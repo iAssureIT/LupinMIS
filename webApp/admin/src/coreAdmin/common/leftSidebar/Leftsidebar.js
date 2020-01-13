@@ -89,18 +89,6 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
-                      <Link to="/activitywise-annual-plan-report" title="Activity Annual Plan">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activity Annual Plan</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/activity-wise-periodic-plan-report" title="Activity Periodic Plan">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activity Periodic Plan</span>
-                      </Link>
-                    </li>
-                    <li>
                       <Link to="/sector-wise-annual-plan-summary-report" title="Sector Annual Plan">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector Annual Plan</span>
@@ -110,6 +98,18 @@ export default class Leftsidebar extends Component{
                       <Link to="/sector-wise-periodic-plan-summary-report" title="Sector Periodic Plan">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector Periodic Plan</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/activitywise-annual-plan-report" title="Activity Annual Plan">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Activity Annual Plan</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/activity-wise-periodic-plan-report" title="Activity Periodic Plan">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Activity Periodic Plan</span>
                       </Link>
                     </li>
                   </ul>

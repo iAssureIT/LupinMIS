@@ -38,7 +38,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 3,
+                    mergedColoums : 4,
                     hide : false
                 },
                 {
@@ -58,7 +58,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "achievement_projectCategory"     : 'Project',
+            "projectCategoryType"              : 'Project Category',
+            "projectName"                      : 'Project Name',
             "name"                            : 'Sector',
             "annualPlan_TotalBudget"          : 'Total Budget', 
             "Per_Annual"                      : 'Proportion to Total %', 
@@ -252,13 +253,16 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
 
   addCommas(x) {
     x=x.toString();
-    var lastThree = x.substring(x.length-3);
-    var otherNumbers = x.substring(0,x.length-3);
-    if(otherNumbers != '')
-        lastThree = ',' + lastThree;
-    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-    return(res);
-      // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if(x.includes('%')){
+        return x;
+    }else{
+        var lastThree = x.substring(x.length-3);
+        var otherNumbers = x.substring(0,x.length-3);
+        if(otherNumbers != '')
+            lastThree = ',' + lastThree;
+        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        return(res);
+    }
   }
   getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        
     if(year){
@@ -276,11 +280,12 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               // console.log('value',value)
               var tableData = response.data.map((a, i)=>{
                 return {
-                  _id                                    : a._id,            
-                  achievement_projectCategory            : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                  _id                                    : a._id,     
+                  projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",
+                  projectName                            : a.projectName === 0 ? "-" :a.projectName,              
                   name                                   : a.name,
                   annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
-                  Per_Annual                             : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
+                  Per_Annual                             : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
                   annualPlan_Reach                       : this.addCommas(a.annualPlan_Reach),
                   annualPlan_FamilyUpgradation           : this.addCommas(a.annualPlan_FamilyUpgradation), 
                   annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
@@ -313,11 +318,12 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               // console.log('value',value)
               var tableData = response.data.map((a, i)=>{
                 return {
-                    _id                                    : a._id,            
-                    achievement_projectCategory            : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                    _id                                    : a._id,    
+                    projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",
+                    projectName                            : a.projectName === 0 ? "-" :a.projectName,                
                     name                                   : a.name,
                     annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
-                    Per_Annual                             : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
+                    Per_Annual                             : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
                     annualPlan_Reach                       : this.addCommas(a.annualPlan_Reach),
                     annualPlan_FamilyUpgradation           : this.addCommas(a.annualPlan_FamilyUpgradation), 
                     annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),

@@ -49,7 +49,7 @@ export default class PieChart extends Component {
     var endDate = year.substring(10, 15)+"-03-31";
     // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
     if(startDate && endDate){
-        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
+        axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/all/all/all/all')
         .then((response)=>{ 
           // console.log("respgetData------------->",response.data) ;
           response.data.splice(-2);

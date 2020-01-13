@@ -43,7 +43,8 @@ class CategorywiseReport extends Component{
             ]
         },
         "tableHeading"      : {
-          "projectCategoryType": 'Project',
+          "projectCategoryType"  : 'Project Category',
+          // "projectName"          : 'Project Name',
           "incomeCategory"    : 'Income Category',
           "landCategory"      : 'Land Holding Category',
           "specialCategory"   : 'Special Category',
@@ -227,13 +228,16 @@ class CategorywiseReport extends Component{
   
   addCommas(x) {
     x=x.toString();
-    var lastThree = x.substring(x.length-3);
-    var otherNumbers = x.substring(0,x.length-3);
-    if(otherNumbers != '')
-        lastThree = ',' + lastThree;
-    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-    return(res);
-      // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if(x.includes('%')){
+        return x;
+    }else{
+        var lastThree = x.substring(x.length-3);
+        var otherNumbers = x.substring(0,x.length-3);
+        if(otherNumbers != '')
+            lastThree = ',' + lastThree;
+        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        return(res);
+    }
   }
   getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType){        
     if(center_ID){
@@ -246,8 +250,9 @@ class CategorywiseReport extends Component{
           console.log("resp",response);
             var tableData = response.data.map((a, i)=>{
             return {
-              _id                    : a._id,            
-              projectCategoryType    : a.projectCategoryType,
+              _id                    : a._id,
+              projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
+              // projectName            : a.projectName === 0 ? "-" :a.projectName,                  
               incomeCategory         : a.incomeCategory,
               landCategory           : a.landCategory,
               specialCategory        : a.specialCategory,

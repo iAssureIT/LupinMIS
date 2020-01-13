@@ -32,7 +32,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 3,
+                    mergedColoums : 4,
                     hide  : false
                 },
                 {
@@ -68,7 +68,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "achievement_projectCategory"        : 'Project',
+            "projectCategoryType"                : 'Project Category',
+            "projectName"                        : 'Project Name',
             "name"                               : 'Sector',
             "annualPlan_TotalBudget_L"           : "Annual Budget Plan 'Lakh'",
             "monthlyPlan_TotalBudget_L"          : 'Periodic Budget plan "Lakh"', 
@@ -215,8 +216,9 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             $(".fullpageloader").hide();
               var tableData = response.data.map((a, i)=>{
                 return {
-                    _id                                       : a._id,            
-                    achievement_projectCategory               : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                    _id                                       : a._id,
+                    projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                    projectName                               : a.projectName === 0 ? "-" :a.projectName,                
                     name                                      : a.name,
                     annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
                     monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                

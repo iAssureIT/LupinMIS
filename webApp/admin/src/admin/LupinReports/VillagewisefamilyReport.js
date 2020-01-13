@@ -54,7 +54,7 @@ class VillagewisefamilyReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "projectCategoryType" : 'Project',
+            "projectCategoryType" : 'Project Category',
             "sectorName"          : 'Sector',
             "activityName"        : 'Activity',
             "subactivityName"     : 'Subactivity',

@@ -33,7 +33,7 @@ class GeographicalReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Activity Details',
-                    mergedColoums : 2,
+                    mergedColoums : 3,
                     hide : false
                 },
                 {
@@ -50,7 +50,8 @@ class GeographicalReport extends Component{
             ]
         },
         "tableHeading"      : {
-          "achievement_projectCategory"      : 'Project',
+          "projectCategoryType"              : 'Project Category',
+          "projectName"                      : 'Project Name',
           "name"                             : 'Activity',
           "achievement_Reach"                : "Reach",
           "achievement_FamilyUpgradation"    : 'Upgradation', 
@@ -343,13 +344,16 @@ class GeographicalReport extends Component{
 
   addCommas(x) {
     x=x.toString();
-    var lastThree = x.substring(x.length-3);
-    var otherNumbers = x.substring(0,x.length-3);
-    if(otherNumbers != '')
-        lastThree = ',' + lastThree;
-    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-    return(res);
-      // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if(x.includes('%')){
+        return x;
+    }else{
+        var lastThree = x.substring(x.length-3);
+        var otherNumbers = x.substring(0,x.length-3);
+        if(otherNumbers != '')
+            lastThree = ',' + lastThree;
+        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        return(res);
+    }
   }
   getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType){        
     console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType);
@@ -364,8 +368,9 @@ class GeographicalReport extends Component{
               $(".fullpageloader").hide();
               var tableData = response.data.map((a, i)=>{
               return {
-                _id                                   : a._id,            
-                achievement_projectCategory           : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                _id                                   : a._id,    
+                projectCategoryType                   : a.projectCategoryType ? a.projectCategoryType : "-",
+                projectName                           : a.projectName === 0 ? "-" :a.projectName,              
                 name                                  : a.name,
                 achievement_Reach                     : this.addCommas(a.achievement_Reach),
                 achievement_FamilyUpgradation         : this.addCommas(a.achievement_FamilyUpgradation),
@@ -399,8 +404,9 @@ class GeographicalReport extends Component{
               console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
                 return {
-                  _id                                   : a._id,            
-                  achievement_projectCategory           : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                  _id                                   : a._id,      
+                  projectCategoryType                   : a.projectCategoryType ? a.projectCategoryType : "-",
+                  projectName                           : a.projectName === 0 ? "-" :a.projectName,            
                   name                                  : a.name,
                   achievement_Reach                     : this.addCommas(a.achievement_Reach),
                   achievement_FamilyUpgradation         : this.addCommas(a.achievement_FamilyUpgradation),

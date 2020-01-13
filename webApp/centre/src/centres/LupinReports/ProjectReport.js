@@ -36,7 +36,7 @@ class ProjectReport extends Component{
                     mergedColoums : 5
                 },
                 {
-                    heading : 'Financial Sharing "Rs"',
+                    heading : 'Financial Sharing "Lakh"',
                     mergedColoums : 9
                 },
             ]
@@ -46,7 +46,7 @@ class ProjectReport extends Component{
             "activityName"    : 'Activity',
             "unit"            : 'Unit',
             "Quantity"        : 'Quantity',
-            "Amount"          : 'Amount',
+            "Amount"          : 'Amount "Lakh"',
             "Beneficiaries"   : 'Beneficiaries',
             "LHWRF"           : 'LHWRF',
             "NABARD"          : 'NABARD',

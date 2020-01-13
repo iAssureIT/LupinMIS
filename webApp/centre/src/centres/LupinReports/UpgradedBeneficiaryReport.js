@@ -40,7 +40,7 @@ class UpgradedBeneficiaryReport extends Component{
         },
         "tableHeading"      : {
             "date"               : 'Date Of Intervention',
-            "projectCategoryType": 'Project',
+            "projectCategoryType": 'Project Category',
             "upgraded"           : 'Upgraded',
             "sectorName"         : 'Sector',
             "activityName"       : 'Activity',

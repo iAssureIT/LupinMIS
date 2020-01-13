@@ -94,7 +94,8 @@ export default class Leftsidebar extends Component{
                         Filewise Monthly Plans
                       </Link>
                     </li>                  
-*/}                    <li>
+*/}                   
+                    <li>
                       <Link to="/sector-wise-annual-plan-summary-report" title="Sector Annual Plan">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector Annual Plan</span>

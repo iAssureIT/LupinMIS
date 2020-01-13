@@ -35,7 +35,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 2,
+                    mergedColoums : 4,
                     hide : false
                 },
                 {
@@ -60,7 +60,8 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "achievement_projectCategory"      : 'Project',
+            "projectCategoryType"              : 'Project Category',
+            "projectName"                      : 'Project Name',
             "name"                             : 'Sector',
             "annualPlan_TotalBudget"           : 'Total Budget', 
             "Per_Annual"                       : 'Proportion to Total %', 
@@ -213,13 +214,16 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
 
     addCommas(x) {
       x=x.toString();
-      var lastThree = x.substring(x.length-3);
-      var otherNumbers = x.substring(0,x.length-3);
-      if(otherNumbers != '')
-          lastThree = ',' + lastThree;
-      var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-      return(res);
-        // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      if(x.includes('%')){
+          return x;
+      }else{
+          var lastThree = x.substring(x.length-3);
+          var otherNumbers = x.substring(0,x.length-3);
+          if(otherNumbers != '')
+              lastThree = ',' + lastThree;
+          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+          return(res);
+      }
     }
     getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){        
         console.log(startDate, endDate, center_ID);
@@ -237,15 +241,16 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                   console.log('value',value)
                   var tableData = response.data.map((a, i)=>{
                     return {
-                      _id                                     : a._id,            
-                      achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                      _id                                     : a._id,               
+                      projectCategoryType                     : a.projectCategoryType ? a.projectCategoryType : "-",
+                      projectName                             : a.projectName === 0 ? "-" :a.projectName,               
                       name                                    : a.name,
                       annualPlan_TotalBudget                  : this.addCommas(a.annualPlan_TotalBudget),
-                      Per_Annual                              : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
+                      Per_Annual                              : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
                       annualPlan_Reach                        : this.addCommas(a.annualPlan_Reach),
                       annualPlan_FamilyUpgradation            : this.addCommas(a.annualPlan_FamilyUpgradation),                
                       monthlyPlan_TotalBudget                 : this.addCommas(a.monthlyPlan_TotalBudget),                
-                      Per_Periodic                            : (((a.monthlyPlan_TotalBudget/value.monthlyPlan_TotalBudget)*100).toFixed(2)) + "%" ,
+                      Per_Periodic                            : (a.Per_Periodic==="-" ? " " :(((a.monthlyPlan_TotalBudget/value.monthlyPlan_TotalBudget)*100).toFixed(2)) + "%") ,
                       monthlyPlan_Reach                       : this.addCommas(a.monthlyPlan_Reach),
                       monthlyPlan_LHWRF                       : this.addCommas(a.monthlyPlan_LHWRF),
                       monthlyPlan_NABARD                      : this.addCommas(a.monthlyPlan_NABARD),
@@ -278,11 +283,12 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                   console.log('value',value)
                   var tableData = response.data.map((a, i)=>{
                     return {
-                      _id                                     : a._id,            
-                      achievement_projectCategory             : a.achievement_projectCategory ? a.achievement_projectCategory : "-",
+                      _id                                     : a._id,                 
+                      projectCategoryType                     : a.projectCategoryType ? a.projectCategoryType : "-",
+                      projectName                             : a.projectName === 0 ? "-" :a.projectName,             
                       name                                    : a.name,
                       annualPlan_TotalBudget                  : this.addCommas(a.annualPlan_TotalBudget),
-                      Per_Annual                              : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
+                      Per_Annual                              : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
                       annualPlan_Reach                        : this.addCommas(a.annualPlan_Reach),
                       annualPlan_FamilyUpgradation            : this.addCommas(a.annualPlan_FamilyUpgradation),                
                       monthlyPlan_TotalBudget                 : this.addCommas(a.monthlyPlan_TotalBudget),                
