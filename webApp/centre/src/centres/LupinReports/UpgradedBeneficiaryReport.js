@@ -41,6 +41,7 @@ class UpgradedBeneficiaryReport extends Component{
         "tableHeading"      : {
             "date"               : 'Date Of Intervention',
             "projectCategoryType": 'Project',
+            "upgraded"           : 'Upgraded',
             "sectorName"         : 'Sector',
             "activityName"       : 'Activity',
             "subactivityName"    : 'Sub-Activity',
@@ -257,6 +258,7 @@ class UpgradedBeneficiaryReport extends Component{
                   _id             : a._id,            
                   date            : a.date,
                   projectCategoryType : a.projectCategoryType,
+                  upgraded        : a.upgraded,
                   sectorName      : a.sectorName,
                   activityName    : a.activityName,
                   subactivityName : a.subactivityName,
