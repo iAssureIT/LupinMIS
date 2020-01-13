@@ -460,14 +460,14 @@ class SectorMapping extends Component{
                   </div>
                     <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="sectorMapping">                   
                       <div className="col-lg-12 ">
-                         <h4 className="pageSubHeader">Goal Sector Mapping</h4>
+                         <h4 className="pageSubHeader">Framework Mapping</h4>
                       </div>
                         {this.state.role !== "viewer" ?
                           <React.Fragment>
                             <div className="row">
                               <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                                 <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
-                                  <label className="formLable">Goal Type</label><span className="asterix">*</span>
+                                  <label className="formLable">Framework</label><span className="asterix">*</span>
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
                                     <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
                                       <option selected="true" disabled="disabled">-- Select --</option>
@@ -486,7 +486,7 @@ class SectorMapping extends Component{
                                   <div className="errorMsg">{this.state.errors.goalType}</div>
                                 </div>
                                 <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
-                                  <label className="formLable">Goal Name</label><span className="asterix">*</span>
+                                  <label className="formLable">Goals / Objective / Indicator </label><span className="asterix">*</span>
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalName" >
                                     <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
                                       <option selected="true" disabled="disabled">-- Select --</option>

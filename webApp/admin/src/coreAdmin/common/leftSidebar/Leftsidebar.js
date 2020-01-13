@@ -263,7 +263,7 @@ export default class Leftsidebar extends Component{
                     <li>
                       <Link to="/sector-mapping" title="Sector Mapping">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Goal Sector Mapping</span>
+                        <span className="sidebarMenuSubText">Framework Mapping</span>
                       </Link>
                     </li>
                     <li>

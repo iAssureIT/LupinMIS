@@ -862,7 +862,7 @@ class IAssureTableUM extends Component {
 		// var z = 2;
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
-	       		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding-left">
+	       		{/*<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding-left">
 					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding formLable text-left">Users Per Page</label>
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 						<select onChange={this.setLimit.bind(this)} value={this.state.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12  noPadding inputBox-main form-control">
@@ -875,8 +875,8 @@ class IAssureTableUM extends Component {
 							<option value='All'>All</option>
 						</select>
 					</div>
-				</div>           
-				<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding-right">
+				</div>           */}
+				<div className="col-lg-4 col-lg-offset-8 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding-right">
 	        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding formLable text-left">Search</label>
 	        		<div className="input-group inputBox-main">
 				        <input type="text" onChange={this.tableSearch.bind(this)} className="NOpadding-right zzero form-control inputBox" ref="tableSearch" id="tableSearch" name="tableSearch"/>
