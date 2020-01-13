@@ -37,7 +37,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 3,
+                    mergedColoums : 4,
                     hide : false
                 },
                 {
@@ -57,8 +57,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "projectCategoryType"     : 'Project',
-            "projectName"     : 'Project Name',
+            "projectCategoryType"     : 'Project Category',
+            "projectName"                   : 'Project Name',
             "name"                            : 'Sector',
             "annualPlan_TotalBudget"          : 'Total Budget', 
             "Per_Annual"                      : 'Proportion to Total %', 
@@ -249,14 +249,14 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           var value = response.data.filter((a)=>{return a.name == "Total"})[0];
           // console.log('value',value)
           var tableData = response.data.map((a, i)=>{
+            console.log(a.Per_Annual)
             return {
                 _id                                    : a._id,     
-                projectCategoryType            : a.projectCategoryType ? a.projectCategoryType : "-",
-                projectName                                   : a.projectName,
+                projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",
+                projectName                            : a.projectName,
                 name                                   : a.name,
                 annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
-                Per_Annual                             : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
-                // Per_Annual                             : a.Per_Annual,
+                Per_Annual                             : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
                 annualPlan_Reach                       : this.addCommas(a.annualPlan_Reach),
                 annualPlan_FamilyUpgradation           : this.addCommas(a.annualPlan_FamilyUpgradation), 
                 annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
