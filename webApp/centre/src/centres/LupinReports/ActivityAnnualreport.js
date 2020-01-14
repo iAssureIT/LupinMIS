@@ -83,13 +83,10 @@ class ActivitywiseAnnualCompletionReport extends Component{
     componentDidMount(){
       const center_ID = localStorage.getItem("center_ID");
       const centerName = localStorage.getItem("centerName");
-      // console.log("localStorage =",localStorage.getItem('centerName'));
-      // console.log("localStorage =",localStorage);
       this.setState({
         center_ID    : center_ID,
         centerName   : centerName,
       },()=>{
-      // console.log("center_ID =",this.state.center_ID);
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       });
       axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -156,14 +153,12 @@ class ActivitywiseAnnualCompletionReport extends Component{
     this.setState({
           sector_ID : sector_id,
         },()=>{
-        console.log(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -177,8 +172,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
@@ -188,7 +181,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      // console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -202,7 +194,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
@@ -219,7 +210,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -227,7 +217,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
@@ -235,10 +224,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
   getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
     if(year){
       if( center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
-        console.log('year', year, 'center_ID', center_ID, 'sector_ID', sector_ID);
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";
-        console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(sector_ID==="all"){
           var url = '/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
         }else{
@@ -284,7 +271,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
     }
   }
   getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });

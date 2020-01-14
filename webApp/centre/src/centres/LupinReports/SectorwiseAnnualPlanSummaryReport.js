@@ -239,7 +239,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -247,7 +246,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
@@ -265,7 +263,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           var value = response.data.filter((a)=>{return a.name == "Total"})[0];
           // console.log('value',value)
           var tableData = response.data.map((a, i)=>{
-            console.log(a.Per_Annual)
+            // console.log(a.Per_Annual)
             return {
                 _id                                    : a._id,     
                 projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",

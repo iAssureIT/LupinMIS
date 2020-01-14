@@ -92,13 +92,10 @@ class ActivitywiseAnnualPlanReport extends Component{
     componentDidMount(){
       const center_ID = localStorage.getItem("center_ID");
       const centerName = localStorage.getItem("centerName");
-      // console.log("localStorage =",localStorage.getItem('centerName'));
-      // console.log("localStorage =",localStorage);
       this.setState({
         center_ID    : center_ID,
         centerName   : centerName,
       },()=>{
-      // console.log("center_ID =",this.state.center_ID);
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       });
       axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -122,7 +119,6 @@ class ActivitywiseAnnualPlanReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-          console.log('year', this.state)
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
           
         });
@@ -158,17 +154,14 @@ class ActivitywiseAnnualPlanReport extends Component{
         }else{
           var sector_id = event.target.value.split('|')[1];
         }
-      console.log('sector_id',sector_id);
       this.setState({
             sector_ID : sector_id,
           },()=>{
-          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
   } 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
           projectCategoryType : projectCategoryType,
@@ -182,8 +175,6 @@ class ActivitywiseAnnualPlanReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       
     },()=>{
@@ -194,7 +185,6 @@ class ActivitywiseAnnualPlanReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      // console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -214,7 +204,6 @@ class ActivitywiseAnnualPlanReport extends Component{
       this.setState({
             projectName : projectName,
           },()=>{
-          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
   }
@@ -232,7 +221,6 @@ class ActivitywiseAnnualPlanReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -240,28 +228,20 @@ class ActivitywiseAnnualPlanReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
   }
   getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){   
     if(year ){
-      // if(center_ID && sector_ID){ 
-      //   if(sector_ID==="all"){
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
-        // console.log(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(sector_ID==="all"){
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
-          console.log("startDate",startDate);
           $(".fullpageloader").show();
-
           axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
           .then((response)=>{
             $(".fullpageloader").hide();
-
-            console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
                   _id                                       : a._id,  
@@ -287,25 +267,16 @@ class ActivitywiseAnnualPlanReport extends Component{
             this.setState({
               tableData : tableData
             },()=>{
-              // console.log("resp",this.state.tableData)
             })
           })
           .catch(function(error){
-            // console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
+            console.log("error = ",error);
           });
         }else{
-          // console.log("year",year);
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";             
           axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
           .then((response)=>{
-            console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
                   _id                                       : a._id,     
@@ -331,7 +302,6 @@ class ActivitywiseAnnualPlanReport extends Component{
             this.setState({
               tableData : tableData
             },()=>{
-              // console.log("resp",this.state.tableData)
             })
           })
           .catch(function(error){
@@ -348,7 +318,6 @@ class ActivitywiseAnnualPlanReport extends Component{
     }
   }
   getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });

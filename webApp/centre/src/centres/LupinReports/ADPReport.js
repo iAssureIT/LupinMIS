@@ -106,7 +106,6 @@ class ADPReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-          console.log('name', this.state)
         });
     }
    

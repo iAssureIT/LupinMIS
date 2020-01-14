@@ -99,13 +99,10 @@ class ActivitywisePeriodicPlanReport extends Component{
     componentDidMount(){
         const center_ID = localStorage.getItem("center_ID");
         const centerName = localStorage.getItem("centerName");
-        // console.log("localStorage =",localStorage.getItem('centerName'));
-        // console.log("localStorage =",localStorage);
         this.setState({
           center_ID    : center_ID,
           centerName   : centerName,
         },()=>{
-        // console.log("center_ID =",this.state.center_ID);
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -118,13 +115,10 @@ class ActivitywisePeriodicPlanReport extends Component{
           // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
-
-
     }
    
     componentWillReceiveProps(nextProps){
@@ -133,7 +127,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.currentFromDate();
         this.currentToDate();
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID,this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
         event.preventDefault();
@@ -141,7 +134,6 @@ class ActivitywisePeriodicPlanReport extends Component{
           [event.target.name] : event.target.value
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-          console.log('name', this.state)
         });
     } 
     getAvailableSectors(){
@@ -149,7 +141,6 @@ class ActivitywisePeriodicPlanReport extends Component{
           method: 'get',
           url: '/api/sectors/list',
         }).then((response)=> {
-            
             this.setState({
               availableSectors : response.data,
               // sector           : response.data[0].sector+'|'+response.data[0]._id
@@ -175,18 +166,15 @@ class ActivitywisePeriodicPlanReport extends Component{
           }else{
             var sector_id = event.target.value.split('|')[1];
           }
-        // console.log('sector_id',sector_id);
         this.setState({
               sector_ID : sector_id,
             },()=>{
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
     }
 
     selectprojectCategoryType(event){
         event.preventDefault();
-        // console.log(event.target.value)
         var projectCategoryType = event.target.value;
         this.setState({
           projectCategoryType : projectCategoryType,
@@ -196,8 +184,6 @@ class ActivitywisePeriodicPlanReport extends Component{
                 projectName : "all",
               })    
             }
-            console.log("shown",this.state.shown, this.state.projectCategoryType)
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
           },()=>{
         })
@@ -207,7 +193,6 @@ class ActivitywisePeriodicPlanReport extends Component{
           method: 'get',
           url: '/api/projectMappings/list',
         }).then((response)=> {
-          console.log('responseP', response);
           this.setState({
             availableProjects : response.data
           })
@@ -227,7 +212,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.setState({
               projectName : projectName,
             },()=>{
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
     }
@@ -244,7 +228,6 @@ class ActivitywisePeriodicPlanReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-            console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
             return(res);
           }else{
             var lastThree = x.substring(x.length-3);
@@ -252,18 +235,15 @@ class ActivitywisePeriodicPlanReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-            console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
             return(res);
           }
         }
     }
     getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-        // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(sector_ID==="all"){
                 $(".fullpageloader").show();
                 axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-                // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/all')
                 .then((response)=>{
                   $(".fullpageloader").hide();
                   console.log("resp",response);
@@ -294,20 +274,12 @@ class ActivitywisePeriodicPlanReport extends Component{
                   this.setState({
                     tableData : tableData
                   },()=>{
-                    // console.log("resp",this.state.tableData)
                   })
                 })
                 .catch(function(error){
-                    // console.log("error = ",error);
-                    if(error.message === "Request failed with status code 401"){
-                      swal({
-                          title : "abc",
-                          text  : "Session is Expired. Kindly Sign In again."
-                      });
-                    }
+                    console.log("error = ",error);
                 });
             }else{             
-                // console.log(startDate, endDate, center_ID, sector_ID);
                 axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
                 .then((response)=>{
@@ -339,11 +311,10 @@ class ActivitywisePeriodicPlanReport extends Component{
                   this.setState({
                     tableData : tableData
                   },()=>{
-                    // console.log("resp",this.state.tableData)
                   })
                 })
                 .catch(function(error){
-                    // console.log("error = ",error);
+                    console.log("error = ",error);
                     if(error.message === "Request failed with status code 401"){
                       swal({
                           title : "abc",
@@ -360,8 +331,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         const name = target.name;
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log(Date.parse(startDate));
-      
         var dateVal = event.target.value;
         var dateUpdate = new Date(dateVal);
         var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -371,7 +340,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID,this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
-        // localStorage.setItem('newFromDate',dateUpdate);
     }
     handleToChange(event){
         event.preventDefault();
@@ -387,10 +355,8 @@ class ActivitywisePeriodicPlanReport extends Component{
            [name] : event.target.value,
            endDate : endDate
         },()=>{
-        // console.log("dateUpdate",this.state.endDate);
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
        });
-       // localStorage.setItem('newToDate',dateUpdate);
     }
 
     currentFromDate(){
@@ -402,23 +368,17 @@ class ActivitywisePeriodicPlanReport extends Component{
         var nextDate = today.getDate() - 30;
         today.setDate(nextDate);
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
         }
-        
-
-        console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
         });
         return today;
-        // this.handleFromChange()
     }
 
     currentToDate(){
         if(this.state.endDate){
             var today = this.state.endDate;
-            // console.log("newToDate",today);
         }else {
             var today =  moment(new Date()).format('YYYY-MM-DD');
         }
@@ -439,7 +399,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         },()=>{
         });
         return today;
-        // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
         console.log(searchText, startRange, limitRange);
@@ -447,17 +406,16 @@ class ActivitywisePeriodicPlanReport extends Component{
             tableData : []
         });
     }
-  changeReportComponent(event){
-    var currentComp = $(event.currentTarget).attr('id');
+    changeReportComponent(event){
+        var currentComp = $(event.currentTarget).attr('id');
 
-    this.setState({
-      'currentTabView': currentComp,
-    })
-  }
-   onBlurEventFrom(){
+        this.setState({
+          'currentTabView': currentComp,
+        })
+    }
+    onBlurEventFrom(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
         if ((Date.parse(endDate) < Date.parse(startDate))) {
             swal("Start date","From date should be less than To date");
             this.refs.startDate.value="";
@@ -466,7 +424,6 @@ class ActivitywisePeriodicPlanReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";

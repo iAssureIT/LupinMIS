@@ -76,7 +76,7 @@ export default class BarChart extends Component{
     if(startDate && endDate){
         axios.get('/api/report/sector_annual_achievement_report/'+startDate+'/'+endDate+'/all/all/all/all')
         .then((response)=>{ 
-          console.log("sector_annual_achievement_report ==>",response);
+          // console.log("sector_annual_achievement_report ==>",response);
           response.data.splice(-2);
           var sector = [];
           var annualPlanReach = [];

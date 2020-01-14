@@ -149,7 +149,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -163,8 +162,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
@@ -174,7 +171,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -194,7 +190,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }

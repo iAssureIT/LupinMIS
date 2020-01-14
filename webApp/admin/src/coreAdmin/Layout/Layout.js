@@ -51,6 +51,7 @@ import Type_Center                                from '../../coreAdmin/masterDa
 import Type_Goal                                  from '../../coreAdmin/masterData/typeOfGoal/typeOfGoalP.js';
 import TypeOfGoalContainer                        from '../../coreAdmin/masterData/typeOfGoal/typeOfGoalContainer.js';
 
+import ProjectDefinition                            from '../../coreAdmin/masterData/projectMapping/ProjectDefinition.js';
 import ProjectMapping                             from '../../coreAdmin/masterData/projectMapping/ProjectMapping.js';
 import SectorMapping                              from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
 
@@ -174,9 +175,10 @@ componentDidMount(){
                           <Route path="/SectorAndActivityRedirect/:tabName/:sectorId/:activityId"                    exact strict component={ SectorAndActivityRedirect } />
                           <Route path="/SectorAndActivityRedirect/:tabName/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivityRedirect } />
   
+                          <Route path="/project-definition"                                           exact strict component={ ProjectDefinition } />
                           <Route path="/project-mapping"                                              exact strict component={ ProjectMapping } />
-                          <Route path="/project-mapping/"                                              exact strict component={ ProjectMapping } />
-                          <Route path="/project-mapping/:projectMappingId"                                              exact strict component={ ProjectMapping } />
+                          <Route path="/project-mapping/"                                             exact strict component={ ProjectMapping } />
+                          <Route path="/project-mapping/:projectMappingId"                            exact strict component={ ProjectMapping } />
                           <Route path="/sector-mapping"                                               exact strict component={ SectorMapping } />
                           <Route path="/sector-mapping/"                                              exact strict component={ SectorMapping } />
                           <Route path="/sector-mapping/:sectorMappingId"                              exact strict component={ SectorMapping } />

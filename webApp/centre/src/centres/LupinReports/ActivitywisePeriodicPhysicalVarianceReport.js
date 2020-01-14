@@ -99,7 +99,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      // console.log("center_ID =",this.state.center_ID);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -114,7 +113,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
       tableData : this.state.tableData,
     },()=>{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
@@ -126,7 +124,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
     this.currentFromDate();
     this.currentToDate();
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
       event.preventDefault();
@@ -134,7 +131,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
         [event.target.name] : event.target.value
       },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log('name', this.state)
       });
   }
   getAvailableSectors(){
@@ -142,7 +138,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-        
         this.setState({
           availableSectors : response.data,
         },()=>{
@@ -167,18 +162,15 @@ class ActivityWisePeriodicVarianceReport extends Component{
     }else{
         var sector_id = event.target.value.split('|')[1];
     }
-    // console.log('sector_id',sector_id);
     this.setState({
         sector_ID : sector_id,
       },()=>{
-      // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -192,8 +184,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
@@ -203,7 +193,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      // console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -223,7 +212,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
@@ -240,7 +228,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -248,13 +235,11 @@ class ActivityWisePeriodicVarianceReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
   }
   getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-    // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
     if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
       if(sector_ID==="all"){
         $(".fullpageloader").show();
@@ -288,7 +273,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
           this.setState({
             tableData : tableData
           },()=>{
-            console.log("resp",this.state.tableData)
           })
         })
         .catch(function(error){
@@ -302,7 +286,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
         });
       }else{
         axios.get('/api/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-        // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
         .then((response)=>{
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
@@ -329,7 +312,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
             this.setState({
               tableData : tableData
             },()=>{
-              console.log("resp",this.state.tableData)
             })
           })
         .catch(function(error){
@@ -350,8 +332,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
- 
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -360,7 +340,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
        startDate:startDate
     },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -369,7 +348,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-  
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var endDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -377,7 +355,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
@@ -385,7 +362,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
   currentFromDate(){
     if(this.state.startDate){
         var today = this.state.startDate;
-        // console.log("localStoragetoday",today);
     }else {
         // var today = moment(new Date()).format('YYYY-MM-DD');
         // var today = new Date("January 20, 2018 15:00:00");
@@ -394,7 +370,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
         today.setDate(nextDate);
         // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
     }
     this.setState({ 
        startDate :today
@@ -406,7 +381,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
 
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
          if ((Date.parse(endDate) < Date.parse(startDate))) {
             
             swal("Start date","From date should be less than To date");
@@ -416,7 +390,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";
@@ -426,7 +399,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
   currentToDate(){
       if(this.state.endDate){
           var today = this.state.endDate;
-          // console.log("newToDate",today);
       }else {
           var today =  moment(new Date()).format('YYYY-MM-DD');
       }
@@ -435,10 +407,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
       },()=>{
       });
       return today;
-      // this.handleToChange();
   }
   getSearchText(searchText, startRange, limitRange){
-    console.log(searchText, startRange, limitRange);
     this.setState({
         tableData : []
     });

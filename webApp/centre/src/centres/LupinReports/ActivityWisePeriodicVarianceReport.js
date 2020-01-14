@@ -113,13 +113,10 @@ class ActivityWisePeriodicVarianceReport extends Component{
     componentDidMount(){
         const center_ID = localStorage.getItem("center_ID");
         const centerName = localStorage.getItem("centerName");
-        // console.log("localStorage =",localStorage.getItem('centerName'));
-        // console.log("localStorage =",localStorage);
         this.setState({
           center_ID    : center_ID,
           centerName   : centerName,
         },()=>{
-        // console.log("center_ID =",this.state.center_ID);
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
 
         });
@@ -133,9 +130,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
           // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
@@ -147,8 +142,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
         this.currentFromDate();
         this.currentToDate();
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-
-        console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
         event.preventDefault();
@@ -156,8 +149,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
            [event.target.name] : event.target.value
         },()=>{
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-
-            console.log('name', this.state)
         });
     } 
     getAvailableSectors(){
@@ -165,14 +156,13 @@ class ActivityWisePeriodicVarianceReport extends Component{
           method: 'get',
           url: '/api/sectors/list',
         }).then((response)=> {
-            
             this.setState({
               availableSectors : response.data,
               // sector           : response.data[0].sector+'|'+response.data[0]._id
             },()=>{
           })
         }).catch(function (error) {
-            // console.log("error = ",error);
+            console.log("error = ",error);
             if(error.message === "Request failed with status code 401"){
               swal({
                   title : "abc",
@@ -191,7 +181,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
         }else{
             var sector_id = event.target.value.split('|')[1];
         }
-        // console.log('sector_id',sector_id);
         this.setState({
               sector_ID : sector_id,
             },()=>{
@@ -202,7 +191,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
 
     selectprojectCategoryType(event){
         event.preventDefault();
-        console.log(event.target.value)
         var projectCategoryType = event.target.value;
         this.setState({
           projectCategoryType : projectCategoryType,
@@ -216,8 +204,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 projectName : "all",
               })    
             }
-            console.log("shown",this.state.shown, this.state.projectCategoryType)
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
           },()=>{
         })
@@ -227,7 +213,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
           method: 'get',
           url: '/api/projectMappings/list',
         }).then((response)=> {
-          console.log('responseP', response);
           this.setState({
             availableProjects : response.data
           })
@@ -247,7 +232,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
         this.setState({
               projectName : projectName,
             },()=>{
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
     }
@@ -264,7 +248,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-            console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
             return(res);
           }else{
             var lastThree = x.substring(x.length-3);
@@ -272,13 +255,11 @@ class ActivityWisePeriodicVarianceReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-            console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
             return(res);
           }
         }
     }
     getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-        console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(sector_ID==="all"){
                 $(".fullpageloader").show();
@@ -327,21 +308,13 @@ class ActivityWisePeriodicVarianceReport extends Component{
                   this.setState({
                     tableData : tableData
                   },()=>{
-                    // console.log("resp",this.state.tableData)
                   })
                 })
                 .catch(function(error){
-                    // console.log("error = ",error);
-                    if(error.message === "Request failed with status code 401"){
-                      swal({
-                          title : "abc",
-                          text  : "Session is Expired. Kindly Sign In again."
-                      });
-                    }
+                    console.log("error = ",error);
                 });
             }else{
                 axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
-                // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
                 .then((response)=>{
                     console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{
@@ -384,11 +357,10 @@ class ActivityWisePeriodicVarianceReport extends Component{
                   this.setState({
                     tableData : tableData
                   },()=>{
-                    // console.log("resp",this.state.tableData)
                   })
                 })
                 .catch(function(error){
-                    // console.log("error = ",error);
+                    console.log("error = ",error);
                     if(error.message === "Request failed with status code 401"){
                       swal({
                           title : "abc",
@@ -405,8 +377,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
         const name = target.name;
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log(Date.parse(startDate));
-      
         var dateVal = event.target.value;
         var dateUpdate = new Date(dateVal);
         var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -415,19 +385,14 @@ class ActivityWisePeriodicVarianceReport extends Component{
            startDate:startDate
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-
-        console.log("dateUpdate",this.state.startDate);
         });
     }
     handleToChange(event){
         event.preventDefault();
         const target = event.target;
         const name = target.name;
-
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-       
-
         var dateVal = event.target.value;
         var dateUpdate = new Date(dateVal);
         var endDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -435,15 +400,12 @@ class ActivityWisePeriodicVarianceReport extends Component{
          [name] : event.target.value,
          endDate : endDate
         },()=>{
-        console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
     }
-   onBlurEventFrom(){
+    onBlurEventFrom(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
         if ((Date.parse(endDate) < Date.parse(startDate))) {
             swal("Start date","From date should be less than To date");
             this.refs.startDate.value="";
@@ -452,38 +414,32 @@ class ActivityWisePeriodicVarianceReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
-          if ((Date.parse(startDate) > Date.parse(endDate))) {
-            swal("End date","To date should be greater than From date");
-            this.refs.endDate.value="";
-        }
+            if ((Date.parse(startDate) > Date.parse(endDate))) {
+                swal("End date","To date should be greater than From date");
+                this.refs.endDate.value="";
+            }
     }
 
     currentFromDate(){
         if(this.state.startDate){
             var today = this.state.startDate;
-            // console.log("localStoragetoday",today);
         }else {
              var today = (new Date());
             var nextDate = today.getDate() - 30;
             today.setDate(nextDate);
             // var newDate = today.toLocaleString();
             var today =  moment(today).format('YYYY-MM-DD');
-            console.log("today",today);
         }
-        console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
         });
         return today;
-        // this.handleFromChange()
     }
 
     currentToDate(){
         if(this.state.endDate){
             var today = this.state.endDate;
-            // console.log("newToDate",today);
         }else {
             var today =  moment(new Date()).format('YYYY-MM-DD');
         }
@@ -492,174 +448,172 @@ class ActivityWisePeriodicVarianceReport extends Component{
         },()=>{
         });
         return today;
-        // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
     }
-  changeReportComponent(event){
-    var currentComp = $(event.currentTarget).attr('id');
+    changeReportComponent(event){
+        var currentComp = $(event.currentTarget).attr('id');
 
-    this.setState({
-      'currentTabView': currentComp,
-    })
-  } 
-  render(){
-    return(  
-        <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
-            <Loader type="fullpageloader" />
-            <div className="row">
-                <div className="formWrapper"> 
-                    <section className="content">
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
-                            <div className="row">
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                                        {/*Activity wise Periodic Variance Report (Physical & Financial)  */} 
-                                        Activity Financial Variance Report                
-                                    </div>
-                                </div>
-                                <hr className="hr-head"/>
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                    
-                                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                                        <label className="formLable">Sector</label><span className="asterix"></span>
-                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                          <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
-                                            <option  className="hidden" >--Select Sector--</option>
-                                            <option value="all" >All</option>
-                                            {
-                                            this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                            this.state.availableSectors.map((data, index)=>{
-                                              return(
-                                                <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                              );
-                                            })
-                                            :
-                                            null
-                                          }
-                                          </select>
-                                        </div>
-                                       {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
-                                    </div>
-                                     <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                                        <label className="formLable">Beneficiary</label><span className="asterix"></span>
-                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                                          <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                                            <option  className="hidden" >--Select--</option>
-                                            <option value="all" >All</option>
-                                            <option value="withUID" >With UID</option>
-                                            <option value="withoutUID" >Without UID</option>
-                                            
-                                          </select>
-                                        </div>
-                                    </div> 
-                                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                                        <label className="formLable">Project Category</label><span className="asterix"></span>
-                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                                          <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                                            <option  className="hidden" >--Select--</option>
-                                            <option value="all" >All</option>
-                                            <option value="LHWRF Grant" >LHWRF Grant</option>
-                                            <option value="Project Fund">Project Fund</option>
-                                            
-                                          </select>
+        this.setState({
+          'currentTabView': currentComp,
+        })
+    } 
+    render(){
+        return(  
+            <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <Loader type="fullpageloader" />
+                <div className="row">
+                    <div className="formWrapper"> 
+                        <section className="content">
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
+                                <div className="row">
+                                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                                            {/*Activity wise Periodic Variance Report (Physical & Financial)  */} 
+                                            Activity Financial Variance Report                
                                         </div>
                                     </div>
-                                    {
-                                        this.state.projectCategoryType === "Project Fund" ?
-
-                                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                                          <label className="formLable">Project Name</label><span className="asterix"></span>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                    <hr className="hr-head"/>
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                        
+                                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                                            <label className="formLable">Sector</label><span className="asterix"></span>
+                                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                              <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                                                <option  className="hidden" >--Select Sector--</option>
                                                 <option value="all" >All</option>
-                                                  {
-                                                    this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                                    this.state.availableProjects.map((data, index)=>{
-                                                      return(
-                                                        <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                                      );
-                                                    })
-                                                    :
-                                                    null
-                                                  }
-                                            </select>
-                                          </div>
-                                        </div>
-                                    : 
-                                    ""
-                                    }
-                                </div> 
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                                        <label className="formLable">From</label><span className="asterix"></span>
-                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                            <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                                        </div>
-                                    </div>
-                                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                                        <label className="formLable">To</label><span className="asterix"></span>
-                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                          <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                                         </div>
-                                    </div>  
-                                </div>  
-                                <div className="marginTop11">
-                                    <div className="">
-                                        <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <IAssureTable 
-                                                tableName = "ActivityWise Periodic Variance Report"
-                                                id = "ActivityWisePeriodicVarianceReport"
-                                                completeDataCount={this.state.tableDatas.length}
-                                                twoLevelHeader={this.state.twoLevelHeader} 
-                                                editId={this.state.editSubId} 
-                                                getData={this.getData.bind(this)} 
-                                                tableHeading={this.state.tableHeading} 
-                                                tableData={this.state.tableData} 
-                                                tableObjects={this.state.tableObjects}
-                                                getSearchText={this.getSearchText.bind(this)}/>
-                                        </div>
-                                   {/*   {
-                                        <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading}  year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas} />  
-                                      }*/}
-                                       {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <div className="sales-report-main-class">
-                                                <div className="reports-select-date-boxmain">
-                                                    <div className="reports-select-date-boxsec">
-                                                        
-                                                            <div className="reports-select-date-from1">
-                                                                <div className="reports-select-date-from2">
-                                                                    From
-                                                                </div>
-                                                                <div className="reports-select-date-from3">
-                                                                    <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="reportsDateRef form-control" placeholder=""  />
-                                                                </div>
-                                                            </div>
-                                                            <div className="reports-select-date-to1">
-                                                                <div className="reports-select-date-to2">
-                                                                    To
-                                                                </div>
-                                                                <div className="reports-select-date-to3">
-                                                                    <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="reportsDateRef form-control" placeholder=""   />
-                                                                </div>
-                                                            </div>
-                                                    </div>
-                                                </div>                           
+                                                {
+                                                this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                                this.state.availableSectors.map((data, index)=>{
+                                                  return(
+                                                    <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                                  );
+                                                })
+                                                :
+                                                null
+                                              }
+                                              </select>
                                             </div>
-                                        </div>*/}
+                                           {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+                                        </div>
+                                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                            <label className="formLable">Beneficiary</label><span className="asterix"></span>
+                                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                                              <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                                                <option  className="hidden" >--Select--</option>
+                                                <option value="all" >All</option>
+                                                <option value="withUID" >With UID</option>
+                                                <option value="withoutUID" >Without UID</option>
+                                                
+                                              </select>
+                                            </div>
+                                        </div> 
+                                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                                            <label className="formLable">Project Category</label><span className="asterix"></span>
+                                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                                              <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                                                <option  className="hidden" >--Select--</option>
+                                                <option value="all" >All</option>
+                                                <option value="LHWRF Grant" >LHWRF Grant</option>
+                                                <option value="Project Fund">Project Fund</option>
+                                                
+                                              </select>
+                                            </div>
+                                        </div>
+                                        {
+                                            this.state.projectCategoryType === "Project Fund" ?
+
+                                            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                                              <label className="formLable">Project Name</label><span className="asterix"></span>
+                                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                                <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                                    <option value="all" >All</option>
+                                                      {
+                                                        this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                                        this.state.availableProjects.map((data, index)=>{
+                                                          return(
+                                                            <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                                          );
+                                                        })
+                                                        :
+                                                        null
+                                                      }
+                                                </select>
+                                              </div>
+                                            </div>
+                                        : 
+                                        ""
+                                        }
+                                    </div> 
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                                            <label className="formLable">From</label><span className="asterix"></span>
+                                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                                <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                                            </div>
+                                        </div>
+                                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                                            <label className="formLable">To</label><span className="asterix"></span>
+                                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                              <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                                             </div>
+                                        </div>  
+                                    </div>  
+                                    <div className="marginTop11">
+                                        <div className="">
+                                            <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <IAssureTable 
+                                                    tableName = "ActivityWise Periodic Variance Report"
+                                                    id = "ActivityWisePeriodicVarianceReport"
+                                                    completeDataCount={this.state.tableDatas.length}
+                                                    twoLevelHeader={this.state.twoLevelHeader} 
+                                                    editId={this.state.editSubId} 
+                                                    getData={this.getData.bind(this)} 
+                                                    tableHeading={this.state.tableHeading} 
+                                                    tableData={this.state.tableData} 
+                                                    tableObjects={this.state.tableObjects}
+                                                    getSearchText={this.getSearchText.bind(this)}/>
+                                            </div>
+                                       {/*   {
+                                            <CustomisedReport twoLevelHeader={this.state.twoLevelHeader} tableHeading={this.state.tableHeading}  year={this.state.year} center={this.state.center} sector={this.state.sector} tableDatas={this.state.tableDatas} />  
+                                          }*/}
+                                           {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div className="sales-report-main-class">
+                                                    <div className="reports-select-date-boxmain">
+                                                        <div className="reports-select-date-boxsec">
+                                                            
+                                                                <div className="reports-select-date-from1">
+                                                                    <div className="reports-select-date-from2">
+                                                                        From
+                                                                    </div>
+                                                                    <div className="reports-select-date-from3">
+                                                                        <input onChange={this.handleFromChange} name="fromDateCustomised" ref="fromDateCustomised" value={this.state.startDate} type="date" className="reportsDateRef form-control" placeholder=""  />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="reports-select-date-to1">
+                                                                    <div className="reports-select-date-to2">
+                                                                        To
+                                                                    </div>
+                                                                    <div className="reports-select-date-to3">
+                                                                        <input onChange={this.handleToChange} name="toDateCustomised" ref="toDateCustomised" value={this.state.endDate} type="date" className="reportsDateRef form-control" placeholder=""   />
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                    </div>                           
+                                                </div>
+                                            </div>*/}
+                                        </div>
                                     </div>
-                                </div>
-                            </div>   
-                        </div>
-                    </section>
+                                </div>   
+                            </div>
+                        </section>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-  }
+        );
+    }
 }
 export default ActivityWisePeriodicVarianceReport

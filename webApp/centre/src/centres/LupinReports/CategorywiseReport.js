@@ -66,27 +66,19 @@ class CategorywiseReport extends Component{
   componentDidMount(){
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
     // console.log("localStorage =",localStorage);
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
+      tableData : this.state.tableData,
     },()=>{
-        this.getAvailableCenterData(this.state.center_ID);
-      // console.log("center_ID =",this.state.center_ID);
+      this.getAvailableCenterData(this.state.center_ID);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.currentFromDate();
     this.getAvailableProjects();
     this.currentToDate();
-    this.setState({
-      // "center"  : this.state.center[0],
-      // "sector"  : this.state.sector[0],
-      tableData : this.state.tableData,
-    },()=>{
-      console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    })
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
@@ -97,20 +89,17 @@ class CategorywiseReport extends Component{
     this.currentFromDate();
     this.currentToDate();
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
     event.preventDefault();
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      // console.log('name', this.state)
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
 
   getAvailableCenterData(center_ID){
-    // console.log("CID"  ,center_ID);
     axios({
       method: 'get',
       url: '/api/centers/'+center_ID,
@@ -121,7 +110,6 @@ class CategorywiseReport extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
           // availableDistInCenter  : response.data[0].districtsCovered,
@@ -149,7 +137,6 @@ class CategorywiseReport extends Component{
   districtChange(event){    
     event.preventDefault();
     var district = event.target.value;
-    // console.log('district', district);
     this.setState({
       district: district
     },()=>{
@@ -176,7 +163,6 @@ class CategorywiseReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -190,8 +176,6 @@ class CategorywiseReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
@@ -201,7 +185,6 @@ class CategorywiseReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -222,7 +205,6 @@ class CategorywiseReport extends Component{
           projectName : projectName,
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
   }
   
@@ -239,7 +221,6 @@ class CategorywiseReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -247,7 +228,6 @@ class CategorywiseReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
@@ -276,7 +256,6 @@ class CategorywiseReport extends Component{
           this.setState({
             tableData : tableData
           },()=>{
-            // console.log("resp",this.state.tableData)
           })
         })
         .catch(function(error){
@@ -297,8 +276,6 @@ class CategorywiseReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
-   
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -306,18 +283,15 @@ class CategorywiseReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log("dateUpdate",this.state.startDate);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
   handleToChange(event){
     event.preventDefault();
     const target = event.target;
     const name = target.name;
-
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var endDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -325,25 +299,20 @@ class CategorywiseReport extends Component{
      [name] : event.target.value,
      endDate : endDate
     },()=>{
-    console.log("dateUpdate",this.state.endDate);
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
 
   currentFromDate(){
     if(this.state.startDate){
           var today = this.state.startDate;
-          // console.log("localStoragetoday",today);
       }else {
           var today = (new Date());
         var nextDate = today.getDate() - 30;
         today.setDate(nextDate);
         // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
       }
-  
-      // console.log("nowfrom",today)
       this.setState({
          startDate :today
       },()=>{
@@ -354,20 +323,16 @@ class CategorywiseReport extends Component{
   currentToDate(){
       if(this.state.endDate){
           var today = this.state.endDate;
-          // console.log("newToDate",today);
       }else {
           var today =  moment(new Date()).format('YYYY-MM-DD');
       }
-      // console.log("nowto",today)
       this.setState({
          endDate :today
       },()=>{
       });
       return today;
-      // this.handleToChange();
   }
   getSearchText(searchText, startRange, limitRange){
-      // console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });
@@ -379,24 +344,22 @@ class CategorywiseReport extends Component{
       'currentTabView': currentComp,
     })
   }
-    onBlurEventFrom(){
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
-        if ((Date.parse(endDate) < Date.parse(startDate))) {
-            swal("Start date","From date should be less than To date");
-            this.refs.startDate.value="";
-        }
+  onBlurEventFrom(){
+      var startDate = document.getElementById("startDate").value;
+      var endDate = document.getElementById("endDate").value;
+      if ((Date.parse(endDate) < Date.parse(startDate))) {
+          swal("Start date","From date should be less than To date");
+          this.refs.startDate.value="";
+      }
+  }
+  onBlurEventTo(){
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+      if ((Date.parse(startDate) > Date.parse(endDate))) {
+        swal("End date","To date should be greater than From date");
+        this.refs.endDate.value="";
     }
-    onBlurEventTo(){
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
-          if ((Date.parse(startDate) > Date.parse(endDate))) {
-            swal("End date","To date should be greater than From date");
-            this.refs.endDate.value="";
-        }
-    }
+  }
   render(){
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">

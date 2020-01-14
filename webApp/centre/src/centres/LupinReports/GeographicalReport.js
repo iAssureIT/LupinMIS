@@ -85,6 +85,7 @@ class GeographicalReport extends Component{
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
+      tableData : this.state.tableData,
     },()=>{
         this.getAvailableCenterData(this.state.center_ID);
       // console.log("center_ID =",this.state.center_ID);
@@ -95,14 +96,7 @@ class GeographicalReport extends Component{
     this.getAvailableSectors();
     this.currentFromDate();
     this.currentToDate();
-    this.setState({
-      // "center"  : this.state.center[0],
-      // "sector"  : this.state.sector[0],
-      tableData : this.state.tableData,
-    },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    })
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }
@@ -113,14 +107,12 @@ class GeographicalReport extends Component{
       this.currentFromDate();
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       this.currentToDate();
-      console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
     event.preventDefault();
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      console.log('name', this.state)
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
@@ -136,7 +128,6 @@ class GeographicalReport extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
@@ -191,7 +182,6 @@ class GeographicalReport extends Component{
     this.setState({
           sector_ID : sector_id,
         },()=>{
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
@@ -217,7 +207,6 @@ class GeographicalReport extends Component{
     });
   }
   getBlock(stateCode, selectedDistrict){
-    console.log("sd", stateCode,selectedDistrict);
     axios({
       method: 'get',
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
@@ -292,7 +281,6 @@ class GeographicalReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -306,8 +294,6 @@ class GeographicalReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
@@ -317,7 +303,6 @@ class GeographicalReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -355,7 +340,6 @@ class GeographicalReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -363,14 +347,11 @@ class GeographicalReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
   }
   getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-    console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType);
-    // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType){
         if(sector_ID==="all"){
@@ -452,8 +433,6 @@ class GeographicalReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
-   
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -462,17 +441,14 @@ class GeographicalReport extends Component{
        startDate:startDate
     },()=>{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
     event.preventDefault();
     const target = event.target;
     const name = target.name;
-
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
- 
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var endDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -480,7 +456,6 @@ class GeographicalReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
@@ -495,10 +470,7 @@ class GeographicalReport extends Component{
         today.setDate(nextDate);
         // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
       }
-  
-      console.log("nowfrom",today)
       this.setState({
          startDate :today
       },()=>{
@@ -537,7 +509,6 @@ class GeographicalReport extends Component{
     onBlurEventFrom(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
         if ((Date.parse(endDate) < Date.parse(startDate))) {
             swal("Start date","From date should be less than To date");
             this.refs.startDate.value="";
@@ -546,7 +517,6 @@ class GeographicalReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";

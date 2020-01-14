@@ -52,10 +52,10 @@ export default class CenterWisePieChart extends Component {
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
     if(startDate && endDate){
-        axios.get('/api/report/center/'+startDate+'/'+endDate+'/all/all/all/all/all') 
+        axios.get('/api/reportDashboard/center_admin/'+startDate+'/'+endDate) 
         .then((response)=>{
-          console.log("response-===>",response.data);
-          response.data.splice(-2); 
+          console.log("center_adminresponse-===>",response);
+          // response.data.splice(-2); 
           var sector = [];
           var annualPlanTotalBudget = [];
           var piechartcolor =[];

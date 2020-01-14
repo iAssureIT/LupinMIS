@@ -49,10 +49,10 @@ export default class PieChart extends Component {
     var endDate = year.substring(10, 15)+"-03-31";
     // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
     if(startDate && endDate){
-        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/all/all/all/all')
+        axios.get('/api/reportDashboard/sector_admin/'+startDate+'/'+endDate)
         .then((response)=>{ 
-          // console.log("sectorrespgetData------------->",response) ;
-          response.data.splice(-2);
+          console.log("sectorrespgetData------------->",response) ;
+          // response.data.splice(-2);
           var sector = [];
           var piechartcolor =[];
           var annualPlanTotalBudget = [];

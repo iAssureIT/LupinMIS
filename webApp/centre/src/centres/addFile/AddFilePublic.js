@@ -204,7 +204,7 @@ class AddFile extends Component{
         if (willDelete) {
           var fileArray = this.state.fileArray; // make a separate copy of the array
           fileArray.splice(index, 1);
-          swal("abc", "document deleted successfully");
+          swal("abc", "File deleted successfully");
           this.setState({
             fileArray: fileArray
           },()=>{
@@ -235,7 +235,7 @@ class AddFile extends Component{
         if (willDelete) {
           var imageArray = this.state.imageArray; // make a separate copy of the array
           imageArray.splice(index, 1);
-          swal("abc", "document deleted successfully");
+          swal("abc", "File deleted successfully");
           this.setState({
             imageArray: imageArray
           },()=>{

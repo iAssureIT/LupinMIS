@@ -48,10 +48,10 @@ class SubActivity extends Component{
     }
   }
  componentDidMount() {
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-      $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter valid Sub-Activity Name.");
+   {/* axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+         $.validator.addMethod("regxsub", function(value, element, regexpr) {         
+         return regexpr.test(value);
+       }, "Please enter valid Sub-Activity Name.");*/}
 
 
     $("#subActivityb").validate({
@@ -67,7 +67,7 @@ class SubActivity extends Component{
         },
         subActivityName: {
           required: true,
-          regxtypeofCenter: /^[A-za-z']+( [A-Za-z']+)*$/,
+          // regxsub: /^[A-za-z']+( [A-Za-z']+)*$/,
         },
       },
       errorPlacement: function(error, element) {
@@ -450,7 +450,7 @@ edit(id){
                         {/*<div className="input-group-addon inputIcon">
                           <i className="fa fa-graduation-cap fa"></i>
                         </div>*/}
-                        <input type="text" className="form-control inputBox " ref="subActivityName" name="subActivityName" value={this.state.subActivityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <input type="text" className="form-control inputBox " ref="subActivityName" name="subActivityName" value={this.state.subActivityName} onChange={this.handleChange.bind(this)} />
                       </div>
                     </div>
                     <div className=" col-md-12 col-sm-6 col-xs-12 ">
