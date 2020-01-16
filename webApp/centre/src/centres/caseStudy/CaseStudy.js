@@ -68,8 +68,6 @@ class CaseStudy extends Component{
   
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    // console.log('editId componentDidMount', this.state.editId);
-    // this.getWorkspaceList();
     axios
       .get('/api/projectSettings/get/one/S3')
       .then((response)=>{
@@ -104,7 +102,6 @@ class CaseStudy extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      console.log("center_ID =",this.state.center_ID);
     this.getLength(this.state.center_ID);
     this.getData(this.state.startRange, this.state.limitRange,this.state.center_ID);
     });
@@ -145,7 +142,6 @@ class CaseStudy extends Component{
     if (event.currentTarget.files) {
       const data = new FormData();
       var selectedFiles = event.currentTarget.files;
-      console.log("selectedFiles",selectedFiles.length);
       let i = 0;
       for ( i = 0; i < selectedFiles.length; i++ ) {
         data.append( 'file', selectedFiles[ i ],selectedFiles[ i ].name);
@@ -170,7 +166,6 @@ class CaseStudy extends Component{
                         "docLink" : docLink,
                         "docName" : docName,
                    },()=>{
-                      console.log("docName",this.state.docName,this.state.docLink);
                    })
              /*    
                    this.setState({
@@ -295,7 +290,6 @@ class CaseStudy extends Component{
       fields["sectorName"]          = "";
       fields["author"]              = "";
 
-      console.log('caseStudyValues', caseStudyValues);
 
       axios.patch('/api/caseStudies/update', caseStudyValues)
         .then((response)=>{
@@ -395,7 +389,6 @@ class CaseStudy extends Component{
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){

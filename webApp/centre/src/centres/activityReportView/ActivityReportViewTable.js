@@ -114,9 +114,7 @@ class ActivityReportView extends Component{
       .catch(function(error){
         console.log(error);
       });
-      console.log("annualPlanValues =>",annualPlanValues);
       academicArray.push(annualPlanValues);
-      console.log("add value",annualPlanValues);      
       alert("Data inserted Successfully!")
       // }
     }

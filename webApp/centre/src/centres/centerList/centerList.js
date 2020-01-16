@@ -94,7 +94,6 @@ class centerList extends Component{
       this.setState({
         tableData : tableData
       },()=>{
-        console.log("tableData",this.state.tableData)
       })
     })
     .catch(function(error){
@@ -114,7 +113,6 @@ class centerList extends Component{
   }
 
    render() {
-        // console.log('dataCount', this.state.dataCount, 'tableData', this.state.tableData);
     return (
       <div className="container-fluid">
         <div className="row">

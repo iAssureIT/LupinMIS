@@ -42,7 +42,6 @@ class FilewiseActivityList extends Component{
             _id: a._id != null ? a._id : "-", 
           }
         })
-        console.log('tableData', tableData)
         this.setState({
           tableData : tableData
         })

@@ -197,7 +197,6 @@ class BulkUpload extends Component{
         }
     }
       this.setState({inputFileData:documentObj},()=>{
-        console.log('inputFileData',this.state.inputFileData)
         $('.fullpageloader').hide()
       });
     };
@@ -230,7 +229,6 @@ class BulkUpload extends Component{
             fileName  : this.state.fileName,
             totalRecords : totalrows
           };
-          console.log('formValues',formValues);
           //console.log('chunkData',chunkData)
           // var formValues ={
           // "finaldata"     : chunkData,
@@ -252,7 +250,6 @@ class BulkUpload extends Component{
               //console.log('endLmt',endLmt)
               
               var percentage = Math.round((endLmt*100/totalrows))
-              console.log('perc',percentage)
               if (percentage > 99 ) {
                 percentage = 100;
                 $('.fullpageloader').hide();

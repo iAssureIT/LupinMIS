@@ -61,7 +61,6 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 		let id = (e.target.id).replace(".", "/");
-		console.log(id);
 		axios({
 	        method: tableObjects.deleteMethod,
 	        url: tableObjects.apiLink+'/delete/'+id
@@ -384,11 +383,7 @@ class IAssureTable extends Component {
 		})
     }
 	render() {
-		// console.log(this.state.limitRange +'>='+  this.state.dataLength);
-		// var x = Object.keys(this.state.tableHeading).length ;
-		// var y = 4;
-		// var z = 2;
-        return (
+		return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
 				{this.state.tableObjects.paginationApply == true ?
 					<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 paddingLeftCss">

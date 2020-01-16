@@ -164,7 +164,6 @@ class AddFile extends Component{
                 let fileName = response.data;
                 // console.log( 'fileName', fileName );
                 this.ocShowAlert( 'File Uploaded', '#3089cf' );
-                console.log( 'File Uploaded', fileName );
             }
           }
         }).catch( ( error ) => {

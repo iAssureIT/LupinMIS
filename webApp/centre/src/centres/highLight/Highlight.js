@@ -54,7 +54,6 @@ class Highlight extends Component{
   
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
-    // console.log('editId' , editId);
     if(nextProps.match.params.id){
       this.setState({
         editId : editId
@@ -98,7 +97,6 @@ class Highlight extends Component{
      
       }
     });
-    // console.log('editId componentDidMount', this.state.editId);
    
     if(this.state.editId){      
       this.edit(this.state.editId);
@@ -119,7 +117,6 @@ class Highlight extends Component{
       fileLocation : fileLocation,
       ImageLocation   : ImageLocation,
     },()=>{
-      console.log("center_ID =",this.state.center_ID);
       this.getLength(this.state.center_ID);
       this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     });
@@ -136,8 +133,6 @@ class Highlight extends Component{
         [event.target.name]: event.target.value,
         "dateofsubmission" :this.refs.dateofsubmission.value,
         "userName"         :this.refs.userName.value, 
-       /* "highlight_Image"  :this.refs.highlight_Image.value,
-        "highlight_File"   :this.refs.highlight_File.value,*/
     });
   
   }
@@ -167,40 +162,36 @@ class Highlight extends Component{
   }
 
   Submit(event){
-    // var fileLocation = JSON.parse(localStorage.getItem('fileLocation'));
-    // var ImageLocation = JSON.parse(localStorage.getItem('ImageLocation'));
-    // console.log("fileLocation ===============================",fileLocation);
-    // console.log("ImageLocation ===============================",ImageLocation);
     event.preventDefault();
-    if($('#highlight').valid()){
-      var highlightValues = {
-        "center_ID"        :this.state.center_ID,
-        "centerName"       :this.state.centerName,
-        "date"             :this.refs.dateofsubmission.value,
-        "userName"         :this.refs.userName.value, 
-        "highlight_Image"  :this.state.imageArray,
-        "highlight_File"   :this.state.fileArray,
-      };
-     
-      axios.post('/api/highlights', highlightValues)
-        .then((response)=>{
-         console.log('response', response);
-          this.getData(this.state.startRange, this.state.limitRange);
-          swal({
-            title : response.data.message,
-            text  : response.data.message
+      if($('#highlight').valid()){
+        var highlightValues = {
+          "center_ID"        :this.state.center_ID,
+          "centerName"       :this.state.centerName,
+          "date"             :this.refs.dateofsubmission.value,
+          "userName"         :this.refs.userName.value, 
+          "highlight_Image"  :this.state.imageArray,
+          "highlight_File"   :this.state.fileArray,
+        };
+       
+        axios.post('/api/highlights', highlightValues)
+          .then((response)=>{
+           console.log('response', response);
+            this.getData(this.state.startRange, this.state.limitRange);
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });
+          })
+          .catch(function(error){
+            console.log("error = ",error);
           });
-        })
-        .catch(function(error){
-          console.log("error = ",error);
+        this.setState({
+          "dateofsubmission"  : moment(new Date()).format('YYYY-MM'),
+          "userName"          :"",
+          "fileArray"         :[],
+          "imageArray"        :[],
         });
-      this.setState({
-        "dateofsubmission"  : moment(new Date()).format('YYYY-MM'),
-        "userName"          :"",
-        "fileArray"         :[],
-        "imageArray"        :[],
-      });
-    }
+      }
   }
 
   Update(event){
@@ -216,7 +207,6 @@ class Highlight extends Component{
         "highlight_File"   :this.refs.highlight_File.value,*/
       };
 
-      console.log('highlightValues', highlightValues);
 
       axios.patch('/api/highlights/update', highlightValues)
         .then((response)=>{
@@ -270,11 +260,9 @@ class Highlight extends Component{
   getLength(center_ID){
     axios.get('/api/highlights/count/'+center_ID)
     .then((response)=>{
-      // console.log('response', response.data);
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -290,7 +278,6 @@ class Highlight extends Component{
     if(center_ID){
       axios.get('/api/highlights/list/'+center_ID, data)
       .then((response)=>{
-        // console.log('response', response);
         this.setState({
           tableData : response.data
         })
@@ -301,7 +288,6 @@ class Highlight extends Component{
     }
   }
   getFile(fileArray, filenames,imageArray){
-     console.log("fileArray",fileArray ,"filenames",filenames,"imageArray",imageArray)
     this.setState({
       "fileArray"   : fileArray,
       "filenames"   : filenames,

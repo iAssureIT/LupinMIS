@@ -654,7 +654,6 @@ class Activity extends Component{
           this.setState({
             listofBlocks     : availableblockInCenter,
           })
-          console.log("availableblockInCenter",availableblockInCenter);
         }).catch(function (error) {
           console.log("error = ",error);
         });
@@ -670,10 +669,9 @@ class Activity extends Component{
         method: 'get',
         url: '/api/activityReport/'+id,
       }).then((response)=> {
-        console.log("editDataresponse",response);
 
         var editData = response.data[0];
-        console.log("editData",editData);
+        // console.log("editData",editData);
         if(editData){
           var bentableData = []
           if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
@@ -739,7 +737,6 @@ class Activity extends Component{
             "sectorId"   : editData.sector_ID,
             "activityId" : editData.activity_ID,
           }, ()=>{
-            console.log("edit", this.state.editData);
             this.getAvailableCenter(this.state.center_ID);
             // this.getBlock(this.state.stateCode, this.state.district);
             // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
@@ -781,7 +778,6 @@ class Activity extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -789,7 +785,6 @@ class Activity extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }

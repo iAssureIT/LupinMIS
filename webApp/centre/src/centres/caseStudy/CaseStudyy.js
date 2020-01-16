@@ -261,10 +261,8 @@ class addWorkspace extends Component{
               branchName             : responseData.bankDetails.branchName,
               accHolderName          : responseData.bankDetails.accHolderName,                
           })
-        // console.log("imgArrayWSaws111",this.state.imgArrayWSaws)
         })
         .catch(function (error) {
-            console.log(error);
               if(error.message === "Request failed with status code 401")
               {
                    swal("Your session is expired! Please login again.","", "error");
@@ -309,7 +307,6 @@ class addWorkspace extends Component{
     const value  = target.type === "checkbox" ? target.checked : target.value
     var index    = event.target.getAttribute('data-index');
     this.state.amenitiesList[index].checked = value;
-      console.log("Check",value)
     this.setState({
       [name]: value,
     });
@@ -325,7 +322,6 @@ class addWorkspace extends Component{
     // const target = event.target;
     // const {name , value}   = event.target;
     const datatype = event.target.getAttribute('name');
-    console.log('==>>',datatype);
     const {name1,value} = event.target;
     let formerrors = this.state.formerrors;
 
@@ -586,14 +582,12 @@ class addWorkspace extends Component{
               S3FileUpload
                 .uploadFile(newFile,this.state.config)
                 .then((Data)=>{
-                  console.log("Data = ",Data);
                   this.setState({
                     banner : Data.location
                   })
                   this.deleteimageBanner(index)
                 })
                 .catch((error)=>{
-                  console.log("formErrors");
                   console.log(error);
                   if(error.message === "Request failed with status code 401")
                   {
@@ -614,14 +608,12 @@ class addWorkspace extends Component{
                       S3FileUpload
                         .uploadFile(newFile,this.state.config)
                         .then((Data)=>{
-                          console.log("Data = ",Data);
                           this.setState({
                             banner : Data.location
                           })
                           this.deleteimageBanner(index)
                         })
                         .catch((error)=>{
-                          console.log("formErrors");
                           console.log(error);
                           if(error.message === "Request failed with status code 401")
                           {
@@ -684,15 +676,12 @@ class addWorkspace extends Component{
   uploadLogoImage(event){
    event.preventDefault();
     var index = event.target.getAttribute('id');
-    console.log("index--------------->",index);
     let self = this;
     if (event.currentTarget.files && event.currentTarget.files[0]) {
       var file = event.currentTarget.files[0];
       var newFileName = JSON.parse(JSON.stringify(new Date()))+"_"+file.name;
       var newFile = new File([file],newFileName);
-      console.log("file",newFile);
       if (newFile) {
-      // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
         if(ext=="jpg" || ext=="png" || ext=="jpeg" || ext=="JPG" || ext=="PNG" || ext=="JPEG"){ 
           if (newFile) {
@@ -700,14 +689,12 @@ class addWorkspace extends Component{
               S3FileUpload
                 .uploadFile(newFile,this.state.config)
                 .then((Data)=>{
-                  console.log("Data = ",Data);
                   this.setState({
                     logo : Data.location
                   })
                   this.deleteimageLogo(index)
                 })
                 .catch((error)=>{
-                  console.log("formErrors");
                   console.log(error);
                 })
             }else{
@@ -723,14 +710,12 @@ class addWorkspace extends Component{
                         S3FileUpload
                           .uploadFile(newFile,this.state.config)
                           .then((Data)=>{
-                            console.log("Data = ",Data);
                             this.setState({
                               logo : Data.location
                             })
                             this.deleteimageLogo(index)
                           })
                           .catch((error)=>{
-                            console.log("formErrors");
                             console.log(error);
                           })
                       } else {
@@ -751,12 +736,10 @@ class addWorkspace extends Component{
   deleteimageLogo(index){
     var data = index.split("/");
     var imageName = data[4];
-    console.log("index1--------------->",imageName);
       if(index){
         S3FileUpload
           .deleteFile(imageName,this.state.config)
           .then((response) =>{
-            console.log("Deletedddd...",response)
             swal("Image deleted successfully");
           })
           .catch((err) => {
@@ -802,7 +785,6 @@ class addWorkspace extends Component{
             S3FileUpload
               .uploadFile(newFile,this.state.config)
               .then((Data)=>{
-                console.log("Data = ",Data);
                   var obj1={
                     imgPath : Data.location,
                   }
@@ -814,7 +796,6 @@ class addWorkspace extends Component{
                   })
               })
               .catch((error)=>{
-                console.log("formErrors");
                 console.log(error);
               })
 
@@ -845,7 +826,6 @@ class addWorkspace extends Component{
     var filePath = e.target.getAttribute('data-id');
     var data = filePath.split("/");
     var imageName = data[4];
-    console.log("imageName==",imageName);
 
     if(index){
       swal({
@@ -872,7 +852,6 @@ class addWorkspace extends Component{
 
   deleteItem=(event)=>{
     event.preventDefault();
-    console.log('innnnn.....')
     var id = event.target.getAttribute('data-id');
     if(id){
       swal({
@@ -1048,7 +1027,6 @@ class addWorkspace extends Component{
                       <th className="text-left">Action</th>
                     </tr>
                   </thead>
-                  {console.log("this.state.workSpaceList = ",this.state.workSpaceList)}
                   {this.state.workSpaceList && this.state.workSpaceList.length>0?
                     <tbody>
                       {this.state.workSpaceList.map((itemData,index)=>{

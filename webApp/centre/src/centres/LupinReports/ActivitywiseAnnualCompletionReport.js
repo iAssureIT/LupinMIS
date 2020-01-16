@@ -97,7 +97,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      console.log("center_ID =",this.state.center_ID);
       this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -156,7 +155,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -170,7 +168,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector', this.state.sector)
         this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
@@ -181,7 +178,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -219,7 +215,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
           this.setState({
             tableDatas : response.data
           },()=>{
-            console.log("resp",this.state.tableDatas)
           })
         })
         .catch(function(error){

@@ -145,7 +145,6 @@ class ListOfBeneficiaries extends Component{
       this.setState({
         tableData : tableData
       },()=>{
-        console.log("tableData",this.state.tableData)
       })
 
     // console.log(selectedBeneficiaries)
