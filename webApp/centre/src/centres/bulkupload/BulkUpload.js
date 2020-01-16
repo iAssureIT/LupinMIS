@@ -246,7 +246,7 @@ class BulkUpload extends Component{
             data: formValues
           })
           .then((response)=> {
-            //console.log('response',response.data)
+            console.log('response',response.data)
             if (response.data.completed) {
 
               //console.log('endLmt',endLmt)
@@ -256,7 +256,7 @@ class BulkUpload extends Component{
               if (percentage > 99 ) {
                 percentage = 100;
                 $('.fullpageloader').hide();
-                $('.filedetailsDiv').show()
+                $('.filedetailsDiv').show();
                 this.props.getFileDetails(this.state.fileName) 
               }
               this.setState({percentage:percentage},()=>{})
