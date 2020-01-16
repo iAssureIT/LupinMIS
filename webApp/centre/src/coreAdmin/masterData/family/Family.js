@@ -575,7 +575,7 @@ class Family extends Component{
     if (center_ID){
       axios.post('/api/families/list/'+center_ID,data)
       .then((response)=>{
-        // console.log('response', response.data);
+        console.log('response', response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                   : a._id,
