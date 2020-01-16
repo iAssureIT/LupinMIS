@@ -15,7 +15,6 @@ import './notification.css';
 
 
   const formValid = formerrors=>{
-  console.log("formerrors",formerrors);
   let valid = true;
   Object.values(formerrors).forEach(val=>{
   val.length>0 && (valid = false);
@@ -34,7 +33,6 @@ class ViewTemplates extends Component{
     const {name,value} = event.target;
     let formerrors = this.state.formerrors;
     
-    // console.log("datatype",datatype);
     switch (datatype){
      
       
@@ -307,9 +305,6 @@ class ViewTemplates extends Component{
 	  }
 
 	submitTemplate(event){
-		// console.log('submitTemplate');
-
-
 		event.preventDefault();
 		// if($("#newTemplateForm").valid() && this.state.content){
 			var templateType     = this.state.templateType;
@@ -317,27 +312,18 @@ class ViewTemplates extends Component{
 			var subject          = this.state.subject;
 			var cketext          = this.state.content;
 
-			console.log("here value of sub", this.state.subject);
-			console.log("here value of content", this.state.content);
-
-			console.log("here value of templatetype", this.state.templateType);
-			console.log("here value of templateName", this.state.templateName);
 			if( cketext === null || cketext == "" || templateType === '-- Select --' || templateName === '--Select Template Name--'){
-				
-				 swal({
-										title: "Please enter mandatory fields",
-										text: "Please enter mandatory fields",
-									});
-          		// console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+			 	swal({
+						title: "Please enter mandatory fields",
+						text: "Please enter mandatory fields",
+					});
 			}else{	
-
 				if(templateType === 'Email' && (subject === null || subject == ""))
 				{
-					
-					 swal({
-										title: "Please enter mandatory fields",
-										text: "Please enter mandatory fields",
-									});
+				 	swal({
+						title: "Please enter mandatory fields",
+						text: "Please enter mandatory fields",
+					});
 				}else{
 
 					var formValues = {   
@@ -350,7 +336,6 @@ class ViewTemplates extends Component{
 						if(formValid(this.state.formerrors)){
 							axios.post('/api/masternotification', formValues)
 							.then((response)=> {	
-							console.log('response here of add --------------',response);	
 								if(response.data.message== "Master Notification Template Name already exists")
 								{
 									
@@ -374,7 +359,6 @@ class ViewTemplates extends Component{
 										method: 'get',
 										url: '/api/masternotification/list',
 									}).then((response)=> {
-										console.log("here are the response--------------------", response);
 										
 										var emailTemplatesList = response.data.filter((a)=>{ return a.templateType == "Email"});	   	    
 										var notificationTemplatesList = response.data.filter((a)=>{ return a.templateType == "Notification"});	   	    
@@ -390,44 +374,27 @@ class ViewTemplates extends Component{
 									    	templateName 	: '--Select Template Name--',
 									    	subject 		: "",
 									    	content 		: null
-									    },()=>{
-									    	console.log("here sub", this.state.subject);
-									    	console.log("here content", this.state.content);
 									    });   
 									}).catch(function (error) {
 									    
-
 									});
-									
 									$('#createNotifyModal').hide();
 									$('.modal-backdrop').remove();
 								})
 								.catch(function (error) {
-									
-
-								// console.log(error);
 								})
 						}else
 						{
-						   
-
 						    swal({
-										title: "Please enter mandatory fields",
-										text: "Please enter mandatory fields",
-									});
-						    // console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+								title: "Please enter mandatory fields",
+								text: "Please enter mandatory fields",
+							});
 						}
 
 				}
 				
 			}
-		/*}else{
-			this.setState({
-				contentError: 'This field is required.',
-			});
-		}*/
 	}
-
 
 	selectType(event){
 		event.preventDefault();
@@ -451,7 +418,6 @@ class ViewTemplates extends Component{
     }
     onChange(evt){
       var newContent = evt.editor.getData();
-      // console.log("onChange fired with event info: ", newContent);
       this.setState({
         content: newContent
       },()=>{

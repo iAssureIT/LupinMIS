@@ -97,14 +97,12 @@ class UMListOfUsers extends Component {
 	    }); 
     }
     getSearchText(searchText, startRange, limitRange){
-        // console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
     }
 
     adminRolesListData(){
-		// return  Meteor.roles.find({"name":{ $nin: ["superAdmin"] }}).fetch();
 	}
 
 	activeSelected(checkedUsersList){
@@ -185,7 +183,6 @@ class UMListOfUsers extends Component {
 		                '[user_email_id]' : user.data.profile.emailId,
 		                '[center_application_URL]' : url
 		            }
-		            // console.log("msgvariable :"+JSON.stringify(msgvariable));
 		            var inputObj = {  
 		                to           : user.data.profile.emailId,
 		                templateName : 'User - Login Account Activation',
@@ -279,7 +276,6 @@ class UMListOfUsers extends Component {
 		                '[User]'    : user.data.profile.fullName,
 		                '[user_email_id]' : user.data.profile.emailId
 		            }
-		            // console.log("msgvariable :"+JSON.stringify(msgvariable));
 		            var inputObj = {  
 		                to           : user.data.profile.emailId,
 		                templateName : 'User - Login Account Blocked',
@@ -301,20 +297,14 @@ class UMListOfUsers extends Component {
 		event.preventDefault();
 		$('#userListDropdownId').attr('disabled','true')
 		var checkedUsersList = this.state.checkedUser;
-		// console.log('id array here', checkedUsersList);
 			
 		if( checkedUsersList.length > 0 ){
 			var selectedValue        = this.refs.userListDropdown.value;
 			var keywordSelectedValue = selectedValue.split('$')[0];
 			var role                 = selectedValue.split('$')[1];
-			// console.log("selectedValue",selectedValue);
-			// console.log("role",role);
-			// console.log("keywordSelectedValue",keywordSelectedValue);
-
 			switch(keywordSelectedValue){
 				case '-':
 				$('#userListDropdownId').removeAttr('disabled')
-			    // console.log('selectedValue:' + selectedValue);
 			    break;
 
 				case 'block_selected':
@@ -328,7 +318,6 @@ class UMListOfUsers extends Component {
 				case 'cancel_selected':
 				    for(var i=0;i< checkedUsersList.length;i++){
 					  	var selectedId = checkedUsersList[i];
-					  	// console.log("selected i",selectedId);
 					  	const token = '';
 					  	const url = '/api/users/'+selectedId ;
 						const headers = {
@@ -343,13 +332,10 @@ class UMListOfUsers extends Component {
 							data: null,
 						})
 						.then((response)=> {
-					    	// window.location.reload(); 
-					    	// console.log('delete response',response);
 					    	this.setState({
 							  	checkedUser : [],
 							  	unCheckedUser : true
 							},()=>{
-						        // console.log('========checkedUsersList.length===',response)
 								$('#userListDropdownId').removeAttr('disabled')
 								this.refs.userListDropdown.value = '-'
 								this.getData(this.state.startRange,this.state.limitRange)
@@ -357,7 +343,7 @@ class UMListOfUsers extends Component {
 				          		swal("abc","User(s) Deleted Successfully");
 							})
 						}).catch((error)=> {
-						    // console.log(error);
+						    console.log(error);
 						});
 				    }  
 				break;
@@ -370,13 +356,10 @@ class UMListOfUsers extends Component {
 					  	 	userID : selectedId,
 					  	 	roles   : role,
 					  	}
-					  	// console.log("selected i",selectedId);
-
 					  	axios
 				       .post('/api/users/roleadd/',formValues)
 				       .then(
 				        (res)=>{
-				            // console.log('res', res);
 					        this.setState({
 							  	checkedUser : [],
 							  	unCheckedUser : true
@@ -391,7 +374,7 @@ class UMListOfUsers extends Component {
 				          		swal("abc",changed + " Records(s) Updated Successfully");
 							})
 				        }).catch((error)=>{ 
-				          // console.log("error = ",error);
+				          	console.log("error = ",error);
 				        });
 				    }  
 				break;
@@ -423,7 +406,7 @@ class UMListOfUsers extends Component {
 				          		swal("abc",changed + " Records(s) Updated Successfully");
 							})			
 				        }).catch((error)=>{ 
-				        // console.log("error = ",error);
+				        	console.log("error = ",error);
 				        });
 				    }  
 				break;
@@ -442,9 +425,7 @@ class UMListOfUsers extends Component {
 				event.preventDefault();
 				var selectedValue        = this.refs.roleListDropdown.value;
 				var keywordSelectedValue = selectedValue.split('$')[0];
-				// console.log("selectedValue",selectedValue);			
-				// console.log("keywordSelectedValue ------------------",keywordSelectedValue);
-					var formValues ={
+					var formValues = {
 						searchText : selectedValue,
 					}
 
@@ -456,8 +437,6 @@ class UMListOfUsers extends Component {
 							}
 							axios.post('/api/users/userslist', data)
 							.then( (res)=>{      
-								// console.log("herer",res);
-								// swal("Success! Showing "+selectedValue,"","success");
 								var tableData = res.data.map((a, i)=>{
 									return {
 										_id 			: a._id,
@@ -473,12 +452,9 @@ class UMListOfUsers extends Component {
 						          completeDataCount : res.data.length,
 						          tableData 		: tableData,          
 						        },()=>{
-						        	// console.log('tableData', this.state.tableData);
 						        })
 							})
 							.catch((error)=>{
-								// console.log("error = ",error);
-								// alert("Something went wrong! Please check Get URL.");
 							});
 
 					}else{
@@ -487,8 +463,6 @@ class UMListOfUsers extends Component {
 					      .post('/api/users/searchValue',formValues)
 					      .then(
 					        (res)=>{
-					          // console.log('res', res);
-					          // swal("Success! Showing only "+selectedValue,"","success");
 					          var data = res.data.data;
 					          var tableData = data.map((a, i)=>{
 									return {
@@ -519,14 +493,11 @@ class UMListOfUsers extends Component {
 
 			var selectedValue        = this.refs.blockActive.value;
 				var keywordSelectedValue = selectedValue.split('$')[0];
-				// console.log("selectedValue status",selectedValue);			
-				// console.log("keywordSelectedValue status",keywordSelectedValue);
 					var formValues ={
 						searchText : selectedValue,
 					}
 
 					if(selectedValue == "all"){
-						// console.log("here all data");
 
 							var data = {
 								"startRange"        : this.state.startRange,
@@ -534,8 +505,6 @@ class UMListOfUsers extends Component {
 							}
 							axios.post('/api/users/userslist', data)
 							.then( (res)=>{      
-								console.log("herer",res);
-								// swal("Success! Showing "+selectedValue,"","success");
 								var tableData = res.data.map((a, i)=>{
 									return {
 										_id 			: a._id,
@@ -551,12 +520,9 @@ class UMListOfUsers extends Component {
 						          completeDataCount : res.data.length,
 						          tableData 		: tableData,          
 						        },()=>{
-						        	// console.log('tableData', this.state.tableData);
 						        })
 							})
 							.catch((error)=>{
-								// console.log("error = ",error);
-								// alert("Something went wrong! Please check Get URL.");
 							});
 
 
@@ -566,8 +532,6 @@ class UMListOfUsers extends Component {
 				      .post('/api/users/searchValue',formValues)
 				      .then(
 				        (res)=>{
-				          // console.log('res', res);
-				          // swal("Success! only "+selectedValue+" users are shown in the list", "","success");
 				          var data = res.data.data;
 				          var tableData = data.map((a, i)=>{
 								return {
@@ -605,12 +569,10 @@ class UMListOfUsers extends Component {
 		})
 	}
 	selectedUser(checkedUsersList){
-		// console.log('checkedUsersList', checkedUsersList);
 		this.setState({
 			checkedUser : checkedUsersList,
 		})
 
-		// console.log("this.state.checkedUser",this.state.checkedUser);
 	}
 	getRole(){
 		axios({
@@ -621,7 +583,6 @@ class UMListOfUsers extends Component {
 		    this.setState({
 		      adminRolesListData : response.data
 		    },()=>{
-		    // console.log('adminRolesListData', this.state.adminRolesListData);
 		    })
 		}).catch(function (error) {
 		  console.log('error', error);
@@ -637,9 +598,7 @@ class UMListOfUsers extends Component {
 	  }
 
 render(){
-	// console.log('this.state.completeDataCount', this.state.completeDataCount);
 	var adminRolesListDataList = this.state.adminRolesListData;
-	// console.log("adminRolesListDataList",adminRolesListDataList);
      return(
      	<div className="container-fluid">
 	        <div className="row">
@@ -659,15 +618,6 @@ render(){
 											<button type="button" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 addexamform userbtn clickforhideshow" data-toggle="modal" data-target="#CreateUserModal"><i className="fa fa-plus" aria-hidden="true"></i><b>&nbsp;&nbsp;&nbsp; Add User</b></button>
 										    <CreateUser getData={this.getData.bind(this)}/>
 										</div>
-										{/*<div className="col-lg-2 col-md-3 col-sm-12 col-xs-12 "  id="createmodalcl">
-											<a href="/umroleslist"><button type="button" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 addexamform clickforhideshow">Add Role</button></a>
-										</div>*/}
-								
-					                   {/* <div className="col-lg-7 col-md-6 col-sm-12 col-xs-12 searchTableBoxAlignSETUM">
-					                   		<span className="blocking-span">
-						                   		<input type="text" name="search"  className="col-lg-8 col-md-8 col-sm-8 Searchusers Searchfind inputTextSearch outlinebox pull-right "  placeholder="&#128269; Search by Name "  />
-						                   	</span>
-					                    </div>*/}
 									</div>
 							        <form className="newTemplateForm">
 										<div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 usrmgnhead">

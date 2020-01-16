@@ -156,7 +156,6 @@ class UsereditModal extends Component{
 				contentError: 'This field is required.',
 			});
 		}
-    	// }
 	}
 	selectType(event){
 		event.preventDefault();
@@ -165,11 +164,6 @@ class UsereditModal extends Component{
 	  this.setState({
 	  	[name]: event.target.value,
 	  });
-		// if(this.refs.templateType.value  == 'Notification' || this.refs.templateType.value  == 'SMS' ){
-		// 	$('.subjectRow').css({'display':'none'});
-		// }else if(this.refs.templateType.value  == 'Email'){
-		// 	$('.subjectRow').css({'display':'block'});
-		// }
 	}
 	
 	updateContent(newContent) {
@@ -179,7 +173,6 @@ class UsereditModal extends Component{
     }
     onChange(evt){
       var newContent = evt.editor.getData();
-      console.log(newContent);
       this.setState({
         firstname: newContent
       },()=>{
@@ -200,8 +193,6 @@ class UsereditModal extends Component{
 		if(this.props.userNot){
 	        return (
 	        		<div>
-	        		{console.log("edit modal",this.props.userNot)}
-					{/*<div className="modal fade modalHide" id={"editNotifyModal-"+this.props.userNot} role="dialog">*/}
 					  	<div className="modal fade modalHide"  id={"editNotifyModal-"+this.props.userNot}  role="dialog" >
                           <div className="modal-dialog modal-lg " role="document">
                             <div className="modal-content modalContent ummodallftmg ummodalmfdrt col-lg-12 ">
@@ -210,94 +201,88 @@ class UsereditModal extends Component{
                                   <span aria-hidden="true">&times;</span>
                                 </button>
                                 <h4 className="modal-title " id="exampleModalLabel">Add New User</h4>
-                              </div>
-                             <div className="modal-body">
-                              <div className="hideModal">
+                            </div>
+                            <div className="modal-body">
+                              	<div className="hideModal">
                                     <div className="">
-                                      <div className="">
-                                          <div className="">                                        
-                                            <section className="">                                          
+                                     	<div className="">
+                                        	<div className="">                                        
+                                            	<section className="">                                          
                                                     <div className="box-body textAlignLeft">
                                                         <div className="">
+                                                    		<form id="signUpUser">
+                                                    			<div className="signuppp col-lg-12 col-md-12 col-sm-12 col-xs-12 createusr ">
+				                                                    <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
+			                                                          <label className="formLable ">First Name <label className="requiredsign">*</label></label>
+			                                                          <span className="blocking-span">
+			                                                           <div className="input-group inputBox-main  new_inputbx " >
+			                                                             <div className="input-group-addon remove_brdr inputIcon">
+			                                                             <i className="fa fa-user-circle fa "></i>
+			                                                            </div>  
+			                                                              <input type="text" style={{textTransform:'capitalize'}}
+			                                                               className="form-control UMname inputText form-control  has-content"
+			                                                                id="firstname" ref="firstname" name="firstname" placeholder="First Name"/>
+			                                                           </div>   
+			                                                          </span>
+				                                                    </div>
+				                                                    <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
+			                                                          <label className="formLable">Last Name <label className="requiredsign">*</label></label>
+			                                                          <span className="blocking-span row">
+			                                                          <div className="input-group inputBox-main  new_inputbx " >
+			                                                             <div className="input-group-addon remove_brdr inputIcon">
+			                                                              <i className="fa fa-user-circle fa "></i>
+			                                                            </div>  
+			                                                             <input type="text"className="form-control UMname inputText form-control  has-content" 
+			                                                             id="lastname" ref="lastname" name="lastname" placeholder="Last Name" />
+			                                                          </div>   
+			                                                          </span>
+				                                                    </div>
+                                                    			</div>
+			                                                    <div className="signuppp col-lg-12 col-md-12 col-sm-12 col-xs-12 createusr">
+			                                                     <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent">
+			                                                       <label className="formLable">Email ID <label className="requiredsign">*</label></label>
+			                                                          <span className="blocking-span col-lg-12 col-md-12 col-xs-12 col-sm-12 emailfixdomain">
+			                                                          <div className="input-group inputBox-main   " >
+			                                                           <div className="input-group-addon remove_brdr inputIcon">
+			                                                            <i className="fa fa-envelope-square"></i>
+			                                                          </div> 
 
-                                                    <form id="signUpUser">
-                                                    <div className="signuppp col-lg-12 col-md-12 col-sm-12 col-xs-12 createusr ">
+			                                                            <input type="text" className="formFloatingLabels form-control  newinputbox" 
+			                                                            ref="signupEmail" name="signupEmail" id="signupEmail" placeholder="Email"/>
+			                                                         </div>   
+			                                                          </span>
+			                                                      </div>
 
-                                                     <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
-                                                          <label className="formLable ">First Name <label className="requiredsign">*</label></label>
-                                                          <span className="blocking-span">
-                                                           <div className="input-group inputBox-main  new_inputbx " >
-                                                             <div className="input-group-addon remove_brdr inputIcon">
-                                                             <i className="fa fa-user-circle fa "></i>
-                                                            </div>  
-                                                              <input type="text" style={{textTransform:'capitalize'}}
-                                                               className="form-control UMname inputText form-control  has-content"
-                                                                id="firstname" ref="firstname" name="firstname" placeholder="First Name"/>
-                                                           </div>   
-                                                          </span>
-                                                      </div>
-                                                      <div className=" col-lg-6 col-md-6 col-xs-6 col-sm-6 inputContent">
-                                                          <label className="formLable">Last Name <label className="requiredsign">*</label></label>
-                                                          <span className="blocking-span row">
-                                                          <div className="input-group inputBox-main  new_inputbx " >
-                                                             <div className="input-group-addon remove_brdr inputIcon">
-                                                              <i className="fa fa-user-circle fa "></i>
-                                                            </div>  
-                                                             <input type="text"className="form-control UMname inputText form-control  has-content" 
-                                                             id="lastname" ref="lastname" name="lastname" placeholder="Last Name" />
-                                                          </div>   
-                                                          </span>
-                                                      </div>
-                                                    </div>
-                                                    <div className="signuppp col-lg-12 col-md-12 col-sm-12 col-xs-12 createusr">
-                                                     <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-12 inputContent">
-                                                       <label className="formLable">Email ID <label className="requiredsign">*</label></label>
-                                                          <span className="blocking-span col-lg-12 col-md-12 col-xs-12 col-sm-12 emailfixdomain">
-                                                          <div className="input-group inputBox-main   " >
-                                                           <div className="input-group-addon remove_brdr inputIcon">
-                                                            <i className="fa fa-envelope-square"></i>
-                                                          </div> 
-
-                                                            <input type="text" className="formFloatingLabels form-control  newinputbox" 
-                                                            ref="signupEmail" name="signupEmail" id="signupEmail" placeholder="Email"/>
-                                                         </div>   
-                                                          </span>
-                                                      </div>
-
-                                                      <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-6 inputContent">
-                                                          <label className="formLable">Mobile Number <label className="requiredsign">*</label></label>
-                                                          <span className="blocking-span row">
-                                                           <div className="input-group inputBox-main  new_inputbx " >
-                                                             <div className="input-group-addon remove_brdr inputIcon">
-                                                              <i className="fa fa-mobile"></i>
-                                                             </div>  
-                                                             <InputMask mask="99999-99999" pattern="^(0|[1-9][0-9-]*)$" 
-                                                               className= "form-control UMname inputText form-control  has-content"
-                                                                ref="mobNumber" name="mobNumber" id="mobNumber" placeholder="Mobile No"/>
-                                                           </div>   
-                                                          </span>
-                                                      </div>
-                                                    </div>
-                                                    <div className=" col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                                      <input className="col-lg-2 col-md-2 col-xs-12 col-sm-12 col-xs-12 pull-right btn btnSubmit topMargin outlinebox" type="submit" value="Register" />
-                                                     </div>    
-                                                </form>
-
-                                                        </div>  
-                                                    </div>
-                                                
+			                                                      <div className=" col-lg-6 col-md-6 col-xs-12 col-sm-6 inputContent">
+			                                                          <label className="formLable">Mobile Number <label className="requiredsign">*</label></label>
+			                                                          <span className="blocking-span row">
+			                                                           <div className="input-group inputBox-main  new_inputbx " >
+			                                                             <div className="input-group-addon remove_brdr inputIcon">
+			                                                              <i className="fa fa-mobile"></i>
+			                                                             </div>  
+			                                                             <InputMask mask="99999-99999" pattern="^(0|[1-9][0-9-]*)$" 
+			                                                               className= "form-control UMname inputText form-control  has-content"
+			                                                                ref="mobNumber" name="mobNumber" id="mobNumber" placeholder="Mobile No"/>
+			                                                           </div>   
+			                                                          </span>
+			                                                      </div>
+			                                                    </div>
+			                                                    <div className=" col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+			                                                      <input className="col-lg-2 col-md-2 col-xs-12 col-sm-12 col-xs-12 pull-right btn btnSubmit topMargin outlinebox" type="submit" value="Register" />
+			                                                    </div>    
+                                                		</form>
+                                                    </div>  
+                                            	</div>
                                           </section>
                                         </div>
-                                      </div>
                                     </div>
-                              </div>
-                  </div>
-                  </div>
-                      
+                                </div>
+                            </div>
+                  		</div>
+                  	</div>
                 </div>
-              </div>
-					
-					</div>
+            </div>
+		</div>
 		    );
 		}else{
 			return (<div></div>);

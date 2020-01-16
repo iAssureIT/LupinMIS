@@ -59,10 +59,8 @@ class Unit extends Component{
     if($("#unitDetails").valid()){
     var unitValues= {
     "unit"        : this.refs.unit.value,
-/*    "createdBy"    : this.state.user_ID,
-*/    };
+    };
 
-   console.log("unitValues",unitValues);
     axios.post('/api/units',unitValues)
       .then((response)=>{
         console.log("response",response);
@@ -91,7 +89,6 @@ class Unit extends Component{
         "unit"        :this.refs.unit.value,
         "ID"         :this.state.editId
       };
-      console.log("unitValues",unitValues)
      
       axios.patch('/api/units/update',unitValues)
         .then((response)=>{
@@ -119,7 +116,6 @@ class Unit extends Component{
   }
  
   componentWillReceiveProps(nextProps){
-  // console.log('componentWillReceiveProps');
     if(nextProps){
       var editId = nextProps.match.params.unitID;
       if(nextProps.match.params.unitID){
@@ -127,8 +123,6 @@ class Unit extends Component{
           editId : editId
         },()=>{
           this.edit(this.state.editId);
-         console.log("editId",editId);
-
         })
       }
       this.getLength();
@@ -137,7 +131,6 @@ class Unit extends Component{
  
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-  // console.log('componentDidMount', this.state.tableData);
     $.validator.addMethod("regxunit", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Unit.");
@@ -169,34 +162,30 @@ class Unit extends Component{
   edit(id){
     $('label.error').html('')
 
-    console.log("id",id);
     axios.get('/api/units/'+id)
     .then((response)=> {
       var editData = response.data[0];
-      console.log("editData",editData)     
       this.setState({
         "unit"  :editData.unit,
       });
-        let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
-        this.setState({
-          errors: errors
-        });
-        return formIsValid;
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+      this.setState({
+        errors: errors
+      });
+      return formIsValid;
     }).catch(function (error) {
         console.log("error = ",error);
-      });
+    });
   }
  
   getData(){
-    // console.log('data', data);
      axios.get('/api/units/list')
     .then((unitList)=>{
      console.log('unitList', unitList.data);
        if(unitList&&unitList.data&&unitList.data.length>0){
         var tableData = unitList.data.map((a, i)=>{
-          console.log("a.unit",a.unit)
           return {
               _id  : a._id,
               unit : a.unit,
@@ -212,27 +201,15 @@ class Unit extends Component{
     });
   }
   getLength(){
-      // axios.get('/api/units/count')
-      // .then((response)=>{
-      //   // console.log('response', response.data);
-      //   this.setState({
-      //     dataCount : response.data.dataLength
-      //   },()=>{
-      //     // console.log('dataCount', this.state.dataCount);
-      //   })
-      // })
-      // .catch(function(error){
-      //   console.log("error = ",error);
-      // });
+     
   }
   componentWillMount(){
-    console.log('componentWillMount');
     this.getLength();
   }
   getSearchText(searchText, startRange, limitRange){
-      this.setState({
-          tableData : []
-      });
+    this.setState({
+        tableData : []
+    });
   }
   componentWillUnmount(){
     this.setState({
@@ -249,7 +226,6 @@ class Unit extends Component{
             <i className=" fa fa-plus-circle"></i>          
           </div>
           <div className="modal fade in  col-lg-12 col-md-12 col-sm-12 col-xs-12" id="unitModal" role="dialog">
-
             <div className="modal-dialog modal-lg customModalUnit " >
               <div className="modal-content ">
                 <div className=" ">
@@ -268,7 +244,6 @@ class Unit extends Component{
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                             <label className="formLable">Unit</label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="unit" >
-                            
                               <input type="text" className="form-control inputBox"  placeholder=""ref="unit" name="unit" value={this.state.unit} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
                             </div>
                             <div className="errorMsg">{this.state.errors.unit}</div>
@@ -294,7 +269,6 @@ class Unit extends Component{
                         tableData={this.state.tableData}
                         getData={this.getData.bind(this)}
                         tableObjects={this.state.tableObjects}
-                        // getSearchText={this.getSearchText.bind(this)}
                       />
                     </div>             
                   </div>

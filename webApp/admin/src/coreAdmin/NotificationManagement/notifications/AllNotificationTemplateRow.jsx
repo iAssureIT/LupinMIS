@@ -21,11 +21,8 @@ class AllNotificationTemplateRow extends Component{
 	editNotificationModal(event){
 		event.preventDefault();
 		var id = event.target.id;
-		console.log('id',id);
 		axios.get('/api/masternotification/'+id)
 		.then((response)=> {
-			
-	    	console.log('delete response',response);
 	    	this.setState({
 				'templateType' 		: response.data.templateType,
 				'templateName'		: response.data.templateName,
@@ -40,24 +37,17 @@ class AllNotificationTemplateRow extends Component{
 	deleteTemplate(event){
 		event.preventDefault();
 		var id = event.target.id;
-		console.log('id',id);
 		axios.delete('/api/masternotification/'+id)
 		.then((response)=> {
-	    	console.log('delete response',response);
-	    	
-	    	 swal({
-										title: "Template deleted successfully",
-										text: "Template deleted successfully",
-									});
-	    	console.log("here response message",response.data.message);
+	    	swal({
+					title: "Template deleted successfully",
+					text: "Template deleted successfully",
+				});
 	    	if(response.data.message=="Master notification deleted")
 	    	{
-	    	this.props.deleteData("Notification",id);
+	    		this.props.deleteData("Notification",id);
     		}
-
-
 		}).catch((error)=> {
-		    // handle error
 		    console.log(error);
 		});
 	}

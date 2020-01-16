@@ -178,9 +178,7 @@ class SubActivity extends Component{
       "subActivityName"      : this.refs.subActivityName.value.split('|')[0],
       "unit"                 : this.state.unit,
       "familyUpgradation"    : this.state.familyUpgradation,
-      // "user_ID"              : this.state.user_ID,
     };
-    console.log("subActivityValues",subActivityValues);
     axios.patch('/api/sectors/subactivity/update',subActivityValues)
       .then((response)=>{
         this.setState({
@@ -191,7 +189,6 @@ class SubActivity extends Component{
           "availableActivity"     :[],
           editId : ''
         },()=>{
-          console.log("this.props.history",this.props.history)
          this.props.history.push('/sector-and-activity');
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
@@ -263,14 +260,12 @@ edit(id){
     $('label.error').html('')
     var activity_id = this.props.match.params.activityId;
     var subactivity_id = this.props.match.params.subactivityId;
-      console.log('this.activity_id',activity_id,subactivity_id);
       axios({
         method: 'get',
         url: '/api/sectors/'+id,
       }).then((response)=> {
         if(response){
         var editData = response.data[0];
-        // console.log("editData",editData); 
     
         var activityName = '';
         var subActivityName = '';
@@ -278,8 +273,6 @@ edit(id){
         var familyUpgradation = '';
         if(editData.activity&&editData.activity.length>0){
           editData.activity.map((a,i)=>{
-        console.log("editData",activity_id, a._id); 
-
             if(activity_id === a._id){
               activityName = a.activityName+'|'+a._id;
               if(a.subActivity&&a.subActivity.length>0){
@@ -301,8 +294,6 @@ edit(id){
           "subActivityName"       : subActivityName,
           "unit"                  : unit,
           "familyUpgradation"     : familyUpgradation,
-        },()=>{
-          console.log('this.state', this.state);      
         });
       }
         let fields = this.state.fields;
@@ -323,7 +314,6 @@ edit(id){
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -338,7 +328,6 @@ edit(id){
     }
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{
-      console.log("response = ",response);
 
       this.setState({
         tableData : response.data
@@ -349,15 +338,11 @@ edit(id){
     });
   }
   getUnits(){
-      
     axios.get('/api/units/list')
     .then((unitList)=>{
-      console.log("unitList = ",unitList);
-
       this.setState({
         unitList : unitList.data
       });
-      console.log("unitList",this.state.unitList);
     })
     .catch(function(error){
       console.log("error = ",error);
@@ -379,7 +364,6 @@ edit(id){
         familyUpgradation : "No",
       })
     }
-
   }
   componentWillUnmount(){
     this.setState({

@@ -83,7 +83,6 @@ class EMPReport extends Component{
         // "sector"  : this.state.sector[0],
         tableData : this.state.tableData,
       },()=>{
-      console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
       })
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
@@ -102,7 +101,6 @@ class EMPReport extends Component{
           [event.target.name] : event.target.value
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
-          console.log('name', this.state)
         });
     }
     getAvailableCenters(){
@@ -131,7 +129,6 @@ class EMPReport extends Component{
           }else{
             var center = this.state.selectedCenter.split('|')[1];
           }
-          console.log('center', center);
           this.setState({
             center_ID :center,            
           },()=>{
@@ -141,7 +138,6 @@ class EMPReport extends Component{
         });
     } 
   getData(startDate, endDate,center_ID, goal, beneficiaryType){
-    console.log(startDate, endDate, center_ID);
     if(startDate && endDate && center_ID && beneficiaryType){
       if(center_ID==="all"){
         if(beneficiaryType==="all"){  
@@ -171,7 +167,6 @@ class EMPReport extends Component{
             this.setState({
               tableData : tableData
             },()=>{
-              console.log("resp",this.state.tableData)
             })
           })
           .catch(function(error){
@@ -206,7 +201,7 @@ class EMPReport extends Component{
             this.setState({
               tableData : tableData
             },()=>{
-              console.log("resp",this.state.tableData)
+
             })
           })
           .catch(function(error){
@@ -242,7 +237,6 @@ class EMPReport extends Component{
             this.setState({
               tableData : tableData
             },()=>{
-              console.log("resp",this.state.tableData)
             })
           })
           .catch(function(error){
@@ -258,7 +252,6 @@ class EMPReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
    
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
@@ -268,7 +261,6 @@ class EMPReport extends Component{
        startDate:startDate
     },()=>{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -285,7 +277,6 @@ class EMPReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
@@ -299,9 +290,7 @@ class EMPReport extends Component{
         today.setDate(nextDate);
         // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
         }
-        console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
@@ -325,7 +314,6 @@ class EMPReport extends Component{
         // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
@@ -333,7 +321,6 @@ class EMPReport extends Component{
     onBlurEventFrom(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
       if ((Date.parse(endDate) < Date.parse(startDate))) {
           swal("Start date","From date should be less than To date");
           this.refs.startDate.value="";
@@ -342,7 +329,6 @@ class EMPReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";

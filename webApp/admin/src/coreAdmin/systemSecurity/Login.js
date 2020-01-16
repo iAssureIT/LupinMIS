@@ -44,24 +44,18 @@ class Login extends Component {
         }
       }
     });
-    // axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
   }
   userlogin(event){
     event.preventDefault();
     if($("#login").valid()){
-      // console.log("in login mode",this.state.auth);
       var auth= {
         email       : this.refs.loginusername.value,
         password    : this.refs.loginpassword.value,
         roles       : ['admin','viewer']
       }
-
-      // console.log("auth value",auth);
-
       axios
       .post('/api/users/login',auth)
       .then((response)=> {
-        // console.log("-------userData------>>",response);
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token;
         localStorage.setItem("token",response.data.token);
         localStorage.setItem("emailId",response.data.emailId);
@@ -70,8 +64,6 @@ class Login extends Component {
         localStorage.setItem("fullName",response.data.fullName);
         localStorage.setItem("role",response.data.roles[0]);
         if(axios.defaults.headers.common.Authorization){
-          // console.log("axios.defaults.headers.common.Authorization",axios.defaults.headers.common.Authorization);
-         /* alert("Authorization check ",);*/
           this.props.history.push("/dashboard");
           window.location.reload();
           if(localStorage==null){ 
@@ -80,13 +72,11 @@ class Login extends Component {
             this.setState({
                 loggedIn  :   true
             },()=>{
-              console.log("loggedIn", this.state.loggedIn);
             })
           }
         }
       })
       .catch(function (error) {
-         // console.log("error", error.response);
         if(error.response&&error.response.status===401){
           swal("Invalid Email or Password","Email ID does not exists");
         }else if(error.response&&error.response.status===409){
@@ -115,18 +105,13 @@ class Login extends Component {
     var z = 0;
     var winHeight =(x-z) + 'px';
     var winHeight1 =(x-z) ;
-    console.log('x',$(window).height());
-    console.log('winHeight',winHeight1);
 
     var innerheight = winHeight1-60 + 'px';
     var innerheight1 = winHeight1-100 ;
    
     var margin = parseInt( innerheight1-y );
     var margint = (margin/2);
-    console.log('margint',margint);
-    console.log('margin',margin);
     var windowWidth = $(window).width();
-    // console.log('ww',windowWidth);
     if(windowWidth>=320&&windowWidth<=992){
     var backImage = "visible-xs col-xs-12 visible-sm col-sm-12 noBackImage"
     }else{
@@ -150,17 +135,9 @@ class Login extends Component {
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">   
                   <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap " style={{ "marginTop": margint , "height": h}}>
-                  
-{/*                  <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 signupPadding signUpFormWrap " style={{"height": divHeight}}>
-*/}                    <div className="divLoginInWrap">
-{/*
-                      <div className="col-lg-4 col-lg-offset-4  ">
-                        <img className="logoImage" src="images/logo.png" height="70px"/>
-                      </div>*/}
-
+                    <div className="divLoginInWrap">
                       <form id="login" className="" onSubmit={this.userlogin.bind(this)}>
                         <div className="col-lg-4 col-lg-offset-4 ">
-                       {/* <h3> hhhh</h3>*/}
                      
                         {<h4 className="signInNameTitle mb35"><span className="bordbt">SIGN IN</span></h4>
                         }</div>
@@ -192,9 +169,7 @@ class Login extends Component {
                           <input id="logInBtn" type="submit" className="btn col-lg-12 col-md-12 col-xs-12 col-sm-12 UMloginbutton hvr-sweep-to-right" value="Sign In"/>
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  customFl pdcls ">
-                          {/*<div className="col-lg-6 col-md-6 col-sm-6">
-                            <Link to='/signup' className="UMGreyy UMGreyy_l pull-left"> <u>Sign Up</u></Link>
-                          </div>*/}
+                         
                           <div className="col-lg-6 col-md-6 col-sm-6 pull-right">
                             <Link to='/forgot-pwd' className="UMGreyy UMGreyy_l pull-right">
                               <u>Forgot Password?</u>
@@ -202,11 +177,6 @@ class Login extends Component {
                           </div>
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 pdcls btn">
-                        {/*  <div className="col-lg-12 col-md-12 col-sm-12 ">
-                            <Link to='/verify-account' className="UMGreyy UMGreyy_l forgotpass emailverify col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                              OTP Verification
-                            </Link>
-                          </div>*/}
                         </div>
                       </form>
                     </div>

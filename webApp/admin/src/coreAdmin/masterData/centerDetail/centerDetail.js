@@ -158,7 +158,6 @@ class centerDetail extends Component{
         "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
       };
 
-      // console.log("centerDetail",centerDetail);
       axios.post('/api/centers',centerDetail)
       .then((response)=>{
       // console.log('response',response);
@@ -204,8 +203,6 @@ class centerDetail extends Component{
       var districtsCovered  = _.pluck(_.uniq(this.state.selectedVillages, function(x){return x.state;}), 'district');
       var selectedBlocks    = _.uniq(this.state.selectedVillages, function(x){return x.block;});
       var blocksCovered   = selectedBlocks.map((a, index)=>{ return _.omit(a, 'village');});
-      // console.log("blocksCovered",blocksCovered);
-      // console.log("districtsCovered",districtsCovered);
       
       var centerDetail = {
         "center_ID"                : this.state.editId,
@@ -229,7 +226,6 @@ class centerDetail extends Component{
         "misCoordinatorEmail"       : this.refs.MISCoordinatorEmail.value,
       };
   
-      // console.log('centerDetail', centerDetail);
       axios.patch('/api/centers',centerDetail)
       .then((response)=>{
         // console.log('response',response);
@@ -521,8 +517,6 @@ class centerDetail extends Component{
               [data.village] : true
             })
           })
-          // console.log("editData",editData);
-
           this.setState({
             "typeOfCenter"             : editData.type_ID,
             "nameOfCenter"             : editData.centerName,
@@ -542,11 +536,8 @@ class centerDetail extends Component{
             "villagesCovered"          : editData.villagesCovered,
             'stateCode'                : editData.address.stateCode
           },()=>{
-            // console.log(this.state)
             this.getDistrict(editData.address.stateCode);
             this.getBlock(editData.address.stateCode, editData.address.district);
-            // console.log(editData.address.stateCode, editData.address.district, editData.blocksCovered);
-            // this.getVillages(editData.address.stateCode, editData.address.district, editData.blocksCovered);
             if(editData.villagesCovered&&editData.villagesCovered.length>0){
               var returnData = [...new Set(editData.villagesCovered.map(a => a.village))]
               if(returnData&&returnData.length>0){
@@ -580,7 +571,6 @@ class centerDetail extends Component{
     });
   }
   getData(startRange, limitRange){
-    // console.log('/api/centers/list/'+startRange+'/'+limitRange);
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
       // console.log('response', response.data);
@@ -639,7 +629,6 @@ class centerDetail extends Component{
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/states/get/list/IN',
     }).then((response)=> {
-      // console.log('response ==========', response.data);
       if(response&&response.data){
         this.setState({
           listofStates : response.data
@@ -656,7 +645,6 @@ class centerDetail extends Component{
       state : selectedState,
     },()=>{
       var stateCode = this.state.state.split('|')[1];
-      // console.log('state', stateCode);
       this.setState({
         stateCode :stateCode,
         pincode :'',
@@ -665,7 +653,6 @@ class centerDetail extends Component{
         blocksCovered : '--Select Block--',
         listofVillages : this.state.editlistofVillages
       },()=>{
-        // console.log('stateCode',this.state.stateCode);
         this.getDistrict(this.state.stateCode);
       })
     });
@@ -676,7 +663,6 @@ class centerDetail extends Component{
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/districts/get/list/IN/'+stateCode,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
         if(response&&response.data){
           this.setState({
             listofDistrict : response.data,
@@ -689,18 +675,15 @@ class centerDetail extends Component{
   districtCoveredChange(event){    
     event.preventDefault();
     var districtCovered = event.target.value;
-    // console.log('districtCovered', districtCovered);
     this.setState({
       districtCovered: districtCovered,
       blocksCovered : '--Select Block--',
     },()=>{
       var selectedDistrict = this.state.districtCovered.split('|')[0];
-      // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict,
         listofVillages : this.state.editlistofVillages
       },()=>{
-        // console.log('selectedDistrict',this.state.selectedDistrict);
         this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
@@ -709,10 +692,8 @@ class centerDetail extends Component{
     axios({
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-      // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
       if(response&&response.data){
-        // console.log('response ==========', response.data);
         this.setState({
           listofBlocks : response.data
         })
@@ -727,25 +708,20 @@ class centerDetail extends Component{
     this.setState({
       blocksCovered : blocksCovered
     },()=>{
-      // console.log("blocksCovered",blocksCovered);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.blocksCovered);
     });
   }
   getVillages(stateCode, selectedDistrict, blocksCovered){
-    // console.log('stateCode, selectedDistrict, blocksCovered',stateCode, selectedDistrict, blocksCovered);
     axios({
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
-      // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+blocksCovered+'/'+selectedDistrict+'/'+stateCode+'/IN',
     }).then((response)=> {
         // console.log('response ==========', response.data);
         if(response&&response.data[0]){
           if(this.state.editlistofVillages.length!==0){
             var listofVillages = response.data
-            // console.log('listofVillages',listofVillages)
             this.state.editlistofVillages.map((data,index) => {
               var index = listofVillages.findIndex(v => v.cityName === data.cityName);
-              // console.log('index',index)
               if(index<0){
                 listofVillages.push({'cityName' : data.cityName});
               }
@@ -772,7 +748,6 @@ class centerDetail extends Component{
     this.setState({
       [id] : value
     },()=>{
-      // console.log('village', this.state[id], id);
       if(this.state[id] === true){
         selectedVillages.push({
           district  : this.refs.districtCovered.value,
@@ -783,9 +758,7 @@ class centerDetail extends Component{
           selectedVillages : selectedVillages,
         });
       }else{
-        // console.log('listofVillages', listofVillages,cityName);
         var index = selectedVillages.findIndex(v => v.village === id);
-        // console.log('index', index);
         selectedVillages.splice(selectedVillages.findIndex(v => v.village === id), 1);
         if(this.refs.districtCovered.value==='--Select District--'&&this.refs.blocksCovered.value==='--Select Block--'){
           listofVillages.splice(listofVillages.findIndex(v => v.cityName === cityName), 1);
@@ -800,16 +773,12 @@ class centerDetail extends Component{
   editVillage(event){
     event.preventDefault();
     var id = event.target.id;
-    // console.log('id',id);
     var selectedVillages = this.state.selectedVillages[id];
-    // console.log('selectedVillages', selectedVillages);
   }
   deleteVillage(event){
     event.preventDefault();
     var id = event.target.id;
-    // console.log('id',id);
     var selectedVillages = this.state.selectedVillages;
-    // console.log('index', index);
     selectedVillages.splice(id, 1);
     this.setState({
       selectedVillages : selectedVillages
@@ -919,7 +888,6 @@ class centerDetail extends Component{
                                     {
                                       this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                       this.state.listofDistrict.map((data, index)=>{
-                                        // console.log(data);
                                         return(
                                           <option key={index} value={this.camelCase(data.districtName)}>{this.camelCase(data.districtName)}</option>
                                         );
@@ -953,9 +921,6 @@ class centerDetail extends Component{
                                <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                                 <label className="formLable">Contact No. of Center Incharge</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centerInchargeContact" >
-                                  {/*<div className="input-group-addon inputIcon">
-                                   <i className="fa fa-building fa iconSize14"></i>
-                                  </div>*/}
                                   <input type="text"   className="form-control inputBox "   value={this.state.centerInchargeContact} name="centerInchargeContact" placeholder="" ref="centerInchargeContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.centerInchargeContact}</div>
@@ -963,9 +928,6 @@ class centerDetail extends Component{
                               <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <label className="formLable">Email of Center Incharge</label><span className="asterix">*</span>
                                 <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="centerInchargeEmail" >
-                                  {/*<div className="input-group-addon inputIcon">
-                                   <i className="fa fa-university fa iconSize14"></i>
-                                  </div>*/}
                                   <input type="text" className="form-control inputBox " name="centerInchargeEmail"  value={this.state.centerInchargeEmail} placeholder="" ref="centerInchargeEmail" onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.centerInchargeEmail}</div>
@@ -978,9 +940,6 @@ class centerDetail extends Component{
                               <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                                 <label className="formLable">Name of MIS Coordinator</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="MISCoordinatorName" >
-                                  {/*<div className="input-group-addon inputIcon">
-                                   <i className="fa fa-building fa iconSize14"></i>
-                                  </div>*/}
                                   <input type="text"   className="form-control inputBox "  value={this.state.MISCoordinatorName}  name="MISCoordinatorName" placeholder="" ref="MISCoordinatorName"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.MISCoordinatorName}</div>
@@ -988,9 +947,6 @@ class centerDetail extends Component{
                                <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                                 <label className="formLable">Contact No. of MIS Coordinator</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="MISCoordinatorContact" >
-                                  {/*<div className="input-group-addon inputIcon">
-                                   <i className="fa fa-building fa iconSize14"></i>
-                                  </div>*/}
                                   <input type="text"   className="form-control inputBox "  value={this.state.MISCoordinatorContact}  name="MISCoordinatorContact" placeholder="" ref="MISCoordinatorContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.MISCoordinatorContact}</div>
@@ -998,9 +954,6 @@ class centerDetail extends Component{
                               <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <label className="formLable">Email of MIS Coordinator</label><span className="asterix">*</span>
                                 <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="MISCoordinatorEmail" >
-                                  {/*<div className="input-group-addon inputIcon">
-                                   <i className="fa fa-university fa iconSize14"></i>
-                                  </div>*/}
                                   <input type="text" className="form-control inputBox "  value={this.state.MISCoordinatorEmail}  name="MISCoordinatorEmail" placeholder=""ref="MISCoordinatorEmail"  onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.MISCoordinatorEmail}</div>
@@ -1063,9 +1016,6 @@ class centerDetail extends Component{
                               {
                                 this.state.listofVillages?
                                 this.state.listofVillages.map((data, index)=>{
-                              /*  this.setState({
-                                  array : village,
-                                })*/
                                   return(
                                     <div key={index} className="col-md-3  col-lg-3 col-sm-12 col-xs-12 mt">
                                       <div className="row"> 
@@ -1106,7 +1056,6 @@ class centerDetail extends Component{
                                   <th>District</th>
                                   <th>Block</th>
                                   <th>Villages</th>
-                                  {/*<th>Actions</th>*/}
                                 </tr>
                               </thead>
                               <tbody>
@@ -1118,10 +1067,6 @@ class centerDetail extends Component{
                                       <td>{data.district.split('|')[0]}</td>
                                       <td>{data.block}</td>
                                       <td>{data.village}</td>
-                                      {/*<td>
-                                        <i className="fa fa-pencil" id={index} onClick={this.editVillage.bind(this)}></i> &nbsp; &nbsp; 
-                                        <i className="fa fa-trash redFont" id={index} onClick={this.deleteVillage.bind(this)}></i>
-                                      </td>*/}
                                     </tr>
                                   );
                                 })

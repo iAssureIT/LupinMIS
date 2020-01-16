@@ -366,7 +366,6 @@ class GeographicalReport extends Component{
     }
   }
   getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-    // console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType);
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType){
         if(center_ID==="all"){

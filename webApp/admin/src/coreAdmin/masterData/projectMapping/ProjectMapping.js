@@ -47,7 +47,6 @@ class ProjectMapping extends Component{
 
   handleChange(event){
     event.preventDefault();
-    console.log("this",$("input:checkbox:checked").data('typechecked'));
     this.setState({
       "projectName"               : this.refs.projectName.value,          
       "startDate"                 : this.refs.startDate.value,          
@@ -67,13 +66,11 @@ class ProjectMapping extends Component{
        startDate:startDate
     },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      console.log("dateUpdate",this.state.startDate);
     });
   }
   onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log("startDate",startDate,endDate)
     if ((Date.parse(endDate) <= Date.parse(startDate))) {
         swal("Start date","From date should be less than To date");
         this.refs.startDate.value="";
@@ -82,7 +79,6 @@ class ProjectMapping extends Component{
   onBlurEventTo(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
         if ((Date.parse(startDate) >= Date.parse(endDate))) {
           swal("End date","To date should be greater than From date");
           this.refs.endDate.value="";
@@ -100,7 +96,6 @@ class ProjectMapping extends Component{
          [name] : event.target.value,
          endDate : endDate
       },()=>{
-      console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
      });
      // localStorage.setItem('newToDate',dateUpdate);
@@ -148,7 +143,6 @@ class ProjectMapping extends Component{
         };
         axios.post('/api/projectMappings',mappingValues)
           .then((response)=>{
-            console.log("response",response)
             swal({
               title : response.data.message,
               text  : response.data.message
@@ -265,15 +259,6 @@ class ProjectMapping extends Component{
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableSector();  
-
-   /* $(document).ready(function(){
-      var data = [];
-      $('.activityName').each(function(){
-        data.push($(this).text());
-      });
-
-      console.log(data);
-    }); */
   }
   edit(id){
     axios({
@@ -281,10 +266,8 @@ class ProjectMapping extends Component{
       url: '/api/projectMappings/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      // console.log('editData',editData);
       var availableSectors = this.state.availableSectors
       if(editData.sector && editData.sector.length>0){
-        // console.log('editData.sector==============',editData.sector,availableSectors)
         editData.sector.map((element)=>{
           if(availableSectors&&availableSectors.length>0){
             var checkSector = availableSectors.findIndex(x=>x._id===element.sector_ID) 
@@ -325,7 +308,6 @@ class ProjectMapping extends Component{
           "sectorData"                 :editData.sector, 
           "availableSectors"           :availableSectors
         });
-      console.log('projectType',this.state.projectType);
       }else{
          var listofTypesArray = editData.type_ID.map((data, index)=>{
           return({
@@ -333,7 +315,6 @@ class ProjectMapping extends Component{
               value   : data.goal_ID
              });
           })
-         console.log("listofTypesArray",listofTypesArray);
          this.setState({
           "projectName"                :editData.projectName,     
           "projectType"                :listofTypesArray[0],      
@@ -342,7 +323,6 @@ class ProjectMapping extends Component{
           "sectorData"                 :editData.sector, 
           "availableSectors"           :availableSectors
         });
-      console.log('projectTypeelse',this.state.projectType);
       }
 
     }).catch(function (error) {
@@ -352,11 +332,9 @@ class ProjectMapping extends Component{
   getLength(){
     axios.get('/api/projectMappings/count')
     .then((response)=>{
-      // console.log('response', response.data);
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -364,7 +342,6 @@ class ProjectMapping extends Component{
     });
   }
   getData(startRange, limitRange){
-    // console.log('/api/projectMappings/list/'+startRange+'/'+limitRange);
     axios.get('/api/projectMappings/list/'+startRange+'/'+limitRange)
     .then((response)=>{
       if(response&&response.data&&response.data.length>0){
@@ -473,7 +450,6 @@ class ProjectMapping extends Component{
         });
       }
     }
-    console.log('sectorData',sectorData)
     this.setState({
       availableSectors : array,
       sectorData: sectorData
@@ -544,7 +520,6 @@ class ProjectMapping extends Component{
         }
       }                                          
     }
-    console.log('sectorData',sectorData)
     this.setState({
       availableSectors : array,
       sectorData : sectorData
@@ -594,7 +569,6 @@ class ProjectMapping extends Component{
         sectorData = arr;
       }
     }
-    console.log('sectorData',sectorData)
     this.setState({
       availableSectors : array,
       sectorData : sectorData
@@ -605,7 +579,6 @@ class ProjectMapping extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {   
-      // console.log("response.data",response.data);
       var availableSectorData = response.data.map((block)=>{
         var totalLength = 0;
         if(block.activity.length>0){
@@ -643,42 +616,31 @@ class ProjectMapping extends Component{
     })
   }
   currentFromDate(){
-     /* if(localStorage.getItem('newFromDate')){
-          var today = localStorage.getItem('newFromDate');
-          console.log("localStoragetoday",today);
-      }*/
-      if(this.state.startDate){
-          var today = this.state.startDate;
-          // console.log("localStoragetoday",today);
-      }else {
-           var today = (new Date());
-        var nextDate = today.getDate() - 30;
-        today.setDate(nextDate);
-        // var newDate = today.toLocaleString();
-        var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
-      }
-      console.log("nowfrom",today)
-      this.setState({
-         startDate :today
-      },()=>{
-      });
-      return today;
-      // this.handleFromChange()
+    if(this.state.startDate){
+        var today = this.state.startDate;
+    }else {
+         var today = (new Date());
+      var nextDate = today.getDate() - 30;
+      today.setDate(nextDate);
+      var today =  moment(today).format('YYYY-MM-DD');
+    }
+    this.setState({
+       startDate :today
+    },()=>{
+    });
+    return today;
   }
   currentToDate(){
-      if(this.state.endDate){
-          var today = this.state.endDate;
-          // console.log("newToDate",today);
-      }else {
-          var today =  moment(new Date()).format('YYYY-MM-DD');
-      }
-      this.setState({
-         endDate :today
-      },()=>{
-      });
-      return today;
-      // this.handleToChange();
+    if(this.state.endDate){
+        var today = this.state.endDate;
+    }else {
+        var today =  moment(new Date()).format('YYYY-MM-DD');
+    }
+    this.setState({
+       endDate :today
+    },()=>{
+    });
+    return today;
   }
   getTypeOfGoal(){
     axios({
@@ -698,7 +660,6 @@ class ProjectMapping extends Component{
                 value : data._id
                });
           })
-          console.log("listofTypesArray",listofTypesArray);
           this.setState({
             listofTypesArray : listofTypesArray
           })
@@ -708,10 +669,9 @@ class ProjectMapping extends Component{
     });
   }
   handleChangeSelect = (projectType) => {
-    this.setState({ projectType : projectType }, ()=>{console.log("projecttype = ", this.state.projectType) });
+    this.setState({ projectType : projectType });
   };
   render() {
-    console.log('this.state.availableSectors',this.state.availableSectors)
     return(
       <div className="container-fluid">
         <div className="row">
@@ -746,7 +706,6 @@ class ProjectMapping extends Component{
                           </div>
                           <div className=" col-lg-6 col-md-4 col-sm-6 col-xs-12 valid_box">
                             <label className="formLable">Goal Type</label><span className="asterix">*</span>
-                            {console.log("this.state.projectType",this.state.projectType)}
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectType" >
                            
                                 {

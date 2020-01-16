@@ -65,7 +65,6 @@ class ForgotPassword extends Component {
             axios
             .get('/api/users/email/'+this.state.email)
             .then((response)=> {
-              console.log("-------name------>>",response);
               if(response&&response.data){
                 var msgvariable = {
                   '[User]'    : response.data.profile.firstName+' '+response.data.profile.lastName,
@@ -181,16 +180,12 @@ class ForgotPassword extends Component {
     var z = 0;
     var winHeight =(x-z) + 'px';
     var winHeight1 =(x-z) ;
-    console.log('x',$(window).height());
-    console.log('winHeight',winHeight1);
 
     var innerheight = winHeight1-130 + 'px';
     var innerheight1 = winHeight1-130 ;
    
     var margin = parseInt( innerheight1-y );
     var margint = (margin/2);
-    console.log('margint',margint);
-    console.log('margin',margin);
     var windowWidth = $(window).width();
     // console.log('ww',windowWidth);
     if(windowWidth>=320&&windowWidth<=992){

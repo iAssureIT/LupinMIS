@@ -10,7 +10,6 @@ export default class NotificationTemplateRow extends Component{
 		}
 	}
 	getnotifTemplate(event){
-		// console.log('getnotifTemplate');
 		event.preventDefault();
 		$('.defaultNotification').css({'display':'none'});
 		$('.inputrow').css({'display':'block'});
@@ -18,12 +17,10 @@ export default class NotificationTemplateRow extends Component{
 
 		if($(window).width() > 780){
 			$('.tempCategory').removeClass('tempactive');
-			// $(event.target).addClass('tempactive');
 			$(event.target).closest( "li" ).addClass('tempactive');
 		}
 
 		var id = event.target.id;
-		// Session.set("notiftemplateId",id);
 		this.props.getNotificationId(id);
 		
 		if($(window).width() < 780){

@@ -22,7 +22,6 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
             "limitRange"        : 10000
             
         }
-        // console.log("tableData", this.state.tableData);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -73,7 +72,6 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                 projectCategoryType : nextProps.projectCategoryType,
                 beneficiaryType     : nextProps.beneficiaryType,
                 },()=>{
-                    // console.log('year', this.state.year, 'center', this.state.center,'sector', this.state.sector)
                     this.getData(this.state.year, this.state.center, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
                 });
             }
@@ -104,7 +102,6 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -112,23 +109,18 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
   }
     getData(year, center, sector, projectCategoryType, projectName, beneficiaryType){        
       if(year){
-        console.log( center, sector, projectCategoryType, projectName, beneficiaryType);
-        console.log('year', year, 'center', center, 'sector', sector);
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";
         if( startDate && endDate && center && sector && projectCategoryType  && beneficiaryType){ 
-        console.log(startDate, endDate, center, sector, projectCategoryType, projectName, beneficiaryType);
             if(center==="all"){
               axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/all/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
-                    console.log('response', response.data);
                     var tableData = response.data.map((a, i)=>{
                     return {
                       _id                           : a._id,
@@ -159,7 +151,6 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
             }else{
                 axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center+'/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
-                    console.log('response', response);
                     var tableData = response.data.map((a, i)=>{
                     return {
                       _id                           : a._id,
@@ -193,7 +184,6 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
         }      
     }
     getSearchText(searchText, startRange, limitRange){
-        // console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });

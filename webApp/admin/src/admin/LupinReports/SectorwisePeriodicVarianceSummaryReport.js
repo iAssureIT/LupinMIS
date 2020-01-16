@@ -3,11 +3,6 @@ import $                    from 'jquery';
 import axios                from 'axios';
 import swal                 from 'sweetalert';
 import moment               from 'moment';
-import DailyReport          from '../Reports/DailyReport.js';
-import WeeklyReport         from '../Reports/WeeklyReport.js';
-import MonthlyReport        from '../Reports/MonthlyReport.js';
-import YearlyReport         from '../Reports/YearlyReport.js';
-import CustomisedReport     from '../Reports/CustomisedReport.js';
 import Loader               from "../../common/Loader.js";
 
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
@@ -106,14 +101,14 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
           downloadApply       : true,
         },   
     }
-    window.scrollTo(0, 0); 
-    this.handleFromChange    = this.handleFromChange.bind(this);
-    this.handleToChange      = this.handleToChange.bind(this);
-    this.currentFromDate     = this.currentFromDate.bind(this);
-    this.currentToDate       = this.currentToDate.bind(this);
-    this.getAvailableCenters = this.getAvailableCenters.bind(this);
-    this.getAvailableSectors = this.getAvailableSectors.bind(this);
-  }
+        window.scrollTo(0, 0); 
+        this.handleFromChange    = this.handleFromChange.bind(this);
+        this.handleToChange      = this.handleToChange.bind(this);
+        this.currentFromDate     = this.currentFromDate.bind(this);
+        this.currentToDate       = this.currentToDate.bind(this);
+        this.getAvailableCenters = this.getAvailableCenters.bind(this);
+        this.getAvailableSectors = this.getAvailableSectors.bind(this);
+    }
 
     componentDidMount(){
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");  
@@ -123,11 +118,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         this.currentFromDate();
         this.currentToDate();
         this.setState({
-          // "center"  : this.state.center[0],
-          // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
@@ -140,7 +132,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         this.currentFromDate();
         this.currentToDate();
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
         event.preventDefault();
@@ -148,7 +139,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
           [event.target.name] : event.target.value
         },()=>{
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-            console.log('name', this.state)
         });
     }
     getAvailableCenters(){
@@ -158,18 +148,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         }).then((response)=> {
           this.setState({
             availableCenters : response.data,
-            // center           : response.data[0].centerName+'|'+response.data[0]._id
-          },()=>{
-            // console.log('center', this.state.center);
-            // var center_ID = this.state.center.split('|')[1];
-            // this.setState({
-            //   center_ID        : center_ID
-            // },()=>{
-            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-            // })
           })
         }).catch(function (error) {  
-          console.log("error = ",error);
           
         });
     } 
@@ -188,7 +168,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             center_ID :center,            
           },()=>{
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
     } 
@@ -197,18 +176,10 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
           method: 'get',
           url: '/api/sectors/list',
         }).then((response)=> {
-            
             this.setState({
               availableSectors : response.data,
-              // sector           : response.data[0].sector+'|'+response.data[0]._id
             },()=>{
-            // var sector_ID = this.state.sector.split('|')[1]
-            // this.setState({
-            //   sector_ID        : sector_ID
-            // },()=>{
-            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-            // })
-            // console.log('sector', this.state.sector);
+           
           })
         }).catch(function (error) {  
           console.log("error = ",error);
@@ -228,15 +199,11 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         this.setState({
           sector_ID : sector_id,
         },()=>{
-        // console.log('availableSectors', this.state.availableSectors);
-        // console.log('sector_ID', this.state.sector_ID);
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
     }
     selectprojectCategoryType(event){
         event.preventDefault();
-        console.log(event.target.value)
         var projectCategoryType = event.target.value;
         this.setState({
           projectCategoryType : projectCategoryType,
@@ -250,8 +217,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                 projectName : "all",
               })    
             }
-            console.log("shown",this.state.shown, this.state.projectCategoryType)
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
           },()=>{
         })
@@ -261,7 +226,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
           method: 'get',
           url: '/api/projectMappings/list',
         }).then((response)=> {
-          console.log('responseP', response);
           this.setState({
             availableProjects : response.data
           })
@@ -276,7 +240,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         this.setState({
               projectName : projectName,
             },()=>{
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
     }
@@ -327,7 +290,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                     this.setState({
                         tableData : tableData
                     },()=>{
-                    console.log("resp",this.state.tableData)
                     })
                 })
                 .catch(function(error){  
@@ -378,7 +340,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                   this.setState({
                     tableData : tableData
                   },()=>{
-                    console.log("resp",this.state.tableData)
                   })
                 })
                 .catch(function(error){  
@@ -394,7 +355,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         const name = target.name;
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log(Date.parse(startDate));
         if ((Date.parse(endDate) <= Date.parse(startDate))) {
             swal("Start date","From date should be less than To date");
             this.refs.startDate.value="";
@@ -407,7 +367,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
            startDate:startDate
         },()=>{
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log("dateUpdate",this.state.startDate);
         });
     }
     handleToChange(event){
@@ -427,76 +386,40 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
            [name] : event.target.value,
            endDate : endDate
         },()=>{
-          console.log("dateUpdate",this.state.endDate);
           this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
     }
 
     currentFromDate(){
-       /* if(localStorage.getItem('newFromDate')){
-            var today = localStorage.getItem('newFromDate');
-            console.log("localStoragetoday",today);
-        }*/
         if(this.state.startDate){
             var today = this.state.startDate;
-            // console.log("localStoragetoday",today);
         }else {
             var today = (new Date());
             var nextDate = today.getDate() - 30;
             today.setDate(nextDate);
-            // var newDate = today.toLocaleString();
             var today =  moment(today).format('YYYY-MM-DD');
-            console.log("today",today);
         }
-        // var dd = today.getDate();
-        // var mm = today.getMonth()+1; //January is 0!
-        // var yyyy = today.getFullYear();
-        // if(dd<10){
-        //     dd='0'+dd;
-        // }
-        // if(mm<10){
-        //     mm='0'+mm;
-        // }
-        // var today = yyyy+'-'+mm+'-'+dd;
-        // var today = yyyy+'-'+mm+'-'+dd;
-
-        console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
         });
         return today;
-        // this.handleFromChange()
     }
 
     currentToDate(){
         if(this.state.endDate){
             var today = this.state.endDate;
-            // console.log("newToDate",today);
         }else {
             var today =  moment(new Date()).format('YYYY-MM-DD');
         }
-        // var dd = today.getDate();
-        // var mm = today.getMonth()+1; //January is 0!
-        // var yyyy = today.getFullYear();
-        // if(dd<10){
-        //     dd='0'+dd;
-        // }
-        // if(mm<10){
-        //     mm='0'+mm;
-        // }
-        // var today = yyyy+'-'+mm+'-'+dd;
-        // var today = yyyy+'-'+mm+'-'+dd;
-        // console.log("nowto",today)
+      
         this.setState({
            endDate :today
         },()=>{
         });
         return today;
-        // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
@@ -511,7 +434,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
   onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log("startDate",startDate,endDate)
     if ((Date.parse(endDate) < Date.parse(startDate))) {
         swal("Start date","From date should be less than To date");
         this.refs.startDate.value="";
@@ -520,7 +442,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
   onBlurEventTo(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
         if ((Date.parse(startDate) > Date.parse(endDate))) {
           swal("End date","To date should be greater than From date");
           this.refs.endDate.value="";

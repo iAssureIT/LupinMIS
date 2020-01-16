@@ -27,22 +27,12 @@ class EmailTemplateRow extends Component{
 	deleteEmailTemplate(event){
 		event.preventDefault();
 		var id = event.target.id;
-		console.log("id",id);
 		const token = '';
 		const url = '/api/masternotification/'+id ;
 		const headers = {
 			    "Authorization" : token,
 			    "Content-Type" 	: "application/json",
 			};
-
-		// axios.delete( url, headers )
-		// .then((response)=> {
-	 //    	console.log('delete response',response);
-		// }).catch((error)=> {
-		//     // handle error
-		//     console.log(error);
-		// });
-
 		axios({
 			method: "DELETE",
 			url : url,
@@ -56,7 +46,6 @@ class EmailTemplateRow extends Component{
 				title: "Template deleted successfully",
 				text: "Template deleted successfully",
 			});
-	    	console.log("here response message",response.data.message);
 	    	if(response.data.message=="Master notification deleted")
 	    	{
 		    	this.props.deleteData("Email",id);
@@ -85,13 +74,8 @@ class EmailTemplateRow extends Component{
     this.props.getEmailData(id);
 	}
 	render(evt) {
-			// console.log('this.props.emailtemplateValues',this.props.emailtemplateValues, this.props.emailtemplateValues._id);
 			var text = this.props.emailtemplateValues.content ? this.props.emailtemplateValues.content : ''; 
-			// console.log("textes=",text);
-			// var regex = new RegExp(/(<([^>]+)>)/ig);
-			// text = text.replace(regex,'');
 			if(this.props.emailtemplateValues && this.props.emailtemplateValues.content){
-
 		        return (
 		    	<div className="contentBox col-lg-12">
 		      		<div className="pull-right actionBtn">

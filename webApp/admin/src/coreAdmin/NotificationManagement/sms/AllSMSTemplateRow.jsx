@@ -19,7 +19,6 @@ export default class AllSMSTemplateRow extends Component{
     editSMSModal(event){
 		event.preventDefault();
 		var id = event.target.id;
-		console.log('id',id);
 		axios.get('/api/masternotification/'+id)
 		.then((response)=> {
 	    	console.log('delete response',response);
@@ -38,7 +37,6 @@ export default class AllSMSTemplateRow extends Component{
 	deleteTemplate(event){
 		event.preventDefault();
 		var id = event.target.id;
-		console.log('id',id);
 		axios.delete('/api/masternotification/'+id)
 		.then((response)=> {
 			
@@ -47,7 +45,6 @@ export default class AllSMSTemplateRow extends Component{
 										text: "Template deleted successfully",
 									});
 	    	console.log('delete response',response);
-	    	console.log("here response message",response.data.message);
 	    	if(response.data.message=="Master notification deleted")
 	    	{
 	    	this.props.deleteData("SMS",id);
@@ -68,7 +65,6 @@ export default class AllSMSTemplateRow extends Component{
 		var text= this.props.smstemplateValues.content ? this.props.smstemplateValues.content : 'abc';
 		var regex = new RegExp(/(<([^>]+)>)/ig);
 		text = text.replace(regex, '');
-		// console.log('smstemplateValues',this.props.smstemplateValues);
 		if(this.props.smstemplateValues.content){
 			
 	        return (

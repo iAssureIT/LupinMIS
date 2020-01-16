@@ -27,75 +27,51 @@ class OfficeEmpList extends Component {
     }
 
    componentDidMount() {
-
       axios
       .get('/api/tgkSpecificcompanysettings/list')
       .then(
         (res)=>{
-          console.log('res', res);
           const postsdata = res.data[0];
-          console.log('postsdata',postsdata);
           this.setState({
             allresult : postsdata,
-          },()=>{
-
-
-
           });
-
-		          console.log("allresult-------------------------------------",this.state.allresult);
-		     
         }
       )
       .catch((error)=>{
-
         console.log("error = ",error);
-        // alert("Something went wrong! Please check Get URL.");
          });  
     }  
 
 	selectOffice(event){
 		var selectOffice = event.currentTarget.value;
-		console.log("here selected office", selectOffice);
-
 		this.setState({
 			oneOffice : selectOffice,
 		})
 		var formValues =
-    	{
+		{
 			searchText : selectOffice,
 		}
-		 if(selectOffice && selectOffice.length != 0) {
-					axios
-				      .post('/api/users/officesearchValue',formValues)
-				      .then(
-				        (res)=>{
-				          console.log('res', res);
-				          const postsdata = res.data.data;
-				          console.log('postsdata',postsdata);
-				          this.setState({
-				            alldata : postsdata,
-				          });
+		if(selectOffice && selectOffice.length != 0) {
+			axios
+		      .post('/api/users/officesearchValue',formValues)
+		      .then(
+		        (res)=>{
+		          console.log('res', res);
+		          const postsdata = res.data.data;
+		          this.setState({
+		            alldata : postsdata,
+		          });
+		        }).catch((error)=>{ 
+		        	console.log(error);
+		        	this.setState({
+		            alldata : null,
+		          });
 
-				          console.log("alldata-------------------------------------",this.state.alldata);
-
-				          // swal("Search successfull by "+searchText+ "","success");
-				          
-				        }).catch((error)=>{ 
-				        	console.log(error);
-				        	this.setState({
-				            alldata : null,
-				          });
-
-				          console.log("alldata-------------------------------------",this.state.alldata);
-
-				        	// swal("Sorry there is no data of "+searchText+ "","error");
-				      });
-	}
-
+		      });
+			}
 	}  		
 
-  		handleChange(event){
+  	handleChange(event){
 	  const target = event.target;
 	  const name   = target.name;
 	  this.setState({
@@ -130,7 +106,6 @@ class OfficeEmpList extends Component {
 
                                                                            { this.state.allresult != null && this.state.allresult.companyLocationsInfo !=null ?
                                                                           this.state.allresult.companyLocationsInfo.map( (locData, index)=>{
-                                                                          console.log('locData',locData);
                                                                            return( 
 
 	                                                                                <option value={locData.officeLocationid ? locData.officeLocationid : null } > {locData.officeLocationid ? locData.officeLocationid : null}  </option>

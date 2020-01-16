@@ -3,11 +3,6 @@ import $                    from 'jquery';
 import axios                from 'axios';
 import swal                 from 'sweetalert';
 import moment               from 'moment';
-import DailyReport          from '../Reports/DailyReport.js';
-import WeeklyReport         from '../Reports/WeeklyReport.js';
-import MonthlyReport        from '../Reports/MonthlyReport.js';
-import YearlyReport         from '../Reports/YearlyReport.js';
-import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../common/Loader.js";
 
@@ -103,7 +98,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
     
@@ -113,16 +107,14 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.getAvailableProjects();
     this.getAvailableSectors();
     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
-      event.preventDefault();
-      this.setState({
-        [event.target.name] : event.target.value
-      },()=>{
-      this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log('name', this.state)
-      });
+    event.preventDefault();
+    this.setState({
+      [event.target.name] : event.target.value
+    },()=>{
+    this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    });
   }
   getAvailableCenters(){
       axios({
@@ -140,64 +132,58 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       });
   } 
   selectCenter(event){
-      var selectedCenter = event.target.value;
+    var selectedCenter = event.target.value;
+    this.setState({
+      [event.target.name] : event.target.value,
+      selectedCenter : selectedCenter,
+    },()=>{
+      if(this.state.selectedCenter==="all"){
+        var center = this.state.selectedCenter;
+      }else{
+        var center = this.state.selectedCenter.split('|')[1];
+      }
       this.setState({
-        [event.target.name] : event.target.value,
-        selectedCenter : selectedCenter,
-      },()=>{
-        if(this.state.selectedCenter==="all"){
-          var center = this.state.selectedCenter;
-        }else{
-          var center = this.state.selectedCenter.split('|')[1];
-        }
-        console.log('center', center);
-        this.setState({
-          center_ID :center,            
-        },()=>{
-        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        })
-      });
-  } 
-  getAvailableSectors(){
-      axios({
-        method: 'get',
-        url: '/api/sectors/list',
-      }).then((response)=> {
-          
-          this.setState({
-            availableSectors : response.data,
-            sector           : response.data[0].sector+'|'+response.data[0]._id
-          },()=>{
-          var sector_ID = this.state.sector.split('|')[1]
-          this.setState({
-            sector_ID        : sector_ID
-          },()=>{
-          this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-          })
-          // console.log('sector', this.state.sector);
-        })
-      }).catch(function (error) {  
-        console.log("error = ",error);
-       
-      });
-  }
-  selectSector(event){
-      event.preventDefault();
-      this.setState({
-        [event.target.name]:event.target.value
-      });
-      var sector_id = event.target.value.split('|')[1];
-      // console.log('sector_id',sector_id);
-      this.setState({
-        sector_ID : sector_id,
+        center_ID :center,            
       },()=>{
       this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    })
+      })
+    });
+  } 
+  getAvailableSectors(){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+        this.setState({
+          availableSectors : response.data,
+          sector           : response.data[0].sector+'|'+response.data[0]._id
+        },()=>{
+        var sector_ID = this.state.sector.split('|')[1]
+        this.setState({
+          sector_ID        : sector_ID
+        },()=>{
+        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        })
+      })
+    }).catch(function (error) {  
+      console.log("error = ",error);
+     
+    });
+  }
+  selectSector(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name]:event.target.value
+    });
+    var sector_id = event.target.value.split('|')[1];
+    this.setState({
+      sector_ID : sector_id,
+    },()=>{
+    this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+  })
   }
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -211,8 +197,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
@@ -222,7 +206,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -237,7 +220,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
@@ -255,7 +237,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -263,7 +244,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
@@ -275,10 +255,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
         if(center_ID==="all"){
           $(".fullpageloader").show();
-
           axios.get('/api/report/sector_annual_achievement_report/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
               .then((response)=>{
-                  console.log('response', response);
                   $(".fullpageloader").hide();
 
                   var tableData = response.data.map((a, i)=>{
@@ -303,11 +281,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                         achievement_Other                 : this.addCommas(a.achievement_Other),
                     }
               })
-                  this.setState({
-                      tableData : tableData
-                  },()=>{
-                      console.log("tableData",this.state.tableData);
-                  });
+              this.setState({
+                  tableData : tableData
+                });
               })
               .catch((error)=>{
                   console.log('error', error);
@@ -338,17 +314,14 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                         achievement_Other                 : this.addCommas(a.achievement_Other),
                     }
               })
-                  this.setState({
-                      tableData : tableData
-                  },()=>{
-                      console.log("tableData",this.state.tableData);
-                  });
+              this.setState({
+                  tableData : tableData
+                });
               })
               .catch((error)=>{
                   console.log('error', error);
               })
-
-          }
+        }
       }
     }
   }

@@ -84,7 +84,6 @@ class ADPReport extends Component{
           // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
         })
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
@@ -103,7 +102,6 @@ class ADPReport extends Component{
           [event.target.name] : event.target.value
         },()=>{
           this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
-          console.log('name', this.state)
         });
     }
     getAvailableCenters(){
@@ -132,7 +130,6 @@ class ADPReport extends Component{
           }else{
             var center = this.state.selectedCenter.split('|')[1];
           }
-          console.log('center', center);
           this.setState({
             center_ID :center,            
           },()=>{
@@ -252,7 +249,7 @@ class ADPReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
+
     
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
@@ -262,7 +259,6 @@ class ADPReport extends Component{
        startDate:startDate
     },()=>{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -279,7 +275,6 @@ class ADPReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
@@ -293,9 +288,7 @@ class ADPReport extends Component{
           today.setDate(nextDate);
           // var newDate = today.toLocaleString();
           var today =  moment(today).format('YYYY-MM-DD');
-          console.log("today",today);
           }
-          console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
@@ -319,7 +312,6 @@ class ADPReport extends Component{
         // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
@@ -327,7 +319,6 @@ class ADPReport extends Component{
     onBlurEventFrom(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
       if ((Date.parse(endDate) < Date.parse(startDate))) {
           swal("Start date","From date should be less than To date");
           this.refs.startDate.value="";
@@ -336,7 +327,6 @@ class ADPReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";

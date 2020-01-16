@@ -83,7 +83,6 @@ class ProjectReport extends Component{
     this.currentFromDate();
     this.currentToDate();
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);
-          console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }   
@@ -120,7 +119,6 @@ class ProjectReport extends Component{
           var center = this.state.selectedCenter.split('|')[1];
         }
         // var center = this.state.selectedCenter.split('|')[1];
-        console.log('center', center);
         this.setState({
           center_ID :center,            
         },()=>{
@@ -135,11 +133,9 @@ class ProjectReport extends Component{
         [event.target.name] : event.target.value
       },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);
-        console.log('name', this.state)
       });
   } 
   getData(startDate, endDate, center_ID, beneficiaryType, projectName){
-    console.log(startDate, endDate, center_ID,  beneficiaryType, projectName);
     if(startDate && endDate && center_ID  && beneficiaryType && projectName){ 
       if(center_ID==="all"){
         var url = '/api/report/goal_project/'+startDate+'/'+endDate+'/all/'+beneficiaryType+"/"+projectName
@@ -168,8 +164,6 @@ class ProjectReport extends Component{
       })  
         this.setState({
           tableData : tableData
-        },()=>{
-          console.log("resp",this.state.tableData)
         })
       })
       .catch(function(error){
@@ -208,7 +202,6 @@ class ProjectReport extends Component{
     this.setState({
       projectName : projectName,
     },()=>{
-    console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'projectName', this.state.projectName)
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);      
     })
   }
@@ -218,8 +211,6 @@ class ProjectReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
-    
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -228,7 +219,6 @@ class ProjectReport extends Component{
        startDate:startDate
     },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);
-    console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -246,73 +236,57 @@ class ProjectReport extends Component{
      [name] : event.target.value,
      endDate : endDate
     },()=>{
-    console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectName);
     });
   }
   currentFromDate(){
-     /* if(localStorage.getItem('newFromDate')){
-          var today = localStorage.getItem('newFromDate');
-          console.log("localStoragetoday",today);
-      }*/
-      if(this.state.startDate){
-          var today = this.state.startDate;
-          // console.log("localStoragetoday",today);
-      }else {
-           var today = (new Date());
-          var nextDate = today.getDate() - 30;
-          today.setDate(nextDate);
-          // var newDate = today.toLocaleString();
-          var today =  moment(today).format('YYYY-MM-DD');
-          console.log("today",today);
-      }
-      console.log("nowfrom",today)
-      this.setState({
-         startDate :today
-      },()=>{
-      });
+    if(this.state.startDate){
+      var today = this.state.startDate;
+    }else {
+      var today = (new Date());
+      var nextDate = today.getDate() - 30;
+      today.setDate(nextDate);
+      var today =  moment(today).format('YYYY-MM-DD');
+    }
+    this.setState({
+       startDate :today
+    },()=>{
+    });
       return today;
-      // this.handleFromChange()
   }
   currentToDate(){
-      if(this.state.endDate){
-          var today = this.state.endDate;
-          // console.log("newToDate",today);
-      }else {
-          var today =  moment(new Date()).format('YYYY-MM-DD');
-      }
-      this.setState({
-         endDate :today
-      },()=>{
-      });
-      return today;
-      // this.handleToChange();
+    if(this.state.endDate){
+      var today = this.state.endDate;
+    }else {
+      var today =  moment(new Date()).format('YYYY-MM-DD');
+    }
+    this.setState({
+       endDate :today
+    },()=>{
+    });
+    return today;
   }
   getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
-      this.setState({
-          tableData : []
-      });
+    this.setState({
+        tableData : []
+    });
   }
   onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log("startDate",startDate,endDate)
     if ((Date.parse(endDate) < Date.parse(startDate))) {
         swal("Start date","From date should be less than To date");
         this.refs.startDate.value="";
     }
   }
   onBlurEventTo(){
-      var startDate = document.getElementById("startDate").value;
-      var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
-        if ((Date.parse(startDate) > Date.parse(endDate))) {
-          swal("End date","To date should be greater than From date");
-          this.refs.endDate.value="";
-      }
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+      if ((Date.parse(startDate) > Date.parse(endDate))) {
+        swal("End date","To date should be greater than From date");
+        this.refs.endDate.value="";
+    }
   }
-
   render(){
     return(     
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">

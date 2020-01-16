@@ -97,7 +97,6 @@ class Activity extends Component{
         
       })
       .catch(function(error){
-        console.log("error ============== ",error);
       });
     }
   }
@@ -114,7 +113,6 @@ class Activity extends Component{
       };
       axios.patch('/api/sectors/activity/update',activityValues)
         .then((response)=>{
-          console.log("activityValues",activityValues);
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
@@ -153,7 +151,6 @@ class Activity extends Component{
         editSectorId : nextProps.match.params.sectorId
       },()=>{
         this.edit(this.state.editSectorId);
-        // console.log("editId",this.state.editId);    
       })      
     }    
     if(nextProps){
@@ -210,19 +207,15 @@ class Activity extends Component{
   }
   edit(id){
     var activity_id = this.props.match.params.activityId;
-    // console.log('activity_id',activity_id);
     axios({
       method: 'get',
       url: '/api/sectors/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log("editData",editData)
       this.setState({
         "sector"        : editData.sector+'|'+editData._id,
         "activityName"      : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName,
-        // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
       },()=>{
-        console.log('this.state', this.state.sector, this.state.activityName)
       });      
      
     }).catch(function (error) {
@@ -233,11 +226,9 @@ class Activity extends Component{
   getLength(){
     axios.get('/api/sectors/count')
     .then((response)=>{
-      // console.log('response', response.data);
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -252,7 +243,6 @@ class Activity extends Component{
     }
     axios.post('/api/sectors/activity/list', data)
     .then((response)=>{
-      console.log("response", response.data);
       this.setState({
         tableData : response.data
       });
@@ -262,7 +252,6 @@ class Activity extends Component{
     });
   }
   getSearchText(searchText, startRange, limitRange){
-      // console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });

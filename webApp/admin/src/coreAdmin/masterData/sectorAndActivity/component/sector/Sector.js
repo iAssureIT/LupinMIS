@@ -13,7 +13,6 @@ class Sector extends Component{
     super(props);
     this.state = {
       "sector"              :"",
-      // "sectorShortName"     :"",
       "user_ID"             :"",
       "sector_id"           :"",
       fields                : {},
@@ -120,7 +119,6 @@ class Sector extends Component{
   }
   
   componentWillReceiveProps(nextProps){
-  // console.log('componentWillReceiveProps');
     if(nextProps){
       var editId = nextProps.match.params.sectorId;
       if(nextProps.match.params.sectorId){
@@ -137,35 +135,20 @@ class Sector extends Component{
  
   componentDidMount(){
   axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-  // console.log('componentDidMount', this.state.tableData);
     $.validator.addMethod("regxsector", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Sector.");
-     
-  /*  $.validator.addMethod("regxsectorShortName", function(value, element, regexpr) {         
-      return regexpr.test(value);
-    }, "Please enter valid Sector Short Name.");
-     */
     $("#sectorDetails").validate({
       rules: {
         sector: {
           required: true,
           regxsector: /^[A-za-z']+( [A-Za-z']+)*$/,
         },
-       /*sectorShortName: {
-          regxsectorShortName: /^[A-za-z']+( [A-Za-z']+)*$/,
-        },*/
-       
       },
       errorPlacement: function(error, element) {
         if (element.attr("name") == "sector"){
           error.insertAfter("#sectorError");
         }
-        
-       /* if (element.attr("name") == "sectorShortName"){
-          error.insertAfter("#sectorShortName");
-        }*/
-        
       }
     });
     var editId = this.props.match.params.sectorId;
@@ -205,10 +188,8 @@ class Sector extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
-    // console.log('data', data);
-     axios.post('/api/sectors/list',data)
+    axios.post('/api/sectors/list',data)
     .then((response)=>{
-      // console.log('tableData', response.data);
       this.setState({
         tableData : response.data
       })
@@ -220,11 +201,8 @@ class Sector extends Component{
   getLength(){
     axios.get('/api/sectors/count')
     .then((response)=>{
-      // console.log('response', response.data);
       this.setState({
         dataCount : response.data.dataLength
-      },()=>{
-        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -232,7 +210,6 @@ class Sector extends Component{
     });
   }
   componentWillMount(){
-    console.log('componentWillMount');
     this.getLength();
   }
   getSearchText(searchText, startRange, limitRange){
@@ -249,7 +226,6 @@ class Sector extends Component{
   }
 
   render() {
-  // console.log('render');
     return (
       <div className="container-fluid">
         <div className="row">
@@ -299,7 +275,6 @@ class Sector extends Component{
                 tableData={this.state.tableData}
                 getData={this.getData.bind(this)}
                 tableObjects={this.state.tableObjects}
-                // getSearchText={this.getSearchText.bind(this)}
               />
             </div>             
           </div>

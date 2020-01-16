@@ -116,13 +116,11 @@ class PlanDetails extends Component{
     var id = (event.target.name).split('-')[1];
     let fields = this.state.fields;
     const x =  this.refs["physicalUnit-"+id].value * this.refs["unitCost-"+id].value;
-    console.log('x',x)
     this.setState({
       [event.target.name] : event.target.value,
       totalBud : x,
       ["totalBudget-"+id] : x
     },()=>{
-      console.log('totalBud=========',this.state.totalBud )
     });
     if (this.validateForm()) {
       let errors = {};
@@ -133,14 +131,10 @@ class PlanDetails extends Component{
     }
     var subActivityDetails = this.state.subActivityDetails;
     
-    console.log("this.state.subActivityDetails",this.state.subActivityDetails);
     var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID === id});
     var name = (event.target.name).split('-')[0];
-    console.log("idExist",idExist);
      var y =parseInt(x);
-     console.log("y1 = ",y);
     if(idExist.length > 0){      
-     console.log("y2 = ",idExist.length );
       for(var i=0; i<subActivityDetails.length; i++){
         if(subActivityDetails[i].subactivity_ID === id){
           subActivityDetails[i][name] = event.target.value;
@@ -148,7 +142,6 @@ class PlanDetails extends Component{
         }
       }
     }else{
-     console.log("y3 = ",y);
       subActivityDetails.push({
         "subactivity_ID"      : id,
         "subactivityName"     : document.getElementById('subActivityName-'+id).innerHTML,
@@ -161,7 +154,6 @@ class PlanDetails extends Component{
     this.setState({
       subActivityDetails : subActivityDetails
     },()=>{
-      console.log("subActivityDetails",this.state.subActivityDetails);
     })
   }
 
@@ -221,7 +213,6 @@ class PlanDetails extends Component{
       tableObjects,
       fields
     },()=>{
-      console.log('month =====================================', this.state.month, this.state.year)
       this.setState({
         "year" : this.state.years[0]
       },()=>{
@@ -251,7 +242,6 @@ class PlanDetails extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -259,7 +249,6 @@ class PlanDetails extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
@@ -320,7 +309,6 @@ class PlanDetails extends Component{
       "year"  : this.state.years[0],
       apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
     },()=>{
-      console.log('year', this.state.year)
        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     })
   }
@@ -348,7 +336,6 @@ class PlanDetails extends Component{
       selectedCenter : selectedCenter,
     },()=>{
       var center_ID = this.state.selectedCenter.split('|')[1];
-      console.log('center_ID', center_ID);
       this.setState({
         center_ID :center_ID,
         

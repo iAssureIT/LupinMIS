@@ -9,7 +9,6 @@ import 'bootstrap/js/modal.js';
 import './userManagement.css';
 
 const formValid = formerrors=>{
-  console.log("formerrors",formerrors);
   let valid = true;
   Object.values(formerrors).forEach(val=>{
   val.length>0 && (valid = false);
@@ -17,10 +16,10 @@ const formValid = formerrors=>{
   return valid;
   }
 
-const nameRegex     = RegExp(/^[A-za-z']+( [A-Za-z']+)*$/);
-const mobileRegex   = RegExp(/^[0-9][0-9]{9}$/);
-const emailRegex    = RegExp (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-class CreateUser extends Component {
+  const nameRegex     = RegExp(/^[A-za-z']+( [A-Za-z']+)*$/);
+  const mobileRegex   = RegExp(/^[0-9][0-9]{9}$/);
+  const emailRegex    = RegExp (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  class CreateUser extends Component {
 
 
   constructor(props) {
@@ -53,7 +52,6 @@ class CreateUser extends Component {
     const {name,value} = event.target;
     let formerrors = this.state.formerrors;
     
-    // console.log("value",value);
     switch (datatype){
       case 'firstname' : 
         formerrors.firstname = nameRegex.test(value)  && value.length>0 ? '' : "Please Enter Valid Name";
@@ -97,13 +95,10 @@ class CreateUser extends Component {
       .get('/api/companysettings/list')
       .then(
         (res)=>{
-          // console.log('res', res);
           const postsdata = res.data;
-          // console.log('postsdata',postsdata);
           this.setState({
             allPosts : postsdata,
           });
-          // console.log("allPosts___________________",this.state.allPosts);
           let locationArray =[];
           if(this.state.allPosts!==null){
             locationArray = this.state.allPosts.map(function(item) { return item.companyLocationsInfo });
@@ -137,7 +132,6 @@ class CreateUser extends Component {
                               completeDataCount : res.data.length,
                               tableData     : tableData,          
                             },()=>{
-                              // console.log('tableData', this.state.tableData);
                             })
                       })
                       .catch((error)=>{
@@ -198,7 +192,6 @@ class CreateUser extends Component {
                     var msgvariable = {
                       '[User]'    : this.state.firstname+' '+this.state.lastname,
                     }
-                    // console.log("msgvariable :"+JSON.stringify(msgvariable));
                     var inputObj = {  
                       to           : this.state.signupEmail,
                       templateName : 'User - Signup Notification',
@@ -207,7 +200,6 @@ class CreateUser extends Component {
                     axios
                     .post('/api/masternotification/send-mail',inputObj)
                     .then((response)=> {
-                      // console.log("-------mail------>>",response);
                       swal({
                         title: "User added successfully",
                         text: "User added successfully",

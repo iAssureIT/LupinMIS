@@ -30,7 +30,6 @@ Meteor.methods({
 
   'UMuserCreateAccountByAdmin' : function(formValues) {
     var existingMob = Meteor.users.findOne({"profile.mobNumber":formValues.mobNumber});
-    // console.log('existingMob',existingMob);
     if(existingMob){
       return 'Mobile number already exist';
     }else{
@@ -97,8 +96,6 @@ Meteor.methods({
   },
 
   updaterole: function (roleId, roleName) {
-    // // console.log(roleId);
-    // // console.log(roleName);
       Meteor.roles.update({'_id': roleId },
                           {
                             $set:{
@@ -132,24 +129,15 @@ Meteor.methods({
   },
 
     addRoles: function(newID , defaultRoleconfig){
-    // // console.log('addRoles'+ newID);
     Roles.addUsersToRoles(newID, defaultRoleconfig);
 
   },
 
   'addRoleToUser': function(role, checkedUsersList){
-    // console.log('role : ' + role);
     var addRoles = [role];
-    // // console.log(checkedUsersList.length);
     for (var i=0; i<checkedUsersList.length; i++) {
-      // // console.log(checkedUsersList[i]);
       var userId = checkedUsersList[i];
       if(checkedUsersList[i] != null){
-        // if( role == 'Teacher' && Roles.userIsInRole(userId, ['Student'])){
-        //   Roles.removeUsersFromRoles(userId, ['Student']);
-        // }else if( role == 'Student' && Roles.userIsInRole(userId, ['Teacher'])){
-        //   Roles.removeUsersFromRoles(userId, ['Teacher']);
-        // }
         Roles.addUsersToRoles(userId, addRoles);
       }
       
@@ -172,7 +160,6 @@ Meteor.methods({
         "userList" : [],
         "userDataLength": 0, 
       };
-      // // console.log("Getdata==",roleSetVar,activeBlockSetVar,departmentname);
      if(Roles.userIsInRole(Meteor.userId(), ['Admin','admin','superAdmin'])){
       // if(roleSetVar || activeBlockSetVar ){
              if(!firstname){

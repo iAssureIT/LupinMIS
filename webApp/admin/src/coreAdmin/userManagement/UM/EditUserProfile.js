@@ -8,9 +8,8 @@ import "./userManagement.css";
 class EditUserProfile extends Component{
 	constructor(props) {
 	  super(props);
-	 		    var UserId = this.props.match.params.id;
-    		 	console.log("UserId ----------------------",UserId);
-	  this.state = {
+ 		var UserId = this.props.match.params.id;
+	  	this.state = {
 	  		UserId    : UserId,
 	  		fullname  : "",
 	  		username  : "",
@@ -19,16 +18,13 @@ class EditUserProfile extends Component{
 	  		firstName : "",
 	  		lastName  : "",
 	  		centerName  : "",
-			}	  	
-			 this.handleChange = this.handleChange.bind(this);
-	  }
-	    
+		}	  	
+		this.handleChange = this.handleChange.bind(this);
+	}
 	handleSubmit(event) {
 		if($('#editUser').valid()){
 			var userid = this.state.UserId;
-			console.log("userid-----------------------------------------",userid);
 			var formvalues = {
-				// "fullName" 		: this.refs.firstName.value +" "+ this.refs.lastName.value,
 				"firstName"		: this.refs.firstName.value,
 				"lastName" 		: this.refs.lastName.value,
 				"emailId"  		: this.refs.username.value,
@@ -36,7 +32,6 @@ class EditUserProfile extends Component{
 				"centerName" 	: this.state.centerName.split("|")[0],
 				"center_ID" 	: this.state.centerName.split("|")[1]
 			}
-			console.log("formvalues",formvalues);
 			axios.patch('/api/users/'+userid, formvalues)
 			.then((response)=> {		
 				
@@ -71,7 +66,6 @@ class EditUserProfile extends Component{
 				          completeDataCount : res.data.length,
 				          tableData 		: tableData,          
 				        },()=>{
-				        	console.log('tableData', this.state.tableData);
 				        })
 					})
 					.catch((error)=>{
@@ -81,7 +75,6 @@ class EditUserProfile extends Component{
 
 			})
 			.catch(function (error) {
-				console.log('error============',error);
 				if(error.response.status===401){
 				 window.location = '/umlistofusers';		
 				}
@@ -93,11 +86,9 @@ class EditUserProfile extends Component{
 	handleChange(event){
         const target = event.target.value;
         const name   = event.target.name;
-        console.log('target',name, target);
           this.setState({ 
 	      [name]:target,
 	    },()=>{
-	    	console.log('this state', this.state);
 	    })
 	}
 	
@@ -160,9 +151,7 @@ class EditUserProfile extends Component{
 	      }
 	    });
  		this.getCenters();
-		console.log("here edit view");
 		var userid = this.state.UserId;
-		console.log("userid-----------------------------------------",userid);
 		 axios.get('/api/users/'+ userid)
 	      .then( (res)=>{
 	        console.log("here data_______________",res.data);
@@ -174,22 +163,15 @@ class EditUserProfile extends Component{
 	        var Mnob  = res.data.profile.mobileNumber ? res.data.profile.mobileNumber : null;
 	        var centerName  = res.data.profile.centerName ? res.data.profile.centerName : null;
 	        var center_ID   = res.data.profile.center_ID ? res.data.profile.center_ID : null;
-
-	        console.log("centerName", res.data.profile.centerName);
-	        // console.log("L name", LastName);
-
-	      this.refs.firstName.value = FirstName;
-	      this.refs.lastName.value = LastName;
-	     /* this.refs.fullname.value = FName */
-		  this.refs.username.value = Email;
-		  this.refs.mobNumber.value = Mnob;
-		  this.refs.centerName.value = centerName;
-		  this.setState({
-		  	mobNumber : Mnob,
-		  	centerName : centerName+"|"+center_ID,
-		  },()=>{
-		  	console.log('edit',this.state.centerName)
-		  });
+			this.refs.firstName.value = FirstName;
+			this.refs.lastName.value = LastName;
+			this.refs.username.value = Email;
+			this.refs.mobNumber.value = Mnob;
+			this.refs.centerName.value = centerName;
+			this.setState({
+			  	mobNumber : Mnob,
+			  	centerName : centerName+"|"+center_ID,
+			});
 	      })
 	      .catch((error)=>{
 	        console.log("error = ",error);
@@ -200,9 +182,6 @@ class EditUserProfile extends Component{
 		event.preventDefault();
 		this.setState({
 			centerName : event.target.value,
-			// center_ID : event.target.value.split('|')[1],
-		},()=>{
-			console.log('centerName',this.state.centerName);
 		})
 	}
   	getCenters(){
@@ -210,11 +189,8 @@ class EditUserProfile extends Component{
 	      method: 'get',
 	      url: '/api/centers/list',
 	    }).then((response)=> {
-	        // console.log('response ==========', response.data);
 	        this.setState({
 	          listofCenters : response.data
-	        },()=>{
-	        console.log('listofCenters', this.state.listofCenters);
 	        })
 	    }).catch(function (error) {
 	      console.log('error', error);
@@ -294,12 +270,10 @@ class EditUserProfile extends Component{
 														</div>  
 														<select className="form-control inputBox UMname" value={this.state.centerName} ref ="centerName" id="centerName" name="centerName" data-text="centerName" onChange={this.handleChangeCenter.bind(this)} >
 					                                <option hidden> --Select-- </option>
-													{console.log("centerName",this.state.centerName)}
 
 					                                  {
 					                                    this.state.listofCenters && this.state.listofCenters.length > 0 ? 
 					                                    this.state.listofCenters.map((data, index)=>{
-					                                      // console.log(data);
 					                                      return(
 					                                        <option key={index} value={data.centerName+'|'+data._id}>{data.centerName}</option>
 					                                      );

@@ -165,7 +165,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -179,7 +178,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center', this.state.center,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
@@ -211,7 +209,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
   }
 
   getData(year, center, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-    console.log(center, sector_ID, projectCategoryType, projectName, beneficiaryType);
       // axios.get('/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID')
       axios.get('/api/report/activity_annual_achievement_report/:startDate/:endDate/:center/:sector_ID/:projectCategoryType/:projectName/:beneficiaryType')
       .then((response)=>{
@@ -219,7 +216,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
         this.setState({
           tableDatas : response.data
         },()=>{
-          console.log("resp",this.state.tableDatas)
         })
       })
       .catch(function(error){

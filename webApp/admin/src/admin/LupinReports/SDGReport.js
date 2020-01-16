@@ -85,12 +85,10 @@ class SDGReport extends Component{
       // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
-          console.log('name', this.state, this.state.beneficiaryType)
     this.handleToChange = this.handleToChange.bind(this);
   }   
     componentWillReceiveProps(nextProps){
@@ -104,7 +102,6 @@ class SDGReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-          console.log('name', this.state, this.state.beneficiaryType)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
         });
     }
@@ -134,17 +131,14 @@ class SDGReport extends Component{
           }else{
             var center = this.state.selectedCenter.split('|')[1];
           }
-          console.log('center', center);
           this.setState({
             center_ID :center,            
           },()=>{
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
     } 
   getData(startDate, endDate,center_ID, goal, beneficiaryType){
-    console.log(startDate, endDate, center_ID);
     if(startDate && endDate && center_ID && beneficiaryType){
       if(center_ID==="all"){
         if(beneficiaryType==="all"){
@@ -174,7 +168,6 @@ class SDGReport extends Component{
           this.setState({
             tableData : tableData
           },()=>{
-            console.log("resp",this.state.tableData)
           })
         })
         .catch(function(error){  
@@ -184,7 +177,6 @@ class SDGReport extends Component{
       }else{
         axios.get('/api/report/goal/'+startDate+'/'+endDate+'/all/SDG Goal/'+beneficiaryType)
         .then((response)=>{
-          console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
             return {
                 _id             : a._id,            
@@ -205,10 +197,9 @@ class SDGReport extends Component{
           this.setState({
             tableData : tableData
           },()=>{
-            console.log("resp",this.state.tableData)
           })
         })
-        .catch(function(error){  
+                .catch(function(error){  
            console.log("error = ",error);
        
         });
@@ -237,7 +228,6 @@ class SDGReport extends Component{
           this.setState({
             tableData : tableData
           },()=>{
-            console.log("resp",this.state.tableData)
           })
         })
         .catch(function(error){  
@@ -254,7 +244,6 @@ class SDGReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
    
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
@@ -264,7 +253,6 @@ class SDGReport extends Component{
        startDate:startDate
     },()=>{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -281,51 +269,38 @@ class SDGReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
     currentFromDate(){
-     /* if(localStorage.getItem('newFromDate')){
-          var today = localStorage.getItem('newFromDate');
-          console.log("localStoragetoday",today);
-      }*/
+     
       if(this.state.startDate){
-          var today = this.state.startDate;
-          // console.log("localStoragetoday",today);
+        var today = this.state.startDate;
       }else {
-          var today = (new Date());
+        var today = (new Date());
         var nextDate = today.getDate() - 30;
         today.setDate(nextDate);
-        // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
       }
-      console.log("nowfrom",today)
       this.setState({
          startDate :today
       },()=>{
       });
       return today;
-      // this.handleFromChange()
     }
 
     currentToDate(){
       if(this.state.endDate){
-          var today = this.state.endDate;
-          // console.log("newToDate",today);
+        var today = this.state.endDate;
       }else {
-          var today =  moment(new Date()).format('YYYY-MM-DD');
+        var today =  moment(new Date()).format('YYYY-MM-DD');
       }
       this.setState({
          endDate :today
-      },()=>{
       });
       return today;
-      // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });
@@ -340,7 +315,6 @@ class SDGReport extends Component{
   onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log("startDate",startDate,endDate)
     if ((Date.parse(endDate) < Date.parse(startDate))) {
         swal("Start date","From date should be less than To date");
         this.refs.startDate.value="";
@@ -349,7 +323,6 @@ class SDGReport extends Component{
   onBlurEventTo(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
         if ((Date.parse(startDate) > Date.parse(endDate))) {
           swal("End date","To date should be greater than From date");
           this.refs.endDate.value="";

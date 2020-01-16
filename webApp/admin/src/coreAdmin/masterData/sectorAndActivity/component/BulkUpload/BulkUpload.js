@@ -66,7 +66,6 @@ class BulkUpload extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    // console.log('nextProps',nextProps);
     if(nextProps.BasicInfoId){
        if(nextProps.BasicInfoId.academicsInfo&&nextProps.BasicInfoId.academicsInfo.length>0){
         this.setState({
@@ -149,130 +148,122 @@ class BulkUpload extends Component{
     axios
     .post('https://jsonplaceholder.typicode.com/posts',{academicValues})
     .then(function(response){
-      console.log(response);
     })
     .catch(function(error){
       console.log(error);
     });
-    console.log("academicValues =>",academicValues);
     academicArray.push(academicValues);
-    console.log("add value",academicValues);      
     alert("Data inserted Successfully!")
     }
 
   }
 
-    componentDidMount() {
-     
-    }
+  componentDidMount() {
+   
+  }
 
-    componentWillUnmount(){
-        $("script[src='/js/adminLte.js']").remove();
-        $("link[href='/css/dashboard.css']").remove();
-    }
+  componentWillUnmount(){
+      $("script[src='/js/adminLte.js']").remove();
+      $("link[href='/css/dashboard.css']").remove();
+  }
 
-    changeTab = (data)=>{
+  changeTab = (data)=>{
     this.setState({
       tabtype : data,
     })
-    console.log("tabtype",this.state.tabtype);
+  }
+
+  render() {
+    const data = [{
+    srno: 1,
+    FamilyID: "L000001",
+    NameofBeneficiary: "Priyanka Lewade",
+    BeneficiaryID: "PL0001",
+    },{
+    srno: 2,
+    FamilyID: "B000001",
+    NameofBeneficiary: "Priyanka Bhanvase",
+    BeneficiaryID: "PB0001",
     }
-
-    render() {
-      const data = [{
-      srno: 1,
-      FamilyID: "L000001",
-      NameofBeneficiary: "Priyanka Lewade",
-      BeneficiaryID: "PL0001",
-      },{
-      srno: 2,
-      FamilyID: "B000001",
-      NameofBeneficiary: "Priyanka Bhanvase",
-      BeneficiaryID: "PB0001",
-      }
-      ]
-      const columns = [ 
-      {
-        Header: ' ',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-3">
-              <div className=" col-lg-offset-1 checkActivityContainer">
-                <input type="checkbox" name="check1" id="sameCheck" />
-              <span className="Activitycheckmark"></span>
-              </div>
-            </div>
-            )     
-          },
-        {
-        Header: 'Sr No',
-        accessor: 'srno',
-        },
-        
-        {
-        Header: 'Family ID',
-        accessor: 'FamilyID', 
-        }, {
-        Header: 'Name of Beneficiary',
-        accessor: 'NameofBeneficiary', 
-        }, {
-        Header: 'Beneficiary ID',
-        accessor: 'BeneficiaryID', 
-        },
-      
-        {
-        Header: 'Action',
-        accessor: 'Action',
-        Cell: row => 
-          (
-          <div className="actionDiv col-lg-offset-3">
-              <div className="col-lg-6" onClick={() => this.deleteData(row.original)}>
-            <i className="fa fa-trash"> </i>
-              </div>
-             
-            </div>
-            )     
-          }
-        ]
-
-    return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="formWrapper">
-              
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
-                        <div className="col-lg-12 col-sm-12 col-xs-12 col-md-12">
-                          <div className="csvDLWrapBulk">
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkUploadForm">
-                              <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 bulkImage">
-                                  <a >
-                                    <img src="/images/download.png"  className="csvimgBulk" title="Click to download file"/>
-                                  </a>
-                              </div>
-                              <div className="csvUpld col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                <h4><b>Instructions</b></h4>
-                                <ul className="uploadQuesinst col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                                  <li><b>1)</b>&nbsp;&nbsp;Please use attached file format to bulkupload <b>Sector and Activity</b> into this system.</li>
-                                  <li><b>2)</b>  File Format must be *.CSV.</li>
-                                  <li><b>3)</b>  Following is the format of .CSV file.</li>
-                                </ul>
-                              <div className="col-lg-11 col-md-12 col-sm-12 col-xs-12 row"><span className="control-label statelabel"><b>Upload Sector and Activities</b></span></div>
-                                <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 inputFieldBulk">
-                                  <input type="file"  name="uploadCSV" ref="uploadCSV"  accept=".csv" className="form-control col-lg-6 col-md-12 col-sm-12 col-xs-12 uploadFileInput nameParts" required/>
-                                </div>
-                              </div>
-                              
-                              </div>
-                            </div>
-                          </div>
-                      </form>
-                   
-              </div>
+    ]
+    const columns = [ 
+    {
+      Header: ' ',
+      accessor: 'Action',
+      Cell: row => 
+        (
+        <div className="actionDiv col-lg-offset-3">
+            <div className=" col-lg-offset-1 checkActivityContainer">
+              <input type="checkbox" name="check1" id="sameCheck" />
+            <span className="Activitycheckmark"></span>
             </div>
           </div>
-        );
-      }
+          )     
+        },
+      {
+      Header: 'Sr No',
+      accessor: 'srno',
+      },
+      
+      {
+      Header: 'Family ID',
+      accessor: 'FamilyID', 
+      }, {
+      Header: 'Name of Beneficiary',
+      accessor: 'NameofBeneficiary', 
+      }, {
+      Header: 'Beneficiary ID',
+      accessor: 'BeneficiaryID', 
+      },
+    
+      {
+      Header: 'Action',
+      accessor: 'Action',
+      Cell: row => 
+        (
+        <div className="actionDiv col-lg-offset-3">
+            <div className="col-lg-6" onClick={() => this.deleteData(row.original)}>
+              <i className="fa fa-trash"> </i>
+            </div>
+          </div>
+          )     
+        }
+      ]
+
+  return (
+    <div className="container-fluid">
+      <div className="row">
+        <div className="formWrapper">
+          <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
+            <div className="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+              <div className="csvDLWrapBulk">
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkUploadForm">
+                  <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 bulkImage">
+                    <a >
+                      <img src="/images/download.png"  className="csvimgBulk" title="Click to download file"/>
+                    </a>
+                  </div>
+                  <div className="csvUpld col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                    <h4><b>Instructions</b></h4>
+                    <ul className="uploadQuesinst col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                      <li><b>1)</b>&nbsp;&nbsp;Please use attached file format to bulkupload <b>Sector and Activity</b> into this system.</li>
+                      <li><b>2)</b>  File Format must be *.CSV.</li>
+                      <li><b>3)</b>  Following is the format of .CSV file.</li>
+                    </ul>
+                  <div className="col-lg-11 col-md-12 col-sm-12 col-xs-12 row"><span className="control-label statelabel"><b>Upload Sector and Activities</b></span></div>
+                    <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 inputFieldBulk">
+                      <input type="file"  name="uploadCSV" ref="uploadCSV"  accept=".csv" className="form-control col-lg-6 col-md-12 col-sm-12 col-xs-12 uploadFileInput nameParts" required/>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 export default BulkUpload
 

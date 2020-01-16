@@ -21,7 +21,6 @@ export default class YearlyReport extends Component{
             "limitRange"        : 10000
             
         }
-        console.log("tableData", this.state);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -52,7 +51,6 @@ export default class YearlyReport extends Component{
                     projectName         : nextProps.projectName,
                     beneficiaryType     : nextProps.beneficiaryType,
                 },()=>{
-                    // console.log('year', this.state.year, 'center', this.state.center,'sector', this.state.sector)
                     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
                 });
             }
@@ -82,7 +80,6 @@ export default class YearlyReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-            console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
             return(res);
           }else{
             var lastThree = x.substring(x.length-3);
@@ -90,7 +87,6 @@ export default class YearlyReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-            console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
             return(res);
           }
         }
@@ -102,7 +98,6 @@ export default class YearlyReport extends Component{
             if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
                 axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
-                    console.log('response', response);
                     var tableData = response.data.map((a, i)=>{
                     return {
                         _id                               : a._id,
@@ -128,7 +123,6 @@ export default class YearlyReport extends Component{
                     this.setState({
                         tableData : tableData
                     },()=>{
-                        console.log("tableData",this.state.tableData);
                     });
                 })
                 .catch((error)=>{
@@ -138,7 +132,6 @@ export default class YearlyReport extends Component{
         }
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
@@ -151,7 +144,6 @@ export default class YearlyReport extends Component{
                         <IAssureTable 
                             tableName = "Sectorwise Annual Completion Report"
                             id = "SectorwiseAnnualCompletionReport"
-                            // completeDataCount={this.state.tableDatas.length}
                             twoLevelHeader={this.state.twoLevelHeader} 
                             editId={this.state.editSubId} 
                             getData={this.getData.bind(this)} 

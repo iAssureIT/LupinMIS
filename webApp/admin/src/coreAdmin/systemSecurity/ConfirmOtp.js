@@ -240,18 +240,13 @@ import './SignUp.css';
     var z = 0;
     var winHeight =(x-z) + 'px';
     var winHeight1 =(x-z) ;
-    console.log('x',$(window).height());
-    console.log('winHeight',winHeight1);
 
     var innerheight = winHeight1-80 + 'px';
     var innerheight1 = winHeight1-80 ;
    
     var margin = parseInt( innerheight1-y );
     var margint = (margin/2);
-    console.log('margint',margint);
-    console.log('margin',margin);
     var windowWidth = $(window).width();
-    // console.log('ww',windowWidth);
     if(windowWidth>=320&&windowWidth<=992){
     var backImage = "visible-xs col-xs-12 visible-sm col-sm-12 noBackImage"
     }else{

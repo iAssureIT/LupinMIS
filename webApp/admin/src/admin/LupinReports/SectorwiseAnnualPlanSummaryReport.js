@@ -3,11 +3,6 @@ import $                    from 'jquery';
 import axios                from 'axios';
 import swal                 from 'sweetalert';
 import moment               from 'moment';
-import DailyReport          from '../Reports/DailyReport.js';
-import WeeklyReport         from '../Reports/WeeklyReport.js';
-import MonthlyReport        from '../Reports/MonthlyReport.js';
-import YearlyReport         from '../Reports/YearlyReport.js';
-import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../common/Loader.js";
 
@@ -32,7 +27,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
         "startDate"         : "",
         "endDate"           : "",
-        // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
@@ -50,11 +44,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                     heading : "Source of Financial Plan 'Rs'",
                     mergedColoums : 10,
                     hide : true
-                },/*
-                {
-                    heading : "",
-                    mergedColoums : 1
-                },*/
+                },
             ]
         },
         "tableHeading"      : {
@@ -98,11 +88,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.currentToDate();
     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     this.setState({
-      // "center"  : this.state.center[0],
-      // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
@@ -114,39 +101,27 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.getAvailableSectors();
     this.currentFromDate();
     this.currentToDate();
-    // this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
-      event.preventDefault();
-      this.setState({
-        [event.target.name] : event.target.value
-      },()=>{
-      this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log('name', this.state)
-      });
+    event.preventDefault();
+    this.setState({
+      [event.target.name] : event.target.value
+    },()=>{
+    this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    });
   }
   getAvailableCenters(){
-      axios({
-        method: 'get',
-        url: '/api/centers/list',
-      }).then((response)=> {
-        this.setState({
-          availableCenters : response.data,
-          // center           : response.data[0].centerName+'|'+response.data[0]._id
-        },()=>{
-          // console.log('center', this.state.center);
-          // var center_ID = this.state.center.split('|')[1];
-          // this.setState({
-          //   center_ID        : center_ID
-          // },()=>{
-          // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-          // })
-        })
-      }).catch(function (error) {  
-         console.log("error = ",error);
-      
-      });
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      this.setState({
+        availableCenters : response.data,
+      })
+    }).catch(function (error) {  
+       console.log("error = ",error);
+    
+    });
   } 
   selectCenter(event){
       var selectedCenter = event.target.value;
@@ -159,12 +134,10 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         }else{
           var center = this.state.selectedCenter.split('|')[1];
         }
-        console.log('center', center);
         this.setState({
           center_ID :center,            
         },()=>{
         this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         })
       });
   } 
@@ -184,7 +157,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           },()=>{
           this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
           })
-          // console.log('sector', this.state.sector);
         })
       }).catch(function (error) {  
         console.log("error = ",error);
@@ -197,7 +169,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         [event.target.name]:event.target.value
       });
       var sector_id = event.target.value.split('|')[1];
-      // console.log('sector_id',sector_id);
       this.setState({
         sector_ID : sector_id,
       },()=>{
@@ -206,7 +177,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
   }
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -220,8 +190,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
@@ -231,7 +199,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -246,11 +213,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
-
   addCommas(x) {
     x=x.toString();
     if(x.includes('%')){
@@ -264,7 +229,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -272,7 +236,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
@@ -290,7 +253,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               $(".fullpageloader").hide();
 
               var value = response.data.filter((a)=>{return a.name == "Total"})[0];
-              // console.log('value',value)
               var tableData = response.data.map((a, i)=>{
                 return {
                   _id                                    : a._id,     
@@ -314,21 +276,18 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               this.setState({
                 tableData : tableData
               },()=>{
-                console.log("resp",this.state.tableData)
               })
             })
             .catch(function(error){  
               console.log("error = ",error);
             });
           }else{
-            console.log("year",year);
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
             axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
               console.log("resp",response);
               var value = response.data.filter((a)=>{return a.name == "Total"})[0];
-              // console.log('value',value)
               var tableData = response.data.map((a, i)=>{
                 return {
                     _id                                    : a._id,    
@@ -352,7 +311,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               this.setState({
                 tableData : tableData
               },()=>{
-                console.log("resp",this.state.tableData)
               })
             })
             .catch(function(error){  
@@ -363,88 +321,69 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       }
     }
     handleFromChange(event){
-        event.preventDefault();
-       const target = event.target;
-       const name = target.name;
-       var dateVal = event.target.value;
-       var dateUpdate = new Date(dateVal);
-       var startDate = moment(dateUpdate).format('YYYY-MM-DD');
-       this.setState({
-           [name] : event.target.value,
-           startDate:startDate
-       },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-       console.log("dateUpdate",this.state.startDate);
-       });
-       // localStorage.setItem('newFromDate',dateUpdate);
+      event.preventDefault();
+      const target = event.target;
+      const name = target.name;
+      var dateVal = event.target.value;
+      var dateUpdate = new Date(dateVal);
+      var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+      this.setState({
+        [name] : event.target.value,
+        startDate:startDate
+      },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+     });
     }
     handleToChange(event){
-        event.preventDefault();
-        const target = event.target;
-        const name = target.name;
-
-        var dateVal = event.target.value;
-        var dateUpdate = new Date(dateVal);
-        var endDate = moment(dateUpdate).format('YYYY-MM-DD');
-        this.setState({
-           [name] : event.target.value,
-           endDate : endDate
-        },()=>{
-        console.log("dateUpdate",this.state.endDate);
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-       });
-       // localStorage.setItem('newToDate',dateUpdate);
+      event.preventDefault();
+      const target = event.target;
+      const name = target.name;
+      var dateVal = event.target.value;
+      var dateUpdate = new Date(dateVal);
+      var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+      this.setState({
+         [name] : event.target.value,
+         endDate : endDate
+      },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
+     });
     }
 
-    currentFromDate(){
-       /* if(localStorage.getItem('newFromDate')){
-            var today = localStorage.getItem('newFromDate');
-            console.log("localStoragetoday",today);
-        }*/
-        if(this.state.startDate){
-            var today = this.state.startDate;
-            // console.log("localStoragetoday",today);
-        }else {
-            var today = (new Date());
-          var nextDate = today.getDate() - 30;
-          today.setDate(nextDate);
-          // var newDate = today.toLocaleString();
-          var today =  moment(today).format('YYYY-MM-DD');
-          console.log("today",today);
-          }
-          console.log("nowfrom",today)
-        this.setState({
-           startDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleFromChange()
-    }
+  currentFromDate(){
+    if(this.state.startDate){
+        var today = this.state.startDate;
+    }else {
+        var today = (new Date());
+      var nextDate = today.getDate() - 30;
+      today.setDate(nextDate);
+      var today =  moment(today).format('YYYY-MM-DD');
+      }
+    this.setState({
+       startDate :today
+    },()=>{
+    });
+    return today;
+  }
 
-    currentToDate(){
-        if(this.state.endDate){
-            var today = this.state.endDate;
-            // console.log("newToDate",today);
-        }else {
-            var today =  moment(new Date()).format('YYYY-MM-DD');
-        }
-        // console.log("nowto",today)
-        this.setState({
-           endDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleToChange();
+  currentToDate(){
+    if(this.state.endDate){
+        var today = this.state.endDate;
+    }else {
+        var today =  moment(new Date()).format('YYYY-MM-DD');
     }
-    getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
-        this.setState({
-            tableData : []
-        });
-    }
+    this.setState({
+       endDate :today
+    },()=>{
+    });
+    return today;
+  }
+  getSearchText(searchText, startRange, limitRange){
+    this.setState({
+        tableData : []
+    });
+  }
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
-
     this.setState({
       'currentTabView': currentComp,
     })
@@ -461,7 +400,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                      {/*Sector wise Annual Plan Summary Report */}           
                         Sector Annual Plan Report 
                     </div>
                   </div>
@@ -545,22 +483,21 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                          }
                         </select>
                       </div>
-                      {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
                     </div>   
                   </div>  
                   <div className="marginTop11">
                       <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <IAssureTable 
-                              tableName = "Sectorwise Annual Plan Summary Report"
-                              id = "SectorwiseAnnualPlanSummaryReport"
-                              completeDataCount={this.state.tableDatas.length}
-                              twoLevelHeader={this.state.twoLevelHeader} 
-                              editId={this.state.editSubId} 
-                              getData={this.getData.bind(this)} 
-                              tableHeading={this.state.tableHeading} 
-                              tableData={this.state.tableData} 
-                              tableObjects={this.state.tableObjects}
-                              getSearchText={this.getSearchText.bind(this)}/>
+                            tableName = "Sectorwise Annual Plan Summary Report"
+                            id = "SectorwiseAnnualPlanSummaryReport"
+                            completeDataCount={this.state.tableDatas.length}
+                            twoLevelHeader={this.state.twoLevelHeader} 
+                            editId={this.state.editSubId} 
+                            getData={this.getData.bind(this)} 
+                            tableHeading={this.state.tableHeading} 
+                            tableData={this.state.tableData} 
+                            tableObjects={this.state.tableObjects}
+                            getSearchText={this.getSearchText.bind(this)}/>
                       </div>
                   </div>  
                 </div>

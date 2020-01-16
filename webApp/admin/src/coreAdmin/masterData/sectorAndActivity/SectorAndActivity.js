@@ -3,7 +3,7 @@ import $                    from 'jquery';
 import Activity             from "./component/activity/Activity.js";
 import Sector               from "./component/sector/Sector.js";
 import SubActivity          from "./component/subActivity/SubActivity.js";
-import _                        from 'underscore';
+import _                    from 'underscore';
 import BulkUpload           from "./component/BulkUpload/BulkUpload.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/tab.js';
@@ -13,21 +13,15 @@ class SectorAndActivity extends Component{
   constructor(props){
     super(props)
     this.state = {
-      "tabtype" : "sector" ,
-      "shown"       : true,
-      "role"                : localStorage.getItem("role")
+      "tabtype"        : "sector" ,
+      "shown"          : true,
+      "role"           : localStorage.getItem("role")
     }
     this.changeTab = this.changeTab.bind(this); 
 
   }
   componentDidMount(){
     var editId = this.props.match.params;
-    // console.log('editId', editId);
-    // this.setState({
-    //   tabtype : editId.subactivityId ? 'subactivity' : (editId.activityId ? "activity" : "sector" )
-    // },()=>{
-    //   console.log(' tabtype ======================', this.state.tabtype, _.has(editId , 'sectorId', 'activityId', "subactivityId"));
-    // });
   }
   componentWillUnmount(){
     $("script[src='/js/adminLte.js']").remove();
