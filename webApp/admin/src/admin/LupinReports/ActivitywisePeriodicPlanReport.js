@@ -111,7 +111,6 @@ class ActivitywisePeriodicPlanReport extends Component{
           // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
@@ -125,14 +124,12 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.currentFromDate();
         this.currentToDate();
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
         event.preventDefault();
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-            console.log('name', this.state)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
     }
@@ -213,7 +210,6 @@ class ActivitywisePeriodicPlanReport extends Component{
 
     selectprojectCategoryType(event){
         event.preventDefault();
-        console.log(event.target.value)
         var projectCategoryType = event.target.value;
         this.setState({
           projectCategoryType : projectCategoryType,
@@ -227,8 +223,6 @@ class ActivitywisePeriodicPlanReport extends Component{
                 projectName : "all",
               })    
             }
-            console.log("shown",this.state.shown, this.state.projectCategoryType)
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
           },()=>{
         })
@@ -238,7 +232,6 @@ class ActivitywisePeriodicPlanReport extends Component{
           method: 'get',
           url: '/api/projectMappings/list',
         }).then((response)=> {
-          console.log('responseP', response);
           this.setState({
             availableProjects : response.data
           })
@@ -253,7 +246,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.setState({
               projectName : projectName,
             },()=>{
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
     }
@@ -271,7 +263,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -279,7 +270,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
@@ -287,7 +277,7 @@ class ActivitywisePeriodicPlanReport extends Component{
     getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(center_ID==="all"){
-                console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
+                // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
                 if(sector_ID==="all"){
                     $(".fullpageloader").show();
 
@@ -423,7 +413,6 @@ class ActivitywisePeriodicPlanReport extends Component{
            startDate:startDate
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log("dateUpdate",this.state.startDate);
         });
     }
     handleToChange(event){
@@ -439,7 +428,6 @@ class ActivitywisePeriodicPlanReport extends Component{
            endDate:endDate
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log("dateUpdate",this.state.endDate);
         });
     }
 
@@ -453,9 +441,7 @@ class ActivitywisePeriodicPlanReport extends Component{
         today.setDate(nextDate);
         // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
         }
-        console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
@@ -479,7 +465,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
@@ -494,7 +479,6 @@ class ActivitywisePeriodicPlanReport extends Component{
    onBlurEventFrom(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
       if ((Date.parse(endDate) <Date.parse(startDate))) {
           swal("Start date","From date should be less than To date");
           this.refs.startDate.value="";
@@ -503,7 +487,6 @@ class ActivitywisePeriodicPlanReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";

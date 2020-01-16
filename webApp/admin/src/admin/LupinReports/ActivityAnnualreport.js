@@ -139,7 +139,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
         }else{
           var center = this.state.selectedCenter.split('|')[1];
         }
-        console.log('center', center);
         this.setState({
           center_ID :center,            
         },()=>{
@@ -193,7 +192,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -249,7 +247,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -257,7 +254,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
@@ -265,10 +261,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
   getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
     if(year){
       if( center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
-        console.log('year', year, 'center_ID', center_ID, 'sector_ID', sector_ID);
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";
-        console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
         if(sector_ID==="all"){
           var url = '/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType
         }else{
@@ -276,7 +270,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
         }
         $(".fullpageloader").show();
         axios.get(url)
-        // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
         .then((response)=>{
             console.log('response', response);
             $(".fullpageloader").hide();

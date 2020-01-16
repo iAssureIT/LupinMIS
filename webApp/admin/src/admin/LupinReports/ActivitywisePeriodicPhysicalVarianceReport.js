@@ -14,207 +14,197 @@ import Loader               from "../../common/Loader.js";
 import "../Reports/Reports.css";
 
 class ActivityWisePeriodicVarianceReport extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            'currentTabView'    : "Monthly",
-            'tableDatas'        : [],
-            'reportData'        : {},
-            'tableData'         : [],
-            "startRange"        : 0,
-            "limitRange"        : 10000,
-            "center"            : "all",
-            "sector"            : "all",
-            "center_ID"         : "all",
-            "sector_ID"         : "all",
-            "projectCategoryType": "all",
-            "beneficiaryType"    : "all",
-            "projectName"        : "all",
-            "startDate"         : "",
-            "endDate"           : "",
-            "twoLevelHeader"    : {
-              apply           : true,
-              firstHeaderData : [
-                  {
-                      heading : 'Activity Details',
-                      mergedColoums :5,
-                      hide : false
-                  },
-                  {
-                      heading : 'Annual Physical Plan',
-                      mergedColoums : 3,
-                      hide : false
-                  },
-                  {
-                      heading : "Periodic Physical Plan",
-                      mergedColoums : 3,
-                      hide : false
-                  },
-                  {
-                      heading : "Periodic Achievements",
-                      mergedColoums : 3,
-                      hide : false
-                  },
-                  {
-                      heading : "Periodic Variance Report",
-                      mergedColoums : 3,
-                      hide : false
-                  },
-              ]
-          },
-          "tableHeading"      : {
-            "projectCategoryType"                : 'Project Category',
-            "projectName"                        : 'Project Name',
-            "name"                               : 'Activity & Sub Activity',
-            "unit"                               : 'Unit',
-            "annualPlan_PhysicalUnit"            : 'Phy Units', 
-            "annualPlan_Reach"                   : "Reach",
-            "annualPlan_FamilyUpgradation"       : 'Family Upgradation plan', 
-            "monthlyPlan_PhysicalUnit"           : 'Phy Units', 
-            "monthlyPlan_Reach"                  : "Reach",
-            "monthlyPlan_FamilyUpgradation"      : 'Family Upgradation plan', 
-            "achievement_PhysicalUnit"           : 'Phy Units', 
-            "achievement_Reach"                  : "Reach",
-            "achievement_FamilyUpgradation"      : 'Family Upgraded', 
-            "variance_monthlyPlan_PhysicalUnit"  : 'Phy Units', 
-            "variance_monthlyPlan_Reach"         : "Reach",
-            "variance_monthlyPlan_FamilyUpgradation" : 'Family Upgraded', 
-          },
-          "tableObjects"        : {
-            downloadApply       : true,
-            paginationApply     : false,
-            searchApply         : false,
-          },   
-        }
-        window.scrollTo(0, 0);
-        this.handleFromChange    = this.handleFromChange.bind(this);
-        this.handleToChange      = this.handleToChange.bind(this);
-        this.currentFromDate     = this.currentFromDate.bind(this);
-        this.currentToDate       = this.currentToDate.bind(this);
-        this.getAvailableCenters = this.getAvailableCenters.bind(this);
-        this.getAvailableSectors = this.getAvailableSectors.bind(this);
-        
-    }
+  constructor(props){
+      super(props);
+      this.state = {
+          'currentTabView'    : "Monthly",
+          'tableDatas'        : [],
+          'reportData'        : {},
+          'tableData'         : [],
+          "startRange"        : 0,
+          "limitRange"        : 10000,
+          "center"            : "all",
+          "sector"            : "all",
+          "center_ID"         : "all",
+          "sector_ID"         : "all",
+          "projectCategoryType": "all",
+          "beneficiaryType"    : "all",
+          "projectName"        : "all",
+          "startDate"         : "",
+          "endDate"           : "",
+          "twoLevelHeader"    : {
+            apply           : true,
+            firstHeaderData : [
+                {
+                    heading : 'Activity Details',
+                    mergedColoums :5,
+                    hide : false
+                },
+                {
+                    heading : 'Annual Physical Plan',
+                    mergedColoums : 3,
+                    hide : false
+                },
+                {
+                    heading : "Periodic Physical Plan",
+                    mergedColoums : 3,
+                    hide : false
+                },
+                {
+                    heading : "Periodic Achievements",
+                    mergedColoums : 3,
+                    hide : false
+                },
+                {
+                    heading : "Periodic Variance Report",
+                    mergedColoums : 3,
+                    hide : false
+                },
+            ]
+        },
+        "tableHeading"      : {
+          "projectCategoryType"                : 'Project Category',
+          "projectName"                        : 'Project Name',
+          "name"                               : 'Activity & Sub Activity',
+          "unit"                               : 'Unit',
+          "annualPlan_PhysicalUnit"            : 'Phy Units', 
+          "annualPlan_Reach"                   : "Reach",
+          "annualPlan_FamilyUpgradation"       : 'Family Upgradation plan', 
+          "monthlyPlan_PhysicalUnit"           : 'Phy Units', 
+          "monthlyPlan_Reach"                  : "Reach",
+          "monthlyPlan_FamilyUpgradation"      : 'Family Upgradation plan', 
+          "achievement_PhysicalUnit"           : 'Phy Units', 
+          "achievement_Reach"                  : "Reach",
+          "achievement_FamilyUpgradation"      : 'Family Upgraded', 
+          "variance_monthlyPlan_PhysicalUnit"  : 'Phy Units', 
+          "variance_monthlyPlan_Reach"         : "Reach",
+          "variance_monthlyPlan_FamilyUpgradation" : 'Family Upgraded', 
+        },
+        "tableObjects"        : {
+          downloadApply       : true,
+          paginationApply     : false,
+          searchApply         : false,
+        },   
+      }
+      window.scrollTo(0, 0);
+      this.handleFromChange    = this.handleFromChange.bind(this);
+      this.handleToChange      = this.handleToChange.bind(this);
+      this.currentFromDate     = this.currentFromDate.bind(this);
+      this.currentToDate       = this.currentToDate.bind(this);
+      this.getAvailableCenters = this.getAvailableCenters.bind(this);
+      this.getAvailableSectors = this.getAvailableSectors.bind(this);
+      
+  }
 
-    componentDidMount(){
-      axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-        this.getAvailableProjects();
-        this.getAvailableCenters();
-        this.getAvailableSectors();
-        this.currentFromDate();
-        this.currentToDate();
+  componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+      this.getAvailableProjects();
+      this.getAvailableCenters();
+      this.getAvailableSectors();
+      this.currentFromDate();
+      this.currentToDate();
+      this.setState({
+        // "center"  : this.state.center[0],
+        // "sector"  : this.state.sector[0],
+        tableData : this.state.tableData,
+      },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      })
+      this.handleFromChange = this.handleFromChange.bind(this);
+      this.handleToChange = this.handleToChange.bind(this);
+  }
+ 
+  componentWillReceiveProps(nextProps){
+      this.getAvailableProjects();
+      this.getAvailableCenters();
+      this.getAvailableSectors();
+      this.currentFromDate();
+      this.currentToDate();
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+  }
+  handleChange(event){
+      event.preventDefault();
+      this.setState({
+        [event.target.name] : event.target.value
+      },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      });
+  }
+  getAvailableCenters(){
+      axios({
+        method: 'get',
+        url: '/api/centers/list',
+      }).then((response)=> {
         this.setState({
-          // "center"  : this.state.center[0],
-          // "sector"  : this.state.sector[0],
-          tableData : this.state.tableData,
+          availableCenters : response.data,
+          // center           : response.data[0].centerName+'|'+response.data[0]._id
         },()=>{
-        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
-        this.handleFromChange = this.handleFromChange.bind(this);
-        this.handleToChange = this.handleToChange.bind(this);
-    }
-   
-    componentWillReceiveProps(nextProps){
-        this.getAvailableProjects();
-        this.getAvailableCenters();
-        this.getAvailableSectors();
-        this.currentFromDate();
-        this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    }
-    handleChange(event){
-        event.preventDefault();
+      }).catch(function (error) {
+        console.log("error = ",error);
+      
+      });
+  } 
+  selectCenter(event){
+      var selectedCenter = event.target.value;
+      this.setState({
+        [event.target.name] : event.target.value,
+        selectedCenter : selectedCenter,
+      },()=>{
+        if(this.state.selectedCenter==="all"){
+          var center = this.state.selectedCenter;
+        }else{
+          var center = this.state.selectedCenter.split('|')[1];
+        }
         this.setState({
-          [event.target.name] : event.target.value
+          center_ID :center,            
         },()=>{
           this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-          console.log('name', this.state)
-        });
-    }
-    getAvailableCenters(){
-        axios({
-          method: 'get',
-          url: '/api/centers/list',
-        }).then((response)=> {
-          this.setState({
-            availableCenters : response.data,
-            // center           : response.data[0].centerName+'|'+response.data[0]._id
-          },()=>{
-          })
-        }).catch(function (error) {
-          console.log("error = ",error);
-        
-        });
-    } 
-    selectCenter(event){
-        var selectedCenter = event.target.value;
-        this.setState({
-          [event.target.name] : event.target.value,
-          selectedCenter : selectedCenter,
-        },()=>{
-          if(this.state.selectedCenter==="all"){
-            var center = this.state.selectedCenter;
-          }else{
-            var center = this.state.selectedCenter.split('|')[1];
-          }
-          console.log('center', center);
-          this.setState({
-            center_ID :center,            
-          },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-          })
-        });
-    } 
-    getAvailableSectors(){
-        axios({
-          method: 'get',
-          url: '/api/sectors/list',
-        }).then((response)=> {
-            
-            this.setState({
-              availableSectors : response.data,
-              // sector           : response.data[0].sector+'|'+response.data[0]._id
-            },()=>{
-            // var sector_ID = this.state.sector.split('|')[1]
-            // this.setState({
-            //   sector_ID        : sector_ID
-            // },()=>{
-            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-            // })
-            // console.log('sector', this.state.sector);
-          })
-        }).catch(function (error) {
-        console.log("error = ",error);
-       
-      });
-    }
-    selectSector(event){
-        event.preventDefault();
-        this.setState({
-          [event.target.name]:event.target.value
-        });
-          if(event.target.value==="all"){
-            var sector_id = event.target.value;
-          }else{
-            var sector_id = event.target.value.split('|')[1];
-          }
-        // console.log('sector_id',sector_id);
-        this.setState({
-              sector_ID : sector_id,
-            },()=>{
-            // console.log('availableSectors', this.state.availableSectors);
-            // console.log('sector_ID', this.state.sector_ID);
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         })
-    }
+      });
+  } 
+  getAvailableSectors(){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+      this.setState({
+          availableSectors : response.data,
+          // sector           : response.data[0].sector+'|'+response.data[0]._id
+        },()=>{
+        // var sector_ID = this.state.sector.split('|')[1]
+        // this.setState({
+        //   sector_ID        : sector_ID
+        // },()=>{
+        // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        // })
+        // console.log('sector', this.state.sector);
+      })
+    }).catch(function (error) {
+    console.log("error = ",error);
+     
+    });
+  }
+  selectSector(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name]:event.target.value
+    });
+      if(event.target.value==="all"){
+        var sector_id = event.target.value;
+      }else{
+        var sector_id = event.target.value.split('|')[1];
+      }
+    this.setState({
+        sector_ID : sector_id,
+      },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    })
+  }
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -228,8 +218,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
@@ -272,7 +260,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -280,13 +267,12 @@ class ActivityWisePeriodicVarianceReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
   }
   getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-    console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
+    // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
     if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
       if(center_ID==="all"){
         if(sector_ID==="all"){
@@ -322,7 +308,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
              this.setState({
                tableData : tableData
              },()=>{
-               console.log("resp",this.state.tableData)
              })
             })
             .catch(function(error){
@@ -359,12 +344,10 @@ class ActivityWisePeriodicVarianceReport extends Component{
              this.setState({
                tableData : tableData
              },()=>{
-               console.log("resp",this.state.tableData)
              })
             })
             .catch(function(error){
-             console.log("error = ",error);
-            
+             console.log("error = ",error);            
             });
           }
         }
@@ -397,7 +380,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
              this.setState({
                tableData : tableData
              },()=>{
-               console.log("resp",this.state.tableData)
              })
             })
             .catch(function(error){
@@ -413,8 +395,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
-   
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -423,7 +403,6 @@ class ActivityWisePeriodicVarianceReport extends Component{
        startDate:startDate
     },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -431,8 +410,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
     const target = event.target;
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
-    var endDate = document.getElementById("endDate").value;
-   
+    var endDate = document.getElementById("endDate").value;   
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var endDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -440,16 +418,11 @@ class ActivityWisePeriodicVarianceReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
 
   currentFromDate(){
-     /* if(localStorage.getItem('newFromDate')){
-          var today = localStorage.getItem('newFromDate');
-          console.log("localStoragetoday",today);
-      }*/
       if(this.state.startDate){
           var today = this.state.startDate;
           // console.log("localStoragetoday",today);
@@ -486,29 +459,26 @@ class ActivityWisePeriodicVarianceReport extends Component{
     // this.handleToChange();
   }
   getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });
   }
-   onBlurEventFrom(){
+  onBlurEventFrom(){
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    if ((Date.parse(endDate) < Date.parse(startDate))) {
+        swal("Start date","From date should be less than To date");
+        this.refs.startDate.value="";
+    }
+  }
+  onBlurEventTo(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
-      if ((Date.parse(endDate) < Date.parse(startDate))) {
-          swal("Start date","From date should be less than To date");
-          this.refs.startDate.value="";
+        if ((Date.parse(startDate) > Date.parse(endDate))) {
+          swal("End date","To date should be greater than From date");
+          this.refs.endDate.value="";
       }
-    }
-    onBlurEventTo(){
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
-          if ((Date.parse(startDate) > Date.parse(endDate))) {
-            swal("End date","To date should be greater than From date");
-            this.refs.endDate.value="";
-        }
-    }
+  }
   render(){
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">

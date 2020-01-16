@@ -96,7 +96,6 @@ class GeographicalReport extends Component{
       // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
@@ -110,14 +109,12 @@ class GeographicalReport extends Component{
     this.currentFromDate();
     this.currentToDate();
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-    console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
     event.preventDefault();
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      console.log('name', this.state)
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
@@ -147,7 +144,6 @@ class GeographicalReport extends Component{
       }else{
         var center = this.state.selectedCenter.split('|')[1];
       }
-      console.log('center', center);
       this.setState({
         center_ID :center, 
       },()=>{
@@ -235,13 +231,11 @@ class GeographicalReport extends Component{
         selectedDistrict :selectedDistrict
       },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
   getBlock(stateCode, selectedDistrict){
-    console.log("sd", stateCode,selectedDistrict);
     axios({
       method: 'get',
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
@@ -294,7 +288,6 @@ class GeographicalReport extends Component{
       village : village
     },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      console.log("village",village);
     });  
   }  
 
@@ -308,7 +301,6 @@ class GeographicalReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -322,8 +314,6 @@ class GeographicalReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       },()=>{
     })
@@ -333,7 +323,6 @@ class GeographicalReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -349,7 +338,6 @@ class GeographicalReport extends Component{
           projectName : projectName,
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
   }
   
@@ -366,7 +354,6 @@ class GeographicalReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -374,13 +361,12 @@ class GeographicalReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
   }
   getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-    console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType);
+    // console.log(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType);
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType){
         if(center_ID==="all"){
@@ -412,7 +398,6 @@ class GeographicalReport extends Component{
               this.setState({
                 tableData : tableData
               },()=>{
-                // console.log("resp",this.state.tableData)
               })
             })
             .catch(function(error){ 
@@ -444,7 +429,6 @@ class GeographicalReport extends Component{
               this.setState({
                 tableData : tableData
               },()=>{
-                console.log("resp",this.state.tableData)
               })
             })
             .catch(function(error){  
@@ -477,7 +461,6 @@ class GeographicalReport extends Component{
               this.setState({
                 tableData : tableData
               },()=>{
-                console.log("resp",this.state.tableData)
               })
             })
             .catch(function(error){  
@@ -494,8 +477,6 @@ class GeographicalReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
-    
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -504,7 +485,6 @@ class GeographicalReport extends Component{
        startDate:startDate
     },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -521,7 +501,6 @@ class GeographicalReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
@@ -536,10 +515,7 @@ class GeographicalReport extends Component{
         today.setDate(nextDate);
         // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
       }
-  
-      console.log("nowfrom",today)
       this.setState({
          startDate :today
       },()=>{
@@ -563,7 +539,6 @@ class GeographicalReport extends Component{
       // this.handleToChange();
   }
   getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });
@@ -578,7 +553,6 @@ class GeographicalReport extends Component{
   onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log("startDate",startDate,endDate)
     if ((Date.parse(endDate) < Date.parse(startDate))) {
         swal("Start date","From date should be less than To date");
         this.refs.startDate.value="";
@@ -587,7 +561,6 @@ class GeographicalReport extends Component{
   onBlurEventTo(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
         if ((Date.parse(startDate) > Date.parse(endDate))) {
           swal("End date","To date should be greater than From date");
           this.refs.endDate.value="";
@@ -658,7 +631,7 @@ class GeographicalReport extends Component{
                               {
                                 this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 && this.state.center_ID!=="all" ? 
                                 this.state.availableDistInCenter.map((data, index)=>{
-                                  console.log("data",data)
+                                  // console.log("data",data)
                                   return(
                                     /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
                                     <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>

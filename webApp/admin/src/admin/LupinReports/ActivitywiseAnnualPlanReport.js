@@ -102,7 +102,7 @@ class ActivitywiseAnnualPlanReport extends Component{
       this.setState({
         tableData : this.state.tableData,
       },()=>{
-        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
   }
@@ -112,7 +112,7 @@ class ActivitywiseAnnualPlanReport extends Component{
       this.getAvailableCenters();
       this.getAvailableSectors();
       this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+      // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
       event.preventDefault();
@@ -120,7 +120,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         [event.target.name] : event.target.value
       },()=>{
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log('name', this.state)
+        // console.log('name', this.state)
       });
   }
   getAvailableCenters(){
@@ -149,7 +149,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         }else{
           var center = this.state.selectedCenter.split('|')[1];
         }
-        console.log('center', center);
+        // console.log('center', center);
         this.setState({
           center_ID :center,            
         },()=>{
@@ -194,7 +194,7 @@ class ActivitywiseAnnualPlanReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
+    // console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
           projectCategoryType : projectCategoryType,
@@ -208,7 +208,7 @@ class ActivitywiseAnnualPlanReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log("shown",this.state.shown, this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       
@@ -253,7 +253,6 @@ class ActivitywiseAnnualPlanReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -261,30 +260,23 @@ class ActivitywiseAnnualPlanReport extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
   }
   getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){   
     if(year ){
-      // if(center_ID && sector_ID){ 
-      //   if(sector_ID==="all"){
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
+            // console.log(startDate, endDate, year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);  
         if(center_ID==="all"){
-          // console.log(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
           if(sector_ID==="all"){
-            // console.log("year",year);
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
-            console.log(startDate, endDate, year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);  
             $(".fullpageloader").show();
-
             axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
-
                   var tableData = response.data.map((a, i)=>{
                   return {
                   _id                                       : a._id,            
@@ -310,12 +302,10 @@ class ActivitywiseAnnualPlanReport extends Component{
                 this.setState({
                   tableData : tableData
                 },()=>{
-                  // console.log("resp",this.state.tableData)
                 })
               })
               .catch(function(error){
                 console.log("error = ",error);
-               
               });
             }else{
               // console.log("year",year);
@@ -358,7 +348,6 @@ class ActivitywiseAnnualPlanReport extends Component{
               });
             }
           }else{
-            // console.log("year",year);
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
             axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
@@ -389,32 +378,27 @@ class ActivitywiseAnnualPlanReport extends Component{
                 this.setState({
                   tableData : tableData
                 },()=>{
-                  // console.log("resp",this.state.tableData)
                 })
               })
               .catch(function(error){
                 console.log("error = ",error);
-                
               });
           }
         }
       }
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
     }
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
-
     this.setState({
       'currentTabView': currentComp,
     })
   }
   render(){
-    console.log("in render all",this.state.tableData);
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <Loader type="fullpageloader" />
