@@ -58,9 +58,9 @@ export default class PieChart extends Component {
           var annualPlanTotalBudget = [];
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{ 
-              if(data.annualPlan_TotalBudget > 0){
+              if(data.annualPlan_TotalBudget_L > 0){
                 sector.push(data.name);
-                annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
+                annualPlanTotalBudget.push(data.annualPlan_TotalBudget_L);
                 piechartcolor.push(this.getRandomColor_sector());
               }
             })

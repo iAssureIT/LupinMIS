@@ -52,9 +52,10 @@ export default class PieChart extends Component {
       // console.log(startDate, endDate);
       // axios.get('/api/report/annual_completion_sector/'+year+'/'+centerID)
       if(startDate && endDate){
-          axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all')
+        // router.get('/sector_center/:center_ID/:startDate/:endDate',  
+          axios.get('/api/reportDashboard/sector_center/'+center_ID+'/'+startDate+'/'+endDate)
           .then((response)=>{ 
-            // console.log("respgetData------------->",response.data) ;
+            console.log("respgetData------------->",response.data) ;
             response.data.splice(-2);
             var sector = [];
             var piechartcolor =[];

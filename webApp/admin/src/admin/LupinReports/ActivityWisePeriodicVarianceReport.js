@@ -265,25 +265,34 @@ class ActivityWisePeriodicVarianceReport extends Component{
         x=x.toString();
         if(x.includes('%')){
             return x;
-        }else{
-          if(x.includes('.')){
-            var pointN = x.split('.')[1];
-            var lastN = x.split('.')[0];
-            var lastThree = lastN.substring(lastN.length-3);
-            var otherNumbers = lastN.substring(0,lastN.length-3);
-            if(otherNumbers != '')
-                lastThree = ',' + lastThree;
-            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-            return(res);
-          }else{
-            var lastThree = x.substring(x.length-3);
-            var otherNumbers = x.substring(0,x.length-3);
-            if(otherNumbers != '')
-                lastThree = ',' + lastThree;
-            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-            return(res);
-          }
-        }
+        }else if(x.includes('-')){
+                var lastN = x.split('-')[1];
+                var lastThree = lastN.substring(lastN.length-3);
+                var otherNumbers = lastN.substring(0,lastN.length-3);
+                if(otherNumbers != '')
+                    lastThree = ',' + lastThree;
+                var res = "-" + otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+                // console.log("x",x,"lastN",lastN,"res",res)
+                return(res);
+            }else{
+              if(x.includes('.')){
+                var pointN = x.split('.')[1];
+                var lastN = x.split('.')[0];
+                var lastThree = lastN.substring(lastN.length-3);
+                var otherNumbers = lastN.substring(0,lastN.length-3);
+                if(otherNumbers != '')
+                    lastThree = ',' + lastThree;
+                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+                return(res);
+              }else{
+                var lastThree = x.substring(x.length-3);
+                var otherNumbers = x.substring(0,x.length-3);
+                if(otherNumbers != '')
+                    lastThree = ',' + lastThree;
+                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+                return(res);
+              }
+            }
     }
 
     getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
