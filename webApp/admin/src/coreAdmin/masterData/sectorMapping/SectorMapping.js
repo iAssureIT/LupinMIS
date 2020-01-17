@@ -148,11 +148,24 @@ class SectorMapping extends Component{
 
         axios.patch('/api/sectorMappings/update',mappingValues)
           .then((response)=>{
-            swal({
-              title : response.data.message,
-              text  : response.data.message
-            });
-            this.getData(this.state.startRange, this.state.limitRange);
+            if(response.data==="Data Already Exists"){
+              console.log('response', response);
+              swal({
+                title : response.data,
+                text  : response.data
+              });  
+              this.getData(this.state.startRange, this.state.limitRange);
+              this.setState({
+                "goalName"           :"-- Select --",
+                "goalType"           :"-- Select --",
+              });
+            }else{
+              swal({
+                title : response.data.message,
+                text  : response.data.message
+              });
+              this.getData(this.state.startRange, this.state.limitRange);
+            }
           })
           .catch(function(error){
             console.log("error = ",error);
@@ -258,43 +271,47 @@ class SectorMapping extends Component{
   }
 
   edit(id){
-    axios({
-      method: 'get',
-      url: '/api/sectorMappings/'+id,
-    }).then((response)=> {
-      var editData = response.data[0];
-      // console.log('editData=====',editData)
-      if(editData){
-        axios({
-          method: 'get',
-          url: '/api/typeofgoals/'+editData.type_ID,
-        }).then((response)=> {
-          // console.log('response==',response)
-          editData.sector.map((a, i)=>{
-            this.setState({
-              [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : true
+    if(id){
+      axios({
+        method: 'get',
+        url: '/api/sectorMappings/'+id,
+      }).then((response)=> {
+        var editData = response.data[0];
+        console.log('editData=====',editData)
+        if(editData){
+          axios({
+            method: 'get',
+            url: '/api/typeofgoals/'+editData.type_ID,
+          }).then((response)=> {
+            // console.log('response==',response)
+            editData.sector.map((a, i)=>{
+              this.setState({
+                [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : true
+              })
             })
-          })
-          this.setState({
-            "goalName"                : editData.goal,
-            "selectedTypeofGoal"      : response.data[0].typeofGoal,
-            "goalType"                : editData.type_ID,      
-            "selectedActivities"      : editData.sector, 
+            this.setState({
+              "goalName"                : editData.goal,
+              "selectedTypeofGoal"      : response.data[0].typeofGoal,
+              "goalType"                : editData.type_ID,      
+              "selectedActivities"      : editData.sector, 
+            },()=>{
+              this.getNameOfGoal(this.state.goalType)
+            });
+            let fields = this.state.fields;
+            let errors = {};
+            let formIsValid = true;
+            this.setState({
+              errors: errors
+            });
+            return formIsValid;
+          }).catch(function (error) {
+            // console.log("error = ",error);
           });
-          let fields = this.state.fields;
-          let errors = {};
-          let formIsValid = true;
-          this.setState({
-            errors: errors
-          });
-          return formIsValid;
-        }).catch(function (error) {
-          // console.log("error = ",error);
-        });
-      }
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
+        }
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+    }
   }
   
   getLength(){
@@ -319,7 +336,7 @@ class SectorMapping extends Component{
       this.setState({
         tableData : response.data
       },()=>{
-        console.log("tableData",this.state.tableData);
+        // console.log("tableData",this.state.tableData);
       })
     })
     .catch(function(error){

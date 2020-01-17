@@ -166,12 +166,15 @@ class ProjectMapping extends Component{
   Update(event){
     event.preventDefault();
     if($('#sectorMapping').valid()){
-      var listofTypesArray = this.state.projectType.map((data, index)=>{
-      return({
-          goalName  : data.label,
-          goal_ID   : data.value
-         });
-      })   
+      console.log(this.state.projectType)
+      if(this.state.projectType>1){
+        var listofTypesArray = this.state.projectType.map((data, index)=>{
+        return({
+            goalName  : data.label,
+            goal_ID   : data.value
+           });
+        })   
+      }
       var mappingValues = 
       {     
         "projectMapping_ID"   : this.state.editId,    

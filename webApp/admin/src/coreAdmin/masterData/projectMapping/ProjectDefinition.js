@@ -17,7 +17,7 @@ class ProjectMapping extends Component{
       "endDate"            : "",
       "projectName"        : "",
       "listofTypesArray"   : "",
-      "projectType"        : [],
+      "goalType"           : [],
       fields               : {},
       errors               : {},
       "tableHeading"       : {
@@ -120,29 +120,26 @@ class ProjectMapping extends Component{
   Submit(event){
     event.preventDefault();
     if($('#projectMapping').valid()){
+      console.log("sectorData",this.state.sectorData)
       if (this.state.sectorData.length===0){      
         swal({
           title: 'abc',
           text: "Please select appropriate Activity from the list.",
           button: true,
         });
-      }else if(this.state.projectType.length === 0){
+      }else if(this.state.goalType.length === 0){
         swal({
           title: 'abc',
           text: "Please select A Goal Type from the dropdown List",
           button: true,
         });        
       }else{    
-        var listofTypesArray = this.state.projectType.map((data, index)=>{
-          return({
-              label : data.label,
-              goal_ID : data.value
-             });
-          })    
+      
         var mappingValues= 
         {     
           "projectName"  : this.refs.projectName.value,          
-          "type_ID"      : listofTypesArray,           
+          "type_ID"      : this.refs.goalType.value,           
+          "goalName"     : this.refs.goalName.value,           
           "startDate"    : this.refs.startDate.value,          
           "endDate"      : this.refs.endDate.value,              
           "sector"       : this.state.sectorData                
@@ -162,7 +159,7 @@ class ProjectMapping extends Component{
           });
         this.setState({
           "projectName"           :"",
-          "projectType"           :[],
+          "goalType"           :[],
           "startDate"             :"",
           "endDate"               :"",
           "sectorData"            :[],
@@ -173,7 +170,7 @@ class ProjectMapping extends Component{
   Update(event){
     event.preventDefault();
     if($('#sectorMapping').valid()){
-      var listofTypesArray = this.state.projectType.map((data, index)=>{
+      var listofTypesArray = this.state.goalType.map((data, index)=>{
       return({
           goalName  : data.label,
           goal_ID   : data.value
@@ -202,7 +199,7 @@ class ProjectMapping extends Component{
       });
       this.setState({
         "projectName"           : "",
-        "projectType"           : [],
+        "goalType"           : [],
         "startDate"             : "",
         "endDate"               : "",
         "sectorData"            : [],
@@ -239,7 +236,7 @@ class ProjectMapping extends Component{
 
     $("#sectorMapping").validate({
       rules: {
-        projectType: {
+        goalType: {
           required: true,
         },
         projectName: {
@@ -248,8 +245,8 @@ class ProjectMapping extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "projectType"){
-          error.insertAfter("#projectType");
+        if (element.attr("name") == "goalType"){
+          error.insertAfter("#goalType");
         }
         if (element.attr("name") == "projectName"){
           error.insertAfter("#projectName");
@@ -322,13 +319,13 @@ class ProjectMapping extends Component{
           })
         this.setState({
           "projectName"                :editData.projectName,     
-          "projectType"                :listofTypesArray,      
+          "goalType"                :listofTypesArray,      
           "startDate"                  :editData.startDate,      
           "endDate"                    :editData.endDate,      
           "sectorData"                 :editData.sector, 
           "availableSectors"           :availableSectors
         });
-      // console.log('projectType',this.state.projectType);
+      // console.log('goalType',this.state.goalType);
       }else{
          var listofTypesArray = editData.type_ID.map((data, index)=>{
           return({
@@ -339,13 +336,13 @@ class ProjectMapping extends Component{
          // console.log("listofTypesArray",listofTypesArray);
          this.setState({
           "projectName"                :editData.projectName,     
-          "projectType"                :listofTypesArray[0],      
+          "goalType"                :listofTypesArray[0],      
           "startDate"                  :editData.startDate,      
           "endDate"                    :editData.endDate,      
           "sectorData"                 :editData.sector, 
           "availableSectors"           :availableSectors
         });
-      // console.log('projectTypeelse',this.state.projectType);
+      // console.log('goalTypeelse',this.state.goalType);
       }
 
     }).catch(function (error) {
@@ -603,7 +600,7 @@ class ProjectMapping extends Component{
       sectorData : sectorData
     })
   }
-  getAvailableSector(){
+  getAvailableSectorP(){
     axios({
       method: 'get',
       url: '/api/sectors/list',
@@ -627,6 +624,44 @@ class ProjectMapping extends Component{
         }
         block.blockLength = totalLength;
         block.checked = "N";
+        return block;
+      })
+      var sortArray = availableSectorData.sort(function(a,b){
+        return((a.blockLength) - (b.blockLength)); //ASC, For Descending order use: b - a
+      });
+
+      this.setState({
+        availableSectors : sortArray,
+      })
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });
+  }
+
+  getAvailableSector(){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {   
+      // console.log("response.data",response.data);
+      var availableSectorData = response.data.map((block)=>{
+        var totalLength = 0;
+        if(block.activity.length>0){
+          totalLength = totalLength + block.activity.length 
+          block.activity.map((blockone)=>{
+            if(blockone.subActivity.length>0){
+              totalLength = totalLength + blockone.subActivity.length 
+              blockone.subActivity.map((blocktwo)=>{
+                blocktwo.checked = "Y"
+                return blocktwo;
+              })
+            }
+            blockone.checked = "Y";
+            return blockone;
+          })
+        }
+        block.blockLength = totalLength;
+        block.checked = "Y";
         return block;
       })
       var sortArray = availableSectorData.sort(function(a,b){
@@ -746,8 +781,8 @@ class ProjectMapping extends Component{
   }
  
   
-  handleChangeSelect = (projectType) => {
-    this.setState({ projectType : projectType }, ()=>{});
+  handleChangeSelect = (goalType) => {
+    this.setState({ goalType : goalType }, ()=>{});
   };
   getDatafromFrameworkMap(goalType , goalName){
    {/* var sectorFromFramework=[
@@ -903,7 +938,8 @@ class ProjectMapping extends Component{
                               })
                             : null
                           }
-                          {/*
+                          <hr/>
+                          {
                             this.state.availableSectors ?
                             this.state.availableSectors.map((data, index)=>{
                               if(data.activity.length>0){
@@ -962,7 +998,7 @@ class ProjectMapping extends Component{
                               })
                             :
                             null
-                          */}
+                          }
                         </div>  
                       </div>                                      
                       <br/>
