@@ -28,7 +28,7 @@ class IAssureTableUM extends Component {
 		    "activeClass" 				: 'activeQueDataCircle',
 		    "paginationArray" 			: [],
 		    "startRange" 				: 0,
-		    "limitRange" 				: 10,
+		    "limitRange" 				: 10000000,
 		    "activeClass" 				: 'activeQueDataCircle', 
 		    "completeDataCount" 		: props && props.completeDataCount ? props.completeDataCount : 0,
 		    "normalData" 				: true,

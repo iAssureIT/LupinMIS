@@ -51,8 +51,9 @@ class ProjectMapping extends Component{
     this.setState({
       [event.target.name] : event.target.value,
       "projectName"               : this.refs.projectName.value,          
-      "startDate"                 : this.refs.startDate.value,          
-      "endDate"                   : this.refs.endDate.value,          
+      "goalName"                  : this.refs.goalName.value,          
+    },()=>{
+      this.getDatafromFrameworkMap(this.state.goalType, this.state.goalName)
     });
   } 
 
@@ -658,9 +659,9 @@ class ProjectMapping extends Component{
         today.setDate(nextDate);
         // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
+        // console.log("today",today);
       }
-      console.log("nowfrom",today)
+      // console.log("nowfrom",today)
       this.setState({
          startDate :today
       },()=>{
@@ -722,6 +723,7 @@ class ProjectMapping extends Component{
       selectedTypeofGoal : selectedTypeofGoal,
       goalName : '-- Select --',
     },()=>{
+      this.getDatafromFrameworkMap(this.state.goalType, this.state.goalName)
       this.getNameOfGoal(this.state.goalType)
     });
   }
@@ -742,27 +744,13 @@ class ProjectMapping extends Component{
       });
     }
   }
-  selectNameofGoal(event){
-    event.preventDefault();
-    var selectedType = event.currentTarget.value;
-    var selectedTypeofGoal     =$(event.currentTarget).find('option:selected').attr('data-name')
-    // var selectedTypeofGoal     = event.currentTarget.getAttribute('data-name');
-    // console.log("selectedTypeofGoal",selectedTypeofGoal)
-
-    this.setState({
-      goalType : selectedType,
-      selectedTypeofGoal : selectedTypeofGoal,
-      goalName : '-- Select --',
-    },()=>{
-      this.getNameOfGoal(this.state.goalType)
-    });
-  }
+ 
   
   handleChangeSelect = (projectType) => {
     this.setState({ projectType : projectType }, ()=>{});
   };
-  getDatafromFrameworkMap(){
-    var sectorFromFramework=[
+  getDatafromFrameworkMap(goalType , goalName){
+   {/* var sectorFromFramework=[
                 {
                   activityName: "Dairy development",
                   activity_ID: "5d6e304a44387358f476ec3d",
@@ -780,13 +768,13 @@ class ProjectMapping extends Component{
               ]
         this.setState({
           sectorFromFramework : sectorFromFramework
-        },()=>{
-          console.log("sectorFromFramework",this.state.sectorFromFramework)
-        })
+        },()=>{ })*/}
     axios({
       method: 'get',
-      url: '/api/sectorMappings/list',
+      url: 'api/sectorMappings/list_arraySector/' + goalType + '/'+ goalName
+
     }).then((response)=> {
+      console.log("getDatafromFrameworkMap",response)
       this.setState({
           sectorFromFrame : response.data
         },()=>{
@@ -797,7 +785,7 @@ class ProjectMapping extends Component{
     });
   }
   render() {
-    console.log('this.state.availableSectors',this.state.availableSectors)
+    // console.log('this.state.availableSectors',this.state.availableSectors)
     return(
       <div className="container-fluid">
         <div className="row">

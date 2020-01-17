@@ -80,12 +80,25 @@ class SectorMapping extends Component{
         fields["goalType"]  = "";
         axios.post('/api/sectorMappings',mappingValues)
           .then((response)=>{
-            console.log("sectorMappings = ",response);
-            swal({
-              title : response.data.message,
-              text  : response.data.message
-            });
-            this.getData(this.state.startRange, this.state.limitRange);
+            if(response.data==="Data Already Exists"){
+              console.log('response', response);
+              swal({
+                title : response.data,
+                text  : response.data
+              });  
+              this.getData(this.state.startRange, this.state.limitRange);
+              this.setState({
+                "goalName"           :"-- Select --",
+                "goalType"           :"-- Select --",
+              });
+            }else{
+              console.log("sectorMappings = ",response);
+              swal({
+                title : response.data.message,
+                text  : response.data.message
+              });
+                this.getData(this.state.startRange, this.state.limitRange);
+            } 
           })
           .catch(function(error){
             console.log("error = ",error);
@@ -406,21 +419,6 @@ class SectorMapping extends Component{
       });
     }
   }
-  selectNameofGoal(event){
-    event.preventDefault();
-    var selectedType = event.currentTarget.value;
-    var selectedTypeofGoal     =$(event.currentTarget).find('option:selected').attr('data-name')
-    // var selectedTypeofGoal     = event.currentTarget.getAttribute('data-name');
-    // console.log("selectedTypeofGoal",selectedTypeofGoal)
-
-    this.setState({
-      goalType : selectedType,
-      selectedTypeofGoal : selectedTypeofGoal,
-      goalName : '-- Select --',
-    },()=>{
-      this.getNameOfGoal(this.state.goalType)
-    });
-  }
   
   handleChange(event){
     event.preventDefault();
@@ -445,7 +443,7 @@ class SectorMapping extends Component{
 
 
   render() {
-    console.log("this.state.listofGoalNames",this.state.listofGoalNames)
+    // console.log("this.state.listofGoalNames",this.state.listofGoalNames)
     return(
       <div className="container-fluid">
         <div className="row">
@@ -494,7 +492,7 @@ class SectorMapping extends Component{
                                       {
                                         this.state.listofGoalNames ?
                                         this.state.listofGoalNames.map((data, index)=>{
-                                          console.log(data)
+                                          // console.log(data)
                                           return(
                                             <option key={index} data-name={data.goalName} value={data.goalName}>{data.goalName}</option> 
                                           );
