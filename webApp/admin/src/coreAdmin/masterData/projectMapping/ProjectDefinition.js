@@ -17,14 +17,15 @@ class ProjectMapping extends Component{
       "endDate"            : "",
       "projectName"        : "",
       "listofTypesArray"   : "",
-      "goalType"           : [],
+      "goalName"           : "-- Select --",
+      "goalType"           : "-- Select --",
       fields               : {},
       errors               : {},
       "tableHeading"       : {
-        type_ID               : "Goal Type",
+        typeofGoal         : "Goal Type",
         projectName        : "Project Name",
-        startDate          : "Start Date",
-        endDate            : "End Date",
+        // startDate          : "Start Date",
+        // endDate            : "End Date",
         sectorName         : "Sector",
         activityName       : "Activity", 
         subActivityName    : "Subactivity", 
@@ -35,7 +36,7 @@ class ProjectMapping extends Component{
         apiLink            : '/api/projectMappings/',
         paginationApply    : false,
         searchApply        : false,
-        editUrl            : '/project-mapping/'
+        editUrl            : '/project-definition/'
       },
       "startRange"         : 0,
       "limitRange"         : 10000,
@@ -144,6 +145,7 @@ class ProjectMapping extends Component{
           "endDate"      : this.refs.endDate.value,              
           "sector"       : this.state.sectorData                
         };
+        console.log("mappingValues",mappingValues);
         axios.post('/api/projectMappings',mappingValues)
           .then((response)=>{
             console.log("response",response)
@@ -152,6 +154,8 @@ class ProjectMapping extends Component{
               text  : response.data.message
             });
             this.getAvailableSector();
+            this.currentFromDate();
+            this.currentToDate();
             this.getData(this.state.startRange, this.state.limitRange);
           })
           .catch(function(error){
@@ -159,31 +163,28 @@ class ProjectMapping extends Component{
           });
         this.setState({
           "projectName"           :"",
-          "goalType"           :[],
-          "startDate"             :"",
-          "endDate"               :"",
-          "sectorData"            :[],
+          "goalName"              : "-- Select --",
+          "goalType"              : "-- Select --",
+          // "startDate"             :"",
+          // "endDate"               :"",
+          // "sectorData"            :,
         });
       }
     }  
   }
   Update(event){
     event.preventDefault();
+    console.log($('#sectorMapping').valid())
     if($('#sectorMapping').valid()){
-      var listofTypesArray = this.state.goalType.map((data, index)=>{
-      return({
-          goalName  : data.label,
-          goal_ID   : data.value
-         });
-      })   
       var mappingValues = 
       {     
         "projectMapping_ID"   : this.state.editId,    
-        "projectName"         : this.refs.projectName.value,
-        "type_ID"             : listofTypesArray,           
-        "startDate"           : this.refs.startDate.value,          
-        "endDate"             : this.refs.endDate.value,              
-        "sector"              : this.state.sectorData             
+        "projectName"  : this.refs.projectName.value,          
+        "type_ID"      : this.refs.goalType.value,           
+        "goalName"     : this.refs.goalName.value,           
+        "startDate"    : this.refs.startDate.value,          
+        "endDate"      : this.refs.endDate.value,              
+        "sector"       : this.state.sectorData               
       };
       axios.patch('/api/projectMappings/update',mappingValues)
         .then((response)=>{
@@ -192,6 +193,8 @@ class ProjectMapping extends Component{
             text  : response.data.message
           });
           this.getAvailableSector();
+          this.currentFromDate();
+          this.currentToDate();
           this.getData(this.state.startRange, this.state.limitRange);
       })
       .catch(function(error){
@@ -199,12 +202,13 @@ class ProjectMapping extends Component{
       });
       this.setState({
         "projectName"           : "",
-        "goalType"           : [],
-        "startDate"             : "",
-        "endDate"               : "",
-        "sectorData"            : [],
+        "goalName"              : "-- Select --",
+        "goalType"              : "-- Select --",
+        // "startDate"             : "",
+        // "endDate"               : "",
+        // "sectorData"            : [],
       });
-      this.props.history.push('/project-mapping');
+      this.props.history.push('/project-definition');
       this.setState({
         "editId"              : "",
       });
@@ -276,13 +280,15 @@ class ProjectMapping extends Component{
     }); */
   }
   edit(id){
+      console.log('editDataid',id);
     axios({
       method: 'get',
       url: '/api/projectMappings/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      // console.log('editData',editData);
+      console.log('editData',response);
       var availableSectors = this.state.availableSectors
+      console.log('availableSectors',availableSectors);
       if(editData.sector && editData.sector.length>0){
         // console.log('editData.sector==============',editData.sector,availableSectors)
         editData.sector.map((element)=>{
@@ -309,41 +315,45 @@ class ProjectMapping extends Component{
         })
       }
 
-      if(editData.type_ID.length>1)
-      {
-         var listofTypesArray = editData.type_ID.map((data, index)=>{
-          return({
-              label  : data.goalName,
-              value   : data.goal_ID
-             });
-          })
+      // if(editData.type_ID.length>1)
+      // {
+      //    var listofTypesArray = editData.type_ID.map((data, index)=>{
+      //     return({
+      //         label  : data.goalName,
+      //         value   : data.goal_ID
+      //        });
+      //     })
+      console.log('editData.sector',editData.sector,availableSectors);
         this.setState({
           "projectName"                :editData.projectName,     
-          "goalType"                :listofTypesArray,      
+          "goalType"                   :editData.type_ID,      
+          "goalName"                   :editData.goalName,      
           "startDate"                  :editData.startDate,      
           "endDate"                    :editData.endDate,      
           "sectorData"                 :editData.sector, 
           "availableSectors"           :availableSectors
+        },()=>{
+          this.getNameOfGoal(this.state.goalType)
         });
       // console.log('goalType',this.state.goalType);
-      }else{
-         var listofTypesArray = editData.type_ID.map((data, index)=>{
-          return({
-              label  : data.goalName,
-              value   : data.goal_ID
-             });
-          })
-         // console.log("listofTypesArray",listofTypesArray);
-         this.setState({
-          "projectName"                :editData.projectName,     
-          "goalType"                :listofTypesArray[0],      
-          "startDate"                  :editData.startDate,      
-          "endDate"                    :editData.endDate,      
-          "sectorData"                 :editData.sector, 
-          "availableSectors"           :availableSectors
-        });
-      // console.log('goalTypeelse',this.state.goalType);
-      }
+      // }else{
+      //    var listofTypesArray = editData.type_ID.map((data, index)=>{
+      //     return({
+      //         label  : data.goalName,
+      //         value   : data.goal_ID
+      //        });
+      //     })
+      //    // console.log("listofTypesArray",listofTypesArray);
+      //    this.setState({
+      //     "projectName"                :editData.projectName,     
+      //     "goalType"                :listofTypesArray[0],      
+      //     "startDate"                  :editData.startDate,      
+      //     "endDate"                    :editData.endDate,      
+      //     "sectorData"                 :editData.sector, 
+      //     "availableSectors"           :availableSectors
+      //   });
+      // // console.log('goalTypeelse',this.state.goalType);
+      // }
 
     }).catch(function (error) {
       console.log("error = ",error);
@@ -367,14 +377,15 @@ class ProjectMapping extends Component{
     // console.log('/api/projectMappings/list/'+startRange+'/'+limitRange);
     axios.get('/api/projectMappings/list/'+startRange+'/'+limitRange)
     .then((response)=>{
+      // console.log(response)
       if(response&&response.data&&response.data.length>0){
         var tableData = response.data.map((a, i)=>{
         return {
             _id                       : a._id,
-            type_ID                   : a.type_ID,
+            typeofGoal                : a.typeofGoal,
             projectName               : a.projectName,
-            startDate                 : a.startDate,
-            endDate                   : a.endDate,
+            // startDate                 : a.startDate,
+            // endDate                   : a.endDate,
             sectorName                : a.sectorName,
             activityName              : a.activityName,
             subActivityName           : a.subActivityName,
@@ -391,6 +402,7 @@ class ProjectMapping extends Component{
   }
   selectSector(event){
     var checkedValue = event.target.value;
+      console.log("checkedValue",checkedValue);
     var index     = event.target.getAttribute('data-index');
     var indexSector     = event.target.getAttribute('data-txt');
     var name     = event.target.getAttribute('data-typechecked');
@@ -427,6 +439,7 @@ class ProjectMapping extends Component{
                     "subActivity_ID":blocktwo._id,
                     "subActivityName": blocktwo.subActivityName,
                   })
+    console.log('sectorData1',sectorData)
                 }
               }else{
                 blocktwo.checked = "N"
@@ -435,6 +448,7 @@ class ProjectMapping extends Component{
                 sectorData = arr;
               }
               return blocktwo
+              console.log("blocktwo1",blocktwo)
             })
           }else{
             if(checkedValue==="Y"){
@@ -449,10 +463,12 @@ class ProjectMapping extends Component{
                   "subActivity_ID":"",
                   "subActivityName": "",
                 })
+                console.log('sectorData2',sectorData)
               }
             }else{
               var arr = sectorData.filter((item)=>{return item.sector_ID!=data._id&&item.activity_ID!=element._id});
               sectorData = arr;
+              console.log('sectorData3',sectorData)
             }
           }
           return element
@@ -473,7 +489,6 @@ class ProjectMapping extends Component{
         });
       }
     }
-    console.log('sectorData',sectorData)
     this.setState({
       availableSectors : array,
       sectorData: sectorData
@@ -544,7 +559,7 @@ class ProjectMapping extends Component{
         }
       }                                          
     }
-    console.log('sectorData',sectorData)
+    console.log('sectorDataActivity',sectorData)
     this.setState({
       availableSectors : array,
       sectorData : sectorData
@@ -594,7 +609,7 @@ class ProjectMapping extends Component{
         sectorData = arr;
       }
     }
-    // console.log('sectorData',sectorData)
+    console.log('sectorDataSubAct',sectorData)
     this.setState({
       availableSectors : array,
       sectorData : sectorData
@@ -643,6 +658,7 @@ class ProjectMapping extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {   
+      var sectorData = this.state.sectorData;
       // console.log("response.data",response.data);
       var availableSectorData = response.data.map((block)=>{
         var totalLength = 0;
@@ -652,24 +668,57 @@ class ProjectMapping extends Component{
             if(blockone.subActivity.length>0){
               totalLength = totalLength + blockone.subActivity.length 
               blockone.subActivity.map((blocktwo)=>{
+                  sectorData.push({
+                    "sector_ID": block._id,
+                    "sectorName": block.sector,
+                    "activity_ID": blockone._id,
+                    "activityName": blockone.activityName,
+                    "subActivity_ID":blocktwo._id,
+                    "subActivityName": blocktwo.subActivityName,
+                  })  
                 blocktwo.checked = "Y"
+                  // console.log('sectorData',sectorData)
                 return blocktwo;
               })
+            }else{
+              sectorData.push({
+                "sector_ID": block._id,
+                "sectorName": block.sector,
+                "activity_ID": blockone._id,
+                "activityName": blockone.activityName,
+                "subActivity_ID":"",
+                "subActivityName": "",
+              })   
             }
             blockone.checked = "Y";
             return blockone;
           })
+        }else{
+          // sectorData.push({
+          //   "sector_ID": block._id,
+          //   "sectorName": block.sector,
+          //   "activity_ID": "",
+          //   "activityName": "",
+          //   "subActivity_ID":"",
+          //   "subActivityName": "",
+          // })   
         }
         block.blockLength = totalLength;
         block.checked = "Y";
+       
         return block;
       })
       var sortArray = availableSectorData.sort(function(a,b){
         return((a.blockLength) - (b.blockLength)); //ASC, For Descending order use: b - a
       });
+          
 
       this.setState({
         availableSectors : sortArray,
+        sectorData       : sectorData,
+      },()=>{
+    // console.log('this.state.availableSectors',this.state.availableSectors)
+    // console.log('this.state.sectorData',this.state.sectorData)
       })
     }).catch(function (error) {
       console.log("error = ",error);
@@ -724,7 +773,10 @@ class ProjectMapping extends Component{
       url: '/api/typeofgoals/list',
     }).then((response)=> {
         this.setState({
-          listofTypes : response.data
+          listofTypes : response.data,
+          // goalType    : response.data[0]._id
+        },()=>{
+          // this.getNameOfGoal(this.state.goalType)
         })
         var label = "";
         var value = "";
@@ -891,7 +943,7 @@ class ProjectMapping extends Component{
                                 {
                                   this.state.listofGoalNames ?
                                   this.state.listofGoalNames.map((data, index)=>{
-                                    console.log(data)
+                                    // console.log(data)
                                     return(
                                       <option key={index} data-name={data.goalName} value={data.goalName}>{data.goalName}</option> 
                                     );

@@ -554,7 +554,7 @@ class IAssureTable extends Component {
 	    WindowObject.close();
     }
 	render() {
-		console.log("role :", this.state.role);
+		// console.log("role :", this.state.role);
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       	{

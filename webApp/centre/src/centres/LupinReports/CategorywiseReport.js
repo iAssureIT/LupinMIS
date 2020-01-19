@@ -44,7 +44,7 @@ class CategorywiseReport extends Component{
         },
         "tableHeading"      : {
           "projectCategoryType"  : 'Project Category',
-          // "projectName"          : 'Project Name',
+          "projectName"          : 'Project Name',
           "incomeCategory"    : 'Income Category',
           "landCategory"      : 'Land Holding Category',
           "specialCategory"   : 'Special Category',
@@ -245,7 +245,7 @@ class CategorywiseReport extends Component{
             return {
               _id                    : a._id,
               projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
-              // projectName            : a.projectName === 0 ? "-" :a.projectName,                  
+              projectName            : a.projectName === "all"|| 0? "-" :a.projectName,                  
               incomeCategory         : a.incomeCategory,
               landCategory           : a.landCategory,
               specialCategory        : a.specialCategory,

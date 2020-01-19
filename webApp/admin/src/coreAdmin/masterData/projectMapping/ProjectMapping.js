@@ -21,10 +21,10 @@ class ProjectMapping extends Component{
       fields               : {},
       errors               : {},
       "tableHeading"       : {
-        type_ID               : "Goal Type",
         projectName        : "Project Name",
-        startDate          : "Start Date",
-        endDate            : "End Date",
+        typeofGoal         : "Goal Type",
+        // startDate          : "Start Date",
+        // endDate            : "End Date",
         sectorName         : "Sector",
         activityName       : "Activity", 
         subActivityName    : "Subactivity", 
@@ -114,6 +114,7 @@ class ProjectMapping extends Component{
   Submit(event){
     event.preventDefault();
     if($('#sectorMapping').valid()){
+      console.log("sectorData",this.state.sectorData)
       if (this.state.sectorData.length===0){      
         swal({
           title: 'abc',
@@ -351,10 +352,10 @@ class ProjectMapping extends Component{
         var tableData = response.data.map((a, i)=>{
         return {
             _id                       : a._id,
-            type_ID                   : a.type_ID,
+            typeofGoal                : a.typeofGoal,
             projectName               : a.projectName,
-            startDate                 : a.startDate,
-            endDate                   : a.endDate,
+            // startDate                 : a.startDate,
+            // endDate                   : a.endDate,
             sectorName                : a.sectorName,
             activityName              : a.activityName,
             subActivityName           : a.subActivityName,
@@ -453,6 +454,7 @@ class ProjectMapping extends Component{
         });
       }
     }
+    console.log('sectorData',sectorData)
     this.setState({
       availableSectors : array,
       sectorData: sectorData

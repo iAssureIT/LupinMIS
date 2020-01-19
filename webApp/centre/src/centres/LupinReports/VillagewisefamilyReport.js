@@ -44,6 +44,7 @@ class VillagewisefamilyReport extends Component{
         },
         "tableHeading"      : {
             "projectCategoryType" : 'Project Category',
+            "projectName"          : 'Project Name',
             "sectorName"          : 'Sector',
             "activityName"        : 'Activity',
             "subactivityName"     : 'Subactivity',
@@ -332,8 +333,9 @@ class VillagewisefamilyReport extends Component{
             console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
-                _id                    : a._id,            
-                projectCategoryType    : a.projectCategoryType,
+                _id                    : a._id,   
+                projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
+                projectName            : a.projectName ==="all"|| 0 ? "-" :a.projectName,                       
                 sectorName             : a.sectorName,
                 activityName           : a.activityName,
                 subactivityName        : a.subactivityName,
@@ -363,8 +365,8 @@ class VillagewisefamilyReport extends Component{
               var tableData = response.data.map((a, i)=>{
               return {
                 _id                    : a._id,            
-                projectCategoryType    : a.projectCategoryType,
-                sectorName             : a.sectorName,
+                projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
+                projectName            : a.projectName ==="all"|| 0 ? "-" :a.projectName,                              sectorName             : a.sectorName,
                 activityName           : a.activityName,
                 subactivityName        : a.subactivityName,
                 familyID               : a.familyID,

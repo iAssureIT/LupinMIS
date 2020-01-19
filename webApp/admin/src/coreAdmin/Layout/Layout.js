@@ -176,6 +176,8 @@ componentDidMount(){
                           <Route path="/SectorAndActivityRedirect/:tabName/:sectorId/:activityId/:subactivityId"     exact strict component={ SectorAndActivityRedirect } />
   
                           <Route path="/project-definition"                                           exact strict component={ ProjectDefinition } />
+                          <Route path="/project-definition/"                                          exact strict component={ ProjectDefinition } />
+                          <Route path="/project-definition/:projectMappingId"                         exact strict component={ ProjectDefinition } />
                           <Route path="/project-mapping"                                              exact strict component={ ProjectMapping } />
                           <Route path="/project-mapping/"                                             exact strict component={ ProjectMapping } />
                           <Route path="/project-mapping/:projectMappingId"                            exact strict component={ ProjectMapping } />
