@@ -154,8 +154,6 @@ class ProjectMapping extends Component{
               title : response.data.message,
               text  : response.data.message
             });
-            this.getAvailableSector(this.state.goalType, this.state.goalName)
-            // this.getAvailableSector();
             this.currentFromDate();
             this.currentToDate();
             this.getData(this.state.startRange, this.state.limitRange);
@@ -166,6 +164,8 @@ class ProjectMapping extends Component{
               "sectorData"            :[],
               "goalName"              : "-- Select --",
               "goalType"              : "-- Select --",
+            },()=>{
+                this.getAvailableSector(this.state.goalType, this.state.goalName)
             });
           })
           .catch(function(error){
@@ -194,7 +194,6 @@ class ProjectMapping extends Component{
             title : response.data.message,
             text  : response.data.message
           });
-          this.getAvailableSector(this.state.goalType, this.state.goalName)
           this.currentFromDate();
           this.currentToDate();
           this.getData(this.state.startRange, this.state.limitRange);
@@ -208,6 +207,8 @@ class ProjectMapping extends Component{
         "sectorData"            :[],
         "goalName"              : "-- Select --",
         "goalType"              : "-- Select --",
+      },()=>{
+          this.getAvailableSector(this.state.goalType, this.state.goalName)
       });
       this.props.history.push('/project-definition');
       this.setState({
@@ -284,7 +285,9 @@ class ProjectMapping extends Component{
       url: '/api/projectMappings/'+id,
     }).then((response)=> {
       var editData = response.data[0];
+
       console.log('editData',response);
+      this.getAvailableSector(editData.type_ID, editData.goalName)
       var availableSectors = this.state.availableSectors
       console.log('availableSectors',availableSectors);
       if(editData.sector && editData.sector.length>0){
@@ -717,7 +720,7 @@ class ProjectMapping extends Component{
         availableSectors : sortArray,
         sectorData       : sectorData,
       },()=>{
-    // console.log('this.state.availableSectors',this.state.availableSectors)
+    console.log('this.state.availableSectors',this.state.availableSectors)
     // console.log('this.state.sectorData',this.state.sectorData)
       })
     }).catch(function (error) {
