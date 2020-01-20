@@ -16,7 +16,7 @@ class FileWisePlanList extends Component{
           "tableObjects"              : {
               deleteMethod              : 'delete',
               apiLink                   : '/api/annualPlans/file/delete/',
-              paginationApply           : true,
+              paginationApply           : false,
               searchApply               : false,
             },
           startRange : 0,

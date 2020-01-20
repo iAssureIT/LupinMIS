@@ -16,7 +16,7 @@ class FileWiseMonthlyPlanList extends Component{
           "tableObjects"              : {
               deleteMethod              : 'delete',
               apiLink                   : '/api/monthlyPlans/file/delete/',
-              paginationApply           : true,
+              paginationApply           : false,
               searchApply               : false,
             },
           startRange : 0,

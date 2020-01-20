@@ -213,7 +213,6 @@ class BulkUpload extends Component{
     var excelChunkData = [];
 
     
-    
     const startProcess = async (data)=>{
       for (var i = initialLmt; i < endLmt; i++) {
         if (this.state.inputFileData[i]) {
@@ -227,7 +226,8 @@ class BulkUpload extends Component{
             data      : chunkData,
             reqdata   : this.props.data,
             fileName  : this.state.fileName,
-            totalRecords : totalrows
+            totalRecords : totalrows,
+            updateBadData : i > factor ? false : true
           };
           //console.log('chunkData',chunkData)
           // var formValues ={
@@ -252,6 +252,7 @@ class BulkUpload extends Component{
               var percentage = Math.round((endLmt*100/totalrows))
               if (percentage > 99 ) {
                 percentage = 100;
+                
                 $('.fullpageloader').hide();
                 $('.filedetailsDiv').show();
                 this.props.getFileDetails(this.state.fileName) 

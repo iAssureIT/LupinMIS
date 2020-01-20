@@ -29,8 +29,8 @@ class FilewiseActivityList extends Component{
   }
   getData(startRange, limitRange){
       var data = {
-        startRange : startRange,
-        limitRange : limitRange
+        startRange : this.state.startRange,
+        limitRange : this.state.limitRange
       }
       axios.post('/api/activityReport/get/files', data)
       .then((response)=>{

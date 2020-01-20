@@ -16,9 +16,10 @@ class FilewiseFamilyList extends Component{
           "tableObjects"              : {
               deleteMethod              : 'delete',
               apiLink                   : '/api/families/file/delete/',
-              paginationApply           : true,
+              paginationApply           : false,
               searchApply               : false,
             },
+            dataCount:0,
           startRange : 0,
           limitRange : 10
     }
@@ -27,14 +28,28 @@ class FilewiseFamilyList extends Component{
   componentDidMount(){
     this.getCount();
   }
-  getData(startRange, limitRange){
+  getCount(){
+      axios.get('/api/families/get/files/count')
+      .then((response)=>{
+        console.log(response.data)
+        this.setState({
+          dataCount : response.data
+        })
+      })
+      .catch((error)=>{
+        console.log('error', error);
+      })
+    }
+  getData(startRange,limitRange){
+    
       var data = {
         startRange : startRange,
         limitRange : limitRange
       }
+      console.log('tableData', data)
       axios.post('/api/families/get/files', data)
       .then((response)=>{
-        console.log(response.data);
+        //console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             fileName: a.fileName != null ? a.fileName : "-", 
@@ -51,18 +66,7 @@ class FilewiseFamilyList extends Component{
         console.log('error', error);
       })
     }
-    getCount(){
-      axios.get('/api/families/get/files/count')
-      .then((response)=>{
-        console.log(response.data)
-        this.setState({
-          dataCount : response.data
-        })
-      })
-      .catch((error)=>{
-        console.log('error', error);
-      })
-    }
+    
   render() {
     return (
       <div className="container-fluid">

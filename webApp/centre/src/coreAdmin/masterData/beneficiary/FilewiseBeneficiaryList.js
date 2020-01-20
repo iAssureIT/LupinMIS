@@ -16,7 +16,7 @@ class FilewiseBeneficiaryList extends Component{
           "tableObjects"              : {
               deleteMethod              : 'delete',
               apiLink                   : '/api/beneficiaries/file/delete/',
-              paginationApply           : true,
+              paginationApply           : false,
               searchApply               : false,
             },
           startRange : 0,
