@@ -61,13 +61,13 @@ export default class CenterWisePieChart extends Component {
           var piechartcolor =[];
           if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
-              if(data.annualPlan_TotalBudget_L > 0){
+              if(data.annualPlan_TotalBudget > 0){
                 sector.push(data.name);
-                annualPlanTotalBudget.push(data.annualPlan_TotalBudget_L);
+                annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
                 piechartcolor.push(this.getRandomColor());                
               }
             })
-            // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
+            console.log("annualPlanTotalBudget",annualPlanTotalBudget);
             if(annualPlanTotalBudget.length > 0){
               centerData.datasets[0].data = annualPlanTotalBudget;
               centerData.labels = sector;
@@ -135,7 +135,7 @@ export default class CenterWisePieChart extends Component {
       // return color;
     }
   render() {
-    // console.log("this.state.data = ",this.state.data);
+    console.log("this.state.data = ",this.state.data);
     return (
       <div>
               <Loader type="fullpageloader" />

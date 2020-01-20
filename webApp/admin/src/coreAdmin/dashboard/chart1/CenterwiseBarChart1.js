@@ -116,10 +116,13 @@ export default class CenterwiseBarChart1 extends Component{
 
 
  
-  getData(year, center_ID){
+  getData( center_ID){
+    var year = "FY 2019 - 2020"
     console.log('year', year, 'center_ID', center_ID);
     var startDate = year.substring(3, 7)+"-04-01";
-    var endDate = moment(new Date()).format("YYYY-MM-DD");
+    var endDate = year.substring(10, 15)+"-03-31";
+    // var startDate = year.substring(3, 7)+"-04-01";
+    // var endDate = moment(new Date()).format("YYYY-MM-DD");
     if(startDate, endDate, center_ID){
         axios.get('/api/report/center/'+startDate+'/'+endDate+'/'+center_ID)
         .then((response)=>{
