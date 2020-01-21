@@ -134,7 +134,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
           // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
@@ -145,7 +145,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         this.currentFromDate();
         this.currentToDate();
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     }
     handleChange(event){
         event.preventDefault();
@@ -153,12 +153,12 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
           [event.target.name] : event.target.value
         },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-          console.log('name', this.state)
+          // console.log('name', this.state)
         });
     }
     selectprojectCategoryType(event){
         event.preventDefault();
-        console.log(event.target.value)
+        // console.log(event.target.value)
         var projectCategoryType = event.target.value;
         this.setState({
           projectCategoryType : projectCategoryType,
@@ -172,7 +172,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                 projectName : "all",
               })    
             }
-            console.log("shown",this.state.shown, this.state.projectCategoryType)
+            // console.log("shown",this.state.shown, this.state.projectCategoryType)
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
           },()=>{
@@ -183,7 +183,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
           method: 'get',
           url: '/api/projectMappings/list',
         }).then((response)=> {
-          console.log('responseP', response);
+          // console.log('responseP', response);
           this.setState({
             availableProjects : response.data
           })
@@ -251,7 +251,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
               this.setState({
                 tableData : tableData
               },()=>{
-                console.log("resp",this.state.tableData)
+                // console.log("resp",this.state.tableData)
               })
             })
             .catch(function(error){  
@@ -271,7 +271,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         const name = target.name;
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log(Date.parse(startDate));
+        // console.log(Date.parse(startDate));
        
         var dateVal = event.target.value;
         var dateUpdate = new Date(dateVal);
@@ -303,7 +303,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     onBlurEventFrom(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
+        // console.log("startDate",startDate,endDate)
          if ((Date.parse(endDate) < Date.parse(startDate))) {
             
             swal("Start date","From date should be less than To date");
@@ -313,7 +313,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
+        // console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";
@@ -329,9 +329,9 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             var nextDate = today.getDate() - 30;
             today.setDate(nextDate);
             var today =  moment(today).format('YYYY-MM-DD');
-            console.log("today",today);
+            // console.log("today",today);
         }
-        console.log("nowfrom",today)
+        // console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
@@ -354,7 +354,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
+        // console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });

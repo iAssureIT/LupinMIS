@@ -189,7 +189,7 @@ class CaseStudy extends Component{
            // })
        });
     }else{
-         console.log("Please select file");
+         // console.log("Please select file");
     }
   }
   isNumberKey(evt){
@@ -362,7 +362,7 @@ class CaseStudy extends Component{
       url: '/api/caseStudies/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log("editData",editData);
+      // console.log("editData",editData);
       this.setState({
         "dateofsubmission"  : editData.date,
         "title"             : editData.title, 
@@ -403,7 +403,7 @@ class CaseStudy extends Component{
     }
     axios.get('/api/caseStudies/list'+center_ID,data)
     .then((response)=>{
-      console.log('response', response);
+      // console.log('response', response);
       this.setState({
         tableData : response.data
       })

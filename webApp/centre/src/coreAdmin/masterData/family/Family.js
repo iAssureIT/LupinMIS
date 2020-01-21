@@ -446,7 +446,7 @@ class Family extends Component{
           this.setState({
             listofBlocks     : availableblockInCenter,
           })
-          console.log("availableblockInCenter",availableblockInCenter);
+          // console.log("availableblockInCenter",availableblockInCenter);
         }).catch(function (error) {
           console.log("error = ",error);
         });
@@ -517,7 +517,7 @@ class Family extends Component{
     if (center_ID){
       axios.post('/api/families/list/'+center_ID,data)
       .then((response)=>{
-        console.log('response', response.data);
+        // console.log('response', response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                   : a._id,
@@ -947,7 +947,7 @@ class Family extends Component{
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Village</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
-                              {console.log("this.state.village",this.state.village)}
+                              {/*console.log("this.state.village",this.state.village)*/}
                                 <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village?this.state.village:""} onChange={this.selectVillage.bind(this)}  >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   {

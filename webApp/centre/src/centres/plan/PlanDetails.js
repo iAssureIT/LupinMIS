@@ -652,7 +652,7 @@ class PlanDetails extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
+        // console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
@@ -660,7 +660,7 @@ class PlanDetails extends Component{
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
+        // console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
         return(res);
       }
     }
@@ -676,7 +676,7 @@ class PlanDetails extends Component{
       // startDate  : moment().year()+"-04-01",
       endDate    : moment(new Date()).format("YYYY-MM-DD"),
     }
-    console.log("data",data);
+    // console.log("data",data);
     axios.post(this.state.apiCall+'/list', data)
     .then((response)=>{
       // console.log("response plan Details===>",response);
@@ -796,7 +796,7 @@ class PlanDetails extends Component{
         method: 'get',
         url: '/api/sectors/'+sector_ID,
       }).then((response)=> {
-        console.log("response for edit",response.data);
+        // console.log("response for edit",response.data);
         this.setState({
           availableActivity : response.data[0].activity,
           // activityName      : "-- Select --",
@@ -867,7 +867,6 @@ class PlanDetails extends Component{
         method: 'get',
         url: this.state.apiCall+'/'+id,
         }).then((response)=> {
-          console.log("")
         var editData = response.data[0];
         if(editData){
           this.getAvailableActivity(editData.sector_ID);

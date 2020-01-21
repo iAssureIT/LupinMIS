@@ -70,13 +70,13 @@ class Beneficiary extends Component{
 
   handleChange(event){
     event.preventDefault();
-    console.log(event);
+    // console.log(event);
     if(event.currentTarget.name==='familyID'){
       let id = $(event.currentTarget).find('option:selected').attr('data-id')
       // $(".fullpageloader").show();
       axios.get('/api/families/'+id)
       .then((response)=>{
-        console.log('response families',response)
+        // console.log('response families',response)
         this.setState({
           "surnameOfBeneficiary"          :response.data[0].surnameOfFH,
           "firstNameOfBeneficiaryCheck"   :response.data[0].firstNameOfFH,
@@ -202,7 +202,7 @@ class Beneficiary extends Component{
         "uidNumber"                 : this.refs.uidNumber.value,
         "relation"                  : this.refs.relation.value,
       };
-      console.log('beneficiaryValue', beneficiaryValue);
+      // console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
@@ -277,7 +277,7 @@ class Beneficiary extends Component{
 
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
-    console.log('mani ',nextProps.match.params.id);
+    // console.log('mani ',nextProps.match.params.id);
     if(nextProps.match.params.id){
       this.setState({
         editId : editId
@@ -429,7 +429,7 @@ class Beneficiary extends Component{
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -463,7 +463,7 @@ class Beneficiary extends Component{
         this.setState({
           tableData : tableData
         },()=>{
-          console.log("tableData",this.state.tableData)
+          // console.log("tableData",this.state.tableData)
         })
       })
       .catch(function(error){
@@ -477,8 +477,7 @@ class Beneficiary extends Component{
         method: 'get',
         url: '/api/families/list/'+center_ID,
       }).then((response)=> {
-      console.log("availableFamiliesresponse", response);
-          
+      // console.log("availableFamiliesresponse", response);
           this.setState({
             availableFamilies : response.data
           })
@@ -505,7 +504,7 @@ class Beneficiary extends Component{
               "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
               "familyID"       : a.familyID        ? a.familyID    : '-',
               "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
-              nameofbeneficiaries : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+              "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
               "relation"       : a.relation     ? a.relation : '-',
           }
         })

@@ -90,7 +90,7 @@ class ADPReport extends Component{
           // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID)
+        // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
@@ -110,14 +110,13 @@ class ADPReport extends Component{
     }
    
     getData(startDate, endDate,center_ID, goal, beneficiaryType){
-        console.log(startDate, endDate, center_ID);
+        // console.log(startDate, endDate, center_ID);
        // $(".fullpageloader").show();
 
         axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+ "ADP Goal/"+beneficiaryType)
         .then((response)=>{
           //$(".fullpageloader").hide();
-
-          console.log("resp",response);
+          // console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
             return {
                 _id             : a._id,            
@@ -138,7 +137,7 @@ class ADPReport extends Component{
           this.setState({
             tableData : tableData
           },()=>{
-            console.log("resp",this.state.tableData)
+            // console.log("resp",this.state.tableData)
           })
         })
         .catch(function(error){
@@ -157,7 +156,7 @@ class ADPReport extends Component{
       const name = target.name;
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log(Date.parse(startDate));
+      // console.log(Date.parse(startDate));
       
       var dateVal = event.target.value;
       var dateUpdate = new Date(dateVal);
@@ -168,7 +167,7 @@ class ADPReport extends Component{
       },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
 
-      console.log("dateUpdate",this.state.startDate);
+      // console.log("dateUpdate",this.state.startDate);
       });
     }
     handleToChange(event){
@@ -186,7 +185,7 @@ class ADPReport extends Component{
        [name] : event.target.value,
        endDate : endDate
       },()=>{
-      console.log("dateUpdate",this.state.endDate);
+      // console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       });
     }
@@ -205,9 +204,9 @@ class ADPReport extends Component{
             today.setDate(nextDate);
             // var newDate = today.toLocaleString();
             var today =  moment(today).format('YYYY-MM-DD');
-            console.log("today",today);
+            // console.log("today",today);
         }
-        console.log("nowfrom",today)
+        // console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
@@ -231,7 +230,7 @@ class ADPReport extends Component{
         // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
+        // console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
@@ -246,7 +245,7 @@ class ADPReport extends Component{
      onBlurEventFrom(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
+      // console.log("startDate",startDate,endDate)
       if ((Date.parse(endDate) < Date.parse(startDate))) {
           swal("Start date","From date should be less than To date");
           this.refs.startDate.value="";
@@ -255,7 +254,7 @@ class ADPReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
+        // console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";

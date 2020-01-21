@@ -21,7 +21,7 @@ export default class YearlyReport extends Component{
             "limitRange"        : 10000
             
         }
-        console.log("tableData", this.state.tableData);
+        // console.log("tableData", this.state.tableData);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -77,7 +77,7 @@ export default class YearlyReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-            console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
+            // console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
             return(res);
           }else{
             var lastThree = x.substring(x.length-3);
@@ -85,7 +85,7 @@ export default class YearlyReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-            console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
+            // console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
             return(res);
           }
         }

@@ -31,7 +31,7 @@ class AddFile extends Component{
   }
   
   componentWillReceiveProps(nextProps){
-    console.log('nextProps.imageArray', nextProps);  
+    // console.log('nextProps.imageArray', nextProps);  
     if(nextProps){
       this.setState({      
           "imageArray"      : nextProps.imageArray, 
@@ -46,7 +46,9 @@ class AddFile extends Component{
 
     this.setState({
       fileType : fileType
-    },()=>{console.log("fileType",this.state.fileType)})
+    },()=>{
+      // console.log("fileType",this.state.fileType)
+    })
     axios
       // .get('http://cofficapi.iassureit.com/api/projectSettings/single/S3')
       .get('/api/projectSettings/get/one/S3')
@@ -105,7 +107,7 @@ class AddFile extends Component{
                     imageArray : imageArray
                   },()=>{
                     this.props.getFile(this.state.fileArray, this.state.filenames,this.state.imageArray)
-                    console.log("imageArray",this.state.imageArray)
+                    // console.log("imageArray",this.state.imageArray)
                   })
               })
               .catch((error)=>{
@@ -162,15 +164,15 @@ class AddFile extends Component{
                     filenames : filenames,
                     fileArray : fileArray
                   },()=>{
-                    console.log("filenames",this.state.fileArray);
+                    // console.log("filenames",this.state.fileArray);
                     this.props.getFile(this.state.fileArray, this.state.filenames,this.state.imageArray)
-                    console.log("fileArray",this.state.fileArray)
+                    // console.log("fileArray",this.state.fileArray)
                     var fileLocation = JSON.stringify(this.state.fileArray);
                     localStorage.setItem("fileLocation",fileLocation);
                   })
               })
               .catch((error)=>{
-                console.log("formErrors");
+                // console.log("formErrors");
                 console.log(error);
               })
           }else{         
@@ -187,7 +189,7 @@ class AddFile extends Component{
     e.preventDefault();
     var index        = e.target.getAttribute('id');
     var filePath     = e.target.getAttribute('data-id');
-    console.log("this.state.fileArray",this.state.fileArray,"index",index,"filePath",filePath);
+    // console.log("this.state.fileArray",this.state.fileArray,"index",index,"filePath",filePath);
     var index = e.currentTarget.getAttribute('id');
     var filePath = e.currentTarget.getAttribute('data-id');
     var data = filePath.split("/");
@@ -220,7 +222,7 @@ class AddFile extends Component{
     e.preventDefault();
     var index = e.currentTarget.getAttribute('id');
     var filePath = e.currentTarget.getAttribute('data-id');
-   console.log("filePath===",filePath);
+    // console.log("filePath===",filePath);
     var data = filePath.split("/");
     var imageName = data[4];
     if(index){
@@ -290,7 +292,7 @@ class AddFile extends Component{
   }
 
   render() {
-    console.log("this.state.fileArray",this.state.fileArray)
+    // console.log("this.state.fileArray",this.state.fileArray)
     return (
       <div className="">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 compForm compinfotp mt20 ">

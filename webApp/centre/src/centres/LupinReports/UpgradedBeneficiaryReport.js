@@ -100,7 +100,7 @@ class UpgradedBeneficiaryReport extends Component{
       this.currentFromDate();
       this.currentToDate();
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
-      console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+      // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
     event.preventDefault();
@@ -108,7 +108,7 @@ class UpgradedBeneficiaryReport extends Component{
       [event.target.name] : event.target.value
     },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
-      console.log('name', this.state)
+      // console.log('name', this.state)
     });
   }
 
@@ -181,7 +181,7 @@ class UpgradedBeneficiaryReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
+    // console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -195,7 +195,7 @@ class UpgradedBeneficiaryReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log("shown",this.state.shown, this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
       },()=>{
@@ -208,7 +208,7 @@ class UpgradedBeneficiaryReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
+      // console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -234,7 +234,7 @@ class UpgradedBeneficiaryReport extends Component{
   }
   
   getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType, upgraded){        
-    console.log(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType, upgraded);
+    // console.log(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType, upgraded);
     if(center_ID){
       if(startDate && endDate && selectedDistrict && projectCategoryType  && beneficiaryType && upgraded){
         if(selectedDistrict==="all"){
@@ -246,7 +246,7 @@ class UpgradedBeneficiaryReport extends Component{
         axios.get(url)
         .then((response)=>{
           $(".fullpageloader").hide();
-          console.log("resp",response);
+          // console.log("resp",response);
           var data = response.data
           var tableData = [];
           if(data.length>0){
@@ -306,7 +306,7 @@ class UpgradedBeneficiaryReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
+    // console.log(Date.parse(startDate));
    
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
@@ -315,9 +315,9 @@ class UpgradedBeneficiaryReport extends Component{
       [name] : event.target.value,
       startDate:startDate
     },()=>{
-    console.log(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    // console.log(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
-    console.log("dateUpdate",this.state.startDate);
+    // console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -334,7 +334,7 @@ class UpgradedBeneficiaryReport extends Component{
          [name] : event.target.value,
          endDate : endDate
       },()=>{
-      console.log("dateUpdate",this.state.endDate);
+      // console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.upgraded);
      });
   }
@@ -349,10 +349,7 @@ class UpgradedBeneficiaryReport extends Component{
         today.setDate(nextDate);
         // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
       }
-  
-      console.log("nowfrom",today)
       this.setState({
          startDate :today
       },()=>{
@@ -391,7 +388,6 @@ class UpgradedBeneficiaryReport extends Component{
     onBlurEventFrom(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
         if ((Date.parse(endDate) < Date.parse(startDate))) {
             swal("Start date","From date should be less than To date");
             this.refs.startDate.value="";
@@ -400,7 +396,6 @@ class UpgradedBeneficiaryReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";

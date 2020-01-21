@@ -212,7 +212,7 @@ class Activity extends Component{
         let id = $(event.currentTarget).find('option:selected').attr('data-id')
         axios.get('/api/projectMappings/'+id)
         .then((response)=>{
-          console.log(response);
+          // console.log(response);
           if(response.data[0].sector&&response.data[0].sector.length>0){
             var returnData = [...new Set(response.data[0].sector.map(a => a.sector_ID))]
             if(returnData&&returnData.length>0){
@@ -255,8 +255,6 @@ class Activity extends Component{
     this.setState({
        [name]: target.value,
     },()=>{
-
-
       if (this.state.unitCost > 0 & this.state.quantity > 0) {
         // console.log("this.state.unitCost = ",this.state.unitCost);
         // console.log("this.state.quantity = ",this.state.quantity);
@@ -422,7 +420,7 @@ class Activity extends Component{
           "sendBeneficiary"     : [],
         });
       }else{
-        swal('Total Costs are not equal! Please check');
+        swal("abc",'Total Costs are not equal! Please check');
       }
     }else{
       $("html,body").scrollTop(0)

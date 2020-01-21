@@ -206,7 +206,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
           method: 'get',
           url: '/api/projectMappings/list',
         }).then((response)=> {
-          console.log('responseP', response);
+          // console.log('responseP', response);
           this.setState({
             availableProjects : response.data
           })
@@ -244,7 +244,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-            console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
+            // console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
             return(res);
           }else{
             var lastThree = x.substring(x.length-3);
@@ -252,13 +252,13 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             if(otherNumbers != '')
                 lastThree = ',' + lastThree;
             var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-            console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
+            // console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
             return(res);
           }
         }
     }
     getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){        
-        console.log(startDate, endDate, center_ID,projectCategoryType);
+        // console.log(startDate, endDate, center_ID,projectCategoryType);
         // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
             $(".fullpageloader").show();
@@ -266,7 +266,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                 .then((response)=>{
                  $(".fullpageloader").hide();
 
-                console.log("resp",response);
+                // console.log("resp",response);
                 var value = response.data.filter((a)=>{return a.name == "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                 return {
@@ -316,7 +316,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         const name = target.name;
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log(Date.parse(startDate));
+        // console.log(Date.parse(startDate));
        
         var dateVal = event.target.value;
         var dateUpdate = new Date(dateVal);
@@ -349,10 +349,8 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
        // localStorage.setItem('newToDate',dateUpdate);
     }
     onBlurEventFrom(){
-
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
          if ((Date.parse(endDate) < Date.parse(startDate))) {
             
             swal("Start date","From date should be less than To date");
@@ -362,7 +360,6 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";
@@ -372,16 +369,13 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
     currentFromDate(){
         if(this.state.startDate){
             var today = this.state.startDate;
-            // console.log("localStoragetoday",today);
         }else {
             var today = (new Date());
             var nextDate = today.getDate() - 30;
             today.setDate(nextDate);
             // var newDate = today.toLocaleString();
             var today =  moment(today).format('YYYY-MM-DD');
-            console.log("today",today);
         }
-        console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
@@ -406,7 +400,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
+        // console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });

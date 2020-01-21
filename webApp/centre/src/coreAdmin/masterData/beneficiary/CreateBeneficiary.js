@@ -152,7 +152,7 @@ class Beneficiary extends Component{
         "uidNumber"                 : this.refs.uidNumber.value,
         "relation"                  : this.refs.relation.value,
       };
-      console.log('beneficiaryValue', beneficiaryValue);
+      // console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
         this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
@@ -211,7 +211,7 @@ class Beneficiary extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    console.log("center_ID =",this.state.center_ID);
+    // console.log("center_ID =",this.state.center_ID);
      this.getLength(this.state.center_ID);
     this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
     this.getAvailableFamilyId(this.state.center_ID);
@@ -285,8 +285,7 @@ class Beneficiary extends Component{
     })
     .then((response)=> {
       var editData = response.data[0];
-      console.log('editData',editData);
-      
+      // console.log('editData',editData);      
       this.setState({
         "beneficiaryID"            : editData.beneficiaryID,
         "familyID"                 : editData.familyID+"|"+editData.family_ID,          
@@ -383,7 +382,7 @@ class Beneficiary extends Component{
       }).catch(function (error) {
         console.log("error = ",error);
       });
-      console.log("availableFamilies", this.state.availableFamilies)
+      // console.log("availableFamilies", this.state.availableFamilies)
     }
   }
 

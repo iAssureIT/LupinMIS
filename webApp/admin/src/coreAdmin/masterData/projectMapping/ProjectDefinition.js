@@ -178,43 +178,58 @@ class ProjectMapping extends Component{
     event.preventDefault();
     if($('#projectMapping').valid()){
       // console.log("sectorData",this.state.sectorData)
-      var mappingValues = 
-      {     
-        "projectMapping_ID"   : this.state.editId,    
-        "projectName"         : this.refs.projectName.value,          
-        "type_ID"      : this.refs.goalType.value,           
-        "goalName"     : this.refs.goalName.value,           
-        "startDate"    : this.refs.startDate.value,          
-        "endDate"      : this.refs.endDate.value,              
-        "sector"       : this.state.sectorData               
-      };
-      axios.patch('/api/projectMappings/update',mappingValues)
-        .then((response)=>{
-          console.log("updateresponse",response)
-          swal({
-            title : response.data.message,
-            text  : response.data.message
-          });
-          this.currentFromDate();
-          this.currentToDate();
-          this.getData(this.state.startRange, this.state.limitRange);
-          this.setState({
-            "projectName"           :"",
-            "type_ID"               :"",
-            "sectorData"            :[],
-            "goalName"              : "-- Select --",
-            "goalType"              : "-- Select --",
-          },()=>{
-            this.getAvailableSector(this.state.goalType, this.state.goalName)
-          });
-      })
-      .catch(function(error){
-        console.log("error = ",error);
-      });
-      this.props.history.push('/project-definition');
-      this.setState({
-        "editId"              : "",
-      });
+      if (this.state.sectorData.length===0){      
+        swal({
+          title: 'abc',
+          text: "Please select appropriate Activity from the list.",
+          button: true,
+        });
+      }else if(this.state.goalType.length === 0){
+        swal({
+          title: 'abc',
+          text: "Please select A Goal Type from the dropdown List",
+          button: true,
+        });        
+      }else{    
+      
+        var mappingValues = 
+        {     
+          "projectMapping_ID"   : this.state.editId,    
+          "projectName"         : this.refs.projectName.value,          
+          "type_ID"      : this.refs.goalType.value,           
+          "goalName"     : this.refs.goalName.value,           
+          "startDate"    : this.refs.startDate.value,          
+          "endDate"      : this.refs.endDate.value,              
+          "sector"       : this.state.sectorData               
+        };
+        axios.patch('/api/projectMappings/update',mappingValues)
+          .then((response)=>{
+            console.log("updateresponse",response)
+            swal({
+              title : response.data.message,
+              text  : response.data.message
+            });
+            this.currentFromDate();
+            this.currentToDate();
+            this.getData(this.state.startRange, this.state.limitRange);
+            this.setState({
+              "projectName"           :"",
+              "type_ID"               :"",
+              "sectorData"            :[],
+              "goalName"              : "-- Select --",
+              "goalType"              : "-- Select --",
+            },()=>{
+              this.getAvailableSector(this.state.goalType, this.state.goalName)
+            });
+        })
+        .catch(function(error){
+          console.log("error = ",error);
+        });
+        this.props.history.push('/project-definition');
+        this.setState({
+          "editId"              : "",
+        });
+      }
     }
   }
   componentWillReceiveProps(nextProps){
@@ -282,7 +297,7 @@ class ProjectMapping extends Component{
       var editData = response.data[0];
       // console.log('editData',response.data[0].sector);
       this.getNameOfGoal(response.data[0].type_ID);
-      console.log('editData.sector',response.data[0].sector);
+      console.log('editData',editData);
       if(editData.sector && editData.sector.length>0){
         axios({
           method: 'get',
@@ -624,7 +639,8 @@ class ProjectMapping extends Component{
           totalLength = totalLength + block.activity.length 
           block.activity.map((blockone, j)=>{
             if(blockone.subActivity[j].length>0){
-              totalLength = totalLength + blockone.subActivity.length 
+              totalLength = totalLength + blockone.subActivity[j].length 
+                  console.log('totalLength',totalLength)
               blockone.subActivity[j].map((blocktwo)=>{
                   sectorData.push({
                     "sector_ID": block.sector_ID,
@@ -663,14 +679,12 @@ class ProjectMapping extends Component{
         }
         block.blockLength = totalLength;
         block.checked = "Y";
-       
         return block;
       })
       var sortArray = availableSectorData.sort(function(a,b){
         return((a.blockLength) - (b.blockLength)); //ASC, For Descending order use: b - a
       });
-          
-
+                  console.log('sortArray',sortArray)
       this.setState({
         availableSectors : sortArray,
         sectorData       : sectorData,

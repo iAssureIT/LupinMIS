@@ -107,16 +107,16 @@ class GoalSectorReport extends Component{
           [event.target.name] : event.target.value
         },()=>{
           this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
-          console.log('name', this.state)
+          // console.log('name', this.state)
         });
     }
    
     getData(startDate, endDate,center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName){
-        console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType);
+        // console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType);
       if(center_ID && beneficiaryType){
         axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName)
         .then((response)=>{
-          console.log("resp",response);
+          // console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
             return {
                 _id                   : a._id,            
@@ -140,7 +140,7 @@ class GoalSectorReport extends Component{
           this.setState({
             tableData : tableData
           },()=>{
-            console.log("resp",this.state.tableData)
+            // console.log("resp",this.state.tableData)
           })
         })
         .catch(function(error){
@@ -213,7 +213,7 @@ class GoalSectorReport extends Component{
       const name = target.name;
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log(Date.parse(startDate));
+      // console.log(Date.parse(startDate));
       
       var dateVal = event.target.value;
       var dateUpdate = new Date(dateVal);
@@ -223,7 +223,7 @@ class GoalSectorReport extends Component{
          startDate:startDate
       },()=>{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
-      console.log("dateUpdate",this.state.startDate);
+      // console.log("dateUpdate",this.state.startDate);
       });
     }
     handleToChange(event){
@@ -241,7 +241,7 @@ class GoalSectorReport extends Component{
        [name] : event.target.value,
        endDate : endDate
       },()=>{
-      console.log("dateUpdate",this.state.endDate);
+      // console.log("dateUpdate",this.state.endDate);
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
       });
     }
@@ -260,9 +260,9 @@ class GoalSectorReport extends Component{
             today.setDate(nextDate);
             // var newDate = today.toLocaleString();
             var today =  moment(today).format('YYYY-MM-DD');
-            console.log("today",today);
+            // console.log("today",today);
         }
-        console.log("nowfrom",today)
+        // console.log("nowfrom",today)
         this.setState({
            startDate :today
         },()=>{
@@ -286,7 +286,7 @@ class GoalSectorReport extends Component{
         // this.handleToChange();
     }
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
+        // console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });
@@ -301,7 +301,7 @@ class GoalSectorReport extends Component{
   onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log("startDate",startDate,endDate)
+    // console.log("startDate",startDate,endDate)
     if ((Date.parse(endDate) < Date.parse(startDate))) {
         swal("Start date","From date should be less than To date");
         this.refs.startDate.value="";
@@ -310,7 +310,7 @@ class GoalSectorReport extends Component{
   onBlurEventTo(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
-      console.log("startDate",startDate,endDate)
+      // console.log("startDate",startDat++++++e,endDate)
         if ((Date.parse(startDate) > Date.parse(endDate))) {
           swal("End date","To date should be greater than From date");
           this.refs.endDate.value="";

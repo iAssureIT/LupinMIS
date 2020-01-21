@@ -87,7 +87,7 @@ class VillagewisefamilyReport extends Component{
       // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-    console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
@@ -100,7 +100,7 @@ class VillagewisefamilyReport extends Component{
     this.currentFromDate();
     this.currentToDate();
     this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
-    console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
     event.preventDefault();
@@ -108,7 +108,7 @@ class VillagewisefamilyReport extends Component{
       [event.target.name] : event.target.value
     },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
-      console.log('name', this.state)
+      // console.log('name', this.state)
     });
   }
 
@@ -209,7 +209,7 @@ class VillagewisefamilyReport extends Component{
     });
   }
   getBlock(stateCode, selectedDistrict){
-    console.log("sd", stateCode,selectedDistrict);
+    // console.log("sd", stateCode,selectedDistrict);
     axios({
       method: 'get',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
@@ -258,7 +258,7 @@ class VillagewisefamilyReport extends Component{
       village : village
     },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
-      console.log("village",village);
+      // console.log("village",village);
     });  
   }  
 
@@ -271,7 +271,7 @@ class VillagewisefamilyReport extends Component{
   }
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
+    // console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
       projectCategoryType : projectCategoryType,
@@ -285,7 +285,7 @@ class VillagewisefamilyReport extends Component{
             projectName : "all",
           })    
         }
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log("shown",this.state.shown, this.state.projectCategoryType)
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
       },()=>{
@@ -296,7 +296,7 @@ class VillagewisefamilyReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response);
+      // console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })
@@ -322,7 +322,7 @@ class VillagewisefamilyReport extends Component{
   }
       
   getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID){        
-    console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
+    // console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
       if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
         if(sector_ID==="all"){
           $(".fullpageloader").show();
@@ -346,7 +346,7 @@ class VillagewisefamilyReport extends Component{
             this.setState({
               tableData : tableData
             },()=>{
-              console.log("resp",this.state.tableData)
+              // console.log("resp",this.state.tableData)
             })
           })
           .catch(function(error){  
@@ -376,7 +376,7 @@ class VillagewisefamilyReport extends Component{
             this.setState({
               tableData : tableData
             },()=>{
-              console.log("resp",this.state.tableData)
+              // console.log("resp",this.state.tableData)
             })
           })
           .catch(function(error){  
@@ -397,8 +397,6 @@ class VillagewisefamilyReport extends Component{
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    console.log(Date.parse(startDate));
-  
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
@@ -407,7 +405,7 @@ class VillagewisefamilyReport extends Component{
        startDate:startDate
     },()=>{
     this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
-    console.log("dateUpdate",this.state.startDate);
+    // console.log("dateUpdate",this.state.startDate);
     });
   }
   handleToChange(event){
@@ -424,7 +422,7 @@ class VillagewisefamilyReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      console.log("dateUpdate",this.state.endDate);
+      // console.log("dateUpdate",this.state.endDate);
       this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID);
     });
   }
@@ -439,10 +437,10 @@ class VillagewisefamilyReport extends Component{
         today.setDate(nextDate);
         // var newDate = today.toLocaleString();
         var today =  moment(today).format('YYYY-MM-DD');
-        console.log("today",today);
+        // console.log("today",today);
       }
   
-      console.log("nowfrom",today)
+      // console.log("nowfrom",today)
       this.setState({
          startDate :today
       },()=>{
@@ -466,7 +464,7 @@ class VillagewisefamilyReport extends Component{
       // this.handleToChange();
   }
   getSearchText(searchText, startRange, limitRange){
-      console.log(searchText, startRange, limitRange);
+      // console.log(searchText, startRange, limitRange);
       this.setState({
           tableData : []
       });
@@ -481,7 +479,7 @@ class VillagewisefamilyReport extends Component{
   onBlurEventFrom(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
+        // console.log("startDate",startDate,endDate)
         if ((Date.parse(endDate) < Date.parse(startDate))) {
             swal("Start date","From date should be less than To date");
             this.refs.startDate.value="";
@@ -490,7 +488,7 @@ class VillagewisefamilyReport extends Component{
     onBlurEventTo(){
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
-        console.log("startDate",startDate,endDate)
+        // console.log("startDate",startDate,endDate)
           if ((Date.parse(startDate) > Date.parse(endDate))) {
             swal("End date","To date should be greater than From date");
             this.refs.endDate.value="";

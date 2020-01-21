@@ -277,7 +277,7 @@ class NewBeneficiary extends Component{
 
   getSearchText(searchText){
     var searchText = searchText;
-    console.log('searchText',searchText)
+    // console.log('searchText',searchText)
     var tableData = [...this.state.prevtableData]
     if(searchText) {
       if(tableData&&tableData.length>0){

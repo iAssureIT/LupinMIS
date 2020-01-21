@@ -33,7 +33,7 @@ export default class YearlyReport extends Component{
           center_ID    : center_ID,
           centerName   : centerName,
         },()=>{
-        console.log("center_ID =",this.state.center_ID,"year", this.state.year);
+        // console.log("center_ID =",this.state.center_ID,"year", this.state.year);
         this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
 
         });
@@ -48,7 +48,7 @@ export default class YearlyReport extends Component{
         })
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.handleChange = this.handleChange.bind(this);
-                    {console.log("year",this.state.year)}
+                    // {console.log("year",this.state.year)}
         
     }
     componentWillReceiveProps(nextProps){
@@ -84,17 +84,17 @@ export default class YearlyReport extends Component{
         this.setState({
            [name] : event.target.value,
         },()=>{
-                this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+          this.getData(this.state.year, this.state.center_ID, this.state.sector, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
 
         });
     }
     getData(year, center_ID, sector, projectCategoryType, projectName, beneficiaryType){        
       if(year){
         if( center_ID && sector && projectCategoryType  && beneficiaryType){ 
-          console.log('year', year, 'center_ID', center_ID, 'sector', sector);
+          // console.log('year', year, 'center_ID', center_ID, 'sector', sector);
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";
-          console.log(startDate, endDate, center_ID, sector, projectCategoryType, projectName, beneficiaryType);
+          // console.log(startDate, endDate, center_ID, sector, projectCategoryType, projectName, beneficiaryType);
           axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
           // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector)
           .then((response)=>{

@@ -113,13 +113,13 @@ class SDGReport extends Component{
     this.setState({ 
       goalType : goalType 
     }, ()=>{
-      console.log("goalType = ", this.state.goalType) 
+      // console.log("goalType = ", this.state.goalType) 
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
     });
   };
   getData(startDate, endDate,center_ID, beneficiaryType, projectCategoryType, projectName){
     // console.log(startDate, endDate, center_ID);
-    console.log("this.state.goalType",this.state.goalType)
+    // console.log("this.state.goalType",this.state.goalType)
     if(startDate && endDate && center_ID && beneficiaryType){
     if(beneficiaryType==="all"){
       var url = '/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+"/all/"+projectCategoryType+"/"+projectName
@@ -133,7 +133,7 @@ class SDGReport extends Component{
     var formvalues = {
           "goal"      : listofTypesArray,           
     }
-    console.log("formvalues",formvalues)
+    // console.log("formvalues",formvalues)
       axios.post(url, formvalues)
       .then((response)=>{
         console.log("resp",response);

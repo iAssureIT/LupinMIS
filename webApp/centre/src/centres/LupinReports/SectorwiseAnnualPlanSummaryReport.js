@@ -311,7 +311,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
          startDate:startDate
      },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-     console.log("dateUpdate",this.state.startDate);
      });
      // localStorage.setItem('newFromDate',dateUpdate);
   }
