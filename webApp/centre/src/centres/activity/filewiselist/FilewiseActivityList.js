@@ -16,7 +16,7 @@ class FilewiseActivityList extends Component{
           "tableObjects"              : {
               deleteMethod              : 'delete',
               apiLink                   : '/api/activityReport/file/delete/',
-              paginationApply           : true,
+              paginationApply           : false,
               searchApply               : false,
             },
           startRange : 0,
@@ -30,7 +30,8 @@ class FilewiseActivityList extends Component{
   getData(startRange, limitRange){
       var data = {
         startRange : this.state.startRange,
-        limitRange : this.state.limitRange
+        limitRange : this.state.limitRange,
+        center_ID  : localStorage.getItem('center_ID')
       }
       axios.post('/api/activityReport/get/files', data)
       .then((response)=>{
@@ -51,7 +52,7 @@ class FilewiseActivityList extends Component{
       })
     }
     getCount(){
-      axios.get('/api/activityReport/get/files/count')
+      axios.get('/api/activityReport/get/files/count/'+localStorage.getItem('center_ID'))
       .then((response)=>{
         console.log(response.data)
         this.setState({

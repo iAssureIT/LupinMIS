@@ -30,7 +30,8 @@ class FileWisePlanList extends Component{
   getData(startRange, limitRange){
       var data = {
         startRange : startRange,
-        limitRange : limitRange
+        limitRange : limitRange,
+        center_ID  : localStorage.getItem('center_ID')
       }
       axios.post('/api/annualPlans/get/files', data)
       .then((response)=>{
@@ -52,7 +53,7 @@ class FileWisePlanList extends Component{
       })
     }
     getCount(){
-      axios.get('/api/annualPlans/get/files/count')
+      axios.get('/api/annualPlans/get/files/count/'+localStorage.getItem('center_ID'))
       .then((response)=>{
         console.log(response.data)
         this.setState({
