@@ -763,5 +763,6 @@ margin-right: 12px;
     
   }
 .modal-open {
-    overflow: scroll;
+  overflow: scroll;
+  overflow-y: auto !important;
 }

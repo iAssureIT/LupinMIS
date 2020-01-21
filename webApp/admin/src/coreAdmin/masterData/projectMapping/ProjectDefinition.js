@@ -281,6 +281,7 @@ class ProjectMapping extends Component{
     }).then((response)=> {
       var editData = response.data[0];
       // console.log('editData',response.data[0].sector);
+      this.getNameOfGoal(response.data[0].type_ID);
       console.log('editData.sector',response.data[0].sector);
       if(editData.sector && editData.sector.length>0){
         axios({

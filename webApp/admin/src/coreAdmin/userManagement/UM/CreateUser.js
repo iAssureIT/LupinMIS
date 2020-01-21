@@ -34,6 +34,8 @@ const formValid = formerrors=>{
       signupEmail       : "",
       mobileNumber         : "",
       adminRolesListData: "",
+      "startRange"        : 0,
+      "limitRange"        : 10000000000, 
       
       formerrors :{
          firstname    : "",
@@ -114,9 +116,9 @@ const formValid = formerrors=>{
                                     "startRange"        : this.state.startRange,
                                     "limitRange"        : this.state.limitRange, 
                             }
+                        console.log("data",data);
                       axios.post('/api/users/userslist', data)
                       .then( (res)=>{      
-                        // console.log("herer",res);
                         var tableData = res.data.map((a, i)=>{
                           return {
                                     _id             : a._id,
@@ -218,8 +220,8 @@ const formValid = formerrors=>{
                           "startRange"        : this.state.startRange,
                           "limitRange"        : this.state.limitRange, 
                         }
-                                      
-                        this.props.getData(0, 10);
+                        this.props.getData(this.state.startRange, this.state.limitRange);
+                                      console.log("createUser",this.state.startRange,this.state.limitRange)
                         var modal = document.getElementById("CreateUserModal");
                         modal.style.display = "none";
                         $('.modal-backdrop').remove();
