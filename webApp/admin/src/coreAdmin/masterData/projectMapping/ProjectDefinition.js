@@ -17,14 +17,16 @@ class ProjectMapping extends Component{
       "endDate"            : "",
       "projectName"        : "",
       "framework"          : [],
+      "availableSectors"   : [],
       "listofTypesArray"   : "",
       "goalName"           : "-- Select --",
       "goalType"           : "-- Select --",
       fields               : {},
       errors               : {},
       "tableHeading"       : {
-        typeofGoal         : "Goal Type",
         projectName        : "Project Name",
+        typeofGoal         : "Framework",
+        goalName           : "Goal / Objective",
         // startDate          : "Start Date",
         // endDate            : "End Date",
         sectorName         : "Sector",
@@ -122,7 +124,6 @@ class ProjectMapping extends Component{
   Submit(event){
     event.preventDefault();
     if($('#projectMapping').valid()){
-      console.log("sectorData",this.state.sectorData)
       if (this.state.sectorData.length===0){      
         swal({
           title: 'abc',
@@ -146,7 +147,7 @@ class ProjectMapping extends Component{
           "endDate"      : this.refs.endDate.value,              
           "sector"       : this.state.sectorData                
         };
-        console.log("mappingValues",mappingValues);
+        // console.log("mappingValues",mappingValues);
         axios.post('/api/projectMappings',mappingValues)
           .then((response)=>{
             console.log("response",response)
@@ -160,7 +161,6 @@ class ProjectMapping extends Component{
             this.setState({
               "projectName"           :"",
               "type_ID"               :"",
-              "goalName"              :"",
               "sectorData"            :[],
               "goalName"              : "-- Select --",
               "goalType"              : "-- Select --",
@@ -176,8 +176,8 @@ class ProjectMapping extends Component{
   }
   Update(event){
     event.preventDefault();
-    console.log($('#sectorMapping').valid())
-    if($('#sectorMapping').valid()){
+    if($('#projectMapping').valid()){
+      // console.log("sectorData",this.state.sectorData)
       var mappingValues = 
       {     
         "projectMapping_ID"   : this.state.editId,    
@@ -190,6 +190,7 @@ class ProjectMapping extends Component{
       };
       axios.patch('/api/projectMappings/update',mappingValues)
         .then((response)=>{
+          console.log("updateresponse",response)
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -197,18 +198,18 @@ class ProjectMapping extends Component{
           this.currentFromDate();
           this.currentToDate();
           this.getData(this.state.startRange, this.state.limitRange);
+          this.setState({
+            "projectName"           :"",
+            "type_ID"               :"",
+            "sectorData"            :[],
+            "goalName"              : "-- Select --",
+            "goalType"              : "-- Select --",
+          },()=>{
+            this.getAvailableSector(this.state.goalType, this.state.goalName)
+          });
       })
       .catch(function(error){
         console.log("error = ",error);
-      });
-      this.setState({
-        "projectName"           :"",
-        "type_ID"               :"",
-        "sectorData"            :[],
-        "goalName"              : "-- Select --",
-        "goalType"              : "-- Select --",
-      },()=>{
-          this.getAvailableSector(this.state.goalType, this.state.goalName)
       });
       this.props.history.push('/project-definition');
       this.setState({
@@ -217,6 +218,7 @@ class ProjectMapping extends Component{
     }
   }
   componentWillReceiveProps(nextProps){
+    // console.log('nextProps',nextProps)
     this.currentFromDate();
     this.currentToDate();
     var editId = nextProps.match.params.projectMappingId;
@@ -226,8 +228,9 @@ class ProjectMapping extends Component{
         editSectorId : nextProps.match.params.sectorId
       },()=>{
         this.edit(this.state.editId);
+        // console.log('this.state.goalType, this.state.goalName',this.state.goalType, this.state.goalName)
+        this.getAvailableSector(this.state.goalType, this.state.goalName)
       })
-      this.getAvailableSector();
     }
     if(nextProps){
       this.getLength();
@@ -267,137 +270,86 @@ class ProjectMapping extends Component{
     }
     this.getLength();
     this.getData(this.state.startRange, this.state.limitRange);
-    // this.getAvailableSector();  
-
-   /* $(document).ready(function(){
-      var data = [];
-      $('.activityName').each(function(){
-        data.push($(this).text());
-      });
-
-      console.log(data);
-    }); */
   }
+  
+
   edit(id){
-      console.log('editDataid',id);
+    console.log('editDataid',id);
     axios({
       method: 'get',
-      url: '/api/projectMappings/'+id,
+      url: '/api/projectMappings/fetch/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-
-      console.log('editData',response);
-      this.getAvailableSector(editData.type_ID, editData.goalName)
-      var availableSectors = this.state.availableSectors
-      console.log('availableSectors',availableSectors);
+      // console.log('editData',response.data[0].sector);
+      console.log('editData.sector',response.data[0].sector);
       if(editData.sector && editData.sector.length>0){
-        console.log('editData.sector==============',editData.sector,availableSectors)
-        editData.sector.map((element)=>{
-          if(availableSectors&&availableSectors.length>0){
-            var checkSector = availableSectors.findIndex(x=>x._id===element.sector_ID) 
-           if(checkSector>=0){
-              availableSectors[checkSector].checked = "Y"
-            }
-            availableSectors.map((data,i)=>{
-              if(availableSectors[i].activity&&availableSectors[i].activity.length>0){
-                var checkActivity = availableSectors[i].activity.findIndex(x=>x._id===element.activity_ID) 
-                if(checkActivity>=0){
-                  availableSectors[i].activity[checkActivity].checked = "Y"
-                }
-                availableSectors[i].activity.map((blockone,j)=>{
-                  var checkSubActivity = availableSectors[i].activity[j].subActivity.findIndex(x=>x._id===element.subActivity_ID) 
-                  if(checkSubActivity>=0){
-                    availableSectors[i].activity[j].subActivity[checkSubActivity].checked = "Y"
-                  }  
+        axios({
+          method: 'get',
+          url: 'api/sectorMappings/list_arraySector/' + editData.type_ID + '/'+ editData.goalName
+        }).then((response)=> {
+          if(response){
+            this.setState({
+              availableSectors : response.data.sector,
+            },()=>{
+              // console.log("availableSectors",this.state.availableSectors)
+              var availableSectors = this.state.availableSectors;
+                editData.sector.map((element)=>{
+                  if(availableSectors&&availableSectors.length>0){
+                    var checkSector = availableSectors.findIndex(x=>x.sector_ID===element.sector_ID) 
+                   if(checkSector>=0){
+                      availableSectors[checkSector].checked = "Y"
+                    }
+                    availableSectors.map((data,i)=>{
+                      // console.log("data",data)
+                      if(availableSectors[i].activity&&availableSectors[i].activity.length>0){
+                        var checkActivity = availableSectors[i].activity.findIndex(x=>x.activity_ID===element.activity_ID) 
+                      // console.log("checkActivity",checkActivity)
+                        if(checkActivity>=0){
+                          availableSectors[i].activity[checkActivity].checked = "Y"
+                        }
+                        availableSectors[i].activity.map((blockone,j)=>{
+                          var checkSubActivity = availableSectors[i].activity[j].subActivity[j].findIndex(x=>x._id===element.subActivity_ID) 
+                          // console.log("availableSectors[i].activity[j].subActivity[j]",availableSectors[i].activity[j].subActivity[j])
+                          if(checkSubActivity>=0){
+                            // console.log("availableSectors[i].activity[j].subActivity[j][checkSubActivity]", availableSectors[i].activity[j].subActivity[j][checkSubActivity])
+                            availableSectors[i].activity[j].subActivity[j][checkSubActivity].checked = "Y"
+                          }
+                          var checkCheckedActivity = availableSectors[i].activity.filter((item)=>{return item.checked==="Y"});
+                          var checkChecked         =  availableSectors[i].activity[j].subActivity[j].filter((item)=>{return item.checked==="Y"});
+                          // console.log("checkChecked",checkChecked)
+                          if((availableSectors[i].activity[j].subActivity[j].length+availableSectors[i].activity.length)===(checkChecked.length+checkCheckedActivity.length)){
+                            data.checked="Y";
+                          }else{
+                            data.checked="N";
+                          }
+                          if(availableSectors[i].activity[j].subActivity[j].length===checkChecked.length){
+                            availableSectors[i].activity[j].checked = "Y"
+                          }else{
+                            availableSectors[i].activity[j].checked = "N"
+                          }
+                        })
+                      }
+                    })
+                  }
                 })
-              }
+                this.setState({
+                  "projectName"                :editData.projectName,     
+                  "goalType"                   :editData.type_ID,      
+                  "goalName"                   :editData.goalName,      
+                  "startDate"                  :editData.startDate,      
+                  "endDate"                    :editData.endDate,      
+                  "sectorData"                 :editData.sector, 
+                  "availableSectors"           :availableSectors
+                },()=>{
+                  this.getNameOfGoal(this.state.goalType)
+                });
             })
           }
-        })
-      }
-
-      // if(editData.type_ID.length>1)
-      // {
-      //    var listofTypesArray = editData.type_ID.map((data, index)=>{
-      //     return({
-      //         label  : data.goalName,
-      //         value   : data.goal_ID
-      //        });
-      //     })
-      console.log('editData.sector',editData.sector,availableSectors);
-        this.setState({
-          "projectName"                :editData.projectName,     
-          "goalType"                   :editData.type_ID,      
-          "goalName"                   :editData.goalName,      
-          "startDate"                  :editData.startDate,      
-          "endDate"                    :editData.endDate,      
-          "sectorData"                 :editData.sector, 
-          "availableSectors"           :availableSectors
-        },()=>{
-          this.getNameOfGoal(this.state.goalType)
+        }).catch(function (error) {
+          console.log("error = ",error);
         });
-      // console.log('goalType',this.state.goalType);
-      // }else{
-      //    var listofTypesArray = editData.type_ID.map((data, index)=>{
-      //     return({
-      //         label  : data.goalName,
-      //         value   : data.goal_ID
-      //        });
-      //     })
-      //    // console.log("listofTypesArray",listofTypesArray);
-      //    this.setState({
-      //     "projectName"                :editData.projectName,     
-      //     "goalType"                :listofTypesArray[0],      
-      //     "startDate"                  :editData.startDate,      
-      //     "endDate"                    :editData.endDate,      
-      //     "sectorData"                 :editData.sector, 
-      //     "availableSectors"           :availableSectors
-      //   });
-      // // console.log('goalTypeelse',this.state.goalType);
-      // }
-
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
-  }
-  getLength(){
-    axios.get('/api/projectMappings/count')
-    .then((response)=>{
-      // console.log('response', response.data);
-      this.setState({
-        dataCount : response.data.dataLength
-      },()=>{
-        // console.log('dataCount', this.state.dataCount);
-      })
-    })
-    .catch(function(error){
-      console.log("error = ",error);
-    });
-  }
-  getData(startRange, limitRange){
-    // console.log('/api/projectMappings/list/'+startRange+'/'+limitRange);
-    axios.get('/api/projectMappings/list/'+startRange+'/'+limitRange)
-    .then((response)=>{
-      // console.log(response)
-      if(response&&response.data&&response.data.length>0){
-        var tableData = response.data.map((a, i)=>{
-        return {
-            _id                       : a._id,
-            typeofGoal                : a.typeofGoal,
-            projectName               : a.projectName,
-            // startDate                 : a.startDate,
-            // endDate                   : a.endDate,
-            sectorName                : a.sectorName,
-            activityName              : a.activityName,
-            subActivityName           : a.subActivityName,
-          }
-        })
-        this.setState({
-          tableData : tableData
-        })
       }
-    })
-    .catch(function(error){
+      }).catch(function (error) {
       console.log("error = ",error);
     });
   }
@@ -561,14 +513,13 @@ class ProjectMapping extends Component{
               "subActivity_ID":"-",
               "subActivityName": "-",
             })  
+        // console.log('sectortorDataActivity',sectorData)
           }
         }else{
           var arr = sectorData.filter((item)=>{return item.activity_ID!=activitySelected.activity_ID});
           sectorData = arr;
         }
-      }                                          
-    }
-    // console.log('sectorDataActivity',sectorData)
+      }                          
     this.setState({
       availableSectors : array,
       sectorData : sectorData
@@ -576,6 +527,7 @@ class ProjectMapping extends Component{
       console.log('selectActivity.sectorData1',this.state.sectorData)
     })
   }
+}
   selectSubactivity(event){
     var checkedValue         = event.target.value;
     var subActivityIndex     = event.target.getAttribute('data-index');
@@ -583,31 +535,34 @@ class ProjectMapping extends Component{
     var activityIndex        = event.target.getAttribute('data-actindex');
     var array = this.state.availableSectors;
     var sectorData = this.state.sectorData;
-    console.log('this.state.sectorData1',this.state.sectorData, "checkedValue",checkedValue)
+    // console.log('this.state.sectorData1',this.state.sectorData, "checkedValue",checkedValue)
     var data;
     if(sectorIndex && array){
       data = this.state.availableSectors[sectorIndex]; 
       var activitySelected = data.activity[activityIndex];
       var subActivitySelected = activitySelected.subActivity[activityIndex][subActivityIndex];
-          console.log("subActivitySelected",subActivitySelected)
       subActivitySelected.checked=checkedValue;
       if(checkedValue==="Y"){
-        var checkCheckedActivity = data.activity.filter((item)=>{return item.checked==="Y"});
         var checkChecked =  activitySelected.subActivity[activityIndex].filter((item)=>{
           return item.checked==="Y"});
+         var allcheckChecked =  activitySelected.subActivity.filter((item)=>{
+          return item.checked==="Y"});
+          // console.log("allcheckChecked",allcheckChecked)
 
-        if((activitySelected.subActivity[activityIndex].length+data.activity.length)===(checkChecked.length+checkCheckedActivity.length)){
-          data.checked="Y";
-          console.log("activitySelected.subActivity[activityIndex].length+data.activity.length",activitySelected.subActivity[activityIndex].length+data.activity.length)
-          console.log("checkChecked.length+checkCheckedActivity.length",checkChecked.length+checkCheckedActivity.length)
-        }else{
-          data.checked="N";
-        }
         if(activitySelected.subActivity[activityIndex].length===checkChecked.length){
           activitySelected.checked = "Y"
         }else{
           activitySelected.checked = "N"
         }
+        var checkCheckedActivity = data.activity.filter((item)=>{return item.checked==="Y"});
+        if((activitySelected.subActivity[activityIndex].length+data.activity.length)===(checkChecked.length+checkCheckedActivity.length)){
+          data.checked="Y";
+          // console.log("activitySelected.subActivity[activityIndex].length+data.activity.length",activitySelected.subActivity[activityIndex].length+data.activity.length)
+          // console.log("checkChecked.length+checkCheckedActivity.length",checkChecked.length+checkCheckedActivity.length)
+        }else{
+          data.checked="N";
+        }
+        
         var checkExists =  sectorData.filter((item)=>{return item.subActivity_ID===subActivitySelected._id});
         if(checkExists.length===0){
           sectorData.push({
@@ -618,15 +573,14 @@ class ProjectMapping extends Component{
             "subActivity_ID":subActivitySelected._id,
             "subActivityName": subActivitySelected.subActivityName,
           })  
-        console.log('sectorDataSubAct',sectorData)
+        // console.log('sectorDataSubAct',sectorData)
         }
       }else{
         data.checked="N";
         activitySelected.checked = "N"
         var arr = sectorData.filter((item)=>{return item.subActivity_ID!=subActivitySelected._id});
         sectorData = arr;
-        console.log('sectorDataSubActN',sectorData)
-
+        // console.log('sectorDataSubActN',sectorData)
       }
     }
     this.setState({
@@ -720,7 +674,7 @@ class ProjectMapping extends Component{
         availableSectors : sortArray,
         sectorData       : sectorData,
       },()=>{
-    console.log('this.state.availableSectors',this.state.availableSectors)
+    // console.log('this.state.availableSectors',this.state.availableSectors)
     // console.log('this.state.sectorData',this.state.sectorData)
       })
     }).catch(function (error) {
@@ -731,6 +685,49 @@ class ProjectMapping extends Component{
     this.setState({
       tableData : []
     })
+  }
+
+  getLength(){
+    axios.get('/api/projectMappings/count')
+    .then((response)=>{
+      // console.log('response', response.data);
+      this.setState({
+        dataCount : response.data.dataLength
+      },()=>{
+        // console.log('dataCount', this.state.dataCount);
+      })
+    })
+    .catch(function(error){
+      console.log("error = ",error);
+    });
+  }
+  getData(startRange, limitRange){
+    // console.log('/api/projectMappings/list/'+startRange+'/'+limitRange);
+    axios.get('/api/projectMappings/list/'+startRange+'/'+limitRange)
+    .then((response)=>{
+      // console.log(response)
+      if(response&&response.data&&response.data.length>0){
+        var tableData = response.data.map((a, i)=>{
+        return {
+            _id                       : a._id,
+            projectName               : a.projectName,
+            typeofGoal                : a.typeofGoal,
+            goalName                  : a.goalName,
+            // startDate                 : a.startDate,
+            // endDate                   : a.endDate,
+            sectorName                : a.sectorName,
+            activityName              : a.activityName,
+            subActivityName           : a.subActivityName,
+          }
+        })
+        this.setState({
+          tableData : tableData
+        })
+      }
+    })
+    .catch(function(error){
+      console.log("error = ",error);
+    });
   }
   currentFromDate(){
      /* if(localStorage.getItem('newFromDate')){
@@ -834,24 +831,7 @@ class ProjectMapping extends Component{
       });
     }
   }
- /* getDatafromFrameworkMap(goalType , goalName){
-    console.log(goalType,goalName)
-    axios({
-      method: 'get',
-      url: 'api/sectorMappings/list_arraySector/' + goalType + '/'+ goalName
 
-    }).then((response)=> {
-      console.log("getDatafromFrameworkMap",response)
-      this.setState({
-          framework : response.data,
-          availableSectors : response.data.sector,
-        },()=>{
-          console.log("availableSectors",this.state.availableSectors)
-        })
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
-  }*/
   render() {
     // console.log('this.state.availableSectors',this.state.availableSectors)
     return(
@@ -869,7 +849,7 @@ class ProjectMapping extends Component{
                   </div>
                   <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="projectMapping">                   
                     <div className="col-lg-12 ">
-                       <h4 className="pageSubHeader">Project Definition</h4>
+                       <h4 className="pageSubHeader">Project Specification</h4>
                     </div>
                   {this.state.role !== "viewer" ?
                     <React.Fragment>
