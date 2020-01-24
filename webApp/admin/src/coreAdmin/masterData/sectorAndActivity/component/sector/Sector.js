@@ -138,16 +138,26 @@ class Sector extends Component{
     $.validator.addMethod("regxsector", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Sector.");
+    $.validator.addMethod("regxsectorShortName", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Sector Abbreviation.");
     $("#sectorDetails").validate({
       rules: {
         sector: {
           required: true,
-          regxsector: /^[A-za-z']+( [A-Za-z']+)*$/,
+          // regxsector: /^[A-za-z']+( [A-Za-z']+)*$/,
+          regxsector:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
+        },
+        sectorShortName: {
+          regxsectorShortName:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
         },
       },
       errorPlacement: function(error, element) {
         if (element.attr("name") == "sector"){
           error.insertAfter("#sectorError");
+        }
+        if (element.attr("name") == "sectorShortName"){
+          error.insertAfter("#sectorShortNameErr");
         }
       }
     });
@@ -242,13 +252,13 @@ class Sector extends Component{
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
                         <label className="formLable">Sector</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorError" >
-                          <input type="text" className="form-control inputBox"  placeholder=""ref="sector" name="sector" value={this.state.sector} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                          <input type="text" className="form-control inputBox"  placeholder=""ref="sector" name="sector" value={this.state.sector}  onChange={this.handleChange.bind(this)} />
                         </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
                         <label className="formLable">Sector Abbreviation</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorShortName" >
-                          <input type="text" className="form-control inputBox"  placeholder="" ref="sectorShortName" name="sectorShortName" value={this.state.sectorShortName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorShortNameErr" >
+                          <input type="text" className="form-control inputBox"  placeholder="" ref="sectorShortName" name="sectorShortName" value={this.state.sectorShortName} onChange={this.handleChange.bind(this)} />
                         </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">

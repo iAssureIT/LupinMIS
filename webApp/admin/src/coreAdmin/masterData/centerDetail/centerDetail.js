@@ -271,7 +271,10 @@ class centerDetail extends Component{
     $.validator.addMethod("RegExpEmail", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Email.");
-
+    $.validator.addMethod("regxnameOfCenter", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Center Name.");
+    
     $("#Academic_details").validate({
       rules: {
         typeOfCenter: {
@@ -279,6 +282,7 @@ class centerDetail extends Component{
         },
         nameOfCenter: {
           required: true,
+          regxnameOfCenter:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
         },
         address: {
           required: true,
@@ -724,7 +728,7 @@ class centerDetail extends Component{
                               <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                                 <label className="formLable">Center Name</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="nameOfCenter" >
-                                  <input type="text"   className="form-control inputBox "  value={this.state.nameOfCenter}  name="nameOfCenter" placeholder="" ref="nameOfCenter"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                  <input type="text"   className="form-control inputBox "  value={this.state.nameOfCenter}  name="nameOfCenter" placeholder="" ref="nameOfCenter"  onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.nameOfCenter}</div>
                               </div>
@@ -825,7 +829,7 @@ class centerDetail extends Component{
                                <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                                 <label className="formLable">Contact No. of MIS Coordinator</label><span className="asterix"></span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="MISCoordinatorContact" >
-                                  <input type="number"   className="form-control inputBox "  value={this.state.MISCoordinatorContact}  name="MISCoordinatorContact" placeholder="" ref="MISCoordinatorContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                  <input type="number"   className="form-control inputBox "  value={this.state.MISCoordinatorContact}  name="MISCoordinatorContact" placeholder="" ref="MISCoordinatorContact" maxLength="10" onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.MISCoordinatorContact}</div>
                               </div>

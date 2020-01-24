@@ -55,20 +55,6 @@ class Activity extends Component{
     });
     
   }
-
-  isTextKey(evt){
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
- 
-  }
-
   submitActivity(event){
     event.preventDefault();
     if($('#Activity').valid()){
@@ -160,7 +146,7 @@ class Activity extends Component{
 
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
+    $.validator.addMethod("regxactivityName", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Activity Name.");
 
@@ -172,7 +158,7 @@ class Activity extends Component{
         },
         activityName: {
           required: true,
-          regxtypeofCenter: /^[A-za-z']+( [A-Za-z']+)*$/,
+          regxactivityName:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
         },
       },
       errorPlacement: function(error, element) {
@@ -301,7 +287,7 @@ class Activity extends Component{
                         <label className="formLable">Activity</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="activityName" >
                           
-                          <input type="text" className="form-control inputBox "  placeholder="" name="activityName"  value={this.state.activityName} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} ref="activityName" />
+                          <input type="text" className="form-control inputBox "  placeholder="" name="activityName"  value={this.state.activityName}  onChange={this.handleChange.bind(this)} ref="activityName" />
                         </div>
                       </div>
                     </div> 

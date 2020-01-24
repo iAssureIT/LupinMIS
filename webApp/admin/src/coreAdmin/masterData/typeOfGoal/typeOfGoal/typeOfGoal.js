@@ -46,19 +46,6 @@ class typeOfGoal extends Component{
    
   }
 
-  isTextKey(evt) {
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
- 
-  }
-
   SubmitType_Goal(event){
     event.preventDefault();
     if($("#typeofGoalDetails").valid()){
@@ -153,7 +140,7 @@ class typeOfGoal extends Component{
       rules: {
         typeofGoalRegx: {
           required: true,
-          regxtypeofGoal: /^[_A-z]*((-|\s)*[_A-z])*$|^$/,
+          regxtypeofGoal:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
         },
       },
       errorPlacement: function(error, element) {
@@ -242,7 +229,7 @@ class typeOfGoal extends Component{
                         <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                           <label className="formLable"> Type of Goal</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeofGoalErr" >
-                            <input type="text" className="form-control inputBox"  placeholder="" ref="typeofGoal" name="typeofGoalRegx" value={this.state.typeofGoal} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                            <input type="text" className="form-control inputBox"  placeholder="" ref="typeofGoal" name="typeofGoalRegx" value={this.state.typeofGoal} onChange={this.handleChange.bind(this)} />
                           </div>
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">

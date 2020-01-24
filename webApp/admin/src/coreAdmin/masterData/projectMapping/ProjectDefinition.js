@@ -253,22 +253,28 @@ class ProjectMapping extends Component{
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    $.validator.addMethod("regxtypeofCenter", function(value, element, regexpr) {         
+    $.validator.addMethod("regxprojectName", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Project Name.");
-    $("#sectorMapping").validate({
+    $("#projectMapping").validate({
       rules: {
+        goalName: {
+          required: true,
+        },
         goalType: {
           required: true,
         },
         projectName: {
           required: true,
-          regxtypeofCenter: /^[A-za-z']+( [A-Za-z']+)*$/,
+          regxprojectName:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
         },
       },
       errorPlacement: function(error, element) {
         if (element.attr("name") == "goalType"){
           error.insertAfter("#goalType");
+        }
+        if (element.attr("name") == "goalName"){
+          error.insertAfter("#goalName");
         }
         if (element.attr("name") == "projectName"){
           error.insertAfter("#projectName");

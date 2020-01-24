@@ -234,7 +234,7 @@ class ProjectMapping extends Component{
     }, "Please enter valid Project Name.");
 
 
-    $("#sectorMapping").validate({
+    $("#projectMapping").validate({
       rules: {
         projectType: {
           required: true,
@@ -690,7 +690,7 @@ class ProjectMapping extends Component{
                       </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-                  <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="sectorMapping">                   
+                  <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="projectMapping">                   
                     <div className="col-lg-12 ">
                        <h4 className="pageSubHeader">Project Definition</h4>
                     </div>

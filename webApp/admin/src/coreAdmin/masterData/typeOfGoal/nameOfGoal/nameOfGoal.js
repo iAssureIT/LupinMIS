@@ -64,19 +64,6 @@ class nameOfGoal extends Component{
   
   }
 
-  isTextKey(evt) {
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
- 
-  }
-
   SubmitType_Goal(event){
     event.preventDefault();
     if($("#typeofNameDetails").valid()){
@@ -177,7 +164,7 @@ class nameOfGoal extends Component{
       rules: {
         goalNameErr: {
           required: true,
-          regxnameofGoal: /^[_A-z]*((-|\s)*[_A-z])*$|^$/,
+          regxnameofGoal:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
         },
         typeofGoalErr: {
           required: true,

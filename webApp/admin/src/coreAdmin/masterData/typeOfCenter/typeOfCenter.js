@@ -45,19 +45,6 @@ class typeOfCenter extends Component{
     
   }
 
-  isTextKey(evt) {
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
- 
-  }
-
   SubmitType_Center(event){
     event.preventDefault();
     if($("#typeofCenterDetails").valid()){
@@ -143,7 +130,7 @@ class typeOfCenter extends Component{
       rules: {
         typeofCenter: {
           required: true,
-          regxtypeofCenter: /^[A-za-z']+( [A-Za-z']+)*$/,
+          regxtypeofCenter:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
         },
        
       },
@@ -255,7 +242,7 @@ class typeOfCenter extends Component{
                                 <label className="formLable"> Center Type</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="typeOfCenterError" >
                                  
-                                  <input type="text" className="form-control inputBox"  placeholder="" ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+                                  <input type="text" className="form-control inputBox"  placeholder="" ref="typeofCenter" name="typeofCenter" value={this.state.typeofCenter}  onChange={this.handleChange.bind(this)} />
                                 </div>
                               </div>
                               <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">

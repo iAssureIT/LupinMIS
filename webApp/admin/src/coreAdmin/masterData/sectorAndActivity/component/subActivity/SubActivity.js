@@ -48,10 +48,10 @@ class SubActivity extends Component{
     }
   }
  componentDidMount() {
-   {/* axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-         $.validator.addMethod("regxsub", function(value, element, regexpr) {         
-         return regexpr.test(value);
-       }, "Please enter valid Sub-Activity Name.");*/}
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+      $.validator.addMethod("regxsubActivityName", function(value, element, regexpr) {         
+              return regexpr.test(value);
+            }, "Please enter valid Sub-Activity Name.");
 
 
     $("#subActivityb").validate({
@@ -67,7 +67,7 @@ class SubActivity extends Component{
         },
         subActivityName: {
           required: true,
-          // regxsub: /^[A-za-z']+( [A-Za-z']+)*$/,
+          regxsubActivityName:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
         },
       },
       errorPlacement: function(error, element) {
@@ -106,18 +106,6 @@ class SubActivity extends Component{
       "subActivityName"      :this.refs.subActivityName.value,
       "unit"                 :this.refs.unit.value,
     });
-  
-  }
-  isTextKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
   }
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode
