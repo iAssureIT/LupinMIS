@@ -294,7 +294,7 @@ class UpgradedBeneficiaryReport extends Component{
               $(".fullpageloader").hide();
               tableData.push({
                 _id             : a._id,            
-                date            : a.date,
+                date            : moment(a.date).format('DD-MM-YYYY'),
                 projectCategoryType: a.projectCategoryType,
                 upgraded        : a.upgraded,
                 sectorName      : a.sectorName,

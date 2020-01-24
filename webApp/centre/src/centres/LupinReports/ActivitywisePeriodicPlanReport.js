@@ -34,7 +34,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums :5,
+                        mergedColoums :3,
                         hide : false
                     },
                     {
@@ -59,8 +59,8 @@ class ActivitywisePeriodicPlanReport extends Component{
                 ] 
             },
             "tableHeading"      : {
-                "projectCategoryType"                       : 'Project Category',
-                "projectName"                               : 'Project Name',
+                // "projectCategoryType"                       : 'Project Category',
+                // "projectName"                               : 'Project Name',
                 "name"                                      : 'Activity & Sub-Activity',
                 "unit"                                      : 'Unit',
                 "annualPlan_Reach"                          : 'Reach', 
@@ -77,8 +77,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 "monthlyPlan_Govt_L"                        : 'Government',
                 "monthlyPlan_DirectCC_L"                    : 'DirectCC',
                 "monthlyPlan_IndirectCC_L"                  : 'IndirectCC',
-                "monthlyPlan_Other_L"                       : 'Others',/*
-                "monthlyPlan_Other_L"                       : 'Remark',*/
+                "monthlyPlan_Other_L"                       : 'Others',
             },
             "tableObjects"        : {
                 paginationApply     : false,
@@ -243,15 +242,15 @@ class ActivitywisePeriodicPlanReport extends Component{
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(sector_ID==="all"){
                 $(".fullpageloader").show();
-                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all')
                 .then((response)=>{
                   $(".fullpageloader").hide();
                   console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{
                         return {
                         _id                                       : a._id,   
-                        projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                        projectName                               : a.projectName === 0 ? "-" :a.projectName,              
+                        // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                        // projectName                               : a.projectName === 0 ? "-" :a.projectName,              
                         name                                      : a.name,
                         unit                                      : a.unit,
                         annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -280,15 +279,15 @@ class ActivitywisePeriodicPlanReport extends Component{
                     console.log("error = ",error);
                 });
             }else{             
-                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all')
                 // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
                 .then((response)=>{
                   console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{
                         return {
                         _id                                       : a._id,
-                        projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                        projectName                               : a.projectName === 0 ? "-" :a.projectName,                         
+                        // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                        // projectName                               : a.projectName === 0 ? "-" :a.projectName,                         
                         name                                      : a.name,
                         unit                                      : a.unit,
                         annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -446,7 +445,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                                 </div>
                                 <hr className="hr-head"/>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                                    <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                                         <label className="formLable">Sector</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
@@ -464,64 +463,14 @@ class ActivitywisePeriodicPlanReport extends Component{
                                           }
                                           </select>
                                         </div>
-                                       {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                                     </div>
-                                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                                        <label className="formLable">Beneficiary</label><span className="asterix"></span>
-                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                                          <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                                            <option  className="hidden" >--Select--</option>
-                                            <option value="all" >All</option>
-                                            <option value="withUID" >With UID</option>
-                                            <option value="withoutUID" >Without UID</option>
-                                          </select>
-                                        </div>
-                                    </div> 
-                                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                                        <label className="formLable">Project Category</label><span className="asterix"></span>
-                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                                          <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                                            <option  className="hidden" >--Select--</option>
-                                            <option value="all" >All</option>
-                                            <option value="LHWRF Grant" >LHWRF Grant</option>
-                                            <option value="Project Fund">Project Fund</option>
-                                            
-                                          </select>
-                                        </div>
-                                    </div>
-                                    {
-                                        this.state.projectCategoryType === "Project Fund" ?
-
-                                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                                          <label className="formLable">Project Name</label><span className="asterix"></span>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                                <option value="all" >All</option>
-                                              {
-                                                this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                                this.state.availableProjects.map((data, index)=>{
-                                                  return(
-                                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                                  );
-                                                })
-                                                :
-                                                null
-                                              }
-                                            </select>
-                                          </div>
-                                        </div>
-                                      : 
-                                      ""
-                                    } 
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                                    <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                             <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} id="startDate" name="startDate" ref="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                                         </div>
                                     </div>
-                                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                                         <label className="formLable">To</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                             <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} id="endDate" name="endDate" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />

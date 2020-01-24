@@ -700,9 +700,9 @@ class IAssureTable extends Component {
 													{this.state.tableHeading && this.state.tableHeading.actions ? 
 														<td className="textAlignCenter">
 															<span>
-																{this.props.activityTable ? 
+																{this.props.viewTable ? 
 																	<React.Fragment>
-																		<Link to={"/activityReportView/"+value._id}>
+																		<Link to={"/"+ this.props.viewLink +"/"+value._id}>
 															     			<i className="fa fa-eye" title="View"></i>&nbsp; &nbsp;
 															     		</Link>
 															     	</React.Fragment>

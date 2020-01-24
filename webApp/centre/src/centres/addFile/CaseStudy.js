@@ -316,7 +316,7 @@ class CaseStudy extends Component{
         var tableData = response.data.map((a, i)=>{
           return {
             _id          : a._id,
-            date         : a.date,
+            date         : moment(a.date).format('DD-MM-YYYY'),
             title        : a.title,
             sectorName   : a.sectorName,
             author       : a.author,
@@ -455,6 +455,8 @@ class CaseStudy extends Component{
                         tableData={this.state.tableData}
                         getData={this.getData.bind(this)}
                         tableObjects={this.state.tableObjects}                          
+                        viewTable = {true}
+                        viewLink = "caseStudyView"
                       />
                     </div> 
                   </div>              

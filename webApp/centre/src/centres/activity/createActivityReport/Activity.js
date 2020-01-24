@@ -210,9 +210,9 @@ class Activity extends Component{
     event.preventDefault();
       if(event.currentTarget.name==='projectName'){
         let id = $(event.currentTarget).find('option:selected').attr('data-id')
-        axios.get('/api/projectMappings/'+id)
+        axios.get('/api/projectMappings/fetch/'+id)
         .then((response)=>{
-          // console.log(response);
+          console.log(response);
           if(response.data[0].sector&&response.data[0].sector.length>0){
             var returnData = [...new Set(response.data[0].sector.map(a => a.sector_ID))]
             if(returnData&&returnData.length>0){
@@ -801,7 +801,7 @@ class Activity extends Component{
           _id                        : a._id,
           projectCategoryType        : a.projectCategoryType,
           projectName                : a.projectName==='all'?'-':a.projectName,
-          date                       : moment(a.date).format('YYYY-MM-DD'),
+          date                       : moment(a.date).format('DD-MM-YYYY'),
           place                      : a.place,
           sectorName                 : a.sectorName,
           typeofactivity             : a.typeofactivity,
@@ -1746,7 +1746,8 @@ class Activity extends Component{
                       getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects} 
                       isDeleted={this.deleted.bind(this)}
-                      activityTable = {true}
+                      viewTable = {true}
+                      viewLink = "activityReportView"
                     /> 
                   </div> 
                   </div>

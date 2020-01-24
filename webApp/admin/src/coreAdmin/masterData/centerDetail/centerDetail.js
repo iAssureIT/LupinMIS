@@ -267,132 +267,6 @@ class centerDetail extends Component{
       });
     }
   }
-/*  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-
-      if (!fields["typeOfCenter"]) {
-        formIsValid = false;
-        errors["typeOfCenter"] = "This field is required.";
-      }     
-      if (!fields["nameOfCenter"]) {
-        formIsValid = false;
-        errors["nameOfCenter"] = "This field is required.";
-      }
-      if (!fields["address"]) {
-        formIsValid = false;
-        errors["address"] = "This field is required.";
-      }
-      if (!fields["state"]) {
-          formIsValid = false;
-          errors["state"] = "This field is required.";
-      }
-      if (!fields["district"]) {
-        formIsValid = false;
-        errors["district"] = "This field is required.";
-      }          
-      if (!fields["pincode"]) {
-        formIsValid = false;
-        errors["pincode"] = "This field is required.";
-      }          
-      if (!fields["centerInchargeName"]) {
-        formIsValid = false;
-        errors["centerInchargeName"] = "This field is required.";
-      }          
-      if (!fields["centerInchargeContact"]) {
-        formIsValid = false;
-        errors["centerInchargeContact"] = "This field is required.";
-
-      }          
-      if (!fields["centerInchargeEmail"]) {
-        formIsValid = false;
-        errors["centerInchargeEmail"] = "This field is required.";
-      }          
-      if (!fields["MISCoordinatorName"]) {
-        formIsValid = false;
-        errors["MISCoordinatorName"] = "This field is required.";
-      }          
-      if (!fields["MISCoordinatorContact"]) {
-        formIsValid = false;
-        errors["MISCoordinatorContact"] = "This field is required.";
-      }          
-      if (!fields["MISCoordinatorEmail"]) {
-        formIsValid = false;
-        errors["MISCoordinatorEmail"] = "This field is required.";
-      }          
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }*/
- /* validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    $("html,body").scrollTop(0);
-    
-      if (typeof fields["centerInchargeEmail"] !== "undefined") {
-        //regular expression for email validation
-        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/i);
-        if (!pattern.test(fields["centerInchargeEmail"])) {
-          formIsValid = false;
-          errors["centerInchargeEmail"] = "Please enter valid Email.";
-        }
-      }
-      if (typeof fields["MISCoordinatorEmail"] !== "undefined") {
-        //regular expression for email validation
-        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/i);
-        if (!pattern.test(fields["MISCoordinatorEmail"])) {
-          formIsValid = false;
-          errors["MISCoordinatorEmail"] = "Please enter valid Email.";
-        }
-      }
-      if (typeof fields["centerInchargeContact"] !== "undefined") {
-        if (!fields["centerInchargeContact"].match(/^[0-9]{10}$|^$/)) {
-          formIsValid = false;
-          errors["centerInchargeContact"] = "Please enter valid contact number";
-        }
-      }
-      if (typeof fields["MISCoordinatorContact"] !== "undefined") {
-        if (!fields["MISCoordinatorContact"].match(/^[0-9]{10}$|^$/)) {
-          formIsValid = false;
-          errors["MISCoordinatorContact"] = "Please enter valid contact number";
-        }
-      }
-      if (typeof fields["pincode"] !== "undefined") {
-        if (!fields["pincode"].match(/^[0-9]{6}$|^$/)) {
-          formIsValid = false;
-          errors["pincode"] = "Please enter valid Pincode.";
-        }
-      }
-      if (typeof fields["nameOfCenter"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["nameOfCenter"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["nameOfCenter"] = "Please enter valid Center Name.";
-        }
-      }
-      if (typeof fields["centerInchargeName"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["centerInchargeName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["centerInchargeName"] = "Please enter valid Name.";
-        }
-      }
-      if (typeof fields["MISCoordinatorName"] !== "undefined") {
-        // if (!fields["beneficiaryID"].match(/^(?!\s*$)[-a-zA-Z0-9_:,.' ']{1,100}$/)) {
-        if (!fields["MISCoordinatorName"].match(/^[_A-z]*((-|\s)*[_A-z])*$|^$/)) {
-          formIsValid = false;
-          errors["MISCoordinatorName"] = "Please enter valid Name.";
-        }
-      }  
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
-  }*/
   componentDidMount() {
     $.validator.addMethod("RegExpEmail", function(value, element, regexpr) {         
       return regexpr.test(value);
@@ -422,6 +296,8 @@ class centerDetail extends Component{
           required: true,
         },
         centerInchargeContact: {
+          maxlength: 10,
+          minlength: 10,
           required: true,
         },
         centerInchargeEmail: {
@@ -430,13 +306,15 @@ class centerDetail extends Component{
 
         },
         MISCoordinatorName: {
-          required: true,
+          // required: true,
         },
         MISCoordinatorContact: {
-          required: true,
+              maxlength: 10,
+              minlength: 10,
+          // required: true,
         },
         MISCoordinatorEmail: {
-          required: true,
+          // required: true,
           RegExpEmail: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/,
 
         },
@@ -902,7 +780,7 @@ class centerDetail extends Component{
                               <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                                <label className="formLable">Pincode</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="pincode" >
-                                  <input type="text"   className="form-control inputBox "  value={this.state.pincode}  name="pincode" placeholder="" ref="pincode" maxLength="6"  onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                  <input type="number"   className="form-control inputBox "  value={this.state.pincode}  name="pincode" placeholder="" ref="pincode" maxLength="6"  onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.pincode}</div>
                               </div>
@@ -921,7 +799,7 @@ class centerDetail extends Component{
                                <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
                                 <label className="formLable">Contact No. of Center Incharge</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="centerInchargeContact" >
-                                  <input type="text"   className="form-control inputBox "   value={this.state.centerInchargeContact} name="centerInchargeContact" placeholder="" ref="centerInchargeContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                  <input type="number"   className="form-control inputBox "   value={this.state.centerInchargeContact} name="centerInchargeContact" placeholder="" ref="centerInchargeContact" maxLength="10" onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.centerInchargeContact}</div>
                               </div>
@@ -938,21 +816,21 @@ class centerDetail extends Component{
                             <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight mt">
                               
                               <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
-                                <label className="formLable">Name of MIS Coordinator</label><span className="asterix">*</span>
+                                <label className="formLable">Name of MIS Coordinator</label><span className="asterix"></span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="MISCoordinatorName" >
                                   <input type="text"   className="form-control inputBox "  value={this.state.MISCoordinatorName}  name="MISCoordinatorName" placeholder="" ref="MISCoordinatorName"  onKeyDown={this.isTextKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.MISCoordinatorName}</div>
                               </div>
                                <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
-                                <label className="formLable">Contact No. of MIS Coordinator</label><span className="asterix">*</span>
+                                <label className="formLable">Contact No. of MIS Coordinator</label><span className="asterix"></span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="MISCoordinatorContact" >
-                                  <input type="text"   className="form-control inputBox "  value={this.state.MISCoordinatorContact}  name="MISCoordinatorContact" placeholder="" ref="MISCoordinatorContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
+                                  <input type="number"   className="form-control inputBox "  value={this.state.MISCoordinatorContact}  name="MISCoordinatorContact" placeholder="" ref="MISCoordinatorContact" maxLength="10" onKeyDown={this.isNumberKey.bind(this)}  onChange={this.handleChange.bind(this)}/>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.MISCoordinatorContact}</div>
                               </div>
                               <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <label className="formLable">Email of MIS Coordinator</label><span className="asterix">*</span>
+                                <label className="formLable">Email of MIS Coordinator</label><span className="asterix"></span>
                                 <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="MISCoordinatorEmail" >
                                   <input type="text" className="form-control inputBox "  value={this.state.MISCoordinatorEmail}  name="MISCoordinatorEmail" placeholder=""ref="MISCoordinatorEmail"  onChange={this.handleChange.bind(this)}/>
                                 </div>

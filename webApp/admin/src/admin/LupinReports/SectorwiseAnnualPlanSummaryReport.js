@@ -32,7 +32,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 4,
+                    mergedColoums : 2,
                     hide : false
                 },
                 {
@@ -48,8 +48,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "projectCategoryType"              : 'Project Category',
-            "projectName"                      : 'Project Name',
+            // "projectCategoryType"              : 'Project Category',
+            // "projectName"                      : 'Project Name',
             "name"                            : 'Sector',
             "annualPlan_TotalBudget"          : 'Total Budget', 
             "Per_Annual"                      : 'Proportion to Total %', 
@@ -247,7 +247,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
         if(center_ID==="all"){
            $(".fullpageloader").show();
-             axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+             axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/all/all/all/all')
             .then((response)=>{
               console.log("resp",response);
               $(".fullpageloader").hide();
@@ -256,8 +256,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               var tableData = response.data.map((a, i)=>{
                 return {
                   _id                                    : a._id,     
-                  projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",
-                  projectName                            : a.projectName === 0 ? "-" :a.projectName,              
+                  // projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",
+                  // projectName                            : a.projectName === 0 ? "-" :a.projectName,              
                   name                                   : a.name,
                   annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
                   Per_Annual                             : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
@@ -284,15 +284,15 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           }else{
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
-            axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+            axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all')
             .then((response)=>{
               console.log("resp",response);
               var value = response.data.filter((a)=>{return a.name == "Total"})[0];
               var tableData = response.data.map((a, i)=>{
                 return {
                     _id                                    : a._id,    
-                    projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",
-                    projectName                            : a.projectName === 0 ? "-" :a.projectName,                
+                    // projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",
+                    // projectName                            : a.projectName === 0 ? "-" :a.projectName,                
                     name                                   : a.name,
                     annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
                     Per_Annual                             : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
@@ -405,7 +405,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                   </div>
                   <hr className="hr-head"/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                       <label className="formLable">Center</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
@@ -424,54 +424,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                           </select>
                       </div>
                     </div>
-                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12  valid_box">
-                      <label className="formLable">Beneficiary</label><span className="asterix"></span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                        <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                          <option  className="hidden" >--Select--</option>
-                          <option value="all" >All</option>
-                          <option value="withUID" >With UID</option>
-                          <option value="withoutUID" >Without UID</option>
-                          
-                        </select>
-                      </div>
-                    </div> 
-                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                      <label className="formLable">Project Category</label><span className="asterix"></span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                        <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                          <option  className="hidden" >--Select--</option>
-                          <option value="all" >All</option>
-                          <option value="LHWRF Grant" >LHWRF Grant</option>
-                          <option value="Project Fund">Project Fund</option>
-                          
-                        </select>
-                      </div>
-                    </div>
-                    {
-                      this.state.projectCategoryType === "Project Fund" ?
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Project Name</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                              <option value="all" >All</option>
-                              {
-                                this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                this.state.availableProjects.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                            </select>
-                          </div>
-                        </div>
-                      : 
-                      ""
-                    } 
-                   <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                   <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                       <label className="formLable">Year</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >

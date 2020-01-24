@@ -35,7 +35,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums :4 ,
+                    mergedColoums :2,
                     hide : false
                 },
                 {
@@ -60,8 +60,8 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "projectCategoryType"              : 'Project Category',
-            "projectName"                      : 'Project Name',
+            // "projectCategoryType"              : 'Project Category',
+            // "projectName"                      : 'Project Name',
             "name"                             : 'Sector',
             "annualPlan_TotalBudget"           : 'Total Budget', 
             "Per_Annual"                       : 'Proportion to Total %', 
@@ -262,28 +262,25 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
             $(".fullpageloader").show();
-            axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+            axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all')
                 .then((response)=>{
                  $(".fullpageloader").hide();
 
-                // console.log("resp",response);
+                console.log("resp",response);
                 var value = response.data.filter((a)=>{return a.name == "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                 return {
                     _id                                     : a._id,            
-                    projectCategoryType                     : a.projectCategoryType ? a.projectCategoryType : "-",
-                    projectName                             : a.projectName === 0 ? "-" :a.projectName,               
+                    // projectCategoryType                     : a.projectCategoryType ? a.projectCategoryType : "-",
+                    // projectName                             : a.projectName === 0 ? "-" :a.projectName,               
                     name                                    : a.name,
                     annualPlan_TotalBudget                  : this.addCommas(a.annualPlan_TotalBudget),
                     Per_Annual                              : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
-                    // Per_Annual                              : (((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ,
                     annualPlan_Reach                        : this.addCommas(a.annualPlan_Reach),
                     annualPlan_FamilyUpgradation            : this.addCommas(a.annualPlan_FamilyUpgradation),                
                     monthlyPlan_TotalBudget                 : this.addCommas(a.monthlyPlan_TotalBudget),                
                     Per_Periodic                            : a.Per_Periodic==="-" ? " " :((((a.monthlyPlan_TotalBudget/value.monthlyPlan_TotalBudget)*100).toFixed(2)) + "%") ,
-                    // Per_Periodic                            : a.Per_Periodic,
                     monthlyPlan_Reach                       : this.addCommas(a.monthlyPlan_Reach),
-                    // monthlyPlan_LHWRF                       : a.monthlyPlan_LHWRF.includes("%") ? a.monthlyPlan_LHWRF : this.addCommas(a.monthlyPlan_LHWRF),
                     monthlyPlan_LHWRF                       : this.addCommas(a.monthlyPlan_LHWRF),
                     monthlyPlan_NABARD                      : this.addCommas(a.monthlyPlan_NABARD),
                     monthlyPlan_Bank_Loan                   : this.addCommas(a.monthlyPlan_Bank_Loan),
@@ -427,57 +424,8 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                                         Sector Periodic Plan Report    
                                     </div>
                                 </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                     <hr className="hr-head"/>
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                                        <label className="formLable">Beneficiary</label><span className="asterix"></span>
-                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                                          <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                                            <option  className="hidden" >--Select--</option>
-                                            <option value="all" >All</option>
-                                            <option value="withUID" >With UID</option>
-                                            <option value="withoutUID" >Without UID</option>
-                                            
-                                          </select>
-                                        </div>
-                                    </div> 
-                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                                        <label className="formLable">Project Category</label><span className="asterix"></span>
-                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                                            <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                                                <option  className="hidden" >--Select--</option>
-                                                <option value="all" >All</option>
-                                                <option value="LHWRF Grant" >LHWRF Grant</option>
-                                                <option value="Project Fund">Project Fund</option>
-                                            </select>
-                                        </div>
-                                    </div>                                    
-                                    {
-                                        this.state.projectCategoryType === "Project Fund" ?
-
-                                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-                                          <label className="formLable">Project Name</label><span className="asterix"></span>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                                <option value="all" >All</option>
-                                                {
-                                                    this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                                    this.state.availableProjects.map((data, index)=>{
-                                                      return(
-                                                        <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                                      );
-                                                    })
-                                                :
-                                                null
-                                              }
-                                            </select>
-                                          </div>
-                                        </div>
-                                    : 
-                                    ""
-                                    } 
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
                                     <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
@@ -490,7 +438,6 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                                             <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)}  name="endDate" id="endDate" ref="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                                         </div>
                                     </div>
-                                   
                                 </div> 
                                      
                                 <div className="marginTop11">

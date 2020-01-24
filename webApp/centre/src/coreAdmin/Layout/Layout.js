@@ -41,6 +41,7 @@ import FileWiseMonthlyPlanList                    from "../../centres/plan/FileW
 
 import CaseStudyy                                 from "../../centres/caseStudy/CaseStudyy.js";
 import CaseStudy                                  from "../../centres/addFile/CaseStudy.js";
+import CaseStudyView                              from "../../centres/addFile/CaseStudyView.js";
 import AddFilePrivate                             from "../../centres/addFile/AddFilePrivate.js";
 import Highlight                                  from "../../centres/highLight/Highlight.js"; 
 /*import Monthwise                                       from "../../centres/plan/Monthwise.js";*/
@@ -169,6 +170,7 @@ class Layout extends Component{
                               <Route path="/caseStudy"                           exact strict component={ CaseStudy } />
                               <Route path="/caseStudy/"                          exact strict component={ CaseStudy } />
                               <Route path="/caseStudy/:id"                       exact strict component={ CaseStudy } />
+                              <Route path="/caseStudyView/:id"                   exact strict component={ CaseStudyView } />
                               <Route path="/caseStudyy"                          exact strict component={ CaseStudyy } />
                               <Route path="/addFile"                             exact strict component={ AddFilePrivate } />
                               <Route path="/highlight"                           exact strict component={ Highlight } />

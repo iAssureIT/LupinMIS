@@ -37,7 +37,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 5,
+                        mergedColoums : 3,
                         hide : false
                     },
                     {
@@ -62,8 +62,8 @@ class ActivitywisePeriodicPlanReport extends Component{
                 ]
             },
             "tableHeading"      : {
-                "projectCategoryType"                       : 'Project Category',
-                "projectName"                               : 'Project Name',
+                // "projectCategoryType"                       : 'Project Category',
+                // "projectName"                               : 'Project Name',
                 "name"                                      : 'Activity & Sub-Activity',
                 "unit"                                      : 'Unit',
                 "annualPlan_Reach"                          : 'Reach', 
@@ -281,7 +281,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 if(sector_ID==="all"){
                     $(".fullpageloader").show();
 
-                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/all/all/all/all')
                     .then((response)=>{
                       console.log("resp",response);
                        $(".fullpageloader").hide();
@@ -289,8 +289,8 @@ class ActivitywisePeriodicPlanReport extends Component{
                         var tableData = response.data.map((a, i)=>{
                             return {
                             _id                                       : a._id,               
-                            projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                            projectName                               : a.projectName === 0 ? "-" :a.projectName,        
+                            // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                            // projectName                               : a.projectName === 0 ? "-" :a.projectName,        
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -321,14 +321,14 @@ class ActivitywisePeriodicPlanReport extends Component{
                        
                     });            
                 }else{
-                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/all/all/all')
                     .then((response)=>{
                       console.log("resp",response);
                         var tableData = response.data.map((a, i)=>{
                             return {
                             _id                                       : a._id,                
-                            projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                            projectName                               : a.projectName === 0 ? "-" :a.projectName,        
+                            // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                            // projectName                               : a.projectName === 0 ? "-" :a.projectName,        
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -360,14 +360,14 @@ class ActivitywisePeriodicPlanReport extends Component{
                     });      
                 }
             }else{
-                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all')
                 .then((response)=>{
                   console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{
                         return {
                             _id                                       : a._id,                
-                            projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                            projectName                               : a.projectName === 0 ? "-" :a.projectName,        
+                            // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                            // projectName                               : a.projectName === 0 ? "-" :a.projectName,        
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -527,7 +527,6 @@ class ActivitywisePeriodicPlanReport extends Component{
                                         }
                                       </select>
                                     </div>
-                                    {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                                   </div>
                                   <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                                     <label className="formLable">Sector</label><span className="asterix"></span>
@@ -547,60 +546,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                                       }
                                       </select>
                                     </div>
-                                   {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                                   </div>
-                                  <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                                    <label className="formLable">Beneficiary</label><span className="asterix"></span>
-                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                                      <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                                        <option  className="hidden" >--Select--</option>
-                                        <option value="all" >All</option>
-                                        <option value="withUID" >With UID</option>
-                                        <option value="withoutUID" >Without UID</option>
-                                        
-                                      </select>
-                                    </div>
-                                  </div> 
-                                  <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                                    <label className="formLable">Project Category</label><span className="asterix"></span>
-                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                                      <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                                        <option  className="hidden" >--Select--</option>
-                                        <option value="all" >All</option>
-                                        <option value="LHWRF Grant" >LHWRF Grant</option>
-                                        <option value="Project Fund">Project Fund</option>
-                                        
-                                      </select>
-                                    </div>
-                                  </div>
-                                    
-                                </div>   
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                  
-                                  {
-                                    this.state.projectCategoryType === "Project Fund" ?
-
-                                    <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12 ">
-                                      <label className="formLable">Project Name</label><span className="asterix"></span>
-                                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                                        <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                            <option value="all" >All</option>
-                                          {
-                                            this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                            this.state.availableProjects.map((data, index)=>{
-                                              return(
-                                                <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                              );
-                                            })
-                                            :
-                                            null
-                                          }
-                                        </select>
-                                      </div>
-                                    </div>
-                                  : 
-                                  ""
-                                  } 
                                   <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >

@@ -26,6 +26,7 @@ class ActivityReportView extends Component{
  
   }
   componentDidMount(){
+    $("html,body").scrollTop(0)
     axios({
       method: 'get',
       url: '/api/activityReport/'+this.state.activty_ID,
@@ -76,7 +77,7 @@ class ActivityReportView extends Component{
                             <p><b>Date</b></p>
                           </div>
                           <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                             <p>{this.state.activity  ? moment(this.state.activity.createdAt).format('YYYY-MM-DD') : "-"}</p>
+                             <p>{this.state.activity  ? moment(this.state.activity.createdAt).format('DD-MM-YYYY') : "-"}</p>
                           </div>
                         </div>
                         <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">

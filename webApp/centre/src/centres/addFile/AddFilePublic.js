@@ -364,6 +364,7 @@ class AddFile extends Component{
                           {
                             this.state.fileArray && this.state.fileArray.length > 0 ? 
                             this.state.fileArray.map((a, index)=>{
+                                  // console.log("a",a)
                               return(
                                 <div className="col-lg-3"  key={index}>
                                      <label id={index} className="pull-right custFaTimes crossLabel" title="Delete image" data-id={a.filePath} onClick={this.deleteFile.bind(this)}><i className="fa fa-times"></i></label>

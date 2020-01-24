@@ -160,7 +160,7 @@ class Family extends Component{
               regxUID: /^[_0-9]*((-|\s)*[_0-9]){12}$|^$/,
             },
             caste: {
-              required: true,
+              // required: true,
             },
             surnameOfFH: {
               required: true,
@@ -182,10 +182,10 @@ class Family extends Component{
 
             },
             contact: {
-              required: true,
+              // required: true,
               maxlength: 10,
               minlength: 10,
-            regxcontact: /^\+?\d+$/,
+            // regxcontact: /^\+?\d+$/,
             },
           },
           errorPlacement: function(error, element) {
@@ -847,14 +847,14 @@ class Family extends Component{
                               <div className="errorMsg">{this.state.errors.uID}</div>
                             </div>
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Contact Number </label><span className="asterix">*</span>
+                              <label className="formLable">Contact Number </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="contactErr" >
                                 <input type="number" className="form-control inputBox "  placeholder=""ref="contact" name="contact" value={this.state.contact}  maxLength="10" onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.contact}</div>
                             </div>  
                             <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Caste</label><span className="asterix">*</span>
+                              <label className="formLable">Caste</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="casteErr" >
                                 <select className="custom-select form-control inputBox" ref="caste" name="caste" value={this.state.caste} onChange={this.handleChange.bind(this)}>
                                   <option selected='true' disabled="disabled" >-- Select --</option>

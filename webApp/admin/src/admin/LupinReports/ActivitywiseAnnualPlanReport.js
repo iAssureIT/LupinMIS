@@ -43,7 +43,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 5,
+                        mergedColoums : 3,
                         hide : false
                     },
                     {
@@ -64,8 +64,8 @@ class ActivitywiseAnnualPlanReport extends Component{
                 ]
             },
             "tableHeading"      : {
-                "projectCategoryType"                    : 'Project Category',
-                "projectName"                            : 'Project Name',
+                // "projectCategoryType"                    : 'Project Category',
+                // "projectName"                            : 'Project Name',
                 "name"                                   : 'Activity & Sub-Activity',
                 "unit"                                   : 'Unit',
                 "annualPlan_Reach"                       : 'Reach', 
@@ -273,15 +273,15 @@ class ActivitywiseAnnualPlanReport extends Component{
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
             $(".fullpageloader").show();
-            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/all/all/all/all')
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
                   var tableData = response.data.map((a, i)=>{
                   return {
                   _id                                       : a._id,            
-                  projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                  projectName                               : a.projectName === 0 ? "-" :a.projectName,        
+                  // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                  // projectName                               : a.projectName === 0 ? "-" :a.projectName,        
                   name                                      : a.name,
                   unit                                      : a.unit,
                   annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -311,14 +311,14 @@ class ActivitywiseAnnualPlanReport extends Component{
               // console.log("year",year);
               var startDate = year.substring(3, 7)+"-04-01";
               var endDate = year.substring(10, 15)+"-03-31";    
-              axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+              axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/all/all/all')
               .then((response)=>{
                 console.log("resp",response);
                   var tableData = response.data.map((a, i)=>{
                   return {
                       _id                                       : a._id,            
-                      projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                      projectName                               : a.projectName === 0 ? "-" :a.projectName,        
+                      // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                      // projectName                               : a.projectName === 0 ? "-" :a.projectName,        
                       name                                      : a.name,
                       unit                                      : a.unit,
                       annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -350,14 +350,14 @@ class ActivitywiseAnnualPlanReport extends Component{
           }else{
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
-            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all')
               .then((response)=>{
                 console.log("resp",response);
                   var tableData = response.data.map((a, i)=>{
                   return {
                     _id                                       : a._id,            
-                    projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                    projectName                               : a.projectName === 0 ? "-" :a.projectName,        
+                    // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                    // projectName                               : a.projectName === 0 ? "-" :a.projectName,        
                     name                                      : a.name,
                     unit                                      : a.unit,
                     annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -415,7 +415,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                     </div>
                     <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Center</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                           <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
@@ -435,7 +435,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.center}</div>*/}
                       </div>
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
+                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
                         <label className="formLable">Sector</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
@@ -453,45 +453,9 @@ class ActivitywiseAnnualPlanReport extends Component{
                           }
                           </select>
                         </div>
-                       {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
                       </div>
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                        <label className="formLable">Project Category</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                          <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                            <option  className="hidden" >--Select--</option>
-                            <option value="all" >All</option>
-                            <option value="LHWRF Grant" >LHWRF Grant</option>
-                            <option value="Project Fund">Project Fund</option>
-                            
-                          </select>
-                        </div>
-                      </div>
-                      {
-                        this.state.projectCategoryType === "Project Fund" ?
-
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                          <label className="formLable">Project Name</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                              <option value="all" >All</option>
-                              {
-                                this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                this.state.availableProjects.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                            </select>
-                          </div>
-                        </div>
-                      : 
-                      ""
-                      }   
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                      
+                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Year</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                           <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >

@@ -257,7 +257,7 @@ class UpgradedBeneficiaryReport extends Component{
                 // console.log('response',response)
                 tableData.push({
                   _id             : a._id,            
-                  date            : a.date,
+                  date            : moment(a.date).format('DD-MM-YYYY'),
                   projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
                   projectName            : a.projectName === "all"||0 ? "-" :a.projectName,                  
                   upgraded        : a.upgraded,
