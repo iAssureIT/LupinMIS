@@ -679,7 +679,7 @@ class PlanDetails extends Component{
     // console.log("data",data);
     axios.post(this.state.apiCall+'/list', data)
     .then((response)=>{
-      // console.log("response plan Details===>",response);
+      console.log("response plan Details===>",response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                 : a._id,
