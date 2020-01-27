@@ -139,17 +139,26 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
     }).then((response)=> {
-      // console.log("response ==>",response.data);
+      console.log("response ==>",response.data[0]);
+
+      function removeDuplicates(data, param){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+          })
+        }
+      var availableblocksInCenter = removeDuplicates(response.data[0].blocksCovered, "district");
+       
       if (response.data && response.data[0]) {
         this.setState({
-          availableCenters : response.data[0],
-          villagesCovered  : response.data[0].villagesCovered.length,
-          blocksCovered    : response.data[0].blocksCovered.slice(0, 8).map((o,i)=>{return o.block}),
-          allblocks        : response.data[0].blocksCovered.map((o,i)=>{return o.block}),
-          districtCovered  : response.data[0].districtsCovered.slice(0, 8).map((d,i)=>{return d.split('|')[0]}),  
-          alldistrict      : response.data[0].districtsCovered.map((d,i)=>{return d.split('|')[0]}),
+          availableCenters         : response.data[0],
+          villagesCoveredInCenter  : response.data[0].villagesCovered.map((o,i)=>{return o.village}),
+          villagesCovered          : response.data[0].villagesCovered.length,
+          blocksCovered            : response.data[0].blocksCovered.slice(0, 8).map((o,i)=>{return o.block}),
+          allblocks                : response.data[0].blocksCovered.map((o,i)=>{return o.block}),
+          districtCovered          : availableblocksInCenter.slice(0, 8).map((d,i)=>{return (d.district).split('|')[0]}),  
+          alldistrict              : availableblocksInCenter.map((d,i)=>{return (d.district).split('|')[0]}),
         },()=>{
-          // console.log("districtCovered",this.state.districtCovered);
+          console.log("villagesCoveredInCenter",this.state.villagesCoveredInCenter);
           // console.log('center', this.state.center);
           // var center_ID = this.state.center.split('|')[1];
           // this.setState({
@@ -378,7 +387,14 @@ export default class Dashboard extends Component{
     }
   }
   dataShow(id){
-    var getData = id === "Districts" ? this.state.alldistrict : this.state.allblocks;
+    if(id === "Districts"){
+      var getData = this.state.alldistrict
+    }else if(id === "Blocks"){
+      var getData = this.state.allblocks
+    }else{
+      var getData = this.state.villagesCoveredInCenter
+    }
+    // var getData = id === "Districts" ? this.state.alldistrict : this.state.allblocks;
     this.setState({
       "dataShow" : getData,
       "dataHeading" : id
@@ -472,20 +488,6 @@ export default class Dashboard extends Component{
 
                             <div className="info-box-content">
                               <span className="info-box-text">Districts</span>
-                                {/*  <span className="info-box-number">5,200</span>*/}
-                            {/*<ul className="classTolist">
-                              {this.state.districtCovered && this.state.districtCovered.length > 0 ?
-                                this.state.districtCovered.map((district,index)=>{
-                                  return(
-                                      <li lassName="listfont" key={index}>
-                                            {district}
-                                      </li>
-                                    )
-                                }) 
-                              :
-                              null }
-                              
-                            </ul>*/}
                               {this.state.districtCovered && this.state.districtCovered.length > 0 ?
                                 this.state.districtCovered.map((district,index)=>{
                                   return(
@@ -528,14 +530,26 @@ export default class Dashboard extends Component{
                               }
                           </div>
                         </div>
-                        <div className="info-box bg-red">
+                        {/*<div className="info-box bg-red">
                           <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
-
                           <div className="info-box-content">
                             <span className="info-box-text">Villages</span>
-                            <span className="info-box-number">{this.state.villagesCovered}</span>
+                            <span className="info-box-number" onClick={()=> this.dataShow("Villages")}>{this.state.villagesCovered}</span>
                             <div className="progress">
                               <div className="progress-bar" style={{"width": this.state.villagesCovered+"%"}}></div>
+                            </div>
+                          </div>
+                        </div>*/}
+                        <div className="info-box bg-red">
+                          <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
+                          <div className="info-box-content">
+                            <span className="info-box-text pull-left">Villages</span>
+                            <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Villages")}>View All..</a></span>
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              <span className="info-box-number">{this.state.villagesCovered}</span>
+                              <div className="progress">
+                                <div className="progress-bar" style={{"width": this.state.villagesCovered+"%"}}></div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -583,7 +597,7 @@ export default class Dashboard extends Component{
                       <div className="modal fade" id="dataShow" role="dialog">
                         <div className="modal-dialog">                        
                           <div className="modal-content">
-                            <div className="modal-header">
+                            <div className="modal-header backColor">
                               <button type="button" className="close" onClick={()=> this.closeModal()}>&times;</button>
                               <h4 className="modal-title">{this.state.dataHeading}</h4>
                             </div>

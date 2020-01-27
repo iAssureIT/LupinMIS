@@ -3,6 +3,7 @@ import $                    from 'jquery';
 import axios                from 'axios';
 import swal                 from 'sweetalert';
 import moment               from 'moment';
+import _                    from 'underscore';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../common/Loader.js";
 
@@ -90,7 +91,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.handleToChange      = this.handleToChange.bind(this);
         this.currentFromDate     = this.currentFromDate.bind(this);
         this.currentToDate       = this.currentToDate.bind(this);
-        this.getAvailableProjects= this.getAvailableProjects.bind(this);
         this.getAvailableSectors = this.getAvailableSectors.bind(this);
         
     }
@@ -105,7 +105,6 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-        this.getAvailableProjects();
         this.getAvailableSectors();
         this.currentFromDate();
         this.currentToDate();
@@ -121,7 +120,6 @@ class ActivitywisePeriodicPlanReport extends Component{
     }
    
     componentWillReceiveProps(nextProps){
-        this.getAvailableProjects();
         this.getAvailableSectors();
         this.currentFromDate();
         this.currentToDate();
@@ -168,50 +166,68 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.setState({
               sector_ID : sector_id,
             },()=>{
+            this.getAvailableActivity(this.state.sector_ID);
+            this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
     }
-
-    selectprojectCategoryType(event){
-        event.preventDefault();
-        var projectCategoryType = event.target.value;
-        this.setState({
-          projectCategoryType : projectCategoryType,
-        },()=>{
-            if (this.state.projectCategoryType=== "all" || this.state.projectCategoryType === "LHWRF Grant"){
+ 
+    getAvailableActivity(sector_ID){
+        if(sector_ID){
+          axios({
+            method: 'get',
+            url: '/api/sectors/'+sector_ID,
+          }).then((response)=> {
+            if(response&&response.data[0]){
               this.setState({
-                projectName : "all",
-              })    
+                availableActivity : response.data[0].activity
+              })
             }
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-          },()=>{
+          }).catch(function (error) {
+            console.log("error = ",error);
+          });
+        }
+    }
+    selectActivity(event){
+        event.preventDefault();
+        this.setState({[event.target.name]:event.target.value});
+        if(event.target.value==="all"){
+          var activity_ID = event.target.value;
+        }else{
+          var activity_ID = event.target.value.split('|')[1];
+        }
+        this.setState({
+          activity_ID : activity_ID,
+        },()=>{
+          this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
         })
     }
-    getAvailableProjects(){
+    getAvailableSubActivity(sector_ID, activity_ID){
         axios({
           method: 'get',
-          url: '/api/projectMappings/list',
+          url: '/api/sectors/'+sector_ID,
         }).then((response)=> {
+          var availableSubActivity = _.flatten(response.data.map((a, i)=>{
+            return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
+          }))
           this.setState({
-            availableProjects : response.data
-          })
+            availableSubActivity : availableSubActivity
+          });
         }).catch(function (error) {
-          console.log('error', error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }   
-        });
+          console.log("error = ",error);
+        });    
     }
-    selectprojectName(event){
+    selectSubActivity(event){
         event.preventDefault();
-        var projectName = event.target.value;
+        this.setState({[event.target.name]:event.target.value});
+        if(event.target.value==="all"){
+          var subActivity_ID = event.target.value;
+        }else{
+          var subActivity_ID = event.target.value.split('|')[1];
+        }
         this.setState({
-              projectName : projectName,
-            },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+          subActivity_ID : subActivity_ID,
+        },()=>{
         })
     }
     addCommas(x) {
@@ -464,6 +480,48 @@ class ActivitywisePeriodicPlanReport extends Component{
                                           </select>
                                         </div>
                                     </div>
+                                    {/*<div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
+                                        <label className="formLable">Activity<span className="asterix">*</span></label>
+                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                                            <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
+                                                <option disabled="disabled" selected="true">-- Select --</option>
+                                                <option value="all" >All</option>
+                                                {
+                                                    this.state.availableActivity && this.state.availableActivity.length >0 ?
+                                                    this.state.availableActivity.map((data, index)=>{
+                                                        if(data.activityName ){
+                                                            return(
+                                                                <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                                            );
+                                                        }
+                                                    })
+                                                    :
+                                                    null
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
+                                        <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
+                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
+                                            <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
+                                                <option disabled="disabled" selected="true">-- Select --</option>
+                                                <option value="all" >All</option>
+                                                {
+                                                    this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                                                    this.state.availableSubActivity.map((data, index)=>{
+                                                        if(data.subActivityName ){
+                                                            return(
+                                                                <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                                            );
+                                                        }
+                                                    })
+                                                    :
+                                                    null
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>  */}
                                     <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >

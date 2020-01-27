@@ -67,7 +67,7 @@ export default class CenterWisePieChart extends Component {
                 piechartcolor.push(this.getRandomColor());                
               }
             })
-            console.log("annualPlanTotalBudget",annualPlanTotalBudget);
+            // console.log("annualPlanTotalBudget",annualPlanTotalBudget);
             if(annualPlanTotalBudget.length > 0){
               centerData.datasets[0].data = annualPlanTotalBudget;
               centerData.labels = sector;
@@ -135,11 +135,10 @@ export default class CenterWisePieChart extends Component {
       // return color;
     }
   render() {
-    console.log("this.state.data = ",this.state.data);
+    // console.log("this.state.data = ",this.state.data);
     return (
       <div>
-              <Loader type="fullpageloader" />
-
+        <Loader type="fullpageloader" />
         <Pie height={150} data={this.state.data} options={{legend: {display: false},
         plugins: {
            labels: [{

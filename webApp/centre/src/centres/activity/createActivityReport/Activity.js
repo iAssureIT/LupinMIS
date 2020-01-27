@@ -1512,7 +1512,6 @@ class Activity extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.sector}</div>
                           </div>
-
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">Activity<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
@@ -1534,9 +1533,7 @@ class Activity extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.activity}</div>
                           </div>
-
-
-                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                               <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
@@ -1558,9 +1555,6 @@ class Activity extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.subactivity}</div>
                           </div>   
-
-
-
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">Activity Type<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >

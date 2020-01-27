@@ -101,12 +101,12 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/centers/count/typeofcenter',
     }).then((response)=> {
-      console.log('response', response);
+      // console.log('response', response);
       this.setState({
         centerData : response.data,
         centerCounts : response.data.map((o,i)=>{return o.count})
       },()=>{
-        console.log('centerCounts', this.state.centerCounts);
+        // console.log('centerCounts', this.state.centerCounts);
 
         this.setState({
           "centerCount" : this.state.centerCounts.reduce((a,b)=>{return a + b})
@@ -277,7 +277,6 @@ export default class Dashboard extends Component{
                       centerCount : this.state.centerCount,
                       multipleValues : true}} 
                   />
-                    
                   <StatusComponent 
                     stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Upgraded Beneficiary",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0,multipleValues : false}} 
                   />
@@ -321,7 +320,6 @@ export default class Dashboard extends Component{
                              }
                             </select>
                           </div>
-                          {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
                         </div>  
                     </div>  
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -384,29 +382,7 @@ export default class Dashboard extends Component{
             </section>     
           </div>     
         </div>     
-      </div>      // static getDerivedStateFromProps(props,state){
-  //    var data = {...state.data}; 
-  //   if (data) {
-  //     data.datasets[0].data = props.expenditure;
-  //     data.datasets[1].data = props.budget;
-  //     data.labels = props.months;
-  //     return{
-  //        data : data
-  //     }
-  //   }
-  // }
-  
+      </div>      
     );
   }
 }
-{/*
-        <Bar
-          data={data}
-          width={100}
-          height={50}
-          options={{
-            maintainAspectRatio: false
-          }}
-        />
-
-*/}
