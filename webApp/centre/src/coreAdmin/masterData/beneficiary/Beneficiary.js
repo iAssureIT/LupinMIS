@@ -40,6 +40,7 @@ class Beneficiary extends Component{
         apiLink             : '/api/beneficiaries/',
         editUrl             : '/beneficiary/',        
         paginationApply     : false,
+        downloadApply       : true,
         searchApply         : true,
       },
       "startRange"          : 0,
@@ -702,6 +703,8 @@ class Beneficiary extends Component{
                       </form>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                         <IAssureTable 
+                          tableName = "Beneficiary"
+                          id = "Beneficiary"
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}
@@ -712,21 +715,23 @@ class Beneficiary extends Component{
                         />
                       </div>
                     </div>
-                    <div id="bulkbenificiary" className="tab-pane fade in ">
-                      <BulkUpload url="/api/beneficiaries/bulk_upload_beneficiary" 
-                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}}
-                      uploadedData={this.uploadedData} 
-                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Beneficiaries.xlsx"
-                      fileDetailUrl={this.state.fileDetailUrl}
-                      getFileDetails={this.getFileDetails}
-                      fileDetails={this.state.fileDetails}
-                      goodRecordsHeading ={this.state.goodRecordsHeading}
-                      failedtableHeading={this.state.failedtableHeading}
-                      failedRecordsTable ={this.state.failedRecordsTable}
-                      failedRecordsCount={this.state.failedRecordsCount}
-                      goodRecordsTable={this.state.goodRecordsTable}
-                      goodDataCount={this.state.goodDataCount}
-                      />
+                    <div  id="bulkbenificiary" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                        <BulkUpload url="/api/beneficiaries/bulk_upload_beneficiary" 
+                        data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}}
+                        uploadedData={this.uploadedData} 
+                        fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Beneficiaries.xlsx"
+                        fileDetailUrl={this.state.fileDetailUrl}
+                        getFileDetails={this.getFileDetails}
+                        fileDetails={this.state.fileDetails}
+                        goodRecordsHeading ={this.state.goodRecordsHeading}
+                        failedtableHeading={this.state.failedtableHeading}
+                        failedRecordsTable ={this.state.failedRecordsTable}
+                        failedRecordsCount={this.state.failedRecordsCount}
+                        goodRecordsTable={this.state.goodRecordsTable}
+                        goodDataCount={this.state.goodDataCount}
+                        />
+                      </div>
                     </div>
                   </div>
                                 

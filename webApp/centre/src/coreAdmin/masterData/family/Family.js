@@ -44,6 +44,7 @@ class Family extends Component{
         editUrl               : '/family/',      
         paginationApply       : false,
         searchApply           : true,
+        downloadApply       : true,
       },
       "tableHeading"          : {
         familyID              : "Family ID",
@@ -978,6 +979,8 @@ class Family extends Component{
                       </form>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                         <IAssureTable 
+                          tableName = "Family"
+                          id = "Family"
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}
@@ -988,21 +991,23 @@ class Family extends Component{
                         />
                       </div>
                     </div>
-                    <div id="bulk" className="tab-pane fade in ">
-                      <BulkUpload url="/api/families/bulk_upload_families" 
-                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
-                      uploadedData={this.uploadedData} 
-                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
-                      fileDetailUrl={this.state.fileDetailUrl}
-                      getFileDetails={this.getFileDetails}
-                      fileDetails={this.state.fileDetails}
-                      goodRecordsHeading ={this.state.goodRecordsHeading}
-                      failedtableHeading={this.state.failedtableHeading}
-                      failedRecordsTable ={this.state.failedRecordsTable}
-                      failedRecordsCount={this.state.failedRecordsCount}
-                      goodRecordsTable={this.state.goodRecordsTable}
-                      goodDataCount={this.state.goodDataCount}
-                      />
+                    <div id="bulk" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                        <BulkUpload url="/api/families/bulk_upload_families" 
+                        data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
+                        uploadedData={this.uploadedData} 
+                        fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
+                        fileDetailUrl={this.state.fileDetailUrl}
+                        getFileDetails={this.getFileDetails}
+                        fileDetails={this.state.fileDetails}
+                        goodRecordsHeading ={this.state.goodRecordsHeading}
+                        failedtableHeading={this.state.failedtableHeading}
+                        failedRecordsTable ={this.state.failedRecordsTable}
+                        failedRecordsCount={this.state.failedRecordsCount}
+                        goodRecordsTable={this.state.goodRecordsTable}
+                        goodDataCount={this.state.goodDataCount}
+                        />
+                      </div>
                     </div>
                   </div>
                   </div>              
