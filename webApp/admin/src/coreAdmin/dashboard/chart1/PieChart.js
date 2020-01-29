@@ -60,7 +60,7 @@ export default class PieChart extends Component {
             response.data.map((data,index)=>{ 
               if(data.annualPlan_TotalBudget > 0){
                 sector.push(data.name);
-                annualPlanTotalBudget.push(data.annualPlan_TotalBudget);
+                annualPlanTotalBudget.push(data.annualPlan_TotalBudget_L);
                 piechartcolor.push(this.getRandomColor_sector());
               }
             })

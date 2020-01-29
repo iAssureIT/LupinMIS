@@ -74,7 +74,7 @@ export default class BarChart extends Component{
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
     if(startDate && endDate){
-        axios.get('/api/report/sector_familyupgrade_outreach_count/all/'+startDate+'/'+endDate)
+        axios.get('/api/reportDashboard/sector_familyupgrade_outreach_count/all/'+startDate+'/'+endDate)
         .then((response)=>{ 
           console.log("sector_annual_achievement_report ==>",response);
           // response.data.splice(-2);

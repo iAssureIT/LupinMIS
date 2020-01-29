@@ -544,7 +544,10 @@ export default class Dashboard extends Component{
                           <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
                           <div className="info-box-content">
                             <span className="info-box-text pull-left">Villages</span>
+                            {this.state.villagesCovered > 0 ?
                             <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Villages")}>View All..</a></span>
+                            : 
+                            ""}
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                               <span className="info-box-number">{this.state.villagesCovered}</span>
                               <div className="progress">
