@@ -61,22 +61,25 @@ export default class BarChart extends Component{
   //   }
   // }
   componentDidUpdate(prevProps, prevState){
+    // console.log('center_ID',this.props.center_ID);
+
     if (prevProps.year !== this.props.year) {
-      this.getSectorwiseFamilyupg(this.props.year,this.state.center_ID);
+      this.getSectorwiseFamilyupg(this.props.year,this.props.center_ID);
     }
   }
   componentDidMount(){
-    this.getSectorwiseFamilyupg(this.props.year,this.state.center_ID);
+    console.log('center_ID',this.props.center_ID);
+    this.getSectorwiseFamilyupg(this.props.year,this.props.center_ID);
   }
   getSectorwiseFamilyupg(year,center_ID){
+    console.log('center_ID',center_ID);
     var oudata = {...this.state.data};
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
-    if(startDate, endDate){
-        axios.get('/api/report/sector/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all')
+    if(center_ID && startDate && endDate){
+        axios.get('/api/report/sector_familyupgrade_outreach_count/'+center_ID+'/'+startDate+'/'+endDate)
         .then((response)=>{ 
-          // console.log("response ==>",response);
-          response.data.splice(-2);
+          // response.data.splice(-2);
           var sector = [];
           var annualPlanReach = [];
           var annualPlanFamilyUpgradation = [];
@@ -86,8 +89,10 @@ export default class BarChart extends Component{
 
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
+          // console.log("sector_familyupgrade_outreach ==>",data);
+
               if(data.achievement_Reach > 0 || data.achievement_FamilyUpgradation > 0){ 
-                sector.push(data.name);
+                sector.push(data.sectorShortName);
                 annualPlanReach.push(data.annualPlan_Reach);
                 annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
                 achievementReach.push(data.achievement_Reach);
@@ -99,13 +104,16 @@ export default class BarChart extends Component{
               oudata.datasets[0].data = achievementFamilyUpgradation;
               oudata.datasets[1].data = achievementReach;
               oudata.labels           = sector;
+               this.setState({
+                "data" : oudata
+              },()=>{})
             }else{
               oudata.datasets[0].data = [200, 100, 500, 750, 300,600,900,150];
               oudata.datasets[1].data = [2000, 1000, 1500, 5000, 2700, 4800, 5400, 2100];
               oudata.labels           = ["AG","NRM","AH","Edu","Health","Infra","WE","RI"];
               this.setState({
                 "data" : oudata
-              })
+              },()=>{})
             } 
           }else{
             oudata.datasets[0].data = [200, 100, 500, 750, 300,600,900,150];

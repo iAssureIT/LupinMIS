@@ -74,10 +74,10 @@ export default class BarChart extends Component{
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
     if(startDate && endDate){
-        axios.get('/api/report/sector_annual_achievement_report/'+startDate+'/'+endDate+'/all/all/all/all')
+        axios.get('/api/report/sector_familyupgrade_outreach_count/all/'+startDate+'/'+endDate)
         .then((response)=>{ 
           console.log("sector_annual_achievement_report ==>",response);
-          response.data.splice(-2);
+          // response.data.splice(-2);
           var sector = [];
           var annualPlanReach = [];
           var annualPlanFamilyUpgradation = [];
@@ -88,7 +88,7 @@ export default class BarChart extends Component{
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
               if(data.achievement_Reach > 0 || data.achievement_FamilyUpgradation > 0){ 
-                sector.push(data.name);
+                sector.push(data.sectorShortName);
                 annualPlanReach.push(data.annualPlan_Reach);
                 annualPlanFamilyUpgradation.push(data.annualPlan_FamilyUpgradation);
                 achievementReach.push(data.achievement_Reach);
@@ -103,7 +103,7 @@ export default class BarChart extends Component{
               this.setState({
                 "data" : oudata
               },()=>{
-                 console.log("oudata",this.state.data);
+                 // console.log("oudata",this.state.data);
 
               })
             }else{
