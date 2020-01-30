@@ -71,6 +71,7 @@ class centerDetail extends Component{
         deleteMethod              : 'delete',
         apiLink                   : '/api/centers/',
         paginationApply           : false,
+        downloadApply             : true,
         searchApply               : false,
         editUrl                   : '/center-details/'
       },
@@ -974,6 +975,8 @@ class centerDetail extends Component{
                              <hr className="hr-head"/>
                           </div>
                        : null}
+                          {/*tableName = "Center Details"
+                          id = "centerDetail" */}
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
                           tableHeading={this.state.tableHeading}

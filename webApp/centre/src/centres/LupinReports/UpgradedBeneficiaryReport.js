@@ -440,6 +440,17 @@ class UpgradedBeneficiaryReport extends Component{
                           </div>
                         </div>
                         <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                          <label className="formLable">Upgraded</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="upgraded" >
+                            <select className="custom-select form-control inputBox" ref="upgraded" name="upgraded" value={this.state.upgraded} onChange={this.handleChange.bind(this)}>
+                              <option  className="hidden" >--Select--</option>
+                              <option value="all" >All</option>
+                              <option value="upgraded">Upgraded</option>
+                              <option value="not_upgraded" >Not Upgraded</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">Beneficiary</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                               <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -487,19 +498,6 @@ class UpgradedBeneficiaryReport extends Component{
                         : 
                         ""
                         } 
-                      </div>
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">                      
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Upgraded</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="upgraded" >
-                            <select className="custom-select form-control inputBox" ref="upgraded" name="upgraded" value={this.state.upgraded} onChange={this.handleChange.bind(this)}>
-                              <option  className="hidden" >--Select--</option>
-                              <option value="all" >All</option>
-                              <option value="upgraded">Upgraded</option>
-                              <option value="not_upgraded" >Not Upgraded</option>
-                            </select>
-                          </div>
-                        </div>
                         <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">From</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >

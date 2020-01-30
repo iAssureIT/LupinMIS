@@ -43,8 +43,8 @@ class GoalSectorReport extends Component{
             ]
         },
         "tableHeading"      : {       
-            "goalType"              : "Goal Type",
-            "goalName"              : 'Goal Name',
+            "goalType"              : "Framework",
+            "goalName"              : 'Goal / Objective',
             "projectCategoryType"   : "Project Category",
             "projectName"           : "Project Name",
             "activityName"    : 'Activity',
@@ -88,6 +88,7 @@ class GoalSectorReport extends Component{
       });
       this.getTypeOfGoal();
       this.getNameOfGoal();
+      this.getAvailableProjects();
       this.currentFromDate();
       this.currentToDate();
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
@@ -95,11 +96,12 @@ class GoalSectorReport extends Component{
       this.handleToChange = this.handleToChange.bind(this);
     }   
     componentWillReceiveProps(nextProps){
-        this.currentFromDate();
-        this.currentToDate();
-        this.getTypeOfGoal();
-        this.getNameOfGoal();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+      this.getAvailableProjects();
+      this.currentFromDate();
+      this.currentToDate();
+      this.getTypeOfGoal();
+      this.getNameOfGoal();
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
     }
     handleChange(event){
         event.preventDefault();
@@ -188,12 +190,6 @@ class GoalSectorReport extends Component{
       })
     }).catch(function (error) {
       console.log('error', error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
     });
   }
   selectprojectName(event){
@@ -385,7 +381,7 @@ class GoalSectorReport extends Component{
                   <hr className="hr-head"/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
                     <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box">
-                      <label className="formLable">Goal Type</label><span className="asterix">*</span>
+                      <label className="formLable">Framework</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
                         <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
                           <option selected={true} disabled="disabled">-- Select --</option>
@@ -403,7 +399,7 @@ class GoalSectorReport extends Component{
                       </div>
                     </div>
                     <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box">
-                      <label className="formLable">Goal Name</label><span className="asterix">*</span>
+                      <label className="formLable">Goal / Objective</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalName" >
                         <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
                           <option selected={true} disabled="disabled">-- Select --</option>

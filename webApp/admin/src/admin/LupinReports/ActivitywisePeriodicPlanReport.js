@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
+import _                    from 'underscore';
 import axios                from 'axios';
 import swal                 from 'sweetalert';
 import moment               from 'moment';
@@ -12,26 +13,25 @@ class ActivitywisePeriodicPlanReport extends Component{
 	constructor(props){
         super(props);
         this.state = {
-            'currentTabView'    : "Monthly",
-            'tableDatas'        : [],
-            'reportData'        : {},
-            'tableData'         : [],
-            "startRange"        : 0,
-            "limitRange"        : 10000,
-            "startDate"         : "",
-            "endDate"           : "",
-            "center_ID"         : "all",
-            "center"            : "all",
-            "sector_ID"         : "all", 
-            "sector"            : "all",
+            'currentTabView'     : "Monthly",
+            'tableDatas'         : [],
+            'reportData'         : {},
+            'tableData'          : [],
+            "startRange"         : 0,
+            "limitRange"         : 10000,
+            "startDate"          : "",
+            "endDate"            : "",
+            "center_ID"          : "all",
+            "center"             : "all",
+            "sector_ID"          : "all", 
+            "sector"             : "all",
+            "activity_ID"        : "all",
+            "activity"           : "all",
+            "subactivity"        : "all",
+            "subActivity_ID"     : "all",
             "projectCategoryType": "all",
             "beneficiaryType"    : "all",
             "projectName"        : "all",
-            // "sector"            : "",
-            // "sector_ID"         : "",
-            // "center"            : "",
-            // "center_ID"         : "",
-            // "dataApiUrl"        : "/api/masternotifications/list",
             "twoLevelHeader"    : {
                 apply           : true,
                 firstHeaderData : [
@@ -54,11 +54,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                         heading : "Source of Financial Plan 'Lakh'",
                         mergedColoums : 9,
                         hide : true
-                    },/*
-                    {
-                        heading : "",
-                        mergedColoums : 1
-                    },*/
+                    },
                 ]
             },
             "tableHeading"      : {
@@ -111,7 +107,7 @@ class ActivitywisePeriodicPlanReport extends Component{
           // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
@@ -123,14 +119,14 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.getAvailableSectors();
         this.currentFromDate();
         this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     }
     handleChange(event){
         event.preventDefault();
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         });
     }
     getAvailableCenters(){
@@ -140,15 +136,7 @@ class ActivitywisePeriodicPlanReport extends Component{
         }).then((response)=> {
           this.setState({
             availableCenters : response.data,
-            // center           : response.data[0].centerName+'|'+response.data[0]._id
           },()=>{
-            // console.log('center', this.state.center);
-            // var center_ID = this.state.center.split('|')[1];
-            // this.setState({
-            //   center_ID        : center_ID
-            // },()=>{
-            // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-            // })
           })
         }).catch(function (error) {
             console.log("error = ",error);
@@ -169,7 +157,7 @@ class ActivitywisePeriodicPlanReport extends Component{
           this.setState({
             center_ID :center,            
           },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
             // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           })
         });
@@ -201,10 +189,78 @@ class ActivitywisePeriodicPlanReport extends Component{
             var sector_id = event.target.value.split('|')[1];
         }
         this.setState({
-              sector_ID : sector_id,
-            },()=>{
-            // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            sector_ID : sector_id,
+            activity_ID    : "all",
+            subActivity_ID : "all",
+            activity       : "all",
+            subactivity    : "all",
+        },()=>{
+            this.getAvailableActivity(this.state.sector_ID);
+            this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+        })
+    }
+
+    getAvailableActivity(sector_ID){
+        if(sector_ID){
+          axios({
+            method: 'get',
+            url: '/api/sectors/'+sector_ID,
+          }).then((response)=> {
+            if(response&&response.data[0]){
+              this.setState({
+                availableActivity : response.data[0].activity
+              })
+            }
+          }).catch(function (error) {
+            console.log("error = ",error);
+          });
+        }
+    }
+    selectActivity(event){
+        event.preventDefault();
+        this.setState({[event.target.name]:event.target.value});
+        if(event.target.value==="all"){
+          var activity_ID = event.target.value;
+        }else{
+          var activity_ID = event.target.value.split('|')[1];
+        }
+        this.setState({
+            activity_ID : activity_ID,
+            subActivity_ID : "all",
+            subactivity    : "all",
+        },()=>{
+            this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+        })
+    }
+    getAvailableSubActivity(sector_ID, activity_ID){
+        axios({
+          method: 'get',
+          url: '/api/sectors/'+sector_ID,
+        }).then((response)=> {
+          var availableSubActivity = _.flatten(response.data.map((a, i)=>{
+            return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
+          }))
+          this.setState({
+            availableSubActivity : availableSubActivity
+          });
+        }).catch(function (error) {
+          console.log("error = ",error);
+        });    
+    }
+    selectSubActivity(event){
+        event.preventDefault();
+        this.setState({[event.target.name]:event.target.value});
+        if(event.target.value==="all"){
+          var subActivity_ID = event.target.value;
+        }else{
+          var subActivity_ID = event.target.value.split('|')[1];
+        }
+        this.setState({
+          subActivity_ID : subActivity_ID,
+        },()=>{
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         })
     }
 
@@ -223,7 +279,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 projectName : "all",
               })    
             }
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
           },()=>{
         })
     }
@@ -245,11 +301,10 @@ class ActivitywisePeriodicPlanReport extends Component{
         var projectName = event.target.value;
         this.setState({
               projectName : projectName,
-            },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        },()=>{
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         })
     }
-    
     addCommas(x) {
     x=x.toString();
     if(x.includes('%')){
@@ -274,14 +329,14 @@ class ActivitywisePeriodicPlanReport extends Component{
       }
     }
   }
-    getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
+    getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID){        
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(center_ID==="all"){
                 // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
                 if(sector_ID==="all"){
                     $(".fullpageloader").show();
 
-                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/all/all/all/all')
+                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/all/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
                     .then((response)=>{
                       console.log("resp",response);
                        $(".fullpageloader").hide();
@@ -321,7 +376,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                        
                     });            
                 }else{
-                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/all/all/all')
+                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
                     .then((response)=>{
                       console.log("resp",response);
                         var tableData = response.data.map((a, i)=>{
@@ -360,7 +415,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                     });      
                 }
             }else{
-                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all')
+                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
                 .then((response)=>{
                   console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{
@@ -412,7 +467,7 @@ class ActivitywisePeriodicPlanReport extends Component{
            [name] : event.target.value,
            startDate:startDate
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         });
     }
     handleToChange(event){
@@ -427,7 +482,7 @@ class ActivitywisePeriodicPlanReport extends Component{
            [name] : event.target.value,
            endDate:endDate
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         });
     }
 
@@ -508,52 +563,94 @@ class ActivitywisePeriodicPlanReport extends Component{
                                     </div>
                                 </div>
                                 <hr className="hr-head"/>
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-                                  <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                    <label className="formLable">Center</label><span className="asterix"></span>
-                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                                      <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                                        <option className="hidden" >-- Select --</option>
-                                        <option value="all" >All</option>
-                                        {
-                                          this.state.availableCenters && this.state.availableCenters.length >0 ?
-                                          this.state.availableCenters.map((data, index)=>{
-                                            return(
-                                              <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                                            );
-                                          })
-                                          :
-                                          null
-                                        }
-                                      </select>
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                                        <label className="formLable">Center</label><span className="asterix"></span>
+                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                                          <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                                            <option className="hidden" >-- Select --</option>
+                                            <option value="all" >All</option>
+                                            {
+                                              this.state.availableCenters && this.state.availableCenters.length >0 ?
+                                              this.state.availableCenters.map((data, index)=>{
+                                                return(
+                                                  <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                                                );
+                                              })
+                                              :
+                                              null
+                                            }
+                                          </select>
+                                        </div>
                                     </div>
-                                  </div>
-                                  <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                                    <label className="formLable">Sector</label><span className="asterix"></span>
-                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                      <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
-                                        <option  className="hidden" >--Select Sector--</option>
-                                        <option value="all" >All</option>
-                                        {
-                                        this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                        this.state.availableSectors.map((data, index)=>{
-                                          return(
-                                            <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                          );
-                                        })
-                                        :
-                                        null
-                                      }
-                                      </select>
+                                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                                        <label className="formLable">Sector</label><span className="asterix"></span>
+                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                            <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                                                <option  className="hidden" >--Select Sector--</option>
+                                                <option value="all" >All</option>
+                                                {
+                                                this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                                this.state.availableSectors.map((data, index)=>{
+                                                  return(
+                                                    <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                                  );
+                                                })
+                                                :
+                                                null
+                                                }
+                                            </select>
+                                        </div>
                                     </div>
-                                  </div>
-                                  <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                                        <label className="formLable">Activity<span className="asterix">*</span></label>
+                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                                            <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
+                                                <option disabled="disabled" selected="true">-- Select --</option>
+                                                <option value="all" >All</option>
+                                                {
+                                                    this.state.availableActivity && this.state.availableActivity.length >0 ?
+                                                    this.state.availableActivity.map((data, index)=>{
+                                                        if(data.activityName ){
+                                                            return(
+                                                                <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                                            );
+                                                        }
+                                                    })
+                                                    :
+                                                    null
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                                        <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
+                                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
+                                            <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
+                                                <option disabled="disabled" selected="true">-- Select --</option>
+                                                <option value="all" >All</option>
+                                                {
+                                                    this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                                                    this.state.availableSubActivity.map((data, index)=>{
+                                                        if(data.subActivityName ){
+                                                            return(
+                                                                <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                                            );
+                                                        }
+                                                    })
+                                                    :
+                                                    null
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>  
+                                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                             <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                                         </div>
                                     </div>
-                                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
                                         <label className="formLable">To</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                             <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />

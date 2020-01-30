@@ -21,15 +21,15 @@ class ActivitywisePeriodicPlanReport extends Component{
             "limitRange"        : 10000,
             "sector"            : "all",
             "sector_ID"         : "all",
+            "activity_ID"       : "all",
+            "activity"          : "all",
+            "subactivity"       : "all",
+            "subActivity_ID"    : "all",
             "projectCategoryType": "all",
             "beneficiaryType"    : "all",
             "projectName"        : "all",
             "startDate"         : "",
             "endDate"           : "",
-            // "sector"            : "",
-            // "sector_ID"         : "",
-            // "center"            : "",
-            // "center_ID"         : "",
             "twoLevelHeader"    : {
                 apply           : true,
                 firstHeaderData : [
@@ -52,11 +52,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                         heading : "Source of Financial Plan 'Lakh'",
                         mergedColoums : 9,
                         hide : true
-                    },/*
-                    {
-                        heading : "",
-                        mergedColoums : 1
-                    },*/
+                    },
                 ] 
             },
             "tableHeading"      : {
@@ -102,7 +98,7 @@ class ActivitywisePeriodicPlanReport extends Component{
           center_ID    : center_ID,
           centerName   : centerName,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         });
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
         this.getAvailableSectors();
@@ -113,7 +109,7 @@ class ActivitywisePeriodicPlanReport extends Component{
           // "sector"  : this.state.sector[0],
           tableData : this.state.tableData,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         })
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
@@ -130,7 +126,7 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.setState({
           [event.target.name] : event.target.value
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         });
     } 
     getAvailableSectors(){
@@ -164,14 +160,17 @@ class ActivitywisePeriodicPlanReport extends Component{
             var sector_id = event.target.value.split('|')[1];
           }
         this.setState({
-              sector_ID : sector_id,
+            sector_ID : sector_id,
+            activity_ID    : "all",
+            subActivity_ID : "all",
+            activity       : "all",
+            subactivity    : "all",
             },()=>{
             this.getAvailableActivity(this.state.sector_ID);
             this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         })
     }
- 
     getAvailableActivity(sector_ID){
         if(sector_ID){
           axios({
@@ -197,9 +196,12 @@ class ActivitywisePeriodicPlanReport extends Component{
           var activity_ID = event.target.value.split('|')[1];
         }
         this.setState({
-          activity_ID : activity_ID,
+            activity_ID : activity_ID,
+            subActivity_ID : "all",
+            subactivity    : "all",
         },()=>{
-          this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+            this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         })
     }
     getAvailableSubActivity(sector_ID, activity_ID){
@@ -228,6 +230,7 @@ class ActivitywisePeriodicPlanReport extends Component{
         this.setState({
           subActivity_ID : subActivity_ID,
         },()=>{
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         })
     }
     addCommas(x) {
@@ -254,11 +257,11 @@ class ActivitywisePeriodicPlanReport extends Component{
           }
         }
     }
-    getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){        
+    getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID){        
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(sector_ID==="all"){
-                $(".fullpageloader").show();
-                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all')
+                $(".fullpageloader").show(); 
+                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
                 .then((response)=>{
                   $(".fullpageloader").hide();
                   console.log("resp",response);
@@ -295,7 +298,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                     console.log("error = ",error);
                 });
             }else{             
-                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all')
+                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
                 // axios.get('/api/report/activity/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID)
                 .then((response)=>{
                   console.log("resp",response);
@@ -370,7 +373,7 @@ class ActivitywisePeriodicPlanReport extends Component{
            [name] : event.target.value,
            endDate : endDate
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
        });
     }
 
@@ -480,7 +483,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                                           </select>
                                         </div>
                                     </div>
-                                    {/*<div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
+                                    <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                                         <label className="formLable">Activity<span className="asterix">*</span></label>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                                             <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
@@ -521,7 +524,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                                                 }
                                             </select>
                                         </div>
-                                    </div>  */}
+                                    </div>  
                                     <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $                    from 'jquery';
 import swal                 from 'sweetalert';
+import _                    from 'underscore';
 import axios                from 'axios';
 import moment               from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
@@ -18,6 +19,10 @@ class GeographicalReport extends Component{
         "limitRange"        : 10000,
         "sector"            : "all",
         "sector_ID"         : "all",
+        "activity_ID"       : "all",
+        "activity"          : "all",
+        "subactivity"       : "all",
+        "subActivity_ID"    : "all",
         "selectedDistrict"  : "all",
         "district"          : "all",
         "block"             : "all",
@@ -33,7 +38,7 @@ class GeographicalReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Activity Details',
-                    mergedColoums : 3,
+                    mergedColoums : 7,
                     hide : false
                 },
                 {
@@ -53,6 +58,9 @@ class GeographicalReport extends Component{
           "projectCategoryType"              : 'Project Category',
           "projectName"                      : 'Project Name',
           "name"                             : 'Activity',
+          "achievement_district"           : 'District',
+          "achievement_block"              : 'Block',
+          "achievement_village"            : 'Village',
           "achievement_Reach"                : "Reach",
           "achievement_FamilyUpgradation"    : 'Upgradation', 
           "achievement_LHWRF_L"              : 'LHWRF',
@@ -89,14 +97,14 @@ class GeographicalReport extends Component{
     },()=>{
         this.getAvailableCenterData(this.state.center_ID);
       // console.log("center_ID =",this.state.center_ID);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableProjects();
     this.getAvailableSectors();
     this.currentFromDate();
     this.currentToDate();
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }
@@ -105,7 +113,7 @@ class GeographicalReport extends Component{
       this.getAvailableProjects();
       this.getAvailableSectors();
       this.currentFromDate();
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
       this.currentToDate();
   }
   handleChange(event){
@@ -113,7 +121,7 @@ class GeographicalReport extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     });
   }
 
@@ -132,7 +140,7 @@ class GeographicalReport extends Component{
           availableDistInCenter  : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
         },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         var stateCode =this.state.address.split('|')[0];
          this.setState({
             stateCode  : stateCode,
@@ -180,9 +188,77 @@ class GeographicalReport extends Component{
       var sector_id = event.target.value.split('|')[1];
     }
     this.setState({
-          sector_ID : sector_id,
-        },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      sector_ID : sector_id,
+      activity_ID    : "all",
+      subActivity_ID : "all",
+      activity       : "all",
+      subactivity    : "all",
+    },()=>{
+      this.getAvailableActivity(this.state.sector_ID);
+      this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+    })
+  }
+  getAvailableActivity(sector_ID){
+    if(sector_ID){
+      axios({
+        method: 'get',
+        url: '/api/sectors/'+sector_ID,
+      }).then((response)=> {
+        if(response&&response.data[0]){
+          this.setState({
+            availableActivity : response.data[0].activity
+          })
+        }
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+    }
+  }
+  selectActivity(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    if(event.target.value==="all"){
+      var activity_ID = event.target.value;
+    }else{
+      var activity_ID = event.target.value.split('|')[1];
+    }
+    this.setState({
+      activity_ID : activity_ID,
+      subActivity_ID : "all",
+      subactivity    : "all",
+    },()=>{
+      this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+    })
+  }
+  getAvailableSubActivity(sector_ID, activity_ID){
+    axios({
+      method: 'get',
+      url: '/api/sectors/'+sector_ID,
+    }).then((response)=> {
+      var availableSubActivity = _.flatten(response.data.map((a, i)=>{
+        return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
+      }))
+      this.setState({
+        availableSubActivity : availableSubActivity
+      });
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });    
+  }
+  selectSubActivity(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    if(event.target.value==="all"){
+      var subActivity_ID = event.target.value;
+    }else{
+      var subActivity_ID = event.target.value.split('|')[1];
+    }
+    this.setState({
+      subActivity_ID : subActivity_ID,
+    },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     })
   }
   districtChange(event){    
@@ -200,7 +276,7 @@ class GeographicalReport extends Component{
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
       // console.log('selectedDistrict',this.state.selectedDistrict);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
@@ -234,7 +310,7 @@ class GeographicalReport extends Component{
       block : block
     },()=>{
       // console.log("block",block);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
@@ -267,7 +343,7 @@ class GeographicalReport extends Component{
       village : village
     },()=>{
       console.log("village",village);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     });  
   }  
 
@@ -294,7 +370,7 @@ class GeographicalReport extends Component{
             projectName : "all",
           })    
         }
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
       },()=>{
     })
   }
@@ -322,7 +398,7 @@ class GeographicalReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
   }
@@ -351,12 +427,12 @@ class GeographicalReport extends Component{
       }
     }
   }
-  getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType){        
+  getData(startDate, endDate, center_ID, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID){        
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType){
         if(sector_ID==="all"){
           $(".fullpageloader").show();
-          axios.get('/api/report/geographical_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+          axios.get('/api/report/geographical_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
           .then((response)=>{
             console.log("resp",response);
               $(".fullpageloader").hide();
@@ -366,6 +442,9 @@ class GeographicalReport extends Component{
                 projectCategoryType                   : a.projectCategoryType ? a.projectCategoryType : "-",
                 projectName                           : a.projectName === 0 ? "-" :a.projectName,              
                 name                                  : a.name,
+                achievement_district                  : a.achievement_district==="all" ? "-" : a.achievement_district,
+                achievement_block                     : a.achievement_block==="all" ? "-" : a.achievement_block,
+                achievement_village                   : a.achievement_village==="all" ? "-" : a.achievement_village,
                 achievement_Reach                     : this.addCommas(a.achievement_Reach),
                 achievement_FamilyUpgradation         : this.addCommas(a.achievement_FamilyUpgradation),
                 achievement_LHWRF_L                   : a.achievement_LHWRF_L,
@@ -393,7 +472,7 @@ class GeographicalReport extends Component{
             }
           });
         }else{
-          axios.get('/api/report/geographical_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+          axios.get('/api/report/geographical_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
             .then((response)=>{
               console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
@@ -402,6 +481,9 @@ class GeographicalReport extends Component{
                   projectCategoryType                   : a.projectCategoryType ? a.projectCategoryType : "-",
                   projectName                           : a.projectName === 0 ? "-" :a.projectName,            
                   name                                  : a.name,
+                  achievement_district                  : a.achievement_district==="all" ? "-" : a.achievement_district,
+                  achievement_block                     : a.achievement_block==="all" ? "-" : a.achievement_block,
+                  achievement_village                   : a.achievement_village==="all" ? "-" : a.achievement_village,
                   achievement_Reach                     : this.addCommas(a.achievement_Reach),
                   achievement_FamilyUpgradation         : this.addCommas(a.achievement_FamilyUpgradation),
                   achievement_LHWRF_L                   : a.achievement_LHWRF_L,
@@ -440,7 +522,7 @@ class GeographicalReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     });
   }
   handleToChange(event){
@@ -456,7 +538,7 @@ class GeographicalReport extends Component{
        [name] : event.target.value,
        endDate : endDate
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     });
   }
 
@@ -537,92 +619,70 @@ class GeographicalReport extends Component{
                         </div>
                     </div>
                     <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 validBox">
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                          <label className="formLable">Sector</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
-                              <option  className="hidden" >--Select Sector--</option>
-                              <option value="all" >All</option>
-                              {
-                              this.state.availableSectors && this.state.availableSectors.length >0 ?
-                              this.state.availableSectors.map((data, index)=>{
-                                return(
-                                  <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                );
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Sector</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                          <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                            <option  className="hidden" >--Select Sector--</option>
+                            <option value="all" >All</option>
+                            {
+                            this.state.availableSectors && this.state.availableSectors.length >0 ?
+                            this.state.availableSectors.map((data, index)=>{
+                              return(
+                                <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                              );
+                            })
+                            :
+                            null
+                          }
+                          </select>
+                        </div>
+                      </div> 
+                      <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Activity<span className="asterix">*</span></label>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                          <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
+                            <option disabled="disabled" selected="true">-- Select --</option>
+                            <option value="all" >All</option>
+                            {
+                              this.state.availableActivity && this.state.availableActivity.length >0 ?
+                              this.state.availableActivity.map((data, index)=>{
+                                if(data.activityName ){
+                                  return(
+                                    <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                  );
+                                }
                               })
                               :
                               null
                             }
-                            </select>
-                          </div>
-                         {/* <div className="errorMsg">{this.state.errors.sector}</div>*/}
+                          </select>
                         </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                          <label className="formLable">District</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                            <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
-                                {
-                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                this.state.availableDistInCenter.map((data, index)=>{
-                                  // console.log("data",data)
-                                  return(
-                                    /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
-
-                                  );
-                                })
-                                :
-                                null
-                              }                               
-                            </select>
-                          </div>
-                        </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Block</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                            <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
+                      </div>
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
+                          <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
+                            <option disabled="disabled" selected="true">-- Select --</option>
+                            <option value="all" >All</option>
                               {
-                                this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                this.state.listofBlocks.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
-                                  );
+                                this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                                this.state.availableSubActivity.map((data, index)=>{
+                                  if(data.subActivityName ){
+                                    return(
+                                      <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                    );
+                                  }
                                 })
                                 :
                                 null
-                              }                              
-                            </select>
-                          </div>
-                          {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
+                              }
+                              
+                          </select>
                         </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                          <label className="formLable">Village</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                            <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
-                              {
-                                this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                                this.state.listofVillages.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
-                                  );
-                                })
-                                :
-                                null
-                              } 
-                            </select>
-                          </div>
-                          {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
-                        </div>
-                    </div> 
-                    <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box  ">                        
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                      </div>  
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">Beneficiary</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                             <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -634,7 +694,68 @@ class GeographicalReport extends Component{
                             </select>
                           </div>
                       </div> 
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                      <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                        <label className="formLable">District</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                          <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
+                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                              {
+                              this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                              this.state.availableDistInCenter.map((data, index)=>{
+                                // console.log("data",data)
+                                return(
+                                  /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                  <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+
+                                );
+                              })
+                              :
+                              null
+                            }                               
+                          </select>
+                        </div>
+                      </div>
+                      <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Block</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                          <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                            {
+                              this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                              this.state.listofBlocks.map((data, index)=>{
+                                return(
+                                  <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                );
+                              })
+                              :
+                              null
+                            }                              
+                          </select>
+                        </div>
+                        {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
+                      </div>
+                      <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Village</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                          <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
+                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                            {
+                              this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                              this.state.listofVillages.map((data, index)=>{
+                                return(
+                                  <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                );
+                              })
+                              :
+                              null
+                            } 
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">Project Category</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                             <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
@@ -649,7 +770,7 @@ class GeographicalReport extends Component{
                       {
                         this.state.projectCategoryType === "Project Fund" ?
 
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                        <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">Project Name</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
                             <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
@@ -671,15 +792,13 @@ class GeographicalReport extends Component{
                       : 
                       ""
                       } 
-                    </div>                     
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">From</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                               <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                           </div>
                       </div>
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                           <label className="formLable">To</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                               <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />

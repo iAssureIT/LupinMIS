@@ -306,7 +306,7 @@ class SDGReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      // console.log('responseP', response);
+      console.log('responseP', response);
       this.setState({
         availableProjects : response.data
       })

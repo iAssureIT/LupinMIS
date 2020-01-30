@@ -237,7 +237,7 @@ export default class Dashboard extends Component{
     if(startDate && endDate && center_ID){
         axios.get('/api/report/center/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all')
         .then((response)=>{
-          // console.log("centerresponse",response);
+          console.log("centerresponse",response);
       /*******************************Dashboard Status Data***************************/
           var centerwiseData = response.data;
           var totalindex = (centerwiseData.length)-2;

@@ -46,8 +46,8 @@ class GoalSectorReport extends Component{
             ]
         },
         "tableHeading"      : { 
-            "goalType"              : "Goal Type",
-            "goalName"              : 'Goal Name',
+            "goalType"              : "Framework",
+            "goalName"              : 'Goal / Objective',
             "projectCategoryType"   : "Project Category",
             "projectName"           : "Project Name",
             "activityName"    : 'Activity',
@@ -425,7 +425,7 @@ class GoalSectorReport extends Component{
                       </div>
                     </div>
                     <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box">
-                      <label className="formLable">Goal Type</label><span className="asterix">*</span>
+                      <label className="formLable">Framework</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
                         <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
                           <option value="" className="hidden" >-- Select --</option>
@@ -443,7 +443,7 @@ class GoalSectorReport extends Component{
                       </div>
                     </div>
                     <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box">
-                      <label className="formLable">Goal Name</label><span className="asterix">*</span>
+                      <label className="formLable">Goal / Objective</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalName" >
                         <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
                           <option value="" className="hidden" >-- Select --</option>

@@ -46,7 +46,8 @@ class CategorywiseReport extends Component{
         },
         "tableHeading"      : {
           "projectCategoryType"  : 'Project Category',
-          // "projectName"          : 'Project Name',
+          "projectName"          : 'Project Name',
+          "district"             : 'District',
           "incomeCategory"    : 'Income Category',
           "landCategory"      : 'Land Holding Category',
           "specialCategory"   : 'Special Category',
@@ -330,7 +331,8 @@ class CategorywiseReport extends Component{
               return {
                 _id                    : a._id,  
                 projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
-                // projectName            : a.projectName === 0 ? "-" :a.projectName,                
+                projectName            : a.projectName === 0 ? "-" :a.projectName,                
+                district               : a.district === "all" ? "-" :a.district,                
                 incomeCategory         : a.incomeCategory,
                 landCategory           : a.landCategory,
                 specialCategory        : a.specialCategory,
@@ -355,7 +357,8 @@ class CategorywiseReport extends Component{
               return {
                 _id                    : a._id,  
                 projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
-                // projectName            : a.projectName === 0 ? "-" :a.projectName,                     
+                projectName            : a.projectName === 0 ? "-" :a.projectName,                     
+                district               : a.district === "all" ? "-" :a.district,                     
                 incomeCategory         : a.incomeCategory,
                 landCategory           : a.landCategory,
                 specialCategory        : a.specialCategory,
@@ -510,7 +513,6 @@ class CategorywiseReport extends Component{
                             {
                                 this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 && this.state.center_ID!=="all" ? 
                                 this.state.availableDistInCenter.map((data, index)=>{
-                                  console.log("data",data)
                                   return(
                                     /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
                                     <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>

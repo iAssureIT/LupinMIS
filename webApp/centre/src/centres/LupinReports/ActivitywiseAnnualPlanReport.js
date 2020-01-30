@@ -33,11 +33,6 @@ class ActivitywiseAnnualPlanReport extends Component{
             "projectCategoryType": "all",
             "beneficiaryType"    : "all",
             "projectName"        : "all",
-            // "sector"            : "",
-            // "sector_ID"         : "",
-            // "center"            : "",
-            // "center_ID"         : "",
-            // "dataApiUrl"        : "/api/masternotifications/list",
             "twoLevelHeader"    : {
                 apply           : true,
                 firstHeaderData : [
@@ -101,38 +96,36 @@ class ActivitywiseAnnualPlanReport extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-      this.getAvailableSectors();
-      this.setState({
-        // "center"  : this.state.center[0],
-        // "sector"  : this.state.sector[0],
-        tableData : this.state.tableData,
-      },()=>{
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      })
+    this.getAvailableSectors();
+    this.setState({
+      tableData : this.state.tableData,
+    },()=>{
+         console.log('aa',this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID); 
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+    })
   }
    
   componentWillReceiveProps(nextProps){
-      this.getAvailableSectors();
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getAvailableSectors();
+    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
   }
   handleChange(event){
-      event.preventDefault();
-      this.setState({
-        [event.target.name] : event.target.value
-      },()=>{
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        
-      });
+    event.preventDefault();
+    this.setState({
+      [event.target.name] : event.target.value
+    },()=>{
+    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+      
+    });
   }
   getAvailableSectors(){
     axios({
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-        
         this.setState({
           availableSectors : response.data,
           // sector           : response.data[0].sector+'|'+response.data[0]._id
@@ -149,21 +142,26 @@ class ActivitywiseAnnualPlanReport extends Component{
     });
   }
   selectSector(event){
-      event.preventDefault();
-      this.setState({
-        [event.target.name]:event.target.value
-      });
-      if(event.target.value==="all"){
-        var sector_id = event.target.value;
-      }else{
-        var sector_id = event.target.value.split('|')[1];
-      }
-      this.setState({
-            sector_ID : sector_id,
-          },()=>{
-          this.getAvailableActivity(this.state.sector_ID);
-          this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      })
+    event.preventDefault();
+    this.setState({
+      [event.target.name]:event.target.value
+    });
+    if(event.target.value==="all"){
+      var sector_id = event.target.value;
+    }else{
+      var sector_id = event.target.value.split('|')[1];
+    }
+    this.setState({
+      sector_ID : sector_id, 
+      activity_ID    : "all",
+      subActivity_ID : "all",
+      activity       : "all",
+      subactivity    : "all",
+    },()=>{
+      this.getAvailableActivity(this.state.sector_ID);
+      this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+    })
   } 
   getAvailableActivity(sector_ID){
     if(sector_ID){
@@ -191,8 +189,11 @@ class ActivitywiseAnnualPlanReport extends Component{
     }
     this.setState({
       activity_ID : activity_ID,
+      subActivity_ID : "all",
+      subactivity    : "all",
     },()=>{
       this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     })
   }
   getAvailableSubActivity(sector_ID, activity_ID){
@@ -221,6 +222,7 @@ class ActivitywiseAnnualPlanReport extends Component{
     this.setState({
       subActivity_ID : subActivity_ID,
     },()=>{
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     })
   }
 
@@ -248,14 +250,14 @@ class ActivitywiseAnnualPlanReport extends Component{
       }
     }
   }
-  getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType){   
+  getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID){   
     if(year ){
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
         if(sector_ID==="all"){
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
           $(".fullpageloader").show();
-          axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all')
+          axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
           .then((response)=>{
             $(".fullpageloader").hide();
               var tableData = response.data.map((a, i)=>{
@@ -291,7 +293,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         }else{
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";             
-          axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all')
+          axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
           .then((response)=>{
               var tableData = response.data.map((a, i)=>{
               return {
@@ -368,7 +370,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                           </select>
                         </div>
                       </div>  
-                      {/*<div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12  ">
+                      <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12  ">
                         <label className="formLable">Activity<span className="asterix">*</span></label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                           <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
@@ -410,7 +412,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                               
                           </select>
                         </div>
-                      </div>  */}
+                      </div>  
 
                       <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12">
                         <label className="formLable">Year</label><span className="asterix"></span>
