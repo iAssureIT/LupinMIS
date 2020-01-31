@@ -9,7 +9,7 @@ import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.js
 import AddFilePublic          from "../addFile/AddFilePublic.js";
 
 import 'react-table/react-table.css';
-// import "./CaseStudy.css";
+import "./CaseStudy.css";
 
 class CaseStudy extends Component{
 
@@ -24,6 +24,7 @@ class CaseStudy extends Component{
       "config"            :"",
       "author"            :"",
       "caseStudy_Image"   :"",
+      "shown"             : true,
       "caseStudy_File"    :"",
       imgArrayWSaws       : [],
       fileArrayEmpty      : [],
@@ -89,7 +90,7 @@ class CaseStudy extends Component{
       rules: {
         title: {
           required: true,
-          regxTitle:/^[A-za-z']+( [A-Za-z']+)*$/,
+          regxTitle:/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*( [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)*$/,
         },  
         author: {
           required: true,
@@ -148,8 +149,9 @@ class CaseStudy extends Component{
     this.setState({
         [event.target.name]: event.target.value,
         "dateofsubmission" :this.refs.dateofsubmission.value,
-        // "sectorName"       :this.refs.sector.value, 
-        "sector"          : this.refs.sector.value.split('|')[0],
+        "sector"           :this.refs.sector.value, 
+        "sector_ID"        :this.refs.sector.value.split('|')[1],
+        "sectorName"       : this.refs.sector.value.split('|')[0],
         "title"            :this.refs.title.value, 
         "author"           :this.refs.author.value, 
        /* "caseStudy_Image"  :this.refs.caseStudy_Image.value,
@@ -183,15 +185,16 @@ class CaseStudy extends Component{
             text  : response.data.message
           });
           this.setState({
-            "title"             :"",
             "dateofsubmission"  :moment(new Date()).format('YYYY-MM-DD'),
-            "sector"            :"",
+            "title"             :"",
+            "sector"            :"-- Select --",
             "author"            :"",
             "action"            :"Submit",
             "caseStudy_Image"   :"",
             "caseStudy_File"    :"",
             "imageArray"        : [],
-            "fileArray"         : []
+            "fileArray"         : [],
+            "shown"             : true,
           });
         })
         .catch(function(error){
@@ -215,7 +218,6 @@ class CaseStudy extends Component{
         "caseStudy_Image"  :this.state.imageArray,
         "caseStudy_File"   :this.state.fileArray,
       };
-
       axios.patch('/api/caseStudies/update', caseStudyValues)
         .then((response)=>{
           this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
@@ -228,12 +230,13 @@ class CaseStudy extends Component{
           console.log("error = ",error);
     });
       this.setState({
-        "dateofsubmission"     :"",
+        "dateofsubmission"  :moment(new Date()).format('YYYY-MM-DD'),
         "title"                :"",
         "sector"               :"-- Select --",
         "author"               :"",
         "imageArray"           :[],
         "fileArray"            :[],
+        "shown"               : true,
       });
       this.props.history.push('/caseStudy');
       this.setState({
@@ -249,7 +252,7 @@ class CaseStudy extends Component{
       url: '/api/caseStudies/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log("editData",editData);
+      // console.log("editData",editData);
       this.setState({
         "dateofsubmission"  : editData.date,
         "title"             : editData.title, 
@@ -258,6 +261,7 @@ class CaseStudy extends Component{
         "author"            : editData.author,
         "imageArray"        : editData.caseStudy_Image,
         "fileArray"         : editData.caseStudy_File,
+        "shown"             : false,
       });
      
     })
@@ -320,6 +324,8 @@ class CaseStudy extends Component{
             title        : a.title,
             sectorName   : a.sectorName,
             author       : a.author,
+            caseStudy_Image       : a.caseStudy_Image,
+            caseStudy_File       : a.caseStudy_File,
           }
         })
         this.setState({
@@ -332,7 +338,7 @@ class CaseStudy extends Component{
     }
   }
     getFile(fileArray, filenames,imageArray){
-     console.log("fileArray",fileArray ,"filenames",filenames,"imageArray",imageArray)
+     // console.log("fileArray",fileArray ,"filenames",filenames,"imageArray",imageArray)
     this.setState({
       "fileArray"   : fileArray,
       "filenames"   : filenames,
@@ -341,9 +347,17 @@ class CaseStudy extends Component{
 
     })
   }
-  
 
-  render() {     
+  toglehidden(){   
+    this.setState({
+     shown: !this.state.shown
+    });
+  }  
+
+  render() {   
+    var hidden = {
+      display: this.state.shown ? "none" : "block"
+    }  
     return (
       <div className="container-fluid">
         <div className="row">
@@ -357,96 +371,208 @@ class CaseStudy extends Component{
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-                  <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="caseStudy">
-                    <div className="row">
-                      <div className=" col-lg-12 col-sm-12 col-xs-12  ">
-                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12  valid_box">
-                          <label className="formLable">Date of Submission</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofsubmission" >
-                            <input type="date" className="form-control inputBox toUpper" name="dateofsubmission" ref="dateofsubmission" value={this.state.dateofsubmission} onChange={this.handleChange.bind(this)}/>
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
+                      <button type="button" className="btn addBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick={this.toglehidden.bind(this)}>Add Case Study</button>
+                    </div> 
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt outerForm" id="caseStudy" style={hidden}>
+                        <div className=" col-lg-12 col-sm-12 col-xs-12  ">
+                          <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12  valid_box">
+                            <label className="formLable">Date of Submission</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofsubmission" >
+                              <input type="date" className="form-control inputBox toUpper" name="dateofsubmission" ref="dateofsubmission" value={this.state.dateofsubmission} onChange={this.handleChange.bind(this)}/>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
-                          <label className="formLable">Title</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="title" >
-                            <input type="text" className="form-control inputBox " ref="title" name="title" value={this.state.title} onChange={this.handleChange.bind(this)} />
+                          <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                            <label className="formLable">Title</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="title" >
+                              <input type="text" className="form-control inputBox " ref="title" name="title" value={this.state.title} onChange={this.handleChange.bind(this)} />
+                            </div>
+                            <div className="errorMsg">{this.state.errors.title}</div>
                           </div>
-                          <div className="errorMsg">{this.state.errors.title}</div>
-                        </div>
-                        <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                          <label className="formLable">Sector </label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                              <option disabled="disabled" selected="true" >-- Select --</option>
-                              {
-                                this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                this.state.availableSectors.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                            </select>
+                          <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Sector </label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                              <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
+                                <option disabled="disabled" selected="true" >-- Select --</option>
+                                {
+                                  this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                  this.state.availableSectors.map((data, index)=>{
+                                    return(
+                                      <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }
+                              </select>
+                            </div>
                           </div>
-                        </div>
-                       {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
-                          <label className="formLable">Sector</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorName" >
-                            <input type="text" className="form-control inputBox " ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.handleChange.bind(this)} />
+                         {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
+                            <label className="formLable">Sector</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="sectorName" >
+                              <input type="text" className="form-control inputBox " ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.handleChange.bind(this)} />
+                            </div>
+                            <div className="errorMsg">{this.state.errors.sectorName}</div>
+                          </div>*/}
+                          <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                            <label className="formLable">Author</label><span className="asterix">*</span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="author" >
+                              <input type="text" className="form-control inputBox " ref="author" name="author" value={this.state.author} onChange={this.handleChange.bind(this)} />
+                            </div>
+                            <div className="errorMsg">{this.state.errors.author}</div>
                           </div>
-                          <div className="errorMsg">{this.state.errors.sectorName}</div>
-                        </div>*/}
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 valid_box">
-                          <label className="formLable">Author</label><span className="asterix">*</span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="author" >
-                            <input type="text" className="form-control inputBox " ref="author" name="author" value={this.state.author} onChange={this.handleChange.bind(this)} />
-                          </div>
-                          <div className="errorMsg">{this.state.errors.author}</div>
-                        </div>
-                      </div><br/>
-                      <AddFilePublic
-                        getFile    = {this.getFile.bind(this)}
-                        configData = {this.state.configData} 
-                        fileArray  = {this.state.fileArray} 
-                        imageArray = {this.state.imageArray} 
-                        fileType   = "Image" 
+                        </div><br/>
+                        <AddFilePublic
+                          getFile    = {this.getFile.bind(this)}
+                          configData = {this.state.configData} 
+                          fileArray  = {this.state.fileArray} 
+                          imageArray = {this.state.imageArray} 
+                          fileType   = "Image" 
 
-                      />   
-                      <hr/>
-   
-                      <AddFilePublic
-                        getFile    = {this.getFile.bind(this)}
-                        configData = {this.state.configData} 
-                        fileArray  = {this.state.fileArray} 
-                        imageArray = {this.state.imageArray} 
-                        fileType   = "File"
-                      />
-                      {/*
-                        this.state.action == "Submit" ?
-                          <AddFilePublic
-                            getFile    = {this.getFile.bind(this)}
-                            configData = {this.state.configData} 
-                            action     = {this.state.action}
-                            fileArray  = {this.state.fileArray} 
-                            fileType   = "File"
-                          />       
-                          :
-                          null              
-                          
-                      */}
-                    </div><br/>
-                    <div className="col-lg-12">
-                      <br/>
-                      {
-                          this.state.editId ? 
-                          <button className=" col-lg-2 btn submit  pull-right" onClick={this.Update.bind(this)}> Update </button>
-                          :
-                          <button className=" col-lg-2 btn submit pull-right" onClick={this.Submit.bind(this)}> Submit </button>
-                        }
+                        />   
+                        <hr/>
+     
+                        <AddFilePublic
+                          getFile    = {this.getFile.bind(this)}
+                          configData = {this.state.configData} 
+                          fileArray  = {this.state.fileArray} 
+                          imageArray = {this.state.imageArray} 
+                          fileType   = "File"
+                        />
+                        {/*
+                          this.state.action == "Submit" ?
+                            <AddFilePublic
+                              getFile    = {this.getFile.bind(this)}
+                              configData = {this.state.configData} 
+                              action     = {this.state.action}
+                              fileArray  = {this.state.fileArray} 
+                              fileType   = "File"
+                            />       
+                            :
+                            null              
+                            
+                        */}
+                        <br/>
+                        <div className="col-lg-12">
+                          <br/>
+                          {
+                              this.state.editId ? 
+                              <button className=" col-lg-2 btn submit  pull-right" onClick={this.Update.bind(this)}> Update </button>
+                              :
+                              <button className=" col-lg-2 btn submit pull-right" onClick={this.Submit.bind(this)}> Submit </button>
+                            }
+                        </div>
+                      </form>
                     </div>
-                  </form>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <div className="">
+                        {
+                          this.state.tableData && this.state.tableData.length >0 ?
+                          this.state.tableData.map((data, index)=>{
+                            console.log(data);
+                            return(
+                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt outerForm">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
+                                  <h4 className="pageSubHeader">Title : {data.title ? data.title : "-"}</h4>
+                                </div>
+                                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 noPadding"> 
+                                  <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
+                                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                      <div className="formLable"><b>Date</b></div>
+                                      <p className="formLable">{data.date  ? data.date : "-"}</p>
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
+                                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                      <div className="formLable"><b>Author</b></div>
+                                       <p className="formLable">{data.author  ? data.author : "-"}</p>
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
+                                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                      <div className="formLable"><b>Sector</b></div>
+                                       <p className="formLable">{data.sectorName  ? data.sectorName : "-"}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 noPadding"> 
+                                   {/*  <i class="fas fa fa-arrow-right fa-2x fa-pull-right fa-border"></i>
+                                                                  <i class="fas fa fa-angle-double-right  fa-2x fa-pull-right fa-border"></i>*/}
+                                  {
+                                    data.caseStudy_File.length > 0? 
+                                    data.caseStudy_File.map((file, i)=> {
+                                      return(
+                                        <div key= {i} className="col-lg-6 col-md-12 col-sm-12 col-xs-12"> 
+                                          <div >
+                                            {
+                                              (file && file.fileName.split('.').pop()==="XLS" || file.fileName.split('.').pop() ==="XLSX"||file.fileName.split('.').pop() ==="xls" || file.fileName.split('.').pop() ==="xlsx")
+                                              ?
+                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/exel2.png"/> </a>
+                                              :
+                                               ""
+                                            }
+                                            {
+                                              (file && file.fileName.split('.').pop() ==="PPT" || file.fileName.split('.').pop() === "PPTX" || file.fileName.split('.').pop() === "ppt" || file.fileName.split('.').pop() ==="pptx")
+                                              ? 
+                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/powerpoint.jpeg"/></a> 
+                                              :""
+                                            }
+                                            {
+                                              (file && file.fileName.split('.').pop() ==="pdf" ||file.fileName.split('.').pop() === "PDF")
+                                              ? 
+                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/pdf.png"/> </a>
+                                              :
+                                              ""
+                                            }
+                                            {
+                                              (file && file.fileName.split('.').pop() ==="doc" || file.fileName.split('.').pop() === "docx" || file.fileName.split('.').pop() === "DOC" || file.fileName.split('.').pop() ==="DOCX"|| file.fileName.split('.').pop() ==="txt" || file.fileName.split('.').pop() === "TXT") 
+                                              ? 
+                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/docs.png"/> </a>
+                                              : ""
+                                            }                                             
+                                          </div>
+                                          <a href={file.filePath} classname="mt">
+                                              <p className="formLable"><b>{file.fileName}</b></p>
+                                          </a>
+                                          
+                                        </div>
+                                        )
+                                    })
+                                    : 
+                                    null
+                                  }
+
+                                </div>
+                                <a class="viewLink" href={"/caseStudyView/"+data._id}>
+                                    <i class='fas fa fa-chevron-right viewLinkIcon  fa-2x fa-pull-right'></i>
+                                </a>
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                  <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"><b>Images</b></p>
+                                  {
+                                    data.caseStudy_Image.length > 0? 
+                                    data.caseStudy_Image.map((img, i)=> {
+                                      return(
+                                        <div key= {i} className="col-lg-3 col-md-12 col-sm-12 col-xs-12 noPadding"> 
+                                            <img className="caseStudy_Image col-lg-12 col-md-12 col-xs-12 col-sm-12" alt="caseStudy" src={img.imgPath} />
+                                        </div>
+                                        )
+                                    })
+                                    : 
+                                    null
+                                  }
+                                </div>
+
+                              </div>
+                            )
+                          })
+                          :
+                          null
+                        }
+                      </div>
+                    </div>
+                  </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                       <IAssureTable 
                         tableHeading={this.state.tableHeading}

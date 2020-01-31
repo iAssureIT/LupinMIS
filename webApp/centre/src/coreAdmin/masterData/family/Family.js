@@ -820,21 +820,21 @@ class Family extends Component{
                               <div className="errorMsg">{this.state.errors.familyID}</div>
                             </div>*/}
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Surname of Family Head </label><span className="asterix">*</span>
+                              <label className="formLable">Surname </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfFHErr" >
                                 <input type="text" className="form-control inputBox" ref="surnameOfFH" name="surnameOfFH" value={this.state.surnameOfFH}  onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.surnameOfFH}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">First Name of Family Head </label><span className="asterix">*</span>
+                              <label className="formLable">First Name </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfFHErr" >
                                 <input type="text" className="form-control inputBox" ref="firstNameOfFH" name="firstNameOfFH" value={this.state.firstNameOfFH} onChange={this.handleChange.bind(this)} />
                               </div>
                               <div className="errorMsg">{this.state.errors.firstNameOfFH}</div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Middle Name of Family Head </label><span className="asterix"></span>
+                              <label className="formLable">Middle Name </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfFHErr" >
                                 <input type="text" className="form-control inputBox" ref="middleNameOfFH" name="middleNameOfFH" value={this.state.middleNameOfFH} onChange={this.handleChange.bind(this)} />
                               </div>

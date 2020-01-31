@@ -1055,11 +1055,11 @@ class PlanDetails extends Component{
                                     // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
                                 }
                               </div>
-                            </div>
+                          </div>
                   
-                           <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
+                          <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
                               <button type="button" className="btn addBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick={this.toglehidden.bind(this)}>Add Plan</button>
-                           </div> 
+                          </div> 
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                         <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt outerForm"  style={hidden}>
