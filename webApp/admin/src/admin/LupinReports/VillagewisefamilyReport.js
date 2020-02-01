@@ -282,7 +282,9 @@ class VillagewisefamilyReport extends Component{
         var selectedDistrict = this.state.district.split('|')[0];
       }
       this.setState({
-        selectedDistrict :selectedDistrict
+        selectedDistrict :selectedDistrict,
+        block : "all",
+        village : "all",
       },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
@@ -306,7 +308,8 @@ class VillagewisefamilyReport extends Component{
     event.preventDefault();
     var block = event.target.value;
     this.setState({
-      block : block
+      block : block,
+      village : "all",
     },()=>{
       this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
       this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
