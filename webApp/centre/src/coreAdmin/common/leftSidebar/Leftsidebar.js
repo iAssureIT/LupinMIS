@@ -143,7 +143,12 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Filewise Activities</span>
                       </Link>
                     </li>  
-                                     
+                    <li>
+                      <Link to="/Filewise-beneficiary-activity-list">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Filewise Benef. in Activities</span>
+                      </Link>
+                    </li>                  
                     <li>
                       <Link to="/viewActivity" title="View all Activities">
                         <i className="fa fa-circle-o" />

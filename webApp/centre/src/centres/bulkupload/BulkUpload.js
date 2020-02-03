@@ -229,7 +229,7 @@ class BulkUpload extends Component{
             totalRecords : totalrows,
             updateBadData : i > factor ? false : true
           };
-          //console.log('chunkData',chunkData)
+          console.log('formValue',formValues)
           // var formValues ={
           // "finaldata"     : chunkData,
           // "invalidData"   : invalidData,
@@ -340,12 +340,12 @@ class BulkUpload extends Component{
             this.props.fileDetails ?
             <div className="">
               <ul className="nav nav-tabs">
-                <li className="active"><a data-toggle="tab" href="#failure">Failure</a></li>
-                <li ><a data-toggle="tab" href="#success">Success</a></li>
+                <li className="active"><a data-toggle="tab" href={"#failure"+this.props.failedRecordsCount}>Failure</a></li>
+                <li ><a data-toggle="tab" href={"#success"+this.props.goodDataCount}>Success</a></li>
               </ul>
               <div className="tab-content">
               <h5>Filename: <span>{this.state.fileName}</span></h5>
-                <div id="failure" className="tab-pane fade in active">
+                <div id={"failure"+this.props.failedRecordsCount} className="tab-pane fade in active">
                 <h5>
                 Out of {this.props.fileDetails.totalRecords } {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  &nbsp;
 
@@ -405,10 +405,12 @@ class BulkUpload extends Component{
                     </div>
 
                   </div>
-                <div id="success" className="tab-pane fade">
+                <div id={"success"+this.props.goodDataCount} className="tab-pane fade">
                   <h5>
-                  Out of {this.props.fileDetails.totalRecords} {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  {this.props.fileDetails.goodrecords.length} {this.props.fileDetails.goodrecords.length > 1 ? "records are" : "record is" } added successfully. &nbsp;
-                    
+                  {
+                    /*Out of {this.props.fileDetails.totalRecords} {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  {this.props.fileDetails.goodrecords.length} {this.props.fileDetails.goodrecords.length > 1 ? "records are" : "record is" } added successfully. &nbsp;
+                  */}
+                  Total {this.props.fileDetails.goodrecords.length} { this.props.fileDetails.totalRecords > 1 ? "records" : "record"} found from this file.
                   </h5>
                       <IAssureTable 
                       tableHeading={this.props.goodRecordsHeading}

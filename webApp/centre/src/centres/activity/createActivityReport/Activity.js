@@ -112,10 +112,13 @@ class Activity extends Component{
       "startRange"                 : 0,
       "limitRange"                 : 10000,
       "editId"                     : this.props.match.params ? this.props.match.params.id : '',
-      fileDetailUrl         : "/api/activityReport/get/filedetails/",
-      goodRecordsTable      : [],
-      failedRecordsTable    : [],
-      goodRecordsHeading :{
+      fileDetailUrl                : "/api/activityReport/get/filedetails/",
+      beneficiaryFileDetailUrl     : "/api/activityReport/get/beneficiaryFiledetails/",
+      goodRecordsTable             : [],
+      failedRecordsTable           : [],
+      beneficiaryGoodRecordsTable  : [],
+      beneficiaryFailedRecordsTable : [],
+      goodRecordsHeading           :{
         projectCategoryType        : "Category",
         projectName                : "Project Name",
         date                       : "Date",
@@ -137,7 +140,7 @@ class Activity extends Component{
         other                      : "Other",
         remark                     : "Remark",
       },
-      failedtableHeading :{
+      failedtableHeading           :{
         projectCategoryType        : "Category",
         projectName                : "Project Name",
         date                       : "Date",
@@ -158,6 +161,45 @@ class Activity extends Component{
         other                      : "Other",
         remark                     : "Remark",
         failedRemark               : "Failed Data Remark",
+      },
+      beneficiaryGoodRecordsHeading           :{
+        sectorName                 : "Sector Name",
+        activityName               : "Activity Name",
+        subactivityName            : "Subactivity Name",
+        date                       : "date",
+        beneficiaryID              : "Beneficiary ID",
+        familyID                   : "Family ID",
+        nameofbeneficiary          : "Beneficiary Name",
+        relation                   : "relation",
+        place                      : "place" 
+      },
+      beneficiaryFailedtableHeading           :{
+        sectorName                 : "Sector Name",
+        activityName               : "Activity Name",
+        subactivityName            : "Subactivity Name",
+        date                       : "date",
+        familyID                   : "Family ID",
+        surnameOfFH                : "FH Surname",
+        firstNameOfFH              : "FH Firstname",
+        middleNameOfFH             : "FH Middlename",
+        uidNumberOfFH              : "FH UID Number",
+        contactNumber              : "Contact Number",
+        FHGender                   : "FH Gender",
+        FHYearOfBirth              : "FH Birth Year",
+        caste                      : "caste",
+        landCategory               : "Land holding Category",
+        incomeCategory             : "Income Category",
+        specialCategory            : "Special Category",
+        place                      : "Place",
+        beneficiaryID              : "Beneficiary ID",  
+        surnameOfBeneficiary       : "Beneficiary Surname",
+        firstNameOfBeneficiary     : "Beneficiary Firstname",
+        middleNameOfBeneficiary    : "Beneficiary middlename,",
+        relation                   : "Relation",
+        uidNumber                  : "Beneficiary UID Number",
+        genderOfbeneficiary        : "Beneficiary Gender",
+        birthYearOfbeneficiary     : "Beneficiary Birth Year",  
+        failedRemark               : "Failed Data Remark",            
       }    
     }
     this.uploadedData = this.uploadedData.bind(this);
@@ -212,7 +254,7 @@ class Activity extends Component{
         let id = $(event.currentTarget).find('option:selected').attr('data-id')
         axios.get('/api/projectMappings/fetch/'+id)
         .then((response)=>{
-          console.log(response);
+          
           if(response.data[0].sector&&response.data[0].sector.length>0){
             var returnData = [...new Set(response.data[0].sector.map(a => a.sector_ID))]
             if(returnData&&returnData.length>0){
@@ -318,7 +360,7 @@ class Activity extends Component{
       selectedBeneficiaries : selectedBeneficiaries
     })
   }
-    
+
   SubmitActivity(event){
     event.preventDefault();
     // console.log("date = ", this.refs.dateofIntervention.value);
@@ -1330,9 +1372,79 @@ class Activity extends Component{
           
     }) 
   } 
+  
+  getBenefiaciaryFileDetails(fileName){
+    
+    axios
+    .get(this.state.beneficiaryFileDetailUrl+fileName)
+    .then((response)=> {
+      $('.fullpageloader').hide();  
+      if(response&&response.data) {
+        this.setState({
+          fileDetails:response.data,
+          beneficiaryFailedRecordsCount : response.data.failedRecords.length,
+          beneficiaryGoodDataCount : response.data.goodrecords.length
+        });
+       
+        var tableData = response.data.goodrecords.map((a, i)=>{
+          return{
+            "sectorName"        : a.sectorName      ? a.sectorName      : '-',
+            "activityName"      : a.activityName    ? a.activityName   : '-',
+            "subactivityName"   : a.subactivityName ? a.subactivityName : '-',
+            "date"              : a.date            ? a.date : '-',  
+            "beneficiaryID"     : a.listofBeneficiaries.beneficiaryID ? a.listofBeneficiaries.beneficiaryID      : '-',
+            "familyID"          : a.listofBeneficiaries.familyID      ? a.listofBeneficiaries.familyID      : '-',
+            "nameofbeneficiary" : a.listofBeneficiaries.nameofbeneficiary ? a.listofBeneficiaries.nameofbeneficiary : '-',
+            "relation"          : a.listofBeneficiaries.relation ? a.listofBeneficiaries.relation : '-', 
+            "place"             : a.listofBeneficiaries.dist + ", " + a.listofBeneficiaries.block + ", " + a.listofBeneficiaries.village,
+          }
+        })
+         
+        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+          return{
+            "sectorName"      : a.sectorName      ? a.sectorName      : '-',
+            "activityName"    : a.activityName    ? a.activityName   : '-',
+            "subactivityName" : a.subactivityName ? a.subactivityName : '-',
+            "date"            : a.date            ? a.date : '-',
+            "familyID"        : a.familyID        ? a.familyID : '-',
+            "surnameOfFH"     : a.surnameOfFH     ? a.surnameOfFH : '-',
+            "firstNameOfFH"   : a.firstNameOfFH   ? a.firstNameOfFH : '-',
+            "middleNameOfFH"  : a.middleNameOfFH  ? a.middleNameOfFH : '-',
+            "uidNumberOfFH"   : a.uidNumberOfFH   ? a.uidNumberOfFH : '-',
+            "contactNumber"   : a.contactNumber   ? a.contactNumber : '-',
+            "FHGender"        : a.FHGender        ? a.FHGender : '-',
+            "FHYearOfBirth"   : a.FHYearOfBirth   ? a.FHYearOfBirth : '-',
+            "caste"           : a.caste           ? a.caste : '-',
+            "landCategory"    : a.landCategory    ? a.landCategory : '-',
+            "incomeCategory"  : a.incomeCategory  ? a.incomeCategory : '-',
+            "specialCategory" : a.specialCategory ? a.specialCategory : '-',
+            "place"           : a.dist + ", " + a.block + ", " + a.village,
+            "beneficiaryID"   : a.beneficiaryID     ? a.beneficiaryID : '-',
+            "surnameOfBeneficiary"    : a.surnameOfBeneficiary     ? a.surnameOfBeneficiary : '-',
+            "firstNameOfBeneficiary"  : a.firstNameOfBeneficiary     ? a.firstNameOfBeneficiary : '-',
+            "middleNameOfBeneficiary" : a.middleNameOfBeneficiary     ? a.middleNameOfBeneficiary : '-',
+            "relation"        : a.relation     ? a.relation : '-',
+            "uidNumber"       : a.uidNumber     ? a.uidNumber : '-',
+            "genderOfbeneficiary"     : a.genderOfbeneficiary     ? a.genderOfbeneficiary : '-',
+            "birthYearOfbeneficiary"  : a.birthYearOfbeneficiary     ? a.birthYearOfbeneficiary : '-',
+            "failedRemark"    : a.failedRemark     ? a.failedRemark : '-',
+          }
+        })
+        
+        this.setState({
+          beneficiaryGoodRecordsTable : tableData,
+          beneficiaryFailedRecordsTable : failedRecordsTable
+        },()=>{
 
+        })
+      }
+    })
+    .catch((error)=> { 
+          
+    }) 
+  }
   render() {
-    // console.log('state',this.state.total)
+     
      var hidden = {
       display: this.state.shown ? "none" : "block"
     }
@@ -1350,9 +1462,10 @@ class Activity extends Component{
                     <hr className="hr-head container-flui7d row"/>
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                       <h4 className="col-lg-6 col-md-6 col-xs-12 col-sm-12 pageSubHeader NOpadding">Activity Details</h4>
-                      <ul className="nav nav-pills col-lg-3 col-lg-offset-3 col-md-3 col-md-offset-3 col-sm-12 col-xs-12">
-                        <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
-                        <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkactivity">Bulk Upload</a></li>
+                      <ul className="nav nav-pills col-lg-6 col-md-3 col-sm-12 col-xs-12 NOpadding">
+                        <li className="active col-lg-3 col-md-3 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
+                        <li className="col-lg-3 col-md-3 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivity" ><a data-toggle="pill"  href="#bulkactivity">Bulk Upload</a></li>
+                        <li className="col-lg-5 col-md-5 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkbeneficiary" ><a data-toggle="pill"  href="#bulkbeneficiary">Beneficiary Bulk Upload</a></li>
                       </ul>
                     </div>
                   </div>
@@ -1759,6 +1872,22 @@ class Activity extends Component{
                       failedRecordsCount={this.state.failedRecordsCount}
                       goodRecordsTable={this.state.goodRecordsTable}
                       goodDataCount={this.state.goodDataCount}
+                      />
+                    </div>
+                    <div id="bulkbeneficiary" className="tab-pane fade in ">
+                     <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
+                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
+                      uploadedData={this.uploadedData} 
+                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
+                      fileDetailUrl={this.state.beneficiaryFileDetailUrl}
+                      getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
+                      fileDetails={this.state.fileDetails}
+                      goodRecordsHeading ={this.state.beneficiaryGoodRecordsHeading}
+                      failedtableHeading={this.state.beneficiaryFailedtableHeading}
+                      failedRecordsTable ={this.state.beneficiaryFailedRecordsTable}
+                      failedRecordsCount={this.state.beneficiaryFailedRecordsCount}
+                      goodRecordsTable={this.state.beneficiaryGoodRecordsTable}
+                      goodDataCount={this.state.beneficiaryGoodDataCount}
                       />
                     </div>
                   </div>

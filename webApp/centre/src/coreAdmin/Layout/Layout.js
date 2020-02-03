@@ -32,6 +32,8 @@ import FilewiseBeneficiaryList                    from "../../coreAdmin/masterDa
 import Activity                                   from "../../centres/activity/createActivityReport/Activity.js";
 import FilewiseActivityList                       from "../../centres/activity/filewiselist/FilewiseActivityList.js";
 
+import FilewiseBeneficiaryActivityList            from "../../centres/activity/filewiselist/FilewiseBeneficiaryActivityList.js";
+
 import ViewActivity                               from "../../centres/activity/viewActivity/ViewActivity.js";
 import ActivityReportView                         from "../../centres/activityReportView/ActivityReportView.js";
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
@@ -160,11 +162,12 @@ class Layout extends Component{
                               <Route path="/activity"                            exact strict component={ Activity } />
                               
                               <Route path="/Filewise-activity-list"              exact strict component={ FilewiseActivityList } />
+                              <Route path="/Filewise-beneficiary-activity-list"  exact strict component={ FilewiseBeneficiaryActivityList } />
                               
                               <Route path="/activity/"                           exact strict component={ Activity } />
                               <Route path="/activity/:id"                        exact strict component={ Activity } />
                               <Route path="/viewActivity"                        exact strict component={ ViewActivity } />
-                              <Route path="/activityReportView/:id"                  exact strict component={ ActivityReportView } />
+                              <Route path="/activityReportView/:id"              exact strict component={ ActivityReportView } />
                               <Route path="/centerList"                          exact strict component={ CenterList } />
                               <Route path="/caseStudy"                           exact strict component={ CaseStudy } />
                               <Route path="/caseStudy/"                          exact strict component={ CaseStudy } />
