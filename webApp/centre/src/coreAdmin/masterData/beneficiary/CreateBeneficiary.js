@@ -3,7 +3,6 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 
-import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./Beneficiary.css";
 
 class Beneficiary extends Component{
@@ -81,7 +80,6 @@ class Beneficiary extends Component{
   }
   SubmitBeneficiary(event){
     event.preventDefault();
-    var id2 = this.state.uidNumber;
     if($('#createBeneficiary').valid()){
     // if (this.validateFormReq() && this.validateForm()){
     var beneficiaryValue= 
@@ -256,22 +254,22 @@ class Beneficiary extends Component{
             },
           },
           errorPlacement: function(error, element) {
-            if (element.attr("name") == "familyID"){
+            if (element.attr("name") === "familyID"){
               error.insertAfter("#familyIDErr");
             }
-            if (element.attr("name") == "relation"){
+            if (element.attr("name") === "relation"){
               error.insertAfter("#relationErr");
             }
-            if (element.attr("name") == "surnameOfBeneficiary"){
+            if (element.attr("name") === "surnameOfBeneficiary"){
               error.insertAfter("#surnameOfBeneficiaryErr");
             }
-            if (element.attr("name") == "uidNumber"){
+            if (element.attr("name") === "uidNumber"){
               error.insertAfter("#uidNumberErr");
             }
-            if (element.attr("name") == "firstNameOfBeneficiary"){
+            if (element.attr("name") === "firstNameOfBeneficiary"){
               error.insertAfter("#firstNameOfBeneficiaryErr");
             }
-            if (element.attr("name") == "middleNameOfBeneficiary"){
+            if (element.attr("name") === "middleNameOfBeneficiary"){
               error.insertAfter("#middleNameOfBeneficiaryErr");
             }
           }
@@ -295,13 +293,7 @@ class Beneficiary extends Component{
         "uidNumber"                : editData.uidNumber,          
         "relation"                 : editData.relation,          
       });      
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
+    
     })
     .catch(function (error) {
       console.log("error = ",error);

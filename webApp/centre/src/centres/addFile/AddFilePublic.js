@@ -303,7 +303,7 @@ class AddFile extends Component{
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                 <div className="clr_k ">
                   <div className="col-lg-offset-1 col-lg-2 col-md-12 col-sm-12 col-xs-12 hand_icon">
-                    <img src="/images/Upload-Icon.png"/>
+                    <img alt="Upload Image" src="/images/Upload-Icon.png"/>
                   </div>
                   <div  className= "col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center below_text">
                    <b className="text_k11"></b>
@@ -332,7 +332,7 @@ class AddFile extends Component{
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                           <div className="imgcss" >
-                            <img className="img-responsive imgheight" src={data.imgPath}/>
+                            <img className="img-responsive imgheight"  alt="Upload Image" src={data.imgPath}/>
                           </div>
                         </div>
                       </div>
@@ -372,24 +372,24 @@ class AddFile extends Component{
                                  {
                                    a.fileName.split('.').pop()==="XLS" || a.fileName.split('.').pop() ==="XLSX"||a.fileName.split('.').pop() ==="xls" || a.fileName.split('.').pop() ==="xlsx"
                                    ?
-                                    <img className="fileExt" src="/images/exel2.png"/> 
+                                    <img className="fileExt" alt="Icon" src="/images/exel2.png"/> 
                                     :
                                      ""
                                   }
                                   {
                                    ( a.fileName.split('.').pop() ==="PPT" || a.fileName.split('.').pop() === "PPTX" || a.fileName.split('.').pop() === "ppt" || a.fileName.split('.').pop() ==="pptx") ? 
-                                    <img className="fileExt" src="/images/powerpoint.jpeg"/> :""
+                                    <img className="fileExt" alt="Icon" src="/images/powerpoint.jpeg"/> :""
                                   }
                                   {
                                  
                                     (a.fileName.split('.').pop() ==="pdf" ||a.fileName.split('.').pop() === "PDF") ? 
-                                    <img className="fileExt" src="/images/pdf.png"/> 
+                                    <img className="fileExt" alt="Icon" src="/images/pdf.png"/> 
                                     :
                                     ""
                                   }
                                   {
                                     (a.fileName.split('.').pop() ==="doc" || a.fileName.split('.').pop() === "docx" || a.fileName.split('.').pop() === "DOC" || a.fileName.split('.').pop() ==="DOCX"|| a.fileName.split('.').pop() ==="txt" || a.fileName.split('.').pop() === "TXT") ? 
-                                    <img className="fileExt" src="/images/docs.png"/> : ""
+                                    <img className="fileExt" alt="Icon" src="/images/docs.png"/> : ""
                                   }
                                  
                                   </div>

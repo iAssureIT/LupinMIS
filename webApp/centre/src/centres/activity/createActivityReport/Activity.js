@@ -6,7 +6,6 @@ import swal                   from 'sweetalert';
 import moment                 from "moment";
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
-import validate               from 'jquery-validation';
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
@@ -215,7 +214,7 @@ class Activity extends Component{
     var subTotal    = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC) + parseInt(this.state.other);
     // console.log("subTotal",subTotal);
     var arr = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
-    var findIndex = arr.findIndex((obj)=>{return obj  == event.target.name});
+    var findIndex = arr.findIndex((obj)=>{return obj  === event.target.name});
     // console.log("findIndex",findIndex);
     if (findIndex !== -1) {
       if (parseInt(subTotal) < parseInt(totalBudget)) {
@@ -642,16 +641,6 @@ class Activity extends Component{
       return formIsValid;
   }
 
-  validateForm() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    // $("html,body").scrollTop(0);
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
 
   toglehidden(){
    this.setState({
@@ -815,14 +804,14 @@ class Activity extends Component{
         var lastN = x.split('.')[0];
         var lastThree = lastN.substring(lastN.length-3);
         var otherNumbers = lastN.substring(0,lastN.length-3);
-        if(otherNumbers != '')
+        if(otherNumbers !== '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
         return(res);
       }else{
         var lastThree = x.substring(x.length-3);
         var otherNumbers = x.substring(0,x.length-3);
-        if(otherNumbers != '')
+        if(otherNumbers !== '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
         return(res);
@@ -837,7 +826,7 @@ class Activity extends Component{
     }
     axios.post('/api/activityReport/list/'+center_ID, data)
     .then((response)=>{
-      // console.log("response",response);
+      console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                        : a._id,
@@ -1295,7 +1284,7 @@ class Activity extends Component{
       subactivity : "-- Select --",
       activity    : '-- Select --',
     },()=>{
-      if (this.state.projectCategoryType == "LHWRF Grant") {
+      if (this.state.projectCategoryType === "LHWRF Grant") {
         this.setState({
           projectName:"-- Select --",
         })
@@ -1444,10 +1433,7 @@ class Activity extends Component{
     }) 
   }
   render() {
-     
-     var hidden = {
-      display: this.state.shown ? "none" : "block"
-    }
+
     return (
       <div className="container-fluid">
         <div className="row"> 
@@ -1509,7 +1495,7 @@ class Activity extends Component{
                       </div>
                         {/*console.log("projectCategoryType",this.state.projectCategoryType)*/}
                       {
-                        this.state.projectCategoryType =="Project Fund" ? 
+                        this.state.projectCategoryType ==="Project Fund" ? 
 
                         <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
                           <label className="formLable">Project Name</label>

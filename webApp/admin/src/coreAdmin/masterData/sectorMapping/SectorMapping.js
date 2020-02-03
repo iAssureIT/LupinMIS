@@ -249,10 +249,10 @@ class SectorMapping extends Component{
         }
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "goalType"){
+        if (element.attr("name") === "goalType"){
           error.insertAfter("#goalType");
         }
-        if (element.attr("name") == "goalName"){
+        if (element.attr("name") === "goalName"){
           error.insertAfter("#goalName");
         }
       }

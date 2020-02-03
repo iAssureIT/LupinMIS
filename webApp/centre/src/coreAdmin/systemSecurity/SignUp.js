@@ -275,25 +275,25 @@ class SignUp extends Component {
 	        },
 	      },
 	      errorPlacement: function(error, element) {
-	        if (element.attr("name") == "firstname"){
+	        if (element.attr("name") === "firstname"){
 	          error.insertAfter("#firstnameErr");
 	        }
-	        if (element.attr("name") == "lastname"){
+	        if (element.attr("name") === "lastname"){
 	          error.insertAfter("#lastnameErr");
 	        }
-	        if (element.attr("name") == "mobileNumber"){
+	        if (element.attr("name") === "mobileNumber"){
 	          error.insertAfter("#mobileNumberErr");
 	        }
-	        if (element.attr("name") == "centerName"){
+	        if (element.attr("name") === "centerName"){
 	          error.insertAfter("#centerNameErr");
 	        }
-	        if (element.attr("name") == "signupEmail"){
+	        if (element.attr("name") === "signupEmail"){
 	          error.insertAfter("#signupEmailErr");
 	        }
-	        if (element.attr("name") == "signupPassword"){
+	        if (element.attr("name") === "signupPassword"){
 	          error.insertAfter("#signupPasswordErr");
 	        }
-	        if (element.attr("name") == "signupConfirmPassword"){
+	        if (element.attr("name") === "signupConfirmPassword"){
 	          error.insertAfter("#signupConfirmPasswordErr");
 	        }
 	      }

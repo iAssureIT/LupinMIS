@@ -151,17 +151,17 @@ class EditNotificationModal extends Component{
 					this.setState({
 						shown : false,
 					});
-					console.log('response --==',response);
-					if (templateType  == "Email") {
+					console.log('response --===',response);
+					if (templateType  === "Email") {
 						this.props.emailGetData(editId)
 
 					}
-					if (templateType  == "Notification") {
+					if (templateType  === "Notification") {
 						this.props.notiGetData(editId)
 
 					}
 
-					if (templateType  == "SMS") {
+					if (templateType  === "SMS") {
 						this.props.smsGetData(editId)
 
 					}
@@ -285,7 +285,7 @@ class EditNotificationModal extends Component{
 												</div>
 											</div>
 										</div>
-										{this.state.templateType!='Notification' && this.state.templateType!='SMS' ?
+										{this.state.templateType!=='Notification' && this.state.templateType!=='SMS' ?
 											<div className="row rowPadding subjectRow col-lg-12 col-md-12 col-xs-12 col-sm-12">
 												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 													<div className="form-group">

@@ -2,12 +2,8 @@ import React, { Component }                                  from 'react';
 import swal                                                  from 'sweetalert';
 import $                                                     from 'jquery';
 import axios                                                 from 'axios';
-import { Link }                                              from 'react-router-dom'
-import DailyReport                                           from '../Reports/DailyReport.js';
-import WeeklyReport                                          from '../Reports/WeeklyReport.js';
-import MonthlyReport                                         from '../Reports/MonthlyReport.js';
+import { Link }                                              from 'react-router-dom';
 import SectorwiseAnnualCompletionSummaryYearlyReport         from '../Reports/SectorwiseAnnualCompletionSummaryYearlyReport.js';
-import CustomisedReport                                      from '../Reports/CustomisedReport.js';
 import Loader                                                from "../../common/Loader.js";
 
 import "../Reports/Reports.css";

@@ -162,10 +162,10 @@ class Activity extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "sector"){
+        if (element.attr("name") === "sector"){
           error.insertAfter("#sectorError");
         }
-        if (element.attr("name") == "activityName"){
+        if (element.attr("name") === "activityName"){
           error.insertAfter("#activityName");
         }
       }

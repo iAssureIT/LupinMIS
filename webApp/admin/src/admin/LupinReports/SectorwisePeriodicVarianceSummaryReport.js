@@ -4,7 +4,6 @@ import axios                from 'axios';
 import swal                 from 'sweetalert';
 import moment               from 'moment';
 import Loader               from "../../common/Loader.js";
-
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 class SectorwiseAnnualCompletionSummaryReport extends Component{

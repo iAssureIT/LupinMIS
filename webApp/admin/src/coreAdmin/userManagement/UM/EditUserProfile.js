@@ -133,19 +133,19 @@ class EditUserProfile extends Component{
 	        }
 	      },
 	      errorPlacement: function(error, element) {
-	        if (element.attr("name") == "firstName"){
+	        if (element.attr("name") === "firstName"){
 	          error.insertAfter("#firstNameErr");
 	        }
-	        if (element.attr("name") == "lastName"){
+	        if (element.attr("name") === "lastName"){
 	          error.insertAfter("#lastNameErr");
 	        }
-	        if (element.attr("name") == "mobNumber"){
+	        if (element.attr("name") === "mobNumber"){
 	          error.insertAfter("#mobNumberErr");
 	        }
-	        if (element.attr("name") == "centerName"){
+	        if (element.attr("name") === "centerName"){
 	          error.insertAfter("#centerNameErr");
 	        }
-	        if (element.attr("name") == "username"){
+	        if (element.attr("name") === "username"){
 	          error.insertAfter("#usernameErr");
 	        }
 	      }

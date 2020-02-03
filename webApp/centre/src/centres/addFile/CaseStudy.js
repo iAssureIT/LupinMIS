@@ -3,8 +3,6 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import moment                 from "moment";
 import swal                   from 'sweetalert';
-import S3FileUpload           from 'react-s3';
-import { deleteFile }         from 'react-s3';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import AddFilePublic          from "../addFile/AddFilePublic.js";
 
@@ -105,16 +103,16 @@ class CaseStudy extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "title"){
+        if (element.attr("name") === "title"){
           error.insertAfter("#title");
         }
-        if (element.attr("name") == "author"){
+        if (element.attr("name") === "author"){
           error.insertAfter("#author");
         }
-        if (element.attr("name") == "dateofsubmission"){
+        if (element.attr("name") === "dateofsubmission"){
           error.insertAfter("#dateofsubmission");
         }
-        if (element.attr("name") == "sector"){
+        if (element.attr("name") === "sector"){
           error.insertAfter("#sector");
         }
       }
@@ -309,10 +307,6 @@ class CaseStudy extends Component{
   }
 
   getData(startRange, limitRange, center_ID){ 
-    var data = {
-      limitRange : limitRange,
-      startRange : startRange,
-    }
     if(center_ID){
       axios.get('/api/caseStudies/list/'+center_ID)
       .then((response)=>{
@@ -473,7 +467,7 @@ class CaseStudy extends Component{
                           this.state.tableData.map((data, index)=>{
                             console.log(data);
                             return(
-                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt outerForm">
+                              <div map={index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt outerForm">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
                                   <h4 className="pageSubHeader">Title : {data.title ? data.title : "-"}</h4>
                                 </div>
@@ -498,43 +492,41 @@ class CaseStudy extends Component{
                                   </div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 noPadding"> 
-                                   {/*  <i class="fas fa fa-arrow-right fa-2x fa-pull-right fa-border"></i>
-                                                                  <i class="fas fa fa-angle-double-right  fa-2x fa-pull-right fa-border"></i>*/}
                                   {
                                     data.caseStudy_File.length > 0? 
                                     data.caseStudy_File.map((file, i)=> {
                                       return(
                                         <div key= {i} className="col-lg-6 col-md-12 col-sm-12 col-xs-12"> 
-                                          <div >
+                                          <div className="iconBox">
                                             {
-                                              (file && file.fileName.split('.').pop()==="XLS" || file.fileName.split('.').pop() ==="XLSX"||file.fileName.split('.').pop() ==="xls" || file.fileName.split('.').pop() ==="xlsx")
+                                              (file && (file.fileName.split('.').pop()==="XLS" || file.fileName.split('.').pop() ==="XLSX"||file.fileName.split('.').pop() ==="xls" || file.fileName.split('.').pop() ==="xlsx"))
                                               ?
-                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/exel2.png"/> </a>
+                                              <a href={file.filePath} className="mt"><img className="fileExt" alt="Download Icon" src="/images/DownloadDoc.svg"/> </a>
                                               :
                                                ""
                                             }
                                             {
-                                              (file && file.fileName.split('.').pop() ==="PPT" || file.fileName.split('.').pop() === "PPTX" || file.fileName.split('.').pop() === "ppt" || file.fileName.split('.').pop() ==="pptx")
+                                              (file && (file.fileName.split('.').pop() ==="PPT" || file.fileName.split('.').pop() === "PPTX" || file.fileName.split('.').pop() === "ppt" || file.fileName.split('.').pop() ==="pptx"))
                                               ? 
-                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/powerpoint.jpeg"/></a> 
+                                              <a href={file.filePath} className="mt"><img className="fileExt" alt="Download Icon" src="/images/Dwldppt.png"/></a> 
                                               :""
                                             }
                                             {
-                                              (file && file.fileName.split('.').pop() ==="pdf" ||file.fileName.split('.').pop() === "PDF")
+                                              (file && (file.fileName.split('.').pop() ==="pdf" ||file.fileName.split('.').pop() === "PDF"))
                                               ? 
-                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/pdf.png"/> </a>
+                                              <a href={file.filePath} className="mt"><img className="fileExt" alt="Download Icon" src="/images/dwldpdf.png"/> </a>
                                               :
                                               ""
                                             }
                                             {
-                                              (file && file.fileName.split('.').pop() ==="doc" || file.fileName.split('.').pop() === "docx" || file.fileName.split('.').pop() === "DOC" || file.fileName.split('.').pop() ==="DOCX"|| file.fileName.split('.').pop() ==="txt" || file.fileName.split('.').pop() === "TXT") 
+                                              (file && (file.fileName.split('.').pop() ==="doc" || file.fileName.split('.').pop() === "docx" || file.fileName.split('.').pop() === "DOC" || file.fileName.split('.').pop() ==="DOCX"|| file.fileName.split('.').pop() ==="txt" || file.fileName.split('.').pop() === "TXT")) 
                                               ? 
-                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/docs.png"/> </a>
+                                              <a href={file.filePath} className="mt"><img className="fileExt" alt="Download Icon" src="/images/DownloadDoc.svg"/> </a>
                                               : ""
                                             }                                             
                                           </div>
-                                          <a href={file.filePath} classname="mt">
-                                              <p className="formLable"><b>{file.fileName}</b></p>
+                                          <a href={file.filePath} className="mt">
+                                              <p className="iconLable"><b>{file.fileName}</b></p>
                                           </a>
                                           
                                         </div>
@@ -545,11 +537,15 @@ class CaseStudy extends Component{
                                   }
 
                                 </div>
-                                <a class="viewLink" href={"/caseStudyView/"+data._id}>
-                                    <i class='fas fa fa-chevron-right viewLinkIcon  fa-2x fa-pull-right'></i>
+                                <a className="viewLink" title="View" href={"/caseStudyView/"+data._id}>
+                                    <i className='fas fa fa-chevron-right viewLinkIcon  fa-2x fa-pull-right'></i>
                                 </a>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                  <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"><b>Images</b></p>
+                                  {
+                                    data.caseStudy_Image.length > 0? 
+                                      <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"><b>Images</b></p>
+                                    : null
+                                  }
                                   {
                                     data.caseStudy_Image.length > 0? 
                                     data.caseStudy_Image.map((img, i)=> {
@@ -581,8 +577,6 @@ class CaseStudy extends Component{
                         tableData={this.state.tableData}
                         getData={this.getData.bind(this)}
                         tableObjects={this.state.tableObjects}                          
-                        viewTable = {true}
-                        viewLink = "caseStudyView"
                       />
                     </div> 
                   </div>              

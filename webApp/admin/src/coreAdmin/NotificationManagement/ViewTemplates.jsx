@@ -103,13 +103,13 @@ class ViewTemplates extends Component{
 	          },	          
 	        }, 
 	        errorPlacement: function(error, element) {
-			  if (element.attr("name") == "templateType"){
+			  if (element.attr("name") === "templateType"){
 			    error.insertAfter("#templateType");
 			  }
-			  if (element.attr("name") == "templateName"){
+			  if (element.attr("name") === "templateName"){
 			    error.insertAfter("#templateName");
 			  } 
-			  if (element.attr("name") == "subject"){
+			  if (element.attr("name") === "subject"){
 			    error.insertAfter("#subject");
 			  }  
 			}
@@ -172,9 +172,9 @@ class ViewTemplates extends Component{
 			method: 'get',
 			url: '/api/masternotification/list',
 		}).then((response)=> {
-			var emailTemplatesList = response.data.filter((a)=>{ return a.templateType == "Email"});	   	    
-			var notificationTemplatesList = response.data.filter((a)=>{ return a.templateType == "Notification"});	   	    
-			var smsTemplatesList = response.data.filter((a)=>{ return a.templateType == "SMS"});	   	    
+			var emailTemplatesList = response.data.filter((a)=>{ return a.templateType === "Email"});	   	    
+			var notificationTemplatesList = response.data.filter((a)=>{ return a.templateType === "Notification"});	   	    
+			var smsTemplatesList = response.data.filter((a)=>{ return a.templateType === "SMS"});	   	    
 		    this.setState({
 		    	emailTemplatesList 			: emailTemplatesList,
 		    	notificationTemplatesList 	: notificationTemplatesList,
@@ -278,24 +278,24 @@ class ViewTemplates extends Component{
 
     deleteData(type,id){
 	  if (type && id) {
-		  if (type == "Email") {
+		  if (type === "Email") {
 		  var emailarray = [...this.state.emailTemplatesList]; // make a separate copy of the array
-		  var index = emailarray.findIndex((obj)=>{return obj._id == id});
+		  var index = emailarray.findIndex((obj)=>{return obj._id === id});
 			  if (index !== -1) {
 			    emailarray.splice(index, 1);
 			    this.setState({emailTemplatesList: emailarray,emailTemplates:{}},()=>
 			    this.getData());
 			  }
-			  }else if (type == "Notification") {
+			  }else if (type === "Notification") {
 			        var notificationarray = [...this.state.notificationTemplatesList]; // make a separate copy of the array
-			  var notificationindex = notificationarray.findIndex((obj)=>{return obj._id == id});
+			  var notificationindex = notificationarray.findIndex((obj)=>{return obj._id === id});
 					  if (notificationindex !== -1) {
 					    notificationarray.splice(notificationindex, 1);
 					    this.setState({notificationTemplatesList: notificationarray,notificationTemplates:{}});
 					  }
-			  }else if (type == "SMS") {
+			  }else if (type === "SMS") {
 					        var smsarray = [...this.state.smsTemplatesList]; // make a separate copy of the array
-					  var smsindex = smsarray.findIndex((obj)=>{return obj._id == id});
+					  var smsindex = smsarray.findIndex((obj)=>{return obj._id === id});
 					  if (smsindex !== -1) {
 					    smsarray.splice(smsindex, 1);
 					    this.setState({smsTemplatesList: smsarray,smsTemplates:{}});
@@ -312,13 +312,13 @@ class ViewTemplates extends Component{
 			var subject          = this.state.subject;
 			var cketext          = this.state.content;
 
-			if( cketext === null || cketext == "" || templateType === '-- Select --' || templateName === '--Select Template Name--'){
+			if( cketext === null || cketext === "" || templateType === '-- Select --' || templateName === '--Select Template Name--'){
 			 	swal({
 						title: "Please enter mandatory fields",
 						text: "Please enter mandatory fields",
 					});
 			}else{	
-				if(templateType === 'Email' && (subject === null || subject == ""))
+				if(templateType === 'Email' && (subject === null || subject === ""))
 				{
 				 	swal({
 						title: "Please enter mandatory fields",
@@ -336,7 +336,7 @@ class ViewTemplates extends Component{
 						if(formValid(this.state.formerrors)){
 							axios.post('/api/masternotification', formValues)
 							.then((response)=> {	
-								if(response.data.message== "Master Notification Template Name already exists")
+								if(response.data.message=== "Master Notification Template Name already exists")
 								{
 									
 									 swal({
@@ -360,9 +360,9 @@ class ViewTemplates extends Component{
 										url: '/api/masternotification/list',
 									}).then((response)=> {
 										
-										var emailTemplatesList = response.data.filter((a)=>{ return a.templateType == "Email"});	   	    
-										var notificationTemplatesList = response.data.filter((a)=>{ return a.templateType == "Notification"});	   	    
-										var smsTemplatesList = response.data.filter((a)=>{ return a.templateType == "SMS"});	   	    
+										var emailTemplatesList = response.data.filter((a)=>{ return a.templateType === "Email"});	   	    
+										var notificationTemplatesList = response.data.filter((a)=>{ return a.templateType === "Notification"});	   	    
+										var smsTemplatesList = response.data.filter((a)=>{ return a.templateType === "SMS"});	   	    
 									    this.setState({
 									    	emailTemplatesList 			: emailTemplatesList,
 									    	notificationTemplatesList 	: notificationTemplatesList,

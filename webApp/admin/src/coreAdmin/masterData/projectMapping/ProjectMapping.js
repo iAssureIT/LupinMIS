@@ -102,7 +102,7 @@ class ProjectMapping extends Component{
   }
   isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -245,10 +245,10 @@ class ProjectMapping extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "projectType"){
+        if (element.attr("name") === "projectType"){
           error.insertAfter("#projectType");
         }
-        if (element.attr("name") == "projectName"){
+        if (element.attr("name") === "projectName"){
           error.insertAfter("#projectName");
         }
       }
@@ -411,8 +411,8 @@ class ProjectMapping extends Component{
                 }
               }else{
                 blocktwo.checked = "N"
-                var arr = sectorData.filter((item)=>{return item.sector_ID!=data._id&&
-                item.activity_ID!=element._id&&item.subActivity_ID!=blocktwo._id});
+                var arr = sectorData.filter((item)=>{return item.sector_ID!==data._id&&
+                item.activity_ID!==element._id&&item.subActivity_ID!==blocktwo._id});
                 sectorData = arr;
               }
               return blocktwo
@@ -432,7 +432,7 @@ class ProjectMapping extends Component{
                 })
               }
             }else{
-              var arr = sectorData.filter((item)=>{return item.sector_ID!=data._id&&item.activity_ID!=element._id});
+              var arr = sectorData.filter((item)=>{return item.sector_ID!==data._id&&item.activity_ID!==element._id});
               sectorData = arr;
             }
           }
@@ -501,7 +501,7 @@ class ProjectMapping extends Component{
             }
           }else{
             blockone.checked = "N"
-            var arr = sectorData.filter((item)=>{return item.activity_ID!=activitySelected._id&&item.subActivity_ID!=blockone._id});
+            var arr = sectorData.filter((item)=>{return item.activity_ID!==activitySelected._id&&item.subActivity_ID!==blockone._id});
             sectorData = arr;
           }
           return blockone;
@@ -520,7 +520,7 @@ class ProjectMapping extends Component{
             })  
           }
         }else{
-          var arr = sectorData.filter((item)=>{return item.activity_ID!=activitySelected._id});
+          var arr = sectorData.filter((item)=>{return item.activity_ID!==activitySelected._id});
           sectorData = arr;
         }
       }                                          
@@ -570,7 +570,7 @@ class ProjectMapping extends Component{
       }else{
         data.checked="N";
         activitySelected.checked = "N"
-        var arr = sectorData.filter((item)=>{return item.subActivity_ID!=subActivitySelected._id});
+        var arr = sectorData.filter((item)=>{return item.subActivity_ID!==subActivitySelected._id});
         sectorData = arr;
       }
     }
@@ -750,7 +750,7 @@ class ProjectMapping extends Component{
                                         <div className="row"> 
                                           <div className="actionDiv col-lg-12 col-md-12 col-xs-12 col-sm-12 noPadding" id="sector">
                                             <div className="sectorContainer col-lg-1">
-                                              <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} data-txt={data._id} value={data.checked=="N"?"Y":"N"} id={data._id +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
+                                              <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} data-txt={data._id} value={data.checked==="N"?"Y":"N"} id={data._id +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
                                               <span className="sectorCheck"></span>
                                             </div>
                                             <label  className="fz14 faintColor col-lg-10">{data.sector}</label>                                   
@@ -763,7 +763,7 @@ class ProjectMapping extends Component{
                                                   <div className={data._id +"|"+data.sector}> 
                                                     <div className="actionDiv" id="activityName">
                                                       <div className="SDGContainer col-lg-1">
-                                                        <input type="checkbox" name="activityName"  data-typechecked={a.activityName} data-index={i} data-txt={index} value={a.checked=="N"?"Y":"N"} className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={a.checked==="Y"?true:false} onChange={this.selectActivity.bind(this)} />
+                                                        <input type="checkbox" name="activityName"  data-typechecked={a.activityName} data-index={i} data-txt={index} value={a.checked==="N"?"Y":"N"} className ="activityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName}  checked={a.checked==="Y"?true:false} onChange={this.selectActivity.bind(this)} />
                                                         <span className="SDGCheck"></span>
                                                       </div>
                                                       <label className="actListItem col-lg-10">{a.activityName}</label>
@@ -777,7 +777,7 @@ class ProjectMapping extends Component{
                                                             <div className={data._id +"|"+data.sector} id="subactivityDiv"> 
                                                               <div className="actionDiv" id="subActivityName">
                                                                 <div className="subContainer col-lg-1">                                                         
-                                                                  <input type="checkbox" name="subActivityName" className ="subActivityName" data-typechecked={a.subActivityName}  data-index={j} data-actindex={i} data-txt={index} value={b.checked=="N"?"Y":"N"}  data-typechecked="subActivityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName+"|"+b._id+"|"+b.subActivityName}  checked={b.checked==="Y"?true:false} onChange={this.selectSubactivity.bind(this)} />
+                                                                  <input type="checkbox" name="subActivityName" className ="subActivityName" data-typechecked={a.subActivityName}  data-index={j} data-actindex={i} data-txt={index} value={b.checked==="N"?"Y":"N"}  data-typechecked="subActivityName" id={data._id +"|"+data.sector+"|"+a._id+"|"+a.activityName+"|"+b._id+"|"+b.subActivityName}  checked={b.checked==="Y"?true:false} onChange={this.selectSubactivity.bind(this)} />
                                                                   <span className="subCheck"></span>
                                                                 </div>
                                                                 <label className="subActivitylistItem col-lg-10">{b.subActivityName}</label>

@@ -21,9 +21,8 @@ class Family extends Component{
       "uID"                  :"",
       "category"             :"",
       "LHWRFCentre"          :"",
-      "centerArray"          : ["Pune", "Bharatpur"],
       "state"                :"Maharastra",
-      "caste"                :"-- Select --",
+      "caste"                :"",
       "district"             :"-- Select --",
       "block"                :"-- Select --",
       "village"              :"-- Select --",
@@ -190,31 +189,31 @@ class Family extends Component{
             },
           },
           errorPlacement: function(error, element) {
-            if (element.attr("name") == "district"){
+            if (element.attr("name") === "district"){
               error.insertAfter("#districtErr");
             }
-            if (element.attr("name") == "block"){
+            if (element.attr("name") === "block"){
               error.insertAfter("#blockErr");
             }
-            if (element.attr("name") == "uID"){
+            if (element.attr("name") === "uID"){
               error.insertAfter("#uIDErr");
             }
-            if (element.attr("name") == "caste"){
+            if (element.attr("name") === "caste"){
               error.insertAfter("#casteErr");
             }
-            if (element.attr("name") == "surnameOfFH"){
+            if (element.attr("name") === "surnameOfFH"){
               error.insertAfter("#surnameOfFHErr");
             }
-            if (element.attr("name") == "firstNameOfFH"){
+            if (element.attr("name") === "firstNameOfFH"){
               error.insertAfter("#firstNameOfFHErr");
             }
-            if (element.attr("name") == "middleNameOfFH"){
+            if (element.attr("name") === "middleNameOfFH"){
               error.insertAfter("#middleNameOfFHErr");
             }
-            if (element.attr("name") == "village"){
+            if (element.attr("name") === "village"){
               error.insertAfter("#villageErr");
             }
-            if (element.attr("name") == "contact"){
+            if (element.attr("name") === "contact"){
               error.insertAfter("#contactErr");
             }
           }
@@ -307,7 +306,7 @@ class Family extends Component{
             });
             this.setState({
               "familyID"             :"",
-              "caste"                :"-- Select --",
+              "caste"                :"",
               "district"             :"-- Select --",
               "block"                :"-- Select --",
               "village"              :"-- Select --",
@@ -386,7 +385,7 @@ class Family extends Component{
             this.setState({
               "familyID"             :"",
               "uID"                  :"",
-              "caste"                :"-- Select --",
+              "caste"                :"",
               "district"             :"-- Select --",
               "block"                :"-- Select --",
               "village"              :"-- Select --",
@@ -559,15 +558,16 @@ class Family extends Component{
           var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
           this.setState({
             listofDistrict  : availableDistInCenter,
-            address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+            district : ""
+            // address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
             // districtsCovered : response.data[0].districtsCovered
           },()=>{
-          var stateCode =this.state.address.split('|')[0];
-           this.setState({
-            stateCode  : stateCode,
-            },()=>{
+          // var stateCode =this.state.address.split('|')[0];
+           // this.setState({
+            // stateCode  : stateCode,
+            // },()=>{
             // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
-            });
+            // });
           })
         }
       }).catch(function (error) {
@@ -608,6 +608,7 @@ class Family extends Component{
           var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
           this.setState({
             listofBlocks     : availableblockInCenter,
+            block : '-- Select --',
           })
         }).catch(function (error) {
           console.log("error = ",error);
@@ -652,6 +653,7 @@ class Family extends Component{
         var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
         this.setState({
           listofVillages   : availablevillageInCenter,
+          village : "-- Select --"
         })
       }).catch(function (error) {
         console.log("error = ",error);
@@ -858,7 +860,7 @@ class Family extends Component{
                               <label className="formLable">Caste</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="casteErr" >
                                 <select className="custom-select form-control inputBox" ref="caste" name="caste" value={this.state.caste} onChange={this.handleChange.bind(this)}>
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
                                   <option>General</option>
                                   <option>SC</option>
                                   <option>ST</option>
@@ -872,7 +874,7 @@ class Family extends Component{
                               <label className="formLable">Land holding Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
                                 <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
-                                  <option>-- Select --</option>
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
                                   <option>Big Farmer</option>
                                   <option>Landless</option>
                                   <option>Marginal Farmer</option>
@@ -885,7 +887,7 @@ class Family extends Component{
                               <label className="formLable">Income Category </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
                                 <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
-                                  <option >-- Select --</option>
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
                                   <option>APL</option>
                                   <option>BPL</option>
                                 </select>
@@ -896,7 +898,7 @@ class Family extends Component{
                               <label className="formLable">Special Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
                                 <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
-                                  <option >-- Select --</option>
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
                                   <option>Normal</option>
                                   <option>Differently Abled</option>
                                   <option>Veerangana</option>
@@ -909,7 +911,7 @@ class Family extends Component{
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
                                 <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
                                       
                                     {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
@@ -929,7 +931,7 @@ class Family extends Component{
                               <label className="formLable">Block</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
                                 <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block?this.state.block:""} onChange={this.selectBlock.bind(this)} >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
                                   {
 
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
@@ -950,7 +952,7 @@ class Family extends Component{
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
                               {/*console.log("this.state.village",this.state.village)*/}
                                 <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village?this.state.village:""} onChange={this.selectVillage.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
                                   {
                                     this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                     this.state.listofVillages.map((data, index)=>{

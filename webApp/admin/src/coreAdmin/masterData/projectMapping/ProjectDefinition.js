@@ -112,7 +112,7 @@ class ProjectMapping extends Component{
   }
   isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -270,13 +270,13 @@ class ProjectMapping extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "goalType"){
+        if (element.attr("name") === "goalType"){
           error.insertAfter("#goalType");
         }
-        if (element.attr("name") == "goalName"){
+        if (element.attr("name") === "goalName"){
           error.insertAfter("#goalName");
         }
-        if (element.attr("name") == "projectName"){
+        if (element.attr("name") === "projectName"){
           error.insertAfter("#projectName");
         }
       }
@@ -421,8 +421,8 @@ class ProjectMapping extends Component{
                 }
               }else{
                 blocktwo.checked = "N"
-                var arr = sectorData.filter((item)=>{return item.sector_ID!=data.sector_ID&&
-                item.activity_ID!=element.activity_ID&&item.subActivity_ID!=blocktwo._id});
+                var arr = sectorData.filter((item)=>{return item.sector_ID!==data.sector_ID&&
+                item.activity_ID!==element.activity_ID&&item.subActivity_ID!==blocktwo._id});
                 sectorData = arr;
               }
               return blocktwo
@@ -444,7 +444,7 @@ class ProjectMapping extends Component{
                 // console.log('sectorData2',sectorData)
               }
             }else{
-              var arr = sectorData.filter((item)=>{return item.sector_ID!=data.sector_ID&&item.activity_ID!=element.activity_ID});
+              var arr = sectorData.filter((item)=>{return item.sector_ID!==data.sector_ID&&item.activity_ID!==element.activity_ID});
               sectorData = arr;
               // console.log('sectorData3',sectorData)
             }
@@ -518,7 +518,7 @@ class ProjectMapping extends Component{
             }
           }else{
             blockone.checked = "N"
-            var arr = sectorData.filter((item)=>{return item.activity_ID!=activitySelected.activity_ID&&item.subActivity_ID!=blockone._id});
+            var arr = sectorData.filter((item)=>{return item.activity_ID!==activitySelected.activity_ID&&item.subActivity_ID!==blockone._id});
             sectorData = arr;
           }
           return blockone;
@@ -538,7 +538,7 @@ class ProjectMapping extends Component{
         // console.log('sectortorDataActivity',sectorData)
           }
         }else{
-          var arr = sectorData.filter((item)=>{return item.activity_ID!=activitySelected.activity_ID});
+          var arr = sectorData.filter((item)=>{return item.activity_ID!==activitySelected.activity_ID});
           sectorData = arr;
         }
       }                          
@@ -600,7 +600,7 @@ class ProjectMapping extends Component{
       }else{
         data.checked="N";
         activitySelected.checked = "N"
-        var arr = sectorData.filter((item)=>{return item.subActivity_ID!=subActivitySelected._id});
+        var arr = sectorData.filter((item)=>{return item.subActivity_ID!==subActivitySelected._id});
         sectorData = arr;
         // console.log('sectorDataSubActN',sectorData)
       }
@@ -953,7 +953,7 @@ class ProjectMapping extends Component{
                                         
                                         <div className="actionDiv col-lg-12 col-md-12 col-xs-12 col-sm-12 noPadding" id="sector">
                                           <div className="sectorContainer col-lg-1">
-                                            <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} data-txt={data.sector_ID} value={data.checked=="N"?"Y":"N"} id={data.sector_ID +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
+                                            <input type="checkbox" name="sector" className ="sector" data-typechecked={data.sector} data-index={index} data-txt={data.sector_ID} value={data.checked==="N"?"Y":"N"} id={data.sector_ID +"|"+data.sector}  checked={data.checked==="Y"?true:false} onChange={this.selectSector.bind(this)} />
                                             <span className="sectorCheck"></span>
                                           </div>
                                           <label  className="fz14 faintColor col-lg-10">{data.sector}</label>                                   
@@ -966,7 +966,7 @@ class ProjectMapping extends Component{
                                                 <div className={data.sector_ID +"|"+data.sector}> 
                                                   <div className="actionDiv" id="activityName">
                                                     <div className="SDGContainer col-lg-1">
-                                                      <input type="checkbox" name="activityName"  data-typechecked={act.activityName} data-index={i} data-txt={index} value={act.checked=="N"?"Y":"N"} className ="activityName" id={data.sector_ID +"|"+data.sector+"|"+act.activity_ID+"|"+act.activityName}  checked={act.checked==="Y"?true:false} onChange={this.selectActivity.bind(this)} />
+                                                      <input type="checkbox" name="activityName"  data-typechecked={act.activityName} data-index={i} data-txt={index} value={act.checked==="N"?"Y":"N"} className ="activityName" id={data.sector_ID +"|"+data.sector+"|"+act.activity_ID+"|"+act.activityName}  checked={act.checked==="Y"?true:false} onChange={this.selectActivity.bind(this)} />
                                                       <span className="SDGCheck"></span>
                                                     </div>
                                                     <label className="actListItem col-lg-10">{act.activityName}</label>
@@ -980,7 +980,7 @@ class ProjectMapping extends Component{
                                                         <div className={data.sector_ID +"|"+data.sector} id="subactivityDiv"> 
                                                           <div className="actionDiv" id="subActivityName">
                                                             <div className="subContainer col-lg-1">                                                         
-                                                              <input type="checkbox" name="subActivityName" className ="subActivityName" data-typechecked={b.subActivityName}  data-index={j} data-actindex={i} data-txt={index} value={b.checked=="N"?"Y":"N"}  data-typechecked="subActivityName" id={data.sector_ID +"|"+data.sector+"|"+act.activity_ID+"|"+act.activityName+"|"+b._id+"|"+b.subActivityName}  checked={b.checked==="Y"?true:false} onChange={this.selectSubactivity.bind(this)} />
+                                                              <input type="checkbox" name="subActivityName" className ="subActivityName" data-typechecked={b.subActivityName}  data-index={j} data-actindex={i} data-txt={index} value={b.checked==="N"?"Y":"N"}  data-typechecked="subActivityName" id={data.sector_ID +"|"+data.sector+"|"+act.activity_ID+"|"+act.activityName+"|"+b._id+"|"+b.subActivityName}  checked={b.checked==="Y"?true:false} onChange={this.selectSubactivity.bind(this)} />
                                                               <span className="subCheck"></span>
                                                             </div>
                                                             <label className="subActivitylistItem col-lg-10">{b.subActivityName}</label>

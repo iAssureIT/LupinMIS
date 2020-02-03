@@ -177,14 +177,14 @@ class BulkUpload extends Component{
             // loop on header columns
             for (k in header) {
                 if (!documentObj.hasOwnProperty(count)) {
-                  if (record[k] == undefined) {  
+                  if (record[k] === undefined) {  
                     documentObj.push({ [header[k]]: '-' });
                   }else{
                     documentObj.push({ [header[k]]: record[k] });
                   }
                 } 
                 else {
-                  if (record[k] == undefined) {
+                  if (record[k] === undefined) {
                    documentObj[count][header[k]] = '-';   
                   }else{
                     documentObj[count][header[k]] = record[k];

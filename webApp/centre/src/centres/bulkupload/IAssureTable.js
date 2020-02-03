@@ -41,7 +41,7 @@ class IAssureTable extends Component {
       this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
-		if(this.state.callPage == true){
+		if(this.state.callPage  ===  true){
         	this.paginationFunction();
         }
         this.setState({
@@ -83,26 +83,26 @@ class IAssureTable extends Component {
 		var sortedData = tableData.sort((a, b)=> {
     		Object.entries(a).map( 
 				([key1, value1], i)=> {
-					if(key == key1){
+					if(key === key1){
 						nameA = value1.replace(reA, "");				
 					}
 				}
 			);
 			Object.entries(b).map( 
 				([key2, value2], i)=> {
-					if(key == key2){
+					if(key === key2){
 						nameB = value2.replace(reA, "");
 					}
 				}
 			);
-			if(this.state.sort == true){
+			if(this.state.sort === true){
 				this.setState({
 					sort 	  : false
 				})
 				if (nameA === nameB) {
 					Object.entries(a).map( 
 						([key1, value1], i)=> {
-							if(key == key1){
+							if(key === key1){
 								aN = parseInt(value1.replace(reN, ""), 10);				
 							}
 						}
@@ -110,7 +110,7 @@ class IAssureTable extends Component {
 					
 					Object.entries(b).map( 
 						([key1, value1], i)=> {
-							if(key == key1){
+							if(key === key1){
 								bN = parseInt(value1.replace(reN, ""), 10);					
 							}
 						}
@@ -134,14 +134,14 @@ class IAssureTable extends Component {
 					}
 					return 0;
 				}
-			}else if(this.state.sort == false){
+			}else if(this.state.sort === false){
 				this.setState({
 					sort 	  : true
 				})
 				if (nameA === nameB) {
 					Object.entries(a).map( 
 						([key1, value1], i)=> {
-							if(key == key1){
+							if(key === key1){
 								aN = parseInt(value1.replace(reN, ""), 10);			
 							}
 						}
@@ -149,7 +149,7 @@ class IAssureTable extends Component {
 					
 					Object.entries(b).map( 
 						([key1, value1], i)=> {
-							if(key == key1){
+							if(key === key1){
 								bN = parseInt(value1.replace(reN, ""), 10);					
 							}
 						}
@@ -185,8 +185,8 @@ class IAssureTable extends Component {
     	var sortedData = tableData.sort((a, b)=> {
 		Object.entries(a).map( 
 			([key1, value1], i)=> {
-				if(key == key1){
-					if(jQuery.type( value1 ) == 'string'){
+				if(key === key1){
+					if(jQuery.type( value1 ) === 'string'){
 						nameA = value1.toUpperCase();
 					}else{
 						nameA = value1;
@@ -196,8 +196,8 @@ class IAssureTable extends Component {
 		);
 		Object.entries(b).map( 
 			([key2, value2], i)=> {
-				if(key == key2){
-					if(jQuery.type( value2 ) == 'string'){
+				if(key === key2){
+					if(jQuery.type( value2 ) === 'string'){
 						nameB = value2.toUpperCase();
 					}else{
 						nameB = value2;
@@ -205,7 +205,7 @@ class IAssureTable extends Component {
 				}
 			}
 		);
-			if(this.state.sort == true){	
+			if(this.state.sort === true){	
 				this.setState({
 					sort 	  : false
 				})		
@@ -216,7 +216,7 @@ class IAssureTable extends Component {
 					return 1;
 				}
 				return 0;
-			}else if(this.state.sort == false){
+			}else if(this.state.sort === false){
 				this.setState({
 					sort 	  : true
 				})	
@@ -237,7 +237,7 @@ class IAssureTable extends Component {
     	event.preventDefault();
     	var key = event.target.getAttribute('id');
     	var tableData = this.state.tableData;
-		if(key == 'number'){
+		if(key === 'number'){
 			this.sortNumber(key, tableData);
 		}else{
 			this.sortString(key, tableData);
@@ -261,7 +261,7 @@ class IAssureTable extends Component {
 		for (var i=valI; i<=pageCount;i++){
 			var countNum = this.state.limitRange * i;
 			var startRange = countNum - this.state.limitRange;
-			if(i == 1){
+			if(i === 1){
 				var activeClass = 'activeCircle';
 			}else{
 				activeClass = '';
@@ -304,10 +304,10 @@ class IAssureTable extends Component {
 		},()=>{
 			$('li').removeClass('activeCircle');
 			this.paginationFunction();
-			if(this.state.normalData == true){
+			if(this.state.normalData === true){
 				this.props.getData(startRange, this.state.limitRange);
 			}	
-			if(this.state.searchData == true){
+			if(this.state.searchData === true){
 				this.tableSearch();
 			}
 		});	
@@ -385,7 +385,7 @@ class IAssureTable extends Component {
 	render() {
 		return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-				{this.state.tableObjects.paginationApply == true ?
+				{this.state.tableObjects.paginationApply === true ?
 					<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 paddingLeftCss">
 						<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12  NOpadding">Data Per Page</label>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -402,7 +402,7 @@ class IAssureTable extends Component {
 					:
 					<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding"></div>    
 				}	
-	       		{   this.state.tableObjects.searchApply == true ?
+	       		{   this.state.tableObjects.searchApply === true ?
 					<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding">
 						<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search</label>
 						<div className="input-group">
@@ -418,7 +418,7 @@ class IAssureTable extends Component {
 						<table className="table iAssureITtable-bordered table-striped table-hover">
 	                        <thead className="tempTableHeader">	     
 		                        <tr className="">
-		                            { this.state.twoLevelHeader.apply == true ?
+		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
 												<th key={index} colSpan={data.mergedColoums} className="umDynamicHeader srpadd textAlignCenter">{data.heading}</th>			
@@ -433,7 +433,7 @@ class IAssureTable extends Component {
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
-													if(key == 'actions'){
+													if(key === 'actions'){
 														return(
 															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value}</th>
 														);	
@@ -466,7 +466,7 @@ class IAssureTable extends Component {
 																// var value2 = value1 ? value1.replace(regex,'') : '';
 																var aN = value2;
 																// var aN = value2.replace(this.state.reA, "");
-																if(aN && $.type( aN ) == 'string'){
+																if(aN && $.type( aN ) === 'string'){
 																	var textAlign = 'textAlignLeft';
 																}else{
 																	var bN = value1 ? parseInt(value1, 10) : '';
@@ -478,7 +478,7 @@ class IAssureTable extends Component {
 																	}
 																}
 																var found = Object.keys(this.state.tableHeading).filter((k)=> {
-																  return k == key;
+																  return k === key;
 																});
 																if(found.length > 0){
 																	if(key != 'id'){
@@ -494,7 +494,7 @@ class IAssureTable extends Component {
 														<td className="textAlignCenter">
 															<span>
 																{this.props.tableObjects.editUrl ? <i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i>:null}&nbsp; &nbsp; 
-																{this.props.editId && this.props.editId == value._id? null :<i className={"fa fa-trash redFont "+value.id} id={value.id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal"+(value._id).replace(".", "")}></i>}
+																{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value.id} id={value.id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal"+(value._id).replace(".", "")}></i>}
 															</span>
 															<div className="modal fade col-lg-12 col-md-12 col-sm-12 col-xs-12" id={"showDeleteModal"+(value._id).replace(".", "")} role="dialog">
 																<div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -534,12 +534,12 @@ class IAssureTable extends Component {
 	                    </tbody>
 	                    </table>
 	                    {
-	                    	this.state.tableObjects.paginationApply == true ?
+	                    	this.state.tableObjects.paginationApply === true ?
 		                    	this.state.tableData && this.state.tableData.length > 0 ?
 		                    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paginationAdminWrap">
 			                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 				                    	{ 
-					                    		this.state.valI ==  1?                  		
+					                    		this.state.valI ===  1?                  		
 					                    		null
 						                    	:
 				                    			<div className="btn btn-primary" onClick={this.showFirstTweentyButtons.bind(this)} title="Fast Backward"><i className="fa fa-fast-backward"></i></div>
@@ -547,7 +547,7 @@ class IAssureTable extends Component {
 			                    	</div>
 			                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 				                    	{ 
-				                    		this.state.valI ==  1?                  		
+				                    		this.state.valI ===  1?                  		
 					                    	null
 					                    	:
 					                    	<div className="btn btn-primary" onClick={this.showPreviousPaginationButtons.bind(this)} title="Previous"><i className="fa fa-caret-left"></i></div>

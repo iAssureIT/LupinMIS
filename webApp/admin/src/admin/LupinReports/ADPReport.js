@@ -3,11 +3,6 @@ import $                    from 'jquery';
 import swal                 from 'sweetalert';
 import axios                from 'axios';
 import moment               from 'moment';
-import DailyReport          from '../Reports/DailyReport.js';
-import WeeklyReport         from '../Reports/WeeklyReport.js';
-import MonthlyReport        from '../Reports/MonthlyReport.js';
-import YearlyReport         from '../Reports/YearlyReport.js';
-import CustomisedReport     from '../Reports/CustomisedReport.js';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../common/Loader.js";
 

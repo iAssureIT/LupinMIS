@@ -357,22 +357,22 @@ class Beneficiary extends Component{
             },
           },
           errorPlacement: function(error, element) {
-            if (element.attr("name") == "familyID"){
+            if (element.attr("name") === "familyID"){
               error.insertAfter("#familyIDErr");
             }
-            if (element.attr("name") == "relation"){
+            if (element.attr("name") === "relation"){
               error.insertAfter("#relationErr");
             }
-            if (element.attr("name") == "surnameOfBeneficiary"){
+            if (element.attr("name") === "surnameOfBeneficiary"){
               error.insertAfter("#surnameOfBeneficiaryErr");
             }
-            if (element.attr("name") == "uidNumber"){
+            if (element.attr("name") === "uidNumber"){
               error.insertAfter("#uidNumberErr");
             }
-            if (element.attr("name") == "firstNameOfBeneficiary"){
+            if (element.attr("name") === "firstNameOfBeneficiary"){
               error.insertAfter("#firstNameOfBeneficiaryErr");
             }
-            if (element.attr("name") == "middleNameOfBeneficiary"){
+            if (element.attr("name") === "middleNameOfBeneficiary"){
               error.insertAfter("#middleNameOfBeneficiaryErr");
             }
           }

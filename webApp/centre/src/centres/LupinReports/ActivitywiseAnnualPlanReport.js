@@ -3,7 +3,6 @@ import $                    from 'jquery';
 import axios                from 'axios';
 import _                    from 'underscore';
 import swal                 from 'sweetalert';
-// import moment               from 'moment';
 import Loader                                      from "../../common/Loader.js";
 
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";

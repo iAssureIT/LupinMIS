@@ -325,40 +325,40 @@ class centerDetail extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "typeOfCenter"){
+        if (element.attr("name") === "typeOfCenter"){
           error.insertAfter("#typeOfCenter");
         }
-        if (element.attr("name") == "nameOfCenter"){
+        if (element.attr("name") === "nameOfCenter"){
           error.insertAfter("#nameOfCenter");
         }
-        if (element.attr("name") == "address"){
+        if (element.attr("name") === "address"){
           error.insertAfter("#address");
         }
-        if (element.attr("name") == "state"){
+        if (element.attr("name") === "state"){
           error.insertAfter("#state");
         }
-        if (element.attr("name") == "district"){
+        if (element.attr("name") === "district"){
           error.insertAfter("#district");
         }
-        if (element.attr("name") == "pincode"){
+        if (element.attr("name") === "pincode"){
           error.insertAfter("#pincode");
         }
-        if (element.attr("name") == "centerInchargeName"){
+        if (element.attr("name") === "centerInchargeName"){
           error.insertAfter("#centerInchargeName");
         }
-        if (element.attr("name") == "centerInchargeContact"){
+        if (element.attr("name") === "centerInchargeContact"){
           error.insertAfter("#centerInchargeContact");
         }
-        if (element.attr("name") == "centerInchargeEmail"){
+        if (element.attr("name") === "centerInchargeEmail"){
           error.insertAfter("#centerInchargeEmail");
         }
-        if (element.attr("name") == "MISCoordinatorName"){
+        if (element.attr("name") === "MISCoordinatorName"){
           error.insertAfter("#MISCoordinatorName");
         }
-        if (element.attr("name") == "MISCoordinatorContact"){
+        if (element.attr("name") === "MISCoordinatorContact"){
           error.insertAfter("#MISCoordinatorContact");
         }
-        if (element.attr("name") == "MISCoordinatorEmail"){
+        if (element.attr("name") === "MISCoordinatorEmail"){
           error.insertAfter("#MISCoordinatorEmail");
         }
       }

@@ -3,10 +3,6 @@ import swal                                        from 'sweetalert';
 import $                                           from 'jquery';
 import axios                                       from 'axios';
 import { Link }                                    from 'react-router-dom'
-import DailyReport                                 from '../Reports/DailyReport.js';
-import WeeklyReport                                from '../Reports/WeeklyReport.js';
-import MonthlyReport                               from '../Reports/MonthlyReport.js';
-import CustomisedReport                            from '../Reports/CustomisedReport.js';
 import ActivitywiseAnnualCompletionYearlyReport    from '../Reports/ActivitywiseAnnualCompletionYearlyReport.js';
 import "../Reports/Reports.css";
 

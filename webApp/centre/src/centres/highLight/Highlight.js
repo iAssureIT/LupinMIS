@@ -3,8 +3,6 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import moment                 from "moment";
 import swal                   from 'sweetalert';
-import S3FileUpload           from 'react-s3';
-import { deleteFile }         from 'react-s3';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import AddFilePublic          from "../addFile/AddFilePublic.js";
 
@@ -90,10 +88,10 @@ class Highlight extends Component{
      
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "userName"){
+        if (element.attr("name") === "userName"){
           error.insertAfter("#userName");
         }
-        if (element.attr("name") == "dateofsubmission"){
+        if (element.attr("name") === "dateofsubmission"){
           error.insertAfter("#dateofsubmission");
         }
        
@@ -176,8 +174,10 @@ class Highlight extends Component{
         "highlight_Image"  :this.state.imageArray,
         "highlight_File"   :this.state.fileArray,
       };
+      console.log('highlightValues',highlightValues);
       axios.patch('/api/highlights/update', highlightValues)
         .then((response)=>{
+           console.log('Uresponse', response);
           this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
@@ -206,8 +206,7 @@ class Highlight extends Component{
       url: '/api/highlights/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log("editDataresponse",response);
-      console.log("editData",editData);
+      console.log("editDataresponse",editData.highlight_Image);
       this.setState({
         "dateofsubmission"  : editData.date,
         "userName"          : editData.userName,
@@ -345,55 +344,56 @@ class Highlight extends Component{
                         {
                           this.state.tableData && this.state.tableData.length >0 ?
                           this.state.tableData.map((data, index)=>{
-                            console.log(data);
                             return(
-                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt outerForm">
-                                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 noPadding"> 
-                                  <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
-                                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                      <div className="formLable"><span className="pageSubHeader">{data.date  ? data.date : "-"}</span></div>
-                                      
-                                    </div>
-                                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                      <h4 className="formLable">User Name : {data.userName ? data.userName : "-"}</h4>
-                                    </div>
+                              <div key={index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt outerForm">
+                                <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 noPadding"> 
+                                  <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12"> 
+                                    <div className="formLable"><span className="pageSubHeader">{data.date  ? data.date : "-"}</span></div>
+                                  </div>
+                                  <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12"> 
+                                      <h4 className="formLable"><b>User Name :</b> {data.userName ? data.userName : "-"}</h4>
                                   </div>
                                 </div>
-                                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 noPadding"> 
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding"> 
+                                  {
+                                    data.highlight_File.length > 0? 
+                                      <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"><b>Files:</b></p>
+                                    : null
+                                  }
                                   {
                                     data.highlight_File.length > 0? 
                                     data.highlight_File.map((file, i)=> {
                                       return(
-                                        <div key= {i} className="col-lg-6 col-md-12 col-sm-12 col-xs-12"> 
+                                        <div key= {i} className="col-lg-3 col-md-4 col-sm-12 col-xs-12"> 
                                           <div >
                                             {
-                                              (file && file.fileName.split('.').pop()==="XLS" || file.fileName.split('.').pop() ==="XLSX"||file.fileName.split('.').pop() ==="xls" || file.fileName.split('.').pop() ==="xlsx")
+                                              (file && (file.fileName.split('.').pop()==="XLS" || file.fileName.split('.').pop() ==="XLSX"||file.fileName.split('.').pop() ==="xls" || file.fileName.split('.').pop() ==="xlsx"))
                                               ?
-                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/exel2.png"/> </a>
+                                              <a href={file.filePath} className="mt"><img className="fileExt" alt="highlight_Image" src="/images/exel2.png"/> </a>
                                               :
                                                ""
                                             }
                                             {
-                                              (file && file.fileName.split('.').pop() ==="PPT" || file.fileName.split('.').pop() === "PPTX" || file.fileName.split('.').pop() === "ppt" || file.fileName.split('.').pop() ==="pptx")
+                                              (file && (file.fileName.split('.').pop() ==="PPT" || file.fileName.split('.').pop() === "PPTX" || file.fileName.split('.').pop() === "ppt" || file.fileName.split('.').pop() ==="pptx"))
                                               ? 
-                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/powerpoint.jpeg"/></a> 
+                                              <a href={file.filePath} className="mt"><img className="fileExt"  alt="highlight_Image" src="/images/powerpoint.jpeg"/></a> 
                                               :""
                                             }
                                             {
-                                              (file && file.fileName.split('.').pop() ==="pdf" ||file.fileName.split('.').pop() === "PDF")
+                                              (file && (file.fileName.split('.').pop() ==="pdf" ||file.fileName.split('.').pop() === "PDF"))
                                               ? 
-                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/pdf.png"/> </a>
+                                              <a href={file.filePath} className="mt"><img className="fileExt"  alt="highlight_Image" src="/images/pdf.png"/> </a>
                                               :
                                               ""
                                             }
                                             {
-                                              (file && file.fileName.split('.').pop() ==="doc" || file.fileName.split('.').pop() === "docx" || file.fileName.split('.').pop() === "DOC" || file.fileName.split('.').pop() ==="DOCX"|| file.fileName.split('.').pop() ==="txt" || file.fileName.split('.').pop() === "TXT") 
+                                              (file && (file.fileName.split('.').pop() ==="doc" || file.fileName.split('.').pop() === "docx" || file.fileName.split('.').pop() === "DOC" || file.fileName.split('.').pop() ==="DOCX"|| file.fileName.split('.').pop() ==="txt" || file.fileName.split('.').pop() === "TXT")) 
                                               ? 
-                                              <a href={file.filePath} classname="mt"><img className="fileExt" src="/images/docs.png"/> </a>
+                                              <a href={file.filePath} className="mt"><img className="fileExt"  alt="highlight_Image" src="/images/docs.png"/> </a>
                                               : ""
                                             }                                             
                                           </div>
-                                          <a href={file.filePath} classname="mt">
+                                          <a href={file.filePath} className="mt">
                                               <p className="formLable"><b>{file.fileName}</b></p>
                                           </a>
                                           
@@ -404,11 +404,15 @@ class Highlight extends Component{
                                     null
                                   }
                                 </div>
-                                <a class="viewLink" href={"/highlightView/"+data._id}>
-                                    <i class='fas fa fa-chevron-right viewLinkIcon  fa-2x fa-pull-right'></i>
+                                <a className="viewLink" href={"/highlightView/"+data._id}>
+                                    <i className='fas fa fa-chevron-right viewLinkIcon  fa-2x fa-pull-right'></i>
                                 </a>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                  <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"><b>Images</b></p>
+                                  {
+                                    data.highlight_Image.length > 0? 
+                                      <p className=" formLable"><b>Images:</b></p>
+                                    : null
+                                  }
                                   {
                                     data.highlight_Image.length > 0? 
                                     data.highlight_Image.map((img, i)=> {
@@ -437,9 +441,7 @@ class Highlight extends Component{
                         dataCount={this.state.dataCount}
                         tableData={this.state.tableData}
                         getData={this.getData.bind(this)}
-                        tableObjects={this.state.tableObjects}                          
-                        viewTable = {true}
-                        viewLink = "caseStudyView"
+                        tableObjects={this.state.tableObjects}       
                       />
                     </div> 
                   </div>              

@@ -45,6 +45,7 @@ import CaseStudy                                  from "../../centres/addFile/Ca
 import CaseStudyView                              from "../../centres/addFile/CaseStudyView.js";
 import AddFilePrivate                             from "../../centres/addFile/AddFilePrivate.js";
 import Highlight                                  from "../../centres/highLight/Highlight.js"; 
+import HighlightView                              from "../../centres/highLight/HighlightView.js"; 
 /*import Monthwise                                       from "../../centres/plan/Monthwise.js";*/
 import CenterList                                 from "../../centres/centerList/centerList.js";
 
@@ -158,12 +159,10 @@ class Layout extends Component{
                               <Route path="/plan-details/:id"                    exact strict component={ Plan } />
                               <Route path="/filewise-plan-list"                  exact strict component={ FileWisePlanList } />
                               <Route path="/filewise-monthly-plan-list"          exact strict component={ FileWiseMonthlyPlanList } />
-                {/*            <Route path="/table"                               exact strict component={ table } />*/}                
-                              <Route path="/activity"                            exact strict component={ Activity } />
-                              
                               <Route path="/Filewise-activity-list"              exact strict component={ FilewiseActivityList } />
                               <Route path="/Filewise-beneficiary-activity-list"  exact strict component={ FilewiseBeneficiaryActivityList } />
-                              
+
+                              <Route path="/activity"                            exact strict component={ Activity } />
                               <Route path="/activity/"                           exact strict component={ Activity } />
                               <Route path="/activity/:id"                        exact strict component={ Activity } />
                               <Route path="/viewActivity"                        exact strict component={ ViewActivity } />
@@ -177,8 +176,7 @@ class Layout extends Component{
                               <Route path="/highlight"                           exact strict component={ Highlight } />
                               <Route path="/highlight/"                          exact strict component={ Highlight } />
                               <Route path="/highlight/:id"                       exact strict component={ Highlight } />                      
-                              {/*<Route path="/report/"                                                      exact strict component={ report } />
-                              <Route path="/report/:url"                                                  exact strict component={ report } />*/}
+                              <Route path="/highlightview/:id"                   exact strict component={ HighlightView } />                      
                               <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
                               <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
                               <Route path="/activity-wise-periodic-variance-report"                       exact strict component={ report3 } />
@@ -190,16 +188,11 @@ class Layout extends Component{
                               <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
                               <Route path="/Project-report"                                               exact strict component={ report10 } />
                               <Route path="/goal-sector-report"                                           exact strict component={ report11 } />
-                             {/* <Route path="/EMP-report"                                                   exact strict component={ report12 } />*/}
                               <Route path="/activitywise-annual-plan-report"                              exact strict component={ report13 } />
                               <Route path="/activity-wise-periodic-plan-report"                           exact strict component={ report14 } />
                               <Route path="/sector-wise-periodic-plan-summary-report"                     exact strict component={ report15 } />
                               <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
-                              {/*<Route path="/Report"                                                       exact strict component={ report } />
-                              <Route path="/Report/:id"                                                   exact strict component={ report } />*/}
-                {/*                    <Route path="/monthwise"                         exact strict component={ Monthwise } />
-                */}                                              
-                              </Switch>        
+                            </Switch>        
                       </div>
                     </div>
                   </div>

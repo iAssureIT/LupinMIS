@@ -3,7 +3,6 @@ import $                    from 'jquery';
 import Activity             from "./component/activity/Activity.js";
 import Sector               from "./component/sector/Sector.js";
 import SubActivity          from "./component/subActivity/SubActivity.js";
-import _                    from 'underscore';
 import BulkUpload           from "./component/BulkUpload/BulkUpload.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/tab.js';
@@ -111,17 +110,17 @@ class SandA extends Component{
                           this.state.editId !=="" ?
                          <ul className="nav nav-tabs nav-pills locNavTab">
                               
-                              <li className={this.state.editId == "sector" || this.state.editId == undefined ?"col-lg-2 col-md-2 col-sm-12 col-xs-12 active transactionTab masterDataTab dis":"col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab dis"}>
+                              <li className={this.state.editId === "sector" || this.state.editId === undefined ?"col-lg-2 col-md-2 col-sm-12 col-xs-12 active transactionTab masterDataTab dis":"col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab dis"}>
                                   <a href="#sector" data-toggle="tab"  onClick={()=>this.changeTab('sector')} >
                                     Sector
                                   </a>
                               </li>
-                               <li className={this.state.editId == "activity"?"col-lg-2 col-md-2 col-sm-12 col-xs-12 active transactionTab masterDataTab st":"col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab st"}>
+                               <li className={this.state.editId === "activity"?"col-lg-2 col-md-2 col-sm-12 col-xs-12 active transactionTab masterDataTab st":"col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab st"}>
                                   <a href="#activity" data-toggle="tab"      onClick={()=>this.changeTab('activity')} >
                                     Activity
                                   </a>
                               </li>
-                              <li className={this.state.editId == "subactivity"?"col-lg-2 col-md-2 col-sm-12 col-xs-12 active transactionTab masterDataTab cntry":"col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab cntry"} >
+                              <li className={this.state.editId === "subactivity"?"col-lg-2 col-md-2 col-sm-12 col-xs-12 active transactionTab masterDataTab cntry":"col-lg-2 col-md-2 col-sm-12 col-xs-12 transactionTab masterDataTab cntry"} >
                                   <a  href="#subactivity" data-toggle="tab"   onClick={()=>this.changeTab('subactivity')}>
                                     Sub-Activity
                                   </a>
@@ -135,7 +134,7 @@ class SandA extends Component{
                       <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                         <div className="tab-pane" id="sector">
                         {
-                          this.state.tabtype == "sector"?
+                          this.state.tabtype === "sector"?
                           <div className="row"><Sector dataVal={this.state.tabtype} />
                             {console.log("In sector")}
                           </div>       
@@ -145,7 +144,7 @@ class SandA extends Component{
                         </div>
                         <div className="tab-pane" id="activity">
                         {
-                          this.state.tabtype == "activity"?
+                          this.state.tabtype === "activity"?
                           <div className="row"><Activity dataVal={this.state.tabtype} /></div>        
                           :
                           null
@@ -153,7 +152,7 @@ class SandA extends Component{
                         </div>
                         <div className="tab-pane" id="subactivity">
                         {
-                          this.state.tabtype == "subactivity" ?
+                          this.state.tabtype === "subactivity" ?
                           <div className="row"><SubActivity dataVal={this.state.tabtype} /></div>        
                           :
                           null

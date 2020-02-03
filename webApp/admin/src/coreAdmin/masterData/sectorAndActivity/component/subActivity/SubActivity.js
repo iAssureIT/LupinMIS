@@ -71,16 +71,16 @@ class SubActivity extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "sector"){
+        if (element.attr("name") === "sector"){
           error.insertAfter("#sectorError");
         }
-        if (element.attr("name") == "activityName"){
+        if (element.attr("name") === "activityName"){
           error.insertAfter("#activityNameError");
         }
-        if (element.attr("name") == "unit"){
+        if (element.attr("name") === "unit"){
           error.insertAfter("#unitError");
         }
-        if (element.attr("name") == "subActivityName"){
+        if (element.attr("name") === "subActivityName"){
           error.insertAfter("#subActivityNameError");
         }
       }

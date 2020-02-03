@@ -61,7 +61,10 @@ class VillagewisefamilyReport extends Component{
             "activityName"        : 'Activity',
             "subactivityName"     : 'Subactivity',
             "familyID"            : 'Family ID',
-            "name_family"         : 'Family Head Name',
+            "name_family"         : 'Family Head Name',     
+            "village"            : 'Village',
+            "block"              : 'Block',
+            "district"           : 'District',
                 
         },
         "tableObjects"        : {
@@ -413,6 +416,9 @@ class VillagewisefamilyReport extends Component{
                 subactivityName        : a.subactivityName,
                 familyID               : a.familyID,
                 name_family            : a.name_family,
+                village                : a.village,
+                block                  : a.block,
+                district               : a.district,             
               }
           })
           this.setState({

@@ -78,9 +78,9 @@ class AddFile extends Component{
       if (newFile) {
       // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
-        if(ext=="jpg" || ext=="png" || ext=="jpeg" || ext=="JPG" || ext=="PNG" || ext=="JPEG"){ 
+        if(ext==="jpg" || ext==="png" || ext==="jpeg" || ext==="JPG" || ext==="PNG" || ext==="JPEG"){ 
           if (newFile) {
-            if(this.state.logo==""){
+            if(this.state.logo===""){
               S3FileUpload
                 .uploadFile(newFile,this.state.config)
                 .then((Data)=>{
@@ -183,7 +183,7 @@ class AddFile extends Component{
 
       <div className="">
         <div className="">
-          {this.state.logo==""?
+          {this.state.logo===""?
             <div className="row padTopC">
               <div className="row  col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h5 className="formLable col-lg-12 col-md-12 col-sm-12 col-xs-12">Add Logo <span className="astrick">*</span></h5>
@@ -203,7 +203,7 @@ class AddFile extends Component{
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imgdetails">(Max size: 1 Mb, Format: JPEG, jpg, png)</div>
             </div>
             :null}
-          {this.state.logo==""?
+          {this.state.logo===""?
             null
           :
             <div className=" padTopC">

@@ -277,7 +277,7 @@ class PlanDetails extends Component{
       ["indirectCC-"+id] : 0,
       ["other-"+id] : 0,
     },()=>{
-      // console.log('totalBud=========',this.state.totalBud );
+      // console.log('totalBud==========',this.state.totalBud );
       if (parseInt(this.state[`noOfBeneficiaries-${id}`]) < parseInt(this.state[`noOfFamilies-${id}`]) ) {
         swal("No. of Families should not greater than No. of Beneficiaries");
         this.setState({
@@ -626,7 +626,7 @@ class PlanDetails extends Component{
       this.setState({
         "year" : this.state.years[0]
       },()=>{
-        // console.log('month =====', this.state.month, this.state.year)
+        // console.log('month ======', this.state.month, this.state.year)
         this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
       })
     });
@@ -920,7 +920,7 @@ class PlanDetails extends Component{
     })
   }
   getFileDetails(fileName){
-    var fileDetailUrl = this.state.month == "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl;
+    var fileDetailUrl = this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl;
     axios
     .get(fileDetailUrl+fileName)
     .then((response)=> {
@@ -1271,11 +1271,11 @@ class PlanDetails extends Component{
                       </div>
                       <div id="bulkplan" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                          <BulkUpload url={this.state.month == "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
+                          <BulkUpload url={this.state.month === "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
                           data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,"month":this.state.month,"year":this.state.year}} 
                           uploadedData={this.uploadedData} 
                           fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
-                          fileDetailUrl={this.state.month == "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
+                          fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
                           getFileDetails={this.getFileDetails}
                           fileDetails={this.state.fileDetails}
                           goodRecordsHeading ={this.state.goodRecordsHeading}
