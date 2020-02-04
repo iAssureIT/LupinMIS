@@ -300,20 +300,20 @@ class Beneficiary extends Component{
     });
   }
   
-  getLength(center_ID){
+  getLength(center_ID){/*
     axios.get('/api/beneficiaries/count/'+center_ID)
     .then((response)=>{
-      // console.log('response', response.data);
+      console.log('response', response.data);
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        // console.log('dataCount', this.state.dataCount);
+        console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
       
     });
-  }
+  */}
 
   isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : evt.keyCode

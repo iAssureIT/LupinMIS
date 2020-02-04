@@ -1861,10 +1861,10 @@ class Activity extends Component{
                       />
                     </div>
                     <div id="bulkbeneficiary" className="tab-pane fade in ">
-                     <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
+                    { <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
                       data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
                       uploadedData={this.uploadedData} 
-                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
+                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Beneficiries+In+Activity+Submission.xlsx"
                       fileDetailUrl={this.state.beneficiaryFileDetailUrl}
                       getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
                       fileDetails={this.state.fileDetails}
@@ -1875,6 +1875,7 @@ class Activity extends Component{
                       goodRecordsTable={this.state.beneficiaryGoodRecordsTable}
                       goodDataCount={this.state.beneficiaryGoodDataCount}
                       />
+                    }
                     </div>
                   </div>
                   
