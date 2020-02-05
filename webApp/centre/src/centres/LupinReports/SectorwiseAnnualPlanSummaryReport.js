@@ -32,7 +32,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             firstHeaderData : [
                 {
                     heading : 'Sector Details',
-                    mergedColoums : 2,
+                    mergedColoums : 4,
                     hide : false
                 },
                 {
@@ -52,8 +52,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            // "projectCategoryType"            : 'Project Category',
-            // "projectName"                    : 'Project Name',
+            "annualPlan_projectCategoryType"            : 'Project Category',
+            "annualPlan_projectName"                    : 'Project Name',
             "name"                            : 'Sector',
             "annualPlan_TotalBudget"          : 'Total Budget', 
             "Per_Annual"                      : 'Proportion to Total %', 
@@ -251,46 +251,46 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       var endDate = year.substring(10, 15)+"-03-31";    
       if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
         $(".fullpageloader").show();
-        axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all')
-        .then((response)=>{
-          console.log("resp",response);
-          $(".fullpageloader").hide();
-          var value = response.data.filter((a)=>{return a.name == "Total"})[0];
-          // console.log('value',value)
-          var tableData = response.data.map((a, i)=>{
-            // console.log(a.Per_Annual)
-            return {
-                _id                                    : a._id,     
-                // projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",
-                // projectName                            : a.projectName === 0 ? "-" :a.projectName,               
-                name                                   : a.name,
-                annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
-                Per_Annual                             : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
-                annualPlan_Reach                       : this.addCommas(a.annualPlan_Reach),
-                annualPlan_FamilyUpgradation           : this.addCommas(a.annualPlan_FamilyUpgradation), 
-                annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
-                annualPlan_LHWRF                       : this.addCommas(a.annualPlan_LHWRF),
-                annualPlan_NABARD                      : this.addCommas(a.annualPlan_NABARD),
-                annualPlan_Bank_Loan                   : this.addCommas(a.annualPlan_Bank_Loan),
-                annualPlan_Govt                        : this.addCommas(a.annualPlan_Govt),
-                annualPlan_DirectCC                    : this.addCommas(a.annualPlan_DirectCC),
-                annualPlan_IndirectCC                  : this.addCommas(a.annualPlan_IndirectCC),
-                annualPlan_Other                       : this.addCommas(a.annualPlan_Other),
-            } 
-          })  
-          this.setState({
-            tableData : tableData
+        axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+          .then((response)=>{
+            console.log("resp",response);
+            $(".fullpageloader").hide();
+            var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+            // console.log('value',value)
+            var tableData = response.data.map((a, i)=>{
+              // console.log(a.Per_Annual)
+              return {
+                  _id                                    : a._id,     
+                  annualPlan_projectCategoryType                    : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
+                  annualPlan_projectName                            : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
+                  name                                   : a.name,
+                  annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
+                  Per_Annual                             : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),
+                  annualPlan_Reach                       : this.addCommas(a.annualPlan_Reach),
+                  annualPlan_FamilyUpgradation           : this.addCommas(a.annualPlan_FamilyUpgradation), 
+                  annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
+                  annualPlan_LHWRF                       : this.addCommas(a.annualPlan_LHWRF),
+                  annualPlan_NABARD                      : this.addCommas(a.annualPlan_NABARD),
+                  annualPlan_Bank_Loan                   : this.addCommas(a.annualPlan_Bank_Loan),
+                  annualPlan_Govt                        : this.addCommas(a.annualPlan_Govt),
+                  annualPlan_DirectCC                    : this.addCommas(a.annualPlan_DirectCC),
+                  annualPlan_IndirectCC                  : this.addCommas(a.annualPlan_IndirectCC),
+                  annualPlan_Other                       : this.addCommas(a.annualPlan_Other),
+              } 
+            })  
+            this.setState({
+              tableData : tableData
+            })
           })
-        })
-        .catch(function(error){  
-          // console.log("error = ",error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-        });
+          .catch(function(error){  
+            // console.log("error = ",error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
       }
     }
   }
@@ -410,6 +410,41 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                               </select>
                             </div>
                           </div> 
+                          <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                            <label className="formLable">Project Category</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                              <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                                <option  className="hidden" >--Select--</option>
+                                <option value="all" >All</option>
+                                <option value="LHWRF Grant" >LHWRF Grant</option>
+                                <option value="Project Fund">Project Fund</option>
+                                
+                              </select>
+                            </div>
+                          </div>
+                          {
+                            this.state.projectCategoryType === "Project Fund" ?
+                            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                              <label className="formLable">Project Name</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                                  <option value="all" >All</option>
+                                  {
+                                    this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                    this.state.availableProjects.map((data, index)=>{
+                                      return(
+                                        <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }
+                                </select>
+                              </div>
+                            </div>
+                          : 
+                          ""
+                          }                 
                         </div>
                         <div className="marginTop11">
                             <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">

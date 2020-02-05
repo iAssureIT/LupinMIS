@@ -37,7 +37,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 3,
+                        mergedColoums : 5,
                         hide : false
                      },
                     {
@@ -58,8 +58,8 @@ class ActivitywiseAnnualPlanReport extends Component{
                 ]
             },
             "tableHeading"      : {
-                "projectCategoryType"                    : 'Project Category',
-                "projectName"                            : 'Project Name',
+                "annualPlan_projectCategoryType"         : 'Project Category',
+                "annualPlan_projectName"                 : 'Project Name',
                 "name"                                   : 'Activity & Sub-Activity',
                 "unit"                                   : 'Unit',
                 "annualPlan_Reach"                       : 'Reach', 
@@ -300,75 +300,75 @@ class ActivitywiseAnnualPlanReport extends Component{
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
           $(".fullpageloader").show();
-          axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
-          .then((response)=>{
-            $(".fullpageloader").hide();
-              var tableData = response.data.map((a, i)=>{
-              return {
-                  _id                                       : a._id,  
-                  projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                  projectName                               : a.projectName === 0 ? "-" :a.projectName,                       
-                  name                                      : a.name,
-                  unit                                      : a.unit,
-                  annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
-                  annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
-                  annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
-                  annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
-                  annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                  annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
-                  annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
-                  annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
-                  annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
-                  annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
-                  annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
-                  annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
-                  annualPlan_Remark                         : a.annualPlan_Remark,
-                  }
-          })
-            this.setState({
-              tableData : tableData
-            },()=>{
+          axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID)
+            .then((response)=>{
+              console.log('response',response);
+              $(".fullpageloader").hide();
+                var tableData = response.data.map((a, i)=>{
+                return {
+                    _id                                       : a._id,  
+                    annualPlan_projectCategoryType            : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
+                    annualPlan_projectName                    : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,                       
+                    name                                      : a.name,
+                    unit                                      : a.unit,
+                    annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
+                    annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
+                    annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
+                    annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
+                    annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                    annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
+                    annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
+                    annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
+                    annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
+                    annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
+                    annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
+                    annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
+                    annualPlan_Remark                         : a.annualPlan_Remark,
+                    }
             })
-          })
-          .catch(function(error){
-            console.log("error = ",error);
-          });
+              this.setState({
+                tableData : tableData
+              },()=>{
+              })
+            })
+            .catch(function(error){
+              console.log("error = ",error);
+            });
         }else{
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";             
-          axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
-          .then((response)=>{
-              var tableData = response.data.map((a, i)=>{
-              return {
-                  _id                                       : a._id,     
-                  projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                  projectName                               : a.projectName === 0 ? "-" :a.projectName,                    
-                  name                                      : a.name,
-                  unit                                      : a.unit,
-                  annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
-                  annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
-                  annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
-                  annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
-                  annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                  annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
-                  annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
-                  annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
-                  annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
-                  annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
-                  annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
-                  annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
-                  annualPlan_Remark                         : a.annualPlan_Remark,
-                }
-          })
-            this.setState({
-              tableData : tableData
-            },()=>{
+          axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID)
+            .then((response)=>{
+                var tableData = response.data.map((a, i)=>{
+                return {
+                    _id                                       : a._id,     
+                    projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                    projectName                               : a.projectName === 0 ? "-" :a.projectName,                    
+                    name                                      : a.name,
+                    unit                                      : a.unit,
+                    annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
+                    annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
+                    annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
+                    annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
+                    annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                    annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
+                    annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
+                    annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
+                    annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
+                    annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
+                    annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
+                    annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
+                    annualPlan_Remark                         : a.annualPlan_Remark,
+                  }
             })
-          })
-          .catch(function(error){
-            // console.log("error = ",error);
-            
-          });
+              this.setState({
+                tableData : tableData
+              },()=>{
+              })
+            })
+            .catch(function(error){
+              console.log("error = ",error);
+            });
         }
       }
     }
@@ -393,8 +393,8 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                     </div>
                     <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Sector</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
@@ -413,7 +413,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                           </select>
                         </div>
                       </div>  
-                      <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12  ">
+                      <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
                         <label className="formLable">Activity<span className="asterix">*</span></label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                           <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
@@ -434,7 +434,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                           </select>
                         </div>
                       </div>
-                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                           <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
@@ -456,7 +456,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                           </select>
                         </div>
                       </div>  
-                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Year</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                           <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >

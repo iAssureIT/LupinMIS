@@ -1448,7 +1448,7 @@ class Activity extends Component{
                     <hr className="hr-head container-flui7d row"/>
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                       <h4 className="col-lg-6 col-md-6 col-xs-12 col-sm-12 pageSubHeader NOpadding">Activity Details</h4>
-                      <ul className="nav nav-pills col-lg-6 col-md-3 col-sm-12 col-xs-12 NOpadding">
+                      <ul className="nav tabNav nav-pills col-lg-6 col-md-3 col-sm-12 col-xs-12 NOpadding">
                         <li className="active col-lg-3 col-md-3 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
                         <li className="col-lg-3 col-md-3 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivity" ><a data-toggle="pill"  href="#bulkactivity">Bulk Upload</a></li>
                         <li className="col-lg-5 col-md-5 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkbeneficiary" ><a data-toggle="pill"  href="#bulkbeneficiary">Beneficiary Bulk Upload</a></li>

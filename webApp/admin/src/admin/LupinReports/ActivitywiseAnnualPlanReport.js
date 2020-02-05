@@ -43,7 +43,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 3,
+                        mergedColoums : 5,
                         hide : false
                     },
                     {
@@ -64,8 +64,8 @@ class ActivitywiseAnnualPlanReport extends Component{
                 ]
             },
             "tableHeading"      : {
-                // "projectCategoryType"                    : 'Project Category',
-                // "projectName"                            : 'Project Name',
+                "annualPlan_projectCategoryType"         : 'Project Category',
+                "annualPlan_projectName"                 : 'Project Name',
                 "name"                                   : 'Activity & Sub-Activity',
                 "unit"                                   : 'Unit',
                 "annualPlan_Reach"                       : 'Reach', 
@@ -341,15 +341,15 @@ class ActivitywiseAnnualPlanReport extends Component{
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
             $(".fullpageloader").show();
-            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/all/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
+            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
                   var tableData = response.data.map((a, i)=>{
                   return {
                   _id                                       : a._id,            
-                  // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                  // projectName                               : a.projectName === 0 ? "-" :a.projectName,        
+                  annualPlan_projectCategoryType            : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
+                  annualPlan_projectName                    : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,        
                   name                                      : a.name,
                   unit                                      : a.unit,
                   annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -379,53 +379,53 @@ class ActivitywiseAnnualPlanReport extends Component{
               // console.log("year",year);
               var startDate = year.substring(3, 7)+"-04-01";
               var endDate = year.substring(10, 15)+"-03-31";    
-              axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
-              .then((response)=>{
-                console.log("resp",response);
-                  var tableData = response.data.map((a, i)=>{
-                  return {
-                      _id                                       : a._id,            
-                      // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                      // projectName                               : a.projectName === 0 ? "-" :a.projectName,        
-                      name                                      : a.name,
-                      unit                                      : a.unit,
-                      annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
-                      annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
-                      annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
-                      annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
-                      annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                      annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
-                      annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
-                      annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
-                      annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
-                      annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
-                      annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
-                      annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
-                      annualPlan_Remark                         : a.annualPlan_Remark,
-                    }
-              })
-                this.setState({
-                  tableData : tableData
-                },()=>{
-                  // console.log("resp",this.state.tableData)
+              axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
+                .then((response)=>{
+                  console.log("resp",response);
+                    var tableData = response.data.map((a, i)=>{
+                    return {
+                        _id                                       : a._id,           
+                        annualPlan_projectCategoryType            : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
+                        annualPlan_projectName                    : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,    
+                        name                                      : a.name,
+                        unit                                      : a.unit,
+                        annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
+                        annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
+                        annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
+                        annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
+                        annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                        annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
+                        annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
+                        annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
+                        annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
+                        annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
+                        annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
+                        annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
+                        annualPlan_Remark                         : a.annualPlan_Remark,
+                      }
                 })
-              })
-              .catch(function(error){
-                console.log("error = ",error);
-               
-              });
+                  this.setState({
+                    tableData : tableData
+                  },()=>{
+                    // console.log("resp",this.state.tableData)
+                  })
+                })
+                .catch(function(error){
+                  console.log("error = ",error);
+                 
+                });
             }
           }else{
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
-            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/all/all/all'+'/'+activity_ID+'/'+subActivity_ID)
+            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
               .then((response)=>{
                 console.log("resp",response);
                   var tableData = response.data.map((a, i)=>{
                   return {
                     _id                                       : a._id,            
-                    // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                    // projectName                               : a.projectName === 0 ? "-" :a.projectName,        
+                    annualPlan_projectCategoryType            : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
+                    annualPlan_projectName                    : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,     
                     name                                      : a.name,
                     unit                                      : a.unit,
                     annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -579,7 +579,42 @@ class ActivitywiseAnnualPlanReport extends Component{
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
-                      </div>                      
+                      </div> 
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                        <label className="formLable">Project Category</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                          <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="LHWRF Grant" >LHWRF Grant</option>
+                            <option value="Project Fund">Project Fund</option>
+                            
+                          </select>
+                        </div>
+                      </div>
+                      {
+                        this.state.projectCategoryType === "Project Fund" ?
+                        <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                          <label className="formLable">Project Name</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                              <option value="all" >All</option>
+                              {
+                                this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                this.state.availableProjects.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
+                          </div>
+                        </div>
+                      : 
+                      ""
+                      }                                  
                     </div>  
                     <div className="marginTop11">
                         <div className="">

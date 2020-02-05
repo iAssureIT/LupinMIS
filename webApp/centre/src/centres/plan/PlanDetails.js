@@ -1143,7 +1143,7 @@ class PlanDetails extends Component{
                       <hr className="hr-head container-fluid row"/>
                     </div>
                   </div>
-                  <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 mt">
+                  <ul className="nav tabNav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 mt">
                     <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualplan">Manual</a></li>
                     <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkplan">Bulk Upload</a></li>
                   </ul> 
@@ -1456,7 +1456,7 @@ class PlanDetails extends Component{
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
                           <BulkUpload url={this.state.month === "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
                           data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,
-                          "month":this.state.month,"year":this.state.year, "projectCategoryType" : this.state.projectCategoryType, "projectName":this.state.projectName}} 
+                          "month":this.state.month,"year":this.state.year, "projectCategoryType" : this.state.projectCategoryType, "projectName":this.state.projectCategoryType==="LHWRF Grant" ? "-" : this.state.projectName}} 
                           uploadedData={this.uploadedData} 
                           fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
                           fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}

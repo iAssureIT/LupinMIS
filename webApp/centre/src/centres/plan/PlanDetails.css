@@ -1,3 +1,12 @@
+.tabNav>li>a {
+  border-radius: 0;
+  color: #444;
+  background: #eee;
+}
+.tabNav>li>a:focus, .tabNav>li>a:hover {
+  text-decoration: none;
+  background-color: #ddd;
+}
 .notbtn{
 
 	border:1px solid #f4f4f4;
