@@ -56,8 +56,8 @@ class ActivitywisePeriodicPlanReport extends Component{
                 ] 
             },
             "tableHeading"      : {
-                // "projectCategoryType"                       : 'Project Category',
-                // "projectName"                               : 'Project Name',
+                "projectCategoryType"                       : 'Project Category',
+                "projectName"                               : 'Project Name',
                 "name"                                      : 'Activity & Sub-Activity',
                 "unit"                                      : 'Unit',
                 "annualPlan_Reach"                          : 'Reach', 
@@ -268,8 +268,8 @@ class ActivitywisePeriodicPlanReport extends Component{
                     var tableData = response.data.map((a, i)=>{
                         return {
                         _id                                       : a._id,   
-                        // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                        // projectName                               : a.projectName === 0 ? "-" :a.projectName,              
+                        projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                        projectName                               : a.projectName === 0 ? "-" :a.projectName,              
                         name                                      : a.name,
                         unit                                      : a.unit,
                         annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -305,8 +305,8 @@ class ActivitywisePeriodicPlanReport extends Component{
                     var tableData = response.data.map((a, i)=>{
                         return {
                         _id                                       : a._id,
-                        // projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                        // projectName                               : a.projectName === 0 ? "-" :a.projectName,                         
+                        projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                        projectName                               : a.projectName === 0 ? "-" :a.projectName,                         
                         name                                      : a.name,
                         unit                                      : a.unit,
                         annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),

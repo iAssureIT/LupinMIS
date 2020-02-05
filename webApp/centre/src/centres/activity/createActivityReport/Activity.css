@@ -79,7 +79,7 @@ q:before, q:after {
   transition-property: color, text-shadow;
 }
 .switch-input:checked + .switch-label-on ~ .switch-selection {
-  left: 49%;
+  left: 49% !important;
   height: 25px;
   /*left: 60px;*/
   /* Note: left: 50%; doesn't transition in WebKit */

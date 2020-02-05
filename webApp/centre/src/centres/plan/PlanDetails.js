@@ -3,10 +3,11 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
-import "./PlanDetails.css";
 import BulkUpload             from "../bulkupload/BulkUpload.js";
-import $ from 'jquery';
+import $                      from 'jquery';
 import moment                 from "moment";
+import 'bootstrap/js/tab.js';
+import "./PlanDetails.css";
 
 var add=0
 class PlanDetails extends Component{
@@ -28,6 +29,9 @@ class PlanDetails extends Component{
       "govtscheme"          :"",
       "directCC"            :"",
       "indirectCC"          :"",
+      type                : true,      
+      "projectName"       : "-- Select --",
+      "projectCategoryType" : "LHWRF Grant",
       "other"               :"",
       "remark"              :"",
       "shown"               : true,
@@ -43,7 +47,7 @@ class PlanDetails extends Component{
       "firstHeaderData"     : [
                                 {
                                     heading : 'Activity Details',
-                                    mergedColoums : 12
+                                    mergedColoums : 14
                                 },
                                 {
                                     heading : 'Source of Fund',
@@ -55,6 +59,8 @@ class PlanDetails extends Component{
       "tableHeading"        : {
         month               : "Month",
         year                : "Year",
+        projectCategoryType : "Category",
+        projectName         : "Project Name",
         sectorName          : "Sector",
         activityName        : "Activity",
         subactivityName     : "Sub-Activity",
@@ -196,25 +202,6 @@ class PlanDetails extends Component{
 
     }
   }
-
-  handleChange(event){
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      [event.target.name] : event.target.value,
-      fields
-    },()=>{
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-    });
-    if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }
-  }
-
   remainTotal(index,name){
     var totalBudget    = this.state.availableSubActivity[parseInt(index)].totalBudget;
     var getsubActivity = this.state.availableSubActivity[parseInt(index)];
@@ -351,6 +338,9 @@ class PlanDetails extends Component{
             "year"                : this.state.year,          
             "center_ID"           : this.state.center_ID,
             "center"              : this.state.centerName,
+            "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
+            "projectCategoryType" : this.state.projectCategoryType,
+            "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
             "sector_ID"           : this.state.sectorName.split('|')[1],
             "sectorName"          : this.state.sectorName.split('|')[0],
             "activity_ID"         : this.state.activityName.split('|')[1],
@@ -431,6 +421,9 @@ class PlanDetails extends Component{
               this.setState({
                 "year"                : "FY 2019 - 2020",
                 "month"               : "Annual Plan",
+                "projectName"        : "-- Select --",
+                "projectCategoryType" : "LHWRF Grant",
+                "type"                : true,
                 "center"              :"",
                 "sector_id"           :"",
                 "sectorName"          :"-- Select --",
@@ -447,6 +440,7 @@ class PlanDetails extends Component{
             .catch(function(error){
               console.log("error"+error);
           });
+         
           Object.entries(planValues).map( 
             ([key, value], i)=> {
               this.setState({
@@ -468,7 +462,8 @@ class PlanDetails extends Component{
         text  : "Please fill atleast one SubActivity Details."
       });
     }
-    
+   
+          
   }
   Update(event){    
     event.preventDefault();
@@ -492,6 +487,9 @@ class PlanDetails extends Component{
             "year"                : this.state.year,           
             "center_ID"           : this.state.center_ID,
             "center"              : this.state.centerName,
+            "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName.split('|')[0],
+            "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
+            "projectCategoryType" : this.state.projectCategoryType,
             "sector_ID"           : this.state.sectorName.split('|')[1],
             "sectorName"          : this.state.sectorName.split('|')[0],
             "activity_ID"         : this.state.activityName.split('|')[1],
@@ -530,6 +528,9 @@ class PlanDetails extends Component{
             "year"                : "FY 2019 - 2020",
             "month"               : "Annual Plan",
             "center"              : "",
+            "projectName"        : "-- Select --",
+            "projectCategoryType" : "LHWRF Grant",
+            "type"                : true,
             "sector_id"           : "",
             "sectorName"          : "-- Select --",
             "activityName"        : "-- Select --",
@@ -685,6 +686,8 @@ class PlanDetails extends Component{
           _id                 : a._id,
           month               : a.month,
           year                : a.year,
+          projectCategoryType : a.projectCategoryType,
+          projectName         : a.projectName==='all'?'-':a.projectName,
           sectorName          : a.sectorName,
           activityName        : a.activityName,
           subactivityName     : a.subactivityName,
@@ -734,6 +737,7 @@ class PlanDetails extends Component{
             "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
           })
         }
+        this.getAvailableProjectName();
         this.getAvailableActivity(this.state.editSectorId);
         this.getAvailableSubActivity(this.state.editSectorId);
         this.edit(this.state.editId);
@@ -757,6 +761,7 @@ class PlanDetails extends Component{
       // console.log('year', this.state.year)
       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     })
+    this.getAvailableProjectName();
     this.getLength();
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
@@ -767,6 +772,67 @@ class PlanDetails extends Component{
       centerName   : centerName,
     });
   }
+
+  handleChange(event){
+    let fields = this.state.fields;
+    fields[event.target.name] = event.target.value;
+    
+    this.setState({
+      [event.target.name] : event.target.value,
+      fields
+    },()=>{
+      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+    });
+    if (this.validateForm()) {
+      let errors = {};
+      errors[event.target.name] = "";
+      this.setState({
+        errors: errors
+      });
+    }
+  }
+
+  selectProjectName(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name]:event.target.value
+    },()=>{
+      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+    });
+    let id = $(event.currentTarget).find('option:selected').attr('data-id')
+    axios.get('/api/projectMappings/fetch/'+id)
+      .then((response)=>{
+        if(response.data[0].sector&&response.data[0].sector.length>0){
+          var returnData = [...new Set(response.data[0].sector.map(a => a.sector_ID))]
+          if(returnData&&returnData.length>0){
+            var array = returnData.map((data,index) => {
+              let getIndex = response.data[0].sector.findIndex(x => x.sector_ID===data)
+              if(getIndex>=0){
+                return {
+                  '_id' : response.data[0].sector[getIndex].sector_ID,
+                  'sector' : response.data[0].sector[getIndex].sectorName
+                };
+              }
+            });
+            this.setState({
+              availableSectors : array,
+              sectorName : '-- Select --',
+              subActivityName : "-- Select --",
+              activityName    : '-- Select --',
+              availableSubActivity : [],
+              sector_ID : array[0]._id
+            },()=>{
+              this.getAvailableActivity(array[0]._id)
+            })
+          }
+        }
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+      
+  }
+
   getAvailableSectors(){
     axios({
       method: 'get',
@@ -779,6 +845,7 @@ class PlanDetails extends Component{
       console.log("error"+error);
     });
   }
+ 
   selectSector(event){
     event.preventDefault();
     this.setState({[event.target.name]:event.target.value});
@@ -789,6 +856,7 @@ class PlanDetails extends Component{
     this.handleChange(event);
     this.getAvailableActivity(sector_ID);
   }
+
   getAvailableActivity(sector_ID){
     // console.log("sector_ID",sector_ID);
     if(sector_ID){
@@ -817,6 +885,20 @@ class PlanDetails extends Component{
     event.preventDefault();
     this.setState({[event.target.name]:event.target.value});
     var activity_ID = event.target.value.split('|')[1];
+    if(this.state.availableSectors&&this.state.availableSectors.length>0){
+      let getIndex = this.state.availableSectors.findIndex(x => x._id===this.state.sector_ID)
+      if(getIndex>=0){
+        if(this.state.availableSectors[getIndex].activity&&this.state.availableSectors[getIndex].activity.length>0){
+          let getIActndex = this.state.availableSectors[getIndex].activity.findIndex(x => x._id===activity_ID)
+          if(getIActndex>=0){
+            this.setState({
+              subActivityDetails : "",
+              availableSubActivity : this.state.availableSectors[getIndex].activity[getIActndex].subActivity
+            })
+          }
+        }
+      }
+    }
     this.handleChange(event);
     this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
   }
@@ -867,6 +949,7 @@ class PlanDetails extends Component{
         method: 'get',
         url: this.state.apiCall+'/'+id,
         }).then((response)=> {
+          console.log('editresponse',response);
         var editData = response.data[0];
         if(editData){
           this.getAvailableActivity(editData.sector_ID);
@@ -898,6 +981,9 @@ class PlanDetails extends Component{
             "sectorName"              : editData.sectorName+'|'+editData.sector_ID,
             "activityName"            : editData.activityName+'|'+editData.activity_ID,
             "subactivity_ID"          : editData.subactivity_ID,
+            "projectCategoryType"     : editData.projectCategoryType,
+            "type"                    : editData.projectCategoryType==="LHWRF Grant" ? true : false,
+            "projectName"             : editData.projectName==='all'?'-- Select --':editData.projectName,
           },()=>{
             // console.log("availableSubActivity in func",this.state.availableSubActivity);
           })      
@@ -985,10 +1071,60 @@ class PlanDetails extends Component{
           
     }) 
   }
+  handleToggle(event){
+    // event.preventDefault();
+    this.getAvailableSectors()
+    this.setState({
+      [event.target.name] : event.target.value,
+      sectorName : '-- Select --',
+      subActivityName : "-- Select --",
+      activityName    : '-- Select --',
+    },()=>{
+      console.log('projectCategoryType',this.state.projectCategoryType);
+      if (this.state.projectCategoryType === "LHWRF Grant") {
+        this.setState({
+          projectName:"-- Select --",
+        })
+      }
+    })
+  }
+  handleToggleP(event) {  
+    event.preventDefault();
+    if (this.state.type===true){
+      this.setState({
+        type: false,
+        projectCategoryType:"Project Fund"
+      },()=>{
+        console.log("this.state.type",this.state.type)
 
+      })
+    }
+    else{
+      this.setState({
+        type: true,
+        projectCategoryType:"LHWRF Grant"
+
+      },()=>{
+      })
+    }  
+  }
+  getAvailableProjectName(){
+    axios({
+      method: 'get',
+      url: '/api/projectMappings/list',
+    }).then((response)=> {
+      console.log('responseP', response); 
+      this.setState({
+        availableProjects : response.data
+      })
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
   render() {
                 // console.log("availableSubActivity",this.state.availableSubActivity);
 
+      console.log("this.state.type",this.state.type,"projectCategoryType",this.state.projectCategoryType)
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
@@ -1007,7 +1143,11 @@ class PlanDetails extends Component{
                       <hr className="hr-head container-fluid row"/>
                     </div>
                   </div>
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                    
+                  <ul className="nav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 mt">
+                    <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualplan">Manual</a></li>
+                    <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkplan">Bulk Upload</a></li>
+                  </ul> 
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt">                    
                     <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 boxHeight">
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
@@ -1036,10 +1176,77 @@ class PlanDetails extends Component{
                       </div>
                       <div className="errorMsg">{this.state.errors.year}</div>
                     </div>
-                    <ul className="nav nav-pills col-lg-3 col-lg-offset-3 col-md-3 col-md-offset-3 col-sm-12 col-xs-12 mt">
-                      <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualplan">Manual</a></li>
-                      <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkplan">Bulk Upload</a></li>
-                    </ul> 
+                    {/*<div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
+                      <label className="formLable">Project Category</label><span className="asterix">*</span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                        <select className="custom-select form-control inputBox"ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.handleToggle.bind(this)} >
+                          <option disabled="disabled" selected="true">-- Select --</option>
+                          <option>LHWRF Grant</option>
+                          <option>Project Fund</option>
+                        </select>
+                      </div>
+                      <div className="errorMsg">{this.state.errors.projectCategoryType}</div>
+                    </div>  */}
+                   {/* <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
+                        <div className="" id="projectCategoryType" >
+                          <label className=" formLable">Category Type<span className="asterix">*</span></label>
+                          <div className="switch" >
+                            <input type="radio" className="switch-input pull-left" name="projectCategoryType" checked={this.state.projectCategoryType === "LHWRF Grant"} onChange={this.handleToggle.bind(this)} value="LHWRF Grant" id="week" />
+                            <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                            <input type="radio" className="switch-input pull-right" name="projectCategoryType" checked={this.state.projectCategoryType === "Project Fund"} onChange={this.handleToggle.bind(this)} value="Project Fund" id="month"  />
+                            <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                            <span className="switch-selection"></span>
+                          </div>
+                        </div>
+                       
+                      </div>  */}
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
+                        <div className="" id="projectCategoryType" >
+                          <label className=" formLable">Category Type<span className="asterix">*</span></label>
+                         {this.state.type===true ?
+
+                           <div className="switch" onClick={this.handleToggleP.bind(this)} >
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
+                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
+                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                              <span className="switch-selection"></span>
+                            </div>
+                            :
+                             <div className="switch" onClick={this.handleToggleP.bind(this)} >
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
+                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                              <span className="switch-selection" ></span>
+                            </div>
+                          }
+                            </div>
+                            </div>
+                    {
+                      this.state.projectCategoryType ==="Project Fund" ? 
+                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
+                          <label className="formLable">Project Name</label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectProjectName.bind(this)} >
+                                <option className="hidden" >-- Select --</option>
+                                {
+                                  this.state.availableProjects && this.state.availableProjects.length > 0  ? 
+                                  this.state.availableProjects.map((data, index)=>{
+                                    return(
+                                      <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }  
+                              </select>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.block}</div>
+                        </div>
+                      : ""
+                    }   
+                    
                   </div> 
                   <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                       <div id="manualplan"  className="tab-pane fade in active ">
@@ -1272,7 +1479,8 @@ class PlanDetails extends Component{
                       <div id="bulkplan" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
                           <BulkUpload url={this.state.month === "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
-                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,"month":this.state.month,"year":this.state.year}} 
+                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,
+                          "month":this.state.month,"year":this.state.year, "projectCategoryType" : this.state.projectCategoryType, "projectName":this.state.projectName}} 
                           uploadedData={this.uploadedData} 
                           fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
                           fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
