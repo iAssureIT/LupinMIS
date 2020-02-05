@@ -1093,7 +1093,10 @@ class PlanDetails extends Component{
     if (this.state.type===true){
       this.setState({
         type: false,
-        projectCategoryType:"Project Fund"
+        projectCategoryType:"Project Fund",
+        sectorName : '-- Select --',
+        subActivityName : "-- Select --",
+        activityName    : '-- Select --',
       },()=>{
         console.log("this.state.type",this.state.type)
 
@@ -1102,8 +1105,11 @@ class PlanDetails extends Component{
     else{
       this.setState({
         type: true,
-        projectCategoryType:"LHWRF Grant"
-
+        projectCategoryType:"LHWRF Grant",
+        projectName:"-- Select --",
+        sectorName : '-- Select --',
+        subActivityName : "-- Select --",
+        activityName    : '-- Select --',
       },()=>{
       })
     }  

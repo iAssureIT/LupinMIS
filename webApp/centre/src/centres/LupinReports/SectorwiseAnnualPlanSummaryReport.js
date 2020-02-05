@@ -52,8 +52,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "annualPlan_projectCategoryType"            : 'Project Category',
-            "annualPlan_projectName"                    : 'Project Name',
+            "annualPlan_projectCategoryType"  : 'Project Category',
+            "annualPlan_projectName"          : 'Project Name',
             "name"                            : 'Sector',
             "annualPlan_TotalBudget"          : 'Total Budget', 
             "Per_Annual"                      : 'Proportion to Total %', 
