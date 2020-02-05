@@ -1176,53 +1176,29 @@ class PlanDetails extends Component{
                       </div>
                       <div className="errorMsg">{this.state.errors.year}</div>
                     </div>
-                    {/*<div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                      <label className="formLable">Project Category</label><span className="asterix">*</span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                        <select className="custom-select form-control inputBox"ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.handleToggle.bind(this)} >
-                          <option disabled="disabled" selected="true">-- Select --</option>
-                          <option>LHWRF Grant</option>
-                          <option>Project Fund</option>
-                        </select>
-                      </div>
-                      <div className="errorMsg">{this.state.errors.projectCategoryType}</div>
-                    </div>  */}
-                   {/* <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
-                        <div className="" id="projectCategoryType" >
-                          <label className=" formLable">Category Type<span className="asterix">*</span></label>
-                          <div className="switch" >
-                            <input type="radio" className="switch-input pull-left" name="projectCategoryType" checked={this.state.projectCategoryType === "LHWRF Grant"} onChange={this.handleToggle.bind(this)} value="LHWRF Grant" id="week" />
+                    <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
+                      <div className="" id="projectCategoryType" >
+                        <label className=" formLable">Category Type<span className="asterix">*</span></label>
+                        {this.state.type===true ?
+
+                         <div className=" switch" onClick={this.handleToggleP.bind(this)} >
+                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
                             <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                            <input type="radio" className="switch-input pull-right" name="projectCategoryType" checked={this.state.projectCategoryType === "Project Fund"} onChange={this.handleToggle.bind(this)} value="Project Fund" id="month"  />
+                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
                             <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
                             <span className="switch-selection"></span>
                           </div>
-                        </div>
-                       
-                      </div>  */}
-                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
-                        <div className="" id="projectCategoryType" >
-                          <label className=" formLable">Category Type<span className="asterix">*</span></label>
-                         {this.state.type===true ?
-
-                           <div className="switch" onClick={this.handleToggleP.bind(this)} >
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
-                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
-                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                              <span className="switch-selection"></span>
-                            </div>
-                            :
-                             <div className="switch" onClick={this.handleToggleP.bind(this)} >
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
-                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
-                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                              <span className="switch-selection" ></span>
-                            </div>
-                          }
-                            </div>
-                            </div>
+                          :
+                           <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggleP.bind(this)} >
+                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
+                            <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                            <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                            <span className="switch-selection" ></span>
+                          </div>
+                        }
+                      </div>
+                    </div>
                     {
                       this.state.projectCategoryType ==="Project Fund" ? 
                         <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
