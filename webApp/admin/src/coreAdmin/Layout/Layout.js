@@ -75,6 +75,7 @@ import report13                                   from "../../admin/LupinReports
 import report14                                   from "../../admin/LupinReports/ActivitywisePeriodicPlanReport.js";
 import report15                                   from "../../admin/LupinReports/SectorwisePeriodicPlanSummaryReport.js";
 import report16                                   from "../../admin/LupinReports/SectorwiseAnnualPlanSummaryReport.js";
+import report17                                   from "../../admin/LupinReports/CenterRankingReport.js";
 
 import ProjectReport                                   from "../../admin/LupinReports/ProjectReport.js";
  class Layout extends Component{
@@ -198,7 +199,7 @@ componentDidMount(){
                           <Route path="/villagewise-family-report"                                    exact strict component={ report7 } />
                           <Route path="/category-wise-report"                                         exact strict component={ report8 } />
                           <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
-                          <Route path="/goal-sector-report"                                                   exact strict component={ report10 } />
+                          <Route path="/goal-sector-report"                                           exact strict component={ report10 } />
                           <Route path="/ADP-report"                                                   exact strict component={ report11 } />
                           <Route path="/EMP-report"                                                   exact strict component={ report12 } />
                           <Route path="/activitywise-annual-plan-report"                              exact strict component={ report13 } />
@@ -207,7 +208,8 @@ componentDidMount(){
                           <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
                           <Route path="/Report"                                                       exact strict component={ report } />
                           <Route path="/Report/:id"                                                   exact strict component={ report } />
-                          <Route path="/Project-report"                                                       exact strict component={ ProjectReport } />
+                          <Route path="/Project-report"                                               exact strict component={ ProjectReport } />
+                          <Route path="/center-ranking-report"                                        exact strict component={ report17 } />
                       </Switch>        
                       </div>
                     </div>

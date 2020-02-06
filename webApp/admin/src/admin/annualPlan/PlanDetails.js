@@ -43,7 +43,7 @@ class PlanDetails extends Component{
       "firstHeaderData"     : [
                                 {
                                     heading : 'Activity Details',
-                                    mergedColoums : 12
+                                    mergedColoums : 14
                                 },
                                 {
                                     heading : 'Source of Fund',
@@ -55,6 +55,8 @@ class PlanDetails extends Component{
       "tableHeading"        : {
         month               : "Month",
         year                : "Year",
+        projectCategoryType : "Category",
+        projectName         : "Project Name",
         sectorName          : "Sector",
         activityName        : "Activity",
         subactivityName     : "Sub-Activity",
@@ -685,6 +687,8 @@ class PlanDetails extends Component{
           _id                 : a._id,
           month               : a.month,
           year                : a.year,
+          projectCategoryType : a.projectCategoryType,
+          projectName         : a.projectName==='all'?'-':a.projectName,
           sectorName          : a.sectorName,
           activityName        : a.activityName,
           subactivityName     : a.subactivityName,
