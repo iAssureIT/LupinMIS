@@ -42,7 +42,7 @@ class GoalSectorReport extends Component{
         },
         "tableHeading"      : { 
             "goalType"              : "Framework",
-            "goalName"              : 'Goal / Objective',
+            "goal"                  : 'Goal / Objective',
             "projectCategoryType"   : "Project Category",
             "projectName"           : "Project Name",
             "activityName"    : 'Activity',
@@ -154,7 +154,7 @@ class GoalSectorReport extends Component{
             return {
                 _id                   : a._id,            
                 goalType              : a.goalType,
-                goalName              : a.goalName,
+                goal                  : a.goal,
                 projectCategoryType   : a.projectCategoryType,
                 projectName           : a.projectName,
                 activityName    : a.activityName,
@@ -197,16 +197,23 @@ class GoalSectorReport extends Component{
         if(this.state.projectCategoryType === "LHWRF Grant"){
           this.setState({
             projectName : "all",
+          },()=>{
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
           })          
         }else if (this.state.projectCategoryType=== "all"){
           this.setState({
             projectName : "all",
+          },()=>{
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
           })    
         }
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+        // console.log("shown",this.state.shown, this.state.projectCategoryType)
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
     },()=>{
     })
   }
+  
   getAvailableProjects(){
     axios({
       method: 'get',

@@ -290,9 +290,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                 var value = response.data.filter((a)=>{return a.name == "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   return {
-                      _id                                    : a._id,    
-                      // projectCategoryType                    : a.projectCategoryType ? a.projectCategoryType : "-",
-                      // projectName                            : a.projectName === 0 ? "-" :a.projectName,                
+                      _id                                    : a._id,   
+                      annualPlan_projectCategoryType         : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
+                      annualPlan_projectName                 : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,   
                       name                                   : a.name,
                       annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
                       Per_Annual                             : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),

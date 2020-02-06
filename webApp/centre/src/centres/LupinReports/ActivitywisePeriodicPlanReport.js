@@ -353,8 +353,8 @@ class ActivitywisePeriodicPlanReport extends Component{
                         var tableData = response.data.map((a, i)=>{
                             return {
                             _id                                       : a._id,
-                            projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                            projectName                               : a.projectName === 0 ? "-" :a.projectName,                         
+                            monthlyPlan_projectCategoryType           : a.monthlyPlan_projectCategoryType ? a.monthlyPlan_projectCategoryType : "-",
+                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,    
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),

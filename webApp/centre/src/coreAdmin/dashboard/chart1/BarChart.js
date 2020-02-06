@@ -79,7 +79,6 @@ export default class BarChart extends Component{
     if(center_ID && startDate && endDate){
         axios.get('/api/reportDashboard/sector_familyupgrade_outreach_count/'+center_ID+'/'+startDate+'/'+endDate)
         .then((response)=>{ 
-          // response.data.splice(-2);
           var sector = [];
           var annualPlanReach = [];
           var annualPlanFamilyUpgradation = [];
@@ -89,7 +88,6 @@ export default class BarChart extends Component{
 
          if(response.data&&response.data.length >0){
             response.data.map((data,index)=>{
-          // console.log("sector_familyupgrade_outreach ==>",data);
 
               if(data.achievement_Reach > 0 || data.achievement_FamilyUpgradation > 0){ 
                 sector.push(data.sectorShortName);
@@ -106,7 +104,8 @@ export default class BarChart extends Component{
               oudata.labels           = sector;
                this.setState({
                 "data" : oudata
-              },()=>{})
+              },()=>{
+              })
             }else{
               oudata.datasets[0].data = [200, 100, 500, 750, 300,600,900,150];
               oudata.datasets[1].data = [2000, 1000, 1500, 5000, 2700, 4800, 5400, 2100];
@@ -138,6 +137,7 @@ export default class BarChart extends Component{
   }
 
   render() {
+                console.log("sector_familyupgrade_outreach ==>",this.state.data);
     return (
       <div>
 {/*       <Radar data={this.state.data} height={350}  options={options} />*/}

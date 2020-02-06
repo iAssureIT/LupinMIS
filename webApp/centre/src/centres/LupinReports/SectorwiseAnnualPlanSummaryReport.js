@@ -261,8 +261,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               // console.log(a.Per_Annual)
               return {
                   _id                                    : a._id,     
-                  annualPlan_projectCategoryType                    : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
-                  annualPlan_projectName                            : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
+                  annualPlan_projectCategoryType         : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
+                  annualPlan_projectName                 : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
                   name                                   : a.name,
                   annualPlan_TotalBudget                 : this.addCommas(a.annualPlan_TotalBudget),
                   Per_Annual                             : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget/value.annualPlan_TotalBudget)*100).toFixed(2)) + "%" ),

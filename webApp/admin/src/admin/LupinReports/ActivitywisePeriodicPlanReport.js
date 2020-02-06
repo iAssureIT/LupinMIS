@@ -345,7 +345,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                             return {
                             _id                                       : a._id,               
                             monthlyPlan_projectCategoryType           : a.monthlyPlan_projectCategoryType ? a.monthlyPlan_projectCategoryType : "-",
-                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === 0 ? "-" :a.monthlyPlan_projectName,        
+                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,        
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -383,7 +383,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                             return {
                             _id                                       : a._id,             
                             monthlyPlan_projectCategoryType           : a.monthlyPlan_projectCategoryType ? a.monthlyPlan_projectCategoryType : "-",
-                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === 0 ? "-" :a.monthlyPlan_projectName,    
+                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,    
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
@@ -422,7 +422,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                         return {
                             _id                                       : a._id,                 
                             monthlyPlan_projectCategoryType           : a.monthlyPlan_projectCategoryType ? a.monthlyPlan_projectCategoryType : "-",
-                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === 0 ? "-" :a.monthlyPlan_projectName,        
+                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,        
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),

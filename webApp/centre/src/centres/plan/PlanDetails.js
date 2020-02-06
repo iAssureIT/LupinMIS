@@ -1392,7 +1392,7 @@ class PlanDetails extends Component{
                                                 </div>
                                               </div>
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                                <label className="formLable">Indirect Com. Cont.</label>
+                                                <label className="formLable">Indire. Com. Cont.</label>
                                                 <div className=" input-group inputBox-main" id={"indirectCC-"+index} >
                                                   <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
                                                   <input type="number"  min="0" className="form-control inputBox nameParts" name={"indirectCC-"+index} placeholder="" value={data.indirectCC} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"indirectCC")}/>

@@ -139,7 +139,7 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
     }).then((response)=> {
-      console.log("response ==>",response.data[0]);
+      // console.log("response ==>",response.data[0]);
 
       function removeDuplicates(data, param){
           return data.filter(function(item, pos, array){
@@ -158,7 +158,7 @@ export default class Dashboard extends Component{
           districtCovered          : availableblocksInCenter.slice(0, 8).map((d,i)=>{return (d.district).split('|')[0]}),  
           alldistrict              : availableblocksInCenter.map((d,i)=>{return (d.district).split('|')[0]}),
         },()=>{
-          console.log("villagesCoveredInCenter",this.state.villagesCoveredInCenter);
+          // console.log("villagesCoveredInCenter",this.state.villagesCoveredInCenter);
           // console.log('center', this.state.center);
           // var center_ID = this.state.center.split('|')[1];
           // this.setState({
