@@ -510,7 +510,7 @@ class centerDetail extends Component{
   getState(){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/states/get/list/IN',
+      url: 'http://locations2.iassureit.com/api/states/get/list/IN',
     }).then((response)=> {
       if(response&&response.data){
         this.setState({
@@ -544,7 +544,7 @@ class centerDetail extends Component{
   getDistrict(stateCode){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/districts/get/list/IN/'+stateCode,
+      url: 'http://locations2.iassureit.com/api/districts/get/list/IN/'+stateCode,
     }).then((response)=> {
         if(response&&response.data){
           this.setState({
@@ -574,7 +574,7 @@ class centerDetail extends Component{
   getBlock(stateCode, selectedDistrict){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+      url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
       if(response&&response.data){
         this.setState({
@@ -597,7 +597,7 @@ class centerDetail extends Component{
   getVillages(stateCode, selectedDistrict, blocksCovered){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
+      url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
     }).then((response)=> {
         // console.log('response ==========', response.data);
         if(response&&response.data[0]){

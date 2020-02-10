@@ -36,17 +36,13 @@ class CenterRankingReport extends Component{
             ]
         },
         "tableHeading"      : {
-            "centerName"              : "centerName",
-            "LHWRF_Sactioned"         : "LHWRF_Sactioned",
-            "Other_Sactioned"         : "Other_Sactioned",
-            "totalBudget_Sactioned"   : "totalBudget_Sactioned",
-            "FamilyUpgradation_Target": "FamilyUpgradation_Target",
-            "LHWRF_Utilized"          : "LHWRF_Utilized",
-            "Other_Utilized"          : "Other_Utilized",
-            "totalBudget_Utilized"    : "totalBudget_Utilized",
-            "Cost_Village"            : "Cost_Village",
-            "Cost_Upgrade"            : "Cost_Upgrade",
+            "centerName"              : "Center",
             "score"                   : "Score",
+            "LHWRF_Utilized"          : "LHWRF Budget Utilization",
+            "Other_Utilized"          : "Other Budget Utilization",
+            "totalBudget_Utilized"    : "TOTAL Budget Utilization",
+            "outReach"                : "Villages  / 1 Lakh",
+            "FamilyUpgradation"       : "Families Upgrade / 1 Lakh",
         },        
         "tableObjects"        : {
           paginationApply     : false,
@@ -123,16 +119,12 @@ class CenterRankingReport extends Component{
                     return {
                         _id                     : a._id,
                         centerName              : a.centerName,
-                        LHWRF_Sactioned         : a.LHWRF_Sactioned,
-                        Other_Sactioned         : a.Other_Sactioned,
-                        totalBudget_Sactioned   : a.totalBudget_Sactioned,
-                        FamilyUpgradation_Target: a.FamilyUpgradation_Target,
+                        score                   : a.score,
                         LHWRF_Utilized          : a.LHWRF_Utilized,
                         Other_Utilized          : a.Other_Utilized,
                         totalBudget_Utilized    : a.totalBudget_Utilized,
-                        Cost_Village            : a.Cost_Village,
-                        Cost_Upgrade            : a.Cost_Upgrade,
-                        score                   : a.score,
+                        outReach                : a.outReach,
+                        FamilyUpgradation       : a.FamilyUpgradation,
                     } 
                 })  
                 this.setState({

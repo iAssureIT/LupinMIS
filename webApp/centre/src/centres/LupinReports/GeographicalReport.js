@@ -140,8 +140,8 @@ class GeographicalReport extends Component{
           availableDistInCenter  : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
         },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-        var stateCode =this.state.address.split('|')[0];
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+          var stateCode =this.state.address.split('|')[0];
          this.setState({
             stateCode  : stateCode,
           });

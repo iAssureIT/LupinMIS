@@ -63,7 +63,7 @@ class Unit extends Component{
 
     axios.post('/api/units',unitValues)
       .then((response)=>{
-        console.log("response",response);
+        // console.log("response",response);
         this.getData();
         swal({
           title : response.data.message,
@@ -183,7 +183,7 @@ class Unit extends Component{
   getData(){
      axios.get('/api/units/list')
     .then((unitList)=>{
-     console.log('unitList', unitList.data);
+     // console.log('unitList', unitList.data);
        if(unitList&&unitList.data&&unitList.data.length>0){
         var tableData = unitList.data.map((a, i)=>{
           return {
