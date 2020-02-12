@@ -1,3 +1,10 @@
+.rdt .form-control{
+	border-color: #fff;
+	height: 30px !important;
+	border-bottom: 1px solid #979797 !important;
+}
+
+
 .notbtn{
 
 	border:1px solid #f4f4f4;

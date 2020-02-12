@@ -595,11 +595,12 @@ class centerDetail extends Component{
     });
   }
   getVillages(stateCode, selectedDistrict, blocksCovered){
+
     axios({
       method: 'get',
       url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+        console.log('response ==========', response.data,+stateCode+'/'+selectedDistrict+'/'+blocksCovered);
         if(response&&response.data[0]){
           if(this.state.editlistofVillages.length!==0){
             var listofVillages = response.data

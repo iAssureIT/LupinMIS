@@ -1,4 +1,8 @@
-
+.rdt .form-control{
+	border-color: #fff;
+	height: 30px !important;
+	border-bottom: 1px solid #979797 !important;
+}
 .familyBtn{
 	margin-top:60px;
 }

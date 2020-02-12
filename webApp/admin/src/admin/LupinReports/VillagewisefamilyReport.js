@@ -297,7 +297,7 @@ class VillagewisefamilyReport extends Component{
   getBlock(stateCode, selectedDistrict){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+      url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
         this.setState({
           listofBlocks : response.data
@@ -321,7 +321,7 @@ class VillagewisefamilyReport extends Component{
   getVillages(stateCode, selectedDistrict, block){
     axios({
       method: 'get',
-      url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
+      url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
     }).then((response)=> {
         this.setState({
           listofVillages : response.data

@@ -3,6 +3,10 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import validate               from 'jquery-validation';
+import DatePicker           from "react-datepicker";
+// import YearPicker from "react-year-picker";
+import Datetime from "react-datetime";
+import 'react-datetime/css/react-datetime.css';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import CreateBeneficiary      from "./CreateBeneficiary.js";
 import "./Beneficiary.css";
@@ -15,17 +19,19 @@ class Beneficiary extends Component{
    
     this.state = {
       // "relation"            :"-- Select --",
-      "Check"               :false,
-      "relation"            :"-- Select --",
-      "familyID"            :"",
-      "beneficiaryID"       :"",
-      "uidNumberCheck"      :"",
-      "firstNameOfBeneficiary"  :"",
+      "Check"                         :false,
+      "relation"                      :"-- Select --",
+      "familyID"                      :"",
+      "beneficiaryID"                 :"",
+      "uidNumberCheck"                :"",
+      "firstNameOfBeneficiary"        :"",
       "middleNameOfBeneficiaryCheck"  :"",
-      "firstNameOfBeneficiaryCheck"  :"",
-      "middleNameOfBeneficiary" :"",
-      "surnameOfBeneficiary"    :"",
-      "nameofbeneficiaries" :"",
+      "firstNameOfBeneficiaryCheck"   :"",
+      "middleNameOfBeneficiary"       :"",
+      "surnameOfBeneficiary"          :"",
+      "nameofbeneficiaries"           :"",
+      "birthYearOfbeneficiary"        :"",
+      "genderOfbeneficiary"           :"-- Select --",
       "fields"              : {},
       "errors"              : {},
       "tableHeading"        : {
@@ -34,6 +40,8 @@ class Beneficiary extends Component{
         nameofbeneficiaries : "Name of Beneficiary",
         uidNumber           : "UID Number",
         relation            : "Relation with Family Head",
+        genderOfbeneficiary : "Gender",
+        birthYearOfbeneficiary : "Birth Year",
         actions             : 'Action',
       },
       "tableObjects"        : {
@@ -102,6 +110,7 @@ class Beneficiary extends Component{
       "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value,
       "uidNumber"                 : this.refs.uidNumber.value,
       "relation"                  : this.refs.relation.value,
+      "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
     });
   /*    if(this.refs.firstNameOfBeneficiary.value === this.state.firstNameOfBeneficiaryCheck )
     {
@@ -141,9 +150,10 @@ class Beneficiary extends Component{
       "surnameOfBeneficiary"      : this.refs.surnameOfBeneficiary.value,
       "firstNameOfBeneficiary"    : this.refs.firstNameOfBeneficiary.value,
       "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value,     
-      // "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
       "uidNumber"                 : this.refs.uidNumber.value,
       "relation"                  : this.refs.relation.value,
+      "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary,
+      "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
     };
     // let fields                          = {};
     // fields["familyID"]                  = "";
@@ -161,7 +171,10 @@ class Beneficiary extends Component{
       "firstNameOfBeneficiary"   :"",   
       "middleNameOfBeneficiary"  :"",   
       "uidNumber"                :"",   
-      "relation"                 :"",   
+      "relation"                 :"-- Select --",
+      "genderOfbeneficiary"      :"-- Select --",
+      "date"                     :"",   
+      "birthYearOfbeneficiary"   :"",   
       // fields:fields
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
@@ -202,6 +215,8 @@ class Beneficiary extends Component{
         "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value,          
         "uidNumber"                 : this.refs.uidNumber.value,
         "relation"                  : this.refs.relation.value,
+        "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary,
+        "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
       };
       // console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
@@ -220,10 +235,13 @@ class Beneficiary extends Component{
         "familyID"                 :"",
         "nameofbeneficiaries"      :"",   
         "uidNumber"                :"",
-        "relation"                 :"",
         "surnameOfBeneficiary"     :"",   
         "firstNameOfBeneficiary"   :"",   
         "middleNameOfBeneficiary"  :"",   
+        "date"                     :"",   
+        "birthYearOfbeneficiary"   :"",   
+        "relation"                 :"-- Select --",
+        "genderOfbeneficiary"      :"-- Select --",   
       });
       this.props.history.push('/beneficiary');
       this.setState({
@@ -387,17 +405,22 @@ class Beneficiary extends Component{
     })
     .then((response)=> {
       var editData = response.data[0];
-      // console.log('editData',editData);
-      
-      this.setState({
-        "beneficiaryID"            : editData.beneficiaryID,
-        "familyID"                 : editData.familyID+"|"+editData.family_ID,          
-        "surnameOfBeneficiary"     : editData.surnameOfBeneficiary,
-        "firstNameOfBeneficiary"   : editData.firstNameOfBeneficiary,
-        "middleNameOfBeneficiary"  : editData.middleNameOfBeneficiary,
-        "uidNumber"                : editData.uidNumber,          
-        "relation"                 : editData.relation,          
-      });      
+      console.log('editData',response);
+      if(editData){
+        this.setState({
+          "beneficiaryID"            : editData.beneficiaryID,
+          "familyID"                 : editData.familyID+"|"+editData.family_ID,          
+          "surnameOfBeneficiary"     : editData.surnameOfBeneficiary,
+          "firstNameOfBeneficiary"   : editData.firstNameOfBeneficiary,
+          "middleNameOfBeneficiary"  : editData.middleNameOfBeneficiary,
+          "uidNumber"                : editData.uidNumber,          
+          "relation"                 : editData.relation,          
+          "date"                     : editData.birthYearOfbeneficiary,          
+          "genderOfbeneficiary"      : editData.genderOfbeneficiary,          
+        },()=>{
+          console.log('edit===',this.state.birthYearOfbeneficiary);
+        });      
+      }
       let fields = this.state.fields;
       let errors = {};
       let formIsValid = true;
@@ -416,8 +439,11 @@ class Beneficiary extends Component{
         "surnameOfBeneficiary"     : "",
         "firstNameOfBeneficiary"   : "",
         "middleNameOfBeneficiary"  : "",
-        "uidNumber"                : "",          
-        "relation"                 : "",          
+        "uidNumber"                : "",      
+        "relation"                 :"-- Select --",
+        "genderOfbeneficiary"      :"-- Select --",       
+        "date"                     :"",   
+        "birthYearOfbeneficiary"   :"",   
       });     
     }
     
@@ -459,6 +485,8 @@ class Beneficiary extends Component{
             nameofbeneficiaries       : a.nameofbeneficiaries,
             uidNumber                 : a.uidNumber,
             relation                  : a.relation,
+            genderOfbeneficiary       : a.genderOfbeneficiary,   
+            birthYearOfbeneficiary    : a.birthYearOfbeneficiary,   
           }
         })
         this.setState({
@@ -593,6 +621,13 @@ class Beneficiary extends Component{
 
     }*/
   }
+  handleYear(date){
+      this.setState({
+        birthYearOfbeneficiary    : date.year(),
+        date    : date,
+      },()=>{
+      });
+    };
   render() {
     return (
       <div className="container-fluid">
@@ -675,7 +710,6 @@ class Beneficiary extends Component{
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   <option>Self</option>
                                   <option>Wife</option>
-
                                   <option>Husband</option>
                                   <option>Son</option>
                                   <option>Daughter</option>
@@ -690,6 +724,47 @@ class Beneficiary extends Component{
                                 </select>
                               </div>
                             </div>
+                            <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
+                              <label className="formLable">Gender</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="genderOfbeneficiaryErr" >
+                                <select className="custom-select form-control inputBox" ref="genderOfbeneficiary" name="genderOfbeneficiary" value={this.state.genderOfbeneficiary} onChange={this.handleChange.bind(this)}  >
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option>Female</option>
+                                  <option>Male</option>
+                                  <option>Transgender</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
+                              <label className="formLable">Birth Year</label>
+                              <div className="">
+                                {console.log('birthYearOfbeneficiary',this.state.birthYearOfbeneficiary)}
+                                <Datetime 
+                                  dateFormat="YYYY"
+                                  name="birthYearOfbeneficiary" 
+                                  id="birthYearOfbeneficiaryErr"
+                                  value={this.state.date}
+                                  closeOnSelect={true}
+                                  onChange={this.handleYear.bind(this)} 
+                                  className="inputBox-main" 
+                                />
+                              </div>
+                            </div>
+
+                            {/*<div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
+                              <label className="formLable">Birth Year</label>
+                              <div className="inputBox-main">
+                              {console.log('birthYearOfbeneficiary',this.state.birthYearOfbeneficiary)}
+                              <YearPicker 
+                                name="birthYearOfbeneficiary" 
+                                id="birthYearOfbeneficiaryErr"
+                                defaultValue={this.state.birthYearOfbeneficiary}
+                                onChange={this.handleYear.bind(this)} 
+                                className=""
+                               />
+                            </div>
+                            </div>*/}
+
                           </div> 
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
