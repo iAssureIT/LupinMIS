@@ -15,7 +15,7 @@ var add = 0;
 class Activity extends Component{
   constructor(props){
     super(props);
-    this.state = {
+    this.state = { 
       "center_ID"         : "",
       "centerName"        : "",
       "district"          : "-- Select --",

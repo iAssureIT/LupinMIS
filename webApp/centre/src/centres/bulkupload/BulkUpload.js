@@ -354,12 +354,12 @@ class BulkUpload extends Component{
                   <div className="text-right">
                   <br/>
                    <ReactHTMLTableToExcel
-                      id="test-table-xls-button"
-                      className="download-table-xls-button"
-                      table="table-to-xls"
-                      filename="tablexls"
-                      sheet="tablexls"
-                      buttonText="Download as XLS"/>
+                    id="test-table-xls-button"
+                    className="download-table-xls-button"
+                    table={"failedtable"+this.props.failedRecordsCount}
+                    filename="tablexls"
+                    sheet="tablexls"
+                    buttonText="Download as XLS"/>
                       <br/>
                     </div>  
                     <div style={{overflowX: "auto"}}>
@@ -373,7 +373,7 @@ class BulkUpload extends Component{
                       />
 
 
-                    <table className="table" width="50%" id="table-to-xls" style={{display:"none"}}>
+                    <table className="table" width="50%" id={"failedtable"+this.props.failedRecordsCount} style={{display:"none"}}>
                       <thead>
                         <tr>
                         {
