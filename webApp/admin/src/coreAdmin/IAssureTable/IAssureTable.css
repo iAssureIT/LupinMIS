@@ -1,5 +1,6 @@
 .wrapText{
   white-space: pre-wrap !important;
+  width: 200px;
 }
 .tableDwld{
   font-size: 25px;

@@ -1,4 +1,7 @@
-/*Page content */
+.wrapText{
+  white-space: pre-wrap !important;
+  width: 200px;
+}
 .fixedModalHeight{
   background-color: #ffffff !important;
   padding-bottom: 15px;
