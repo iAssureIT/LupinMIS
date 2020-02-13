@@ -1,3 +1,7 @@
+.activityWrapText{
+	white-space: pre-wrap !important;
+}
+
 .notbtn{
 
 	border:1px solid #f4f4f4;

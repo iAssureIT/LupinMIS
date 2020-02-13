@@ -41,11 +41,12 @@ class UpgradedBeneficiaryReport extends Component{
         "tableHeading"      : {
             "date"               : 'Date Of Intervention',
             "projectCategoryType": 'Project Category',
-            "projectName"          : 'Project Name',
+            "projectName"        : 'Project Name',
             "upgraded"           : 'Upgraded',
-            "sectorName"         : 'Sector',
-            "activityName"       : 'Activity',
-            "subactivityName"    : 'Sub-Activity',
+            "name"               : 'Activity',
+            // "sectorName"         : 'Sector',
+            // "activityName"       : 'Activity',
+            // "subactivityName"    : 'Sub-Activity',
             "familyID"           : 'Family ID',
             "beneficiaryID"      : 'Beneficiary ID',
             "namebeneficiary"    : 'Name of Beneficiary',           
@@ -254,16 +255,17 @@ class UpgradedBeneficiaryReport extends Component{
 
               axios.get('/api/beneficiaries/'+a.beneficiaryID)
               .then((response)=>{
-                // console.log('response',response)
+                console.log('response',response)
                 tableData.push({
                   _id             : a._id,            
                   date            : moment(a.date).format('DD-MM-YYYY'),
                   projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
                   projectName            : a.projectName === "all"||0 ? "-" :a.projectName,                  
                   upgraded        : a.upgraded,
-                  sectorName      : a.sectorName,
-                  activityName    : a.activityName,
-                  subactivityName : a.subactivityName,
+                  name            : a.name,
+                  // sectorName      : a.sectorName,
+                  // activityName    : a.activityName,
+                  // subactivityName : a.subactivityName,
                   familyID        : response.data[0].familyID,
                   beneficiaryID   : response.data[0].beneficiaryID,
                   namebeneficiary : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,

@@ -326,7 +326,7 @@ class CategorywiseReport extends Component{
               return {
                 _id                    : a._id,  
                 projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
-                projectName            : a.projectName === 0 ? "-" :a.projectName,                
+                projectName            : a.projectName === "all"|| 0 ? "-" :a.projectName,                
                 district               : a.district === "all" ? "-" :a.district,                
                 incomeCategory         : a.incomeCategory,
                 landCategory           : a.landCategory,
@@ -352,7 +352,7 @@ class CategorywiseReport extends Component{
               return {
                 _id                    : a._id,  
                 projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
-                projectName            : a.projectName === 0 ? "-" :a.projectName,                     
+                projectName            : a.projectName === "all"|| 0 ? "-" :a.projectName,                     
                 district               : a.district === "all" ? "-" :a.district,                     
                 incomeCategory         : a.incomeCategory,
                 landCategory           : a.landCategory,
