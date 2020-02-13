@@ -1160,33 +1160,10 @@ class Activity extends Component{
       }).catch(function (error) {
         console.log("error = ",error);
       });
-      // var selectedDistrict = this.state.district;
-      // // console.log("selectedDistrict",selectedDistrict);
-      // this.setState({
-      //   district :selectedDistrict
-      // },()=>{
-      //   // console.log('selectedDistrict',this.state.district);
-      //   // this.getBlock(this.state.stateCode, this.state.district);
-      // })
     });
     this.handleChange(event);
   }
-  // getBlock(stateCode, selectedDistrict){
-  //   axios({
-  //     method: 'get',
-  //     url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-  //   }).then((response)=> {
-  //     console.log('response ==========', response.data);
-  //     if(response&&response.data){
-  //       this.setState({
-  //         listofBlocks : response.data,
-  //         // block : response.data[0].blockName
-  //       })
-  //     }
-  //   }).catch(function (error) {
-  //     console.log('error', error);
-  //   });
-  // }
+  
   selectBlock(event){
     event.preventDefault();
     var block = event.target.value;
@@ -1214,21 +1191,7 @@ class Activity extends Component{
     });
     this.handleChange(event);
   }
-  // getVillages(stateCode, selectedDistrict, block){
-  //   // console.log(stateCode, selectedDistrict, block);
-  //   axios({
-  //     method: 'get',
-  //     url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
-  //     // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
-  //   }).then((response)=> {
-  //     // console.log('response ==========', response.data);
-  //     this.setState({
-  //       listofVillages : response.data
-  //     })
-  //   }).catch(function (error) {
-  //     console.log('error', error);
-  //   });
-  // }
+  
   selectVillage(event){
     event.preventDefault();
     var village = event.target.value;
@@ -1237,27 +1200,7 @@ class Activity extends Component{
     });
     this.handleChange(event);
   }
-/*  getToggleValue(event){
-    console.log("this.state.projectCategoryType",this.state.projectCategoryType);
-    if(this.state.projectCategoryType === "LHWRF Grant"){
-      this.setState({
-        projectCategoryType : "Project Fund",
-      },()=>{
-        console.log("shown", this.state.projectCategoryType)
-      })
-    }else{
-      this.setState({
-        projectCategoryType : "Project Fund",
-      },()=>{
-        this.setState({
-          projectName : "LHWRF Grant",
-        })
-        console.log("shown",this.state.shown, this.state.projectCategoryType)
-      })
-    }
 
-  }*/
-  
   getAvailableProjectName(){
     axios({
       method: 'get',

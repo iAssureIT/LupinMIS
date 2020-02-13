@@ -148,12 +148,6 @@ class GeographicalReport extends Component{
       })
     }).catch(function (error) {
       console.log("districtError",+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      } 
     });
   } 
   
@@ -261,6 +255,7 @@ class GeographicalReport extends Component{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     })
   }
+  
   districtChange(event){    
     event.preventDefault();
     var district = event.target.value;
@@ -277,14 +272,31 @@ class GeographicalReport extends Component{
         selectedDistrict :selectedDistrict,
         block : "all",
         village : "all",
-      },()=>{
+      },()=>{        
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
       // console.log('selectedDistrict',this.state.selectedDistrict);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      // this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        // console.log('availableblockInCenter ==========',response);
+        function removeDuplicates(data, param, district){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+          })
+        }
+        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.selectedDistrict);
+        this.setState({
+          listofBlocks     : availableblockInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
       })
     });
   }
-  getBlock(stateCode, selectedDistrict){
+  /*getBlock(stateCode, selectedDistrict){
     axios({
       method: 'get',
       // url: 'http://locations2.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
@@ -304,7 +316,7 @@ class GeographicalReport extends Component{
           });
         }
       });
-  }
+  }*/
   selectBlock(event){
     event.preventDefault();
     var block = event.target.value;
@@ -314,10 +326,26 @@ class GeographicalReport extends Component{
     },()=>{
       // console.log("block",block);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.selectedDistrict,this.state.block);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
     });
   }
-  getVillages(stateCode, selectedDistrict, block){
+ /* getVillages(stateCode, selectedDistrict, block){
     // console.log(stateCode, selectedDistrict, block);
     axios({
       method: 'get',
@@ -338,7 +366,7 @@ class GeographicalReport extends Component{
           });
         }
       });
-  }
+  }*/
   selectVillage(event){
     event.preventDefault();
     var village = event.target.value;
@@ -709,7 +737,7 @@ class GeographicalReport extends Component{
                                 // console.log("data",data)
                                 return(
                                   /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                  <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                  <option key={index} value={(data.district+'|'+data._id)}>{data.district.split('|')[0]}</option>
 
                                 );
                               })
@@ -729,7 +757,7 @@ class GeographicalReport extends Component{
                               this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                               this.state.listofBlocks.map((data, index)=>{
                                 return(
-                                  <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                  <option key={index} value={data.block}>{data.block}</option>
                                 );
                               })
                               :
@@ -749,7 +777,7 @@ class GeographicalReport extends Component{
                               this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                               this.state.listofVillages.map((data, index)=>{
                                 return(
-                                  <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                  <option key={index} value={data.village}>{data.village}</option>
                                 );
                               })
                               :

@@ -122,7 +122,6 @@ class VillagewisefamilyReport extends Component{
   }
 
   getAvailableCenterData(center_ID){
-    // console.log("CID"  ,center_ID);
     axios({
       method: 'get',
       url: '/api/centers/'+center_ID,
@@ -133,29 +132,18 @@ class VillagewisefamilyReport extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
-          // availableDistInCenter  : response.data[0].districtsCovered,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-          // districtsCovered : response.data[0].districtsCovered
         },()=>{
-        var stateCode =this.state.address.split('|')[0];
+          this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+          var stateCode =this.state.address.split('|')[0];
          this.setState({
-          stateCode  : stateCode,
-
-        },()=>{
-        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
-        });
-        })
+            stateCode  : stateCode,
+          });
+      })
     }).catch(function (error) {
-      console.log("error"+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      } 
+      console.log("districtError",+error);
     });
   } 
 
@@ -281,13 +269,31 @@ class VillagewisefamilyReport extends Component{
         selectedDistrict :selectedDistrict,
         block : "all",
         village : "all",
-      },()=>{
+      },()=>{        
       this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      // console.log('selectedDistrict',this.state.selectedDistrict);
+      // this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        // console.log('availableblockInCenter ==========',response);
+        function removeDuplicates(data, param, district){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+          })
+        }
+        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.selectedDistrict);
+        this.setState({
+          listofBlocks     : availableblockInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
       })
     });
   }
-  getBlock(stateCode, selectedDistrict){
+/*  getBlock(stateCode, selectedDistrict){
     // console.log("sd", stateCode,selectedDistrict);
     axios({
       method: 'get',
@@ -301,7 +307,7 @@ class VillagewisefamilyReport extends Component{
     }).catch(function (error) {
       console.log('error', error);
     });
-  }
+  }*/
   selectBlock(event){
     event.preventDefault();
     var block = event.target.value;
@@ -311,10 +317,26 @@ class VillagewisefamilyReport extends Component{
     },()=>{
       // console.log("block",block);
       this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
-      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.selectedDistrict,this.state.block);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
     });
   }
-  getVillages(stateCode, selectedDistrict, block){
+  /*getVillages(stateCode, selectedDistrict, block){
     // console.log(stateCode, selectedDistrict, block);
     axios({
       method: 'get',
@@ -330,7 +352,7 @@ class VillagewisefamilyReport extends Component{
     }).catch(function (error) {
       console.log('error', error);
     });
-  }
+  }*/
   selectVillage(event){
     event.preventDefault();
     var village = event.target.value;
@@ -686,7 +708,7 @@ class VillagewisefamilyReport extends Component{
                                 // console.log("data",data)
                                 return(
                                   /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                  <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                  <option key={index} value={(data.district+'|'+data._id)}>{data.district.split('|')[0]}</option>
 
                                 );
                               })
@@ -706,7 +728,7 @@ class VillagewisefamilyReport extends Component{
                               this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                               this.state.listofBlocks.map((data, index)=>{
                                 return(
-                                  <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                  <option key={index} value={data.block}>{data.block}</option>
                                 );
                               })
                               :
@@ -726,7 +748,7 @@ class VillagewisefamilyReport extends Component{
                               this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                               this.state.listofVillages.map((data, index)=>{
                                 return(
-                                  <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                  <option key={index} value={data.village}>{data.village}</option>
                                 );
                               })
                               :
