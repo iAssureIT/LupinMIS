@@ -50,6 +50,7 @@ const formValid = formerrors=>{
   }
 
  handleChange(event){
+  console.log('center_ID',event.target.value);
     const datatype = event.target.getAttribute('data-text');
     const {name,value} = event.target;
     let formerrors = this.state.formerrors;
@@ -272,7 +273,7 @@ const formValid = formerrors=>{
         this.setState({
           listofCenters : response.data
         },()=>{
-        // console.log('listofCenters', this.state.listofCenters);
+        console.log('listofCenters', this.state.listofCenters);
         })
     }).catch(function (error) {
       console.log('error', error);

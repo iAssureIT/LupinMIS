@@ -767,6 +767,7 @@ class PlanDetails extends Component{
 
   selectCenter(event){
       var selectedCenter = event.target.value;
+    console.log('selectedCenter',selectedCenter);
       this.setState({
         [event.target.name] : event.target.value,
         selectedCenter : selectedCenter,
@@ -792,7 +793,7 @@ class PlanDetails extends Component{
           availableCenters : response.data,
           // center           : response.data[0].centerName+'|'+response.data[0]._id
         },()=>{
-      // console.log('centersresponse', this.state.availableCenters);
+      console.log('centersresponse', this.state.availableCenters);
 
         })
     }).catch(function (error) {

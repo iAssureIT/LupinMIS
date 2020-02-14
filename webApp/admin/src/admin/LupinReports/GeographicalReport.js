@@ -169,20 +169,18 @@ class GeographicalReport extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        // console.log('availableDistInCenter ==========',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-        var stateCode =this.state.address.split('|')[0];
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+          var stateCode =this.state.address.split('|')[0];
          this.setState({
             stateCode  : stateCode,
           });
       })
     }).catch(function (error) {
       console.log("districtError",+error);
-     
     });
   } 
   getAvailableSectors(){
@@ -300,34 +298,51 @@ class GeographicalReport extends Component{
       }else{
         var selectedDistrict = this.state.district.split('|')[0];
       }
-      // console.log("selectedDistrict",selectedDistrict);
       this.setState({
         selectedDistrict :selectedDistrict,
         block : "all",
         village : "all",
-      },()=>{
+      },()=>{        
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      // console.log('selectedDistrict',this.state.selectedDistrict);
+      // this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        // console.log('availableblockInCenter ==========',response);
+        function removeDuplicates(data, param, district){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+          })
+        }
+        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.selectedDistrict);
+        this.setState({
+          listofBlocks     : availableblockInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
       })
     });
   }
-  getBlock(stateCode, selectedDistrict){
-    axios({
-      method: 'get',
-      // url: 'http://locations2.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
-      url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-    }).then((response)=> {
-        console.log('response ==========', response.data);
-        this.setState({
-          listofBlocks : response.data
-        },()=>{
-        // console.log('listofBlocks', this.state.listofBlocks);
-        })
-    }).catch(function (error) {  
-       console.log("error = ",error);
+  // getBlock(stateCode, selectedDistrict){
+  //   axios({
+  //     method: 'get',
+  //     // url: 'http://locations2.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
+  //     url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+  //   }).then((response)=> {
+  //       console.log('response ==========', response.data);
+  //       this.setState({
+  //         listofBlocks : response.data
+  //       },()=>{
+  //       // console.log('listofBlocks', this.state.listofBlocks);
+  //       })
+  //   }).catch(function (error) {  
+  //      console.log("error = ",error);
        
-      });
-  }
+  //     });
+  // }
   selectBlock(event){
     event.preventDefault();
     var block = event.target.value;
@@ -337,27 +352,43 @@ class GeographicalReport extends Component{
     },()=>{
       // console.log("block",block);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.selectedDistrict,this.state.block);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
     });
   }
-  getVillages(stateCode, selectedDistrict, block){
-    // console.log(stateCode, selectedDistrict, block);
-    axios({
-      method: 'get',
-      // url: 'http://locations2.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
-      url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
-    }).then((response)=> {
-        console.log('response ==========', response.data);
-        this.setState({
-          listofVillages : response.data
-        },()=>{
-        // console.log('listofVillages', this.state.listofVillages);
-        })
-    }).catch(function (error) { 
-        console.log("error = ",error);
+  // getVillages(stateCode, selectedDistrict, block){
+  //   // console.log(stateCode, selectedDistrict, block);
+  //   axios({
+  //     method: 'get',
+  //     // url: 'http://locations2.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
+  //     url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
+  //   }).then((response)=> {
+  //       console.log('response ==========', response.data);
+  //       this.setState({
+  //         listofVillages : response.data
+  //       },()=>{
+  //       // console.log('listofVillages', this.state.listofVillages);
+  //       })
+  //   }).catch(function (error) { 
+  //       console.log("error = ",error);
     
-      });
-  }
+  //     });
+  // }
   selectVillage(event){
     event.preventDefault();
     var village = event.target.value;
@@ -528,6 +559,9 @@ class GeographicalReport extends Component{
                   projectCategoryType                   : a.projectCategoryType ? a.projectCategoryType : "-",
                   projectName                           : a.projectName === 0 ? "-" :a.projectName,   
                   name                                  : a.name,
+                  achievement_district                  : a.achievement_district==="all" ? "-" : a.achievement_district,
+                  achievement_block                     : a.achievement_block==="all" ? "-" : a.achievement_block,
+                  achievement_village                   : a.achievement_village==="all" ? "-" : a.achievement_village,
                   achievement_Reach                     : this.addCommas(a.achievement_Reach),
                   achievement_FamilyUpgradation         : this.addCommas(a.achievement_FamilyUpgradation),
                   achievement_LHWRF_L                   : a.achievement_LHWRF_L,
@@ -539,6 +573,7 @@ class GeographicalReport extends Component{
                   achievement_Other_L                   : a.achievement_Other_L,
                   achievement_TotalBudget_L             : a.achievement_TotalBudget_L,
                 }
+    
               })
               this.setState({
                 tableData : tableData
@@ -773,7 +808,7 @@ class GeographicalReport extends Component{
                                 // console.log("data",data)
                                 return(
                                   /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                  <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+                                  <option key={index} value={(data.district+'|'+data._id)}>{data.district.split('|')[0]}</option>
 
                                 );
                               })
@@ -793,7 +828,7 @@ class GeographicalReport extends Component{
                               this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                               this.state.listofBlocks.map((data, index)=>{
                                 return(
-                                  <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                  <option key={index} value={data.block}>{data.block}</option>
                                 );
                               })
                               :
@@ -813,7 +848,7 @@ class GeographicalReport extends Component{
                               this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                               this.state.listofVillages.map((data, index)=>{
                                 return(
-                                  <option key={index} value={this.camelCase(data.cityName)}>{this.camelCase(data.cityName)}</option>
+                                  <option key={index} value={data.village}>{data.village}</option>
                                 );
                               })
                               :
