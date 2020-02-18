@@ -52,7 +52,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                         hide : false
                     },
                     {
-                        heading : "Source of Financial Plan 'Rs'",
+                        heading : "Source of Financial Plan 'Lakh'",
                         mergedColoums : 7,
                         hide : true
                     },
@@ -71,15 +71,15 @@ class ActivitywiseAnnualPlanReport extends Component{
                 "annualPlan_Reach"                       : 'Reach', 
                 "annualPlan_FamilyUpgradation"           : "Families Upgradation",
                 "annualPlan_PhysicalUnit"                : 'Phy Units', 
-                "annualPlan_UnitCost"                    : 'Unit Cost "Rs"',
+                "annualPlan_UnitCost_L"                  : "Unit Cost 'Lakh'",
                 "annualPlan_TotalBudget_L"               : "Total Budget 'Lakh'",
-                "annualPlan_LHWRF"                       : 'LHWRF',
-                "annualPlan_NABARD"                      : 'NABARD',
-                "annualPlan_Bank_Loan"                   : 'Bank',
-                "annualPlan_Govt"                        : 'Government',
-                "annualPlan_DirectCC"                    : 'DirectCC',
-                "annualPlan_IndirectCC"                  : 'IndirectCC',
-                "annualPlan_Other"                       : 'Others',
+                "annualPlan_LHWRF_L"                     : 'LHWRF',
+                "annualPlan_NABARD_L"                    : 'NABARD',
+                "annualPlan_Bank_Loan_L"                 : 'Bank',
+                "annualPlan_Govt_L"                      : 'Government',
+                "annualPlan_DirectCC_L"                  : 'DirectCC',
+                "annualPlan_IndirectCC_L"                : 'IndirectCC',
+                "annualPlan_Other_L"                     : 'Others',
                 "annualPlan_Remark"                      : 'Remark',
             },
             "tableObjects"        : {
@@ -336,122 +336,52 @@ class ActivitywiseAnnualPlanReport extends Component{
     if(year ){
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType && activity_ID && subActivity_ID){ 
             // console.log(activity_ID, subActivity_ID);  
+        var startDate = year.substring(3, 7)+"-04-01";
+        var endDate = year.substring(10, 15)+"-03-31";    
         if(center_ID==="all"){
           if(sector_ID==="all"){
-            var startDate = year.substring(3, 7)+"-04-01";
-            var endDate = year.substring(10, 15)+"-03-31";    
-            $(".fullpageloader").show();
-            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
-              .then((response)=>{
-                console.log("resp",response);
-                $(".fullpageloader").hide();
-                  var tableData = response.data.map((a, i)=>{
-                  return {
-                  _id                                       : a._id,            
+            var url = '/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
+          }else{    
+            var url = '/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
+          }
+        }else{
+          var url = '/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
+        }     
+          $(".fullpageloader").show();
+          axios.get(url)
+            .then((response)=>{
+              console.log("resp",response);
+              $(".fullpageloader").hide();
+              var tableData = response.data.map((a, i)=>{
+                return {
+                  _id                                       : a._id,  
                   annualPlan_projectCategoryType            : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
-                  annualPlan_projectName                    : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,        
+                  annualPlan_projectName                    : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,                       
                   name                                      : a.name,
                   unit                                      : a.unit,
                   annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
                   annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
                   annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
-                  annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
+                  annualPlan_UnitCost_L                     : a.annualPlan_UnitCost_L,
                   annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                  annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
-                  annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
-                  annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
-                  annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
-                  annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
-                  annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
-                  annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
+                  annualPlan_LHWRF_L                        : a.annualPlan_LHWRF_L,
+                  annualPlan_NABARD_L                       : a.annualPlan_NABARD_L,
+                  annualPlan_Bank_Loan_L                    : a.annualPlan_Bank_Loan_L,
+                  annualPlan_Govt_L                         : a.annualPlan_Govt_L,
+                  annualPlan_DirectCC_L                     : a.annualPlan_DirectCC_L,
+                  annualPlan_IndirectCC_L                   : a.annualPlan_IndirectCC_L,
+                  annualPlan_Other_L                        : a.annualPlan_Other_L,
                   annualPlan_Remark                         : a.annualPlan_Remark,
-                  }
+                }
               })
-                this.setState({
-                  tableData : tableData
-                },()=>{
-                })
+              this.setState({
+                tableData : tableData
+              },()=>{
               })
-              .catch(function(error){
-                console.log("error = ",error);
-              });
-            }else{
-              // console.log("year",year);
-              var startDate = year.substring(3, 7)+"-04-01";
-              var endDate = year.substring(10, 15)+"-03-31";    
-              axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
-                .then((response)=>{
-                  console.log("resp",response);
-                    var tableData = response.data.map((a, i)=>{
-                    return {
-                        _id                                       : a._id,           
-                        annualPlan_projectCategoryType            : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
-                        annualPlan_projectName                    : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,    
-                        name                                      : a.name,
-                        unit                                      : a.unit,
-                        annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
-                        annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
-                        annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
-                        annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
-                        annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                        annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
-                        annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
-                        annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
-                        annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
-                        annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
-                        annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
-                        annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
-                        annualPlan_Remark                         : a.annualPlan_Remark,
-                      }
-                })
-                  this.setState({
-                    tableData : tableData
-                  },()=>{
-                    // console.log("resp",this.state.tableData)
-                  })
-                })
-                .catch(function(error){
-                  console.log("error = ",error);
-                 
-                });
-            }
-          }else{
-            var startDate = year.substring(3, 7)+"-04-01";
-            var endDate = year.substring(10, 15)+"-03-31";    
-            axios.get('/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
-              .then((response)=>{
-                console.log("resp",response);
-                  var tableData = response.data.map((a, i)=>{
-                  return {
-                    _id                                       : a._id,            
-                    annualPlan_projectCategoryType            : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
-                    annualPlan_projectName                    : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,     
-                    name                                      : a.name,
-                    unit                                      : a.unit,
-                    annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
-                    annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
-                    annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
-                    annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
-                    annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                    annualPlan_LHWRF                          : this.addCommas(a.annualPlan_LHWRF),
-                    annualPlan_NABARD                         : this.addCommas(a.annualPlan_NABARD),
-                    annualPlan_Bank_Loan                      : this.addCommas(a.annualPlan_Bank_Loan),
-                    annualPlan_Govt                           : this.addCommas(a.annualPlan_Govt),
-                    annualPlan_DirectCC                       : this.addCommas(a.annualPlan_DirectCC),
-                    annualPlan_IndirectCC                     : this.addCommas(a.annualPlan_IndirectCC),
-                    annualPlan_Other                          : this.addCommas(a.annualPlan_Other),
-                    annualPlan_Remark                         : a.annualPlan_Remark,
-                  }
-              })
-                this.setState({
-                  tableData : tableData
-                },()=>{
-                })
-              })
-              .catch(function(error){
-                console.log("error = ",error);
-              });
-          }
+            })
+          .catch(function(error){
+            console.log("error = ",error);
+          });
         }
       }
     }

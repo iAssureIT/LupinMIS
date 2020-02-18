@@ -1,3 +1,6 @@
+.whiteText{
+  color: transparent;
+}
 .tableDwld{
   font-size: 25px;
   border: 1px solid #eee;
@@ -86,7 +89,7 @@
   background-color: #fff;
   border: 1px solid #979797 !important;
   border-radius: 3px !important;
-  margin-top: 30px;
+  margin-top: 5px;
 }
 .tableprintincon{
   font-size: 15px;
@@ -96,7 +99,7 @@
   border: 1px solid #979797 !important;
   border-radius: 3px !important;
   padding: 5px 10px;
-  margin-top: 30px;
+  margin-top: 5px;
 }
 /*.scrollContent {
   display:block;

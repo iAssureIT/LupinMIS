@@ -47,7 +47,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                     },
                     {
                         heading : 'Periodic Plan',
-                        mergedColoums : 3,
+                        mergedColoums : 5,
                         hide : false
                     },
                     {
@@ -65,10 +65,12 @@ class ActivitywisePeriodicPlanReport extends Component{
                 "annualPlan_Reach"                          : 'Reach', 
                 "annualPlan_FamilyUpgradation"              : "Families Upgradation",
                 "annualPlan_PhysicalUnit"                   : 'Phy Units', 
-                "annualPlan_UnitCost"                       : 'Unit Cost "Rs"',
+                "annualPlan_UnitCost_L"                     : "Unit Cost 'Lakh'",
                 "annualPlan_TotalBudget_L"                  : "Total Budget 'Lakh'",
                 "monthlyPlan_Reach"                         : 'Reach', 
+                "monthlyPlan_FamilyUpgradation"             : 'Families Upgradation', 
                 "monthlyPlan_PhysicalUnit"                  : 'Phy Units', 
+                "monthlyPlan_UnitCost_L"                    : "Unit Cost 'Lakh'",
                 "monthlyPlan_TotalBudget_L"                 : "Total Budget 'Lakh'",
                 "monthlyPlan_LHWRF_L"                       : 'LHWRF',
                 "monthlyPlan_NABARD_L"                      : 'NABARD',
@@ -76,8 +78,7 @@ class ActivitywisePeriodicPlanReport extends Component{
                 "monthlyPlan_Govt_L"                        : 'Government',
                 "monthlyPlan_DirectCC_L"                    : 'DirectCC',
                 "monthlyPlan_IndirectCC_L"                  : 'IndirectCC',
-                "monthlyPlan_Other_L"                       : 'Others',/*
-                "monthlyPlan_Other_L"                       : 'Remark',*/
+                "monthlyPlan_Other_L"                       : 'Others',
             },
             "tableObjects"        : {
                 paginationApply     : false,
@@ -334,104 +335,35 @@ class ActivitywisePeriodicPlanReport extends Component{
             if(center_ID==="all"){
                 // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType);
                 if(sector_ID==="all"){
-                    $(".fullpageloader").show();
-
-                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
-                    .then((response)=>{
-                      console.log("resp",response);
-                       $(".fullpageloader").hide();
-
-                        var tableData = response.data.map((a, i)=>{
-                            return {
-                            _id                                       : a._id,               
-                            monthlyPlan_projectCategoryType           : a.monthlyPlan_projectCategoryType ? a.monthlyPlan_projectCategoryType : "-",
-                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,        
-                            name                                      : a.name,
-                            unit                                      : a.unit,
-                            annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
-                            annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
-                            annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
-                            annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
-                            annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                            monthlyPlan_Reach                         : this.addCommas(a.monthlyPlan_Reach),
-                            monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
-                            monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,
-                            monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
-                            monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
-                            monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
-                            monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
-                            monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
-                            monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
-                            monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
-                        }
-                    })
-                      this.setState({
-                        tableData : tableData
-                      },()=>{
-                        // console.log("resp",this.state.tableData)
-                      })
-                    })
-                    .catch(function(error){
-                       console.log("error = ",error);
-                       
-                    });            
+                    var url = '/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
                 }else{
-                    axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
-                    .then((response)=>{
-                      console.log("resp",response);
-                        var tableData = response.data.map((a, i)=>{
-                            return {
-                            _id                                       : a._id,             
-                            monthlyPlan_projectCategoryType           : a.monthlyPlan_projectCategoryType ? a.monthlyPlan_projectCategoryType : "-",
-                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,    
-                            name                                      : a.name,
-                            unit                                      : a.unit,
-                            annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
-                            annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
-                            annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
-                            annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
-                            annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                            monthlyPlan_Reach                         : this.addCommas(a.monthlyPlan_Reach),
-                            monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
-                            monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,
-                            monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
-                            monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
-                            monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
-                            monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
-                            monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
-                            monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
-                            monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
-                        }
-                    })
-                      this.setState({
-                        tableData : tableData
-                      },()=>{
-                        // console.log("resp",this.state.tableData)
-                      })
-                    })
-                    .catch(function(error){
-                        console.log("error = ",error);
-                       
-                    });      
+                    var url = '/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
                 }
             }else{
-                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
+                var url = '/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
+            }    
+
+            $(".fullpageloader").show();
+            axios.get(url)
                 .then((response)=>{
                   console.log("resp",response);
+                   $(".fullpageloader").hide();
                     var tableData = response.data.map((a, i)=>{
                         return {
-                            _id                                       : a._id,                 
+                            _id                                       : a._id,   
                             monthlyPlan_projectCategoryType           : a.monthlyPlan_projectCategoryType ? a.monthlyPlan_projectCategoryType : "-",
-                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,        
+                            monthlyPlan_projectName                   : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,              
                             name                                      : a.name,
                             unit                                      : a.unit,
                             annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
                             annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
                             annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
-                            annualPlan_UnitCost                       : this.addCommas(a.annualPlan_UnitCost),
+                            annualPlan_UnitCost_L                     : (a.annualPlan_UnitCost_L),
                             annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
                             monthlyPlan_Reach                         : this.addCommas(a.monthlyPlan_Reach),
+                            monthlyPlan_FamilyUpgradation             : this.addCommas(a.monthlyPlan_FamilyUpgradation),
                             monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
+                            monthlyPlan_UnitCost_L                    : (a.monthlyPlan_UnitCost_L),
                             monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,
                             monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
                             monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
@@ -441,18 +373,17 @@ class ActivitywisePeriodicPlanReport extends Component{
                             monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
                             monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
                         }
-                })
-                  this.setState({
-                    tableData : tableData
-                  },()=>{
+                    })
+                    this.setState({
+                        tableData : tableData
+                    },()=>{
                     // console.log("resp",this.state.tableData)
-                  })
+                    })
                 })
                 .catch(function(error){
-                     console.log("error = ",error);
+                   console.log("error = ",error);
                    
                 });            
-            }
         }
     }
     handleFromChange(event){

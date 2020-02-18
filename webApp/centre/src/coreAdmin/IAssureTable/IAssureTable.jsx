@@ -576,6 +576,7 @@ class IAssureTable extends Component {
                 <React.Fragment>
           
                     <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+		        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding whiteText">Search</label>
                         <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
                            <ReactHTMLTableToExcel
                                 id="table-to-xls"                           
@@ -614,7 +615,7 @@ class IAssureTable extends Component {
 		    
 		  
            
-	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">
+	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding">
 	            	{/*==============================================================================
 	            			We will have two tables... One to display on screen and one to print.							
 					   ============================================================================== */}
