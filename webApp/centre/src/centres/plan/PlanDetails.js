@@ -179,19 +179,19 @@ class PlanDetails extends Component{
   }
   calculateTotalBudget(index){
     if (this.state["physicalUnit-"+index] && this.state["unitCost-"+index]) {
-      const total =  parseInt(this.state["physicalUnit-"+index]) * parseInt(this.state["unitCost-"+index]);
+      const total =  parseFloat(this.state["physicalUnit-"+index]) * parseFloat(this.state["unitCost-"+index]);
       // console.log("total",total);
-      this.state.availableSubActivity[parseInt(index)].totalBudget = total;
-      this.state.availableSubActivity[parseInt(index)].LHWRF = total;
-      this.state.availableSubActivity[parseInt(index)].NABARD = 0;
-      this.state.availableSubActivity[parseInt(index)].bankLoan = 0;
-      this.state.availableSubActivity[parseInt(index)].directCC = 0;
-      this.state.availableSubActivity[parseInt(index)].govtscheme = 0;
-      this.state.availableSubActivity[parseInt(index)].indirectCC = 0;
-      this.state.availableSubActivity[parseInt(index)].other = 0;
+      this.state.availableSubActivity[parseFloat(index)].totalBudget = (total).toFixed(2);
+      this.state.availableSubActivity[parseFloat(index)].LHWRF = (total).toFixed(2);
+      this.state.availableSubActivity[parseFloat(index)].NABARD = 0;
+      this.state.availableSubActivity[parseFloat(index)].bankLoan = 0;
+      this.state.availableSubActivity[parseFloat(index)].directCC = 0;
+      this.state.availableSubActivity[parseFloat(index)].govtscheme = 0;
+      this.state.availableSubActivity[parseFloat(index)].indirectCC = 0;
+      this.state.availableSubActivity[parseFloat(index)].other = 0;
       this.setState({ 
-        ["totalBudget-"+index] : total,
-        ["LHWRF-"+index] : total,
+        ["totalBudget-"+index] : (total).toFixed(2),
+        ["LHWRF-"+index] : (total).toFixed(2),
         ["NABARD-"+index] : 0,
         ["bankLoan-"+index] : 0,
         ["directCC-"+index] : 0,
@@ -203,18 +203,18 @@ class PlanDetails extends Component{
     }
   }
   remainTotal(index,name){
-    var totalBudget    = this.state.availableSubActivity[parseInt(index)].totalBudget;
-    var getsubActivity = this.state.availableSubActivity[parseInt(index)];
-    var subTotal       = parseInt(getsubActivity.LHWRF) + parseInt(getsubActivity.NABARD) + parseInt(getsubActivity.bankLoan) + parseInt(getsubActivity.govtscheme) + parseInt(getsubActivity.directCC) + parseInt(getsubActivity.indirectCC) + parseInt(getsubActivity.other);
+    var totalBudget    = this.state.availableSubActivity[parseFloat(index)].totalBudget;
+    var getsubActivity = this.state.availableSubActivity[parseFloat(index)];
+    var subTotal       = (parseFloat(getsubActivity.LHWRF)) + (parseFloat(getsubActivity.NABARD)) + (parseFloat(getsubActivity.bankLoan)) + (parseFloat(getsubActivity.govtscheme)) + (parseFloat(getsubActivity.directCC)) + (parseFloat(getsubActivity.indirectCC)) + (parseFloat(getsubActivity.other));
     var arr            = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
     var findIndex      = arr.findIndex((obj)=>{return obj  === name});
 
     if (findIndex !== -1) {
-      if (parseInt(subTotal) < parseInt(totalBudget)) {
+      if (parseFloat(subTotal) < parseFloat(totalBudget)) {
         var getstate = arr[findIndex + 1];
         if (getstate) {
-          getsubActivity[getstate] = totalBudget - subTotal;
-          this.setState({[getstate+"-"+index] : totalBudget - subTotal });
+          getsubActivity[getstate] = (totalBudget - subTotal).toFixed(2);
+          this.setState({[getstate+"-"+index] : (totalBudget - subTotal).toFixed(2)});
         }
         for (var k = findIndex + 2; k < arr.length; k++) {
           var currentStates = arr[k];
@@ -226,11 +226,11 @@ class PlanDetails extends Component{
       }else{
         var remainTotal =  0;
         for (var j = 0; j < findIndex; j++) {
-          remainTotal += parseInt(getsubActivity[arr[j]]);
+          remainTotal += (parseFloat(getsubActivity[arr[j]])).toFixed(2);
         }
         if (remainTotal > 0 ) {
-          getsubActivity[arr[findIndex]] = totalBudget - remainTotal;
-          this.setState({[arr[findIndex]+"-"+index] : totalBudget - remainTotal});
+          getsubActivity[arr[findIndex]] = (totalBudget - remainTotal).toFixed(2);
+          this.setState({[arr[findIndex]+"-"+index] : (totalBudget - remainTotal).toFixed(2)});
         }
         for (var i = findIndex + 1; i < arr.length; i++) {
           var currentState = arr[i];
@@ -251,12 +251,12 @@ class PlanDetails extends Component{
     const value = event.target.value;
     let fields = this.state.fields;
     const x =  this.refs["physicalUnit-"+id].value * this.refs["unitCost-"+id].value;
-    // console.log('x',x)
+    console.log('x',x)
     this.setState({
       [event.target.name] : event.target.value,
-      totalBud : x,
-      ["totalBudget-"+id] : x,
-      ["LHWRF-"+id] : x,
+      totalBud : x.toFixed(2),
+      ["totalBudget-"+id] : x.toFixed(2),
+      ["LHWRF-"+id] : x.toFixed(2),
       ["NABARD-"+id] : 0,
       ["bankLoan-"+id] : 0,
       ["directCC-"+id] : 0,
@@ -288,7 +288,7 @@ class PlanDetails extends Component{
     var idExist = subActivityDetails.filter((a)=>{return a.subactivity_ID === id});
     var name = (name).split('-')[0];
     // console.log("idExist",idExist);
-     var y =parseInt(totalBud);  
+     var y =parseFloat(totalBud).toFixed(2);  
      // console.log("y1 = ",y);
     if(idExist.length > 0){      
      // console.log("y2 = ",idExist.length );
@@ -348,18 +348,18 @@ class PlanDetails extends Component{
             "subactivity_ID"      : subActivityDetails[i]._id,
             "subactivityName"     : subActivityDetails[i].subActivityName,
             "unit"                : subActivityDetails[i].unit,
-            "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
-            "unitCost"            : parseInt(subActivityDetails[i].unitCost),
-            "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
-            "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
-            "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
-            "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
-            "NABARD"              : parseInt(subActivityDetails[i].NABARD),
-            "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
-            "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
-            "directCC"            : parseInt(subActivityDetails[i].directCC),
-            "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
-            "other"               : parseInt(subActivityDetails[i].other),
+            "physicalUnit"        : parseFloat(subActivityDetails[i].physicalUnit),
+            "unitCost"            : parseFloat(subActivityDetails[i].unitCost),
+            "totalBudget"         : parseFloat(subActivityDetails[i].totalBudget),
+            "noOfBeneficiaries"   : parseFloat(subActivityDetails[i].noOfBeneficiaries),
+            "noOfFamilies"        : parseFloat(subActivityDetails[i].noOfFamilies),
+            "LHWRF"               : parseFloat(subActivityDetails[i].LHWRF),
+            "NABARD"              : parseFloat(subActivityDetails[i].NABARD),
+            "bankLoan"            : parseFloat(subActivityDetails[i].bankLoan),
+            "govtscheme"          : parseFloat(subActivityDetails[i].govtscheme),
+            "directCC"            : parseFloat(subActivityDetails[i].directCC),
+            "indirectCC"          : parseFloat(subActivityDetails[i].indirectCC),
+            "other"               : parseFloat(subActivityDetails[i].other),
             "remark"              : subActivityDetails[i].remark,
           };
           axios.post(this.state.apiCall, planValues)
@@ -497,18 +497,18 @@ class PlanDetails extends Component{
             "subactivity_ID"      : subActivityDetails[i]._id,
             "subactivityName"     : subActivityDetails[i].subActivityName,
             "unit"                : subActivityDetails[i].unit,
-            "physicalUnit"        : parseInt(subActivityDetails[i].physicalUnit),
-            "unitCost"            : parseInt(subActivityDetails[i].unitCost),
-            "totalBudget"         : parseInt(subActivityDetails[i].totalBudget),
-            "noOfBeneficiaries"   : parseInt(subActivityDetails[i].noOfBeneficiaries),
-            "noOfFamilies"        : parseInt(subActivityDetails[i].noOfFamilies),
-            "LHWRF"               : parseInt(subActivityDetails[i].LHWRF),
-            "NABARD"              : parseInt(subActivityDetails[i].NABARD),
-            "bankLoan"            : parseInt(subActivityDetails[i].bankLoan),
-            "govtscheme"          : parseInt(subActivityDetails[i].govtscheme),
-            "directCC"            : parseInt(subActivityDetails[i].directCC),
-            "indirectCC"          : parseInt(subActivityDetails[i].indirectCC),
-            "other"               : parseInt(subActivityDetails[i].other),
+            "physicalUnit"        : parseFloat(subActivityDetails[i].physicalUnit),
+            "unitCost"            : parseFloat(subActivityDetails[i].unitCost),
+            "totalBudget"         : parseFloat(subActivityDetails[i].totalBudget),
+            "noOfBeneficiaries"   : parseFloat(subActivityDetails[i].noOfBeneficiaries),
+            "noOfFamilies"        : parseFloat(subActivityDetails[i].noOfFamilies),
+            "LHWRF"               : parseFloat(subActivityDetails[i].LHWRF),
+            "NABARD"              : parseFloat(subActivityDetails[i].NABARD),
+            "bankLoan"            : parseFloat(subActivityDetails[i].bankLoan),
+            "govtscheme"          : parseFloat(subActivityDetails[i].govtscheme),
+            "directCC"            : parseFloat(subActivityDetails[i].directCC),
+            "indirectCC"          : parseFloat(subActivityDetails[i].indirectCC),
+            "other"               : parseFloat(subActivityDetails[i].other),
             "remark"              : subActivityDetails[i].remark,
           };
           // console.log('planValues',planValues)
@@ -864,12 +864,17 @@ class PlanDetails extends Component{
         method: 'get',
         url: '/api/sectors/'+sector_ID,
       }).then((response)=> {
-        // console.log("response for edit",response.data);
+
+       
+        var availableActivity = response.data[0].activity
+         var sortArray = availableActivity.sort(function(a,b){
+        return((a.activityName) - (b.activityName)); //ASC, For Descending order use: b - a
+      });
         this.setState({
-          availableActivity : response.data[0].activity,
+          availableActivity : sortArray,
           // activityName      : "-- Select --",
         },()=>{
-          // console.log("this.state.editId",this.state.editId);
+          console.log("this.state.availableActivity",this.state.availableActivity);
           if(!this.state.editId){
             this.setState({
                 availableSubActivity : []
@@ -1080,7 +1085,7 @@ class PlanDetails extends Component{
       subActivityName : "-- Select --",
       activityName    : '-- Select --',
     },()=>{
-      console.log('projectCategoryType',this.state.projectCategoryType);
+      // console.log('projectCategoryType',this.state.projectCategoryType);
       if (this.state.projectCategoryType === "LHWRF Grant") {
         this.setState({
           projectName:"-- Select --",
@@ -1098,7 +1103,7 @@ class PlanDetails extends Component{
         subActivityName : "-- Select --",
         activityName    : '-- Select --',
       },()=>{
-        console.log("this.state.type",this.state.type)
+        // console.log("this.state.type",this.state.type)
 
       })
     }
@@ -1119,7 +1124,7 @@ class PlanDetails extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      console.log('responseP', response); 
+      // console.log('responseP', response); 
       this.setState({
         availableProjects : response.data
       })
@@ -1130,7 +1135,7 @@ class PlanDetails extends Component{
   render() {
                 // console.log("availableSubActivity",this.state.availableSubActivity);
 
-      console.log("this.state.type",this.state.type,"projectCategoryType",this.state.projectCategoryType)
+      // console.log("this.state.type",this.state.type,"projectCategoryType",this.state.projectCategoryType)
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
@@ -1334,7 +1339,7 @@ class PlanDetails extends Component{
                                                 <label className="formLable">Total Cost</label>
                                                 <div className="input-group inputBox-main" id={"totalBudget-"+index} >                                         
                                                   <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="number"  min="0" className="form-control inputBox formLable " name={"totalBudget-"+index} disabled value={data.totalBudget}/>
+                                                  <input type="number"  min="0" className="form-control inputBox formLable " name={"totalBudget-"+index} disabled value={(parseFloat(data.totalBudget)).toFixed(2)}/>
                                                 </div>
                                               </div>  
                                               <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">

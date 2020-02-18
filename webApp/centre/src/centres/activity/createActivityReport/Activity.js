@@ -210,17 +210,17 @@ class Activity extends Component{
   remainTotal(event){
     event.preventDefault(); 
     // console.log("event.target.name",event.target.name);
-    var totalBudget = parseInt(this.state.totalcost);
-    var subTotal    = parseInt(this.state.LHWRF) + parseInt(this.state.NABARD) + parseInt(this.state.bankLoan) + parseInt(this.state.govtscheme) + parseInt(this.state.directCC) + parseInt(this.state.indirectCC) + parseInt(this.state.other);
+    var totalBudget = parseFloat(this.state.totalcost);
+    var subTotal    = parseFloat(this.state.LHWRF) + parseFloat(this.state.NABARD) + parseFloat(this.state.bankLoan) + parseFloat(this.state.govtscheme) + parseFloat(this.state.directCC) + parseFloat(this.state.indirectCC) + parseFloat(this.state.other);
     // console.log("subTotal",subTotal);
     var arr = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
     var findIndex = arr.findIndex((obj)=>{return obj  === event.target.name});
     // console.log("findIndex",findIndex);
     if (findIndex !== -1) {
-      if (parseInt(subTotal) < parseInt(totalBudget)) {
+      if (parseFloat(subTotal) < parseFloat(totalBudget)) {
         var getstate = arr[findIndex + 1];
         if (getstate) {
-          this.setState({[getstate] : totalBudget - subTotal });
+          this.setState({[getstate] : (totalBudget - subTotal).toFixed(2) });
         }
         for (var k = findIndex + 2; k < arr.length; k++) {
           var currentStates = arr[k];
@@ -231,7 +231,7 @@ class Activity extends Component{
       }else{
         var remainTotal =  0;
         for (var j = 0; j < findIndex; j++) {
-          remainTotal += parseInt(this.state[arr[j]]);
+          remainTotal += parseFloat(this.state[arr[j]]);
         }
         if (remainTotal > 0 ) {
           this.setState({[arr[findIndex]] : totalBudget - remainTotal });
@@ -298,8 +298,8 @@ class Activity extends Component{
     },()=>{
       if (this.state.unitCost > 0 & this.state.quantity > 0) {
         // console.log("this.state.unitCost = ",this.state.unitCost);
-        // console.log("this.state.quantity = ",this.state.quantity);
-        var totalcost = parseInt(this.state.unitCost) * parseInt(this.state.quantity);
+        var totalcost = (parseFloat(this.state.unitCost) * parseFloat(this.state.quantity)).toFixed(2);
+        console.log("totalcost = ",totalcost);
         this.state.LHWRF = 0;
         this.state.NABARD = 0;
         this.state.bankLoan = 0;
@@ -403,7 +403,7 @@ class Activity extends Component{
       };
       
       // console.log("activityValues", activityValues);
-      if (parseInt(this.state.total) === parseInt(this.state.totalcost)) {
+      if (parseFloat(this.state.total) === parseFloat(this.state.totalcost)) {
 
         axios.post('/api/activityReport',activityValues)
         .then((response)=>{
@@ -648,50 +648,53 @@ class Activity extends Component{
     });
   }
   
-  getAvailableVillages()
+  getAvailableVillages(center_ID, district, block)
   {
     axios({
         method: 'get',
-        url: '/api/centers/'+this.state.center_ID,
+        url: '/api/centers/'+center_ID,
         }).then((response)=> {
         function removeDuplicates(data, param, district, block){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
           })
         }
-        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village", district, block);
         this.setState({
           listofVillages   : availablevillageInCenter,
-        })
+        },()=>{
+            console.log('listofVillages',this.state.listofVillages);
+          })
       }).catch(function (error) {
         console.log("error = ",error);
       });
     }
-  getAvailableBlocks()
+  getAvailableBlocks(center_ID, districtB)
   {
+        console.log("center_ID = ",center_ID,"district",districtB);
     axios({
           method: 'get',
-          url: '/api/centers/'+this.state.center_ID,
+          url: '/api/centers/'+center_ID,
           }).then((response)=> {
-          // console.log('availableblockInCenter ==========',response);
+          console.log('availableblockInCenter ==========',response);
           function removeDuplicates(data, param, district){
             return data.filter(function(item, pos, array){
               return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
             })
           }
-          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+          console.log('villagesCovered',response.data[0].villagesCovered);
+          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", districtB);
           this.setState({
             listofBlocks     : availableblockInCenter,
+          },()=>{
+            console.log('listofBlocks',this.state.listofBlocks);
           })
         }).catch(function (error) {
           console.log("error = ",error);
         });
   }
   edit(id){
-    // console.log('id',id)
-    this.getAvailableVillages();
-    this.getAvailableBlocks();
-    this.getAvailableCenter(this.state.center_ID);
+    console.log('this.state.center_ID',this.state.center_ID)
 
     if(id){
       axios({
@@ -700,7 +703,7 @@ class Activity extends Component{
       }).then((response)=> {
 
         var editData = response.data[0];
-        // console.log("editData",editData);
+        console.log("editData",editData);
         if(editData){
           var bentableData = []
           if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
@@ -767,10 +770,11 @@ class Activity extends Component{
             "activityId" : editData.activity_ID,
           }, ()=>{
             this.getAvailableCenter(this.state.center_ID);
-            // this.getBlock(this.state.stateCode, this.state.district);
-            // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
             this.getAvailableActivity(this.state.sectorId);
             this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
+            this.getAvailableVillages(this.state.center_ID, this.state.district, this.state.block);
+            this.getAvailableBlocks(this.state.center_ID, this.state.district);
+            this.getAvailableCenter(this.state.center_ID);
           });
         }
       })
@@ -1651,7 +1655,7 @@ class Activity extends Component{
 
                               <label className="formLable">Total Cost of Activity :</label>
                             
-                              <input type="number" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost"  value={this.state.totalcost} disabled />
+                              <input type="number" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost"  value={(parseFloat(this.state.totalcost)).toFixed(2)} disabled />
                               
                             </div>
                             <div className="errorMsg">{this.state.errors.totalcost}</div>
@@ -1735,7 +1739,7 @@ class Activity extends Component{
                                
                                   <div className="form-control inputBox inputBox-main unit">
                                     {this.state.total ? 
-                                        <label className="formLable" id="total">{this.state.total}</label>
+                                        <label className="formLable" id="total">{(parseFloat(this.state.total)).toFixed(2)}</label>
                                       :
                                       0
                                     }

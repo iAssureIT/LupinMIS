@@ -47,7 +47,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                     hide :false,
                 },
                 {
-                    heading : "Source OF Financial Achievement",
+                    heading : "Source of Financial Achievement",
                     mergedColoums : 7,
                     hide :true,
                 },
