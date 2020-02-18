@@ -461,7 +461,7 @@ class Activity extends Component{
           "sendBeneficiary"     : [],
         });
       }else{
-        swal("abc",'Total Costs are not equal! Please check');
+        swal("abc",'Total Costs are not equal! Please check.');
       }
     }else{
       $("html,body").scrollTop(0)

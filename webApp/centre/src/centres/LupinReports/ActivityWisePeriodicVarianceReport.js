@@ -49,7 +49,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     },
                     
                     {
-                        heading : "Physical and Financial Plan 'Lakh'",
+                        heading : "Physical and Financial Periodic Plan 'Lakh'",
                         mergedColoums : 9,
                         hide : false
                     },
@@ -82,7 +82,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 "monthlyPlan_Govt_L"                        : 'Government',
                 "monthlyPlan_Other_L"                       : 'Others',
                 "achievement_PhysicalUnit"                  : 'Phy Units', 
-                "achievement_TotalBudget_L"                 : "Financial Total",
+                "achievement_TotalBudget_L"                 : "Financial Total 'Lakh'",
                 "achievement_LHWRF_L"                       : 'LHWRF',
                 "achievement_NABARD_L"                      : 'NABARD',
                 "achievement_Bank_Loan_L"                   : 'Bank Loan',
@@ -91,7 +91,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 "achievement_Govt_L"                        : 'Government',
                 "achievement_Other_L"                       : 'Others',
                 "variance_monthlyPlan_PhysicalUnit"         : 'Phy Units', 
-                "variance_monthlyPlan_TotalBudget_L"        : "Financial Total",
+                "variance_monthlyPlan_TotalBudget_L"        : "Financial Total 'Lakh'",
                 "variance_monthlyPlan_LHWRF_L"              : 'LHWRF',
                 "variance_monthlyPlan_NABARD_L"             : 'NABARD',
                 "variance_monthlyPlan_Bank_Loan_L"          : 'Bank Loan',

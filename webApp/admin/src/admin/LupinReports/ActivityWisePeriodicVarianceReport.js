@@ -51,12 +51,12 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         hide : false
                     },
                     {
-                        heading : "Physical and Financial Plan",
+                        heading : "Physical and Financial Periodic Plan 'Lakh'",
                         mergedColoums : 9,
                         hide : false
                     },
                     {
-                        heading : "Physical and Financial Achievement",
+                        heading : "Physical and Financial Achievement 'Lakh'",
                         mergedColoums : 9,
                         hide : false
                     },
@@ -74,6 +74,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 "unit"                                      : 'Unit',
                 "annualPlan_PhysicalUnit"                   : 'Phy Units', 
                 "annualPlan_TotalBudget_L"                  : "Total Budget 'Lakh'",
+
                 "monthlyPlan_PhysicalUnit"                  : 'Phy Units', 
                 "monthlyPlan_TotalBudget_L"                 : "Total Budget 'Lakh'",
                 "monthlyPlan_LHWRF_L"                       : 'LHWRF',
@@ -83,8 +84,9 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 "monthlyPlan_DirectCC_L"                    : 'DirectCC',
                 "monthlyPlan_IndirectCC_L"                  : 'IndirectCC',
                 "monthlyPlan_Other_L"                       : 'Others',
+
                 "achievement_PhysicalUnit"                  : 'Phy Units', 
-                "achievement_TotalBudget_L"                 : "Financial Total",
+                "achievement_TotalBudget_L"                 : "Financial Total 'Lakh'",
                 "achievement_LHWRF_L"                       : 'LHWRF',
                 "achievement_NABARD_L"                      : 'NABARD',
                 "achievement_Bank_Loan_L"                   : 'Bank Loan',
@@ -92,8 +94,9 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 "achievement_DirectCC_L"                    : 'DirectCC',
                 "achievement_IndirectCC_L"                  : 'IndirectCC',
                 "achievement_Other_L"                       : 'Others',
+
                 "variance_monthlyPlan_PhysicalUnit"         : 'Phy Units', 
-                "variance_monthlyPlan_TotalBudget_L"        : "Financial Total",
+                "variance_monthlyPlan_TotalBudget_L"        : "Financial Total 'Lakh'",
                 "variance_monthlyPlan_LHWRF_L"              : 'LHWRF',
                 "variance_monthlyPlan_NABARD_L"             : 'NABARD',
                 "variance_monthlyPlan_Bank_Loan_L"          : 'Bank Loan',

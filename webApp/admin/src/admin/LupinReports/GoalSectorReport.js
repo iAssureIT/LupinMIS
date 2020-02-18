@@ -3,6 +3,7 @@ import $                    from 'jquery';
 import swal                 from 'sweetalert';
 import axios                from 'axios';
 import moment               from 'moment';
+import Loader               from "../../common/Loader.js";
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
 class GoalSectorReport extends Component{
@@ -35,7 +36,7 @@ class GoalSectorReport extends Component{
                     mergedColoums : 7
                 },
                 {
-                    heading : 'Financial Sharing "Rs"',
+                    heading : 'Financial Sharing "Lakh"',
                     mergedColoums : 9
                 },
             ]
@@ -48,7 +49,7 @@ class GoalSectorReport extends Component{
             "activityName"    : 'Activity',
             "unit"            : 'Unit',
             "Quantity"        : 'Quantity',
-            "Amount"          : 'Amount',
+            "Amount"          : "Amount 'Lakh'",
             "Beneficiaries"   : 'Beneficiaries',
             "LHWRF"           : 'LHWRF',
             "NABARD"          : 'NABARD',
@@ -147,8 +148,10 @@ class GoalSectorReport extends Component{
         }else{
           var url = '/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName
         }
+        $(".fullpageloader").show();
         axios.get(url)
         .then((response)=>{
+        $(".fullpageloader").hide();
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
             return {
@@ -395,6 +398,7 @@ class GoalSectorReport extends Component{
   render(){
     return(     
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">

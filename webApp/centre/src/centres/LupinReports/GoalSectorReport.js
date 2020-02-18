@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import $                    from 'jquery';
 import swal                 from 'sweetalert';
 import axios                from 'axios';
+import Loader               from "../../common/Loader.js";
 import moment               from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../Reports/Reports.css";
@@ -111,8 +112,10 @@ class GoalSectorReport extends Component{
     getData(startDate, endDate,center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName){
         // console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType);
       if(center_ID && beneficiaryType){
+        $(".fullpageloader").show();
         axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName)
         .then((response)=>{
+        $(".fullpageloader").hide();
           console.log("resp",response);
           var tableData = response.data.map((a, i)=>{
             return {
@@ -367,6 +370,7 @@ class GoalSectorReport extends Component{
   render(){
     return(     
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">
