@@ -48,6 +48,7 @@ import Highlight                                  from "../../centres/highLight/
 import HighlightView                              from "../../centres/highLight/HighlightView.js"; 
 /*import Monthwise                                       from "../../centres/plan/Monthwise.js";*/
 import CenterList                                 from "../../centres/centerList/centerList.js";
+import SectorList                                 from "../../centres/sectorList/SectorList.js";
 
 // import report                                     from "../../centres/LupinReports/Report.js";
 // import report1                                    from "../../centres/LupinReports/ActivitywiseAnnualCompletionReport.js";
@@ -168,6 +169,7 @@ class Layout extends Component{
                               <Route path="/viewActivity"                        exact strict component={ ViewActivity } />
                               <Route path="/activityReportView/:id"              exact strict component={ ActivityReportView } />
                               <Route path="/centerList"                          exact strict component={ CenterList } />
+                              <Route path="/sectorList"                          exact strict component={ SectorList } />
                               <Route path="/caseStudy"                           exact strict component={ CaseStudy } />
                               <Route path="/caseStudy/"                          exact strict component={ CaseStudy } />
                               <Route path="/caseStudy/:id"                       exact strict component={ CaseStudy } />

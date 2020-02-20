@@ -301,7 +301,7 @@ class BulkUpload extends Component{
 	        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent">
 	          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 bulkEmployeeImg">
 	            <a href={this.props.fileurl} download>
-		            <img src="/images/exel2.png" />
+		            <img src="/images/Excel-download-icon.png" />
 	            </a>
 	          </div>
 	          <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 bulkEmployeeVerif">

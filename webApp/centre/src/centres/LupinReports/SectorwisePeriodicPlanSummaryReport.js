@@ -256,8 +256,11 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
     getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){        
         // console.log(startDate, endDate, center_ID,projectCategoryType);
         // axios.get('/api/report/periodic_sector/'+startDate+'/'+endDate+'/'+center_ID)
+        $(".fullpageloader").show();
+        if(this.state.endDate==="Invalid date" || this.state.startDate==="Invalid date" ){
+            $(".fullpageloader").hide();
+        }
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
-            $(".fullpageloader").show();
             axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
                 .then((response)=>{
                  $(".fullpageloader").hide();
@@ -285,7 +288,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                     monthlyPlan_DirectCC_L                  : a.monthlyPlan_DirectCC_L,
                     monthlyPlan_IndirectCC_L                : a.monthlyPlan_IndirectCC_L,
                     monthlyPlan_Other_L                     : a.monthlyPlan_Other_L,
-                } 
+                }
             })  
               this.setState({
                 tableData : tableData
@@ -303,6 +306,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
               }
             });
         }
+        
     }
     handleFromChange(event){
         event.preventDefault();
@@ -327,6 +331,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
         event.preventDefault();
         const target = event.target;
         const name = target.name;
+        console.log('to',event.target.value);
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
         
@@ -337,7 +342,8 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
            [name] : event.target.value,
            endDate : endDate
         },()=>{
-        // console.log("dateUpdate",this.state.endDate);
+            
+        console.log("dateUpdate",this.state.endDate);
             this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
        });
        // localStorage.setItem('newToDate',dateUpdate);

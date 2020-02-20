@@ -1,6 +1,6 @@
 .bulkEmployeeVerif ul li{text-align: left;list-style: disc;}
-.bulkEmployeeImg{height: 90px;}
-.bulkEmployeeImg img{max-height: 100%;margin-bottom: 1px;}
+.bulkEmployeeImg{height: 100px;}
+.bulkEmployeeImg img{height: 115px;margin-bottom: 1px;}
 .bulkEmployeeImg a{font-size: 13px;color: #00b8ff!important}
 .bulkEmployeeContent{/*margin-bottom: 50px;*/margin-top: 4px;background-color: #f6f6f7;padding-top: 20px;padding-bottom: 15px;}
 .bulkEmployeeFile p span, .bulkEmployeeFile p span:hover, .bulkEmployeeFile p span:focus,

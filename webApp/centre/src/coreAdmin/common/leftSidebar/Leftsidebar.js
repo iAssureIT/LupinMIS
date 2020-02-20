@@ -306,14 +306,7 @@ export default class Leftsidebar extends Component{
 
 
 
-                <li className="sidebarMenuText" >
-                  <Link to="/centerList" title="Center List">
-                    <i className="fa fa-clipboard" />
-                    Center List
-                  </Link>
-                </li>
-
-
+                
 
                 <li className="sidebarMenuText">
                   <Link to="/caseStudy" title="Case Study">
@@ -330,6 +323,19 @@ export default class Leftsidebar extends Component{
                     Highlights
                   </Link>
                 </li>
+                <li className="sidebarMenuText" >
+                  <Link to="/centerList" title="Center List">
+                    <i className="fa fa-clipboard" />
+                    Center List
+                  </Link>
+                </li>
+                <li className="sidebarMenuText" >
+                  <Link to="/sectorList" title="Sector List">
+                    <i className="fa fa-clipboard" />
+                    Sector List
+                  </Link>
+                </li>
+
 
 
 
