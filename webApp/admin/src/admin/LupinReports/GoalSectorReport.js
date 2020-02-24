@@ -189,34 +189,31 @@ class GoalSectorReport extends Component{
         });
       }
     }
-
+ 
   selectprojectCategoryType(event){
     event.preventDefault();
     // console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
-          projectCategoryType : projectCategoryType,
+        projectCategoryType : projectCategoryType,
+      },()=>{
+      if(this.state.projectCategoryType === "LHWRF Grant"){
+        this.setState({
+          projectName : "all",
         },()=>{
-        if(this.state.projectCategoryType === "LHWRF Grant"){
-          this.setState({
-            projectName : "all",
-          },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
-          })          
-        }else if (this.state.projectCategoryType=== "all"){
-          this.setState({
-            projectName : "all",
-          },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
-          })    
-        }
-        // console.log("shown",this.state.shown, this.state.projectCategoryType)
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
           this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
-    },()=>{
+        })          
+      }else if (this.state.projectCategoryType=== "all"){
+        this.setState({
+          projectName : "all",
+        },()=>{
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+        })    
+      }else  if(this.state.projectCategoryType=== "Project Fund"){
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+      }
     })
   }
-  
   getAvailableProjects(){
     axios({
       method: 'get',

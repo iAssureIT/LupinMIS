@@ -263,22 +263,27 @@ class ActivitywiseAnnualCompletionReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
+    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
-      projectCategoryType : projectCategoryType,
+        projectCategoryType : projectCategoryType,
     },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
-          this.setState({
-            projectName : "all",
-          })          
+            this.setState({
+              projectName : "all",
+            },()=>{
+              this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+            })          
         }else if (this.state.projectCategoryType=== "all"){
-          this.setState({
-            projectName : "all",
-          })    
+            this.setState({
+              projectName : "all",
+            },()=>{
+              this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+            })    
+        }else  if(this.state.projectCategoryType=== "Project Fund"){
+          this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         }
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-      },()=>{
+    },()=>{
     })
   }
   getAvailableProjects(){
