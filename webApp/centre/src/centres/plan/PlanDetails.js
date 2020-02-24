@@ -1013,7 +1013,7 @@ class PlanDetails extends Component{
   getFileDetails(fileName){
     var fileDetailUrl = this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl;
     axios
-    .get(fileDetailUrl+fileName)
+    .get(fileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
       $('.fullpageloader').hide();  
       if (response) {

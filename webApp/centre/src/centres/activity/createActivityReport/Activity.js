@@ -1240,7 +1240,7 @@ class Activity extends Component{
   }
   getFileDetails(fileName){
     axios
-    .get(this.state.fileDetailUrl+fileName)
+    .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
       $('.fullpageloader').hide();  
       if(response&&response.data) {
@@ -1312,7 +1312,7 @@ class Activity extends Component{
   getBenefiaciaryFileDetails(fileName){
     
     axios
-    .get(this.state.beneficiaryFileDetailUrl+fileName)
+    .get(this.state.beneficiaryFileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
       $('.fullpageloader').hide();  
       if(response&&response.data) {

@@ -517,7 +517,7 @@ class Beneficiary extends Component{
   }
   getFileDetails(fileName){
       axios
-      .get(this.state.fileDetailUrl+fileName)
+      .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
       .then((response)=> {
       $('.fullpageloader').hide();  
       if (response) {
