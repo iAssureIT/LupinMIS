@@ -89,11 +89,11 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableProjects();
     this.getAvailableCenters();
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
   }
   componentWillReceiveProps(nextProps){
     this.getAvailableCenters();
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     this.getAvailableProjects();
   }
   handleChange(event){
@@ -103,7 +103,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
       [event.target.name] : event.target.value
     },()=>{
       // console.log('name', this.state)
-    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     });
   }
   getAvailableCenters(){
@@ -135,7 +135,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
       selectedCenter : selectedCenter,
     },()=>{
       var center = this.state.selectedCenter.split('|')[1];
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       // console.log('center', center);
       this.setState({
         // center :center,
@@ -145,21 +145,27 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
 
   selectprojectCategoryType(event){
     event.preventDefault();
+    console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
-      projectCategoryType : projectCategoryType,
+        projectCategoryType : projectCategoryType,
     },()=>{
         if(this.state.projectCategoryType === "LHWRF Grant"){
-          this.setState({
-            projectName : "all",
-          })          
+            this.setState({
+              projectName : "all",
+            },()=>{
+              this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            })          
         }else if (this.state.projectCategoryType=== "all"){
-          this.setState({
-            projectName : "all",
-          })    
+            this.setState({
+              projectName : "all",
+            },()=>{
+              this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            })    
+        }else  if(this.state.projectCategoryType=== "Project Fund"){
+          this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         }
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      },()=>{
+    },()=>{
     })
   }
   getAvailableProjects(){
@@ -186,7 +192,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     })
   }
   getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        
