@@ -472,8 +472,10 @@ class VillagewisefamilyReport extends Component{
           })
         })
         .catch(function(error){  
-           console.log("error = ",error);
-          
+          console.log("error = ",error.message);
+          if(error.message === "Request failed with status code 500"){
+              $(".fullpageloader").hide();
+          }
         });
       }
     }

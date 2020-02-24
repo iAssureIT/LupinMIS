@@ -96,6 +96,8 @@ class ActivitywiseAnnualPlanReport extends Component{
 
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+      // this.getFinancialYear();
+      // this.year();
       this.getAvailableCenters();
       this.getAvailableProjects();
       this.getAvailableSectors();
@@ -108,6 +110,7 @@ class ActivitywiseAnnualPlanReport extends Component{
   }
  
   componentWillReceiveProps(nextProps){
+      this.getFinancialYear();
       this.getAvailableProjects();
       this.getAvailableCenters();
       this.getAvailableSectors();
@@ -386,17 +389,67 @@ class ActivitywiseAnnualPlanReport extends Component{
         }
       }
     }
-    getSearchText(searchText, startRange, limitRange){
-        this.setState({
-            tableData : []
-        });
+  getFinancialYear() {
+
+    let financeYear;
+    let today = moment();
+    console.log('today',today);
+    if(today.month() >= 3){
+        financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
     }
-  changeReportComponent(event){
-    var currentComp = $(event.currentTarget).attr('id');
+    else{
+        financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
     this.setState({
-      'currentTabView': currentComp,
-    })
-  }
+        financeYear :financeYear
+    },()=>{
+    console.log('financeYear',this.state.financeYear);
+        var firstYear= this.state.financeYear.split('-')[0]
+        var secondYear= this.state.financeYear.split('-')[1]
+        console.log(firstYear,secondYear);
+        var financialYear = "FY "+firstYear+" - "+secondYear;
+        /*"FY 2019 - 2020",*/
+        this.setState({
+            financialYear  :financialYear,
+        },()=>{
+          console.log('financialYear',this.state.financialYear);
+            // this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        })
+    });
+
+    var date = new Date,
+    year = date.getFullYear(),
+    select = document.createElement('select');
+
+    for (var i = year; i < year + 5; i++) {
+
+        var option = document.createElement('option'),
+            yearText = document.createTextNode(i);
+        
+        option.appendChild(yearText);
+        select.add(option);  
+        console.log('option',option); 
+    }
+
+    select.name = 'year';
+
+    document.body.appendChild(select);
+  }   
+  year() {
+        //Reference the DropDownList.
+        var ddlYears = $("#ddlYears");
+ 
+        //Determine the Current Year.
+        var currentYear = (new Date()).getFullYear();
+ 
+        //Loop and add the Year values to DropDownList.
+        for (var i = 1950; i <= currentYear; i++) {
+            var option = $("<option />");
+            option.html(i);
+            option.val(i);
+            ddlYears.append(option);
+        }
+    }
   render(){
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -497,16 +550,17 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                       </div>  
                       
+                    {/*  <select id="ddlYears"></select>*/}
                       <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Year</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                           <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
                            <option className="hidden" >-- Select Year --</option>
-                           {
+                          { 
                             this.state.years.map((data, i)=>{
                               return <option key={i}>{data}</option>
                             })
-                           }
+                          }
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
@@ -560,7 +614,7 @@ class ActivitywiseAnnualPlanReport extends Component{
                                     tableHeading={this.state.tableHeading} 
                                     tableData={this.state.tableData} 
                                     tableObjects={this.state.tableObjects}
-                                    getSearchText={this.getSearchText.bind(this)}/>
+                                    />
                             </div>
                         </div>
                     </div>

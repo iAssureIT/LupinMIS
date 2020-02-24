@@ -321,12 +321,12 @@ class CategorywiseReport extends Component{
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && projectCategoryType  && beneficiaryType){
         if(center_ID==="all"){  // axios.get('/api/report/geographical/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID)
-        $(".fullpageloader").show();
+          $(".fullpageloader").show();
 
-        axios.get('/api/report/category/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)        
-          .then((response)=>{
-            console.log("resp",response);
-            $(".fullpageloader").hide();
+          axios.get('/api/report/category/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)        
+            .then((response)=>{
+              console.log("resp",response);
+              $(".fullpageloader").hide();
 
               var tableData = response.data.map((a, i)=>{
               return {
@@ -346,9 +346,11 @@ class CategorywiseReport extends Component{
             },()=>{
             })
           })
-          .catch(function(error){
-              console.log("error = ",error);
-              
+          .catch(function(error){  
+            console.log("error = ",error.message);
+            if(error.message === "Request failed with status code 500"){
+                $(".fullpageloader").hide();
+            }
           });
         }else{
           axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
@@ -372,9 +374,11 @@ class CategorywiseReport extends Component{
             },()=>{
             })
           })
-          .catch(function(error){
-              console.log("error = ",error);
-            
+          .catch(function(error){  
+            console.log("error = ",error.message);
+            if(error.message === "Request failed with status code 500"){
+                $(".fullpageloader").hide();
+            }
           });
         }
       }

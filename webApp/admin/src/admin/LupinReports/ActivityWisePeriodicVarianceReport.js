@@ -429,9 +429,11 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         // console.log("resp",this.state.tableData)
                       })
                     })
-                    .catch(function(error){
-                        console.log("error = ",error);
-                      
+                    .catch(function(error){  
+                        console.log("error = ",error.message);
+                        if(error.message === "Request failed with status code 500"){
+                            $(".fullpageloader").hide();
+                        }
                     });
                 }else{
                     axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
@@ -481,9 +483,11 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         // console.log("resp",this.state.tableData)
                       })
                     })
-                    .catch(function(error){
-                         console.log("error = ",error);
-                      
+                    .catch(function(error){  
+                        console.log("error = ",error.message);
+                        if(error.message === "Request failed with status code 500"){
+                            $(".fullpageloader").hide();
+                        }
                     });
                 }
             }
@@ -535,9 +539,11 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     // console.log("resp",this.state.tableData)
                   })
                 }) 
-                .catch(function(error){
-                     console.log("error = ",error);
-                  
+                .catch(function(error){  
+                    console.log("error = ",error.message);
+                    if(error.message === "Request failed with status code 500"){
+                        $(".fullpageloader").hide();
+                    }
                 });
             }
         }

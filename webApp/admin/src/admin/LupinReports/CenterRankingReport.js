@@ -51,36 +51,30 @@ class CenterRankingReport extends Component{
         },   
     }
     window.scrollTo(0, 0); 
-    this.handleFromChange    = this.handleFromChange.bind(this);
-    this.handleToChange      = this.handleToChange.bind(this);
-    this.currentFromDate     = this.currentFromDate.bind(this);
-    this.currentToDate       = this.currentToDate.bind(this);
-  }
+    }
 
     componentDidMount(){
         axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-        this.currentFromDate();
-        this.currentToDate();
+        this.getFinancialYear();
         this.setState({
             tableData : this.state.tableData,
         },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         })
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        this.handleFromChange = this.handleFromChange.bind(this);
-        this.handleToChange = this.handleToChange.bind(this);
+        this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     }   
+
     componentWillReceiveProps(nextProps){
-        this.currentFromDate(); 
-        this.currentToDate();
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getFinancialYear();
+        this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     }
+
     handleChange(event){
         event.preventDefault();
         this.setState({
             [event.target.name] : event.target.value
         },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
     }
 
@@ -108,110 +102,66 @@ class CenterRankingReport extends Component{
             }
         }
     }
-    getData(startDate, endDate){        
-        if(startDate && endDate){ 
-            $(".fullpageloader").show();
-            axios.get('/api/centerRanking/'+startDate+'/'+endDate)
-                .then((response)=>{
-                    $(".fullpageloader").hide();
-                    console.log("response = ",response);
-                    var tableData = response.data.map((a, i)=>{
-                    return {
-                        _id                     : a._id,
-                        centerName              : a.centerName,
-                        score                   : a.score,
-                        LHWRF_Utilized          : a.LHWRF_Utilized,
-                        Other_Utilized          : a.Other_Utilized,
-                        totalBudget_Utilized    : a.totalBudget_Utilized,
-                        outReach                : a.outReach,
-                        FamilyUpgradation       : a.FamilyUpgradation,
-                    } 
-                })  
-                this.setState({
-                    tableData : tableData
-                })
-            })
-            .catch(function(error){  
-                console.log("error = ",error);
-            });
+
+    getFinancialYear() {
+        let financialYear;
+        let today = moment();
+        console.log('today',today);
+        if(today.month() >= 3){
+            financialYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
         }
-    }
-    handleFromChange(event){
-        event.preventDefault();
-        const target = event.target;
-        const name = target.name;
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-       
-        var dateVal = event.target.value;
-        var dateUpdate = new Date(dateVal);
-        var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+        else{
+            financialYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+        }
         this.setState({
-           [name] : event.target.value,
-           startDate:startDate
+            financialYear :financialYear
         },()=>{
-            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        console.log('financialYear',this.state.financialYear);
+            var firstYear= this.state.financialYear.split('-')[0]
+            var secondYear= this.state.financialYear.split('-')[1]
+            console.log(firstYear,secondYear);
+            this.setState({
+                firstYear  :firstYear,
+                secondYear :secondYear
+            },()=>{
+                this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            })
         });
-    }
-    handleToChange(event){
-        event.preventDefault();
-        const target = event.target;
-        const name = target.name;
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-      
-        var dateVal = event.target.value;
-        var dateUpdate = new Date(dateVal);
-        var endDate = moment(dateUpdate).format('YYYY-MM-DD');
-        this.setState({
-           [name] : event.target.value,
-           endDate : endDate
-        },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        });
+    }   
+    getData(firstYear, secondYear){  
+        if(firstYear && secondYear){ 
+            var startDate = firstYear+"-04-01";
+            var endDate = secondYear+"-03-31";   
+                console.log('startDate-endDate',startDate,endDate);     
+            if(startDate && endDate){ 
+                $(".fullpageloader").show();
+                axios.get('/api/centerRanking/'+startDate+'/'+endDate)
+                    .then((response)=>{
+                        $(".fullpageloader").hide();
+                        console.log("response = ",response);
+                        var tableData = response.data.map((a, i)=>{
+                        return {
+                            _id                     : a._id,
+                            centerName              : a.centerName,
+                            score                   : a.score,
+                            LHWRF_Utilized          : a.LHWRF_Utilized,
+                            Other_Utilized          : a.Other_Utilized,
+                            totalBudget_Utilized    : a.totalBudget_Utilized,
+                            outReach                : a.outReach,
+                            FamilyUpgradation       : a.FamilyUpgradation,
+                        } 
+                    })  
+                    this.setState({
+                        tableData : tableData
+                    })
+                })
+                .catch(function(error){  
+                    console.log("error = ",error);
+                });
+            }
+        }
     }
 
-    currentFromDate(){
-        if(this.state.startDate){
-            var today = this.state.startDate;
-        }else {
-           var today = (new Date());
-           var nextDate = today.getDate() - 30;
-           today.setDate(nextDate);
-           var today =  moment(today).format('YYYY-MM-DD');
-        }
-        this.setState({
-           startDate :today
-        });
-        return today;
-    }
-    currentToDate(){
-        if(this.state.endDate){
-            var today = this.state.endDate;
-        }else {
-            var today =  moment(new Date()).format('YYYY-MM-DD');
-        }
-        this.setState({
-            endDate :today
-        });
-        return today;
-    }
-    onBlurEventFrom(){
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        if ((Date.parse(endDate) < Date.parse(startDate))) {
-            swal("Start date","From date should be less than To date");
-            this.refs.startDate.value="";
-        }
-    }
-    onBlurEventTo(){
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        if ((Date.parse(startDate) > Date.parse(endDate))) {
-            swal("End date","To date should be greater than From date");
-            this.refs.endDate.value="";
-        }
-    }
     render(){
         return(     
             <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -227,20 +177,6 @@ class CenterRankingReport extends Component{
                                         </div>
                                     </div>
                                     <hr className="hr-head"/>
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
-                                          <label className="formLable">From</label><span className="asterix"></span>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                              <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                                          </div>
-                                      </div>
-                                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
-                                          <label className="formLable">To</label><span className="asterix"></span>
-                                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                              <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                                          </div>
-                                      </div>           
-                                    </div>
                                     <div className="marginTop11">
                                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <IAssureTable 

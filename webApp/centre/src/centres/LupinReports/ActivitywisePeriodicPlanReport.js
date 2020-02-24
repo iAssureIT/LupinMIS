@@ -353,8 +353,11 @@ class ActivitywisePeriodicPlanReport extends Component{
                         },()=>{
                         })
                     })
-                    .catch(function(error){
-                        console.log("error = ",error);
+                    .catch(function(error){  
+                        console.log("error = ",error.message);
+                        if(error.message === "Request failed with status code 500"){
+                            $(".fullpageloader").hide();
+                        }
                     });
             }else{      
                 $(".fullpageloader").show(); 
@@ -393,8 +396,11 @@ class ActivitywisePeriodicPlanReport extends Component{
                       },()=>{
                       })
                     })
-                    .catch(function(error){
-                        console.log("error = ",error);
+                    .catch(function(error){  
+                        console.log("error = ",error.message);
+                        if(error.message === "Request failed with status code 500"){
+                            $(".fullpageloader").hide();
+                        }
                     });
             }
         }

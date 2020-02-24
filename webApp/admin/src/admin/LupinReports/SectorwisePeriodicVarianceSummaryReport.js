@@ -298,11 +298,12 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                     })
                 })
                 .catch(function(error){  
-                  console.log("error = ",error);
-                 
+                  console.log("error = ",error.message);
+                  if(error.message === "Request failed with status code 500"){
+                      $(".fullpageloader").hide();
+                  }
                 });
             }else{
-
                 $(".fullpageloader").show();
                 axios.get('/api/report/sector_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
@@ -348,8 +349,10 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                   })
                 })
                 .catch(function(error){  
-                   console.log("error = ",error);
-                  
+                    console.log("error = ",error.message);
+                    if(error.message === "Request failed with status code 500"){
+                        $(".fullpageloader").hide();
+                    }
                 });
             }
         }

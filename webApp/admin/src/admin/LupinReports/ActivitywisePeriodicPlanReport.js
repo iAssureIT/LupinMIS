@@ -386,9 +386,11 @@ class ActivitywisePeriodicPlanReport extends Component{
                     // console.log("resp",this.state.tableData)
                     })
                 })
-                .catch(function(error){
-                   console.log("error = ",error);
-                   
+                .catch(function(error){  
+                    console.log("error = ",error.message);
+                    if(error.message === "Request failed with status code 500"){
+                        $(".fullpageloader").hide();
+                    }
                 });            
         }
     }

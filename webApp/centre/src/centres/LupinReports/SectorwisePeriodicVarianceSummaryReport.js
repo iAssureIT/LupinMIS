@@ -210,56 +210,55 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             $(".fullpageloader").show();
             axios.get('/api/report/sector_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
-              console.log("resp",response);
-            $(".fullpageloader").hide();
-              var tableData = response.data.map((a, i)=>{
-                return {
-                    _id                                       : a._id,
-                    projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                    projectName                               : a.projectName === 0 ? "-" :a.projectName,                
-                    name                                      : a.name,
-                    annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                    monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                
-                    monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
-                    monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
-                    monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
-                    monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
-                    monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
-                    monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
-                    monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
-                    achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
-                    Per_Periodic                              : a.Per_Periodic,
-                    achievement_LHWRF_L                       : a.achievement_LHWRF_L,
-                    achievement_NABARD_L                      : a.achievement_NABARD_L,
-                    achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,
-                    achievement_DirectCC_L                    : a.achievement_DirectCC_L,
-                    achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
-                    achievement_Govt_L                        : a.achievement_Govt_L,
-                    achievement_Other_L                       : a.achievement_Other_L,
-                    variance_monthlyPlan_TotalBudget_L        : a.variance_monthlyPlan_TotalBudget_L,
-                    variance_monthlyPlan_LHWRF_L              : a.variance_monthlyPlan_LHWRF_L,
-                    variance_monthlyPlan_NABARD_L             : a.variance_monthlyPlan_NABARD_L,
-                    variance_monthlyPlan_Bank_Loan_L          : a.variance_monthlyPlan_Bank_Loan_L,
-                    variance_monthlyPlan_DirectCC_L           : a.variance_monthlyPlan_DirectCC_L,
-                    variance_monthlyPlan_IndirectCC_L         : a.variance_monthlyPlan_IndirectCC_L,
-                    variance_monthlyPlan_Govt_L               : a.variance_monthlyPlan_Govt_L,
-                    variance_monthlyPlan_Other_L              : a.variance_monthlyPlan_Other_L
-                }
-            })  
-              this.setState({
-                tableData : tableData
-              },()=>{
+                console.log("resp",response);
+                $(".fullpageloader").hide();
+                var tableData = response.data.map((a, i)=>{
+                    return {
+                        _id                                       : a._id,
+                        projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
+                        projectName                               : a.projectName === 0 ? "-" :a.projectName,                
+                        name                                      : a.name,
+                        annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                        monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                
+                        monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
+                        monthlyPlan_NABARD_L                      : a.monthlyPlan_NABARD_L,
+                        monthlyPlan_Bank_Loan_L                   : a.monthlyPlan_Bank_Loan_L,
+                        monthlyPlan_DirectCC_L                    : a.monthlyPlan_DirectCC_L,
+                        monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
+                        monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
+                        monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
+                        achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
+                        Per_Periodic                              : a.Per_Periodic,
+                        achievement_LHWRF_L                       : a.achievement_LHWRF_L,
+                        achievement_NABARD_L                      : a.achievement_NABARD_L,
+                        achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,
+                        achievement_DirectCC_L                    : a.achievement_DirectCC_L,
+                        achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
+                        achievement_Govt_L                        : a.achievement_Govt_L,
+                        achievement_Other_L                       : a.achievement_Other_L,
+                        variance_monthlyPlan_TotalBudget_L        : a.variance_monthlyPlan_TotalBudget_L,
+                        variance_monthlyPlan_LHWRF_L              : a.variance_monthlyPlan_LHWRF_L,
+                        variance_monthlyPlan_NABARD_L             : a.variance_monthlyPlan_NABARD_L,
+                        variance_monthlyPlan_Bank_Loan_L          : a.variance_monthlyPlan_Bank_Loan_L,
+                        variance_monthlyPlan_DirectCC_L           : a.variance_monthlyPlan_DirectCC_L,
+                        variance_monthlyPlan_IndirectCC_L         : a.variance_monthlyPlan_IndirectCC_L,
+                        variance_monthlyPlan_Govt_L               : a.variance_monthlyPlan_Govt_L,
+                        variance_monthlyPlan_Other_L              : a.variance_monthlyPlan_Other_L
+                    }
+                })  
+                this.setState({
+                    tableData : tableData
+                },()=>{
                 // console.log("resp",this.state.tableData)
-              })
+                })
+            
+
             })
             .catch(function(error){  
-              // console.log("error = ",error);
-              if(error.message === "Request failed with status code 401"){
-                swal({
-                    title : "abc",
-                    text  : "Session is Expired. Kindly Sign In again."
-                });
-              }
+                console.log("error = ",error.message);
+                if(error.message === "Request failed with status code 500"){
+                    $(".fullpageloader").hide();
+                }
             });
         }
     }

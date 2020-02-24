@@ -178,14 +178,11 @@ class GoalSectorReport extends Component{
           },()=>{
           })
         })
-        .catch(function(error){
-            // console.log("error = ",error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
+        .catch(function(error){  
+          console.log("error = ",error.message);
+          if(error.message === "Request failed with status code 500"){
+              $(".fullpageloader").hide();
+          }
         });
       }
     }

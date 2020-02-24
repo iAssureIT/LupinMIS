@@ -516,14 +516,16 @@ class GeographicalReport extends Component{
               },()=>{
               })
             })
-            .catch(function(error){ 
-              console.log("error = ",error);
-             
+            .catch(function(error){  
+              console.log("error = ",error.message);
+              if(error.message === "Request failed with status code 500"){
+                  $(".fullpageloader").hide();
+              }
             });
           }else{
-          axios.get('/api/report/geographical_annual_achievement_report/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
-            .then((response)=>{
-              console.log("resp",response);
+            axios.get('/api/report/geographical_annual_achievement_report/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
+              .then((response)=>{
+                console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
                 return {
                   _id                                   : a._id,             
@@ -551,8 +553,10 @@ class GeographicalReport extends Component{
               })
             })
             .catch(function(error){  
-                console.log("error = ",error);
-              
+              console.log("error = ",error.message);
+              if(error.message === "Request failed with status code 500"){
+                  $(".fullpageloader").hide();
+              }
             });
           }
         }else{
@@ -587,8 +591,10 @@ class GeographicalReport extends Component{
               })
             })
             .catch(function(error){  
-               console.log("error = ",error);
-            
+              console.log("error = ",error.message);
+              if(error.message === "Request failed with status code 500"){
+                  $(".fullpageloader").hide();
+              }
             });
         }
       }
