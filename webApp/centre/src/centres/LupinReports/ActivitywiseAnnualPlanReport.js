@@ -233,17 +233,22 @@ class ActivitywiseAnnualPlanReport extends Component{
     this.setState({
       projectCategoryType : projectCategoryType,
     },()=>{
-        if(this.state.projectCategoryType === "LHWRF Grant"){
-          this.setState({
-            projectName : "all",
-          })          
-        }else if (this.state.projectCategoryType=== "all"){
-          this.setState({
-            projectName : "all",
-          })    
-        }
+      if(this.state.projectCategoryType === "LHWRF Grant"){
+        this.setState({
+          projectName : "all",
+        },()=>{
+          this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+        })          
+      }else if (this.state.projectCategoryType=== "all"){
+        this.setState({
+          projectName : "all",
+        },()=>{
+          this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+        })    
+      }else  if(this.state.projectCategoryType=== "Project Fund"){
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-      },()=>{
+      }
+    },()=>{
     })
   }
 
