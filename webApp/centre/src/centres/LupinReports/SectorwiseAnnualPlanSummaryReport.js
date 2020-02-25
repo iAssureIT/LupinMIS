@@ -256,7 +256,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       var endDate = year.substring(10, 15)+"-03-31";    
       if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
         $(".fullpageloader").show();
-        axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+        axios.get('/api/reports/sector_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
           .then((response)=>{
             console.log("resp",response);
             $(".fullpageloader").hide();

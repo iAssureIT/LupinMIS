@@ -267,7 +267,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             $(".fullpageloader").hide();
         }
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
-            axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+            axios.get('/api/reports/sector_periodic_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
                 .then((response)=>{
                  $(".fullpageloader").hide();
 
