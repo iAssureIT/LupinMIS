@@ -204,7 +204,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
       var endDate = year.substring(10, 15)+"-03-31";    
       if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
         $(".fullpageloader").show();
-        axios.get('/api/report/activity_annual_achievement_report/:startDate/:endDate/:center_ID/:sector/:projectCategoryType/:projectName/:beneficiaryType')
+        axios.get('/api/reports/activity_annual_achievement_reports/:startDate/:endDate/:center_ID/:sector/:projectCategoryType/:projectName/:beneficiaryType')
         .then((response)=>{
           $(".fullpageloader").hide();
           console.log("resp",response);

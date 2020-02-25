@@ -344,12 +344,12 @@ class ActivitywiseAnnualPlanReport extends Component{
         var endDate = year.substring(10, 15)+"-03-31";    
         if(center_ID==="all"){
           if(sector_ID==="all"){
-            var url = '/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
+            var url = '/api/reports/activity_annual_plans/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
           }else{    
-            var url = '/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
+            var url = '/api/reports/activity_annual_plans/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
           }
         }else{
-          var url = '/api/report/activity_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
+          var url = '/api/reports/activity_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
         }     
           $(".fullpageloader").show();
           axios.get(url)

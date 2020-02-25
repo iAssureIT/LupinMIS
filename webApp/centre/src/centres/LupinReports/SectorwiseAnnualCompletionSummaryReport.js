@@ -201,7 +201,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
       var endDate = year.substring(10, 15)+"-03-31";    
       if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
         $(".fullpageloader").show();
-        axios.get('/api/report/sector_annual_achievement_report/:startDate/:endDate/:center_ID/:projectCategoryType/:projectName/:beneficiaryType')
+        axios.get('/api/reports/sector_annual_achievement_reports/:startDate/:endDate/:center_ID/:projectCategoryType/:projectName/:beneficiaryType')
         .then((response)=>{
           $(".fullpageloader").hide();
           // console.log("resp",response);

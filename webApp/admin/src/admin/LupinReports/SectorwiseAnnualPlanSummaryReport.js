@@ -252,7 +252,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
         if(center_ID==="all"){
            $(".fullpageloader").show();
-             axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/all')
+             axios.get('/api/reports/sector_annual_plans/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/all')
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
@@ -288,7 +288,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           }else{
             var startDate = year.substring(3, 7)+"-04-01";
             var endDate = year.substring(10, 15)+"-03-31";    
-            axios.get('/api/report/sector_annual_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+            axios.get('/api/reports/sector_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
               .then((response)=>{
                 console.log("resp",response);
                 var value = response.data.filter((a)=>{return a.name == "Total"})[0];

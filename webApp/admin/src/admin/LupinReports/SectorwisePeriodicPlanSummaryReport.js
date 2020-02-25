@@ -224,7 +224,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
     if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
         if(center_ID==="all"){
           $(".fullpageloader").show();
-          axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/all')
+          axios.get('/api/reports/sector_periodic_plans/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/all')
             .then((response)=>{
               $(".fullpageloader").hide();
               console.log("response = ",response);
@@ -265,7 +265,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
             });
         }else{
             $(".fullpageloader").show();
-            axios.get('/api/report/sector_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+            axios.get('/api/reports/sector_periodic_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
             .then((response)=>{
               $(".fullpageloader").hide();
               console.log("response = ",response);

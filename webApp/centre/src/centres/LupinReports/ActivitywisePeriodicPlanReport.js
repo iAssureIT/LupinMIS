@@ -318,7 +318,7 @@ class ActivitywisePeriodicPlanReport extends Component{
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(sector_ID==="all"){
                 $(".fullpageloader").show(); 
-                axios.get('/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
+                axios.get('/api/reports/activity_periodic_plans/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
                     .then((response)=>{
                         $(".fullpageloader").hide();
                         console.log("resp",response);
