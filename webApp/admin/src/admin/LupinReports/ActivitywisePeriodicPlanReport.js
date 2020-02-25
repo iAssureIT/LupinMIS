@@ -348,7 +348,7 @@ class ActivitywisePeriodicPlanReport extends Component{
             }else{
                 var url = '/api/report/activity_periodic_plan/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID
             }    
-
+            console.log('axios',startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID);
             $(".fullpageloader").show();
             axios.get(url)
                 .then((response)=>{
@@ -406,6 +406,7 @@ class ActivitywisePeriodicPlanReport extends Component{
            [name] : event.target.value,
            startDate:startDate
         },()=>{
+            console.log('startDate',this.state.startDate);
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         });
     }
@@ -421,6 +422,7 @@ class ActivitywisePeriodicPlanReport extends Component{
            [name] : event.target.value,
            endDate:endDate
         },()=>{
+            console.log('endDate',this.state.endDate);
         this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
         });
     }

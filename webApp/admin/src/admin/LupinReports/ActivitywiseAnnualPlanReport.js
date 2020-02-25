@@ -96,8 +96,8 @@ class ActivitywiseAnnualPlanReport extends Component{
 
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-      // this.getFinancialYear();
-      // this.year();
+      this.getFinancialYear();
+      this.year();
       this.getAvailableCenters();
       this.getAvailableProjects();
       this.getAvailableSectors();
@@ -395,26 +395,26 @@ class ActivitywiseAnnualPlanReport extends Component{
     let today = moment();
     console.log('today',today);
     if(today.month() >= 3){
-        financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
     }
     else{
-        financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
     }
     this.setState({
         financeYear :financeYear
     },()=>{
-    console.log('financeYear',this.state.financeYear);
-        var firstYear= this.state.financeYear.split('-')[0]
-        var secondYear= this.state.financeYear.split('-')[1]
-        console.log(firstYear,secondYear);
-        var financialYear = "FY "+firstYear+" - "+secondYear;
-        /*"FY 2019 - 2020",*/
-        this.setState({
-            financialYear  :financialYear,
-        },()=>{
-          console.log('financialYear',this.state.financialYear);
-            // this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        })
+      console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+          financialYear  :financialYear,
+      },()=>{
+        console.log('financialYear',this.state.financialYear);
+          // this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      })
     });
 
     var date = new Date,
@@ -441,7 +441,6 @@ class ActivitywiseAnnualPlanReport extends Component{
  
         //Determine the Current Year.
         var currentYear = (new Date()).getFullYear();
- 
         //Loop and add the Year values to DropDownList.
         for (var i = 1950; i <= currentYear; i++) {
             var option = $("<option />");
@@ -449,7 +448,45 @@ class ActivitywiseAnnualPlanReport extends Component{
             option.val(i);
             ddlYears.append(option);
         }
+
+
+    var financeYears = $("#financeYears");
+    let financeYear;
+    let today = moment();
+    console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
     }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+          financialYear  :financialYear,
+      },()=>{
+        console.log('financialYear',this.state.financialYear);
+        var financialYear = this.state.financialYear
+        for (var i = 2010; i <= firstYear; i++) {
+          for (var j = 2011; j <= secondYear; j++) {
+            var financialYears = "FY "+i+" - "+j
+            console.log('financialYears',financialYears);
+            option.html(financialYears);
+            option.val(financialYears);
+            financeYears.append(option);
+          }
+        }
+      })
+
+    })
+  }
   render(){
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -550,7 +587,8 @@ class ActivitywiseAnnualPlanReport extends Component{
                         </div>
                       </div>  
                       
-                    {/*  <select id="ddlYears"></select>*/}
+                   {  /* <select id="ddlYears"></select>
+                                         <select id="financeYears"></select>*/}
                       <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Year</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
