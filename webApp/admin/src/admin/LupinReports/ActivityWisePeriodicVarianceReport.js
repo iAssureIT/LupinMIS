@@ -380,7 +380,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 if(sector_ID==="all"){
                     $(".fullpageloader").show();
 
-                    axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
+                    axios.get('/api/reports/activity_annual_achievement_reports/'+startDate+'/'+endDate+'/all/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
                     .then((response)=>{
                       console.log("resp",response);
                        $(".fullpageloader").hide();
@@ -436,7 +436,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         }
                     });
                 }else{
-                    axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
+                    axios.get('/api/reports/activity_annual_achievement_reports/'+startDate+'/'+endDate+'/all/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
                     .then((response)=>{
                       console.log("resp",response);
                         var tableData = response.data.map((a, i)=>{
@@ -492,7 +492,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 }
             }
             else{
-                axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
+                axios.get('/api/reports/activity_annual_achievement_reports/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
                 .then((response)=>{
                   console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{

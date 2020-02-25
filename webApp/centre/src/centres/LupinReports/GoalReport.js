@@ -18,7 +18,7 @@ class SDGReport extends Component{
         "startRange"        : 0,
         "limitRange"        : 10000,
         "beneficiaryType"   : "all",
-        "projectCategoryType"    : "all",
+        "projectCategoryType": "all",
         "projectName"       : "all",
         "twoLevelHeader"    : { 
             apply           : true,

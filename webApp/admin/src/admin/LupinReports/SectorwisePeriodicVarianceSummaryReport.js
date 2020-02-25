@@ -254,7 +254,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
             if(center_ID==="all"){
                 $(".fullpageloader").show();
 
-                axios.get('/api/report/sector_annual_achievement_report/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/reports/sector_annual_achievement_reports/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                     console.log("resp",response);
                     $(".fullpageloader").hide();
@@ -305,7 +305,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                 });
             }else{
                 $(".fullpageloader").show();
-                axios.get('/api/report/sector_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/reports/sector_annual_achievement_reports/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                   console.log("resp",response);
                   $(".fullpageloader").hide();

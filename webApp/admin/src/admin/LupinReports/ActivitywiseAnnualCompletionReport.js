@@ -205,8 +205,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
   }
 
   getData(year, center, sector_ID, projectCategoryType, projectName, beneficiaryType){        
-      // axios.get('/api/report/activity/:startDate/:endDate/:center_ID/:sector_ID')
-      axios.get('/api/report/activity_annual_achievement_report/:startDate/:endDate/:center/:sector_ID/:projectCategoryType/:projectName/:beneficiaryType')
+      axios.get('/api/reports/activity_annual_achievement_reports/:startDate/:endDate/:center/:sector_ID/:projectCategoryType/:projectName/:beneficiaryType')
       .then((response)=>{
         console.log("resp",response);
         this.setState({

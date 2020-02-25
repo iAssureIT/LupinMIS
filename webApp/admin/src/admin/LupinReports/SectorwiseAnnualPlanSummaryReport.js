@@ -256,7 +256,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
-
                 var value = response.data.filter((a)=>{return a.name == "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   return {

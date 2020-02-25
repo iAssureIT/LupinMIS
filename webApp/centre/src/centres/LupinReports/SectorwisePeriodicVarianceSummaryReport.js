@@ -251,8 +251,6 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                 },()=>{
                 // console.log("resp",this.state.tableData)
                 })
-            
-
             })
             .catch(function(error){  
                 console.log("error = ",error.message);

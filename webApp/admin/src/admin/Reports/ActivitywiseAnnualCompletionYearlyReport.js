@@ -119,7 +119,7 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
         var endDate = year.substring(10, 15)+"-03-31";
         if( startDate && endDate && center && sector && projectCategoryType  && beneficiaryType){ 
             if(center==="all"){
-              axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/all/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+              axios.get('/api/reports/activity_annual_achievement_reports/'+startDate+'/'+endDate+'/all/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                     var tableData = response.data.map((a, i)=>{
                     return {
@@ -149,7 +149,7 @@ export default class ActivitywiseAnnualCompletionYearlyReport extends Component{
                     console.log('error', error);
                 })
             }else{
-                axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center+'/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+                axios.get('/api/reports/activity_annual_achievement_reports/'+startDate+'/'+endDate+'/'+center+'/'+sector+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
                 .then((response)=>{
                     var tableData = response.data.map((a, i)=>{
                     return {

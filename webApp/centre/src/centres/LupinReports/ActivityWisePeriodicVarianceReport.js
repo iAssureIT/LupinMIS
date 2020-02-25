@@ -406,7 +406,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 });
             }else{
                 $(".fullpageloader").show();
-                axios.get('/api/report/activity_annual_achievement_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
+                axios.get('/api/reports/activity_annual_achievement_reports/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
                 .then((response)=>{
                     $(".fullpageloader").hide();
                     console.log("resp",response);

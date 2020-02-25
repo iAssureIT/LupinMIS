@@ -162,7 +162,6 @@ class Layout extends Component{
                               <Route path="/filewise-monthly-plan-list"          exact strict component={ FileWiseMonthlyPlanList } />
                               <Route path="/Filewise-activity-list"              exact strict component={ FilewiseActivityList } />
                               <Route path="/Filewise-beneficiary-activity-list"  exact strict component={ FilewiseBeneficiaryActivityList } />
-
                               <Route path="/activity"                            exact strict component={ Activity } />
                               <Route path="/activity/"                           exact strict component={ Activity } />
                               <Route path="/activity/:id"                        exact strict component={ Activity } />
