@@ -18,7 +18,7 @@ class GoalSectorReport extends Component{
         "startRange"        : 0,
         "center"            : "all",
         "center_ID"         : "all",
-        "projectCategoryType": "LHWRF Fund",
+        "projectCategoryType": "LHWRF Grant",
         "goalName"           : "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
