@@ -122,9 +122,9 @@ class SDGReport extends Component{
     // console.log("this.state.goalType",this.state.goalType)
     if(startDate && endDate && center_ID && beneficiaryType){
     if(beneficiaryType==="all"){
-      var url = '/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+"/all/"+projectCategoryType+"/"+projectName
+      var url = '/api/reports/goals/'+startDate+'/'+endDate+'/'+center_ID+"/all/"+projectCategoryType+"/"+projectName
     }else{
-      var url = '/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+beneficiaryType+"/"+projectCategoryType+"/"+projectName
+      var url = '/api/reports/goals/'+startDate+'/'+endDate+'/'+center_ID+'/'+beneficiaryType+"/"+projectCategoryType+"/"+projectName
     }
 
     var listofTypesArray = this.state.goalType.map((data, index)=>{

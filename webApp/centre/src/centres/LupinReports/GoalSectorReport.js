@@ -15,7 +15,7 @@ class GoalSectorReport extends Component{
         'reportData'        : {},
         'tableData'         : [],
         "startRange"        : 0,
-        "projectCategoryType": "all",
+        "projectCategoryType": "LHWRF Fund",
         "goalName"           : "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
@@ -420,7 +420,7 @@ class GoalSectorReport extends Component{
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                         <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
                           <option  className="hidden" >--Select--</option>
-                          <option value="all" >All</option>
+                          {/*<option value="all" >All</option>*/}
                           <option value="LHWRF Grant" >LHWRF Grant</option>
                           <option value="Project Fund">Project Fund</option>
                         </select>
