@@ -557,7 +557,6 @@ class Family extends Component{
           this.setState({
             listofDistrict  : availableDistInCenter,
             address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-
             // address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
             // districtsCovered : response.data[0].districtsCovered
           },()=>{
