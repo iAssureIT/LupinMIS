@@ -580,6 +580,8 @@ class Beneficiary extends Component{
                 nameofbeneficiaries       : a.surnameOfBeneficiary+" "+a.firstNameOfBeneficiary+" " +a.middleNameOfBeneficiary,
                 uidNumber                 : a.uidNumber,
                 relation                  : a.relation,
+                genderOfbeneficiary       : a.genderOfbeneficiary,   
+                birthYearOfbeneficiary    : a.birthYearOfbeneficiary,
               }
             })
           }
