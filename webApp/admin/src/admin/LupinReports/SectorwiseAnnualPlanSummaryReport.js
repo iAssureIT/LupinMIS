@@ -257,7 +257,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
                 var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                // console.log('value',value.annualPlan_TotalBudget_L);
                 var tableData = response.data.map((a, i)=>{
+                // console.log('a',a.annualPlan_TotalBudget_L);
                   return {
                     _id                                      : a._id,     
                     annualPlan_projectCategoryType           : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
@@ -265,7 +267,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                     name                                     : a.name,
                     annualPlan_Reach                         : this.addCommas(a.annualPlan_Reach),
                     annualPlan_FamilyUpgradation             : this.addCommas(a.annualPlan_FamilyUpgradation), 
-                    Per_Annual                               : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
+                    Per_Annual                               : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(4)) + "%" ),
                     annualPlan_TotalBudget_L                 : (a.annualPlan_TotalBudget_L),
                     annualPlan_LHWRF_L                       : (a.annualPlan_LHWRF_L),
                     annualPlan_NABARD_L                      : (a.annualPlan_NABARD_L),
