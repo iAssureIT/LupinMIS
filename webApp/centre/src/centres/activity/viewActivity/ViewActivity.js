@@ -58,8 +58,10 @@ class ViewActivity extends Component{
                             ]
       },
       "tableHeading"      : {
-        date                       : "Date",
-        place                      : "Place",
+        projectCategoryType        : "Category",
+        projectName                : "Project Name",
+        date                       : "Intervention Date",
+        place                      : "Intervention Place",
         sectorName                 : "Sector",
         activityName               : "Activity",
         subactivityName            : "Sub-Activity",
@@ -67,17 +69,16 @@ class ViewActivity extends Component{
         unitCost                   : "Unit Cost",
         quantity                   : "Quantity",
         totalcost                  : "Total Cost",
-        numofBeneficiaries         : "No. Of Beneficiaries",
+        numofBeneficiaries         : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
-        bankLoan                   : "Bank Loan",
-        govtscheme                 : "Govt. Scheme",
-        directCC                   : "Direct Community Contribution",
-        indirectCC                 : "Indirect Community Contribution",
+        bankLoan                   : "Bank",
+        govtscheme                 : "Government",
+        directCC                   : "DirectCC",
+        indirectCC                 : "IndirectCC",
         other                      : "Other",
-        total                      : "Total",
+        // total                      : "Total",
         remark                     : "Remark",
-        // actions                    : 'Action',
       },
       "tableObjects"               : {
         deleteMethod               : 'delete',
@@ -88,7 +89,7 @@ class ViewActivity extends Component{
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
-      "limitRange"                 : 10,
+      "limitRange"                 : 1000000000,
       "editId"                     : this.props.match.params ? this.props.match.params.id : ''
     }
   }
@@ -109,14 +110,29 @@ class ViewActivity extends Component{
   }
   addCommas(x) {
     x=x.toString();
-    var lastThree = x.substring(x.length-3);
-    var otherNumbers = x.substring(0,x.length-3);
-    if(otherNumbers != '')
-        lastThree = ',' + lastThree;
-    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-    return(res);
-      // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if(x.includes('%')){
+        return x;
+    }else{
+      if(x.includes('.')){
+        var pointN = x.split('.')[1];
+        var lastN = x.split('.')[0];
+        var lastThree = lastN.substring(lastN.length-3);
+        var otherNumbers = lastN.substring(0,lastN.length-3);
+        if(otherNumbers !== '')
+            lastThree = ',' + lastThree;
+        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+        return(res);
+      }else{
+        var lastThree = x.substring(x.length-3);
+        var otherNumbers = x.substring(0,x.length-3);
+        if(otherNumbers !== '')
+            lastThree = ',' + lastThree;
+        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        return(res);
+      }
+    }
   }
+
   getData(startRange, limitRange, center_ID){ 
    var data = {
       limitRange : limitRange,
@@ -130,7 +146,7 @@ class ViewActivity extends Component{
           _id                        : a._id,
           projectCategoryType        : a.projectCategoryType,
           projectName                : a.projectName==='all'?'-':a.projectName,
-          date                       : moment(a.date).format('YYYY-MM-DD'),
+          date                       : moment(a.date).format('DD-MM-YYYY'),
           place                      : a.place,
           sectorName                 : a.sectorName,
           typeofactivity             : a.typeofactivity,
