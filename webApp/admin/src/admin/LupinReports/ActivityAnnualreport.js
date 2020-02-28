@@ -43,7 +43,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                 // },
                 {
                     heading : "Annual Financial Achievement ",
-                    mergedColoums : 4,
+                    mergedColoums : 5,
                     hide :false,
                 },
                 {
@@ -64,6 +64,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
           "unit"                          : 'Unit',
           "achievement_Reach"             : 'Reach', 
           "achievement_FamilyUpgradation" : 'Families Upgradation', 
+          "achievement_UnitCost"          : 'Unit Cost', 
           "achievement_PhysicalUnit"      : 'Phy Units', 
           "achievement_TotalBudget_L"     : "Total Expenditure 'Lakh'",
           "achievement_LHWRF_L"           : 'LHWRF',
@@ -359,6 +360,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
               unit                          : a.unit,
               achievement_Reach             : this.addCommas(a.achievement_Reach),
               achievement_FamilyUpgradation : this.addCommas(a.achievement_FamilyUpgradation), 
+              achievement_UnitCost          : this.addCommas(a.achievement_UnitCost),
               achievement_PhysicalUnit      : this.addCommas(a.achievement_PhysicalUnit),
               achievement_TotalBudget_L     : a.achievement_TotalBudget_L,      
               achievement_LHWRF_L           : a.achievement_LHWRF_L,

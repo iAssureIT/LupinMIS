@@ -44,34 +44,38 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     },
                     {
                         heading : 'Annual Plan',
-                        mergedColoums : 2,
+                        mergedColoums : 3,
                         hide : false
                     },
                     
                     {
                         heading : "Physical and Financial Periodic Plan 'Lakh'",
-                        mergedColoums : 9,
+                        mergedColoums : 10,
                         hide : false
                     },
                     {
                         heading : "Physical and Financial Achievement 'Lakh'",
-                        mergedColoums : 9,
+                        mergedColoums : 10,
                         hide : false
                     },
                     {
                         heading : "Agency wise Variance Periodic Report 'Lakh'",
-                        mergedColoums : 9,
+                        mergedColoums : 10,
                           hide : false
                     },
                 ]
             },
+
             "tableHeading"      : {
                 "projectCategoryType"                       : 'Project Category',
                 "projectName"                               : 'Project Name',
                 "name"                                      : 'Activity & Sub-Activity',
                 "unit"                                      : 'Unit',
+                "annualPlan_UnitCost_L"                       : 'Unit Cost', 
                 "annualPlan_PhysicalUnit"                   : 'Phy Units', 
                 "annualPlan_TotalBudget_L"                  : "Total Budget 'Lakh'",
+                
+                "monthlyPlan_UnitCost_L"                    : 'Unit Cost', 
                 "monthlyPlan_PhysicalUnit"                  : 'Phy Units', 
                 "monthlyPlan_TotalBudget_L"                 : "Total Budget 'Lakh'",
                 "monthlyPlan_LHWRF_L"                       : 'LHWRF',
@@ -81,6 +85,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 "monthlyPlan_IndirectCC_L"                  : 'IndirectCC',
                 "monthlyPlan_Govt_L"                        : 'Government',
                 "monthlyPlan_Other_L"                       : 'Others',
+
+                "achievement_UnitCost_L"                      : 'Unit Cost', 
                 "achievement_PhysicalUnit"                  : 'Phy Units', 
                 "achievement_TotalBudget_L"                 : "Financial Total 'Lakh'",
                 "achievement_LHWRF_L"                       : 'LHWRF',
@@ -90,6 +96,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 "achievement_IndirectCC_L"                  : 'IndirectCC',
                 "achievement_Govt_L"                        : 'Government',
                 "achievement_Other_L"                       : 'Others',
+
+                "variance_monthlyPlan_UnitCost_L"             : 'Unit Cost', 
                 "variance_monthlyPlan_PhysicalUnit"         : 'Phy Units', 
                 "variance_monthlyPlan_TotalBudget_L"        : "Financial Total 'Lakh'",
                 "variance_monthlyPlan_LHWRF_L"              : 'LHWRF',
@@ -362,8 +370,10 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         projectName                               : a.projectName === 0 ? "-" :a.projectName,                 
                         name                                      : a.name,
                         unit                                      : a.unit,
+                        annualPlan_UnitCost_L                     : (a.annualPlan_UnitCost_L),
                         annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
                         annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                        monthlyPlan_UnitCost_L                    : (a.monthlyPlan_UnitCost_L),
                         monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
                         monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,
                         monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
@@ -373,6 +383,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
                         monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                         monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
+                        achievement_UnitCost_L                    : (a.achievement_UnitCost_L),
                         achievement_PhysicalUnit                  : this.addCommas(a.achievement_PhysicalUnit),
                         achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
                         achievement_LHWRF_L                       : a.achievement_LHWRF_L,
@@ -382,6 +393,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
                         achievement_Govt_L                        : a.achievement_Govt_L,
                         achievement_Other_L                       : a.achievement_Other_L,
+                        variance_monthlyPlan_UnitCost_L           : (a.variance_monthlyPlan_UnitCost_L),
                         variance_monthlyPlan_PhysicalUnit         : this.addCommas(a.variance_monthlyPlan_PhysicalUnit),
                         variance_monthlyPlan_TotalBudget_L        : a.variance_monthlyPlan_TotalBudget_L,
                         variance_monthlyPlan_LHWRF_L              : a.variance_monthlyPlan_LHWRF_L,
@@ -412,13 +424,15 @@ class ActivityWisePeriodicVarianceReport extends Component{
                     console.log("resp",response);
                     var tableData = response.data.map((a, i)=>{
                     return {
-                        _id                                       : a._id,  
+                        _id                                       : a._id,           
                         projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                        projectName                               : a.projectName === 0 ? "-" :a.projectName,                       
+                        projectName                               : a.projectName === 0 ? "-" :a.projectName,                 
                         name                                      : a.name,
                         unit                                      : a.unit,
+                        annualPlan_UnitCost_L                     : (a.annualPlan_UnitCost_L),
                         annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
                         annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+                        monthlyPlan_UnitCost_L                    : (a.monthlyPlan_UnitCost_L),
                         monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
                         monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,
                         monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,
@@ -428,6 +442,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
                         monthlyPlan_Govt_L                        : a.monthlyPlan_Govt_L,
                         monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
+                        achievement_UnitCost_L                    : (a.achievement_UnitCost_L),
                         achievement_PhysicalUnit                  : this.addCommas(a.achievement_PhysicalUnit),
                         achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
                         achievement_LHWRF_L                       : a.achievement_LHWRF_L,
@@ -437,6 +452,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
                         achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
                         achievement_Govt_L                        : a.achievement_Govt_L,
                         achievement_Other_L                       : a.achievement_Other_L,
+                        variance_monthlyPlan_UnitCost_L           : (a.variance_monthlyPlan_UnitCost_L),
                         variance_monthlyPlan_PhysicalUnit         : this.addCommas(a.variance_monthlyPlan_PhysicalUnit),
                         variance_monthlyPlan_TotalBudget_L        : a.variance_monthlyPlan_TotalBudget_L,
                         variance_monthlyPlan_LHWRF_L              : a.variance_monthlyPlan_LHWRF_L,
