@@ -1,3 +1,7 @@
+.umDynamicHeader .coloredIndex{
+  background-color: #f00;
+}
+
 .wrapText{
   white-space: pre-wrap !important;
   width: 200px;
@@ -25,6 +29,7 @@
   border: 1px solid #4ca75a;
 }
 .tempTableHeader{
+  color: #fff;
   background: #4ca75a !important;
 }
 .paginationAdminWrap{
@@ -65,9 +70,6 @@
 }
 .textAlignCenter{
   text-align: center !important;
-}
-.tempTableHeader{
-  color: #fff;
 }
 
 .umDynamicHeader{

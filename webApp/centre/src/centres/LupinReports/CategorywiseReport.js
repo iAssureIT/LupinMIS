@@ -22,6 +22,9 @@ class CategorywiseReport extends Component{
         "projectCategoryType": "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
+        "incomeCategory"    : "all",
+        "specialCategory"   : "all",
+        "landCategory"      : "all",
         "twoLevelHeader"    : {
             apply           : false,
             firstHeaderData : [
@@ -69,13 +72,13 @@ class CategorywiseReport extends Component{
       tableData : this.state.tableData,
     },()=>{
       this.getAvailableCenterData(this.state.center_ID);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.currentFromDate();
     this.getAvailableProjects();
     this.currentToDate();
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }
@@ -84,14 +87,14 @@ class CategorywiseReport extends Component{
     this.getAvailableProjects();
     this.currentFromDate();
     this.currentToDate();
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
   }
   handleChange(event){
     event.preventDefault();
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
     });
   }
 
@@ -144,7 +147,7 @@ class CategorywiseReport extends Component{
       this.setState({
         selectedDistrict :selectedDistrict
       },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
       })
     });
   }
@@ -168,16 +171,16 @@ class CategorywiseReport extends Component{
             this.setState({
               projectName : "all",
             },()=>{
-              this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+              this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
             })          
         }else if (this.state.projectCategoryType=== "all"){
             this.setState({
               projectName : "all",
             },()=>{
-              this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+              this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
             })    
         }else  if(this.state.projectCategoryType=== "Project Fund"){
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
         }
     },()=>{
     })
@@ -206,7 +209,7 @@ class CategorywiseReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
     })
   }
   
@@ -234,11 +237,12 @@ class CategorywiseReport extends Component{
       }
     }
   }
-  getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType){        
+  getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType, incomeCategory, landCategory, specialCategory){        
+    console.log('/api/report/category/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+incomeCategory+'/'+landCategory+'/'+specialCategory);
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && projectCategoryType  && beneficiaryType){
         $(".fullpageloader").show();
-        axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+        axios.get('/api/reports/category_reports/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+incomeCategory+'/'+landCategory+'/'+specialCategory)
         .then((response)=>{
           $(".fullpageloader").hide();
 
@@ -252,8 +256,10 @@ class CategorywiseReport extends Component{
               incomeCategory         : a.incomeCategory,
               landCategory           : a.landCategory,
               specialCategory        : a.specialCategory,
-              Reach                  : this.addCommas(a.Reach),
-              FamilyUpgradation      : this.addCommas(a.FamilyUpgradation),
+              Reach                  : (a.Reach),
+              FamilyUpgradation      : (a.FamilyUpgradation),
+              // Reach                  : this.addCommas(a.Reach),
+              // FamilyUpgradation      : this.addCommas(a.FamilyUpgradation),
             }
           })
           this.setState({
@@ -283,7 +289,7 @@ class CategorywiseReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
     });
   }
   handleToChange(event){
@@ -299,7 +305,7 @@ class CategorywiseReport extends Component{
      [name] : event.target.value,
      endDate : endDate
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
     });
   }
 
@@ -461,6 +467,40 @@ class CategorywiseReport extends Component{
                               <input onChange={this.handleToChange.bind(this)} onBlur={this.onBlurEventTo.bind(this)}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                           </div>
                       </div> 
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Land holding Category</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
+                          <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
+                            <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                            <option>Big Farmer</option>
+                            <option>Landless</option>
+                            <option>Marginal Farmer</option>
+                            <option>Small Farmer</option>
+                          </select>
+                        </div>
+                      </div>                          
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Income Category </label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
+                          <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
+                            <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                            <option>APL</option>
+                            <option>BPL</option>
+                          </select>
+                        </div>
+                      </div>                        
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Special Category</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
+                          <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
+                            <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                            <option>Normal</option>
+                            <option>Differently Abled</option>
+                            <option>Veerangana</option>
+                            <option>Widow Headed</option>
+                          </select>
+                        </div>
+                      </div>                          
                     </div>  
                     <div className="marginTop11">
                         <div className="">

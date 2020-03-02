@@ -33,6 +33,7 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		    "printhideArray"			: [],
+		    "colorArray"	      		: ["red", "yellow", "green"],
 		    "role"						: localStorage.getItem("role"),
 		}
 		this.delete = this.delete.bind(this);
@@ -50,6 +51,15 @@ class IAssureTable extends Component {
 					}
 
 					for(let k=0; k<mergCol; k++){
+						if(props.twoLevelHeader.firstHeaderData[j].color){
+							var colorElem = {col:tableHeading[index], color:"color"};
+						// console.log(index," this.state.colorElem ========== ",colorElem);
+						}else{
+							var colorElem = {col:tableHeading[index], color:""};
+						// console.log(index," this.state.colorElem = ",colorElem);
+						}
+						this.state.colorArray.push(colorElem);
+						// console.log(index," this.state.colorArray = ", this.state.colorArray ,colorElem);
 						if(props.twoLevelHeader.firstHeaderData[j].hide){
 							var phElem = {col:tableHeading[index], printhide:"printhide"};
 						}else{
@@ -619,6 +629,7 @@ class IAssureTable extends Component {
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
+		                            		// console.log('dataIIIIIIIIIIIIIIIIIII',data,index);
 		                            		return(
 												<th key={index} colSpan={data.mergedColoums} className="umDynamicHeader srpadd textAlignCenter">{data.heading}</th>			
 		                            		);		                            		
@@ -670,11 +681,13 @@ class IAssureTable extends Component {
 																		var textAlign = 'textAlignLeft noWrapText'
 																	}else{
 																		var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
+																		// console.log("value1", value1, "parseInt",(parseInt(value1.replace(this.state.reN, ""), 10)))
 																		if(bN){
-																			var textAlign = 'textAlignRight';
+																			var textAlign = 'textAlignLeft';
 																		}else{
 																			var textAlign = 'textAlignLeft noWrapText';
 																		}
+																		// console.log("bN",bN,"key",key, "value1", value1, "textAlign", textAlign)
 																	}
 																}else{
 																	var textAlign = 'textAlignRight';

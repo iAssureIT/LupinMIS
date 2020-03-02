@@ -43,7 +43,8 @@ class ActivityWisePeriodicVarianceReport extends Component{
                 {
                     heading : 'Annual Physical Plan',
                     mergedColoums : 3,
-                    hide : false
+                    hide : false,
+                    color : true,
                 },
                 {
                     heading : "Periodic Physical Plan",
