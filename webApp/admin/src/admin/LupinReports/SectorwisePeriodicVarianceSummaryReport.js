@@ -249,7 +249,8 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         })
     }
 
-    getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){        
+    getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){      
+    console.log(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType)  
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
             if(center_ID==="all"){
                 $(".fullpageloader").show();

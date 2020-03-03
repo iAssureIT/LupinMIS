@@ -168,10 +168,10 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                 this.setState({
                   projectName : "all",
                 },()=>{
-                    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+                    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
                 })    
             }else  if(this.state.projectCategoryType=== "Project Fund"){
-                this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+                this.getData(this.state.startDate, this.state.endDate, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
             }
         },()=>{
         })
@@ -275,7 +275,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
            [name] : event.target.value,
            startDate:startDate
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID,this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
         });
     }
     handleToChange(event){
@@ -292,7 +292,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
            [name] : event.target.value,
            endDate : endDate
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+            this.getData(this.state.startDate, this.state.endDate, this.state.center_ID,  this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
        });
     }
     onBlurEventFrom(){

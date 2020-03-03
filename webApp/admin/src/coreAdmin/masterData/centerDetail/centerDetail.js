@@ -104,7 +104,7 @@ class centerDetail extends Component{
       "MISCoordinatorContact"    : this.refs.MISCoordinatorContact.value,
       "MISCoordinatorEmail"      : this.refs.MISCoordinatorEmail.value,
       "districtCovered"          : this.refs.districtCovered.value,
-      "blocksCovered"            : this.refs.blocksCovered.value,
+      "blocksCovered"            : this.state.blocksCovered,
     });    
   }
   isNumberKey(evt){
@@ -576,6 +576,7 @@ class centerDetail extends Component{
       method: 'get',
       url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
+      console.log('response',response);
       if(response&&response.data){
         this.setState({
           listofBlocks : response.data
@@ -587,20 +588,34 @@ class centerDetail extends Component{
   }
   selectBlock(event){
     event.preventDefault();
-    var blocksCovered = event.target.value;
+    /*this.camelCase(data.blockName)+'|'+data.countryID+'|'+data.stateID+'|'+data.districtID+'|'+data._id*/
+    var blocksCoveredValue = event.target.value;
+    var blocksCovered = blocksCoveredValue.split('|')[0];
+    var countryID = blocksCoveredValue.split('|')[1];
+    var stateID = blocksCoveredValue.split('|')[2];
+    var districtID = blocksCoveredValue.split('|')[3];
+    var blockID = blocksCoveredValue.split('|')[4];
+    console.log('blocksCovered',blocksCoveredValue);
     this.setState({
-      blocksCovered : blocksCovered
+      blocksCoveredValue : blocksCoveredValue,
+      blocksCovered : blocksCovered,
+      countryID : countryID,
+      stateID : stateID,
+      districtID : districtID,
+      blockID : blockID
     },()=>{
-      this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.blocksCovered);
+
+      this.getVillages(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
     });
   }
-  getVillages(stateCode, selectedDistrict, blocksCovered){
-    console.log('http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered);
+  getVillages(countryID, stateID, districtID, blockID){
+    console.log('http://locations2.iassureit.com/api/cities/get/citieslist/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID);
     axios({
       method: 'get',
-      url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
+      // url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
+      url: 'http://locations2.iassureit.com/api/cities/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
     }).then((response)=> {
-        console.log('response ==========', response.data,+stateCode+'/'+selectedDistrict+'/'+blocksCovered);
+        console.log('response ==========', response.data);
         if(response&&response.data[0]){
           if(this.state.editlistofVillages.length!==0){
             var listofVillages = response.data
@@ -635,7 +650,7 @@ class centerDetail extends Component{
       if(this.state[id] === true){
         selectedVillages.push({
           district  : this.refs.districtCovered.value,
-          block     : this.refs.blocksCovered.value,
+          block     : this.state.blocksCovered,
           village   : id
         });
         this.setState({
@@ -644,7 +659,7 @@ class centerDetail extends Component{
       }else{
         var index = selectedVillages.findIndex(v => v.village === id);
         selectedVillages.splice(selectedVillages.findIndex(v => v.village === id), 1);
-        if(this.refs.districtCovered.value==='--Select District--'&&this.refs.blocksCovered.value==='--Select Block--'){
+        if(this.refs.districtCovered.value==='--Select District--'&&this.state.blocksCovered==='--Select Block--'){
           listofVillages.splice(listofVillages.findIndex(v => v.cityName === cityName), 1);
         }
         this.setState({
@@ -874,13 +889,13 @@ class centerDetail extends Component{
                               <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
                                 <label className="formLable">Block Covered</label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
-                                  <select className="custom-select form-control inputBox"  value={this.state.blocksCovered}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
+                                  <select className="custom-select form-control inputBox"  value={this.state.blocksCoveredValue}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
                                     <option disabled="disabled" selected="true" value="--Select Block--" >--Select Block--</option>
                                     {
                                       this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                       this.state.listofBlocks.map((data, index)=>{
                                         return(
-                                          <option key={index} value={this.camelCase(data.blockName)}>{this.camelCase(data.blockName)}</option>
+                                          <option key={index} value={this.camelCase(data.blockName)+'|'+data.countryID+'|'+data.stateID+'|'+data.districtID+'|'+data._id}>{this.camelCase(data.blockName)}</option>
                                         );
                                       })
                                       :
