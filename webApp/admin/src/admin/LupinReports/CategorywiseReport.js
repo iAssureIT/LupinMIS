@@ -604,6 +604,7 @@ class CategorywiseReport extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
                             <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
                               <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                              <option value="all" >All</option>
                               <option>Big Farmer</option>
                               <option>Landless</option>
                               <option>Marginal Farmer</option>
@@ -616,6 +617,7 @@ class CategorywiseReport extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
                             <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
                               <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                              <option value="all" >All</option>
                               <option>APL</option>
                               <option>BPL</option>
                             </select>
@@ -626,6 +628,7 @@ class CategorywiseReport extends Component{
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
                             <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
                               <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                              <option value="all" >All</option>
                               <option>Normal</option>
                               <option>Differently Abled</option>
                               <option>Veerangana</option>

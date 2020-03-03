@@ -242,7 +242,7 @@ class CategorywiseReport extends Component{
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && projectCategoryType  && beneficiaryType){
         $(".fullpageloader").show();
-        axios.get('/api/reports/category_reports/'+startDate+'/'+endDate+'/all/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+incomeCategory+'/'+landCategory+'/'+specialCategory)
+        axios.get('/api/reports/category_reports/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+incomeCategory+'/'+landCategory+'/'+specialCategory)
         .then((response)=>{
           $(".fullpageloader").hide();
 
@@ -417,61 +417,62 @@ class CategorywiseReport extends Component{
                               </select>
                             </div>
                         </div> 
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">Project Category</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                              <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                                <option  className="hidden" >--Select--</option>
-                                <option value="all" >All</option>
-                                <option value="LHWRF Grant" >LHWRF Grant</option>
-                                <option value="Project Fund">Project Fund</option>
-                                
-                              </select>
+                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                            <label className="formLable">From</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                <input onChange={this.handleFromChange.bind(this)}   onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                             </div>
                         </div>
-                        {
-                          this.state.projectCategoryType === "Project Fund" ?
-                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">Project Name</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                <option  className="hidden" >--Select--</option>
-                                 <option value="all" >All</option>
-                                {
-                                  this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                  this.state.availableProjects.map((data, index)=>{
-                                    return(
-                                      <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                }
-                              </select>
+                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                            <label className="formLable">To</label><span className="asterix"></span>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                <input onChange={this.handleToChange.bind(this)} onBlur={this.onBlurEventTo.bind(this)}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                             </div>
-                          </div>
-                        : 
-                        ""
-                        } 
+                        </div> 
                     </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">From</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                              <input onChange={this.handleFromChange.bind(this)}   onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                          <label className="formLable">Project Category</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                            <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                              <option  className="hidden" >--Select--</option>
+                              <option value="all" >All</option>
+                              <option value="LHWRF Grant" >LHWRF Grant</option>
+                              <option value="Project Fund">Project Fund</option>
+                              
+                            </select>
                           </div>
                       </div>
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">To</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                              <input onChange={this.handleToChange.bind(this)} onBlur={this.onBlurEventTo.bind(this)}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                      {
+                        this.state.projectCategoryType === "Project Fund" ?
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                          <label className="formLable">Project Name</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                              <option  className="hidden" >--Select--</option>
+                               <option value="all" >All</option>
+                              {
+                                this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                this.state.availableProjects.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
                           </div>
-                      </div> 
+                        </div>
+                      : 
+                      ""
+                      } 
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Land holding Category</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
                           <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
                             <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                            <option value="all" >All</option>
                             <option>Big Farmer</option>
                             <option>Landless</option>
                             <option>Marginal Farmer</option>
@@ -484,6 +485,7 @@ class CategorywiseReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
                           <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
                             <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                            <option value="all" >All</option>
                             <option>APL</option>
                             <option>BPL</option>
                           </select>
@@ -494,6 +496,7 @@ class CategorywiseReport extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
                           <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
                             <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                            <option value="all" >All</option>
                             <option>Normal</option>
                             <option>Differently Abled</option>
                             <option>Veerangana</option>
