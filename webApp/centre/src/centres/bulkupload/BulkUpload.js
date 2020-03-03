@@ -7,6 +7,7 @@ import $ from 'jquery';
 import IAssureTable           from "./IAssureTable.js";
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import Loader  from '../../common/Loader.js'; 
+
 class BulkUpload extends Component{
 	constructor(props) {
     super(props);
@@ -206,7 +207,7 @@ class BulkUpload extends Component{
   bulkUpload() {
     $('.fullpageloader').show();
     var initialLmt = 0;
-    var factor = 200;
+    var factor = 100;
     var endLmt = initialLmt+factor;
     var totalrows = this.state.inputFileData.length;
     var chunkData = [];
