@@ -6,6 +6,7 @@ import moment               from 'moment';
 import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../common/Loader.js";
 
+import "./SectorwisePeriodicVarianceSummaryReport.css";
 import "../Reports/Reports.css";
 class SectorwiseAnnualCompletionSummaryReport extends Component{
 	constructor(props){

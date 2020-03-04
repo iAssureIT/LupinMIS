@@ -7,6 +7,7 @@ import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx"
 import Loader               from "../../common/Loader.js";
 
 import "../Reports/Reports.css";
+import "./SectorwisePeriodicPlanSummaryReport.css";
 
 class SectorwisePeriodicPlanSummaryReport extends Component{
 	constructor(props){
@@ -234,29 +235,33 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
     }
 
     addCommas(x) {
-        x=x.toString();
-        if(x.includes('%')){
-            return x;
+        if(x===0){
+            return parseInt(x)
         }else{
-          if(x.includes('.')){
-            var pointN = x.split('.')[1];
-            var lastN = x.split('.')[0];
-            var lastThree = lastN.substring(lastN.length-3);
-            var otherNumbers = lastN.substring(0,lastN.length-3);
-            if(otherNumbers != '')
-                lastThree = ',' + lastThree;
-            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-            // console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
-            return(res);
-          }else{
-            var lastThree = x.substring(x.length-3);
-            var otherNumbers = x.substring(0,x.length-3);
-            if(otherNumbers != '')
-                lastThree = ',' + lastThree;
-            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-            // console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
-            return(res);
-          }
+            x=x.toString();
+            if(x.includes('%')){
+                return x;
+            }else{
+              if(x.includes('.')){
+                var pointN = x.split('.')[1];
+                var lastN = x.split('.')[0];
+                var lastThree = lastN.substring(lastN.length-3);
+                var otherNumbers = lastN.substring(0,lastN.length-3);
+                if(otherNumbers != '')
+                    lastThree = ',' + lastThree;
+                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+                // console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
+                return(res);
+              }else{
+                var lastThree = x.substring(x.length-3);
+                var otherNumbers = x.substring(0,x.length-3);
+                if(otherNumbers != '')
+                    lastThree = ',' + lastThree;
+                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+                // console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
+                return(res);
+              }
+            }
         }
     }
     getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){        
@@ -280,11 +285,11 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                     annualPlan_Reach                        : this.addCommas(a.annualPlan_Reach),
                     annualPlan_FamilyUpgradation            : this.addCommas(a.annualPlan_FamilyUpgradation),                
                     // Per_Annual                              : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
-                    annualProportionToTotal                 : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(4)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(4)) + "%" ),
+                    annualProportionToTotal                 : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
                     annualPlan_TotalBudget_L                : (a.annualPlan_TotalBudget_L),
                     monthlyPlan_Reach                       : this.addCommas(a.monthlyPlan_Reach),
                     monthlyPlan_FamilyUpgradation           : this.addCommas(a.monthlyPlan_FamilyUpgradation),                
-                    periodicProportionToTotal               : (((((a.monthlyPlan_TotalBudget_L/value.monthlyPlan_TotalBudget_L)*100).toFixed(2)) + "%") === "NaN%") ? " " : ((((a.monthlyPlan_TotalBudget_L/value.monthlyPlan_TotalBudget_L)*100).toFixed(4)) + "%") ,
+                    periodicProportionToTotal               : (((((a.monthlyPlan_TotalBudget_L/value.monthlyPlan_TotalBudget_L)*100).toFixed(2)) + "%") === "NaN%") ? " " : ((((a.monthlyPlan_TotalBudget_L/value.monthlyPlan_TotalBudget_L)*100).toFixed(2)) + "%") ,
                     monthlyPlan_TotalBudget_L               : (a.monthlyPlan_TotalBudget_L),                
                     monthlyPlan_LHWRF_L                     : a.monthlyPlan_LHWRF_L,
                     monthlyPlan_NABARD_L                    : a.monthlyPlan_NABARD_L,

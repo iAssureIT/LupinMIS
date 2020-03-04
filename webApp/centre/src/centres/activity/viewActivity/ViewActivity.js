@@ -45,11 +45,11 @@ class ViewActivity extends Component{
         firstHeaderData   : [
                             {
                               heading : 'Activity Details',
-                              mergedColoums : 11
+                              mergedColoums : 13
                             },
                             {
                               heading : 'Source of Fund',
-                              mergedColoums : 8
+                              mergedColoums : 7
                             },
                             {
                               heading : '',

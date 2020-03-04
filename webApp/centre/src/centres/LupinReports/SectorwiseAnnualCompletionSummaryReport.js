@@ -6,12 +6,10 @@ import { Link }                                              from 'react-router-
 import SectorwiseAnnualCompletionSummaryYearlyReport         from '../Reports/SectorwiseAnnualCompletionSummaryYearlyReport.js';
 import Loader                                                from "../../common/Loader.js";
 
+import "./SectorwiseAnnualCompletionSummaryReport.css";
 import "../Reports/Reports.css";
 import '../../coreAdmin/IAssureTable/print.css';
-/*Sector  Annual Plan     Annual Achievement        Source of Financial Achievement               Remarks
-   Total Budget Outreach  Family Upgradation plan Outreach   Families Upgraded  " Financial
-Total " % to Annual Plan  LHWRF NABARD  Bank  Loan  Community  Contribution   Govt. Others  
-                      Direct  Indirect      */
+
 class SectorwiseAnnualCompletionSummaryReport extends Component{
 	constructor(props){
     super(props);

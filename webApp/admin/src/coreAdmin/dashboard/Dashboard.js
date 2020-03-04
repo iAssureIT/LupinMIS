@@ -356,7 +356,7 @@ export default class Dashboard extends Component{
                       </div>
 
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                        <div className="box2">
+                        <div className="box2 monthChartBox">
                           <div className="box-header with-border">
                              <h3 className="box-title">Month wise Goal Completion</h3>
                           </div>
@@ -366,7 +366,7 @@ export default class Dashboard extends Component{
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                        <div className="box2">
+                        <div className="box2 monthChartBox">
                           <div className="box-header with-border">
                              <h3 className="box-title">Month wise Expenditure V/s Budget</h3>
                           </div>

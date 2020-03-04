@@ -222,26 +222,30 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     })
   }
   addCommas(x) {
-    x=x.toString();
-    if(x.includes('%')){
-        return x;
+    if(x===0){
+      return parseInt(x)
     }else{
-      if(x.includes('.')){
-        var pointN = x.split('.')[1];
-        var lastN = x.split('.')[0];
-        var lastThree = lastN.substring(lastN.length-3);
-        var otherNumbers = lastN.substring(0,lastN.length-3);
-        if(otherNumbers != '')
-            lastThree = ',' + lastThree;
-        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        return(res);
+      x=x.toString();
+      if(x.includes('%')){
+          return x;
       }else{
-        var lastThree = x.substring(x.length-3);
-        var otherNumbers = x.substring(0,x.length-3);
-        if(otherNumbers != '')
-            lastThree = ',' + lastThree;
-        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        return(res);
+        if(x.includes('.')){
+          var pointN = x.split('.')[1];
+          var lastN = x.split('.')[0];
+          var lastThree = lastN.substring(lastN.length-3);
+          var otherNumbers = lastN.substring(0,lastN.length-3);
+          if(otherNumbers != '')
+              lastThree = ',' + lastThree;
+          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+          return(res);
+        }else{
+          var lastThree = x.substring(x.length-3);
+          var otherNumbers = x.substring(0,x.length-3);
+          if(otherNumbers != '')
+              lastThree = ',' + lastThree;
+          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+          return(res);
+        }
       }
     }
   }
@@ -265,10 +269,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                     annualPlan_projectCategoryType           : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
                     annualPlan_projectName                   : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
                     name                                     : a.name,
-                    annualPlan_Reach                         : this.addCommas(a.annualPlan_Reach),
-                    annualPlan_FamilyUpgradation             : this.addCommas(a.annualPlan_FamilyUpgradation), 
-                    proportionToTotal                        : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(4)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(4)) + "%" ),
-                    // Per_Annual                               : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(4)) + "%" ),
+                    annualPlan_Reach                         : (a.annualPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.annualPlan_Reach)), 
+                    annualPlan_FamilyUpgradation             : (a.annualPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.annualPlan_FamilyUpgradation)), 
+                    proportionToTotal                        : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
                     annualPlan_TotalBudget_L                 : (a.annualPlan_TotalBudget_L),
                     annualPlan_LHWRF_L                       : (a.annualPlan_LHWRF_L),
                     annualPlan_NABARD_L                      : (a.annualPlan_NABARD_L),
@@ -300,9 +303,9 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                     annualPlan_projectCategoryType           : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
                     annualPlan_projectName                   : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
                     name                                     : a.name,
-                    annualPlan_Reach                         : this.addCommas(a.annualPlan_Reach),
-                    annualPlan_FamilyUpgradation             : this.addCommas(a.annualPlan_FamilyUpgradation), 
-                    proportionToTotal                        : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(4)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(4)) + "%" ),
+                    annualPlan_Reach                         : (a.annualPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.annualPlan_Reach)), 
+                    annualPlan_FamilyUpgradation             : (a.annualPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.annualPlan_FamilyUpgradation)), 
+                    proportionToTotal                        : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
                     // Per_Annual                               : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
                     annualPlan_TotalBudget_L                 : (a.annualPlan_TotalBudget_L),
                     annualPlan_LHWRF_L                       : (a.annualPlan_LHWRF_L),

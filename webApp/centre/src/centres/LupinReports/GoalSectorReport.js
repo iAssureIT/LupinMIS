@@ -111,7 +111,7 @@ class GoalSectorReport extends Component{
    
     getData(startDate, endDate,center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName){
         console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName);
-      if(center_ID && beneficiaryType){
+      if(center_ID && beneficiaryType && goalType && goalName){
         $(".fullpageloader").show();
         axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName)
         .then((response)=>{

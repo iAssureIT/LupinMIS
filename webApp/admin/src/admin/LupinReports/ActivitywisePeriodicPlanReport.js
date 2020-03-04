@@ -8,6 +8,7 @@ import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx"
 import Loader               from "../../common/Loader.js";
 
 import "../Reports/Reports.css";
+import "./ActivitywisePeriodicPlanReport.css";
 
 class ActivitywisePeriodicPlanReport extends Component{
 	constructor(props){
@@ -313,26 +314,30 @@ class ActivitywisePeriodicPlanReport extends Component{
         })
     }
     addCommas(x) {
-        x=x.toString();
-        if(x.includes('%')){
-            return x;
+        if(x===0){
+            return parseInt(x)
         }else{
-            if(x.includes('.')){
-                var pointN = x.split('.')[1];
-                var lastN = x.split('.')[0];
-                var lastThree = lastN.substring(lastN.length-3);
-                var otherNumbers = lastN.substring(0,lastN.length-3);
-                if(otherNumbers != '')
-                    lastThree = ',' + lastThree;
-                    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-                    return(res);
+            x=x.toString();
+            if(x.includes('%')){
+                return x;
             }else{
-                var lastThree = x.substring(x.length-3);
-                var otherNumbers = x.substring(0,x.length-3);
-                if(otherNumbers != '')
-                    lastThree = ',' + lastThree;
-                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-                return(res);
+                if(x.includes('.')){
+                    var pointN = x.split('.')[1];
+                    var lastN = x.split('.')[0];
+                    var lastThree = lastN.substring(lastN.length-3);
+                    var otherNumbers = lastN.substring(0,lastN.length-3);
+                    if(otherNumbers != '')
+                        lastThree = ',' + lastThree;
+                        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+                        return(res);
+                }else{
+                    var lastThree = x.substring(x.length-3);
+                    var otherNumbers = x.substring(0,x.length-3);
+                    if(otherNumbers != '')
+                        lastThree = ',' + lastThree;
+                    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+                    return(res);
+                }
             }
         }
     }
@@ -361,14 +366,14 @@ class ActivitywisePeriodicPlanReport extends Component{
                             monthlyPlan_projectName                   : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,              
                             name                                      : a.name,
                             unit                                      : a.unit,
-                            annualPlan_Reach                          : this.addCommas(a.annualPlan_Reach),
-                            annualPlan_FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation),
-                            annualPlan_PhysicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit),
+                            annualPlan_Reach                          : (a.annualPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.annualPlan_Reach)), 
+                            annualPlan_FamilyUpgradation              : (a.annualPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.annualPlan_FamilyUpgradation)), 
+                            annualPlan_PhysicalUnit                   : (a.annualPlan_PhysicalUnit === " ") ? " "  : parseInt(this.addCommas(a.annualPlan_PhysicalUnit)), 
                             annualPlan_UnitCost_L                     : (a.annualPlan_UnitCost_L),
                             annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
-                            monthlyPlan_Reach                         : this.addCommas(a.monthlyPlan_Reach),
-                            monthlyPlan_FamilyUpgradation             : this.addCommas(a.monthlyPlan_FamilyUpgradation),
-                            monthlyPlan_PhysicalUnit                  : this.addCommas(a.monthlyPlan_PhysicalUnit),
+                            monthlyPlan_Reach                         : (a.monthlyPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.monthlyPlan_Reach)), 
+                            monthlyPlan_FamilyUpgradation             : (a.monthlyPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.monthlyPlan_FamilyUpgradation)), 
+                            monthlyPlan_PhysicalUnit                  : (a.monthlyPlan_PhysicalUnit === " ") ? " "  : parseInt(this.addCommas(a.monthlyPlan_PhysicalUnit)), 
                             monthlyPlan_UnitCost_L                    : (a.monthlyPlan_UnitCost_L),
                             monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,
                             monthlyPlan_LHWRF_L                       : a.monthlyPlan_LHWRF_L,

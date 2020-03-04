@@ -1,0 +1,6 @@
+#SectorwisePeriodicPlanSummaryReport tr .colorTable:nth-child(2), #SectorwisePeriodicPlanSummaryReport tr .srpadd:nth-child(n+5){
+	background: var(--color1);
+}
+#SectorwisePeriodicPlanSummaryReport tr .colorTable:nth-child(3), #SectorwisePeriodicPlanSummaryReport tr .srpadd:nth-child(n+9){
+	background: var(--color2);
+}

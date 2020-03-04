@@ -631,7 +631,7 @@ class IAssureTable extends Component {
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		// console.log('dataIIIIIIIIIIIIIIIIIII',data,index);
 		                            		return(
-												<th key={index} colSpan={data.mergedColoums} className="umDynamicHeader srpadd textAlignCenter">{data.heading}</th>			
+												<th key={index} colSpan={data.mergedColoums} className="umDynamicHeader srpadd colorTable textAlignCenter">{data.heading}</th>			
 		                            		);		                            		
 		                            	})	
 		                            	:

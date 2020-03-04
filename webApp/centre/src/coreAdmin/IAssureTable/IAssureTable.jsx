@@ -629,7 +629,7 @@ class IAssureTable extends Component {
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
-												<th key={index} colSpan={data.mergedColoums} className={"umDynamicHeader srpadd textAlignCenter " + (data.hide ? "printhide" :"")}>{data.heading}</th>			
+												<th key={index} colSpan={data.mergedColoums} className={"umDynamicHeader srpadd colorTable textAlignCenter " + (data.hide ? "printhide" :"")}>{data.heading}</th>			
 		                            		);		                           		
 		                            	})	
 		                            	:
@@ -643,11 +643,11 @@ class IAssureTable extends Component {
 											([key, value], i)=> {
 													if(key === 'actions'){
 														return(
-															<th key={i} id={key} className="umDynamicHeader srpadd textAlignLeft printhide">{value}</th>
+															<th key={i} id={key} className={"umDynamicHeader srpadd  textAlignLeft printhide colorRow-"+this.state.tableObjects.component}>{value}</th>
 														);	
 													}else{
 														return(
-															<th key={i} id={key}  className={"umDynamicHeader srpadd textAlignLeft "+(this.state.printhideArray[i] ? this.state.printhideArray[i].printhide : "" )}>{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															<th key={i} id={key}  className={"umDynamicHeader srpadd textAlignLeft "+(this.state.printhideArray[i] ? this.state.printhideArray[i].printhide : "" )}>{value} <br/><span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
 													}
 																							

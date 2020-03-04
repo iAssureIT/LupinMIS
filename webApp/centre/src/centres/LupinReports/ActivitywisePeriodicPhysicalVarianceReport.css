@@ -1,0 +1,14 @@
+
+#ActivityWisePeriodicPhysicalVarianceReport tr .colorTable:nth-child(2), #ActivityWisePeriodicPhysicalVarianceReport tr .srpadd:nth-child(n+6){
+	background: var(--color1);
+}
+ #ActivityWisePeriodicPhysicalVarianceReport tr .colorTable:nth-child(3), #ActivityWisePeriodicPhysicalVarianceReport tr .srpadd:nth-child(n+9){
+	background: var(--color2);
+}
+#ActivityWisePeriodicPhysicalVarianceReport tr .colorTable:nth-child(4), #ActivityWisePeriodicPhysicalVarianceReport tr .srpadd:nth-child(n+12){
+	background: var(--color1);
+}
+#ActivityWisePeriodicPhysicalVarianceReport tr .colorTable:nth-child(5), #ActivityWisePeriodicPhysicalVarianceReport tr .srpadd:nth-child(n+15){
+  /*background: rgba(255, 99, 132, 1);*/
+	background: var(--color2);
+}

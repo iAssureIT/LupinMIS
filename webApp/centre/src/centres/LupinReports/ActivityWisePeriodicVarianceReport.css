@@ -1,0 +1,13 @@
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(2), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+6){
+	background: var(--color1);
+}
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(3), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+9){
+	background: var(--color2);
+}
+ #ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(4), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+19){
+	background: var(--color1);
+}
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(5), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+29){
+	background: var(--color2);
+}
+

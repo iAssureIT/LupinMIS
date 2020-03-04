@@ -7,6 +7,7 @@ import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx"
 import Loader               from "../../common/Loader.js";
 
 import "../Reports/Reports.css";
+import "./SectorwiseAnnualCompletionSummaryReport.css";
 
 class SectorwiseAnnualPlanSummaryReport extends Component{
   constructor(props){
@@ -231,26 +232,30 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
   }
     
   addCommas(x) {
-    x=x.toString();
-    if(x.includes('%')){
-        return x;
+    if(x===0){
+      return parseInt(x)
     }else{
-      if(x.includes('.')){
-        var pointN = x.split('.')[1];
-        var lastN = x.split('.')[0];
-        var lastThree = lastN.substring(lastN.length-3);
-        var otherNumbers = lastN.substring(0,lastN.length-3);
-        if(otherNumbers != '')
-            lastThree = ',' + lastThree;
-        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        return(res);
+      x=x.toString();
+      if(x.includes('%')){
+          return x;
       }else{
-        var lastThree = x.substring(x.length-3);
-        var otherNumbers = x.substring(0,x.length-3);
-        if(otherNumbers != '')
-            lastThree = ',' + lastThree;
-        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        return(res);
+        if(x.includes('.')){
+          var pointN = x.split('.')[1];
+          var lastN = x.split('.')[0];
+          var lastThree = lastN.substring(lastN.length-3);
+          var otherNumbers = lastN.substring(0,lastN.length-3);
+          if(otherNumbers != '')
+              lastThree = ',' + lastThree;
+          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+          return(res);
+        }else{
+          var lastThree = x.substring(x.length-3);
+          var otherNumbers = x.substring(0,x.length-3);
+          if(otherNumbers != '')
+              lastThree = ',' + lastThree;
+          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+          return(res);
+        }
       }
     }
   }
@@ -263,6 +268,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           $(".fullpageloader").show();
           axios.get('/api/reports/sector_annual_achievement_reports/'+startDate+'/'+endDate+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
               .then((response)=>{
+                console.log('response',response);
                   $(".fullpageloader").hide();
 
                   var tableData = response.data.map((a, i)=>{
@@ -271,11 +277,11 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                     projectCategoryType               : a.projectCategoryType ? a.projectCategoryType : "-",
                     projectName                       : a.projectName === 0 ? "-" :a.projectName,      
                     name                              : a.name,
-                    annualPlan_Reach                  : this.addCommas(a.annualPlan_Reach), 
-                    annualPlan_FamilyUpgradation      : this.addCommas(a.annualPlan_FamilyUpgradation), 
+                    annualPlan_Reach                  : (a.annualPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.annualPlan_Reach)), 
+                    annualPlan_FamilyUpgradation      : (a.annualPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.annualPlan_FamilyUpgradation)), 
                     annualPlan_TotalBudget_L          : a.annualPlan_TotalBudget_L,
-                    achievement_Reach                 : this.addCommas(a.achievement_Reach), 
-                    achievement_FamilyUpgradation     : this.addCommas(a.achievement_FamilyUpgradation), 
+                    achievement_Reach                 : (a.achievement_Reach===" ")? " " : parseInt(this.addCommas(a.achievement_Reach)), 
+                    achievement_FamilyUpgradation     : (a.achievement_FamilyUpgradation===" ")? " " : parseInt(this.addCommas(a.achievement_FamilyUpgradation)), 
                     achievement_TotalBudget_L         : a.achievement_TotalBudget_L, 
                     Per_Annual                        : a.Per_Annual,
                     achievement_LHWRF_L               : a.achievement_LHWRF_L,

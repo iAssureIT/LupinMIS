@@ -8,6 +8,7 @@ import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx"
 import Loader               from "../../common/Loader.js";
 
 import "../Reports/Reports.css";
+import "./ActivitywisePeriodicPhysicalVarianceReport.css";
 
 class ActivityWisePeriodicVarianceReport extends Component{
   constructor(props){
@@ -77,6 +78,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
           "variance_monthlyPlan_FamilyUpgradation" : 'Family Upgraded', 
         },
         "tableObjects"        : {
+          component           : "ActivityWisePeriodicVarianceReport",
           paginationApply     : false,
           downloadApply       : true,
           searchApply         : false,
@@ -290,18 +292,21 @@ class ActivityWisePeriodicVarianceReport extends Component{
     })
   }
   addCommas(x) {
-    x=x.toString();
-    if(x.includes('%')){
-        return x;
-    }else if(x.includes('-')){
-            var lastN = x.split('-')[1];
-            var lastThree = lastN.substring(lastN.length-3);
-            var otherNumbers = lastN.substring(0,lastN.length-3);
-            if(otherNumbers != '')
-                lastThree = ',' + lastThree;
-            var res = "-" + otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-            // console.log("x",x,"lastN",lastN,"res",res)
-            return(res);
+    if(x===0){
+      return parseInt(x)
+    }else{
+      x=x.toString();
+      if(x.includes('%')){
+          return x;
+      }else if(x.includes('-')){
+          var lastN = x.split('-')[1];
+          var lastThree = lastN.substring(lastN.length-3);
+          var otherNumbers = lastN.substring(0,lastN.length-3);
+          if(otherNumbers != '')
+              lastThree = ',' + lastThree;
+          var res = "-" + otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+          console.log("x",x,"lastN",lastN,"res",res)
+          return(res);
         }else{
           if(x.includes('.')){
             var pointN = x.split('.')[1];
@@ -321,6 +326,7 @@ class ActivityWisePeriodicVarianceReport extends Component{
             return(res);
           }
         }
+      }
     }
   getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID){        
     if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
