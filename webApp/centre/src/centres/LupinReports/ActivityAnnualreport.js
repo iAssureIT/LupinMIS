@@ -64,7 +64,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
             "unit"                          : 'Unit',
             "achievement_Reach"             : 'Reach', 
             "achievement_FamilyUpgradation" : 'Families Upgradation', 
-            "achievement_UnitCost_L"          : 'Unit Cost', 
+            "achievement_UnitCost_L"        : 'Unit Cost "Lakh" ', 
             "achievement_PhysicalUnit"      : 'Phy Units', 
             "achievement_TotalBudget_L"     : "Total Expenditure 'Lakh'",
             "achievement_LHWRF_L"           : 'LHWRF',

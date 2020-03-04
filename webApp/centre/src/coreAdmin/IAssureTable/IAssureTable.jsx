@@ -664,22 +664,37 @@ class IAssureTable extends Component {
 										(value, i)=> {
 											return(
 												<tr key={i} className="tablerow">
-													<td className="textAlignCenter">{this.state.startRange+1+i}</td>
+
+													{/*console.log('Object.entries(value)', (Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-"))*/}
+													{
+														((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
+														?
+															<td className="textAlignCenter">{this.state.startRange+1+i}</td>
+														:
+															<td className="textAlignCenter"></td>
+													}
 													{
 														Object.entries(value).map( 
 															([key, value1], i)=> {
 																if($.type(value1) === 'string'){
-																	var regex = new RegExp(/(<([^>]+)>)/ig);
-																	var value2 = value1 ? value1.replace(regex,'') : '';
-																	var aN = value2.replace(this.state.reA, "");
-																	if(aN && $.type( aN ) === 'string'){
-																		var textAlign = 'textAlignLeft noWrapText '+ (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+																	var numbers = /^[0-9]+$/;
+																	if(value1.includes(',')){
+																		var textAlign = 'textAlignRight';
+																	}else if(value1.match(numbers)){
+																		var textAlign = 'textAlignRight';
 																	}else{
-																		var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
-																		if(bN){
-																			var textAlign = 'textAlignRight ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+																		var regex = new RegExp(/(<([^>]+)>)/ig);
+																		var value2 = value1 ? value1.replace(regex,'') : '';
+																		var aN = value2.replace(this.state.reA, "");
+																		if(aN && $.type( aN ) === 'string'){
+																			var textAlign = 'textAlignLeft noWrapText '+ (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																		}else{
-																			var textAlign = 'textAlignLeft noWrapText ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+																			var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
+																			if(bN){
+																				var textAlign = 'textAlignRight ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+																			}else{
+																				var textAlign = 'textAlignLeft noWrapText ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+																			}
 																		}
 																	}
 																}else{

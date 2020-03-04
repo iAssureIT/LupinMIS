@@ -66,34 +66,32 @@ export default class YearlyReport extends Component{
     
     addCommas(x) {
         if(x===0){
-            return parseInt(x)
+          return parseInt(x)
         }else{
-            x=x.toString();
-            if(x.includes('%')){
-                return x;
+          x=x.toString();
+          if(x.includes('%')){
+              return x;
+          }else{
+            if(x.includes('.')){
+              var pointN = x.split('.')[1];
+              var lastN = x.split('.')[0];
+              var lastThree = lastN.substring(lastN.length-3);
+              var otherNumbers = lastN.substring(0,lastN.length-3);
+              if(otherNumbers != '')
+                  lastThree = ',' + lastThree;
+              var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+              return(res);
             }else{
-              if(x.includes('.')){
-                var pointN = x.split('.')[1];
-                var lastN = x.split('.')[0];
-                var lastThree = lastN.substring(lastN.length-3);
-                var otherNumbers = lastN.substring(0,lastN.length-3);
-                if(otherNumbers != '')
-                    lastThree = ',' + lastThree;
-                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-                // console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
-                return(res);
-              }else{
-                var lastThree = x.substring(x.length-3);
-                var otherNumbers = x.substring(0,x.length-3);
-                if(otherNumbers != '')
-                    lastThree = ',' + lastThree;
-                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-                // console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
-                return(res);
-              }
+              var lastThree = x.substring(x.length-3);
+              var otherNumbers = x.substring(0,x.length-3);
+              if(otherNumbers != '')
+                  lastThree = ',' + lastThree;
+              var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+              return(res);
             }
+          }
         }
-    }
+      }
     getData(year, center_ID, projectCategoryType, projectName, beneficiaryType){        
         if(year){
             var startDate = year.substring(3, 7)+"-04-01";
@@ -103,15 +101,16 @@ export default class YearlyReport extends Component{
                 .then((response)=>{
                     console.log('response', response);
                     var tableData = response.data.map((a, i)=>{
+                    console.log(' parseInt(this.addCommas(a.annualPlan_Reach))',  (this.addCommas(a.annualPlan_Reach)));
                     return {
                         _id                               : a._id,
                         projectCategoryType               : a.projectCategoryType ? a.projectCategoryType : "-",
                         projectName                       : a.projectName === 0 ? "-" :a.projectName,      
-                        name                              : a.name,
-                        annualPlan_Reach                  : this.addCommas(a.annualPlan_Reach), 
+                        name                              : a.name, 
+                        annualPlan_Reach                  : this.addCommas(a.annualPlan_Reach),
                         annualPlan_FamilyUpgradation      : this.addCommas(a.annualPlan_FamilyUpgradation), 
                         annualPlan_TotalBudget_L          : a.annualPlan_TotalBudget_L,
-                        achievement_Reach                 : this.addCommas(a.achievement_Reach), 
+                        achievement_Reach                 : this.addCommas(a.achievement_Reach),
                         achievement_FamilyUpgradation     : this.addCommas(a.achievement_FamilyUpgradation), 
                         achievement_TotalBudget_L         : a.achievement_TotalBudget_L, 
                         Per_Annual                        : a.Per_Annual,

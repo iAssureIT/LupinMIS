@@ -240,13 +240,13 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                   monthlyPlan_projectCategoryType         : a.monthlyPlan_projectCategoryType ? a.monthlyPlan_projectCategoryType : "-",
                   monthlyPlan_projectName                 : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,               
                   name                                    : a.name,
-                  annualPlan_Reach                        : (a.annualPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.annualPlan_Reach)), 
-                  annualPlan_FamilyUpgradation            : (a.annualPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.annualPlan_FamilyUpgradation)), 
+                  annualPlan_Reach                        : this.addCommas(a.annualPlan_Reach),
+                  annualPlan_FamilyUpgradation            : this.addCommas(a.annualPlan_FamilyUpgradation),
                   annualProportionToTotal                 : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
                   // Per_Annual                              : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
                   annualPlan_TotalBudget_L                : (a.annualPlan_TotalBudget_L),
-                  monthlyPlan_Reach                       : (a.monthlyPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.monthlyPlan_Reach)), 
-                  monthlyPlan_FamilyUpgradation           : (a.monthlyPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.monthlyPlan_FamilyUpgradation)), 
+                  monthlyPlan_Reach                       : this.addCommas(a.monthlyPlan_Reach),
+                  monthlyPlan_FamilyUpgradation           : this.addCommas(a.monthlyPlan_FamilyUpgradation),
                   periodicProportionToTotal               : (((((a.monthlyPlan_TotalBudget_L/value.monthlyPlan_TotalBudget_L)*100).toFixed(2)) + "%") === "NaN%") ? " " : ((((a.monthlyPlan_TotalBudget_L/value.monthlyPlan_TotalBudget_L)*100).toFixed(2)) + "%") ,
                   monthlyPlan_TotalBudget_L               : (a.monthlyPlan_TotalBudget_L),                
                   monthlyPlan_LHWRF_L                     : a.monthlyPlan_LHWRF_L,
@@ -256,7 +256,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                   monthlyPlan_DirectCC_L                  : a.monthlyPlan_DirectCC_L,
                   monthlyPlan_IndirectCC_L                : a.monthlyPlan_IndirectCC_L,
                   monthlyPlan_Other_L                     : a.monthlyPlan_Other_L,
-              } 
+                } 
             })  
               this.setState({
                 tableData : tableData
@@ -282,13 +282,13 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                   monthlyPlan_projectCategoryType         : a.monthlyPlan_projectCategoryType ? a.monthlyPlan_projectCategoryType : "-",
                   monthlyPlan_projectName                 : a.monthlyPlan_projectName === "all" ? "-" :a.monthlyPlan_projectName,               
                   name                                    : a.name,
-                  annualPlan_Reach                        : (a.annualPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.annualPlan_Reach)), 
-                  annualPlan_FamilyUpgradation            : (a.annualPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.annualPlan_FamilyUpgradation)), 
+                  annualPlan_Reach                        : this.addCommas(a.annualPlan_Reach),
+                  annualPlan_FamilyUpgradation            : this.addCommas(a.annualPlan_FamilyUpgradation),
                   annualProportionToTotal                 : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
                   // Per_Annual                              : a.Per_Annual==="-" ? " " :((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
                   annualPlan_TotalBudget_L                : (a.annualPlan_TotalBudget_L),
-                  monthlyPlan_Reach                       : (a.monthlyPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.monthlyPlan_Reach)), 
-                  monthlyPlan_FamilyUpgradation           : (a.monthlyPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.monthlyPlan_FamilyUpgradation)), 
+                  monthlyPlan_Reach                       : this.addCommas(a.monthlyPlan_Reach),
+                  monthlyPlan_FamilyUpgradation           : this.addCommas(a.monthlyPlan_FamilyUpgradation),
                   periodicProportionToTotal               : (((((a.monthlyPlan_TotalBudget_L/value.monthlyPlan_TotalBudget_L)*100).toFixed(2)) + "%") === "NaN%") ? " " : ((((a.monthlyPlan_TotalBudget_L/value.monthlyPlan_TotalBudget_L)*100).toFixed(2)) + "%") ,
                   monthlyPlan_TotalBudget_L               : (a.monthlyPlan_TotalBudget_L),                
                   monthlyPlan_LHWRF_L                     : a.monthlyPlan_LHWRF_L,
@@ -298,7 +298,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                   monthlyPlan_DirectCC_L                  : a.monthlyPlan_DirectCC_L,
                   monthlyPlan_IndirectCC_L                : a.monthlyPlan_IndirectCC_L,
                   monthlyPlan_Other_L                     : a.monthlyPlan_Other_L,
-              } 
+                } 
             })  
               this.setState({
                 tableData : tableData

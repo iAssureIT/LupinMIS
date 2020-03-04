@@ -669,25 +669,40 @@ class IAssureTable extends Component {
 										(value, i)=> {
 											return(
 												<tr key={i} className="">
-													<td className="textAlignCenter">{this.state.startRange+1+i}</td>
+
+													{/*console.log('Object.entries(value)', (Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-"))*/}
+													{
+														((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
+														?
+															<td className="textAlignCenter">{this.state.startRange+1+i}</td>
+														:
+															<td className="textAlignCenter"></td>
+													}
 													{
 														Object.entries(value).map( 
 															([key, value1], i)=> {
 																if($.type(value1) === 'string'){
-																	var regex = new RegExp(/(<([^>]+)>)/ig);
-																	var value2 = value1 ? value1.replace(regex,'') : '';
-																	var aN = value2.replace(this.state.reA, "");
-																	if(aN && $.type( aN ) === 'string'){
-																		var textAlign = 'textAlignLeft noWrapText'
+																	var numbers = /^[0-9]+$/;
+																	if(value1.includes(',')){
+																		var textAlign = 'textAlignRight';
+																	}else if(value1.match(numbers)){
+																		var textAlign = 'textAlignRight';
 																	}else{
-																		var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
-																		// console.log("value1", value1, "parseInt",(parseInt(value1.replace(this.state.reN, ""), 10)))
-																		if(bN){
-																			var textAlign = 'textAlignLeft';
+																		var regex = new RegExp(/(<([^>]+)>)/ig);
+																		var value2 = value1 ? value1.replace(regex,'') : '';
+																		var aN = value2.replace(this.state.reA, "");
+																		if(aN && $.type( aN ) === 'string'){
+																			var textAlign = 'textAlignLeft noWrapText'
 																		}else{
-																			var textAlign = 'textAlignLeft noWrapText';
+																			var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
+																			// console.log("value1", value1, "parseInt",(parseInt(value1.replace(this.state.reN, ""), 10)))
+																			if(bN){
+																				var textAlign = 'textAlignLeft';
+																			}else{
+																				var textAlign = 'textAlignLeft noWrapText';
+																			}
+																			// console.log("bN",bN,"key",key, "value1", value1, "textAlign", textAlign)
 																		}
-																		// console.log("bN",bN,"key",key, "value1", value1, "textAlign", textAlign)
 																	}
 																}else{
 																	var textAlign = 'textAlignRight';
