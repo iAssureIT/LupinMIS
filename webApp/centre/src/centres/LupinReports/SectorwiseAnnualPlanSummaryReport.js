@@ -269,22 +269,22 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             var tableData = response.data.map((a, i)=>{
               // console.log("a.Per_Annual",((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2));
               return {
-                  _id                                      : a._id,     
-                  annualPlan_projectCategoryType           : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
-                  annualPlan_projectName                   : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
-                  name                                     : a.name,
-                  annualPlan_Reach                         : this.addCommas(a.annualPlan_Reach),
-                  annualPlan_FamilyUpgradation             : this.addCommas(a.annualPlan_FamilyUpgradation), 
-                  proportionToTotal                        : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
-                  annualPlan_TotalBudget_L                 : (a.annualPlan_TotalBudget_L),
-                  annualPlan_LHWRF_L                       : (a.annualPlan_LHWRF_L),
-                  annualPlan_NABARD_L                      : (a.annualPlan_NABARD_L),
-                  annualPlan_Bank_Loan_L                   : (a.annualPlan_Bank_Loan_L),
-                  annualPlan_Govt_L                        : (a.annualPlan_Govt_L),
-                  annualPlan_DirectCC_L                    : (a.annualPlan_DirectCC_L),
-                  annualPlan_IndirectCC_L                  : (a.annualPlan_IndirectCC_L),
-                  annualPlan_Other_L                       : (a.annualPlan_Other_L),
-              } 
+                    _id                                      : a._id,     
+                    annualPlan_projectCategoryType           : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
+                    annualPlan_projectName                   : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
+                    name                                     : a.name,
+                    annualPlan_Reach                         : (a.annualPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.annualPlan_Reach)), 
+                    annualPlan_FamilyUpgradation             : (a.annualPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.annualPlan_FamilyUpgradation)), 
+                    proportionToTotal                        : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
+                    annualPlan_TotalBudget_L                 : (a.annualPlan_TotalBudget_L),
+                    annualPlan_LHWRF_L                       : (a.annualPlan_LHWRF_L),
+                    annualPlan_NABARD_L                      : (a.annualPlan_NABARD_L),
+                    annualPlan_Bank_Loan_L                   : (a.annualPlan_Bank_Loan_L),
+                    annualPlan_Govt_L                        : (a.annualPlan_Govt_L),
+                    annualPlan_DirectCC_L                    : (a.annualPlan_DirectCC_L),
+                    annualPlan_IndirectCC_L                  : (a.annualPlan_IndirectCC_L),
+                    annualPlan_Other_L                       : (a.annualPlan_Other_L),
+                } 
             })  
             this.setState({
               tableData : tableData
