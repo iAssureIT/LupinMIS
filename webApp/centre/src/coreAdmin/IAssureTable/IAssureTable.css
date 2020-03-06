@@ -16,7 +16,8 @@
 }
 
 .iAssureITtable-bordered > thead > tr > th, .iAssureITtable-bordered > tbody > tr > th, .iAssureITtable-bordered > tfoot > tr > th, .iAssureITtable-bordered > thead > tr > td, .iAssureITtable-bordered > tbody > tr > td, .iAssureITtable-bordered > tfoot > tr > td {
-    border: 1px solid #fff6;
+    /*border: 1px solid #fff6;*/
+    border: 1px solid #2f9c3f !important;
 }
 .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #fff;

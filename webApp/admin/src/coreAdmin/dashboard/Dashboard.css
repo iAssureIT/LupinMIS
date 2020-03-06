@@ -1,3 +1,81 @@
+.backColor {
+    background-color: #4ca75a !important;
+    color: #fff;
+}
+.listfontInmodal {
+    margin-right: 1%!important;
+    width: 31%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-left: 1%;
+}
+.info-box {
+    display: block;
+    min-height: 100px;
+    /* min-height: 105px; */
+    background: #fff;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    margin-bottom: 15px;
+    /* padding: 12.5px 0px 5px 5px; */
+}
+.info-box-content {
+    padding: 5px 0px !important;
+    margin-left: 90px;
+}.info-box-text {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.circleFont {
+    font-size: 5px;
+}
+.progress-description, .info-box-text {
+    display: block;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.listfont {
+    font-size: 13px;
+    color: #fff;
+}
+.listfont {
+    margin-right: 1%!important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-left: 1%;
+    height: 15px;
+    margin-top: 1px;
+}
+.info-box-icon {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 2px;
+    display: block;
+    float: left;
+    height: 100px;
+    width: 80px;
+    text-align: center;
+    font-size: 45px;
+    line-height: 100px;
+    background: rgba(0, 0, 0, 0.2);
+}
+.bg-red{
+    background-color: #dd4b39;
+}
+.bg-skyblue{
+    background-color: rgba(54, 162, 235, 1);
+    color: #fff;
+}
+.mt10{
+    margin-top: 10px;
+}
 .monthChartBox{
     height: 365px;
 }

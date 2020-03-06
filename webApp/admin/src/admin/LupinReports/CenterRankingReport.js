@@ -7,6 +7,7 @@ import IAssureTable         from "../../coreAdmin/IAssureTable/IAssureTable.jsx"
 import Loader               from "../../common/Loader.js";
 
 import "../Reports/Reports.css";
+import "./CenterRankingReport.css";
 
 class CenterRankingReport extends Component{
     constructor(props){

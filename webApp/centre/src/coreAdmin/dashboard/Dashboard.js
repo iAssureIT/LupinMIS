@@ -139,7 +139,7 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
     }).then((response)=> {
-      // console.log("response ==>",response.data[0]);
+      console.log("response ==>",response.data[0]);
 
       function removeDuplicates(data, param){
           return data.filter(function(item, pos, array){

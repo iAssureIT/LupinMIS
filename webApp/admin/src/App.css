@@ -126,7 +126,7 @@
 
 /*.....................Main.css........................*/
 body {
-  font-family:'Montserrat',sans-serif;
+  font-family:'Montserrat',sans-serif !important;
   background-color:#eeeeee !important;
   font-size: 12px !important;
 }

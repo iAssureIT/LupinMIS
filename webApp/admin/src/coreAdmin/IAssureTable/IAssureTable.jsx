@@ -93,15 +93,33 @@ class IAssureTable extends Component {
 		    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }); 
 	      
-	      // this.palindrome('Moam');
-	      this.setState({
-	      	tableHeading	: this.props.tableHeading,
-	      	tableData 		: this.props.tableData,
-	      	tableName 		: this.props.tableName,
-	      	dataCount 		: this.props.dataCount,
-	      	id 				: this.props.id,
-	      });
-      // this.paginationFunction();
+		// this.palindrome('Moam');
+		this.setState({
+			tableHeading	: this.props.tableHeading,
+			tableData 		: this.props.tableData,
+			tableName 		: this.props.tableName,
+			dataCount 		: this.props.dataCount,
+			id 				: this.props.id,
+		});
+		/*if(this.state.id){
+	      	var tableOffset = $("#"+this.state.id).offset().top;
+	      	console.log('tableOffset',tableOffset);
+	      	$(window).bind("scroll", function() {
+			    var offset = $(this).scrollTop();
+			    console.log('offset',offset);
+	      		if (offset > tableOffset) {
+	      			console.log('here');
+	      			$(".fixedHeader").css({"color": "yellow", "position" : "fixed", "overflow" : "auto","top" : "0px"});
+			    }
+			    else if (offset < tableOffset || offset===0) {
+	      			console.log('else here');
+				        $(".fixedHeader").css({"color": "blue"});
+			    }else{
+			        $(".fixedHeader").css({"color": "blue"});
+			    }
+			});
+		}*/
+	    // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
 		// console.log('tableData',nextProps.tableData);
@@ -639,20 +657,20 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd text-center">Sr.No.</th>
+	                            <th className="umDynamicHeader srpadd text-center colSr">Sr.No.</th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
 													if(key === 'actions'){
 														if (this.state.role !== "viewer") {
 															return(
-																<th key={i} className="umDynamicHeader srpadd text-center">{value}</th>
+																<th key={i} className={"umDynamicHeader srpadd text-center col"+(i+1)}>{value}</th>
 															);	
 															
 														}
 													}else{
 														return(
-															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															<th key={i} className={"umDynamicHeader srpadd textAlignLeft col"+(i+1)}>{value} <br/> <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
 													}
 																							
@@ -674,9 +692,9 @@ class IAssureTable extends Component {
 													{
 														((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
 														?
-															<td className="textAlignCenter">{this.state.startRange+1+i}</td>
+															<td className="textAlignCenter colSr">{this.state.startRange+1+i}</td>
 														:
-															<td className="textAlignCenter"></td>
+															<td className="textAlignCenter colSr"></td>
 													}
 													{
 														Object.entries(value).map( 
@@ -710,9 +728,15 @@ class IAssureTable extends Component {
 																var found = Object.keys(this.state.tableHeading).filter((k)=> {
 																  return k === key;
 																});
+																// console.log('found',found);
 																if(found.length > 0){
 																	if(key !== 'id'){
-																		return(<td className={textAlign} key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
+																		// console.log(' value1', value1);
+																		if(value1){
+																			return(<td className={textAlign+" col"+i } key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
+																		}else{
+																			return(<td className={textAlign+" col"+i } key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
+																		}
 																	}
 																}
 
@@ -763,8 +787,9 @@ class IAssureTable extends Component {
 									:
 									<tr className="trAdmin"><td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+1 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
 								}
-	                    </tbody>
+	                    	</tbody>
 	                    </table>
+	                    <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="header-fixed"></table>
 	                    {
 	                    	this.state.tableObjects.paginationApply === true ?
 		                    	this.state.tableData && this.state.tableData.length > 0 ?

@@ -20,7 +20,8 @@
   height: 32px !important;
 }
 .iAssureITtable-bordered > thead > tr > th, .iAssureITtable-bordered > tbody > tr > th, .iAssureITtable-bordered > tfoot > tr > th, .iAssureITtable-bordered > thead > tr > td, .iAssureITtable-bordered > tbody > tr > td, .iAssureITtable-bordered > tfoot > tr > td {
-    border: 1px solid #fff6;
+    /*border: 1px solid #fff6;*/
+    border: 1px solid #2f9c3f;
 }
 .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #fff;
@@ -100,23 +101,35 @@
     border-radius: 3px !important;
     padding: 5px 10px;
 }
+
 .totalrow{
   background-color: #ddd;
 }
 
-/*.scrollContent {
+.scrollContent {/*
   display: block;
   height: 262px;
   overflow: auto;
-  width: 100%
-}
+  width: 100%;
+*/}
 
-.fixedHeader{
+.fixedHeader{/*
   display: table;
   overflow: auto;
   width: 100%
-}*/
+*/}
 
+.td_size {    
+  /*max-width:200px;
+  min-width:200px; */
+ /* width:200px; 
+  overflow:hidden; 
+  height:50px;
+  max-height:50px; 
+  min-height:50px;
+  */
+  /*(Optional)This might be useful for some overflow contents*/   
+}
 /*
 .scrollContent {
 
@@ -129,3 +142,12 @@
   overflow: auto !important;
 }
 */
+
+
+
+.fixedTable thead th, .fixedTable tbody tr {
+  width: 100%;
+}
+.fixedTable .colSr{
+  width: 8% !important;
+}

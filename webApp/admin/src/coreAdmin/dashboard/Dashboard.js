@@ -1,11 +1,8 @@
 import React,{Component} from 'react';
 // import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import axios             from 'axios';
+import $                 from "jquery";
 import { render } from 'react-dom';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
-
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -78,6 +75,11 @@ export default class Dashboard extends Component{
           "count"       : 0,
        }], 
       "centerCounts"                  :[],
+      "villagesCovered"               : 0,
+      countAllCenter                  : 0,
+      countDistrict                   : 0,
+      countBlocks                     : 0,
+      villagesCovered                 : 0,
       "centerCount"                   : 0,
       'year'                          : "FY 2019 - 2020",
       "years"                         :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
@@ -89,6 +91,7 @@ export default class Dashboard extends Component{
  
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.getAvailableCentersData(this.state.center_ID);
     this.getAvailableCenters();
     this.getcenter();
     this.getCountOfSectors();
@@ -117,6 +120,7 @@ export default class Dashboard extends Component{
     });
   }
   componentWillReceiveProps(nextProps){
+    this.getAvailableCentersData(this.state.center_ID);
     this.getAvailableCenters();
     this.getCountOfSectors();
     this.getCountOfActivities();
@@ -130,6 +134,7 @@ export default class Dashboard extends Component{
       // console.log('name', this.state)
     });
   }
+
   getAvailableCenters(){
     axios({
       method: 'get',
@@ -258,7 +263,51 @@ export default class Dashboard extends Component{
       // }
       // return color;
     }
+  dataShow(id){
+    if(id === "Districts"){
+      var getData = this.state.districtsCovered
+    }else if(id === "Blocks"){
+      var getData = this.state.blocksCovered
+    }else if(id === "Centers"){
+      var getData = this.state.CenterNames
+    }else{
+      var getData = this.state.villagesCoveredInCenter
+    }
+    this.setState({
+      "dataShow" : getData,
+      "dataHeading" : id
+    },()=>{
+      $('#dataShow').css({"display": "block"});
+      $('#dataShow').addClass('in');  
+    })
+  }
+  closeModal(){
+      $('#dataShow').css({"display": "none"});
+      $('#dataShow').removeClass('in');  
+  }
 
+  getAvailableCentersData(center_ID){
+    axios({
+      method: 'get',
+      url: '/api/reportDashboard/list_count_center_district_blocks_villages',
+    }).then((response)=> {
+      // console.log("response ==>",response.data[0]);
+      if (response.data && response.data[0]) {
+        this.setState({
+          CenterNames              : response.data[0].centerName,
+          villagesCoveredInCenter  : response.data[0].villagesCovered.map((o,i)=>{return o}),
+          countAllCenter           : response.data[0].countCenter,
+          countDistrict            : response.data[0].countDistrict,
+          countBlocks              : response.data[0].countBlocks,
+          villagesCovered          : response.data[0].countVillages,
+          blocksCovered            : response.data[0].blocksCovered.map((o,i)=>{return o}),
+          districtsCovered            : response.data[0].districtsCovered.map((o,i)=>{return o}),
+        })
+      }
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
 
   render(){
     return(
@@ -271,56 +320,117 @@ export default class Dashboard extends Component{
                   <h3>Dashboard</h3>
                 </div>
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
-                  <StatusComponent 
-                    stats={{color:"#2FC0EF", icon:"building",
-                      centerData : this.state.centerData,
-                      centerCount : this.state.centerCount,
-                      multipleValues : true}} 
-                  />
-                  <StatusComponent 
-                    stats={{color:"#DD4B39", icon:"users",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Upgraded Beneficiary",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0,multipleValues : false}} 
-                  />
-                  <StatusComponent 
-                    stats={{color:"#4CA75A", icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget_L ? "Rs. "+this.state.annualPlan_TotalBudget_L+" L" : "Rs. 0 L", heading2:"Expenditure",value2:this.state.achievement_Total_L ? "Rs. "+this.state.achievement_Total_L : "Rs. 0 L",multipleValues : false}} 
-                  />
-                  <StatusComponent 
-                    stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:this.state.sectorCount ? this.state.sectorCount : 0, heading2:"Activities",value2:this.state.activityCount ? this.state.activityCount : 0,multipleValues : false}}
-                  /> 
+                  <div className="row">
+                    <StatusComponent 
+                      stats={{color:"rgba(54, 162, 235, 1)", icon:"building",
+                        centerData : this.state.centerData,
+                        centerCount : this.state.centerCount,
+                        multipleValues : true}} 
+                    />
+                    <StatusComponent 
+                      stats={{color:"#DD4B39", icon:"user",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Upgraded Beneficiary",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0,multipleValues : false}} 
+                    />
+                    <StatusComponent 
+                      stats={{color:"#4CA75A", icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget_L ? "Rs. "+this.state.annualPlan_TotalBudget_L+" L" : "Rs. 0 L", heading2:"Expenditure",value2:this.state.achievement_Total_L ? "Rs. "+this.state.achievement_Total_L : "Rs. 0 L",multipleValues : false}} 
+                    />
+                    <StatusComponent 
+                      stats={{color:"#F39C2F", icon:"thumbs-o-up",heading1:"Sectors",value1:this.state.sectorCount ? this.state.sectorCount : 0, heading2:"Activities",value2:this.state.activityCount ? this.state.activityCount : 0,multipleValues : false}}
+                    /> 
+                </div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                   <div className="row">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11 mb15">
-                       {/* <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label className="formLable">Center</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                                <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                                    <option className="hidden" >-- Select --</option>
-                                    {
-                                      this.state.availableCenters && this.state.availableCenters.length >0 ?
-                                      this.state.availableCenters.map((data, index)=>{
-                                        return(
-                                          <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                                        );
-                                      })
-                                      :
-                                      null
-                                    }
-                                </select>
+                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                      <div className="info-box bg-skyblue">
+                        <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
+                        <div className="info-box-content">
+                          <span className="info-box-text pull-left">Centers</span>
+                          {this.state.countAllCenter > 0 ?
+                          <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Centers")}>View All..</a></span>
+                          : 
+                          ""}
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
+                            <span className="info-box-number">{this.state.countAllCenter}</span>
+                            <div className="progress">
+                              <div className="progress-bar" style={{"width": this.state.countAllCenter+"%"}}></div>
                             </div>
-                        </div>*/}
-                        <div className=" col-lg-4 col-lg-offset-4 col-md-6 col-sm-6 col-xs-12">
-                          <label className="formLable">Year</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                            <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                             <option className="hidden" >-- Select Year --</option>
-                             {
-                              this.state.years.map((data, i)=>{
-                                return <option key={i}>{data}</option>
-                              })
-                             }
-                            </select>
                           </div>
-                        </div>  
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                      <div className="info-box bg-red">
+                        <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
+                        <div className="info-box-content">
+                          <span className="info-box-text pull-left">Districts</span>
+                          {this.state.countDistrict > 0 ?
+                          <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Districts")}>View All..</a></span>
+                          : 
+                          ""}
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
+                            <span className="info-box-number">{this.state.countDistrict}</span>
+                            <div className="progress">
+                              <div className="progress-bar" style={{"width": this.state.countDistrict+"%"}}></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                      <div className="info-box bg-green">
+                        <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
+                        <div className="info-box-content">
+                          <span className="info-box-text pull-left">Blocks</span>
+                          {this.state.countBlocks > 0 ?
+                          <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Blocks")}>View All..</a></span>
+                          : 
+                          ""}
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
+                            <span className="info-box-number">{this.state.countBlocks}</span>
+                            <div className="progress">
+                              <div className="progress-bar" style={{"width": this.state.countBlocks+"%"}}></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                      <div className="info-box bg-yellow">
+                        <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
+                        <div className="info-box-content">
+                          <span className="info-box-text pull-left">Villages</span>
+                          {this.state.villagesCovered > 0 ?
+                          <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Villages")}>View All..</a></span>
+                          : 
+                          ""}
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
+                            <span className="info-box-number">{this.state.villagesCovered}</span>
+                            <div className="progress">
+                              <div className="progress-bar" style={{"width": this.state.villagesCovered+"%"}}></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                  <div className="row">
+                    
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11 mb15">
+                      <div className=" col-lg-4 col-lg-offset-4 col-md-6 col-sm-6 col-xs-12">
+                        <label className="formLable">Year</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                          <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                           <option className="hidden" >-- Select Year --</option>
+                           {
+                            this.state.years.map((data, i)=>{
+                              return <option key={i}>{data}</option>
+                            })
+                           }
+                          </select>
+                        </div>
+                      </div>  
                     </div>  
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -374,6 +484,32 @@ export default class Dashboard extends Component{
                             <MonthwiseExpenditure year={this.state.year} />
                           </div>
                         </div>                             
+                      </div>
+
+                      <div className="modal fade" id="dataShow" role="dialog">
+                        <div className="modal-dialog">                        
+                          <div className="modal-content">
+                            <div className="modal-header backColor">
+                              <button type="button" className="close" onClick={()=> this.closeModal()}>&times;</button>
+                              <h4 className="modal-title">{this.state.dataHeading}</h4>
+                            </div>
+                            <div className="modal-body">
+                              {this.state.dataShow && this.state.dataShow.length > 0 ?
+                                this.state.dataShow.map((data,index)=>{
+                                   return(
+                                      <span className="listfontInmodal" key={index}>
+                                           <i className="fa fa-circle-o circleFont" aria-hidden="true"></i> {data}
+                                      </span>
+                                    )
+                                }) 
+
+                              :
+                              null }
+                            </div>
+                            <div className="modal-footer">
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div> 

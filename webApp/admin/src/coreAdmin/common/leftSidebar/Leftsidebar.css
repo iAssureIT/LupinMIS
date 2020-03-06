@@ -2430,17 +2430,15 @@ a.article, a.article:hover {
    * Component: Info Box
    * -------------------
    */
-  .info-box {
+ /* .info-box {
     display: block;
-    /*min-height: 90px;*/
-    min-height: 105px;
+    min-height: 90px;
     background: #fff;
     width: 100%;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     border-radius: 2px;
     margin-bottom: 15px;
-    padding: 12.5px 0px 5px 5px;
-  }
+    padding: 0px 0px;}*/
   .info-box small {
     font-size: 14px;
   }
@@ -2456,21 +2454,7 @@ a.article, a.article:hover {
   .info-box .progress .progress-bar {
     background: #fff;
   }
-  .info-box-icon {
-    border-top-left-radius: 2px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 2px;
-    display: block;
-    float: left;
-    height: 80px;
-    width: 80px;
-    text-align: center;
-    font-size: 45px;
-    line-height: 80px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 100%;
-  }
+
   .info-box-icon > img {
     max-width: 100%;
     margin-top: -8px;
@@ -4730,7 +4714,7 @@ a.article, a.article:hover {
   .bg-black {
     background-color: #111111 !important;
   }
-  .bg-red,
+  .bg-blue,
   .callout.callout-danger,
   .alert-danger,
   .alert-error,
