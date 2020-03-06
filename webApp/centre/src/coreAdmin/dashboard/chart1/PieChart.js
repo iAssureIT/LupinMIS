@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Pie} from 'react-chartjs-2';
-import 'chartjs-plugin-labels';
+// import 'chartjs-plugin-labels';
 import axios             from 'axios';
 
 export default class PieChart extends Component {
@@ -13,7 +13,9 @@ export default class PieChart extends Component {
       datasets: [{
         data: [],
         backgroundColor: [] ,
-        hoverBackgroundColor: []
+        hoverBackgroundColor: [],
+        borderWidth: 2,
+        hoverBorderWidth: 3,
         }]
       }
     } 
@@ -75,6 +77,8 @@ export default class PieChart extends Component {
               sectordata.labels = sector;
               sectordata.datasets[0].backgroundColor = piechartcolor;
               sectordata.datasets[0].hoverBackgroundColor = piechartcolor;
+              sectordata.datasets[0].hoverBorderColor = piechartcolor;  
+              sectordata.datasets[0].borderColor = piechartcolor;  
               this.setState({
                 "data" : sectordata
               })
@@ -84,6 +88,8 @@ export default class PieChart extends Component {
               sectordata.labels = ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"];
               sectordata.datasets[0].backgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
               sectordata.datasets[0].hoverBackgroundColor =["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+              sectordata.datasets[0].hoverBorderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+              sectordata.datasets[0].borderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
               this.setState({
                 "data" : sectordata
               })
@@ -93,6 +99,8 @@ export default class PieChart extends Component {
             sectordata.labels = ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"];
             sectordata.datasets[0].backgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
             sectordata.datasets[0].hoverBackgroundColor =["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+            sectordata.datasets[0].hoverBorderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+            sectordata.datasets[0].borderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
             this.setState({
               "data" : sectordata
             })
@@ -105,6 +113,8 @@ export default class PieChart extends Component {
         sectordata.labels = ["Agriculture Development","Natural Resource Management","Animal Husbandry","Educational Sector","Health"];
         sectordata.datasets[0].backgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
         sectordata.datasets[0].hoverBackgroundColor =["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+        sectordata.datasets[0].hoverBorderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+        sectordata.datasets[0].borderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
         this.setState({
           "data" : sectordata
         })
@@ -129,19 +139,40 @@ export default class PieChart extends Component {
   render() {
     return ( 
       <div>
-        <Pie height={130} data={this.state.data} options={{legend: {display: false},
-        plugins: {
-           labels: [{
-            render: 'label',
-            position: 'outside',
-            fontColor: '#000',
-            textMargin: 8
-          },
-          {
-            render: 'percentage',
-            fontColor: '#fff',
+        <Pie height={150} 
+          data={this.state.data} 
+          height="150" 
+          options={
+            {
+              plugins: {
+                labels: {
+                  render: () => {}
+                }
+              },
+              legend: 
+              {
+                labels: {
+                  boxWidth: 20
+                },
+                display: true, 
+                position: 'right'
+              }
+            }
           }
-           ]} }} />
+        />
+        
+      {  /*plugins: {
+                 labels: [{
+                  render: 'label',
+                  position: 'outside',
+                  fontColor: '#000',
+                  textMargin: 8
+                },
+                {
+                  render: 'percentage',
+                  fontColor: '#fff',
+                }
+                 ]} }}*/ }
       </div>
     );
   }

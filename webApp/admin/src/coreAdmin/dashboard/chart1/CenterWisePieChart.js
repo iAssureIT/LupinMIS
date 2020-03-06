@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Pie} from 'react-chartjs-2';
-import 'chartjs-plugin-labels';
+// import 'chartjs-plugin-labels';
 import axios             from 'axios';
 import moment            from 'moment';
 import Loader            from "../../../common/Loader.js";
@@ -14,10 +14,13 @@ export default class CenterWisePieChart extends Component {
       datasets: [{
         data: [], 
         backgroundColor: [],
-        hoverBackgroundColor: []
+        hoverBackgroundColor: [],
+        borderWidth: 2,
+        hoverBorderWidth: 3,
         }]
       }
     }
+
   }
  
 
@@ -72,7 +75,9 @@ export default class CenterWisePieChart extends Component {
               centerData.datasets[0].data = annualPlanTotalBudget;
               centerData.labels = sector;
               centerData.datasets[0].backgroundColor = piechartcolor;
-              centerData.datasets[0].hoverBackgroundColor = piechartcolor;
+              centerData.datasets[0].hoverBackgroundColor = piechartcolor;  
+              centerData.datasets[0].hoverBorderColor = piechartcolor;  
+              centerData.datasets[0].borderColor = piechartcolor;  
               this.setState({
                 "data" : centerData
               })
@@ -82,6 +87,8 @@ export default class CenterWisePieChart extends Component {
               centerData.labels = ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"];
               centerData.datasets[0].backgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
               centerData.datasets[0].hoverBackgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+              centerData.datasets[0].hoverBorderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+              centerData.datasets[0].borderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
               this.setState({
                 "data" : centerData
               })
@@ -92,6 +99,8 @@ export default class CenterWisePieChart extends Component {
             centerData.labels = ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"];
             centerData.datasets[0].backgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
             centerData.datasets[0].hoverBackgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+            centerData.datasets[0].hoverBorderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+            centerData.datasets[0].borderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
             this.setState({
               "data" : centerData
             })
@@ -104,6 +113,8 @@ export default class CenterWisePieChart extends Component {
       centerData.labels = ["Pune","Aurangabad","Goa","Sikkim","Bharatpur"];
       centerData.datasets[0].backgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
       centerData.datasets[0].hoverBackgroundColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+      centerData.datasets[0].hoverBorderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
+      centerData.datasets[0].borderColor = ["#0275d8","#5cb85c","#5bc0de","#f0ad4e","#d9534f"];
       this.setState({
         "data" : centerData
       })
@@ -139,20 +150,46 @@ export default class CenterWisePieChart extends Component {
     return (
       <div>
         <Loader type="fullpageloader" />
-        <Pie height={150} data={this.state.data} options={{legend: {display: false},
-        plugins: {
-           labels: [{
-            render: 'label',
-            position: 'outside',
-            fontColor: '#000',
-            textMargin: 8
-          },
-          {
-            render: 'percentage',
-            fontColor: '#fff',
+        <Pie height={150} 
+          data={this.state.data} 
+          height="150" 
+          options={
+            {
+              plugins: {
+                labels: {
+                  render: () => {}
+                }
+              },
+              legend: 
+              {
+                labels: {
+                  boxWidth: 20,
+                   padding: 10
+                },
+                display: true, 
+                position: 'right'
+              },
+              tooltips: {
+                mode: 'nearest',
+                intersect: false,
+              }
+            }
           }
-          ]}}
-          } />
+        />
+  {  /*    plugins: {
+             labels: [{
+              render: 'label',
+              position: 'outside',
+              fontColor: '#000',
+              textMargin: 8
+            },
+            {
+              render: 'percentage',
+              fontColor: '#fff',
+            }
+            ]}}
+            }*/}
+          
       </div>
     );
   }
