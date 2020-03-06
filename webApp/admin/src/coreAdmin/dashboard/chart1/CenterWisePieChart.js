@@ -47,7 +47,7 @@ export default class CenterWisePieChart extends Component {
     this.getCenterwiseData(this.props.year);
   }
   getCenterwiseData(year){
-    // console.log("in fun");
+    // console.log("year========",year);
     var centerData = {...this.state.data};
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";

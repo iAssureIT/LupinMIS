@@ -105,49 +105,22 @@
 .totalrow{
   background-color: #ddd;
 }
-
-.scrollContent {/*
+/*
+.scrollContent {
   display: block;
   height: 262px;
   overflow: auto;
   width: 100%;
-*/}
+}
 
-.fixedHeader{/*
+.fixedHeader{
   display: table;
   overflow: auto;
   width: 100%
-*/}
-
-.td_size {    
-  /*max-width:200px;
-  min-width:200px; */
- /* width:200px; 
-  overflow:hidden; 
-  height:50px;
-  max-height:50px; 
-  min-height:50px;
-  */
-  /*(Optional)This might be useful for some overflow contents*/   
 }
-/*
-.scrollContent {
-
-  height: 262px !important;
-  overflow: auto !important;
-}
-
-.fixedHeader {
-  display: table !important;
-  overflow: auto !important;
-}
-*/
-
-
-
 .fixedTable thead th, .fixedTable tbody tr {
   width: 100%;
 }
 .fixedTable .colSr{
   width: 8% !important;
-}
+}*/
