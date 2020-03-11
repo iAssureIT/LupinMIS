@@ -29,7 +29,7 @@ componentDidMount(){
                 <ul className="list-unstyled components">
                   <li className="active">
                     <div className="rightsideHeading ">
-                         {/*   <i className="glyphicon fa fa-server"></i> &nbsp;*/}
+                         {/*   <i className="fa fa-server"></i> &nbsp;*/}
                            Core Admin Modules
                     </div>
                   </li>
@@ -47,13 +47,13 @@ componentDidMount(){
                   </li>
                   <li className="sidebarMenuText">
                     <a href="/umlistofusers" >
-                       <i className="glyphicon fa fa-users"></i> 
+                       <i className="fa fa-users"></i> 
                          User Management
                     </a>
                   </li>
                   {/* <li>
                         <a href="#userman" data-toggle="collapse" aria-expanded="false">
-                           <i className="glyphicon fa fa-user-circle"></i> &nbsp;
+                           <i className="fa fa-user-circle"></i> &nbsp;
                            User Management
                         </a>
                         <ul className="collapse list-unstyled " id="userman">

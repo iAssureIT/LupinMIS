@@ -1,29 +1,38 @@
-/*.col1{
-	width: 10% !important;
+.col1{
+	width: 100px !important;
 	white-space: pre-wrap!important;
 }
 .col2{
-	width: 10% !important;
+	width: 100px !important;
 }
 .col3{
-	width: 20% !important;
+	width: 200px !important;
 }
 .col4{
-	width: 12% !important;
+	width: 120px !important;
 }
 .col5{
-	width: 15% !important;
+	width: 150px !important;
 }
 .col6{
-	width: 15% !important;
+	width: 150px !important;
 }
 .col7{
-	width: 10% !important;
+	width: 100px !important;
+}
+
+#CenterRankingReport .scrollContent {
+  display: block;
+  height: 262px;
+  overflow: auto;
+  width: 100%;
+}
+
+#CenterRankingReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
 }
 
 
 
-
-
-
-*/
