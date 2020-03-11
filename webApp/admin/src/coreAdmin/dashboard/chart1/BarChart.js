@@ -1,6 +1,10 @@
 import React,{Component} from 'react';
-import {Bar} from 'react-chartjs-2';
+import {Bar}             from 'react-chartjs-2';
 import axios             from 'axios';
+import $                 from 'jquery';
+import IAssureTable      from "../../IAssureTable/IAssureTable.jsx";
+import Loader            from "../../../common/Loader.js";
+
 
 const options = {
     scales: {
@@ -45,7 +49,24 @@ export default class BarChart extends Component{
             data: []
           }
         ]
-      }
+      },   
+      "twoLevelHeader"    : {
+          apply           : false,
+          firstHeaderData : [
+          ]
+      },
+      "tableHeading"      : {
+        "sectorName"                       : 'Sector',
+        "sectorShortName"                  : 'Sector Short Name',
+        "achievement_FamilyUpgradation"    : 'Family Upgradation', 
+        "achievement_Reach"                : 'Outreach', 
+      },
+      
+      "tableObjects"        : {
+        paginationApply     : false,
+        searchApply         : false,
+        downloadApply       : true,
+      },   
     }
   }
 
@@ -63,10 +84,12 @@ export default class BarChart extends Component{
   // }
   componentDidUpdate(prevProps, prevState){
     if (prevProps.year !== this.props.year) {
+      this.getData(this.props.year);
       this.getSectorwiseFamilyupg(this.props.year);
     }
   }
   componentDidMount(){
+    this.getData(this.props.year);
     this.getSectorwiseFamilyupg(this.props.year);
   }
   getSectorwiseFamilyupg(year){
@@ -76,7 +99,7 @@ export default class BarChart extends Component{
     if(startDate && endDate){
         axios.get('/api/reportDashboard/sector_familyupgrade_outreach_count/all/'+startDate+'/'+endDate)
         .then((response)=>{ 
-          console.log("sector_annual_achievement_report ==>",response);
+          // console.log("sector_annual_achievement_report ==>",response);
           // response.data.splice(-2);
           var sector = [];
           var annualPlanReach = [];
@@ -136,10 +159,54 @@ export default class BarChart extends Component{
     }
   } 
 
+  getData(year){
+    if(year){
+      console.log("year========",year);
+      var sectordata = {...this.state.data};
+      var startDate = year.substring(3, 7)+"-04-01";
+      var endDate = year.substring(10, 15)+"-03-31";
+      if(startDate && endDate){
+        axios.get('/api/reportDashboard/sector_familyupgrade_outreach_count/all/'+startDate+'/'+endDate)
+          .then((response)=>{
+          console.log("sector_annual_achievement_report ==>",response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+                _id                                       : a._id,  
+                sectorName                                : a.sectorName,
+                sectorShortName                           : a.sectorShortName,
+                achievement_FamilyUpgradation             : a.achievement_FamilyUpgradation,
+                achievement_Reach                         : a.achievement_Reach,
+            }
+            })
+            this.setState({
+                tableData : tableData
+            },()=>{})
+        })
+        .catch(function(error){  
+          console.log("error = ",error.message);
+          if(error.message === "Request failed with status code 500"){
+              $(".fullpageloader").hide();
+          }
+        });
+      }
+    }
+  }
   render() {
     return (
       <div>
-{/*       <Radar data={this.state.data} height={350}  options={options} />*/}
+        <Loader type="fullpageloader" />
+        <div className="displayNone">
+          <IAssureTable 
+            tableName="Sector wise Outreach & Family Upgradation"
+            id="SectorwiseOutreachAndFamilyUpgradation"
+            twoLevelHeader={this.state.twoLevelHeader} 
+            getData={this.getData.bind(this)} 
+            tableHeading={this.state.tableHeading} 
+            tableData={this.state.tableData} 
+            tableObjects={this.state.tableObjects}
+            />
+        </div>
+       {/*<Radar data={this.state.data} height={350}  options={options} />*/}
        <Bar data={this.state.data} height={300}  options={options} />
       </div>
     );

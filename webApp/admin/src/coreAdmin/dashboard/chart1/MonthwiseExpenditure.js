@@ -1,7 +1,11 @@
 import React,{Component} from 'react';
-import {Line} from 'react-chartjs-2';
+import {Line}            from 'react-chartjs-2';
+import axios             from 'axios';
+import $                 from 'jquery';
+import IAssureTable      from "../../IAssureTable/IAssureTable.jsx";
+import Loader            from "../../../common/Loader.js";
 import 'chartjs-plugin-labels';
-import axios from 'axios';
+
 
 export default class MonthwiseExpenditure extends Component{
   constructor(props){
@@ -29,7 +33,23 @@ export default class MonthwiseExpenditure extends Component{
             data: []
           },
         ]
-      }
+      }, 
+      "twoLevelHeader"    : {
+          apply           : false,
+          firstHeaderData : [
+          ]
+      },
+      "tableHeading"      : {
+        "month"                           : 'Month',
+        "monthlyPlan_TotalBudget"         : 'Budget',
+        "curr_achievement_TotalBudget"    : 'Expenditure', 
+      },
+      
+      "tableObjects"        : {
+        paginationApply     : false,
+        searchApply         : false,
+        downloadApply       : true,
+      },   
     }
   }
   // static getDerivedStateFromProps(props,state){
@@ -45,10 +65,12 @@ export default class MonthwiseExpenditure extends Component{
   // }
    componentDidUpdate(prevProps,prevState){
     if (prevProps.year !== this.props.year) {
+      this.getData(this.props.year);
       this.getmonthwiseExpen(this.props.year);
     }
   }
   componentDidMount(){
+    this.getData(this.props.year);
     this.getmonthwiseExpen(this.props.year);
   }
   getmonthwiseExpen(year,center_ID){
@@ -106,9 +128,51 @@ export default class MonthwiseExpenditure extends Component{
     }
   }
 
+  getData(year){
+    if(year){
+      console.log("year========",year);
+      var monthexp = {...this.state.data};
+      var startYear = year.substring(3, 7);
+      var endYear = year.substring(10, 15);
+      if(startYear && endYear){
+        axios.get('/api/report/dashboard/'+startYear+'/'+endYear+'/all')
+          .then((response)=>{
+            var tableData = response.data.map((a, i)=>{
+            return {
+                _id                                : a._id,  
+                month                              : a.month,
+                monthlyPlan_TotalBudget            : a.monthlyPlan_TotalBudget,
+                curr_achievement_TotalBudget       : a.curr_achievement_TotalBudget,
+              }
+            })
+            this.setState({
+                tableData : tableData
+            },()=>{})
+        })
+        .catch(function(error){  
+          console.log("error = ",error.message);
+          if(error.message === "Request failed with status code 500"){
+              $(".fullpageloader").hide();
+          }
+        });
+      }
+    }
+  }
   render() {
     return (
       <div>
+        <Loader type="fullpageloader" />
+        <div className="displayNone">
+          <IAssureTable 
+            tableName="Month wise Expenditure & Budget"
+            id="MonthwiseExpenditure"
+            twoLevelHeader={this.state.twoLevelHeader} 
+            getData={this.getData.bind(this)} 
+            tableHeading={this.state.tableHeading} 
+            tableData={this.state.tableData} 
+            tableObjects={this.state.tableObjects}
+            />
+        </div>
        <Line data={this.state.data} height={190}  options={{responsive: true,stacked: true,}} />
       </div>
     );

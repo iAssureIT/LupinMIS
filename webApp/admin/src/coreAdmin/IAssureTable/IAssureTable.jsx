@@ -703,7 +703,7 @@ class IAssureTable extends Component {
 																	var numbers = /^[0-9]+$/;
 																	if(value1.includes(',')){
 																		var textAlign = 'textAlignRight';
-																	}else if(value1.includes('%')){
+																	}else if(value1.includes('%') && ( value1.match(numbers)) || value1.includes('0')){
 																		var textAlign = 'textAlignRight';
 																	}else if(value1.match(numbers)){
 																		var textAlign = 'textAlignRight';
@@ -712,16 +712,14 @@ class IAssureTable extends Component {
 																		var value2 = value1 ? value1.replace(regex,'') : '';
 																		var aN = value2.replace(this.state.reA, "");
 																		if(aN && $.type( aN ) === 'string'){
-																			var textAlign = 'textAlignLeft noWrapText'
+																			var textAlign = 'textAlignLeft noWrapText '+ (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																		}else{
 																			var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
-																			// console.log("value1", value1, "parseInt",(parseInt(value1.replace(this.state.reN, ""), 10)))
 																			if(bN){
-																				var textAlign = 'textAlignLeft';
+																				var textAlign = 'textAlignRight ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																			}else{
-																				var textAlign = 'textAlignLeft noWrapText';
+																				var textAlign = 'textAlignLeft noWrapText ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
 																			}
-																			// console.log("bN",bN,"key",key, "value1", value1, "textAlign", textAlign)
 																		}
 																	}
 																}else{

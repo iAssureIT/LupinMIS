@@ -2159,6 +2159,7 @@ a.article, a.article:hover {
     /*font-weight: 600;*/
   }
   .box-header .box-title{
+    padding: 7px;
     text-align: center;
   }
   .box-header > .fa,

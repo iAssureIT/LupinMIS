@@ -2159,6 +2159,7 @@ a.article, a.article:hover {
   }
   .box-header .box-title{
     text-align: center;
+    padding: 7px;
   }
   .box-header > .fa,
   .box-header > .glyphicon,

@@ -431,7 +431,7 @@ input, select{
 
 
 .signUpBackground{
-  background-image: url("/images/signupbackground.jpg");
+  /*background-image: url("/images/signupbackground.jpg");*/
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }

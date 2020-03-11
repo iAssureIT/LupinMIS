@@ -1,9 +1,12 @@
-import React,{Component} from 'react';
-import {Pie} from 'react-chartjs-2';
+import React,{Component}            from 'react';
+import {Pie}                        from 'react-chartjs-2';
+import axios                        from 'axios';
+import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
+import moment                       from 'moment';
+import $                            from 'jquery';
+import IAssureTable                 from "../../IAssureTable/IAssureTable.jsx";
+import Loader                       from "../../../common/Loader.js";
 // import 'chartjs-plugin-labels';
-import axios             from 'axios';
-import moment            from 'moment';
-import Loader            from "../../../common/Loader.js";
 
 export default class CenterWisePieChart extends Component {
   constructor(props){
@@ -18,7 +21,23 @@ export default class CenterWisePieChart extends Component {
         borderWidth: 2,
         hoverBorderWidth: 3,
         }]
-      }
+      },
+      "twoLevelHeader"    : {
+          apply           : false,
+          firstHeaderData : [
+          ]
+      },
+      "tableHeading"      : {
+        "name"                             : 'Center',
+        // "annualPlan_TotalBudget"           : 'Annual Plan Total Budget', 
+        "annualPlan_TotalBudget_L"         : 'Annual Plan Total Budget "Lakhs"', 
+      },
+      
+      "tableObjects"        : {
+        paginationApply     : false,
+        searchApply         : false,
+        downloadApply       : true,
+      },   
     }
 
   }
@@ -43,11 +62,13 @@ export default class CenterWisePieChart extends Component {
   // }
   componentDidUpdate(prevProps,prevState){
     if (prevProps.year !== this.props.year) {
+      this.getData(this.props.year);
       this.getCenterwiseData(this.props.year);
     }
   }
   componentDidMount(){
     this.getCenterwiseData(this.props.year);
+    this.getData(this.props.year);
   }
   getCenterwiseData(year){
     // console.log("year========",year);
@@ -120,6 +141,36 @@ export default class CenterWisePieChart extends Component {
       })
     }
   }
+  getData(year){
+    if(year){
+      // console.log("year========",year);
+      var centerData = {...this.state.data};
+      var startDate = year.substring(3, 7)+"-04-01";
+      var endDate = year.substring(10, 15)+"-03-31";
+      if(startDate && endDate){
+        axios.get('/api/reportDashboard/center_admin/'+startDate+'/'+endDate) 
+          .then((response)=>{
+            var tableData = response.data.map((a, i)=>{
+            return {
+                _id                                       : a._id,  
+                name                                      : a.name,
+                annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
+                annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+            }
+            })
+            this.setState({
+                tableData : tableData
+            },()=>{})
+        })
+        .catch(function(error){  
+          console.log("error = ",error.message);
+          if(error.message === "Request failed with status code 500"){
+              $(".fullpageloader").hide();
+          }
+        });
+      }
+    }
+  }
   // gatAllYear(){
   //  const years = []
   //  const dateStart = moment()
@@ -150,6 +201,18 @@ export default class CenterWisePieChart extends Component {
     return (
       <div>
         <Loader type="fullpageloader" />
+        
+        <div className="displayNone">
+          <IAssureTable 
+            tableName = "Centerwise Pie Chart"
+            id = "CenterWisePieChart"
+            twoLevelHeader={this.state.twoLevelHeader} 
+            getData={this.getData.bind(this)} 
+            tableHeading={this.state.tableHeading} 
+            tableData={this.state.tableData} 
+            tableObjects={this.state.tableObjects}
+            />
+        </div>
         <Pie height={150} 
           data={this.state.data} 
           height="150" 

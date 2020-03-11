@@ -11,6 +11,7 @@ import Chart from 'chart.js';
 import StatusComponent from './StatusComponent/StatusComponent.js'
 import MonthwiseGoalCompletion   from './chart1/MonthwiseGoalCompletion.js'
 import MonthwiseExpenditure   from './chart1/MonthwiseExpenditure.js'
+import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
 
 import BarChart from './chart1/BarChart.js';
 import PieChart from './chart1/PieChart.js';
@@ -436,7 +437,16 @@ export default class Dashboard extends Component{
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div className="box2">
                             <div className="box-header with-border">
-                              <h3 className="box-title">Center wise Budget</h3>
+                              <h3 className="box-title">Center wise Budget (In Lakhs)</h3>
+                              <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                                <ReactHTMLTableToExcel
+                                  id="table-to-xls"                           
+                                  className="download-table-xls-button fa fa-download tableicons pull-right"
+                                  table="CenterWisePieChart"
+                                  sheet="tablexls"
+                                  filename="Center wise Pie Chart"
+                                  buttonText=""/>
+                              </div>
                             </div>
                             <div className="box-body">
                               <CenterWisePieChart year={this.state.year}  />
@@ -446,7 +456,16 @@ export default class Dashboard extends Component{
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div className="box2">
                           <div className="box-header with-border">
-                            <h3 className="box-title">Sector wise Budget</h3>
+                            <h3 className="box-title">Sector wise Budget (In Lakhs)</h3>
+                            <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                              <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table="SectorWisePieChart"
+                                sheet="tablexls"
+                                filename="Sector wise Pie Chart"
+                                buttonText=""/>
+                            </div>
                           </div>
                           <div className="box-body">
                              <PieChart year={this.state.year} />
@@ -457,7 +476,16 @@ export default class Dashboard extends Component{
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="box2">
                           <div className="box-header with-border">
-                             <h3 className="box-title">Sector wise Outreach & Family Upgradation</h3>
+                            <h3 className="box-title">Sector wise Outreach & Family Upgradation</h3>
+                            <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                              <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table="SectorwiseOutreachAndFamilyUpgradation"
+                                sheet="tablexls"
+                                filename="Sector wise Outreach & Family Upgradation"
+                                buttonText=""/>
+                            </div>
                           </div>
                           <div className="box-body">
                             <BarChart year={this.state.year} />
@@ -468,7 +496,16 @@ export default class Dashboard extends Component{
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
                         <div className="box2 monthChartBox">
                           <div className="box-header with-border">
-                             <h3 className="box-title">Month wise Goal Completion</h3>
+                            <h3 className="box-title">Month wise Goal Completion</h3>
+                            <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                              <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table="MonthwiseGoalCompletion"
+                                sheet="tablexls"
+                                filename="Month wise Goal Completion"
+                                buttonText=""/>
+                            </div>
                           </div>
                           <div className="box-body">
                             <MonthwiseGoalCompletion year={this.state.year}/>
@@ -478,7 +515,16 @@ export default class Dashboard extends Component{
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
                         <div className="box2 monthChartBox">
                           <div className="box-header with-border">
-                             <h3 className="box-title">Month wise Expenditure V/s Budget</h3>
+                            <h3 className="box-title">Month wise Expenditure V/s Budget</h3>
+                            <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                              <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table="MonthwiseExpenditure"
+                                sheet="tablexls"
+                                filename="Month wise Expenditure & Budget"
+                                buttonText=""/>
+                            </div>
                           </div>
                           <div className="box-body">
                             <MonthwiseExpenditure year={this.state.year} />

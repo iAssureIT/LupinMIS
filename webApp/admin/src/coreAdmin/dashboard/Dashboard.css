@@ -1,3 +1,6 @@
+.displayNone{
+    display: none;
+}
 .backColor {
     background-color: #4ca75a !important;
     color: #fff;
