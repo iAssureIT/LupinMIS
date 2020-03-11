@@ -93,7 +93,6 @@ class UMListOfUsers extends Component {
         })
 	    .catch((error)=>{
 	      console.log("error = ",error);
-	      alert("Check .");
 	    }); 
     }
     getSearchText(searchText, startRange, limitRange){

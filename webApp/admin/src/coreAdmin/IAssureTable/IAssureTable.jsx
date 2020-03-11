@@ -703,6 +703,8 @@ class IAssureTable extends Component {
 																	var numbers = /^[0-9]+$/;
 																	if(value1.includes(',')){
 																		var textAlign = 'textAlignRight';
+																	}else if(value1.includes('%')){
+																		var textAlign = 'textAlignRight';
 																	}else if(value1.match(numbers)){
 																		var textAlign = 'textAlignRight';
 																	}else{
