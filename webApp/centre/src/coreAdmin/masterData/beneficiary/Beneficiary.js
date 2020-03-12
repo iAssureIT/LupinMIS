@@ -1,6 +1,7 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
+import moment                 from 'moment';
 import swal                   from 'sweetalert';
 import validate               from 'jquery-validation';
 import DatePicker           from "react-datepicker";
@@ -584,8 +585,10 @@ class Beneficiary extends Component{
     }*/
   }
   handleYear(date){
+        // console.log(' date.year()', date);
+        console.log(' date.year()',moment(date).format('YYYY'));
       this.setState({
-        birthYearOfbeneficiary    : date.year(),
+        birthYearOfbeneficiary    : moment(date).format('YYYY'),
         date    : date,
       },()=>{
       });

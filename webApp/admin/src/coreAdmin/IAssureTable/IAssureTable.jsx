@@ -664,13 +664,17 @@ class IAssureTable extends Component {
 													if(key === 'actions'){
 														if (this.state.role !== "viewer") {
 															return(
-																<th key={i} className={"umDynamicHeader srpadd text-center col"+(i+1)}>{value}</th>
+																<th key={i} className={"umDynamicHeader srpadd text-center col"+(i+1)}>
+																<div className="wrapText">{value}</div>
+																</th>
 															);	
 															
 														}
 													}else{
 														return(
-															<th key={i} className={"umDynamicHeader srpadd textAlignLeft col"+(i+1)}>{value} <br/> <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															<th key={i} className={"umDynamicHeader srpadd textAlignLeft col"+(i+1)}>
+															<div className="wrapText">{value}</div>
+															 <br/> <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
 													}
 																							
