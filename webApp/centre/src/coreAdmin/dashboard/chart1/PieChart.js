@@ -1,7 +1,10 @@
 import React,{Component} from 'react';
-import {Pie} from 'react-chartjs-2';
+import {Pie}             from 'react-chartjs-2';
 // import 'chartjs-plugin-labels';
+import $                 from 'jquery';
 import axios             from 'axios';
+import IAssureTable      from "../../IAssureTable/IAssureTable.jsx";
+import Loader            from "../../../common/Loader.js";
 
 export default class PieChart extends Component {
 
@@ -17,33 +20,38 @@ export default class PieChart extends Component {
         borderWidth: 2,
         hoverBorderWidth: 3,
         }]
-      }
+      },      
+      "twoLevelHeader"    : {
+          apply           : false,
+          firstHeaderData : [
+          ]
+      },
+      "tableHeading"      : {
+        "name"                             : 'Sector',
+        "sectorShortName"                  : 'Sector Short Name',
+        // "annualPlan_TotalBudget"           : 'Annual Plan Total Budget', 
+        "annualPlan_TotalBudget_L"         : 'Annual Plan Total Budget "Lakhs"', 
+      },
+      
+      "tableObjects"        : {
+        paginationApply     : false,
+        searchApply         : false,
+        downloadApply       : true,
+      },   
     } 
   }
  
-
-  // static getDerivedStateFromProps(props,state){
-  //    var data = {...state.data};
-
-  //     if (data) {
-  //       data.datasets[0].data = props.annualPlanTotalBudget ? props.annualPlanTotalBudget : [];
-  //       data.labels = props.sector;
-  //       data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];
-  //       data.datasets[0].hoverBackgroundColor = props.piechartcolor ? props.piechartcolor : [];
-  //       return{
-  //          data : data
-  //       }
-  //     }
-  // }
   componentDidUpdate(prevProps, prevState){
     if (prevProps.year !== this.props.year) {
-       this.getSectorwiseData(this.props.year,this.props.center_ID);
+      this.getData(this.props.year,this.props.center_ID);
+      this.getSectorwiseData(this.props.year,this.props.center_ID);
     }
   }
   componentDidMount(){
+    this.getData(this.props.year,this.props.center_ID);
     this.getSectorwiseData(this.props.year,this.props.center_ID);
   }
-  getSectorwiseData(year,center_ID){
+  getSectorwiseData(year, center_ID){
     // console.log("this.props.center_ID",center_ID);
     if (year && center_ID) {
 
@@ -57,7 +65,7 @@ export default class PieChart extends Component {
         // router.get('/sector_center/:center_ID/:startDate/:endDate',  
           axios.get('/api/reportDashboard/sector_center/'+center_ID+'/'+startDate+'/'+endDate)
           .then((response)=>{ 
-            console.log("respgetData------------->",response) ;
+            // console.log("respgetData------------->",response) ;
             response.data.splice(-2);
             var sector = [];
             var piechartcolor =[];
@@ -123,22 +131,67 @@ export default class PieChart extends Component {
     }
   }
   getRandomColor_sector(){
-      var letters = '01234ABCDEF56789';
-      var color = '#';
-      for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-      //  var letters = 'BCDEF'.split('');
-      // var color = '#';
-      // for (var i = 0; i < 6; i++ ) {
-      //     color += letters[Math.floor(Math.random() * letters.length)];
-      // }
-      // return color;
+    var letters = '01234ABCDEF56789';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+    //  var letters = 'BCDEF'.split('');
+    // var color = '#';
+    // for (var i = 0; i < 6; i++ ) {
+    //     color += letters[Math.floor(Math.random() * letters.length)];
+    // }
+    // return color;
+  }
+  getData(year, center_ID){
+    if(year){
+      // console.log("year========",year);
+      var sectordata = {...this.state.data};
+      var startDate = year.substring(3, 7)+"-04-01";
+      var endDate = year.substring(10, 15)+"-03-31";
+      if(startDate && endDate){
+
+          axios.get('/api/reportDashboard/sector_center/'+center_ID+'/'+startDate+'/'+endDate)
+          .then((response)=>{
+            console.log('response',response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+                _id                                       : a._id,  
+                name                                      : a.name,
+                sectorShortName                           : a.sectorShortName,
+                // annualPlan_TotalBudget                    : a.annualPlan_TotalBudget,
+                annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
+            }
+            })
+            this.setState({
+                tableData : tableData
+            },()=>{})
+        })
+        .catch(function(error){  
+          console.log("error = ",error.message);
+          if(error.message === "Request failed with status code 500"){
+              $(".fullpageloader").hide();
+          }
+        });
+      }
+    }
+  }
   render() {
     return ( 
       <div>
+        <Loader type="fullpageloader" />
+        <div className="displayNone">
+          <IAssureTable 
+            tableName = "Sector wise Pie Chart"
+            id = "SectorWisePieChart"
+            twoLevelHeader={this.state.twoLevelHeader} 
+            getData={this.getData.bind(this)} 
+            tableHeading={this.state.tableHeading} 
+            tableData={this.state.tableData} 
+            tableObjects={this.state.tableObjects}
+            />
+        </div>
         <Pie height={150} 
           data={this.state.data} 
           height="150" 
@@ -160,19 +213,18 @@ export default class PieChart extends Component {
             }
           }
         />
-        
-      {  /*plugins: {
-                 labels: [{
-                  render: 'label',
-                  position: 'outside',
-                  fontColor: '#000',
-                  textMargin: 8
-                },
-                {
-                  render: 'percentage',
-                  fontColor: '#fff',
-                }
-                 ]} }}*/ }
+     { /*  plugins: {
+                labels: [{
+                 render: 'label',
+                 position: 'outside',
+                 fontColor: '#000',
+                 textMargin: 8
+               },
+               {
+                 render: 'percentage',
+                 fontColor: '#fff',
+               }
+                ]} }}*/ }
       </div>
     );
   }

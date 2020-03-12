@@ -40,21 +40,7 @@ export default class PieChart extends Component {
       },   
     } 
   }
- 
 
-  // static getDerivedStateFromProps(props,state){
-  //    var data = {...state.data};
-
-  //     if (data) {
-  //       data.datasets[0].data = props.annualPlanTotalBudget ? props.annualPlanTotalBudget : [];
-  //       data.labels = props.sector;
-  //       data.datasets[0].backgroundColor = props.piechartcolor ? props.piechartcolor : [];
-  //       data.datasets[0].hoverBackgroundColor = props.piechartcolor ? props.piechartcolor : [];
-  //       return{
-  //          data : data
-  //       }
-  //     }
-  // }
   componentDidUpdate(prevProps, prevState){
     if (prevProps.year !== this.props.year) {
       this.getData(this.props.year);

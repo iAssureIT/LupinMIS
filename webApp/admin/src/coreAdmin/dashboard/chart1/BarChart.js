@@ -5,7 +5,6 @@ import $                 from 'jquery';
 import IAssureTable      from "../../IAssureTable/IAssureTable.jsx";
 import Loader            from "../../../common/Loader.js";
 
-
 const options = {
     scales: {
       xAxes: [{

@@ -1,5 +1,7 @@
-
-
+.Width100{
+  white-space: pre-wrap !important;
+  width: 100px;
+}
 .wrapText{
   white-space: pre-wrap !important;
   width: 200px;

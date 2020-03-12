@@ -1,3 +1,6 @@
+.displayNone{
+    display: none;
+}
 .monthChartBox{
     height: 365px;
 }
@@ -353,7 +356,7 @@
   /* background-color: #eee; */
   }
   .circleFont{
-    font-size: 5px;
+    font-size: 8px;
   }
 .listfont{
     margin-right: 1%!important;
@@ -372,5 +375,5 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     margin-left: 1%;
-    color: "#000";
+    font-size: 14px
 } 

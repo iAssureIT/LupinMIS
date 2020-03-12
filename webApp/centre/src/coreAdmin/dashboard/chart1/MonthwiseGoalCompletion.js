@@ -1,7 +1,10 @@
 import React,{Component} from 'react';
-import {Bar} from 'react-chartjs-2';
-import 'chartjs-plugin-labels';
+import {Bar}             from 'react-chartjs-2';
 import axios             from 'axios';
+import $                 from 'jquery';
+import IAssureTable      from "../../IAssureTable/IAssureTable.jsx";
+import Loader            from "../../../common/Loader.js";
+import 'chartjs-plugin-labels';
 
 const options = {
     scales: {
@@ -59,7 +62,23 @@ export default class MonthwiseGoalCompletion extends Component{
             data: []
           },
         ]
-      }
+      }, 
+      "twoLevelHeader"    : {
+          apply           : false,
+          firstHeaderData : [
+          ]
+      },
+      "tableHeading"      : {
+        "month"                     : 'Month',
+        "monthlyPlan_Reach"         : 'Outreach',
+        "curr_achievement_Reach"    : 'Upgraded Beneficiaries', 
+      },
+      
+      "tableObjects"        : {
+        paginationApply     : false,
+        searchApply         : false,
+        downloadApply       : true,
+      },   
     }
   }
   // static getDerivedStateFromProps(props,state){
@@ -76,10 +95,12 @@ export default class MonthwiseGoalCompletion extends Component{
   componentDidUpdate(prevProps, prevState){
     if (prevProps.year !== this.props.year) {
       this.getMonthwiseData(this.props.year,this.props.center_ID);
+      this.getData(this.props.year,this.props.center_ID);
     }
   }
   componentDidMount(){
     this.getMonthwiseData(this.props.year,this.props.center_ID);
+    this.getData(this.props.year,this.props.center_ID);
   }
   getMonthwiseData(year,center_ID){
     // console.log('year', year, 'center_ID', center_ID);
@@ -136,9 +157,50 @@ export default class MonthwiseGoalCompletion extends Component{
   }
 
 
+  getData(year, center_ID){
+    if(year){
+      var monthlydata = {...this.state.data};
+      var startYear = year.substring(3, 7);
+      var endYear = year.substring(10, 15);
+      if(startYear && endYear){
+        axios.get('/api/report/dashboard/'+startYear+'/'+endYear+'/'+center_ID)
+          .then((response)=>{
+            var tableData = response.data.map((a, i)=>{
+            return {
+                _id                                : a._id,  
+                month                              : a.month,
+                monthlyPlan_Reach                  : a.monthlyPlan_Reach,
+                curr_achievement_Reach             : a.curr_achievement_Reach,
+              }
+            })
+            this.setState({
+                tableData : tableData
+            },()=>{})
+        })
+        .catch(function(error){  
+          console.log("error = ",error.message);
+          if(error.message === "Request failed with status code 500"){
+              $(".fullpageloader").hide();
+          }
+        });
+      }
+    }
+  }
   render() {
     return (
       <div>
+        <Loader type="fullpageloader" />
+        <div className="displayNone">
+          <IAssureTable 
+            id="MonthwiseGoalCompletion"
+            tableName="Month wise Goal Completion"
+            twoLevelHeader={this.state.twoLevelHeader} 
+            getData={this.getData.bind(this)} 
+            tableHeading={this.state.tableHeading} 
+            tableData={this.state.tableData} 
+            tableObjects={this.state.tableObjects}
+            />
+        </div>
        <Bar data={this.state.data} height={300}  options={options} />
       </div>
     );

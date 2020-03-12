@@ -71,7 +71,7 @@ export default class CenterWisePieChart extends Component {
     this.getData(this.props.year);
   }
   getCenterwiseData(year){
-    // console.log("year========",year);
+    console.log("year========",year);
     var centerData = {...this.state.data};
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
@@ -79,6 +79,7 @@ export default class CenterWisePieChart extends Component {
         axios.get('/api/reportDashboard/center_admin/'+startDate+'/'+endDate) 
         .then((response)=>{
           console.log("center_adminresponse-===>",response);
+          console.log("center_adminresponse-===>",startDate, endDate);
           // response.data.splice(-2); 
           var sector = [];
           var annualPlanTotalBudget = [];

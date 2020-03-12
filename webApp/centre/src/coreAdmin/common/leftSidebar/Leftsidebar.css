@@ -2432,8 +2432,7 @@ a.article, a.article:hover {
    */
   .info-box {
     display: block;
-    min-height: 90px;
-    /*min-height: 105px;*/
+    min-height: 110px;
     background: #fff;
     width: 100%;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -2463,11 +2462,11 @@ a.article, a.article:hover {
     border-bottom-left-radius: 2px;
     display: block;
     float: left;
-    height: 90px;
+    height: 110px;
     width: 90px;
     text-align: center;
-    font-size: 45px;
-    line-height: 80px;
+    font-size: 58px;
+    line-height: 108px;
     background: rgba(0, 0, 0, 0.2);
     /*border-radius: 100%;*/
   }
@@ -2477,7 +2476,7 @@ a.article, a.article:hover {
     margin-left: 2px;
   }
   .info-box-content {
-    padding: 5px 10px;
+    padding: 10px;
     margin-left: 90px;
   }
   .info-box-number {
@@ -2495,6 +2494,7 @@ a.article, a.article:hover {
   }
   .info-box-text {
     text-transform: uppercase;
+    font-weight: bolder;
   }
   .info-box-more {
     display: block;
@@ -5416,4 +5416,5 @@ ul.classTolist li{
 .listfont{
   font-size: 13px;
   color: #fff;
+  padding-bottom: 18px;
 }

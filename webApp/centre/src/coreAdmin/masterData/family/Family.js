@@ -950,6 +950,7 @@ class Family extends Component{
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
+                                      console.log('this.state.listofDistrict',this.state.listofDistrict);
                                       return(
                                         <option key={index} value={(data.district).split('|')[0]}>{this.camelCase(data.district).split('|')[0]}</option>
                                       );

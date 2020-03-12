@@ -1,24 +1,20 @@
-import React,{Component} from 'react';
-// import TrackerReact from 'meteor/ultimatejs:tracker-react';
-import axios             from 'axios';
-import $                 from "jquery";
-import { render } from 'react-dom';
+import React,{Component}         from 'react';
+import axios                     from 'axios';
+import $                         from "jquery";
+import { render }                from 'react-dom';
+import html2canvas               from 'html2canvas';
+import Chart                     from 'chart.js';
+import ReactHTMLTableToExcel     from 'react-html-table-to-excel';
+import StatusComponent           from './StatusComponent/StatusComponent.js'
+import MonthwiseGoalCompletion   from './chart1/MonthwiseGoalCompletion.js'
+import MonthwiseExpenditure      from './chart1/MonthwiseExpenditure.js'
+import BarChart                  from './chart1/BarChart.js';
+import PieChart                  from './chart1/PieChart.js';
+import CenterWisePieChart        from './chart1/CenterWisePieChart.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import html2canvas from 'html2canvas';
-import Chart from 'chart.js';
-import StatusComponent from './StatusComponent/StatusComponent.js'
-import MonthwiseGoalCompletion   from './chart1/MonthwiseGoalCompletion.js'
-import MonthwiseExpenditure   from './chart1/MonthwiseExpenditure.js'
-import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
-
-import BarChart from './chart1/BarChart.js';
-import PieChart from './chart1/PieChart.js';
-import CenterWisePieChart from './chart1/CenterWisePieChart.js';
-import {HorizontalBar} from 'react-chartjs-2';
 import './Dashboard.css';
-import {Bar} from 'react-chartjs-2';
  
 
 const data = {
@@ -77,10 +73,10 @@ export default class Dashboard extends Component{
        }], 
       "centerCounts"                  :[],
       "villagesCovered"               : 0,
-      countAllCenter                  : 0,
-      countDistrict                   : 0,
-      countBlocks                     : 0,
-      villagesCovered                 : 0,
+      "countAllCenter"                : 0,
+      "countDistrict"                 : 0,
+      "countBlocks"                   : 0,
+      "villagesCovered"               : 0,
       "centerCount"                   : 0,
       'year'                          : "FY 2019 - 2020",
       "years"                         :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
@@ -302,7 +298,7 @@ export default class Dashboard extends Component{
           countBlocks              : response.data[0].countBlocks,
           villagesCovered          : response.data[0].countVillages,
           blocksCovered            : response.data[0].blocksCovered.map((o,i)=>{return o}),
-          districtsCovered            : response.data[0].districtsCovered.map((o,i)=>{return o}),
+          districtsCovered         : response.data[0].districtsCovered.map((o,i)=>{return o}),
         })
       }
     }).catch(function (error) {

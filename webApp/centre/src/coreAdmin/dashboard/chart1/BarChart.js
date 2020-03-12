@@ -1,6 +1,9 @@
 import React,{Component} from 'react';
-import {Bar} from 'react-chartjs-2';
+import {Bar}             from 'react-chartjs-2';
 import axios             from 'axios';
+import $                 from 'jquery';
+import IAssureTable      from "../../IAssureTable/IAssureTable.jsx";
+import Loader            from "../../../common/Loader.js";
 
 const options = {
     scales: {
@@ -23,7 +26,7 @@ export default class BarChart extends Component{
       "data" : {
         labels: [],
         datasets: [
-          {
+          { 
             label: 'Family Upgradation',
             backgroundColor:'rgba(255, 206, 86, 1)',
             borderColor: 'rgba(255, 206, 86, 0.5)',
@@ -44,7 +47,24 @@ export default class BarChart extends Component{
             data: []
           }
         ]
-      }
+      },   
+      "twoLevelHeader"    : {
+          apply           : false,
+          firstHeaderData : [
+          ]
+      },
+      "tableHeading"      : {
+        "sectorName"                       : 'Sector',
+        "sectorShortName"                  : 'Sector Short Name',
+        "achievement_FamilyUpgradation"    : 'Family Upgradation', 
+        "achievement_Reach"                : 'Outreach', 
+      },
+      
+      "tableObjects"        : {
+        paginationApply     : false,
+        searchApply         : false,
+        downloadApply       : true,
+      },   
     }
   }
 
@@ -65,11 +85,13 @@ export default class BarChart extends Component{
 
     if (prevProps.year !== this.props.year) {
       this.getSectorwiseFamilyupg(this.props.year,this.props.center_ID);
+      this.getData(this.props.year,this.props.center_ID);
     }
   }
   componentDidMount(){
     console.log('center_ID',this.props.center_ID);
     this.getSectorwiseFamilyupg(this.props.year,this.props.center_ID);
+    this.getData(this.props.year,this.props.center_ID);
   }
   getSectorwiseFamilyupg(year,center_ID){
     console.log('center_ID',center_ID);
@@ -135,15 +157,58 @@ export default class BarChart extends Component{
         })
     }
   }
-
+  getData(year, center_ID){
+    if(year){
+      console.log("year========",year);
+      var sectordata = {...this.state.data};
+      var startDate = year.substring(3, 7)+"-04-01";
+      var endDate = year.substring(10, 15)+"-03-31";
+      if(startDate && endDate){
+        axios.get('/api/reportDashboard/sector_familyupgrade_outreach_count/'+center_ID+'/'+startDate+'/'+endDate)
+          .then((response)=>{
+          console.log("sector_annual_achievement_report ==>",response);
+            var tableData = response.data.map((a, i)=>{
+            return {
+                _id                                       : a._id,  
+                sectorName                                : a.sectorName,
+                sectorShortName                           : a.sectorShortName,
+                achievement_FamilyUpgradation             : a.achievement_FamilyUpgradation,
+                achievement_Reach                         : a.achievement_Reach,
+            }
+            })
+            this.setState({
+                tableData : tableData
+            },()=>{})
+        })
+        .catch(function(error){  
+          console.log("error = ",error.message);
+          if(error.message === "Request failed with status code 500"){
+              $(".fullpageloader").hide();
+          }
+        });
+      }
+    }
+  }
   render() {
-                console.log("sector_familyupgrade_outreach ==>",this.state.data);
     return (
       <div>
-{/*       <Radar data={this.state.data} height={350}  options={options} />*/}
+        <Loader type="fullpageloader" />
+        <div className="displayNone">
+          <IAssureTable 
+            tableName="Sector wise Outreach & Family Upgradation"
+            id="SectorwiseOutreachAndFamilyUpgradation"
+            twoLevelHeader={this.state.twoLevelHeader} 
+            getData={this.getData.bind(this)} 
+            tableHeading={this.state.tableHeading} 
+            tableData={this.state.tableData} 
+            tableObjects={this.state.tableObjects}
+            />
+        </div>
+       {/*<Radar data={this.state.data} height={350}  options={options} />*/}
        <Bar data={this.state.data} height={300}  options={options} />
       </div>
     );
   }
 }
+
 

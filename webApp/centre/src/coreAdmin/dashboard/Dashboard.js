@@ -1,29 +1,20 @@
-import React,{Component} from 'react';
-// import TrackerReact from 'meteor/ultimatejs:tracker-react';
-import axios             from 'axios';
-import { render } from 'react-dom';
-import $ from "jquery";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
-import html2canvas from 'html2canvas';
-import Chart from 'chart.js';
-import StatusComponent from './StatusComponent/StatusComponent.js'
+import React,{Component}         from 'react';
+import axios                     from 'axios';
+import $                         from "jquery";
+import { render }                from 'react-dom';
+import html2canvas               from 'html2canvas';
+import Chart                     from 'chart.js';
+import ReactHTMLTableToExcel     from 'react-html-table-to-excel';
+import StatusComponent           from './StatusComponent/StatusComponent.js'
 import MonthwiseGoalCompletion   from './chart1/MonthwiseGoalCompletion.js'
-import MonthwiseExpenditure   from './chart1/MonthwiseExpenditure.js'
-
-import BarChart from './chart1/BarChart.js'; 
-import PieChart from './chart1/PieChart.js';
-import CenterWisePieChart from './chart1/CenterWisePieChart.js';
-import {HorizontalBar} from 'react-chartjs-2';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
-
+import MonthwiseExpenditure      from './chart1/MonthwiseExpenditure.js'
+import BarChart                  from './chart1/BarChart.js';
+import PieChart                  from './chart1/PieChart.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import {Bar} from 'react-chartjs-2';
 import './Dashboard.css';
-
+ 
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   datasets: [
@@ -475,14 +466,6 @@ export default class Dashboard extends Component{
                     </div>  
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                       <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-                        {/*<div className="box2">
-                            <div className="box-header with-border">
-                              <h3 className="box-title">Center wise Budget</h3>
-                            </div>
-                            <div className="box-body">
-                               <CenterWisePieChart center_annualPlanTotalBudget={this.state.center_annualPlanTotalBudget ? this.state.center_annualPlanTotalBudget : []} piechartcolor={this.state.piechartcolor}  center_sector ={this.state.center_sector ? this.state.center_sector : []}/>
-                            </div>
-                        </div> */}
                         <div className="info-box bg-yellow">
                             <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
 
@@ -560,7 +543,16 @@ export default class Dashboard extends Component{
                       <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                         <div className="box2">
                           <div className="box-header with-border">
-                              <h3 className="box-title">Sector wise Budget</h3>
+                            <h3 className="box-title">Sector wise Budget (In Lakhs)</h3>
+                            <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                              <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table="SectorWisePieChart"
+                                sheet="tablexls"
+                                filename="Sector wise Pie Chart"
+                                buttonText=""/>
+                            </div>
                           </div>
                           <div className="box-body">
                             <PieChart year={this.state.year} center_ID={this.state.center_ID}/>
@@ -570,7 +562,16 @@ export default class Dashboard extends Component{
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="box2">
                           <div className="box-header with-border">
-                              <h3 className="box-title">Sector wise Outreach & Family Upgradation</h3>
+                            <h3 className="box-title">Sector wise Outreach & Family Upgradation</h3>
+                            <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                              <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table="SectorwiseOutreachAndFamilyUpgradation"
+                                sheet="tablexls"
+                                filename="Sector wise Outreach & Family Upgradation"
+                                buttonText=""/>
+                            </div>
                           </div>
                           <div className="box-body">
                             <BarChart year={this.state.year} center_ID={this.state.center_ID} />
@@ -580,7 +581,16 @@ export default class Dashboard extends Component{
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6" > 
                         <div className="box2 monthChartBox">
                           <div className="box-header with-border">
-                              <h3 className="box-title">Month wise Goal Completion</h3>
+                            <h3 className="box-title">Month wise Goal Completion</h3>
+                            <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                              <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table="MonthwiseGoalCompletion"
+                                sheet="tablexls"
+                                filename="Month wise Goal Completion"
+                                buttonText=""/>
+                            </div>
                           </div>
                           <div className="box-body">
                              <MonthwiseGoalCompletion year={this.state.year} center_ID={this.state.center_ID}/>
@@ -591,6 +601,15 @@ export default class Dashboard extends Component{
                         <div className="box2 monthChartBox">
                             <div className="box-header with-border">
                               <h3 className="box-title">Month wise Expenditure V/s Budget</h3>
+                            <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                              <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table="MonthwiseExpenditure"
+                                sheet="tablexls"
+                                filename="Month wise Expenditure & Budget"
+                                buttonText=""/>
+                            </div>
                             </div>
                             <div className="box-body">
                               <MonthwiseExpenditure year={this.state.year} center_ID={this.state.center_ID}/>

@@ -31,7 +31,8 @@ class Beneficiary extends Component{
       "surnameOfBeneficiary"          :"",
       "nameofbeneficiaries"           :"",
       "birthYearOfbeneficiary"        :"",
-      "genderOfbeneficiary"           :"-- Select --",
+      "genderOfbeneficiary"           :"",
+      // "genderOfbeneficiary"           :"-- Select --",
       "fields"              : {},
       "errors"              : {},
       "tableHeading"        : {
@@ -172,7 +173,8 @@ class Beneficiary extends Component{
       "middleNameOfBeneficiary"  :"",   
       "uidNumber"                :"",   
       "relation"                 :"-- Select --",
-      "genderOfbeneficiary"      :"-- Select --",
+      "genderOfbeneficiary"      :"",
+      // "genderOfbeneficiary"      :"-- Select --",
       "date"                     :"",   
       "birthYearOfbeneficiary"   :"",   
       // fields:fields
@@ -241,7 +243,8 @@ class Beneficiary extends Component{
         "date"                     :"",   
         "birthYearOfbeneficiary"   :"",   
         "relation"                 :"-- Select --",
-        "genderOfbeneficiary"      :"-- Select --",   
+        "genderOfbeneficiary"      :"",
+        // "genderOfbeneficiary"      :"-- Select --",   
       });
       this.props.history.push('/beneficiary');
       this.setState({
@@ -249,50 +252,6 @@ class Beneficiary extends Component{
       });
     }
   }
-  // validateFormReq() {
-  //   let fields = this.state.fields;
-  //   let errors = {};
-  //   let formIsValid = true;
-  //   $("html,body").scrollTop(0);
-  //     if (!fields["familyID"]) {
-  //       formIsValid = false;
-  //       errors["familyID"] = "This field is required.";
-  //     }     
-  //      if (!fields["surnameOfBeneficiary"]) {
-  //       formIsValid = false;
-  //       errors["surnameOfBeneficiary"] = "This field is required.";
-  //     }        
-  //      if (!fields["firstNameOfBeneficiary"]) {
-  //       formIsValid = false;
-  //       errors["firstNameOfBeneficiary"] = "This field is required.";
-  //     }        
-  //      if (!fields["middleNameOfBeneficiary"]) {
-  //       formIsValid = false;
-  //       errors["middleNameOfBeneficiary"] = "This field is required.";
-  //     }       
-  //      if (!fields["relation"]) {
-  //       formIsValid = false;
-  //       errors["relation"] = "This field is required.";
-  //     }     
-  //     this.setState({
-  //       errors: errors
-  //     });
-  //     return formIsValid;
-  // }
-
-  // validateForm() {
-  //   let fields = this.state.fields;
-  //   let errors = {};
-  //   let formIsValid = true;
-  //   $("html,body").scrollTop(0);
-   
-    
-
-  //     this.setState({
-  //       errors: errors
-  //     });
-  //     return formIsValid;
-  // }
 
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
@@ -441,7 +400,8 @@ class Beneficiary extends Component{
         "middleNameOfBeneficiary"  : "",
         "uidNumber"                : "",      
         "relation"                 :"-- Select --",
-        "genderOfbeneficiary"      :"-- Select --",       
+        "genderOfbeneficiary"      :"",
+        // "genderOfbeneficiary"      :"-- Select --",       
         "date"                     :"",   
         "birthYearOfbeneficiary"   :"",   
       });     
@@ -730,7 +690,7 @@ class Beneficiary extends Component{
                               <label className="formLable">Gender</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="genderOfbeneficiaryErr" >
                                 <select className="custom-select form-control inputBox" ref="genderOfbeneficiary" name="genderOfbeneficiary" value={this.state.genderOfbeneficiary} onChange={this.handleChange.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
                                   <option>Female</option>
                                   <option>Male</option>
                                   <option>Transgender</option>
