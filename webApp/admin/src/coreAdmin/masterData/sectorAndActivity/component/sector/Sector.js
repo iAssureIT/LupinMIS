@@ -200,9 +200,17 @@ class Sector extends Component{
     }
     axios.post('/api/sectors/list',data)
     .then((response)=>{
+      
+      var tableData = response.data.map((a, i)=>{
+          return {
+            _id               : a._id,
+            sector            : a.sector,
+            sectorShortName   : a.sectorShortName,
+          }
+        })
       this.setState({
-        tableData : response.data
-      })
+        tableData : tableData
+      });
     })
     .catch(function(error){
       console.log("error = ",error);
@@ -280,6 +288,8 @@ class Sector extends Component{
 
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
               <IAssureTable
+                tableName = "Sector"
+                id = "Sector"
                 tableHeading={this.state.tableHeading}
                 dataCount={this.state.dataCount}
                 tableData={this.state.tableData}

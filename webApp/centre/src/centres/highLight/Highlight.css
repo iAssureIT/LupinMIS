@@ -1,0 +1,26 @@
+#Highlight .col1{
+    width: 150px;
+}
+#Highlight .col2{
+    width: 700px;
+}
+
+#Highlight .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#Highlight .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+.viewLinkBox{
+	margin-top: 70px;
+}
+.viewLinkBox2{
+	margin-top: 140px;
+}

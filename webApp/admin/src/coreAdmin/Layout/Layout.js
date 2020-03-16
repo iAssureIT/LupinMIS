@@ -56,28 +56,25 @@ import ProjectMapping                             from '../../coreAdmin/masterDa
 import SectorMapping                              from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
 
 import plan                                       from '../../admin/annualPlan/PlanDetails.js';
-import report                                     from "../../admin/LupinReports/Report.js";
 // import report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
-import report1                                    from "../../admin/LupinReports/ActivityAnnualreport.js";
-import report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
-import report3                                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport.js";
-import report4                                    from "../../admin/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";
-import report5                                    from "../../admin/LupinReports/ActivitywisePeriodicPhysicalVarianceReport.js";
-import report6                                    from "../../admin/LupinReports/GeographicalReport.js";
-import report7                                    from "../../admin/LupinReports/VillagewisefamilyReport.js";
-import report8                                    from "../../admin/LupinReports/CategorywiseReport.js";
-import report9                                    from "../../admin/LupinReports/UpgradedBeneficiaryReport.js";
+import report1                                    from "../../admin/LupinReports/ActivityAnnualreport/ActivityAnnualreport.js";
+import report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport/SectorwiseAnnualCompletionSummaryReport.js";
+import report3                                    from "../../admin/LupinReports/ActivityWisePeriodicVarianceReport/ActivityWisePeriodicVarianceReport.js";
+import report4                                    from "../../admin/LupinReports/SectorwisePeriodicVarianceSummaryReport/SectorwisePeriodicVarianceSummaryReport.js";
+import report5                                    from "../../admin/LupinReports/ActivitywisePeriodicPhysicalVarianceReport/ActivitywisePeriodicPhysicalVarianceReport.js";
+import report6                                    from "../../admin/LupinReports/GeographicalReport/GeographicalReport.js";
+import report7                                    from "../../admin/LupinReports/VillagewisefamilyReport/VillagewisefamilyReport.js";
+import report8                                    from "../../admin/LupinReports/CategorywiseReport/CategorywiseReport.js";
+import report9                                    from "../../admin/LupinReports/UpgradedBeneficiaryReport/UpgradedBeneficiaryReport.js";
 // import report10                                   from "../../admin/LupinReports/SDGReport.js";
-import report10                                   from "../../admin/LupinReports/GoalSectorReport.js";
-import report11                                   from "../../admin/LupinReports/ADPReport.js";
-import report12                                   from "../../admin/LupinReports/EMPReport.js";
-import report13                                   from "../../admin/LupinReports/ActivitywiseAnnualPlanReport.js";
-import report14                                   from "../../admin/LupinReports/ActivitywisePeriodicPlanReport.js";
-import report15                                   from "../../admin/LupinReports/SectorwisePeriodicPlanSummaryReport.js";
-import report16                                   from "../../admin/LupinReports/SectorwiseAnnualPlanSummaryReport.js";
-import report17                                   from "../../admin/LupinReports/CenterRankingReport.js";
+import report10                                   from "../../admin/LupinReports/GoalSectorReport/GoalSectorReport.js";
+import report13                                   from "../../admin/LupinReports/ActivitywiseAnnualPlanReport/ActivitywiseAnnualPlanReport.js";
+import report14                                   from "../../admin/LupinReports/ActivitywisePeriodicPlanReport/ActivitywisePeriodicPlanReport.js";
+import report15                                   from "../../admin/LupinReports/SectorwisePeriodicPlanSummaryReport/SectorwisePeriodicPlanSummaryReport.js";
+import report16                                   from "../../admin/LupinReports/SectorwiseAnnualPlanSummaryReport/SectorwiseAnnualPlanSummaryReport.js";
+import report17                                   from "../../admin/LupinReports/CenterRankingReport/CenterRankingReport.js";
 
-import ProjectReport                                   from "../../admin/LupinReports/ProjectReport.js";
+import ProjectReport                                   from "../../admin/LupinReports/GoalSectorReport/ProjectReport.js";
  class Layout extends Component{
   
   constructor(props) {
@@ -189,7 +186,6 @@ componentDidMount(){
                           <Route path="/plan-details"                                                 exact strict component={ plan } />
                           <Route path="/plan-details/"                                                exact strict component={ plan } />
                           <Route path="/plan-details/:id"                                             exact strict component={ plan } />
-                          <Route path="/report/:url"                                                  exact strict component={ report } />
                           <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
                           <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
                           <Route path="/activity-wise-periodic-variance-report"                       exact strict component={ report3 } />
@@ -200,14 +196,10 @@ componentDidMount(){
                           <Route path="/category-wise-report"                                         exact strict component={ report8 } />
                           <Route path="/upgraded-beneficiary-report"                                  exact strict component={ report9 } />
                           <Route path="/goal-sector-report"                                           exact strict component={ report10 } />
-                          <Route path="/ADP-report"                                                   exact strict component={ report11 } />
-                          <Route path="/EMP-report"                                                   exact strict component={ report12 } />
                           <Route path="/activitywise-annual-plan-report"                              exact strict component={ report13 } />
                           <Route path="/activity-wise-periodic-plan-report"                           exact strict component={ report14 } />
                           <Route path="/sector-wise-periodic-plan-summary-report"                     exact strict component={ report15 } />
                           <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
-                          <Route path="/Report"                                                       exact strict component={ report } />
-                          <Route path="/Report/:id"                                                   exact strict component={ report } />
                           <Route path="/Project-report"                                               exact strict component={ ProjectReport } />
                           <Route path="/center-ranking-report"                                        exact strict component={ report17 } />
                       </Switch>        

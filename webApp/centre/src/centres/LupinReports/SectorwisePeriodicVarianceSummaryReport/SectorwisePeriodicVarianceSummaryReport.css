@@ -1,0 +1,56 @@
+
+#SectorwisePeriodicVarianceSummaryReport tr .srpadd:nth-child(n+7), #SectorwisePeriodicVarianceSummaryReport tr .colorTable:nth-child(3){
+	background: var(--color1);
+}
+#SectorwisePeriodicVarianceSummaryReport tr .srpadd:nth-child(n+14), #SectorwisePeriodicVarianceSummaryReport tr .colorTable:nth-child(4), #SectorwisePeriodicVarianceSummaryReport tr .colorTable:nth-child(5){
+	background: var(--color2);
+}
+#SectorwisePeriodicVarianceSummaryReport tr .srpadd:nth-child(n+23), #SectorwisePeriodicVarianceSummaryReport tr .colorTable:nth-child(6), #SectorwisePeriodicVarianceSummaryReport tr .colorTable:nth-child(7){
+	background: var(--color1);
+}
+
+#SectorwisePeriodicVarianceSummaryReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#SectorwisePeriodicVarianceSummaryReport .col2{
+	width: 80px !important;
+}
+#SectorwisePeriodicVarianceSummaryReport .col3{
+	width: 150px !important;
+}
+#SectorwisePeriodicVarianceSummaryReport .col4, #SectorwisePeriodicVarianceSummaryReport .col7{
+	width: 54px !important;
+}
+#SectorwisePeriodicVarianceSummaryReport .col15, #SectorwisePeriodicVarianceSummaryReport .col16, #SectorwisePeriodicVarianceSummaryReport .col20, #SectorwisePeriodicVarianceSummaryReport .col22, #SectorwisePeriodicVarianceSummaryReport .col28{
+	width: 62px !important;
+} 
+#SectorwisePeriodicVarianceSummaryReport .col14{
+	width: 82px !important;
+}
+
+#SectorwisePeriodicVarianceSummaryReport .col18, #SectorwisePeriodicVarianceSummaryReport .col11, #SectorwisePeriodicVarianceSummaryReport .col9, #SectorwisePeriodicVarianceSummaryReport .col5, #SectorwisePeriodicVarianceSummaryReport .col8, #SectorwisePeriodicVarianceSummaryReport .col26{
+	width: 72px !important;
+}
+ #SectorwisePeriodicVarianceSummaryReport .col6, #SectorwisePeriodicVarianceSummaryReport .col12, #SectorwisePeriodicVarianceSummaryReport .col10, #SectorwisePeriodicVarianceSummaryReport .col17 {
+	width: 52px !important;
+}
+#SectorwisePeriodicVarianceSummaryReport .col13, #SectorwisePeriodicVarianceSummaryReport .col19, #SectorwisePeriodicVarianceSummaryReport .col21, #SectorwisePeriodicVarianceSummaryReport .col23{
+	width: 52px !important;
+}
+#SectorwisePeriodicVarianceSummaryReport .col24, #SectorwisePeriodicVarianceSummaryReport .col25, #SectorwisePeriodicVarianceSummaryReport .col27, #SectorwisePeriodicVarianceSummaryReport .col29{
+	width: 52px !important;
+}
+#SectorwisePeriodicVarianceSummaryReport .scrollContent {
+  display: block;
+  height: 262px;
+  overflow: auto;
+  width: 100%;
+}
+
+#SectorwisePeriodicVarianceSummaryReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

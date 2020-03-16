@@ -1,3 +1,26 @@
+
+#SubActivity .col1, #SubActivity .col3, #SubActivity .col2 {
+  width: 240px;
+}
+#SubActivity .col5, #SubActivity .col4{
+  width: 150px;
+}
+
+
+#SubActivity .scrollContent {
+  display: block;
+  height: 300px;
+  overflow: auto;
+  width: 100%;
+}
+
+#SubActivity .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+
 .notbtn{
 
 	border:1px solid #f4f4f4;

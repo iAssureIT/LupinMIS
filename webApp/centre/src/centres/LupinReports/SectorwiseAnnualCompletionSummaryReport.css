@@ -1,7 +1,0 @@
-
-#SectorwiseAnnualCompletionReport tr .colorTable:nth-child(2), #SectorwiseAnnualCompletionReport tr .srpadd:nth-child(n+5){
-	background: var(--color1);
-}
-#SectorwiseAnnualCompletionReport tr .colorTable:nth-child(3), #SectorwiseAnnualCompletionReport tr .srpadd:nth-child(n+8){
-	background: var(--color2);
-}

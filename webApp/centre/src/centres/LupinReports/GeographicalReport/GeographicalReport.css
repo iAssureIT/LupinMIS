@@ -1,0 +1,41 @@
+#GeographicalReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#GeographicalReport .col2{
+	width: 100px !important;
+}
+#GeographicalReport .col3, #GeographicalReport .col17{
+	white-space: pre-wrap!important;
+	width: 200px !important;
+}
+#GeographicalReport .col4, #GeographicalReport .col7{
+	width: 54px !important;
+}
+#GeographicalReport .col9, #GeographicalReport .col14
+{
+	width: 62px !important;
+} 
+#GeographicalReport .col13, #GeographicalReport .col12, #GeographicalReport .col15
+{
+	width: 72px !important;
+} 
+
+#GeographicalReport .col8, #GeographicalReport .col11, #GeographicalReport .col6, #GeographicalReport .col5{
+	width: 72px !important;
+}
+#GeographicalReport .col10, #GeographicalReport .col16 {
+	width: 52px !important;
+}
+#GeographicalReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#GeographicalReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}

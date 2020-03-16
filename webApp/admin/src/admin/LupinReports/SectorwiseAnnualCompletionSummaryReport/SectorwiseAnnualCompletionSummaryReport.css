@@ -1,0 +1,49 @@
+#SectorwiseAnnualCompletionReport tr .colorTable:nth-child(2), #SectorwiseAnnualCompletionReport tr .srpadd:nth-child(n+5){
+	background: var(--color1);
+}
+#SectorwiseAnnualCompletionReport tr .colorTable:nth-child(3), #SectorwiseAnnualCompletionReport tr .srpadd:nth-child(n+8){
+	background: var(--color2);
+}
+
+#SectorwiseAnnualCompletionReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#SectorwiseAnnualCompletionReport .col2{
+	width: 100px !important;
+}
+#SectorwiseAnnualCompletionReport .col3{
+	width: 150px !important;
+}
+#SectorwiseAnnualCompletionReport .col4, #SectorwiseAnnualCompletionReport .col7{
+	width: 54px !important;
+}
+#SectorwiseAnnualCompletionReport .col15, #SectorwiseAnnualCompletionReport .col16{
+	width: 62px !important;
+} 
+#SectorwiseAnnualCompletionReport .col10{
+	width: 82px !important;
+}
+
+#SectorwiseAnnualCompletionReport .col14, #SectorwiseAnnualCompletionReport .col5, #SectorwiseAnnualCompletionReport .col8{
+	width: 72px !important;
+}
+ #SectorwiseAnnualCompletionReport .col6, #SectorwiseAnnualCompletionReport .col9, #SectorwiseAnnualCompletionReport .col12, #SectorwiseAnnualCompletionReport .col11, #SectorwiseAnnualCompletionReport .col17 {
+	width: 52px !important;
+}
+#SectorwiseAnnualCompletionReport .col13{
+	width: 52px !important;
+}
+#SectorwiseAnnualCompletionReport .scrollContent {
+  display: block;
+  height: 262px;
+  overflow: auto;
+  width: 100%;
+}
+
+#SectorwiseAnnualCompletionReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

@@ -333,10 +333,17 @@ class SectorMapping extends Component{
     console.log('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange);
     axios.get('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange)
     .then((response)=>{
+      var tableData = response.data.map((a, i)=>{
+          return {
+            _id               : a._id,
+            type              : a.type,
+            goal              : a.goal,
+            sectorName        : a.sectorName,
+            activityName      : a.activityName,      
+          }
+        })
       this.setState({
-        tableData : response.data
-      },()=>{
-        // console.log("tableData",this.state.tableData);
+        tableData : tableData
       })
     })
     .catch(function(error){
@@ -578,6 +585,8 @@ class SectorMapping extends Component{
                     }   
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
+                      tableName = "Sector Mapping"
+                      id = "SectorMapping" 
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.dataCount}

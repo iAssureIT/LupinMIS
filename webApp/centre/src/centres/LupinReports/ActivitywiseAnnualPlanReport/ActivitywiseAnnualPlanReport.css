@@ -1,0 +1,45 @@
+#activitywiseAnnualPlanReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#activitywiseAnnualPlanReport .col2{
+	width: 100px !important;
+}
+#activitywiseAnnualPlanReport .col3, #activitywiseAnnualPlanReport .col17{
+	white-space: pre-wrap!important;
+	width: 200px !important;
+}
+#activitywiseAnnualPlanReport .col4, #activitywiseAnnualPlanReport .col7{
+	width: 54px !important;
+}
+#activitywiseAnnualPlanReport .col9
+{
+	width: 62px !important;
+} 
+#activitywiseAnnualPlanReport .col13, #activitywiseAnnualPlanReport .col15
+{
+	width: 72px !important;
+} 
+
+#activitywiseAnnualPlanReport .col11, #activitywiseAnnualPlanReport .col6, #activitywiseAnnualPlanReport .col5{
+	width: 72px !important;
+}
+#activitywiseAnnualPlanReport .col10, #activitywiseAnnualPlanReport .col12, #activitywiseAnnualPlanReport .col16 {
+	width: 52px !important;
+}
+#activitywiseAnnualPlanReport .col8, #activitywiseAnnualPlanReport .col14{
+	width: 52px !important;
+}
+#activitywiseAnnualPlanReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#activitywiseAnnualPlanReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

@@ -1,0 +1,45 @@
+#ActivitywiseAnnualCompletionReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#ActivitywiseAnnualCompletionReport .col2{
+	width: 100px !important;
+}
+#ActivitywiseAnnualCompletionReport .col3, #ActivitywiseAnnualCompletionReport .col17{
+	white-space: pre-wrap!important;
+	width: 200px !important;
+}
+#ActivitywiseAnnualCompletionReport .col4, #ActivitywiseAnnualCompletionReport .col7{
+	width: 54px !important;
+}
+#ActivitywiseAnnualCompletionReport .col9
+{
+	width: 80px !important;
+} 
+#ActivitywiseAnnualCompletionReport .col13, #ActivitywiseAnnualCompletionReport .col15
+{
+	width: 72px !important;
+} 
+
+#ActivitywiseAnnualCompletionReport .col11, #ActivitywiseAnnualCompletionReport .col6, #ActivitywiseAnnualCompletionReport .col5{
+	width: 72px !important;
+}
+#ActivitywiseAnnualCompletionReport .col10, #ActivitywiseAnnualCompletionReport .col12, #ActivitywiseAnnualCompletionReport .col16 {
+	width: 52px !important;
+}
+#ActivitywiseAnnualCompletionReport .col8, #ActivitywiseAnnualCompletionReport .col14{
+	width: 52px !important;
+}
+#ActivitywiseAnnualCompletionReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#ActivitywiseAnnualCompletionReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

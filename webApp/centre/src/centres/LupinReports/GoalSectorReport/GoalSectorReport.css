@@ -1,0 +1,45 @@
+#GoalSectorReport .col1{
+	width: 80px !important;
+	white-space: pre-wrap!important;
+}
+#GoalSectorReport .col2, #GoalSectorReport .col3{
+	width: 100px !important;
+}
+#GoalSectorReport .col3, #GoalSectorReport .col5{
+	white-space: pre-wrap!important;
+	width: 200px !important;
+}
+#GoalSectorReport .col4{
+	width: 100px !important;
+}
+#GoalSectorReport .col9, #GoalSectorReport .col7
+{
+	width: 82px !important;
+} 
+#GoalSectorReport .col13, #GoalSectorReport .col15
+{
+	width: 72px !important;
+} 
+
+#GoalSectorReport .col11, #GoalSectorReport .col6, #GoalSectorReport .col14 {
+	width: 72px !important;
+}
+#GoalSectorReport .col10, #GoalSectorReport .col12{
+	width: 52px !important;
+}
+#GoalSectorReport .col8{
+	width: 52px !important;
+}
+#GoalSectorReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#GoalSectorReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

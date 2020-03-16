@@ -219,9 +219,16 @@ class nameOfGoal extends Component{
     console.log('data', data);
      axios.post('/api/typeofgoals/goalName/list',data)
     .then((response)=>{
-       console.log('tableData==================', response);
+       // console.log('tableData==================', response);
+      var tableData = response.data.map((a, i)=>{
+          return {
+            _id           : a._id,
+            typeofGoal    : a.typeofGoal,
+            goalName      : a.goalName,
+          }
+        })
       this.setState({
-        tableData : response.data
+        tableData : tableData
       })
     })
     .catch(function(error){
@@ -329,12 +336,14 @@ class nameOfGoal extends Component{
 
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
           <IAssureTable 
+            tableName = "name of Goal"
+            id = "nameOfGoal" 
             tableHeading={this.state.tableHeading}
             dataCount={this.state.dataCount}
             tableData={this.state.tableData}
             getData={this.getData.bind(this)}
             tableObjects={this.state.tableObjects}
-            deleteMethod      = 'patch'
+            deleteMethod = 'patch'
             />
         </div> 
       </div>                            

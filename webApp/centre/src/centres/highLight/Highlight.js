@@ -346,85 +346,90 @@ class Highlight extends Component{
                           this.state.tableData.map((data, index)=>{
                             return(
                               <div key={index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt outerForm">
-                                <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 noPadding"> 
-                                  <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12"> 
-                                    <div className="formLable"><span className="pageSubHeader">{data.date  ? data.date : "-"}</span></div>
+                                <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                                  <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 noPadding"> 
+                                    <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12"> 
+                                      <div className="formLable"><span className="pageSubHeader">{data.date  ? data.date : "-"}</span></div>
+                                    </div>
+                                    <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12"> 
+                                        <h4 className="formLable"><b>User Name :</b> {data.userName ? data.userName : "-"}</h4>
+                                    </div>
                                   </div>
-                                  <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12"> 
-                                      <h4 className="formLable"><b>User Name :</b> {data.userName ? data.userName : "-"}</h4>
-                                  </div>
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding"> 
-                                  {
-                                    data.highlight_File.length > 0? 
-                                      <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"><b>Files:</b></p>
-                                    : null
-                                  }
-                                  {
-                                    data.highlight_File.length > 0? 
-                                    data.highlight_File.map((file, i)=> {
-                                      return(
-                                        <div key= {i} className="col-lg-3 col-md-4 col-sm-12 col-xs-12"> 
-                                          <div >
-                                            {
-                                              (file && (file.fileName.split('.').pop()==="XLS" || file.fileName.split('.').pop() ==="XLSX"||file.fileName.split('.').pop() ==="xls" || file.fileName.split('.').pop() ==="xlsx"))
-                                              ?
-                                              <a href={file.filePath} className="mt"><img className="fileExt" alt="highlight_Image" src="/images/exel2.png"/> </a>
-                                              :
-                                               ""
-                                            }
-                                            {
-                                              (file && (file.fileName.split('.').pop() ==="PPT" || file.fileName.split('.').pop() === "PPTX" || file.fileName.split('.').pop() === "ppt" || file.fileName.split('.').pop() ==="pptx"))
-                                              ? 
-                                              <a href={file.filePath} className="mt"><img className="fileExt"  alt="highlight_Image" src="/images/powerpoint.jpeg"/></a> 
-                                              :""
-                                            }
-                                            {
-                                              (file && (file.fileName.split('.').pop() ==="pdf" ||file.fileName.split('.').pop() === "PDF"))
-                                              ? 
-                                              <a href={file.filePath} className="mt"><img className="fileExt"  alt="highlight_Image" src="/images/pdf.png"/> </a>
-                                              :
-                                              ""
-                                            }
-                                            {
-                                              (file && (file.fileName.split('.').pop() ==="doc" || file.fileName.split('.').pop() === "docx" || file.fileName.split('.').pop() === "DOC" || file.fileName.split('.').pop() ==="DOCX"|| file.fileName.split('.').pop() ==="txt" || file.fileName.split('.').pop() === "TXT")) 
-                                              ? 
-                                              <a href={file.filePath} className="mt"><img className="fileExt"  alt="highlight_Image" src="/images/docs.png"/> </a>
-                                              : ""
-                                            }                                             
+                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding"> 
+                                    {
+                                      data.highlight_File.length > 0? 
+                                        <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"><b>Files:</b></p>
+                                      : null
+                                    }
+                                    {
+                                      data.highlight_File.length > 0? 
+                                      data.highlight_File.map((file, i)=> {
+                                        return(
+                                          <div key= {i} className="col-lg-3 col-md-4 col-sm-12 col-xs-12"> 
+                                            <div >
+                                              {
+                                                (file && (file.fileName.split('.').pop()==="XLS" || file.fileName.split('.').pop() ==="XLSX"||file.fileName.split('.').pop() ==="xls" || file.fileName.split('.').pop() ==="xlsx"))
+                                                ?
+                                                <a href={file.filePath} className="mt"><img className="fileExt" alt="highlight_Image" src="/images/exel2.png"/> </a>
+                                                :
+                                                 ""
+                                              }
+                                              {
+                                                (file && (file.fileName.split('.').pop() ==="PPT" || file.fileName.split('.').pop() === "PPTX" || file.fileName.split('.').pop() === "ppt" || file.fileName.split('.').pop() ==="pptx"))
+                                                ? 
+                                                <a href={file.filePath} className="mt"><img className="fileExt"  alt="highlight_Image" src="/images/powerpoint.jpeg"/></a> 
+                                                :""
+                                              }
+                                              {
+                                                (file && (file.fileName.split('.').pop() ==="pdf" ||file.fileName.split('.').pop() === "PDF"))
+                                                ? 
+                                                <a href={file.filePath} className="mt"><img className="fileExt"  alt="highlight_Image" src="/images/pdf.png"/> </a>
+                                                :
+                                                ""
+                                              }
+                                              {
+                                                (file && (file.fileName.split('.').pop() ==="doc" || file.fileName.split('.').pop() === "docx" || file.fileName.split('.').pop() === "DOC" || file.fileName.split('.').pop() ==="DOCX"|| file.fileName.split('.').pop() ==="txt" || file.fileName.split('.').pop() === "TXT")) 
+                                                ? 
+                                                <a href={file.filePath} className="mt"><img className="fileExt"  alt="highlight_Image" src="/images/docs.png"/> </a>
+                                                : ""
+                                              }                                             
+                                            </div>
+                                            <a href={file.filePath} className="mt">
+                                                <p className="formLable"><b>{file.fileName}</b></p>
+                                            </a>
+                                            
                                           </div>
-                                          <a href={file.filePath} className="mt">
-                                              <p className="formLable"><b>{file.fileName}</b></p>
-                                          </a>
-                                          
-                                        </div>
-                                        )
-                                    })
-                                    : 
-                                    null
-                                  }
+                                          )
+                                      })
+                                      : 
+                                      null
+                                    }
+                                  </div>
+                                  
+                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    {
+                                      data.highlight_Image.length > 0? 
+                                        <p className=" formLable"><b>Images:</b></p>
+                                      : null
+                                    }
+                                    {
+                                      data.highlight_Image.length > 0? 
+                                      data.highlight_Image.map((img, i)=> {
+                                        return(
+                                          <div key= {i} className="col-lg-3 col-md-12 col-sm-12 col-xs-12 noPadding"> 
+                                              <img className="caseStudy_Image col-lg-12 col-md-12 col-xs-12 col-sm-12" alt="caseStudy" src={img.imgPath} />
+                                          </div>
+                                          )
+                                      })
+                                      : 
+                                      null
+                                    }
+                                  </div>
                                 </div>
-                                <a className="viewLink" href={"/highlightView/"+data._id}>
-                                    <i className='fas fa fa-chevron-right viewLinkIcon  fa-2x fa-pull-right'></i>
-                                </a>
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                  {
-                                    data.highlight_Image.length > 0? 
-                                      <p className=" formLable"><b>Images:</b></p>
-                                    : null
-                                  }
-                                  {
-                                    data.highlight_Image.length > 0? 
-                                    data.highlight_Image.map((img, i)=> {
-                                      return(
-                                        <div key= {i} className="col-lg-3 col-md-12 col-sm-12 col-xs-12 noPadding"> 
-                                            <img className="caseStudy_Image col-lg-12 col-md-12 col-xs-12 col-sm-12" alt="caseStudy" src={img.imgPath} />
-                                        </div>
-                                        )
-                                    })
-                                    : 
-                                    null
-                                  }
+                                <div className={data.highlight_Image.length && data.highlight_File.length > 0? "col-lg-2 col-md-10 col-sm-12 col-xs-12 viewLinkBox2" : "col-lg-2 col-md-12 col-sm-12 col-xs-12 viewLinkBox" }>
+                                  <a className="viewLink" href={"/highlightView/"+data._id}>
+                                      <i className='fas fa fa-chevron-right viewLinkIcon  fa-2x fa-pull-right'></i>
+                                  </a>
                                 </div>
                               </div>
                             )
@@ -436,6 +441,8 @@ class Highlight extends Component{
                     </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                       <IAssureTable 
+                        tableName = "Highlight"
+                        id = "Highlight"
                         tableHeading={this.state.tableHeading}
                         twoLevelHeader={this.state.twoLevelHeader} 
                         dataCount={this.state.dataCount}

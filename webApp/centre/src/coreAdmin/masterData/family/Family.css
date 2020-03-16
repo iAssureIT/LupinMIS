@@ -1,3 +1,30 @@
+#Family .col1, #Family .col3, #Family .col4 {
+	width: 80px;
+}
+#Family .col2{
+	width: 160px;
+}
+#Family .col6, #Family .col7, #Family .col5{
+	width: 90px;
+}
+#Family .col8, #Family .col9, #Family .col10, #Family .col11, #Family .col12, #Family .col13{
+	width: 90px;
+}
+
+#Family .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#Family .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+
 .rdt .form-control{
 	border-color: #fff;
 	height: 30px !important;

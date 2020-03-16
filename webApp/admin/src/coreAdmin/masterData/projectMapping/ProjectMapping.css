@@ -1,3 +1,31 @@
+#ProjectMapping .col1, #ProjectMapping .col2
+{
+  width: 120px;
+}
+#ProjectMapping .col5, #ProjectMapping .col6 {
+  width: 200px;
+}
+#ProjectMapping .col3
+{
+  width: 220px;
+}
+#ProjectMapping .col4 {
+  width: 220px;
+}
+
+
+#ProjectMapping .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#ProjectMapping .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
 .aweCheckbox {
   padding-left: 20px;
 }

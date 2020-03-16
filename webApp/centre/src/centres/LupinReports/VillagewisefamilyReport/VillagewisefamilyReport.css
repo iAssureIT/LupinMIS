@@ -1,0 +1,38 @@
+#VillagewisefamilyReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#VillagewisefamilyReport .col2{
+	width: 100px !important;
+}
+#VillagewisefamilyReport .col3{
+	white-space: pre-wrap!important;
+	width: 200px !important;
+}
+#VillagewisefamilyReport .col4, #VillagewisefamilyReport .col7{
+	width: 90px !important;
+}
+#VillagewisefamilyReport .col9
+{
+	width: 62px !important;
+} 
+
+#VillagewisefamilyReport .col5{
+	width: 150px !important;
+}
+#VillagewisefamilyReport .col8, #VillagewisefamilyReport .col6{
+	width: 82px !important;
+}
+
+#VillagewisefamilyReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#VillagewisefamilyReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}

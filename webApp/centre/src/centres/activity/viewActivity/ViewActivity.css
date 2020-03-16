@@ -1,3 +1,51 @@
+#activityReport .col1{
+  width: 100px !important;
+  white-space: pre-wrap!important;
+}
+#activityReport .col2{
+  width: 100px !important;
+}
+#activityReport .col3{
+  white-space: pre-wrap!important;
+  width: 100px !important;
+}
+#activityReport .col4{
+  width: 120px !important;
+}
+#activityReport .col7
+{
+  width: 200px !important;
+} 
+#activityReport .col11, #activityReport .col9, #activityReport .col13, #activityReport .col15, #activityReport .col17
+{
+  width: 72px !important;
+} 
+ #activityReport .col5{
+  width: 120px !important;
+}
+
+#activityReport .col6, #activityReport .col20{
+  width: 200px !important;
+}
+#activityReport .col10, #activityReport .col12, #activityReport .col16 {
+  width: 72px !important;
+}
+#activityReport .col8, #activityReport .col14, #activityReport .col18, #activityReport .col19{
+  width: 72px !important;
+}
+#activityReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#activityReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
 .mr30{
 	margin-right: 30px;
 }

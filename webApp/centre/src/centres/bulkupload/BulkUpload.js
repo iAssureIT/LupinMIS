@@ -291,7 +291,7 @@ class BulkUpload extends Component{
 
   }
   render() {
-    console.log("goodrecords",this.props.fileDetails)
+    // console.log("goodrecords",this.props.fileDetails)
   	 const SheetJSFT = [
       "xlsx",
       "xls",

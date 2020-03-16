@@ -1,0 +1,38 @@
+#Villagewisefamily .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#Villagewisefamily .col2{
+	width: 100px !important;
+}
+#Villagewisefamily .col3{
+	white-space: pre-wrap!important;
+	width: 200px !important;
+}
+#Villagewisefamily .col4, #Villagewisefamily .col7{
+	width: 90px !important;
+}
+#Villagewisefamily .col9
+{
+	width: 62px !important;
+} 
+
+#Villagewisefamily .col5{
+	width: 150px !important;
+}
+#Villagewisefamily .col8, #Villagewisefamily .col6{
+	width: 82px !important;
+}
+
+#Villagewisefamily .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#Villagewisefamily .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}

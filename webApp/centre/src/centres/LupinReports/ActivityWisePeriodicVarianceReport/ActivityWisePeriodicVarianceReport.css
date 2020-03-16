@@ -1,0 +1,58 @@
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(2), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+6){
+	background: var(--color1);
+}
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(3), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+9){
+	background: var(--color2);
+}
+ #ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(4), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+19){
+	background: var(--color1);
+}
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(5), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+29){
+	background: var(--color2);
+}
+
+#ActivityWisePeriodicVarianceReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#ActivityWisePeriodicVarianceReport .col2{
+	width: 100px !important;
+}
+#ActivityWisePeriodicVarianceReport .col3{
+	width: 200px !important;
+}
+#ActivityWisePeriodicVarianceReport .col4{
+	width: 50px !important;
+}
+#ActivityWisePeriodicVarianceReport .col13, #ActivityWisePeriodicVarianceReport .col14, #ActivityWisePeriodicVarianceReport .col15, #ActivityWisePeriodicVarianceReport .col25,#ActivityWisePeriodicVarianceReport  .col35{
+	width: 62px !important;
+} 
+
+
+#ActivityWisePeriodicVarianceReport .col16, #ActivityWisePeriodicVarianceReport .col26, #ActivityWisePeriodicVarianceReport  .col36{
+	width: 72px !important;
+}
+#ActivityWisePeriodicVarianceReport .col5, #ActivityWisePeriodicVarianceReport .col6, #ActivityWisePeriodicVarianceReport .col7, #ActivityWisePeriodicVarianceReport .col8, #ActivityWisePeriodicVarianceReport .col9, #ActivityWisePeriodicVarianceReport .col10, #ActivityWisePeriodicVarianceReport .col12, #ActivityWisePeriodicVarianceReport .col11, #ActivityWisePeriodicVarianceReport .col17, #ActivityWisePeriodicVarianceReport .col18 {
+	width: 52px !important;
+}
+#ActivityWisePeriodicVarianceReport .col19, #ActivityWisePeriodicVarianceReport .col20, #ActivityWisePeriodicVarianceReport .col21, #ActivityWisePeriodicVarianceReport .col22, #ActivityWisePeriodicVarianceReport .col23, #ActivityWisePeriodicVarianceReport .col24, #ActivityWisePeriodicVarianceReport .col27, #ActivityWisePeriodicVarianceReport .col28, #ActivityWisePeriodicVarianceReport .col29 {
+	width: 52px !important;
+}
+#ActivityWisePeriodicVarianceReport .col30, #ActivityWisePeriodicVarianceReport .col31, #ActivityWisePeriodicVarianceReport .col32, #ActivityWisePeriodicVarianceReport .col33, #ActivityWisePeriodicVarianceReport .col34, #ActivityWisePeriodicVarianceReport .col37{
+	width: 52px !important;
+}
+#ActivityWisePeriodicVarianceReport .scrollContent {
+  display: block;
+  height: 262px;
+  overflow: auto;
+  width: 100%;
+}
+
+#ActivityWisePeriodicVarianceReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+
+

@@ -872,7 +872,7 @@ class PlanDetails extends Component{
       });
         this.setState({
           availableActivity : sortArray,
-          // activityName      : "-- Select --",
+          activityName      : "-- Select --",
         },()=>{
           console.log("this.state.availableActivity",this.state.availableActivity);
           if(!this.state.editId){
@@ -1302,11 +1302,13 @@ class PlanDetails extends Component{
                           <br/>  
                           <div>
                             {this.state.availableSubActivity ? <hr className=""/> :""}
-                          </div>                     
+                          </div>
                             {
-                              this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                              this.state.availableActivity && this.state.availableSubActivity && this.state.availableSubActivity.length >0?
                               this.state.availableSubActivity.map((data, index)=>{
-                                if(data.subActivityName ){
+                                // console.log('data',this.state.availableSubActivity);
+                                // if(data.subActivityName ){
+                                if(data.subActivityName){
                                   return(
                                     <div className="subActDiv"  key={data._id}>
                                           <div className=" col-lg-2 col-md-2 col-sm-2 col-xs-2 contentDiv  ">
@@ -1431,12 +1433,13 @@ class PlanDetails extends Component{
                                     </div>
                                   );
                                 }else{
-                                  return <label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity. </label>
+                                  return (<label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity. </label>)
                                 }
                               })
                               : 
                               null
-                            }                           
+                            }   
+                                                  
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                            <br/>{
                             this.state.editId ? 

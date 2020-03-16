@@ -1,0 +1,39 @@
+#SectorwiseAnnualPlanSummaryReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#SectorwiseAnnualPlanSummaryReport .col2{
+	width: 100px !important;
+}
+#SectorwiseAnnualPlanSummaryReport .col3{
+	width: 150px !important;
+}
+#SectorwiseAnnualPlanSummaryReport .col4, #SectorwiseAnnualPlanSummaryReport .col7{
+	width: 54px !important;
+}
+ #SectorwiseAnnualPlanSummaryReport .col9, #SectorwiseAnnualPlanSummaryReport .col13{
+	width: 62px !important;
+} 
+
+#SectorwiseAnnualPlanSummaryReport .col11, #SectorwiseAnnualPlanSummaryReport .col6, #SectorwiseAnnualPlanSummaryReport .col5{
+	width: 72px !important;
+}
+#SectorwiseAnnualPlanSummaryReport .col10, #SectorwiseAnnualPlanSummaryReport .col12 {
+	width: 52px !important;
+}
+#SectorwiseAnnualPlanSummaryReport .col8, #SectorwiseAnnualPlanSummaryReport .col14{
+	width: 52px !important;
+}
+#SectorwiseAnnualPlanSummaryReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#SectorwiseAnnualPlanSummaryReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

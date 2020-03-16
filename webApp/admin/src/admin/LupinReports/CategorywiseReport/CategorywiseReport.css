@@ -1,0 +1,35 @@
+#CategorywiseReport .col1{
+	width: 150px !important;
+	white-space: pre-wrap!important;
+}
+#CategorywiseReport .col2{
+	width: 100px !important;
+}
+#CategorywiseReport .col3{
+	white-space: pre-wrap!important;
+	width: 100px !important;
+}
+#CategorywiseReport .col4, #CategorywiseReport .col7{
+	width: 84px !important;
+}
+#CategorywiseReport .col9
+{
+	width: 62px !important;
+} 
+
+#CategorywiseReport .col8, #CategorywiseReport .col6, #CategorywiseReport .col5{
+	width: 100px !important;
+
+}
+#CategorywiseReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#CategorywiseReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}

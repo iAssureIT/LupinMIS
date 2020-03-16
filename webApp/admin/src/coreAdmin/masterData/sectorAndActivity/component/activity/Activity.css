@@ -1,3 +1,21 @@
+#Activity .col1, #Activity .col2 {
+  width: 420px;
+}
+
+
+#Activity .scrollContent {
+  display: block;
+  height: 300px;
+  overflow: auto;
+  width: 100%;
+}
+
+#Activity .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
 .activityWrapText{
 	white-space: pre-wrap !important;
 }

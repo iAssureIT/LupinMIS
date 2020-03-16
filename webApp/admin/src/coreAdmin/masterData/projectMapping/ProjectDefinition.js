@@ -27,8 +27,6 @@ class ProjectMapping extends Component{
         projectName        : "Project Name",
         typeofGoal         : "Framework",
         goalName           : "Goal / Objective",
-        // startDate          : "Start Date",
-        // endDate            : "End Date",
         sectorName         : "Sector",
         activityName       : "Activity", 
         subActivityName    : "Subactivity", 
@@ -734,8 +732,6 @@ class ProjectMapping extends Component{
             projectName               : a.projectName,
             typeofGoal                : a.typeofGoal,
             goalName                  : a.goalName,
-            // startDate                 : a.startDate,
-            // endDate                   : a.endDate,
             sectorName                : a.sectorName,
             activityName              : a.activityName,
             subActivityName           : a.subActivityName,
@@ -1026,6 +1022,8 @@ class ProjectMapping extends Component{
                      
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
+                      tableName = "Project Mapping"
+                      id = "ProjectMapping" 
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.dataCount}

@@ -1,6 +1,0 @@
-#activitywisePeriodicPlanReport tr .colorTable:nth-child(2), #activitywisePeriodicPlanReport tr .srpadd:nth-child(n+6){
-	background: var(--color1);
-}
-#activitywisePeriodicPlanReport tr .colorTable:nth-child(3), #activitywisePeriodicPlanReport tr .srpadd:nth-child(n+11){
-	background: var(--color2);
-}

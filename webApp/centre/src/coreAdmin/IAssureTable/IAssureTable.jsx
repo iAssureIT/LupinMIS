@@ -623,7 +623,7 @@ class IAssureTable extends Component {
 
 	            	{/* ===  Display Table === */}
 	                <div className="table-responsive" id="section-to-screen">
-						<table className="table iAssureITtable-bordered table-striped table-hover" id={this.state.id}>
+						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
 	                        <thead className="tempTableHeader fixedHeader">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
@@ -636,18 +636,24 @@ class IAssureTable extends Component {
 		                            	null									
 									}
 	                            </tr>
-	                            <tr className="tablerow">
-	                            <th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
+	                            <tr className="">
+	                            <th className="umDynamicHeader srpadd text-center">
+									<div className="colSr">Sr.No.</div>
+	                            </th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
 													if(key === 'actions'){
 														return(
-															<th key={i} id={key} className={"umDynamicHeader srpadd  textAlignLeft printhide colorRow-"+this.state.tableObjects.component}>{value}</th>
+															<th key={i} id={key} className={"umDynamicHeader srpadd  textAlignLeft printhide colorRow-"+this.state.tableObjects.component}>
+																<div className={"wrapWord col"+(i+1)}>{value}</div>
+															</th>
 														);	
 													}else{
 														return(
-															<th key={i} id={key}  className={"umDynamicHeader srpadd textAlignLeft "+(this.state.printhideArray[i] ? this.state.printhideArray[i].printhide : "" )}>{value} <br/><span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															<th key={i} id={key}  className={"umDynamicHeader srpadd textAlignLeft "+(this.state.printhideArray[i] ? this.state.printhideArray[i].printhide : "" )}>
+																<div className={"wrapWord col"+(i+1)}>{value}</div>
+															<br/><span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
 													}
 																							
@@ -658,7 +664,7 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                        </thead>
-	                        <tbody className="scrollContent">
+	                        <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""}>
 	                           { this.state.tableData && this.state.tableData.length > 0 ?
 	                           		this.state.tableData.map( 
 										(value, i)=> {
@@ -669,9 +675,13 @@ class IAssureTable extends Component {
 													{
 														((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
 														?
-															<td className="textAlignCenter">{this.state.startRange+1+i}</td>
+															<td className="textAlignCenter">
+																<div className="colSr">{this.state.startRange+1+i}</div>
+															</td>
 														:
-															<td className="textAlignCenter"></td>
+															<td className="textAlignCenter">
+																<div className="colSr"></div>
+															</td>
 													}
 													{
 														Object.entries(value).map( 
@@ -708,7 +718,7 @@ class IAssureTable extends Component {
 																});
 																if(found.length > 0){
 																	if(key !== 'id'){
-																		return(<td className={textAlign} key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
+																		return(<td className={textAlign} key={i}><div className={textAlign+" col"+i } dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
 																	}
 																}
 

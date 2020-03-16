@@ -1,3 +1,38 @@
+#PlanDetails .col1, #PlanDetails .col3, #PlanDetails .col4 {
+	width: 80px;
+}
+#PlanDetails .col5, #PlanDetails .col6, #PlanDetails .col7, #PlanDetails .col21{
+	width: 160px;
+}
+#PlanDetails .col2, #PlanDetails .col17{
+	width: 90px;
+}
+#PlanDetails .col8, #PlanDetails .col9, #PlanDetails .col10, #PlanDetails .col11, #PlanDetails .col12, #PlanDetails .col13{
+	width: 70px;
+}
+#PlanDetails .col14, #PlanDetails .col15, #PlanDetails .col16, #PlanDetails .col20, #PlanDetails .col18, #PlanDetails .col19{
+	width: 70px;
+}
+
+#PlanDetails .col20{
+	width: 70px;
+}
+
+#PlanDetails .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#PlanDetails .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+
+
 .tabNav>li>a {
   border-radius: 0;
   color: #444;

@@ -52,22 +52,22 @@ import SectorList                                 from "../../centres/sectorList
 
 // import report                                     from "../../centres/LupinReports/Report.js";
 // import report1                                    from "../../centres/LupinReports/ActivitywiseAnnualCompletionReport.js";
-import report1                                    from "../../centres/LupinReports/ActivityAnnualreport.js";
-import report2                                    from "../../centres/LupinReports/SectorwiseAnnualCompletionSummaryReport.js";
-import report3                                    from "../../centres/LupinReports/ActivityWisePeriodicVarianceReport.js";
-import report4                                    from "../../centres/LupinReports/SectorwisePeriodicVarianceSummaryReport.js";
-import report5                                    from "../../centres/LupinReports/ActivitywisePeriodicPhysicalVarianceReport.js";
-import report6                                    from "../../centres/LupinReports/GeographicalReport.js";
-import report7                                    from "../../centres/LupinReports/VillagewisefamilyReport.js";
-import report8                                    from "../../centres/LupinReports/CategorywiseReport.js";
-import report9                                    from "../../centres/LupinReports/UpgradedBeneficiaryReport.js";
-import report10                                   from "../../centres/LupinReports/ProjectReport.js";
-import report11                                   from "../../centres/LupinReports/GoalSectorReport.js";
+import report1                                    from "../../centres/LupinReports/ActivityAnnualreport/ActivityAnnualreport.js";
+import report2                                    from "../../centres/LupinReports/SectorwiseAnnualCompletionSummaryReport/SectorwiseAnnualCompletionSummaryReport.js";
+import report3                                    from "../../centres/LupinReports/ActivityWisePeriodicVarianceReport/ActivityWisePeriodicVarianceReport.js";
+import report4                                    from "../../centres/LupinReports/SectorwisePeriodicVarianceSummaryReport/SectorwisePeriodicVarianceSummaryReport.js";
+import report5                                    from "../../centres/LupinReports/ActivitywisePeriodicPhysicalVarianceReport/ActivitywisePeriodicPhysicalVarianceReport.js";
+import report6                                    from "../../centres/LupinReports/GeographicalReport/GeographicalReport.js";
+import report7                                    from "../../centres/LupinReports/VillagewisefamilyReport/VillagewisefamilyReport.js";
+import report8                                    from "../../centres/LupinReports/CategorywiseReport/CategorywiseReport.js";
+import report9                                    from "../../centres/LupinReports/UpgradedBeneficiaryReport/UpgradedBeneficiaryReport.js";
+import report10                                   from "../../centres/LupinReports/GoalSectorReport/ProjectReport.js";
+import report11                                   from "../../centres/LupinReports/GoalSectorReport/GoalSectorReport.js";
 // import report12                                   from "../../centres/LupinReports/EMPReport.js";
-import report13                                   from "../../centres/LupinReports/ActivitywiseAnnualPlanReport.js";
-import report14                                   from "../../centres/LupinReports/ActivitywisePeriodicPlanReport.js";
-import report15                                   from "../../centres/LupinReports/SectorwisePeriodicPlanSummaryReport.js";
-import report16                                   from "../../centres/LupinReports/SectorwiseAnnualPlanSummaryReport.js";
+import report13                                   from "../../centres/LupinReports/ActivitywiseAnnualPlanReport/ActivitywiseAnnualPlanReport.js";
+import report14                                   from "../../centres/LupinReports/ActivitywisePeriodicPlanReport/ActivitywisePeriodicPlanReport.js";
+import report15                                   from "../../centres/LupinReports/SectorwisePeriodicPlanSummaryReport/SectorwisePeriodicPlanSummaryReport.js";
+import report16                                   from "../../centres/LupinReports/SectorwiseAnnualPlanSummaryReport/SectorwiseAnnualPlanSummaryReport.js";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';

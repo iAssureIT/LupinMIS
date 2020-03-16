@@ -1,6 +1,17 @@
 .whiteText{
   color: transparent;
 }
+.umDynamicHeader .coloredIndex{
+  background-color: #f00;
+}
+
+.wrapText{
+  white-space: pre-wrap !important;
+  width: 200px;
+}
+.wrapWord{
+   word-wrap: break-word;
+}
 .tableDwld{
   font-size: 25px;
   border: 1px solid #eee;
@@ -23,7 +34,7 @@
     background-color: #fff;
 }
 .iAssureITtable-bordered{
-  border: 1px solid #4ca75a;
+  /*border: 1px solid #4ca75a;*/
   margin-top: 2%;
 }
 .tempTableHeader{
@@ -107,26 +118,42 @@
   padding: 5px 10px;
   margin-top: 5px;
 }
-/*.scrollContent {
-  display:block;
-  height:200px;
-  width: 100%;
-  overflow:auto;
-}
-.fixedHeader{
-  display:table;
-  table-layout:fixed;
-}*/
 .scrollit{
   overflow:scroll;
     height:100px;
 }
-/*.customTable{
-  position: relative !important;
-  border-collapse: collapse !important; 
+
+.fixedTable .colSr{
+  width: 30px !important;
+}
+
+
+.scrollContent::-webkit-scrollbar-thumb {
+    background-color: #888  ;
+    /*border: 1px solid #aaa;*/
+}
+
+.scrollContent::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+.scrollContent::-webkit-scrollbar-track {
+  background: #fff; 
+    border: 1px solid #4ca75a;
 
 }
-.fixedHeading {
-   position: sticky;
+ 
+/* Handle */
+.scrollContent::-webkit-scrollbar-thumb {
+  background: #aaa; 
+}
 
-}*/
+/* Handle on hover */
+.scrollContent::-webkit-scrollbar-thumb:hover {
+  background: #666; 
+}
+
+.scrollContent::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+}

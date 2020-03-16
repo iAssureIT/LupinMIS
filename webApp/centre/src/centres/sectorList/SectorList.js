@@ -4,6 +4,7 @@ import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import "./SectorList.css";
    
 class SectorList extends Component{
   
@@ -40,6 +41,7 @@ class SectorList extends Component{
       },
       "tableHeading"                : {
         sector              : "Sector",
+        sectorShortName     : "Sector Short Name",
         activityName        : "Activity",
         subActivityName     : "Sub-Activity",
         unit                : "Unit",
@@ -64,9 +66,20 @@ class SectorList extends Component{
     }
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{
-
+      console.log('response',response);
+       var tableData = response.data.map((a, i)=>{
+          return {
+            _id               : a._id,
+            sector            : a.sector,
+            sectorShortName   : a.sectorShortName,
+            activityName      : a.activityName,
+            subActivityName   : a.subActivityName,
+            unit              : a.unit,
+            familyUpgradation : a.familyUpgradation,
+          }
+        })
       this.setState({
-        tableData : response.data
+        tableData : tableData
       });
     })
     .catch(function(error){
@@ -96,6 +109,8 @@ class SectorList extends Component{
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
+                          tableName = "Sector List"
+                          id = "SectorList"
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}

@@ -149,7 +149,6 @@ class ViewActivity extends Component{
           date                       : moment(a.date).format('DD-MM-YYYY'),
           place                      : a.place,
           sectorName                 : a.sectorName,
-          typeofactivity             : a.typeofactivity,
           activityName               : a.activityName,
           subactivityName            : a.subactivityName,
           unit                       : a.unit,
@@ -164,7 +163,6 @@ class ViewActivity extends Component{
           directCC                   : this.addCommas(a.directCC),
           indirectCC                 : this.addCommas(a.indirectCC),
           other                      : this.addCommas(a.other),
-          total                      : this.addCommas(a.total),
           remark                     : a.remark,
         }
       })
@@ -216,6 +214,8 @@ class ViewActivity extends Component{
                  
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <IAssureTable 
+                      tableName = "Activity Report"
+                      id = "activityReport"
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.dataCount}

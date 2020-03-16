@@ -1,3 +1,32 @@
+#SectorMapping .col1
+{
+  width: 150px;
+}
+#SectorMapping .col2 {
+  width: 200px;
+}
+#SectorMapping .col3
+{
+  width: 220px;
+}
+#SectorMapping .col4 {
+  width: 220px;
+}
+
+
+#SectorMapping .scrollContent {
+  display: block;
+  height: 300px;
+  overflow: auto;
+  width: 100%;
+}
+
+#SectorMapping .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
 /*.blockheight{
 	min-height: 200px;
 	max-height: auto;

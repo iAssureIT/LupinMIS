@@ -317,8 +317,18 @@ edit(id){
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{
 
+      var tableData = response.data.map((a, i)=>{
+          return {
+            _id               : a._id,
+            sector            : a.sector,
+            activityName      : a.activityName,
+            subActivityName   : a.subActivityName,
+            unit              : a.unit,
+            familyUpgradation : a.familyUpgradation,
+          }
+        })
       this.setState({
-        tableData : response.data
+        tableData : tableData
       });
     })
     .catch(function(error){
@@ -484,6 +494,8 @@ edit(id){
             }
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                 <IAssureTable 
+                  tableName = "SubActivity"
+                  id = "SubActivity"
                   tableHeading={this.state.tableHeading}
                   twoLevelHeader={this.state.twoLevelHeader} 
                   dataCount={this.state.dataCount}

@@ -1,0 +1,25 @@
+
+#SectorList .col1, #SectorList .col3, #SectorList .col4 {
+	width: 240px;
+}
+#SectorList .col5, #SectorList .col6{
+	width: 100px;
+}
+
+#SectorList .col2{
+	width: 80px;
+}
+
+#SectorList .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#SectorList .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

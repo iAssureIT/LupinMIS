@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+/*import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, withRouter } from "react-router-dom";
 
@@ -117,4 +117,4 @@ function App1() {
   );
 }
 
-export default App1
+export default App1*/

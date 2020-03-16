@@ -995,6 +995,8 @@ class centerDetail extends Component{
                           id = "centerDetail" */}
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
+                          tableName = "Center Details"
+                          id = "CenterDetail"
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}

@@ -1,0 +1,37 @@
+#UpgradedBeneficiaryReport .col1{
+	width: 80px !important;
+	white-space: pre-wrap!important;
+}
+#UpgradedBeneficiaryReport .col2{
+	width: 100px !important;
+}
+#UpgradedBeneficiaryReport .col3{
+	width: 100px !important;
+}
+#UpgradedBeneficiaryReport .col4, #UpgradedBeneficiaryReport .col11, #UpgradedBeneficiaryReport .col12 {
+	width: 72px !important;
+} 
+#UpgradedBeneficiaryReport .col5{
+	width: 200px !important;
+}
+#UpgradedBeneficiaryReport .col6, #UpgradedBeneficiaryReport .col10, #UpgradedBeneficiaryReport .col7,  #UpgradedBeneficiaryReport .col9{
+	width: 120px !important;
+}
+ #UpgradedBeneficiaryReport .col8{
+	width: 140px !important;
+}
+
+
+#UpgradedBeneficiaryReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#UpgradedBeneficiaryReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

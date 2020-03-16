@@ -839,7 +839,6 @@ class Activity extends Component{
           date                       : moment(a.date).format('DD-MM-YYYY'),
           place                      : a.place,
           sectorName                 : a.sectorName,
-          typeofactivity             : a.typeofactivity,
           activityName               : a.activityName,
           subactivityName            : a.subactivityName,
           unit                       : a.unit,
@@ -854,7 +853,6 @@ class Activity extends Component{
           directCC                   : this.addCommas(a.directCC),
           indirectCC                 : this.addCommas(a.indirectCC),
           other                      : this.addCommas(a.other),
-          total                      : this.addCommas(a.total),
           remark                     : a.remark,
         }
       })

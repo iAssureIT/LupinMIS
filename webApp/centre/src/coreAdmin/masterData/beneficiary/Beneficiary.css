@@ -1,3 +1,28 @@
+#Beneficiary .col1, #Beneficiary .col2, #Beneficiary .col4 {
+	width: 100px;
+}
+#Beneficiary .col3, #Beneficiary .col5{
+	width: 150px;
+}
+#Beneficiary .col6, #Beneficiary .col7{
+	width: 90px;
+}
+
+#Beneficiary .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#Beneficiary .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+
+
 .rdt .form-control{
 	border-color: #fff;
 	height: 30px !important;

@@ -1,3 +1,31 @@
+
+#CenterDetail .col3, #CenterDetail .col4, #CenterDetail .col5 {
+  width: 220px;
+}
+#CenterDetail .col1, #CenterDetail .col2{
+  width: 100px;
+  white-space: pre-wrap;
+}
+
+#CenterDetail .col6{
+  width: 80px;
+}
+
+#CenterDetail .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#CenterDetail .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+
+
 .wrapText{
   word-wrap: break-word;
 }

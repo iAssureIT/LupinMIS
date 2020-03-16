@@ -657,7 +657,9 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd text-center colSr">Sr.No.</th>
+	                            <th className="umDynamicHeader srpadd text-center">
+									<div className="colSr">Sr.No.</div>
+	                            </th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
@@ -665,15 +667,15 @@ class IAssureTable extends Component {
 														if (this.state.role !== "viewer") {
 															return(
 																<th key={i} className={"umDynamicHeader srpadd text-center col"+(i+1)}>
-																<div className="wrapText">{value}</div>
+																	<div className={"wrapWord col"+(i+1)}>{value}</div>
 																</th>
 															);	
 															
 														}
 													}else{
 														return(
-															<th key={i} className={"umDynamicHeader srpadd textAlignLeft col"+(i+1)}>
-															<div className="wrapText">{value}</div>
+															<th key={i} className="umDynamicHeader srpadd textAlignLeft">
+															<div className={"wrapWord col"+(i+1)}>{value}</div>
 															 <br/> <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
 													}
@@ -685,7 +687,7 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                        </thead>
-	                        <tbody className="scrollContent">
+	                        <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""}>
 	                           { this.state.tableData && this.state.tableData.length > 0 ?
 	                           		this.state.tableData.map( 
 										(value, i)=> {
@@ -696,9 +698,13 @@ class IAssureTable extends Component {
 													{
 														((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
 														?
-															<td className="textAlignCenter colSr">{this.state.startRange+1+i}</td>
+															<td className="textAlignCenter">
+																<div className="colSr">{this.state.startRange+1+i}</div>
+															</td>
 														:
-															<td className="textAlignCenter colSr"></td>
+															<td className="textAlignCenter">
+																<div className="colSr"></div>
+															</td>
 													}
 													{
 														Object.entries(value).map( 
@@ -737,9 +743,9 @@ class IAssureTable extends Component {
 																	if(key !== 'id'){
 																		// console.log(' value1', value1);
 																		if(value1){
-																			return(<td className={textAlign+" col"+i } key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
+																			return(<td className={textAlign} key={i}><div className={textAlign+" col"+i } dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
 																		}else{
-																			return(<td className={textAlign+" col"+i } key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
+																			return(<td className={textAlign} key={i}><div className={textAlign+" col"+i } dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
 																		}
 																	}
 																}
@@ -791,6 +797,7 @@ class IAssureTable extends Component {
 									:
 									<tr className="trAdmin"><td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+1 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
 								}
+									{console.log('Object.keys(this.state.tableHeading).length+1',Object.keys(this.state.tableHeading).length+1)}
 	                    	</tbody>
 	                    </table>
 	                    <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="header-fixed"></table>

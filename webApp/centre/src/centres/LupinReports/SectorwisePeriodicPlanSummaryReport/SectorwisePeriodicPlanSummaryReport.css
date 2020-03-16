@@ -1,0 +1,51 @@
+#SectorwisePeriodicPlanSummaryReport tr .colorTable:nth-child(2), #SectorwisePeriodicPlanSummaryReport tr .srpadd:nth-child(n+5){
+	background: var(--color1);
+}
+#SectorwisePeriodicPlanSummaryReport tr .colorTable:nth-child(3), #SectorwisePeriodicPlanSummaryReport tr .srpadd:nth-child(n+9){
+	background: var(--color2);
+}
+
+
+#SectorwisePeriodicPlanSummaryReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#SectorwisePeriodicPlanSummaryReport .col2{
+	width: 100px !important;
+}
+#SectorwisePeriodicPlanSummaryReport .col3{
+	width: 150px !important;
+}
+#SectorwisePeriodicPlanSummaryReport .col4, #SectorwisePeriodicPlanSummaryReport .col7{
+	width: 54px !important;
+}
+ #SectorwisePeriodicPlanSummaryReport .col16, #SectorwisePeriodicPlanSummaryReport .col17
+ {
+	width: 62px !important;
+} 
+#SectorwisePeriodicPlanSummaryReport .col10{
+	width: 82px !important;
+}
+
+#SectorwisePeriodicPlanSummaryReport .col6, #SectorwisePeriodicPlanSummaryReport .col9, #SectorwisePeriodicPlanSummaryReport .col5, #SectorwisePeriodicPlanSummaryReport .col15{
+	width: 72px !important;
+}
+#SectorwisePeriodicPlanSummaryReport .col12, #SectorwisePeriodicPlanSummaryReport .col11 {
+	width: 52px !important;
+}
+#SectorwisePeriodicPlanSummaryReport .col13, #SectorwisePeriodicPlanSummaryReport .col8, #SectorwisePeriodicPlanSummaryReport .col14{
+	width: 52px !important;
+}
+#SectorwisePeriodicPlanSummaryReport .scrollContent {
+  display: block;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#SectorwisePeriodicPlanSummaryReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

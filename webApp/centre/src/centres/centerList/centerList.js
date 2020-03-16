@@ -4,6 +4,7 @@ import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import "./centerList.css";
    
 class centerList extends Component{
   
@@ -128,6 +129,8 @@ class centerList extends Component{
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
+                          tableName = "Center Details"
+                          id = "CenterDetail"
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}

@@ -65,7 +65,7 @@ class HighlightView extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                      Case Study View
+                      Highlight View
                     </div>
                     <hr className="hr-head container-fluid row"/>
                     <div className="col-lg-10 col-lg-offset-1 col-md-12 col-xs-12 col-sm-12 mt outerForm">
@@ -78,7 +78,7 @@ class HighlightView extends Component{
                         <p className="formLable">&nbsp; &nbsp; {this.state.highlight  ? this.state.highlight.userName : "-"}</p>
                       </div>
                       <div className="row">
-                        <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 mt"> 
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt"> 
                           <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable"><i className="fa fa-files-o"></i>&nbsp;<b>Files</b></p>
                           {
                             this.state.highlight_File.length > 0? 
@@ -121,7 +121,7 @@ class HighlightView extends Component{
                                 )
                             })
                             : 
-                            null
+                              <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12">No files found.</label>
                           }
                         </div>
                         <hr className="container-fluid"/>
@@ -137,7 +137,7 @@ class HighlightView extends Component{
                                 )
                             })
                             : 
-                            null
+                            <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12">No images found.</label>
                           }
                         </div>
                       </div>

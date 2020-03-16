@@ -1,10 +1,15 @@
 .umDynamicHeader .coloredIndex{
   background-color: #f00;
 }
-
+.noTempData{
+  
+}
 .wrapText{
   white-space: pre-wrap !important;
   width: 200px;
+}
+.wrapWord{
+   word-wrap: break-word;
 }
 .tableDwld{
   font-size: 25px;
@@ -111,7 +116,7 @@
   width: 1000px;
 }*/
 .fixedTable .colSr{
-  width: 80px !important;
+  width: 50px !important;
 }
 
 
@@ -121,7 +126,7 @@
 }
 
 .scrollContent::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 /* Track */

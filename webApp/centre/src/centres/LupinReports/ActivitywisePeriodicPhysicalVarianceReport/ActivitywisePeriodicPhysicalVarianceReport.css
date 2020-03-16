@@ -1,0 +1,52 @@
+
+#ActivityWisePeriodicPhysicalVarianceReport tr .colorTable:nth-child(2), #ActivityWisePeriodicPhysicalVarianceReport tr .srpadd:nth-child(n+6){
+	background: var(--color1);
+}
+ #ActivityWisePeriodicPhysicalVarianceReport tr .colorTable:nth-child(3), #ActivityWisePeriodicPhysicalVarianceReport tr .srpadd:nth-child(n+9){
+	background: var(--color2);
+}
+#ActivityWisePeriodicPhysicalVarianceReport tr .colorTable:nth-child(4), #ActivityWisePeriodicPhysicalVarianceReport tr .srpadd:nth-child(n+12){
+	background: var(--color1);
+}
+#ActivityWisePeriodicPhysicalVarianceReport tr .colorTable:nth-child(5), #ActivityWisePeriodicPhysicalVarianceReport tr .srpadd:nth-child(n+15){
+  /*background: rgba(255, 99, 132, 1);*/
+	background: var(--color2);
+}
+
+#ActivityWisePeriodicPhysicalVarianceReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#ActivityWisePeriodicPhysicalVarianceReport .col2{
+	width: 100px !important;
+}
+#ActivityWisePeriodicPhysicalVarianceReport .col3{
+	width: 200px !important;
+}
+#ActivityWisePeriodicPhysicalVarianceReport .col4{
+	width: 50px !important;
+}
+#ActivityWisePeriodicPhysicalVarianceReport .col13, #ActivityWisePeriodicPhysicalVarianceReport .col14, #ActivityWisePeriodicPhysicalVarianceReport .col16, #ActivityWisePeriodicPhysicalVarianceReport .col25, #ActivityWisePeriodicPhysicalVarianceReport .col35{
+	width: 62px !important;
+} 
+
+#ActivityWisePeriodicPhysicalVarianceReport .col7, #ActivityWisePeriodicPhysicalVarianceReport .col10, #ActivityWisePeriodicPhysicalVarianceReport .col26, #ActivityWisePeriodicPhysicalVarianceReport .col36{
+	width: 72px !important;
+}
+#ActivityWisePeriodicPhysicalVarianceReport .col5, #ActivityWisePeriodicPhysicalVarianceReport .col6,  #ActivityWisePeriodicPhysicalVarianceReport .col8, #ActivityWisePeriodicPhysicalVarianceReport  .col9, #ActivityWisePeriodicPhysicalVarianceReport .col12, #ActivityWisePeriodicPhysicalVarianceReport .col11, #ActivityWisePeriodicPhysicalVarianceReport .col15, #ActivityWisePeriodicPhysicalVarianceReport .col17, #ActivityWisePeriodicPhysicalVarianceReport .col18, #ActivityWisePeriodicPhysicalVarianceReport .col14 {
+	width: 52px !important;
+}
+
+#ActivityWisePeriodicPhysicalVarianceReport .scrollContent {
+  display: block;
+  height: 262px;
+  overflow: auto;
+  width: 100%;
+}
+
+#ActivityWisePeriodicPhysicalVarianceReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
