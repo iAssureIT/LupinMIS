@@ -323,6 +323,7 @@ class PlanDetails extends Component{
     // console.log("subActivityDetails",subActivityDetails);
     var nooffamily = false;
     var subactivityname = '';
+    if($('#planDetails').valid()){
     if(subActivityDetails.length > 0){
       for (var j = 0; j < subActivityDetails.length; j++) {
         if (subActivityDetails[j].noOfFamilies === 0) {
@@ -462,7 +463,7 @@ class PlanDetails extends Component{
         text  : "Please fill atleast one SubActivity Details."
       });
     }
-   
+   }
           
   }
   Update(event){    
@@ -565,6 +566,10 @@ class PlanDetails extends Component{
       if (!fields["activityName"]) {
         formIsValid = false;
         errors["activityName"] = "This field is required.";
+      }       
+      if (!fields["projectName"]) {
+        formIsValid = false;
+        errors["projectName"] = "This field is required.";
       }  
      /* if (!fields["year"]) {
         formIsValid = false;
@@ -771,6 +776,33 @@ class PlanDetails extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     });
+
+    $("#planDetails").validate({
+      rules: {
+        sectorName: {
+          required: true,
+        },  
+        activityName: {
+          required: true,
+        },  
+        projectName: {
+          required: true,
+        },  
+
+     
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") === "sectorName"){
+          error.insertAfter("#sectorName");
+        }
+        if (element.attr("name") === "activityName"){
+          error.insertAfter("#activityName");
+        }
+        if (element.attr("name") === "projectName"){
+          error.insertAfter("#projectName");
+        }
+      }
+    });
   }
 
   handleChange(event){
@@ -872,7 +904,7 @@ class PlanDetails extends Component{
       });
         this.setState({
           availableActivity : sortArray,
-          activityName      : "-- Select --",
+          // activityName      : "-- Select --",
         },()=>{
           console.log("this.state.availableActivity",this.state.availableActivity);
           if(!this.state.editId){
@@ -1102,6 +1134,7 @@ class PlanDetails extends Component{
         sectorName : '-- Select --',
         subActivityName : "-- Select --",
         activityName    : '-- Select --',
+        availableSubActivity : [],
       },()=>{
         // console.log("this.state.type",this.state.type)
 
@@ -1158,333 +1191,334 @@ class PlanDetails extends Component{
                     <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualplan">Manual</a></li>
                     <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkplan">Bulk Upload</a></li>
                   </ul> 
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt">                    
-                    <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 boxHeight">
-                      <label className="formLable">Plan</label>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
-                        <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
-                          <option disabled="disabled" selected="true">-- Select Plan --</option>
-                         {this.state.months.map((data,index) =>
-                          <option key={index}  value={data} >{data}</option>
-                          )}
-                          
-                        </select>
+                  <form className="" id="planDetails">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt">                    
+                      <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 boxHeight">
+                        <label className="formLable">Plan</label>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
+                          <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
+                            <option disabled="disabled" selected="true">-- Select Plan --</option>
+                           {this.state.months.map((data,index) =>
+                            <option key={index}  value={data} >{data}</option>
+                            )}
+                            
+                          </select>
 
+                        </div>
+                        <div className="errorMsg">{this.state.errors.month}</div>
                       </div>
-                      <div className="errorMsg">{this.state.errors.month}</div>
-                    </div>
-                    <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 zeroIndex boxHeight">
-                       <label className="formLable">Year</label>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                        <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
-                          <option disabled="disabled" selected="true">-- Select Year --</option>
-                         {
-                          this.state.years.map((data, i)=>{
-                            return <option key={i}>{data}</option>
-                          })
-                         }
-                        </select>
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 zeroIndex boxHeight">
+                         <label className="formLable">Year</label>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                          <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
+                            <option disabled="disabled" selected="true">-- Select Year --</option>
+                           {
+                            this.state.years.map((data, i)=>{
+                              return <option key={i}>{data}</option>
+                            })
+                           }
+                          </select>
+                        </div>
+                        <div className="errorMsg">{this.state.errors.year}</div>
                       </div>
-                      <div className="errorMsg">{this.state.errors.year}</div>
-                    </div>
-                    <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
-                      <div className="" id="projectCategoryType" >
-                        <label className=" formLable">Category Type<span className="asterix">*</span></label>
-                        {this.state.type===true ?
+                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
+                        <div className="" id="projectCategoryType" >
+                          <label className=" formLable">Category Type<span className="asterix">*</span></label>
+                          {this.state.type===true ?
 
-                         <div className=" switch" onClick={this.handleToggleP.bind(this)} >
-                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
-                            <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
-                            <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                            <span className="switch-selection"></span>
-                          </div>
-                          :
-                           <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggleP.bind(this)} >
-                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
-                            <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
-                            <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                            <span className="switch-selection" ></span>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                    {
-                      this.state.projectCategoryType ==="Project Fund" ? 
-                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
-                          <label className="formLable">Project Name</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectProjectName.bind(this)} >
-                                <option className="hidden" >-- Select --</option>
-                                {
-                                  this.state.availableProjects && this.state.availableProjects.length > 0  ? 
-                                  this.state.availableProjects.map((data, index)=>{
-                                    return(
-                                      <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                }  
-                              </select>
+                           <div className=" switch" onClick={this.handleToggleP.bind(this)} >
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
+                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
+                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                              <span className="switch-selection"></span>
                             </div>
-                            <div className="errorMsg">{this.state.errors.block}</div>
+                            :
+                             <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggleP.bind(this)} >
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
+                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                              <span className="switch-selection" ></span>
+                            </div>
+                          }
                         </div>
-                      : ""
-                    }   
-                    
-                  </div> 
-                  <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                      <div id="manualplan"  className="tab-pane fade in active ">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt"> 
-                          <div className="AnnualHeadCont col-lg-8">
-                              <div className="annualHead">
-                              {
-                                this.state.month==="--Quarter 1--"
-                                  ?
-                                    <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
-                                  :
-                                    <h5 defaultValue="Annual Plan">{this.state.month === "Annual Plan" ? "Annual Plan": "Monthly Plan" || this.state.month !== "Annual Plan" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
-                                    // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
-                                }
+                      </div>
+                      {
+                        this.state.projectCategoryType ==="Project Fund" ? 
+                          <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
+                            <label className="formLable">Project Name</label>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectProjectName.bind(this)} >
+                                  <option className="hidden" >-- Select --</option>
+                                  {
+                                    this.state.availableProjects && this.state.availableProjects.length > 0  ? 
+                                    this.state.availableProjects.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }  
+                                </select>
                               </div>
+                              <div className="errorMsg">{this.state.errors.projectName}</div>
                           </div>
-                  
-                          <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
-                              <button type="button" className="btn addBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick={this.toglehidden.bind(this)}>Add Plan</button>
-                          </div> 
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
-                        <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt outerForm"  style={hidden}>
-                            <div className=" col-lg-12 col-sm-12 col-xs-12 NOpadding ">                
-                              <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                                <label className="formLable">Sector</label><span className="asterix">*</span>
-                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
-                                  <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
-                                    <option disabled="disabled" selected="true">-- Select --</option>
-                                    {
-                                      this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                      this.state.availableSectors.map((data, index)=>{
-                                        return(
-                                          <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                        );
+                        : ""
+                      }  
+                    </div> 
+                    <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                        <div id="manualplan"  className="tab-pane fade in active ">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt"> 
+                            <div className="AnnualHeadCont col-lg-8 col-md-8 col-sm-12 col-xs-12 NOpadding">
+                                <div className="annualHead">
+                                {
+                                  this.state.month==="--Quarter 1--"
+                                    ?
+                                      <h5>Quarterly Plan for April, May & June{this.state.year !=="-- Select Year --" ? " - "+this.state.year : null}</h5> 
+                                    :
+                                      <h5 defaultValue="Annual Plan">{this.state.month === "Annual Plan" ? "Annual Plan": "Monthly Plan" || this.state.month !== "Annual Plan" ? "Monthly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                                      // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                                  }
+                                </div>
+                            </div>
+                    
+                            <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
+                                <button type="button" className="btn addBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick={this.toglehidden.bind(this)}>Add Plan</button>
+                            </div> 
+                          </div>
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                          <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt outerForm"  style={hidden}>
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 NOpadding ">                
+                                <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
+                                  <label className="formLable">Sector</label><span className="asterix">*</span>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
+                                    <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
+                                      <option disabled="disabled" selected="true">-- Select --</option>
+                                      {
+                                        this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                        this.state.availableSectors.map((data, index)=>{
+                                          return(
+                                            <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.sectorName}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
+                                  <label className="formLable">Activity</label><span className="asterix">*</span>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
+                                    <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
+                                      <option disabled="disabled" selected="true">-- Select --</option>
+                                      {
+                                      this.state.availableActivity && this.state.availableActivity.length >0 ?
+                                      this.state.availableActivity.map((data, index)=>{
+                                        if(data.activityName ){
+                                          return(
+                                            <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                          );
+                                        }
                                       })
                                       :
                                       null
                                     }
-                                  </select>
-                                </div>
-                                <div className="errorMsg">{this.state.errors.sectorName}</div>
-                              </div>
-                              <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
-                                <label className="formLable">Activity</label><span className="asterix">*</span>
-                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
-                                  <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
-                                    <option disabled="disabled" selected="true">-- Select --</option>
-                                    {
-                                    this.state.availableActivity && this.state.availableActivity.length >0 ?
-                                    this.state.availableActivity.map((data, index)=>{
-                                      if(data.activityName ){
-                                        return(
-                                          <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
-                                        );
-                                      }
-                                    })
-                                    :
-                                    null
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.activityName}</div>
+                                </div>                  
+                              </div> 
+                            <br/>  
+                            <div>
+                              {this.state.availableSubActivity ? <hr className=""/> :""}
+                            </div>
+                              {
+                                this.state.availableActivity && this.state.availableSubActivity && this.state.availableSubActivity.length >0?
+                                this.state.availableSubActivity.map((data, index)=>{
+                                  // console.log('data',this.state.availableSubActivity);
+                                  // if(data.subActivityName ){
+                                  if(data.subActivityName){
+                                    return(
+                                      <div className="subActDiv"  key={data._id}>
+                                            <div className=" col-lg-2 col-md-2 col-sm-2 col-xs-2 contentDiv  ">
+                                              <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
+                                              <label className="formLable visibilityHidden">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
+                                            </div>
+                                            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 NOpadding">
+                                              <div className="row">
+                                                <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
+                                                  <label className="formLable head">Sub-Activity Details</label>
+                                                </div>
+                                              </div>
+                                             
+                                              <div className="row ">
+                                                <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                  <label className="formLable">Physical Units</label>
+                                                  <div className="input-group inputBox-main " id={"physicalUnit-"+index} >
+                                                    <input type="number" min="0" className="form-control inputBox nameParts" name={"physicalUnit-"+index} placeholder="" value={data.physicalUnit} onChange={this.handlesubactivityChange}/>
+                                                    <span className="input-group-addon inputAddonforphysicalunit" title={data.unit}>{data.unit.length>9?data.unit.substr(0,3)+'...':data.unit}</span>
+                                                  </div>{/*{console.log("state",this.state)}*/}
+                                                </div>
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                  <label className="formLable">Unit Cost</label>
+                                                  <div className=" input-group inputBox-main" id={"unitCost-"+index} >
+                                                    <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                    <input type="text"  min="0" className="form-control inputBox nameParts" name={"unitCost-"+index} placeholder="" value={data.unitCost} onChange={this.handlesubactivityChange}/>
+                                                  </div>
+                                                </div>  
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                  <label className="formLable">Total Cost</label>
+                                                  <div className="input-group inputBox-main" id={"totalBudget-"+index} >                                         
+                                                    <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                    <input type="number"  min="0" className="form-control inputBox formLable " name={"totalBudget-"+index} disabled value={(parseFloat(data.totalBudget)).toFixed(2)}/>
+                                                  </div>
+                                                </div>  
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
+                                                  <label className="formLable">No.of Beneficiaries</label>
+                                                  <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+index} >
+                                                    <input type="number"  min="0" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+index} placeholder="" value={data.noOfBeneficiaries} onChange={this.handlesubactivityChange}/>                              
+                                                  </div>
+                                                </div> 
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
+                                                  <label className="formLable">No.of Families</label>
+                                                  <div className=" input-group inputBox-main" id={"noOfFamilies-"+index} >
+                                                    <input type="number"  min="0" className="form-control inputBox nameParts" name={"noOfFamilies-"+index} placeholder="" value={data.noOfFamilies} onChange={this.handlesubactivityChange}/>                              
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div className="row">
+                                                <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields   ">
+                                                  <label className="formLable head">Sources of Fund</label>
+                                                </div>
+                                              </div>
+                                              <div className="row">
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                  <label className="formLable">LHWRF</label>
+                                                  <div className=" input-group inputBox-main" id={"LHWRF-"+index} >
+                                                    <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                    <input type="number"  min="0" className="form-control inputBox nameParts" name={"LHWRF-"+index} placeholder="" value={data.LHWRF} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"LHWRF")}/>
+                                                  </div>
+                                                </div>
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                  <label className="formLable">NABARD</label>
+                                                  <div className=" input-group inputBox-main" id={"NABARD-"+index} >
+                                                    <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                    <input type="number"  min="0" className="form-control inputBox nameParts" name={"NABARD-"+index} placeholder="" value={data.NABARD} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"NABARD")}/>
+                                                  </div>
+                                                </div>
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                  <label className="formLable">Bank Loan</label>
+                                                  <div className=" input-group inputBox-main" id={"bankLoan-"+index}>
+                                                    <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                    <input type="number"  min="0" className="form-control inputBox nameParts" name={"bankLoan-"+index} placeholder="" value={data.bankLoan} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"bankLoan")}/>
+                                                  </div>
+                                                </div>
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                  <label className="formLable">Govt. Schemes</label>
+                                                  <div className=" input-group inputBox-main" id={"govtscheme-"+index} >
+                                                    <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                    <input type="number"  min="0" className="form-control inputBox nameParts" name={"govtscheme-"+index} placeholder="" value={data.govtscheme} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"govtscheme")}/>
+                                                  </div>
+                                                </div>
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                  <label className="formLable">Direct Com. Cont.</label>
+                                                  <div className=" input-group inputBox-main" id={"directCC-"+index} >
+                                                    <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                    <input type="number"  min="0" className="form-control inputBox nameParts" name={"directCC-"+index} placeholder="" value={data.directCC} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"directCC")}/>
+                                                  </div>
+                                                </div>
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                  <label className="formLable">Indire. Com. Cont.</label>
+                                                  <div className=" input-group inputBox-main" id={"indirectCC-"+index} >
+                                                    <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                    <input type="number"  min="0" className="form-control inputBox nameParts" name={"indirectCC-"+index} placeholder="" value={data.indirectCC} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"indirectCC")}/>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div className=" row">
+                                                <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
+                                                  <label className="formLable">Other</label>
+                                                  <div className=" input-group inputBox-main" id={"other-"+index} >
+                                                    <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
+                                                    <input type="number"  min="0" className="form-control inputBox nameParts" name={"other-"+index} placeholder="" value={data.other} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"other")}/>
+                                                  </div>
+                                                </div>
+                                                <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
+                                                  <label className="formLable">Remark</label>
+                                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+index} >
+                                                    <input type="text" className="form-control inputBox nameParts" name={"remark-"+index} placeholder="Remark" value={data.remark} onChange={this.handlesubactivityChange} />
+                                                  </div>
+                                                </div>
+                                              </div>  
+                                              <div className="row">                            
+                                                <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
+                                                  <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
+                                                    <label className="formLable"></label>
+                                                    <div className="errorMsg">{this.state.errors.remark}</div>
+                                                  </div>
+                                                </div> 
+                                              </div><br/>
+                                            </div>  <br/>
+                                      </div>
+                                    );
+                                  }else{
+                                    return (<label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity. </label>)
                                   }
-                                  </select>
-                                </div>
-                                <div className="errorMsg">{this.state.errors.activityName}</div>
-                              </div>                  
-                            </div> 
-                          <br/>  
-                          <div>
-                            {this.state.availableSubActivity ? <hr className=""/> :""}
+                                })
+                                : 
+                                null
+                              }   
+                                                    
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                             <br/>{
+                              this.state.editId ? 
+                              <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
+                              :
+                              <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
+                            }
+                            </div>                        
+                          </form>
                           </div>
-                            {
-                              this.state.availableActivity && this.state.availableSubActivity && this.state.availableSubActivity.length >0?
-                              this.state.availableSubActivity.map((data, index)=>{
-                                // console.log('data',this.state.availableSubActivity);
-                                // if(data.subActivityName ){
-                                if(data.subActivityName){
-                                  return(
-                                    <div className="subActDiv"  key={data._id}>
-                                          <div className=" col-lg-2 col-md-2 col-sm-2 col-xs-2 contentDiv  ">
-                                            <label className="head" value={data.subActivityName+'|'+data._id} id={"subActivityName-"+data._id}>{data.subActivityName} </label><br/>
-                                            <label className="formLable visibilityHidden">Unit :<span id={"unit-"+data._id}>{data.unit}</span></label>
-                                          </div>
-                                          <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 NOpadding">
-                                            <div className="row">
-                                              <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields  ">
-                                                <label className="formLable head">Sub-Activity Details</label>
-                                              </div>
-                                            </div>
-                                           
-                                            <div className="row ">
-                                              <div className="col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                                <label className="formLable">Physical Units</label>
-                                                <div className="input-group inputBox-main " id={"physicalUnit-"+index} >
-                                                  <input type="number" min="0" className="form-control inputBox nameParts" name={"physicalUnit-"+index} placeholder="" value={data.physicalUnit} onChange={this.handlesubactivityChange}/>
-                                                  <span className="input-group-addon inputAddonforphysicalunit" title={data.unit}>{data.unit.length>9?data.unit.substr(0,3)+'...':data.unit}</span>
-                                                </div>{/*{console.log("state",this.state)}*/}
-                                              </div>
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                                <label className="formLable">Unit Cost</label>
-                                                <div className=" input-group inputBox-main" id={"unitCost-"+index} >
-                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="text"  min="0" className="form-control inputBox nameParts" name={"unitCost-"+index} placeholder="" value={data.unitCost} onChange={this.handlesubactivityChange}/>
-                                                </div>
-                                              </div>  
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                                <label className="formLable">Total Cost</label>
-                                                <div className="input-group inputBox-main" id={"totalBudget-"+index} >                                         
-                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="number"  min="0" className="form-control inputBox formLable " name={"totalBudget-"+index} disabled value={(parseFloat(data.totalBudget)).toFixed(2)}/>
-                                                </div>
-                                              </div>  
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields subData">
-                                                <label className="formLable">No.of Beneficiaries</label>
-                                                <div className=" input-group inputBox-main" id={"noOfBeneficiaries-"+index} >
-                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"noOfBeneficiaries-"+index} placeholder="" value={data.noOfBeneficiaries} onChange={this.handlesubactivityChange}/>                              
-                                                </div>
-                                              </div> 
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 Activityfields ">
-                                                <label className="formLable">No.of Families</label>
-                                                <div className=" input-group inputBox-main" id={"noOfFamilies-"+index} >
-                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"noOfFamilies-"+index} placeholder="" value={data.noOfFamilies} onChange={this.handlesubactivityChange}/>                              
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div className="row">
-                                              <div className="col-lg-3 col-md-1 col-sm-6 col-xs-12 Activityfields   ">
-                                                <label className="formLable head">Sources of Fund</label>
-                                              </div>
-                                            </div>
-                                            <div className="row">
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                                <label className="formLable">LHWRF</label>
-                                                <div className=" input-group inputBox-main" id={"LHWRF-"+index} >
-                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"LHWRF-"+index} placeholder="" value={data.LHWRF} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"LHWRF")}/>
-                                                </div>
-                                              </div>
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                                <label className="formLable">NABARD</label>
-                                                <div className=" input-group inputBox-main" id={"NABARD-"+index} >
-                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"NABARD-"+index} placeholder="" value={data.NABARD} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"NABARD")}/>
-                                                </div>
-                                              </div>
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                                <label className="formLable">Bank Loan</label>
-                                                <div className=" input-group inputBox-main" id={"bankLoan-"+index}>
-                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"bankLoan-"+index} placeholder="" value={data.bankLoan} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"bankLoan")}/>
-                                                </div>
-                                              </div>
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                                <label className="formLable">Govt. Schemes</label>
-                                                <div className=" input-group inputBox-main" id={"govtscheme-"+index} >
-                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"govtscheme-"+index} placeholder="" value={data.govtscheme} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"govtscheme")}/>
-                                                </div>
-                                              </div>
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                                <label className="formLable">Direct Com. Cont.</label>
-                                                <div className=" input-group inputBox-main" id={"directCC-"+index} >
-                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"directCC-"+index} placeholder="" value={data.directCC} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"directCC")}/>
-                                                </div>
-                                              </div>
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                                <label className="formLable">Indire. Com. Cont.</label>
-                                                <div className=" input-group inputBox-main" id={"indirectCC-"+index} >
-                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"indirectCC-"+index} placeholder="" value={data.indirectCC} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"indirectCC")}/>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div className=" row">
-                                              <div className=" col-lg-2 col-md-1 col-sm-6 col-xs-12 planfields">
-                                                <label className="formLable">Other</label>
-                                                <div className=" input-group inputBox-main" id={"other-"+index} >
-                                                  <span className="input-group-addon inputAddon"><i className="fa fa-inr"></i></span>
-                                                  <input type="number"  min="0" className="form-control inputBox nameParts" name={"other-"+index} placeholder="" value={data.other} onChange={this.handlesubactivityChange} onBlur={()=> this.remainTotal(index,"other")}/>
-                                                </div>
-                                              </div>
-                                              <div className=" col-lg-10 col-md-10 col-sm-12 col-xs-12 planfields">
-                                                <label className="formLable">Remark</label>
-                                                <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id={"remark-"+index} >
-                                                  <input type="text" className="form-control inputBox nameParts" name={"remark-"+index} placeholder="Remark" value={data.remark} onChange={this.handlesubactivityChange} />
-                                                </div>
-                                              </div>
-                                            </div>  
-                                            <div className="row">                            
-                                              <div className=" col-lg-10 col-lg-offset-2 col-sm-12 col-xs-12  padmi3">
-                                                <div className=" col-lg-12 col-md-6 col-sm-6 col-xs-12 padmi3 ">
-                                                  <label className="formLable"></label>
-                                                  <div className="errorMsg">{this.state.errors.remark}</div>
-                                                </div>
-                                              </div> 
-                                            </div><br/>
-                                          </div>  <br/>
-                                    </div>
-                                  );
-                                }else{
-                                  return (<label>Please check either all sub Activity Details are submitted or you don't have sub activity for activity. </label>)
-                                }
-                              })
-                              : 
-                              null
-                            }   
-                                                  
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                           <br/>{
-                            this.state.editId ? 
-                            <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
-                            :
-                            <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
-                          }
-                          </div>                        
-                        </form>
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  formLable " >
+                            <div className="row">  
+                             <IAssureTable 
+                                tableName = "Plan Details"
+                                id = "PlanDetails"
+                                tableHeading={this.state.tableHeading}
+                                twoLevelHeader={this.state.twoLevelHeader} 
+                                dataCount={this.state.dataCount}
+                                tableData={this.state.tableData}
+                                getData={this.getData.bind(this)}
+                                tableObjects={this.state.tableObjects}
+                                getSearchText={this.getSearchText.bind(this)}
+                              />
+                            </div>
+                          </div> 
                         </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  formLable " >
-                          <div className="row">  
-                           <IAssureTable 
-                              tableName = "Plan Details"
-                              id = "PlanDetails"
-                              tableHeading={this.state.tableHeading}
-                              twoLevelHeader={this.state.twoLevelHeader} 
-                              dataCount={this.state.dataCount}
-                              tableData={this.state.tableData}
-                              getData={this.getData.bind(this)}
-                              tableObjects={this.state.tableObjects}
-                              getSearchText={this.getSearchText.bind(this)}
-                            />
+                        <div id="bulkplan" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                            <BulkUpload url={this.state.month === "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
+                            data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,
+                            "month":this.state.month,"year":this.state.year, "projectCategoryType" : this.state.projectCategoryType, "projectName":this.state.projectCategoryType==="LHWRF Grant" ? "-" : this.state.projectName}} 
+                            uploadedData={this.uploadedData} 
+                            fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
+                            fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
+                            getFileDetails={this.getFileDetails}
+                            fileDetails={this.state.fileDetails}
+                            goodRecordsHeading ={this.state.goodRecordsHeading}
+                            failedtableHeading={this.state.failedtableHeading}
+                            failedRecordsTable ={this.state.failedRecordsTable}
+                            failedRecordsCount={this.state.failedRecordsCount}
+                            goodRecordsTable={this.state.goodRecordsTable}
+                            goodDataCount={this.state.goodDataCount}/>
                           </div>
-                        </div> 
-                      </div>
-                      <div id="bulkplan" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                          <BulkUpload url={this.state.month === "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
-                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID,
-                          "month":this.state.month,"year":this.state.year, "projectCategoryType" : this.state.projectCategoryType, "projectName":this.state.projectCategoryType==="LHWRF Grant" ? "-" : this.state.projectName}} 
-                          uploadedData={this.uploadedData} 
-                          fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
-                          fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
-                          getFileDetails={this.getFileDetails}
-                          fileDetails={this.state.fileDetails}
-                          goodRecordsHeading ={this.state.goodRecordsHeading}
-                          failedtableHeading={this.state.failedtableHeading}
-                          failedRecordsTable ={this.state.failedRecordsTable}
-                          failedRecordsCount={this.state.failedRecordsCount}
-                          goodRecordsTable={this.state.goodRecordsTable}
-                          goodDataCount={this.state.goodDataCount}/>
                         </div>
-                      </div>
-                  </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             </section>
