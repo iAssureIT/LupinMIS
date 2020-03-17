@@ -66,29 +66,30 @@ class FilewiseBeneficiaryList extends Component{
     }
   render() {
     return (
-      <div className="container-fluid">
+      <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div className="row">
-          <div className="formWrapper">
-             <section className="content">
-              <div className="">
-                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
-                  <div className="row">
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                      <div className="col-lg-10 col-lg-offset-1  col-md-10 col-md-offset-1 col-xs-12 col-sm-12 actDetails">
-                        <h5>Filewise Details</h5>
-                        <IAssureTable 
-                            tableHeading={this.state.tableHeading}
-                            twoLevelHeader={this.state.twoLevelHeader} 
-                            dataCount={this.state.dataCount}
-                            tableData={this.state.tableData}
-                            getData={this.getData.bind(this)}
-                            tableObjects={this.state.tableObjects}
-                          />
-                      </div>
-                    </div>
-                    </div>
+          <div className="formWrapper"> 
+            <section className="content">
+              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
+                <div className="row">
+                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                      Filewise Beneficiaries Details
                     </div>
                   </div>
+                  <hr className="hr-head"/>
+                  <div className="col-lg-10 col-lg-offset-1 col-md-12 col-xs-12 col-sm-12">
+                    <IAssureTable 
+                        tableHeading={this.state.tableHeading}
+                        twoLevelHeader={this.state.twoLevelHeader} 
+                        dataCount={this.state.dataCount}
+                        tableData={this.state.tableData}
+                        getData={this.getData.bind(this)}
+                        tableObjects={this.state.tableObjects}
+                      />
+                  </div>
+                </div>
+              </div>
             </section>
           </div>
         </div>

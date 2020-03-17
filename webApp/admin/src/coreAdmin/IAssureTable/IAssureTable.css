@@ -9,7 +9,7 @@
   width: 200px;
 }
 .wrapWord{
-   word-wrap: break-word;
+   /*word-wrap: break-word;*/
 }
 .tableDwld{
   font-size: 25px;
@@ -121,7 +121,7 @@
 
 
 .scrollContent::-webkit-scrollbar-thumb {
-    background-color: #888  ;
+    background-color: #666  ;
     /*border: 1px solid #aaa;*/
 }
 
@@ -138,7 +138,7 @@
  
 /* Handle */
 .scrollContent::-webkit-scrollbar-thumb {
-  background: #aaa; 
+  background: #666; 
 }
 
 /* Handle on hover */

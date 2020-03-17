@@ -797,7 +797,6 @@ class IAssureTable extends Component {
 									:
 									<tr className="trAdmin"><td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+1 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
 								}
-									{console.log('Object.keys(this.state.tableHeading).length+1',Object.keys(this.state.tableHeading).length+1)}
 	                    	</tbody>
 	                    </table>
 	                    <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="header-fixed"></table>

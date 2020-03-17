@@ -265,7 +265,7 @@ class typeOfCenter extends Component{
 
                       }
                     </form>    
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 ">
                       <IAssureTable 
                         tableHeading={this.state.tableHeading}
                         dataCount={this.state.dataCount}

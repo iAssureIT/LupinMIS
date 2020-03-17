@@ -1,11 +1,11 @@
 #Activity .col1, #Activity .col2 {
-  width: 420px;
+  width: 318px;
 }
 
 
 #Activity .scrollContent {
   display: block;
-  height: 300px;
+  height: 350px;
   overflow: auto;
   width: 100%;
 }

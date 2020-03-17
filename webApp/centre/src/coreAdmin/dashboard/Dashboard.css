@@ -148,13 +148,14 @@
 
 
 .box2{
-   /* height: 305px;
+   /* 
     background-color: #ffffff;
     border: 1px solid #eee;
      -webkit-box-shadow: 0 0 10px #eee; 
     box-shadow: 0 0 10px #eee;  
     border-radius: 5px;
     */
+    height: 380px;
     position: relative;
     border-radius: 3px;
     background: #ffffff;

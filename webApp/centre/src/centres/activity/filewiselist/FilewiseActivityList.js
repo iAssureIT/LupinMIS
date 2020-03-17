@@ -73,11 +73,11 @@ class FilewiseActivityList extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                        Filewise Details
+                        Filewise Activity Details
                       </div>
                   </div>
                   <hr className="hr-head"/>
-                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                  <div className="col-lg-10 col-lg-offset-1 col-md-12 col-xs-12 col-sm-12">
                     <IAssureTable 
                         tableHeading={this.state.tableHeading}
                         twoLevelHeader={this.state.twoLevelHeader} 

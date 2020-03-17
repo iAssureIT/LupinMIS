@@ -192,9 +192,9 @@ export default class PieChart extends Component {
             tableObjects={this.state.tableObjects}
             />
         </div>
-        <Pie height={150} 
+        <Pie height={140} 
           data={this.state.data} 
-          height="150" 
+          height="140" 
           options={
             {
               plugins: {

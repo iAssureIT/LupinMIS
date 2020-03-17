@@ -541,7 +541,7 @@ export default class Dashboard extends Component{
                         </div>
                       </div>
                       <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                        <div className="box2">
+                        <div className="box2 graphBox">
                           <div className="box-header with-border">
                             <h3 className="box-title">Sector wise Budget (In Lakhs)</h3>
                             <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">

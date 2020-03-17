@@ -6,6 +6,26 @@ import IAssureTable      from "../../IAssureTable/IAssureTable.jsx";
 import Loader            from "../../../common/Loader.js";
 import 'chartjs-plugin-labels';
 
+const options = {
+    scales: {
+      xAxes: [{
+        stacked: true,
+      }],
+      yAxes: [{
+        stacked: true,
+          }], 
+    },
+    plugins: {
+      labels: [{
+        render: 'value',
+        showActualPercentages: false,
+        fontSize: 9,
+        // fontColor: '#fff',
+      }]
+    },
+    responsive: true,
+    maintainAspectRatio: false     
+};
 
 export default class MonthwiseExpenditure extends Component{
   constructor(props){
@@ -173,7 +193,9 @@ export default class MonthwiseExpenditure extends Component{
             tableObjects={this.state.tableObjects}
             />
         </div>
-       <Line data={this.state.data} height={190}  options={{responsive: true,stacked: true,}} />
+       <Line data={this.state.data} height={300}  options={options} />
+        
+      {/* <Line data={this.state.data} height={300}   options={{responsive: true,stacked: true,}} />*/}
       </div>
     );
   }

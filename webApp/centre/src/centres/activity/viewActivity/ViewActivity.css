@@ -35,7 +35,7 @@
 }
 #activityReport .scrollContent {
   display: block;
-  height: 250px;
+  height: 350px;
   overflow: auto;
   width: 100%;
 }

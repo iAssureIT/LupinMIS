@@ -11,6 +11,7 @@ import MonthwiseExpenditure      from './chart1/MonthwiseExpenditure.js'
 import BarChart                  from './chart1/BarChart.js';
 import PieChart                  from './chart1/PieChart.js';
 import CenterWisePieChart        from './chart1/CenterWisePieChart.js';
+import Loader                       from "../../common/Loader.js";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -204,10 +205,10 @@ export default class Dashboard extends Component{
     if(startDate && endDate){
         axios.get('/api/report/center/'+startDate+'/'+endDate+'/all/all/all/all/all')
         .then((response)=>{
+          console.log('centerwiseData',response)
       /*******************************Dashboard Status Data***************************/
         if(response.data){
           var centerwiseData = response.data;
-          // console.log('centerwiseData',centerwiseData)
           var totalindex = (centerwiseData.length)-2;
           var totalData = response.data[totalindex];
           var achievement_Reach       = totalData.achievement_Reach;
@@ -431,7 +432,8 @@ export default class Dashboard extends Component{
                     </div>  
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div className="box2">
+                              <Loader type="fullpageloader" />
+                        <div className="box2 graphBox">
                             <div className="box-header with-border">
                               <h3 className="box-title">Center wise Budget (In Lakhs)</h3>
                               <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
@@ -450,7 +452,7 @@ export default class Dashboard extends Component{
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div className="box2">
+                        <div className="box2 graphBox">
                           <div className="box-header with-border">
                             <h3 className="box-title">Sector wise Budget (In Lakhs)</h3>
                             <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
@@ -464,7 +466,7 @@ export default class Dashboard extends Component{
                             </div>
                           </div>
                           <div className="box-body">
-                             <PieChart year={this.state.year} />
+                            <PieChart year={this.state.year} />
                           </div>
                         </div>
                       </div>
