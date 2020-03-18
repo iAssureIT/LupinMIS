@@ -9,7 +9,7 @@
 
 #SubActivity .scrollContent {
   display: block;
-  height: 300px;
+  height: 400px;
   overflow: auto;
   width: 100%;
 }

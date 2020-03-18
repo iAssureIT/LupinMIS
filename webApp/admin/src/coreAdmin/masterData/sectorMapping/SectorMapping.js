@@ -5,6 +5,7 @@ import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import validate               from 'jquery-validation';
 
+import Loader                 from "../../../common/Loader.js";
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./SectorMapping.css";
 
@@ -330,9 +331,11 @@ class SectorMapping extends Component{
   }
   
   getData(startRange, limitRange){
+    $(".fullpageloader").show();
     console.log('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange);
     axios.get('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange)
     .then((response)=>{
+      $(".fullpageloader").hide();
       var tableData = response.data.map((a, i)=>{
           return {
             _id               : a._id,
@@ -470,6 +473,7 @@ class SectorMapping extends Component{
     // console.log("this.state.listofGoalNames",this.state.listofGoalNames)
     return(
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             <section className="content">

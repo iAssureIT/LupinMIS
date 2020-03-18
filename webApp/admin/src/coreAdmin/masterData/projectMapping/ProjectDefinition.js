@@ -4,8 +4,9 @@ import moment                     from 'moment';
 import axios                      from 'axios';
 import swal                       from 'sweetalert';
 import _                          from 'underscore';
-import IAssureTable               from "../../IAssureTable/IAssureTable.jsx";
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import IAssureTable               from "../../IAssureTable/IAssureTable.jsx";
+import Loader                     from "../../../common/Loader.js";
 
 import "./ProjectMapping.css";
 
@@ -721,9 +722,11 @@ class ProjectMapping extends Component{
     });
   }
   getData(startRange, limitRange){
-    // console.log('/api/projectMappings/list/'+startRange+'/'+limitRange);
+    // console.log('vvzz/api/projectMappings/list/'+startRange+'/'+limitRange);
+    $(".fullpageloader").show();
     axios.get('/api/projectMappings/list/'+startRange+'/'+limitRange)
     .then((response)=>{
+      $(".fullpageloader").hide();
       // console.log(response)
       if(response&&response.data&&response.data.length>0){
         var tableData = response.data.map((a, i)=>{
@@ -853,6 +856,7 @@ class ProjectMapping extends Component{
     // console.log('this.state.availableSectors',this.state.availableSectors)
     return(
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             <section className="content">

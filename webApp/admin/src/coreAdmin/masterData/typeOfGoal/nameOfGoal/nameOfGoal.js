@@ -6,6 +6,7 @@ import validate               from 'jquery-validation';
 import {withRouter}           from 'react-router-dom';
 // import _                      from 'underscore';
 
+import Loader                 from "../../../../common/Loader.js";
 import IAssureTable             from "../../../IAssureTable/IAssureTable.jsx";
 import "./nameOfGoal.css";
  
@@ -217,8 +218,10 @@ class nameOfGoal extends Component{
       startRange : startRange,
     }
     console.log('data', data);
-     axios.post('/api/typeofgoals/goalName/list',data)
+    $(".fullpageloader").show();
+    axios.post('/api/typeofgoals/goalName/list',data)
     .then((response)=>{
+      $(".fullpageloader").hide();
        // console.log('tableData==================', response);
       var tableData = response.data.map((a, i)=>{
           return {
@@ -285,6 +288,7 @@ class nameOfGoal extends Component{
       <div>
         {this.state.role !== "viewer" ?
           <React.Fragment>
+            <Loader type="fullpageloader" />
             <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable marginT50 " id="typeofNameDetails">
                 <div className="row">
                   <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">

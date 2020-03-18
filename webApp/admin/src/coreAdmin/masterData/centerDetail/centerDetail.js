@@ -6,6 +6,7 @@ import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import 'bootstrap/js/tab.js';
 import validate               from 'jquery-validation';
+import Loader                 from "../../../common/Loader.js";
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./centerDetail.css";
  
@@ -454,8 +455,10 @@ class centerDetail extends Component{
     });
   }
   getData(startRange, limitRange){
+    $(".fullpageloader").show();
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
+    $(".fullpageloader").hide();
       console.log('response', response);
       if(response&&response.data&&response.data.length>0){
         var tableData = response.data.map((a, i)=>{
@@ -703,6 +706,7 @@ class centerDetail extends Component{
   render() {
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
               <section className="content">

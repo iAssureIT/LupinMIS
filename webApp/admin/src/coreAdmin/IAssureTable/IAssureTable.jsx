@@ -676,7 +676,7 @@ class IAssureTable extends Component {
 														return(
 															<th key={i} className="umDynamicHeader srpadd textAlignLeft">
 															<div className={"wrapWord col"+(i+1)}>{value}</div>
-															 <br/> <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															 <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
 													}
 																							

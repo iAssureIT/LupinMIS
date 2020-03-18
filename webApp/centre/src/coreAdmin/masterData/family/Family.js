@@ -6,6 +6,7 @@ import swal                   from 'sweetalert';
 import Datetime               from "react-datetime";
 import 'react-datetime/css/react-datetime.css';
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader                 from "../../../common/Loader.js";
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 import 'react-table/react-table.css';
 import "./Family.css";
@@ -514,8 +515,10 @@ class Family extends Component{
       startRange : startRange,
     }
     if (center_ID){
+    $(".fullpageloader").show();
       axios.post('/api/families/list/'+center_ID,data)
       .then((response)=>{
+      $(".fullpageloader").hide();
         // console.log('response', response.data);
         var tableData = response.data.map((a, i)=>{
           return {
@@ -800,6 +803,7 @@ class Family extends Component{
   render() {     
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             <section className="content">

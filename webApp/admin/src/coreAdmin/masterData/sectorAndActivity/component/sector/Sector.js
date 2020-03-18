@@ -4,6 +4,7 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import {withRouter}           from 'react-router-dom';
 // import _                      from 'underscore';
+import Loader                 from "../../../../../common/Loader.js";
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import "./Sector.css";
 
@@ -198,9 +199,10 @@ class Sector extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
+  $(".fullpageloader").show();
     axios.post('/api/sectors/list',data)
     .then((response)=>{
-      
+      $(".fullpageloader").hide();
       var tableData = response.data.map((a, i)=>{
           return {
             _id               : a._id,
@@ -246,6 +248,7 @@ class Sector extends Component{
   render() {
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             {this.state.role !== "viewer" ? 

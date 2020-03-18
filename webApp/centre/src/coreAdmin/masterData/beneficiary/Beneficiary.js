@@ -9,6 +9,7 @@ import DatePicker           from "react-datepicker";
 import Datetime from "react-datetime";
 import 'react-datetime/css/react-datetime.css';
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
+import Loader                 from "../../../common/Loader.js";
 import CreateBeneficiary      from "./CreateBeneficiary.js";
 import "./Beneficiary.css";
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
@@ -432,11 +433,13 @@ class Beneficiary extends Component{
     }
     // console.log(center_ID);
     // var centerID = this.state.center_ID;
+    $(".fullpageloader").show();
     if (center_ID){
       axios.post('/api/beneficiaries/list/'+center_ID,data)
         // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
       // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
       .then((response)=>{
+        $(".fullpageloader").hide();
         console.log('response', response);
         var tableData = response.data.map((a, i)=>{
           return {
@@ -596,6 +599,7 @@ class Beneficiary extends Component{
   render() {
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             <section className="content">

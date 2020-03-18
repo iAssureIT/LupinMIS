@@ -16,7 +16,7 @@
 
 #ProjectMapping .scrollContent {
   display: block;
-  height: 350px;
+  height: 400px;
   overflow: auto;
   width: 100%;
 }

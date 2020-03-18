@@ -4,6 +4,7 @@ import axios                  from 'axios';
 import moment                 from "moment";
 import swal                   from 'sweetalert';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader                 from "../../common/Loader.js";
 import AddFilePublic          from "../addFile/AddFilePublic.js";
 
 import 'react-table/react-table.css';
@@ -224,9 +225,11 @@ class Highlight extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
+    $(".fullpageloader").show();
     if(center_ID){
       axios.get('/api/highlights/list/'+center_ID, data)
       .then((response)=>{
+        $(".fullpageloader").hide();
         var tableData = response.data.map((a, i)=>{
           return {
             _id             : a._id,
@@ -266,6 +269,7 @@ class Highlight extends Component{
     }  
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             <section className="content">

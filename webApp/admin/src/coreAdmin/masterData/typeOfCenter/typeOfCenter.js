@@ -4,6 +4,7 @@ import axios                  from 'axios';
 import validate               from 'jquery-validation';
 import swal                   from 'sweetalert';
 import {withRouter}           from 'react-router-dom';
+import Loader                 from "../../../common/Loader.js";
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./typeOfCenter.css";
 
@@ -187,9 +188,11 @@ class typeOfCenter extends Component{
       startRange : startRange,
     }
     // console.log('data', data);
+    $(".fullpageloader").show();
     axios.get('/api/typeofcenters/list',data)
     .then((response)=>{
       // console.log('tableData', response.data);
+    $(".fullpageloader").hide();
       this.setState({
         tableData : response.data
       })
@@ -219,6 +222,7 @@ class typeOfCenter extends Component{
     // console.log('render');
     return (
         <div className="container-fluid">
+        <Loader type="fullpageloader" />
           <div className="row">
             <div className="formWrapper">
               <section className="content">

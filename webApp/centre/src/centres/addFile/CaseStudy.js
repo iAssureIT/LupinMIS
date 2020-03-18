@@ -4,6 +4,7 @@ import axios                  from 'axios';
 import moment                 from "moment";
 import swal                   from 'sweetalert';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import Loader                 from "../../common/Loader.js";
 import AddFilePublic          from "../addFile/AddFilePublic.js";
 
 import 'react-table/react-table.css';
@@ -307,9 +308,11 @@ class CaseStudy extends Component{
   }
 
   getData(startRange, limitRange, center_ID){ 
+    $(".fullpageloader").show();
     if(center_ID){
       axios.get('/api/caseStudies/list/'+center_ID)
       .then((response)=>{
+        $(".fullpageloader").hide();
         console.log("response",response);
         var tableData = response.data.map((a, i)=>{
           return {
@@ -354,6 +357,7 @@ class CaseStudy extends Component{
     }  
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             <section className="content">

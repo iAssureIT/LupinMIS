@@ -1,8 +1,10 @@
 import React, { Component }   from 'react';
 import axios                  from 'axios';
+import $                      from 'jquery';
 import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 
+import Loader                 from "../../common/Loader.js";
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "./SectorList.css";
    
@@ -64,8 +66,10 @@ class SectorList extends Component{
       startRange : startRange,
       limitRange : limitRange
     }
+    $(".fullpageloader").show();
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{
+    $(".fullpageloader").hide();
       console.log('response',response);
        var tableData = response.data.map((a, i)=>{
           return {
@@ -96,6 +100,7 @@ class SectorList extends Component{
    render() {
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
               <section className="content">

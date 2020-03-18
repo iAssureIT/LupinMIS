@@ -4,6 +4,7 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import {Route, withRouter}    from 'react-router-dom';
+import Loader                 from "../../../../../common/Loader.js";
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
 import Unit                   from '../unit/Unit.js';
 
@@ -314,9 +315,11 @@ edit(id){
       startRange : startRange,
       limitRange : limitRange
     }
+
+  $(".fullpageloader").show();
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{
-
+      $(".fullpageloader").hide();
       var tableData = response.data.map((a, i)=>{
           return {
             _id               : a._id,
@@ -376,6 +379,7 @@ edit(id){
   render() {
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             {this.state.role !== "viewer" ?
