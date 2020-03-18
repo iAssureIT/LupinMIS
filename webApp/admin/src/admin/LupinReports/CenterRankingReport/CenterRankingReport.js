@@ -44,7 +44,7 @@ class CenterRankingReport extends Component{
             "totalBudget_Utilized"    : "TOTAL Budget Utilization",
             "outReach"                : "Villages  / 1 Lakh",
             "FamilyUpgradation"       : "Families Upgrade / 1 Lakh",
-            "Admin_Cost"              : "Admin_Cost",
+            "Admin_Cost"              : "Admin Cost",
             "sum"                     : "Sum",
             "Factor"                  : "Factor",
         },        
