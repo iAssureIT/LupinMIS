@@ -940,14 +940,15 @@ class PlanDetails extends Component{
       }
     }
     this.handleChange(event);
-    this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
+    this.getAvailableSubActivity(this.state.sector_ID, activity_ID, this.state.center_ID);
   }
   
-  getAvailableSubActivity(sector_ID, activity_ID){
+  getAvailableSubActivity(sector_ID, activity_ID, center_ID){
     console.log('sector_ID, activity_ID',sector_ID, activity_ID);
     var data={
       "sector_ID"   : sector_ID,
       "activity_ID" : activity_ID,
+      "center_ID"   : center_ID,
       "planFor"     : this.state.month === "Annual Plan" ? "Annual" : "Monthly",
       "month"       : this.state.month,
       "year"        : this.state.year,
