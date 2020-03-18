@@ -79,7 +79,7 @@ export default class CenterWisePieChart extends Component {
         $(".fullpageloader").show();
         axios.get('/api/reportDashboard/center_admin/'+startDate+'/'+endDate) 
         .then((response)=>{
-              $(".fullpageloader").hide();
+              // $(".fullpageloader").hide();
           console.log("center_adminresponse-===>",response);
           // response.data.splice(-2); 
           var sector = [];
@@ -202,58 +202,68 @@ export default class CenterWisePieChart extends Component {
     // console.log("this.state.data = ",this.state.data);
     return (
       <div>
-        
-        <div className="displayNone">
-          <IAssureTable 
-            tableName = "Centerwise Pie Chart"
-            id = "CenterWisePieChart"
-            twoLevelHeader={this.state.twoLevelHeader} 
-            getData={this.getData.bind(this)} 
-            tableHeading={this.state.tableHeading} 
-            tableData={this.state.tableData} 
-            tableObjects={this.state.tableObjects}
-            />
-        </div>
-        <Pie height={150} 
-          data={this.state.data} 
-          height="150" 
-          options={
-            {
-              plugins: {
-                labels: {
-                  render: () => {}
-                }
-              },
-              legend: 
+        <div>
+          <div className="displayNone">
+            <IAssureTable 
+              tableName = "Centerwise Pie Chart"
+              id = "CenterWisePieChart"
+              twoLevelHeader={this.state.twoLevelHeader} 
+              getData={this.getData.bind(this)} 
+              tableHeading={this.state.tableHeading} 
+              tableData={this.state.tableData} 
+              tableObjects={this.state.tableObjects}
+              />
+          </div>
+          <Pie height={150} 
+            data={this.state.data} 
+            height="150" 
+            options={
               {
-                labels: {
-                  boxWidth: 20,
-                   padding: 10
+                plugins: {
+                  labels: {
+                    render: () => {}
+                  }
                 },
-                display: true, 
-                position: 'right'
-              },
-              tooltips: {
-                mode: 'nearest',
-                intersect: false,
+                legend: 
+                {
+                  labels: {
+                    boxWidth: 20,
+                     padding: 10
+                  },
+                  display: true, 
+                  position: 'right'
+                },
+                tooltips: {
+                  mode: 'nearest',
+                  intersect: false,
+                }
               }
             }
-          }
-        />
-  {  /*    plugins: {
-             labels: [{
-              render: 'label',
-              position: 'outside',
-              fontColor: '#000',
-              textMargin: 8
-            },
-            {
-              render: 'percentage',
-              fontColor: '#fff',
-            }
-            ]}}
-            }*/}
-          
+          />
+           {  /* plugins: {
+               labels: [{
+                render: 'label',
+                position: 'outside',
+                fontColor: '#000',
+                textMargin: 8
+              },
+              {
+                render: 'percentage',
+                fontColor: '#fff',
+              }
+              ]}}
+              }*/}
+        </div>
+      {/*
+        this.state.data ? 
+        : 
+
+        <div className="bg-red">
+          <div className="loadingImageContainer col-lg-4 col-lg-offset-4">
+            <img src="/images/loading.gif"/>
+          </div>
+        </div>
+      */} 
       </div>
     );
   }

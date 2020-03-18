@@ -181,7 +181,6 @@ export default class MonthwiseExpenditure extends Component{
   render() {
     return (
       <div>
-        <Loader type="fullpageloader" />
         <div className="displayNone">
           <IAssureTable 
             tableName="Month wise Expenditure & Budget"

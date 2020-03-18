@@ -174,7 +174,6 @@ export default class PieChart extends Component {
   render() {
     return ( 
       <div>
-        <Loader type="fullpageloader" />
         <div className="displayNone">
           <IAssureTable 
             tableName = "Sector wise Pie Chart"

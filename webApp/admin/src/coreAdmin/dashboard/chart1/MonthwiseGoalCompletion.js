@@ -191,7 +191,6 @@ export default class MonthwiseGoalCompletion extends Component{
   render() {
     return (
       <div>
-        <Loader type="fullpageloader" />
         <div className="displayNone">
           <IAssureTable 
             id="MonthwiseGoalCompletion"

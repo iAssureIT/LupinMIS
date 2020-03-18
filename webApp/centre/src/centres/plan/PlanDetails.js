@@ -907,7 +907,7 @@ class PlanDetails extends Component{
       });
         this.setState({
           availableActivity : sortArray,
-          // activityName      : "-- Select --",
+          activityName      : "-- Select --",
         },()=>{
           console.log("this.state.availableActivity",this.state.availableActivity);
           if(!this.state.editId){
@@ -944,6 +944,7 @@ class PlanDetails extends Component{
   }
   
   getAvailableSubActivity(sector_ID, activity_ID){
+    console.log('sector_ID, activity_ID',sector_ID, activity_ID);
     var data={
       "sector_ID"   : sector_ID,
       "activity_ID" : activity_ID,
@@ -952,9 +953,10 @@ class PlanDetails extends Component{
       "year"        : this.state.year,
       "dataFor"     : this.state.editId ? "edit" : "add",
     }
+    console.log('data',data);
     axios.post('/api/sectors/activity',data)
     .then((response)=> {
-      // console.log('response.data',response.data)
+      console.log('response.data',response)
       if(response&&response.data){
         var newavailableSubActivity = response.data.map((data,index)=>{
           data.physicalUnit = 0;

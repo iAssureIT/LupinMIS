@@ -193,7 +193,6 @@ export default class BarChart extends Component{
   render() {
     return (
       <div>
-        <Loader type="fullpageloader" />
         <div className="displayNone">
           <IAssureTable 
             tableName="Sector wise Outreach & Family Upgradation"
