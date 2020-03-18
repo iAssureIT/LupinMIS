@@ -5,7 +5,6 @@ import axios                                       from 'axios';
 import { Link }                                    from 'react-router-dom'
 import ActivitywiseAnnualCompletionYearlyReport    from '../../Reports/ActivitywiseAnnualCompletionYearlyReport.js';
 import Loader                                      from "../../../common/Loader.js";
-
 import "../../Reports/Reports.css";
 
 class ActivitywiseAnnualCompletionReport extends Component{

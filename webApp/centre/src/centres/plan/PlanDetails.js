@@ -2,10 +2,11 @@ import React, { Component }   from 'react';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
-import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
-import BulkUpload             from "../bulkupload/BulkUpload.js";
 import $                      from 'jquery';
 import moment                 from "moment";
+import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import BulkUpload             from "../bulkupload/BulkUpload.js";
+import Loader                 from "../../common/Loader.js";
 import 'bootstrap/js/tab.js';
 import "./PlanDetails.css";
 
@@ -683,8 +684,10 @@ class PlanDetails extends Component{
       endDate    : moment(new Date()).format("YYYY-MM-DD"),
     }
     // console.log("data",data);
+    $(".fullpageloader").show();
     axios.post(this.state.apiCall+'/list', data)
     .then((response)=>{
+    $(".fullpageloader").hide();
       console.log("response plan Details===>",response);
       var tableData = response.data.map((a, i)=>{
         return {
@@ -1174,6 +1177,7 @@ class PlanDetails extends Component{
     }
     return ( 
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             <section className="content">

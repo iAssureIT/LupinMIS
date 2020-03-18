@@ -17,7 +17,7 @@
 #CenterRankingReport .col6{
 	width: 150px !important;
 }
-#CenterRankingReport .col7{
+#CenterRankingReport .col7, #CenterRankingReport .col8, #CenterRankingReport .col9, #CenterRankingReport .col10{
 	width: 100px !important;
 }
 

@@ -1,10 +1,11 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
+import ReactHTMLTableToExcel  from 'react-html-table-to-excel';
 import ReactTable             from "react-table";
-import BenificiaryName from './BenificiaryName.js';
 import moment                 from "moment";
+import BenificiaryName        from './BenificiaryName.js';
+import Loader                 from "../../common/Loader.js";
 
 import 'react-table/react-table.css';
 import "./ActivityReportView.css";
@@ -26,11 +27,13 @@ class ActivityReportView extends Component{
  
   }
   componentDidMount(){
+    $(".fullpageloader").show();
     $("html,body").scrollTop(0)
     axios({
       method: 'get',
       url: '/api/activityReport/'+this.state.activty_ID,
     }).then((response)=> {
+    $(".fullpageloader").hide();
       console.log("response",response.data);
       if (response.data && response.data[0]) {
         this.setState({
@@ -57,6 +60,7 @@ class ActivityReportView extends Component{
   render() {
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
              <section className="content">

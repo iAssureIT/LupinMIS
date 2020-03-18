@@ -36,3 +36,14 @@
   overflow: auto;
   width: 100%
 }
+
+.iconBox{
+	padding:0px 0px 0px 29px;
+}
+.iconLable {
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px !important;
+    color: #333333;
+    font-weight: normal;
+    text-align: center;
+}

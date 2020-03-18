@@ -4,7 +4,6 @@ import axios                from 'axios';
 import _                    from 'underscore';
 import swal                 from 'sweetalert';
 import Loader                                      from "../../../common/Loader.js";
-
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "../../Reports/Reports.css";
 import "./ActivitywiseAnnualPlanReport.css"

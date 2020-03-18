@@ -44,6 +44,9 @@ class CenterRankingReport extends Component{
             "totalBudget_Utilized"    : "TOTAL Budget Utilization",
             "outReach"                : "Villages  / 1 Lakh",
             "FamilyUpgradation"       : "Families Upgrade / 1 Lakh",
+            "Admin_Cost"              : "Admin_Cost",
+            "sum"                     : "Sum",
+            "Factor"                  : "Factor",
         },        
         "tableObjects"        : {
           paginationApply     : false,
@@ -150,6 +153,9 @@ class CenterRankingReport extends Component{
                             totalBudget_Utilized    : a.totalBudget_Utilized,
                             outReach                : a.outReach,
                             FamilyUpgradation       : a.FamilyUpgradation,
+                            Admin_Cost              : a.Admin_Cost,
+                            sum                     : a.sum,
+                            Factor                  : a.Factor,
                         } 
                     })  
                     this.setState({

@@ -6,6 +6,7 @@ import swal                   from 'sweetalert';
 import moment                 from "moment";
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
+import Loader                 from "../../../common/Loader.js";
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
@@ -828,8 +829,10 @@ class Activity extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
+    $(".fullpageloader").show();
     axios.post('/api/activityReport/list/'+center_ID, data)
     .then((response)=>{
+    $(".fullpageloader").hide();
       console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
@@ -1381,6 +1384,7 @@ class Activity extends Component{
 
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row"> 
           <div className="formWrapper">
             <section className="content">

@@ -1,9 +1,17 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
+import moment                 from 'moment';
 import swal                   from 'sweetalert';
-
+import validate               from 'jquery-validation';
+import DatePicker           from "react-datepicker";
+// import YearPicker from "react-year-picker";
+import Datetime from "react-datetime";
+import 'react-datetime/css/react-datetime.css';
+import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
+import CreateBeneficiary      from "./CreateBeneficiary.js";
 import "./Beneficiary.css";
+import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 
 class Beneficiary extends Component{
   
@@ -11,10 +19,21 @@ class Beneficiary extends Component{
     super(props);
    
     this.state = {
-      "familyID"            :"",
-      "beneficiaryID"       :"",
-      "nameofbeneficiaries" :"",
-      "relation"            :"",
+      // "relation"            :"-- Select --",
+      "Check"                         :false,
+      "relation"                      :"-- Select --",
+      "familyID"                      :"",
+      "beneficiaryID"                 :"",
+      "uidNumberCheck"                :"",
+      "firstNameOfBeneficiary"        :"",
+      "middleNameOfBeneficiaryCheck"  :"",
+      "firstNameOfBeneficiaryCheck"   :"",
+      "middleNameOfBeneficiary"       :"",
+      "surnameOfBeneficiary"          :"",
+      "nameofbeneficiaries"           :"",
+      "birthYearOfbeneficiary"        :"",
+      "genderOfbeneficiary"           :"",
+      // "genderOfbeneficiary"           :"-- Select --",
       "fields"              : {},
       "errors"              : {},
       "tableHeading"        : {
@@ -23,29 +42,46 @@ class Beneficiary extends Component{
         nameofbeneficiaries : "Name of Beneficiary",
         uidNumber           : "UID Number",
         relation            : "Relation with Family Head",
+        genderOfbeneficiary : "Gender",
+        birthYearOfbeneficiary : "Birth Year",
         actions             : 'Action',
       },
       "tableObjects"        : {
         apiLink             : '/api/beneficiaries/',
         editUrl             : '/beneficiary/',        
         paginationApply     : false,
-        searchApply         : false,
+        downloadApply       : true,
+        searchApply         : true,
       },
       "startRange"          : 0,
       "limitRange"          : 10000,
-      "editId"              : props.editId ? props.editId : ''
+      "editId"              : props.editId ? props.editId : '',
     }
-    // console.log('params', this.props.match.params);
+    this.uploadedData = this.uploadedData.bind(this);
+    this.getFileDetails = this.getFileDetails.bind(this);
   }
 
-
   handleChange(event){
-      event.preventDefault();
+    event.preventDefault();
+    // console.log(event);
     if(event.currentTarget.name==='familyID'){
       let id = $(event.currentTarget).find('option:selected').attr('data-id')
+      // $(".fullpageloader").show();
       axios.get('/api/families/'+id)
       .then((response)=>{
-        this.setState({"surnameOfBeneficiary":response.data[0].surnameOfFH})
+        // console.log('response families',response)
+        this.setState({
+          "surnameOfBeneficiary"          :response.data[0].surnameOfFH,
+          "firstNameOfBeneficiaryCheck"   :response.data[0].firstNameOfFH,
+          "uidNumberCheck"                :response.data[0].uidNumber,
+          "middleNameOfBeneficiaryCheck"  :response.data[0].middleNameOfFH,
+          "firstNameOfBeneficiary"    : "",
+          "middleNameOfBeneficiary"   : "",
+          "uidNumber"                 :"",
+          "relation"                  : "-- Select --",
+        })
+        // $(".fullpageloader").hide();
+
       })
       .catch(function(error){ 
         console.log("error = ",error);
@@ -58,28 +94,35 @@ class Beneficiary extends Component{
       "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value,
       "uidNumber"                 : this.refs.uidNumber.value,
       "relation"                  : this.refs.relation.value,
+      "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
     });
-    let fields                = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
-      fields
-    });
-  
-  }
-
-  isTextKey(evt){
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
+  /*    if(this.refs.firstNameOfBeneficiary.value === this.state.firstNameOfBeneficiaryCheck )
+    {
+       
+      var uidNumber = this.state.uidNumberCheck;
+      var middleNameOfBeneficiaryCheck = this.state.middleNameOfBeneficiaryCheck;
+      this.setState({
+          uidNumber : uidNumber,
+          relation  : "Self",
+          middleNameOfBeneficiary : middleNameOfBeneficiaryCheck,
+          Check     : false,
+      })
+          
     }
     else{
-      return true;
-    }
-  }
+      this.setState({
+          uidNumber : "",
+          relation  : "-- Select --",
+          middleNameOfBeneficiary : "",
+          Check     : false,
+      })
+
+    }*/
+  } 
+
   SubmitBeneficiary(event){
     event.preventDefault();
+    var id2 = this.state.uidNumber;
     if($('#createBeneficiary').valid()){
     // if (this.validateFormReq() && this.validateForm()){
     var beneficiaryValue= 
@@ -91,9 +134,10 @@ class Beneficiary extends Component{
       "surnameOfBeneficiary"      : this.refs.surnameOfBeneficiary.value,
       "firstNameOfBeneficiary"    : this.refs.firstNameOfBeneficiary.value,
       "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value,     
-      // "nameofbeneficiaries"   : this.refs.nameofbeneficiaries.value,
       "uidNumber"                 : this.refs.uidNumber.value,
       "relation"                  : this.refs.relation.value,
+      "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary,
+      "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
     };
     // let fields                          = {};
     // fields["familyID"]                  = "";
@@ -111,12 +155,16 @@ class Beneficiary extends Component{
       "firstNameOfBeneficiary"   :"",   
       "middleNameOfBeneficiary"  :"",   
       "uidNumber"                :"",   
-      "relation"                 :"",   
+      "relation"                 :"-- Select --",
+      "genderOfbeneficiary"      :"",
+      // "genderOfbeneficiary"      :"-- Select --",
+      "date"                     :"",   
+      "birthYearOfbeneficiary"   :"",   
       // fields:fields
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
-      this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
         swal({
           title : response.data.message,
           text  : response.data.message,
@@ -126,6 +174,9 @@ class Beneficiary extends Component{
         console.log("error = ",error);
       });
     }
+  }
+  uploadedData(data){
+    this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
   }
   Update(event){
     event.preventDefault();
@@ -149,11 +200,13 @@ class Beneficiary extends Component{
         "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value,          
         "uidNumber"                 : this.refs.uidNumber.value,
         "relation"                  : this.refs.relation.value,
+        "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary,
+        "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
       };
       // console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
-        this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
+        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
             text  : response.data.message,
@@ -167,10 +220,14 @@ class Beneficiary extends Component{
         "familyID"                 :"",
         "nameofbeneficiaries"      :"",   
         "uidNumber"                :"",
-        "relation"                 :"",
         "surnameOfBeneficiary"     :"",   
         "firstNameOfBeneficiary"   :"",   
         "middleNameOfBeneficiary"  :"",   
+        "date"                     :"",   
+        "birthYearOfbeneficiary"   :"",   
+        "relation"                 :"-- Select --",
+        "genderOfbeneficiary"      :"",
+        // "genderOfbeneficiary"      :"-- Select --",   
       });
       this.props.history.push('/beneficiary');
       this.setState({
@@ -178,6 +235,7 @@ class Beneficiary extends Component{
       });
     }
   }
+
   componentWillReceiveProps(nextProps){
     var editId = this.props.editId;
     if(nextProps.editId){
@@ -197,9 +255,10 @@ class Beneficiary extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
+
     this.getLength();
-    // this.props.getData();
-    this.props.getData(this.state.startRange, this.state.limitRange);
+    // this.getData();
+    this.getData(this.state.startRange, this.state.limitRange);
     this.getAvailableFamilyId();
     const center_ID = localStorage.getItem("center_ID");
     // const token = localStorage.getItem("token");
@@ -211,19 +270,20 @@ class Beneficiary extends Component{
     },()=>{
     // console.log("center_ID =",this.state.center_ID);
      this.getLength(this.state.center_ID);
-    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
+    // this.getData();
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     this.getAvailableFamilyId(this.state.center_ID);
-    });   
-
+    });    
+ 
     $.validator.addMethod("regxUIDNumber", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter valid Aadhar Number.");
-    // $.validator.addMethod("regxsurnameOfBeneficiary", function(value, element, regexpr) {         
-    //   return regexpr.test(value);
-    // }, "Please enter valid Surname.");
-    // $.validator.addMethod("regxfirstNameOfBeneficiary", function(value, element, regexpr) {         
-    //   return regexpr.test(value);
-    // }, "Please enter valid First Name.");
+    $.validator.addMethod("regxsurnameOfBeneficiary", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid Surname.");
+    $.validator.addMethod("regxfirstNameOfBeneficiary", function(value, element, regexpr) {         
+      return regexpr.test(value);
+    }, "Please enter valid First Name.");
     // $.validator.addMethod("regxmiddleNameOfBeneficiary", function(value, element, regexpr) {         
     //   return regexpr.test(value);
     // }, "Please enter valid Middle Name.");
@@ -242,15 +302,16 @@ class Beneficiary extends Component{
             },
             surnameOfBeneficiary: {
               required: true,
-              // regxsurnameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
+              regxsurnameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
             },
             firstNameOfBeneficiary: {
               required: true,
-              // regxfirstNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
+              regxfirstNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,
             },
             middleNameOfBeneficiary: {
               // required: true,
-              // regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
+               // regxmiddleNameOfBeneficiary: /^( [a-zA-Z ])*$/,
+               // regxmiddleNameOfBeneficiary:/^[A-za-z']+( [A-Za-z']+)*$/,   
             },
           },
           errorPlacement: function(error, element) {
@@ -273,114 +334,248 @@ class Beneficiary extends Component{
               error.insertAfter("#middleNameOfBeneficiaryErr");
             }
           }
-        }); 
+        });
   }
 
   edit(id){
-    axios({
+    if(id && id != undefined){
+      axios({
       method: 'get',
       url: '/api/beneficiaries/'+id,
     })
     .then((response)=> {
       var editData = response.data[0];
-      // console.log('editData',editData);      
+      console.log('editData',response);
+      if(editData){
+        this.setState({
+          "beneficiaryID"            : editData.beneficiaryID,
+          "familyID"                 : editData.familyID+"|"+editData.family_ID,          
+          "surnameOfBeneficiary"     : editData.surnameOfBeneficiary,
+          "firstNameOfBeneficiary"   : editData.firstNameOfBeneficiary,
+          "middleNameOfBeneficiary"  : editData.middleNameOfBeneficiary,
+          "uidNumber"                : editData.uidNumber,          
+          "relation"                 : editData.relation,          
+          "date"                     : editData.birthYearOfbeneficiary,          
+          "genderOfbeneficiary"      : editData.genderOfbeneficiary,          
+        },()=>{
+          console.log('edit===',this.state.birthYearOfbeneficiary);
+        });      
+      }
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
       this.setState({
-        "beneficiaryID"            : editData.beneficiaryID,
-        "familyID"                 : editData.familyID+"|"+editData.family_ID,          
-        "surnameOfBeneficiary"     : editData.surnameOfBeneficiary,
-        "firstNameOfBeneficiary"   : editData.firstNameOfBeneficiary,
-        "middleNameOfBeneficiary"  : editData.middleNameOfBeneficiary,
-        "uidNumber"                : editData.uidNumber,          
-        "relation"                 : editData.relation,          
-      });      
-    
+        errors: errors
+      });
+      return formIsValid;
     })
     .catch(function (error) {
       console.log("error = ",error);
     });
+    }else{
+      this.setState({
+        "beneficiaryID"            : "",
+        "familyID"                 : "",          
+        "surnameOfBeneficiary"     : "",
+        "firstNameOfBeneficiary"   : "",
+        "middleNameOfBeneficiary"  : "",
+        "uidNumber"                : "",      
+        "relation"                 :"-- Select --",
+        "genderOfbeneficiary"      :"",
+        // "genderOfbeneficiary"      :"-- Select --",       
+        "date"                     :"",   
+        "birthYearOfbeneficiary"   :"",   
+      });     
+    }
+    
   }
   
-  getLength(center_ID){/*
+  getLength(center_ID){
     axios.get('/api/beneficiaries/count/'+center_ID)
     .then((response)=>{
-      console.log('response', response.data);
+      // console.log('response', response.data);
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
       
     });
-  */}
-
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
   }
 
-  // getData(startRange, limitRange, center_ID){
-  //   var data = {
-  //     limitRange : limitRange,
-  //     startRange : startRange,
-  //   }
-  //   console.log(center_ID);
-  //   // var centerID = this.state.center_ID;
-  //   if (center_ID){
-  //     axios.post('/api/beneficiaries/list/'+center_ID,data)
-  //       // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
-  //     // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
-  //     .then((response)=>{
-  //       console.log('response', response);
-  //       var tableData = response.data.map((a, i)=>{
-  //         return {
-  //           _id                       : a._id,
-  //           beneficiaryID             : a.beneficiaryID,
-  //           familyID                  : a.familyID,
-  //           nameofbeneficiaries       : a.nameofbeneficiaries,
-  //           uidNumber                 : a.uidNumber,
-  //           relation                  : a.relation,
-  //         }
-  //       })
-  //       this.setState({
-  //         tableData : tableData
-  //       },()=>{
-  //         console.log("tableData",this.state.tableData)
-  //       })
-  //     })
-  //     .catch(function(error){
-  //       console.log("error = ",error);
-  //     });
-  //   }
-  // }
+  getData(startRange, limitRange, center_ID){
+    var data = {
+      limitRange : limitRange,
+      startRange : startRange,
+    }
+    // console.log(center_ID);
+    // var centerID = this.state.center_ID;
+    if (center_ID){
+      axios.post('/api/beneficiaries/list/'+center_ID,data)
+        // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
+      // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
+      .then((response)=>{
+        console.log('response', response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                       : a._id,
+            beneficiaryID             : a.beneficiaryID,
+            familyID                  : a.familyID,
+            nameofbeneficiaries       : a.nameofbeneficiaries,
+            uidNumber                 : a.uidNumber,
+            relation                  : a.relation,
+            genderOfbeneficiary       : a.genderOfbeneficiary,   
+            birthYearOfbeneficiary    : a.birthYearOfbeneficiary,   
+          }
+        })
+        this.setState({
+          tableData : tableData
+        },()=>{
+          // console.log("tableData",this.state.tableData)
+        })
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+    }
+  }
   getAvailableFamilyId(center_ID){
     if(center_ID){
       axios({
         method: 'get',
         url: '/api/families/list/'+center_ID,
       }).then((response)=> {
-          
+      // console.log("availableFamiliesresponse", response);
           this.setState({
             availableFamilies : response.data
           })
       }).catch(function (error) {
         console.log("error = ",error);
       });
-      // console.log("availableFamilies", this.state.availableFamilies)
     }
   }
+  getFileDetails(fileName){
+      axios
+      .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
+      .then((response)=> {
+      $('.fullpageloader').hide();  
+      if (response) {
+        this.setState({
+            fileDetails:response.data,
+            failedRecordsCount : response.data.failedRecords.length,
+            goodDataCount : response.data.goodrecords.length
+        });
 
+          var tableData = response.data.goodrecords.map((a, i)=>{
+           
+          return{
+              "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
+              "familyID"       : a.familyID        ? a.familyID    : '-',
+              "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
+              "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+              "relation"       : a.relation     ? a.relation : '-',
+          }
+        })
+
+        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+        return{
+            "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
+            "familyID"       : a.familyID        ? a.familyID    : '-',
+            "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
+            "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+            "relation"       : a.relation     ? a.relation : '-',
+            "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
+            
+        }
+        })
+        this.setState({
+            goodRecordsTable : tableData,
+            failedRecordsTable : failedRecordsTable
+        })
+      }
+      })
+      .catch((error)=> { 
+            
+      }) 
+  } 
+  getSearchText(searchText){
+    var searchText = searchText;
+    // console.log('searchText',searchText)
+    var formValues ={
+      searchText : searchText,
+    }
+    if(searchText) {
+      axios
+      .post('/api/beneficiaries/searchValue/'+this.state.center_ID, formValues)
+      .then(
+        (res)=>{
+          // console.log('res', res);
+          if(res.data.data&&res.data.data.length>0){
+            var tableData = res.data.data.map((a, i)=>{
+              return {
+                _id                       : a._id,
+                beneficiaryID             : a.beneficiaryID,
+                familyID                  : a.familyID,
+                nameofbeneficiaries       : a.surnameOfBeneficiary+" "+a.firstNameOfBeneficiary+" " +a.middleNameOfBeneficiary,
+                uidNumber                 : a.uidNumber,
+                relation                  : a.relation,
+                genderOfbeneficiary       : a.genderOfbeneficiary,   
+                birthYearOfbeneficiary    : a.birthYearOfbeneficiary,
+              }
+            })
+          }
+        this.setState({
+          tableData     : tableData,          
+        })
+      }).catch((error)=>{ 
+        console.log('error',error)
+        // swal("No results found","","error");
+        this.setState({
+          tableData     : [],          
+        })
+      });
+    }
+  }
+  getUID(event)
+  {
+  /*  if(this.state.firstNameOfBeneficiary === this.state.firstNameOfBeneficiaryCheck )
+    {
+       
+      var uidNumber = this.state.uidNumberCheck;
+      var middleNameOfBeneficiaryCheck = this.state.middleNameOfBeneficiaryCheck;
+      this.setState({
+          uidNumber : uidNumber,
+          relation  : "Self",
+          middleNameOfBeneficiary : middleNameOfBeneficiaryCheck,
+          Check     : false,
+      })
+          
+    }
+
+    else if(this.refs.firstNameOfBeneficiary.value == ""){
+      this.setState({
+          uidNumber : "",
+          relation  : "-- Select --",
+          middleNameOfBeneficiary : "",
+          Check     : false,
+      })
+
+    }*/
+  }
+  handleYear(date){
+        // console.log(' date.year()', date);
+        console.log(' date.year()',moment(date).format('YYYY'));
+      this.setState({
+        birthYearOfbeneficiary    : moment(date).format('YYYY'),
+        date    : date,
+      },()=>{
+      });
+    };
   render() {
-    return (    
-      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box" id="createBeneficiary">
+    return (
+      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable border_Box" id="createBeneficiary">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
            <h4 className="pageSubHeader">Create New Beneficiary</h4>
         </div>
@@ -411,21 +606,21 @@ class Beneficiary extends Component{
             <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
           </div>*/}
           <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-            <label className="formLable">Surname </label><span className="asterix">*</span>
+            <label className="formLable">Surname  </label><span className="asterix">*</span>
             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfBeneficiaryErr" >
-              <input type="text" className="form-control inputBox" ref="surnameOfBeneficiary" name="surnameOfBeneficiary" value={this.state.surnameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+              <input type="text" className="form-control inputBox" ref="surnameOfBeneficiary" name="surnameOfBeneficiary" value={this.state.surnameOfBeneficiary}  onChange={this.handleChange.bind(this)} />
             </div>
           </div>
           <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-            <label className="formLable">First Name </label><span className="asterix">*</span>
+            <label className="formLable">First Name  </label><span className="asterix">*</span>
             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfBeneficiaryErr" >
-              <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+              <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onBlur={this.getUID.bind(this)}  onChange={this.handleChange.bind(this)} />
             </div>
           </div>
           <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
-            <label className="formLable">Middle Name </label><span className="asterix"></span>
+            <label className="formLable">Middle Name  </label><span className="asterix"></span>
             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="middleNameOfBeneficiaryErr" >
-              <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary} onKeyDown={this.isTextKey.bind(this)} onChange={this.handleChange.bind(this)} />
+              <input type="text" className="form-control inputBox" ref="middleNameOfBeneficiary" name="middleNameOfBeneficiary" value={this.state.middleNameOfBeneficiary}    onChange={this.handleChange.bind(this)} />
             </div>
           </div>
           <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
@@ -438,7 +633,7 @@ class Beneficiary extends Component{
             <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
               <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
-                <option  value="">-- Select --</option>
+                <option selected='true' disabled="disabled" >-- Select --</option>
                 <option>Self</option>
                 <option>Wife</option>
                 <option>Husband</option>
@@ -448,13 +643,53 @@ class Beneficiary extends Component{
                 <option>Mother</option>
                 <option>Brother</option>
                 <option>Sister</option>
-                <option>Daughter in Law</option>
-                <option>Son in Law</option>
+                <option>Daughter-in-Law</option>
+                <option>Son-in-Law</option>
                 <option>Grandson</option>
                 <option>Granddaughter</option>
               </select>
             </div>
           </div>
+          <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
+            <label className="formLable">Gender</label><span className="asterix"></span>
+            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="genderOfbeneficiaryErr" >
+              <select className="custom-select form-control inputBox" ref="genderOfbeneficiary" name="genderOfbeneficiary" value={this.state.genderOfbeneficiary} onChange={this.handleChange.bind(this)}  >
+                <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                <option>Female</option>
+                <option>Male</option>
+                <option>Transgender</option>
+              </select>
+            </div>
+          </div>
+          <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
+            <label className="formLable">Birth Year</label>
+            <div className="">
+              {console.log('birthYearOfbeneficiary',this.state.birthYearOfbeneficiary)}
+              <Datetime 
+                dateFormat="YYYY"
+                name="birthYearOfbeneficiary" 
+                id="birthYearOfbeneficiaryErr"
+                value={this.state.date}
+                closeOnSelect={true}
+                onChange={this.handleYear.bind(this)} 
+                className="inputBox-main" 
+              />
+            </div>
+          </div>
+
+          {/*<div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
+            <label className="formLable">Birth Year</label>
+            <div className="inputBox-main">
+            {console.log('birthYearOfbeneficiary',this.state.birthYearOfbeneficiary)}
+            <YearPicker 
+              name="birthYearOfbeneficiary" 
+              id="birthYearOfbeneficiaryErr"
+              defaultValue={this.state.birthYearOfbeneficiary}
+              onChange={this.handleYear.bind(this)} 
+              className=""
+             />
+          </div>
+          </div>*/}
         </div> 
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
           {

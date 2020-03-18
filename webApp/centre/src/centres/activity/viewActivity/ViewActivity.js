@@ -1,10 +1,12 @@
 import React, { Component }   from 'react';
 import swal                   from 'sweetalert';
 import axios                  from 'axios';
+import $                      from 'jquery';
 import moment                 from "moment";
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 
+import Loader                 from "../../../common/Loader.js";
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "./ViewActivity.css";
 
@@ -138,8 +140,10 @@ class ViewActivity extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
+    $(".fullpageloader").show();
     axios.post('/api/activityReport/list/'+center_ID, data)
     .then((response)=>{
+    $(".fullpageloader").hide();
       console.log("response",response);
       var tableData = response.data.map((a, i)=>{
         return {
@@ -200,6 +204,7 @@ class ViewActivity extends Component{
   render() {
     return (
       <div className="container-fluid">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper">
             <section className="content">
