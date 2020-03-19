@@ -101,7 +101,6 @@ export default class YearlyReport extends Component{
                 .then((response)=>{
                     console.log('response', response);
                     var tableData = response.data.map((a, i)=>{
-                    console.log(' parseInt(this.addCommas(a.annualPlan_Reach))',  (this.addCommas(a.annualPlan_Reach)));
                     return {
                         _id                               : a._id,
                         projectCategoryType               : a.projectCategoryType ? a.projectCategoryType : "-",

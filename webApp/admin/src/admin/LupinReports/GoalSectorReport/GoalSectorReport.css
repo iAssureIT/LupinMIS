@@ -2,13 +2,18 @@
 	width: 80px !important;
 	white-space: pre-wrap!important;
 }
-#GoalSectorReport .col2, #GoalSectorReport .col3{
+
+#GoalSectorReport .col2{
+    width: 150px !important;
+    white-space: pre-wrap;
+}
+#GoalSectorReport .col3{
 	width: 100px !important;
 }
-#GoalSectorReport .col3, #GoalSectorReport .col5{
+#GoalSectorReport .col5{
 	white-space: pre-wrap!important;
 	width: 200px !important;
-}
+}	
 #GoalSectorReport .col4{
 	width: 100px !important;
 }

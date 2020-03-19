@@ -3,6 +3,7 @@
 	white-space: pre-wrap!important;
 }
 #VillagewisefamilyReport .col2{
+	white-space: pre-wrap!important;
 	width: 100px !important;
 }
 #VillagewisefamilyReport .col3{
@@ -10,17 +11,21 @@
 	width: 200px !important;
 }
 #VillagewisefamilyReport .col4, #VillagewisefamilyReport .col7{
+	white-space: pre-wrap!important;
 	width: 90px !important;
 }
 #VillagewisefamilyReport .col9
 {
+	white-space: pre-wrap!important;
 	width: 62px !important;
 } 
 
 #VillagewisefamilyReport .col5{
+	white-space: pre-wrap!important;
 	width: 150px !important;
 }
 #VillagewisefamilyReport .col8, #VillagewisefamilyReport .col6{
+	white-space: pre-wrap!important;
 	width: 82px !important;
 }
 

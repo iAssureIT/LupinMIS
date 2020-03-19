@@ -6,6 +6,7 @@
 	width: 100px !important;
 }
 #SectorwiseAnnualPlanSummaryReport .col3{
+	white-space: pre-wrap!important;
 	width: 150px !important;
 }
 #SectorwiseAnnualPlanSummaryReport .col4, #SectorwiseAnnualPlanSummaryReport .col7{

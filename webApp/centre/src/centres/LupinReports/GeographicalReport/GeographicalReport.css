@@ -22,6 +22,7 @@
 } 
 
 #GeographicalReport .col8, #GeographicalReport .col11, #GeographicalReport .col6, #GeographicalReport .col5{
+	white-space: pre-wrap!important;
 	width: 72px !important;
 }
 #GeographicalReport .col10, #GeographicalReport .col16 {

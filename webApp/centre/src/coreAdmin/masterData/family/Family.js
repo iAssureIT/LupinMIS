@@ -298,11 +298,6 @@ class Family extends Component{
             });
           }else{
             // console.log('response', response);
-            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-            swal({
-              title : response.data.message,
-              text  : response.data.message
-            });
             this.setState({
               "familyID"             :"",
               "caste"                :"",
@@ -323,6 +318,11 @@ class Family extends Component{
               "date"                 :"",
               "FHYearOfBirth"        :"",
               // "FHGender"             :"-- Select --",
+            });
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            swal({
+              title : response.data.message,
+              text  : response.data.message
             });
           }
         })
@@ -613,6 +613,9 @@ class Family extends Component{
           this.setState({
             listofBlocks     : availableblockInCenter,
             block : '-- Select --',
+          },()=>{
+            // console.log('this.state.listofBlocks',this.state.listofBlocks);
+            // console.log('this.state.block',this.state.block);
           })
         }).catch(function (error) {
           console.log("error = ",error);
@@ -970,7 +973,7 @@ class Family extends Component{
                               <label className="formLable">Block</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
                                 <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block?this.state.block:""} onChange={this.selectBlock.bind(this)} >
-                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option selected='true'  disabled="disabled" >-- Select --</option>
                                   {
 
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
@@ -991,7 +994,7 @@ class Family extends Component{
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
                               {/*console.log("this.state.village",this.state.village)*/}
                                 <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village?this.state.village:""} onChange={this.selectVillage.bind(this)}  >
-                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
                                   {
                                     this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                     this.state.listofVillages.map((data, index)=>{

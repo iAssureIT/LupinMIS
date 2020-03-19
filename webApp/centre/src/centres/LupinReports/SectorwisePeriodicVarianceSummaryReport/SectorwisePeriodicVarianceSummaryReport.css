@@ -17,6 +17,7 @@
 	width: 80px !important;
 }
 #SectorwisePeriodicVarianceSummaryReport .col3{
+	white-space: pre-wrap!important;
 	width: 150px !important;
 }
 #SectorwisePeriodicVarianceSummaryReport .col4, #SectorwisePeriodicVarianceSummaryReport .col7{

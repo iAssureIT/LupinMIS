@@ -692,7 +692,8 @@ margin-right: 12px;
       text-align: center!important;
   }
   .textAlignLeft {
-      text-align: left!important;
+    text-align: left!important;
+    white-space: pre-wrap;
   }
   .textAlignRight {
       text-align: right!important;

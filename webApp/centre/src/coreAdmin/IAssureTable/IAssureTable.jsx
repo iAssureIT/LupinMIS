@@ -576,7 +576,7 @@ class IAssureTable extends Component {
                 <React.Fragment>
           
                     <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
-		        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding whiteText">Search</label>
+		        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding whiteText">&nbsp;	</label>
                         <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
                            <ReactHTMLTableToExcel
                                 id="table-to-xls"                           
@@ -739,7 +739,17 @@ class IAssureTable extends Component {
 																{this.props.tableObjects.editUrl ?
 																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>:null}&nbsp; &nbsp; 
 															{/*	{this.props.editId ? <i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i> : null }&nbsp; &nbsp; */}
-																{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "") }></i>}
+																{console.log('value._id',value._id)}
+																{this.props.editId && this.props.editId === value._id
+																	? 
+																		null 
+																	:
+																		value._id==="-"
+																		? 
+																		null
+																		:
+																		<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "") }></i>
+																}
 															</span>
 															<div className="modal fade" id={"showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "")} role="dialog">
 		                                                        <div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">

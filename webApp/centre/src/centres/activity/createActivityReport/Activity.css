@@ -14,17 +14,21 @@
 }
 #activityReport .col7
 {
+  white-space: pre-wrap!important;
   width: 200px !important;
 } 
 #activityReport .col11, #activityReport .col9, #activityReport .col13, #activityReport .col15, #activityReport .col17
 {
+  white-space: pre-wrap!important;
   width: 72px !important;
 } 
  #activityReport .col5{
+  white-space: pre-wrap!important;
   width: 120px !important;
 }
 
 #activityReport .col6, #activityReport .col20{
+  white-space: pre-wrap!important;
   width: 200px !important;
 }
 #activityReport .col10, #activityReport .col12, #activityReport .col16 {
