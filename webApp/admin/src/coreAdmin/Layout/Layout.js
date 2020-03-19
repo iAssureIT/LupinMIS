@@ -56,6 +56,12 @@ import ProjectMapping                             from '../../coreAdmin/masterDa
 import SectorMapping                              from '../../coreAdmin/masterData/sectorMapping/SectorMapping.js';
 
 import plan                                       from '../../admin/annualPlan/PlanDetails.js';
+
+import CaseStudy                                  from "../../admin/addFile/CaseStudy.js";
+import CaseStudyView                              from "../../admin/addFile/CaseStudyView.js";
+import AddFilePrivate                             from "../../admin/addFile/AddFilePrivate.js";
+import Highlight                                  from "../../admin/highLight/Highlight.js"; 
+import HighlightView                              from "../../admin/highLight/HighlightView.js"; 
 // import report1                                    from "../../admin/LupinReports/ActivitywiseAnnualCompletionReport.js";
 import report1                                    from "../../admin/LupinReports/ActivityAnnualreport/ActivityAnnualreport.js";
 import report2                                    from "../../admin/LupinReports/SectorwiseAnnualCompletionSummaryReport/SectorwiseAnnualCompletionSummaryReport.js";
@@ -186,6 +192,14 @@ componentDidMount(){
                           <Route path="/plan-details"                                                 exact strict component={ plan } />
                           <Route path="/plan-details/"                                                exact strict component={ plan } />
                           <Route path="/plan-details/:id"                                             exact strict component={ plan } />
+                          <Route path="/caseStudy"                                                    exact strict component={ CaseStudy } />
+                          <Route path="/caseStudy/"                                                   exact strict component={ CaseStudy } />
+                          <Route path="/caseStudy/:id"                                                exact strict component={ CaseStudy } />
+                          <Route path="/caseStudyView/:id"                                            exact strict component={ CaseStudyView } />
+                          <Route path="/highlight"                                                    exact strict component={ Highlight } />
+                          <Route path="/highlight/"                                                   exact strict component={ Highlight } />
+                          <Route path="/highlight/:id"                                                exact strict component={ Highlight } />                      
+                          <Route path="/highlightview/:id"                                            exact strict component={ HighlightView } />                      
                           <Route path="/activitywise-annual-completion-report"                        exact strict component={ report1 } />
                           <Route path="/sector-wise-annual-completion-summary-report"                 exact strict component={ report2 } />
                           <Route path="/activity-wise-periodic-variance-report"                       exact strict component={ report3 } />

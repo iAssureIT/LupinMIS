@@ -33,6 +33,11 @@
 #activityReport .col8, #activityReport .col14, #activityReport .col18, #activityReport .col19{
   width: 72px !important;
 }
+
+#activityReport .col21{
+    width: 60px !important;
+}
+
 #activityReport .scrollContent {
   display: block;
   height: 250px;

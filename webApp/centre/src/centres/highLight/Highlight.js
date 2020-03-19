@@ -132,7 +132,7 @@ class Highlight extends Component{
       if($('#highlight').valid()){
         var highlightValues = {
           "center_ID"        :this.state.center_ID,
-          "centerName"       :this.state.centerName,
+          "center"           :this.state.centerName,
           "date"             :this.refs.dateofsubmission.value,
           "userName"         :this.refs.userName.value, 
           "highlight_Image"  :this.state.imageArray,
@@ -169,7 +169,7 @@ class Highlight extends Component{
       var highlightValues = {
         "highlight_ID"     :this.state.editId, 
         "center_ID"        :this.state.center_ID,
-        "centerName"       :this.state.centerName,
+        "center"           :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
         "userName"         :this.refs.userName.value, 
         "highlight_Image"  :this.state.imageArray,
@@ -443,7 +443,7 @@ class Highlight extends Component{
                         }
                       </div>
                     </div>
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                  <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 mt">
                       <IAssureTable 
                         tableName = "Highlight"
                         id = "Highlight"

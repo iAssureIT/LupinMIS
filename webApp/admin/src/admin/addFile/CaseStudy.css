@@ -17,14 +17,11 @@
     text-align: center;
 }
 
-#CaseStudy .col1{
+#CaseStudy .col1, #CaseStudy .col2{
     width: 150px;
 }
-#CaseStudy .col4, #CaseStudy .col2, #CaseStudy .col3 {
+#CaseStudy .col4, #CaseStudy .col5, #CaseStudy .col3 {
     width: 220px;
-}
-#CaseStudy .col5{
-    width: 60px;
 }
 
 #CaseStudy .scrollContent {

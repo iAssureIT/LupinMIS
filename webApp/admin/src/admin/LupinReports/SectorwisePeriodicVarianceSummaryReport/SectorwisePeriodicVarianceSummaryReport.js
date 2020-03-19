@@ -312,10 +312,10 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                   console.log("resp",response);
                   $(".fullpageloader").hide();
                   var tableData = response.data.map((a, i)=>{
-                    return {
-                        _id                                       : a._id,      
+                return {
+                        _id                                       : a._id,       
                         projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                        projectName                               : a.projectName === 0 ? "-" :a.projectName,             
+                        projectName                               : a.projectName === 0 ? "-" :a.projectName,       
                         name                                      : a.name,
                         annualPlan_TotalBudget_L                  : a.annualPlan_TotalBudget_L,
                         monthlyPlan_TotalBudget_L                 : a.monthlyPlan_TotalBudget_L,                
@@ -327,7 +327,7 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                         monthlyPlan_IndirectCC_L                  : a.monthlyPlan_IndirectCC_L,
                         monthlyPlan_Other_L                       : a.monthlyPlan_Other_L,
                         achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
-                        Per_Annual                                : a.Per_Annual,
+                        Per_Periodic                              : a.Per_Periodic,
                         achievement_LHWRF_L                       : a.achievement_LHWRF_L,
                         achievement_NABARD_L                      : a.achievement_NABARD_L,
                         achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,

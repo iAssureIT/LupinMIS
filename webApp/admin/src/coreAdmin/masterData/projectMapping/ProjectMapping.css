@@ -12,7 +12,11 @@
 #ProjectMapping .col4 {
   width: 220px;
 }
-
+/*
+#ProjectMapping .col7 {
+  width: 64px;
+}
+*/
 
 #ProjectMapping .scrollContent {
   display: block;

@@ -1,12 +1,10 @@
-#Highlight .col1{
+#Highlight .col1, #Highlight .col2{
     width: 145px;
 }
-#Highlight .col2{
-    width: 488px;
-}
 #Highlight .col3{
-    width: 60px;
+    width: 385px;
 }
+
 
 #Highlight .scrollContent {
   display: block;

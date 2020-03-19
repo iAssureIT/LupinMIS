@@ -11,6 +11,10 @@
 	width: 90px;
 }
 
+#Family .col14{
+    width: 60px !important;
+}
+
 #Family .scrollContent {
   display: block;
   height: 350px;

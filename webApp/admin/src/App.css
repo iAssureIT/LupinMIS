@@ -1,3 +1,11 @@
+.outerForm {
+    box-shadow: 0px 2px 8px #888888cf;
+    padding: 25px 15px 15px 15px;
+    margin-bottom: 20px;
+}
+.mt {
+    margin-top: 20px;
+}
 .subHeader {
     font-family: 'Montserrat',sans-serif;
     font-size: 14px;

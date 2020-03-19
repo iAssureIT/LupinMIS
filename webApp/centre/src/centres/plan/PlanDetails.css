@@ -18,6 +18,10 @@
 	width: 70px;
 }
 
+#PlanDetails .col22{
+	width: 60px;
+}
+
 #PlanDetails .scrollContent {
   display: block;
   height: 350px;

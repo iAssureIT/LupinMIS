@@ -165,6 +165,7 @@ class CaseStudy extends Component{
     if($('#caseStudy').valid()){
       var caseStudyValues = {
         "center_ID"        :this.state.center_ID,
+        "center"           :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
         "sector_ID"        :this.refs.sector.value.split('|')[1],
         "sectorName"       :this.refs.sector.value.split('|')[0],
@@ -209,6 +210,7 @@ class CaseStudy extends Component{
       var caseStudyValues = {
         "caseStudy_ID"     :this.state.editId, 
         "center_ID"        :this.state.center_ID,
+        "center"           :this.state.centerName,
         "date"             :this.refs.dateofsubmission.value,
         "title"            :this.refs.title.value, 
         "sector_ID"        :this.refs.sector.value.split('|')[1],
