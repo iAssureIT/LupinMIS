@@ -216,7 +216,7 @@ export default class Dashboard extends Component{
           var annualPlan_TotalBudget  = totalData.annualPlan_TotalBudget;
           var achievement_TotalBudget = totalData.achievement_TotalBudget;
           var annualPlan_TotalBudget_L = totalData.annualPlan_TotalBudget_L;
-          var achievement_Total_L      = totalData.achievement_Total_L;
+          var achievement_Total_L      = totalData.achievement_TotalBudget_L;
             this.setState({
             achievement_Reach        : achievement_Reach,
             annualPlan_Reach         : annualPlan_Reach,

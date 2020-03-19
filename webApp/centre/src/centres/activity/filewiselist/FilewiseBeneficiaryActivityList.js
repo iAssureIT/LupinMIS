@@ -38,7 +38,7 @@ class FilewiseBeneficiaryActivityList extends Component{
         console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
-            fileName: a._id != null ? a._id : "-", 
+            fileName: a._id != null ? a._id : "Manual", 
             count: a.count != NaN ? "<p>"+a.count+"</p>" : "a", 
             _id: a._id != null ? a._id : "-", 
           }
