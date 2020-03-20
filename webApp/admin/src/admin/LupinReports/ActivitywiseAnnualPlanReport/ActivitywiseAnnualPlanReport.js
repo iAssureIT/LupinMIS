@@ -397,10 +397,9 @@ class ActivitywiseAnnualPlanReport extends Component{
       }
     }
   getFinancialYear() {
-
     let financeYear;
     let today = moment();
-    console.log('today',today);
+    // console.log('today',today);
     if(today.month() >= 3){
       financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
     }
@@ -410,16 +409,16 @@ class ActivitywiseAnnualPlanReport extends Component{
     this.setState({
         financeYear :financeYear
     },()=>{
-      console.log('financeYear',this.state.financeYear);
+      // console.log('financeYear',this.state.financeYear);
       var firstYear= this.state.financeYear.split('-')[0]
       var secondYear= this.state.financeYear.split('-')[1]
-      console.log(firstYear,secondYear);
+      // console.log(firstYear,secondYear);
       var financialYear = "FY "+firstYear+" - "+secondYear;
       /*"FY 2019 - 2020",*/
       this.setState({
           financialYear  :financialYear,
       },()=>{
-        console.log('financialYear',this.state.financialYear);
+        // console.log('financialYear',this.state.financialYear);
           // this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
     });
@@ -435,7 +434,7 @@ class ActivitywiseAnnualPlanReport extends Component{
         
         option.appendChild(yearText);
         select.add(option);  
-        console.log('option',option); 
+        // console.log('option',option); 
     }
 
     select.name = 'year';
@@ -443,24 +442,13 @@ class ActivitywiseAnnualPlanReport extends Component{
     document.body.appendChild(select);
   }   
   year() {
-        //Reference the DropDownList.
-        var ddlYears = $("#ddlYears");
- 
-        //Determine the Current Year.
-        var currentYear = (new Date()).getFullYear();
-        //Loop and add the Year values to DropDownList.
-        for (var i = 1950; i <= currentYear; i++) {
-            var option = $("<option />");
-            option.html(i);
-            option.val(i);
-            ddlYears.append(option);
-        }
-
-
+     //Determine the Current Year.
+    var currentYear = (new Date()).getFullYear();
+    //Loop and add the Year values to DropDownList.  
     var financeYears = $("#financeYears");
     let financeYear;
     let today = moment();
-    console.log('today',today);
+    // console.log('today',today);
     if(today.month() >= 3){
       financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
     }
@@ -470,28 +458,27 @@ class ActivitywiseAnnualPlanReport extends Component{
     this.setState({
         financeYear :financeYear
     },()=>{
-      console.log('financeYear',this.state.financeYear);
+      // console.log('financeYear',this.state.financeYear);
       var firstYear= this.state.financeYear.split('-')[0]
       var secondYear= this.state.financeYear.split('-')[1]
-      console.log(firstYear,secondYear);
+      // console.log(firstYear,secondYear);
       var financialYear = "FY "+firstYear+" - "+secondYear;
       /*"FY 2019 - 2020",*/
       this.setState({
           financialYear  :financialYear,
       },()=>{
-        console.log('financialYear',this.state.financialYear);
+        // console.log('financialYear',this.state.financialYear);
         var financialYear = this.state.financialYear
-        for (var i = 2010; i <= firstYear; i++) {
-          for (var j = 2011; j <= secondYear; j++) {
-            var financialYears = "FY "+i+" - "+j
-            console.log('financialYears',financialYears);
-            option.html(financialYears);
-            option.val(financialYears);
-            financeYears.append(option);
+        var financialYear = [];
+        for (var i = 2017; i <= firstYear; i++) {
+          for (var j = 2018; j <= secondYear; j++) {
+            if (j-i===1){
+              var financialYears = "FY "+i+" - "+j
+              // console.log('financialYears',financialYears);
+            }
           }
         }
       })
-
     })
   }
   render(){
