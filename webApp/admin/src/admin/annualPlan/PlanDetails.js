@@ -33,6 +33,7 @@ class PlanDetails extends Component{
       "remark"              :"",
       "shown"               : true,
       "uID"                 :"",
+      "years"                :[],
       "month"               :"Annual Plan", 
       "heading"             :"Annual Plan",
       "months"              :["Annual Plan","Till Date","April","May","June","July","August","September","October","November","December","January","February","March"],
@@ -669,6 +670,7 @@ class PlanDetails extends Component{
   }
 
   getData(center_ID, month, year, startRange, limitRange ){
+    console.log('year',year);
     var data = {
       center_ID  : center_ID,
       month      : month,
@@ -753,6 +755,7 @@ class PlanDetails extends Component{
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.year();
     this.getAvailableSectors();
     this.getAvailableCenters();
     if(this.state.editId){     
@@ -762,8 +765,8 @@ class PlanDetails extends Component{
       "year"  : this.state.years[0],
       apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
     },()=>{
-      // console.log('year', this.state.year)
       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+      console.log('year', this.state.year)
     })
     this.getLength();
   }
@@ -1022,9 +1025,52 @@ class PlanDetails extends Component{
     }) 
   }
 
-  render() {
-                // console.log("availableSubActivity",this.state.availableSubActivity);
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      // console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        year            :financialYear
+      },()=>{
+              console.log('year',this.state.year);
+      var upcomingFirstYear=parseInt(this.state.firstYear)+3
+      var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              // console.log('years',this.state.years);
+              })
+            }
+          }
+        }
+      })
+    })
+  }
 
+  render() {
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }

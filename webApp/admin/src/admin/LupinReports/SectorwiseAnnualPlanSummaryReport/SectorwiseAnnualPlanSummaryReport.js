@@ -23,8 +23,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         "projectCategoryType": "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
-        'year'              : "FY 2019 - 2020",
-        "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+        // 'year'              : "FY 2019 - 2020",
+        // "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
         "startDate"         : "",
         "endDate"           : "",
         "twoLevelHeader"    : {
@@ -80,6 +80,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
 
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.year();
     this.getAvailableCenters();
     this.getAvailableProjects();
     this.getAvailableSectors();
@@ -95,6 +96,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.handleToChange = this.handleToChange.bind(this);
   }   
   componentWillReceiveProps(nextProps){
+    this.year();
     this.getAvailableCenters();
     this.getAvailableProjects();
     this.getAvailableSectors();
@@ -400,11 +402,56 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       'currentTabView': currentComp,
     })
   }
+
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      // console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        year       :financialYear
+      },()=>{
+        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              console.log('years',this.state.years);
+              console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
+  }
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <Loader type="fullpageloader" />
-
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">
@@ -442,9 +489,12 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
                          <option className="hidden" >-- Select Year --</option>
                          {
-                          this.state.years.map((data, i)=>{
-                            return <option key={i}>{data}</option>
-                          })
+                            this.state.years 
+                            ? 
+                              this.state.years.map((data, i)=>{
+                                return <option key={i}>{data}</option>
+                              })
+                            : null
                          }
                         </select>
                       </div>

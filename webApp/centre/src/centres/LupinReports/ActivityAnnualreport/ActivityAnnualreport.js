@@ -3,7 +3,7 @@ import _                    from 'underscore';
 import $                    from 'jquery';
 import axios                from 'axios';
 import swal                 from 'sweetalert';
-// import moment               from 'moment';
+import moment               from 'moment';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
 
@@ -26,8 +26,8 @@ class ActivitywiseAnnualCompletionReport extends Component{
         "projectCategoryType": "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
-        'year'              : "FY 2019 - 2020",
-         "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+        // 'year'              : "FY 2019 - 2020",
+        //  "years"            :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
         "startRange"        : 0,
         "limitRange"        : 10000,
         "twoLevelHeader"    : {
@@ -87,31 +87,33 @@ class ActivitywiseAnnualCompletionReport extends Component{
       this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount(){
-      const center_ID = localStorage.getItem("center_ID");
-      const centerName = localStorage.getItem("centerName");
-      this.setState({
-        center_ID    : center_ID,
-        centerName   : centerName,
-      },()=>{
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-      });
-      axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-        this.getAvailableProjects();
-        this.getAvailableSectors();
-        this.setState({
-          // "center"  : this.state.center[0],
-          // "sector"  : this.state.sector[0],
-          tableData : this.state.tableData,
-        },()=>{
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-        })  
-    }
-    componentWillReceiveProps(nextProps){
-      this.getAvailableSectors();
-      this.getAvailableProjects();
+  componentDidMount(){
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
       this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-    }
+    });
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.year();
+    this.getAvailableProjects();
+    this.getAvailableSectors();
+    this.setState({
+      // "center"  : this.state.center[0],
+      // "sector"  : this.state.sector[0],
+      tableData : this.state.tableData,
+    },()=>{
+    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+    })  
+  }
+  componentWillReceiveProps(nextProps){
+    this.year();
+    this.getAvailableSectors();
+    this.getAvailableProjects();
+    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+  }
   handleChange(event){
     event.preventDefault();
 
@@ -361,6 +363,52 @@ class ActivitywiseAnnualCompletionReport extends Component{
           tableData : []
       });
   }
+
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      // console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        year       :financialYear
+      },()=>{
+        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              console.log('years',this.state.years);
+              console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
+  }
   render(){ 
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -448,7 +496,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
                               <option value="all" >All</option>
                               <option value="withUID" >With UID</option>
                               <option value="withoutUID" >Without UID</option>
-                              
                             </select>
                           </div>
                         </div>  
@@ -460,7 +507,6 @@ class ActivitywiseAnnualCompletionReport extends Component{
                               <option value="all" >All</option>
                               <option value="LHWRF Grant" >LHWRF Grant</option>
                               <option value="Project Fund">Project Fund</option>
-                              
                             </select>
                           </div>
                         </div>
@@ -491,15 +537,17 @@ class ActivitywiseAnnualCompletionReport extends Component{
                           <label className="formLable">Year</label><span className="asterix"></span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                             <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                             <option className="hidden" >-- Select Year --</option>
-                             {
-                              this.state.years.map((data, i)=>{
-                                return <option key={i}>{data}</option>
-                              })
-                             }
+                              <option className="hidden" >-- Select Year --</option>
+                              { 
+                                this.state.years 
+                                ? 
+                                  this.state.years.map((data, i)=>{
+                                    return <option key={i}>{data}</option>
+                                  })
+                                : null
+                              }
                             </select>
                           </div>
-                          {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
                         </div>  
                     </div> 
                     <div className="marginTop11 col-lg-12 col-md-12 col-sm-12 col-xs-12">

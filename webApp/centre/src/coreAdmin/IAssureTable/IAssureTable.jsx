@@ -739,7 +739,7 @@ class IAssureTable extends Component {
 																{this.props.tableObjects.editUrl ?
 																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>:null}&nbsp; &nbsp; 
 															{/*	{this.props.editId ? <i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i> : null }&nbsp; &nbsp; */}
-																{console.log('value._id',value._id)}
+																{/*console.log('value._id',value._id)*/}
 																{this.props.editId && this.props.editId === value._id
 																	? 
 																		null 

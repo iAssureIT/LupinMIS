@@ -16,6 +16,7 @@ class ActivitywiseAnnualPlanReport extends Component{
             'tableDatas'        : [],
             'reportData'        : {},
             'tableData'         : [],
+            'years'             : [],
             "startRange"        : 0,
             "limitRange"        : 10000,
             "center"            : "all",
@@ -29,15 +30,10 @@ class ActivitywiseAnnualPlanReport extends Component{
             "projectCategoryType": "all",
             "beneficiaryType"    : "all",
             "projectName"        : "all",
-            'year'              : "FY 2019 - 2020",
-            "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+            'year'               : "",
+            // "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
             "startDate"         : "",
             "endDate"           : "",
-            // "sector"            : "",
-            // "sector_ID"         : "",
-            // "center"            : "",
-            // "center_ID"         : "",
-            // "dataApiUrl"        : "/api/masternotifications/list",
             "twoLevelHeader"    : {
                 apply           : true,
                 firstHeaderData : [
@@ -91,31 +87,28 @@ class ActivitywiseAnnualPlanReport extends Component{
         window.scrollTo(0, 0);
         this.getAvailableCenters = this.getAvailableCenters.bind(this);
         this.getAvailableSectors = this.getAvailableSectors.bind(this);
-        
     }
 
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-      this.getFinancialYear();
-      this.year();
-      this.getAvailableCenters();
-      this.getAvailableProjects();
-      this.getAvailableSectors();
-      this.setState({
-        tableData : this.state.tableData,
-      },()=>{
-        // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-      })
+    this.year();
+    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+    this.getAvailableCenters();
+    this.getAvailableProjects();
+    this.getAvailableSectors();
+    this.setState({
+      tableData : this.state.tableData,
+    },()=>{
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+    })
   }
  
   componentWillReceiveProps(nextProps){
-      this.getFinancialYear();
-      this.getAvailableProjects();
-      this.getAvailableCenters();
-      this.getAvailableSectors();
-      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-      // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    this.year();
+    this.getAvailableProjects();
+    this.getAvailableCenters();
+    this.getAvailableSectors();
+    this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
   }
   handleChange(event){
       event.preventDefault();
@@ -123,7 +116,6 @@ class ActivitywiseAnnualPlanReport extends Component{
         [event.target.name] : event.target.value
       },()=>{
         this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-        // console.log('name', this.state)
       });
   }
   getAvailableCenters(){
@@ -157,7 +149,6 @@ class ActivitywiseAnnualPlanReport extends Component{
           center_ID :center,            
         },()=>{
           this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
-          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         })
       });
   } 
@@ -341,9 +332,9 @@ class ActivitywiseAnnualPlanReport extends Component{
     }
   }
   getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID){   
+    // console.log('here',year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID);
     if(year ){
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType && activity_ID && subActivity_ID){ 
-            // console.log(activity_ID, subActivity_ID);  
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";    
         if(center_ID==="all"){
@@ -396,56 +387,8 @@ class ActivitywiseAnnualPlanReport extends Component{
         }
       }
     }
-  getFinancialYear() {
-    let financeYear;
-    let today = moment();
-    // console.log('today',today);
-    if(today.month() >= 3){
-      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
-    else{
-      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
-    this.setState({
-        financeYear :financeYear
-    },()=>{
-      // console.log('financeYear',this.state.financeYear);
-      var firstYear= this.state.financeYear.split('-')[0]
-      var secondYear= this.state.financeYear.split('-')[1]
-      // console.log(firstYear,secondYear);
-      var financialYear = "FY "+firstYear+" - "+secondYear;
-      /*"FY 2019 - 2020",*/
-      this.setState({
-          financialYear  :financialYear,
-      },()=>{
-        // console.log('financialYear',this.state.financialYear);
-          // this.getData(this.state.firstYear, this.state.secondYear, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-      })
-    });
 
-    var date = new Date,
-    year = date.getFullYear(),
-    select = document.createElement('select');
-
-    for (var i = year; i < year + 5; i++) {
-
-        var option = document.createElement('option'),
-            yearText = document.createTextNode(i);
-        
-        option.appendChild(yearText);
-        select.add(option);  
-        // console.log('option',option); 
-    }
-
-    select.name = 'year';
-
-    document.body.appendChild(select);
-  }   
   year() {
-     //Determine the Current Year.
-    var currentYear = (new Date()).getFullYear();
-    //Loop and add the Year values to DropDownList.  
-    var financeYears = $("#financeYears");
     let financeYear;
     let today = moment();
     // console.log('today',today);
@@ -465,16 +408,25 @@ class ActivitywiseAnnualPlanReport extends Component{
       var financialYear = "FY "+firstYear+" - "+secondYear;
       /*"FY 2019 - 2020",*/
       this.setState({
-          financialYear  :financialYear,
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        year       :financialYear
       },()=>{
-        // console.log('financialYear',this.state.financialYear);
-        var financialYear = this.state.financialYear
-        var financialYear = [];
-        for (var i = 2017; i <= firstYear; i++) {
-          for (var j = 2018; j <= secondYear; j++) {
+      this.getData(this.state.year, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+      var upcomingFirstYear =parseInt(this.state.firstYear)+3
+      var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
             if (j-i===1){
-              var financialYears = "FY "+i+" - "+j
-              // console.log('financialYears',financialYears);
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              console.log('years',this.state.years);
+              console.log('year',this.state.year);
+              })              
             }
           }
         }
@@ -587,12 +539,15 @@ class ActivitywiseAnnualPlanReport extends Component{
                         <label className="formLable">Year</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                           <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                           <option className="hidden" >-- Select Year --</option>
-                          { 
-                            this.state.years.map((data, i)=>{
-                              return <option key={i}>{data}</option>
-                            })
-                          }
+                            <option className="hidden" >-- Select Year --</option>
+                            { 
+                              this.state.years 
+                              ? 
+                                this.state.years.map((data, i)=>{
+                                  return <option key={i}>{data}</option>
+                                })
+                              : null
+                            }
                           </select>
                         </div>
                         {/*<div className="errorMsg">{this.state.errors.year}</div>*/}

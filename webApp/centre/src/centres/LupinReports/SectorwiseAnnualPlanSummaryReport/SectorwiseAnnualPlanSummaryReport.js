@@ -24,8 +24,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         "projectCategoryType": "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
-        'year'              : "FY 2019 - 2020",
-        "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+        // 'year'               : "FY 2019 - 2020",
+        // "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
         "startDate"         : "",
         "endDate"           : "",
         "twoLevelHeader"    : {
@@ -75,14 +75,11 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
         },   
     }
     window.scrollTo(0, 0); 
-    this.handleFromChange    = this.handleFromChange.bind(this);
-    this.handleToChange      = this.handleToChange.bind(this);
-    this.currentFromDate     = this.currentFromDate.bind(this);
-    this.currentToDate       = this.currentToDate.bind(this);
     this.getAvailableSectors = this.getAvailableSectors.bind(this);
   }
 
   componentDidMount(){
+    this.year();
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -97,8 +94,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
       this.getAvailableSectors();
       this.getAvailableProjects();
-      this.currentFromDate();
-      this.currentToDate();
       this.setState({
         // "center"  : this.state.center[0],
         // "sector"  : this.state.sector[0],
@@ -106,17 +101,14 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       },()=>{
       this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
-      this.handleFromChange = this.handleFromChange.bind(this);
-      this.handleToChange = this.handleToChange.bind(this);
   }   
   componentWillReceiveProps(nextProps){
+    this.year();
     if(nextProps){  
       this.getData(this.state.year, this.state.center_ID);
     }
     this.getAvailableProjects();
     this.getAvailableSectors();
-    this.currentFromDate();
-    this.currentToDate();
     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
   }
 
@@ -299,79 +291,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       }
     }
   }
-  handleFromChange(event){
-      event.preventDefault();
-     const target = event.target;
-     const name = target.name;
-     var dateVal = event.target.value;
-     var dateUpdate = new Date(dateVal);
-     var startDate = moment(dateUpdate).format('YYYY-MM-DD');
-     this.setState({
-         [name] : event.target.value,
-         startDate:startDate
-     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-     });
-     // localStorage.setItem('newFromDate',dateUpdate);
-  }
-  handleToChange(event){
-      event.preventDefault();
-      const target = event.target;
-      const name = target.name;
 
-      var dateVal = event.target.value;
-      var dateUpdate = new Date(dateVal);
-      var endDate = moment(dateUpdate).format('YYYY-MM-DD');
-      this.setState({
-         [name] : event.target.value,
-         endDate : endDate
-      },()=>{
-      // console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID);
-     });
-     // localStorage.setItem('newToDate',dateUpdate);
-  }
-
-  currentFromDate(){
-     /* if(localStorage.getItem('newFromDate')){
-          var today = localStorage.getItem('newFromDate');
-          console.log("localStoragetoday",today);
-      }*/
-      if(this.state.startDate){
-          var today = this.state.startDate;
-          // console.log("localStoragetoday",today);
-      }else {
-         var today = (new Date());
-        var nextDate = today.getDate() - 30;
-        today.setDate(nextDate);
-        // var newDate = today.toLocaleString();
-        var today =  moment(today).format('YYYY-MM-DD');
-        // console.log("today",today);
-      }
-      // console.log("nowfrom",today)
-      this.setState({
-         startDate :today
-      },()=>{
-      });
-      return today;
-      // this.handleFromChange()
-  }
-
-  currentToDate(){
-      if(this.state.endDate){
-          var today = this.state.endDate;
-          // console.log("newToDate",today);
-      }else {
-          var today =  moment(new Date()).format('YYYY-MM-DD');
-      }
-      // console.log("nowto",today)
-      this.setState({
-         endDate :today
-      },()=>{
-      });
-      return today;
-      // this.handleToChange();
-  }
   getSearchText(searchText, startRange, limitRange){
       // console.log(searchText, startRange, limitRange);
       this.setState({
@@ -385,6 +305,53 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       'currentTabView': currentComp,
     })
   } 
+
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      // console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        year       :financialYear
+      },()=>{
+        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              console.log('years',this.state.years);
+              console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
+  }
+
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -393,80 +360,83 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           <div className="formWrapper"> 
             <section className="content">
               <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
-                    <div className="row">
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                               {/* Sector wise Annual Plan Summary Report*/}  
-                                Sector Annual Plan Report            
-                            </div>
-                        </div>
-                        <hr className="hr-head"/>
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-                          <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <label className="formLable">Year</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                              <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                               <option className="hidden" >-- Select Year --</option>
-                               {
-                                this.state.years.map((data, i)=>{
-                                  return <option key={i}>{data}</option>
-                                })
-                               }
-                              </select>
-                            </div>
-                          </div> 
-                          <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
-                            <label className="formLable">Project Category</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                              <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                                <option  className="hidden" >--Select--</option>
-                                <option value="all" >All</option>
-                                <option value="LHWRF Grant" >LHWRF Grant</option>
-                                <option value="Project Fund">Project Fund</option>
-                                
-                              </select>
-                            </div>
-                          </div>
-                          {
-                            this.state.projectCategoryType === "Project Fund" ?
-                            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
-                              <label className="formLable">Project Name</label><span className="asterix"></span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                                <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                  <option value="all" >All</option>
-                                  {
-                                    this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                    this.state.availableProjects.map((data, index)=>{
-                                      return(
-                                        <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }
-                                </select>
-                              </div>
-                            </div>
-                          : 
-                          ""
-                          }                 
-                        </div>
-                        <div className="marginTop11">
-                            <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <IAssureTable 
-                                    tableName = "Sectorwise Annual Plan Summary Report"
-                                    id = "SectorwiseAnnualPlanSummaryReport"
-                                    completeDataCount={this.state.tableDatas.length}
-                                    twoLevelHeader={this.state.twoLevelHeader} 
-                                    editId={this.state.editSubId} 
-                                    getData={this.getData.bind(this)} 
-                                    tableHeading={this.state.tableHeading} 
-                                    tableData={this.state.tableData} 
-                                    tableObjects={this.state.tableObjects}
-                                    getSearchText={this.getSearchText.bind(this)}/>
-                            </div>
-                        </div>  
+                <div className="row">
+                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                       {/* Sector wise Annual Plan Summary Report*/}  
+                        Sector Annual Plan Report            
                     </div>
+                  </div>
+                  <hr className="hr-head"/>
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
+                    <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label className="formLable">Year</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                        <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                         <option className="hidden" >-- Select Year --</option>
+                         {
+                          this.state.years 
+                          ?
+                            this.state.years.map((data, i)=>{
+                              return <option key={i}>{data}</option>
+                            })
+                          : null
+                         }
+                        </select>
+                      </div>
+                    </div> 
+                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                      <label className="formLable">Project Category</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                        <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                          <option  className="hidden" >--Select--</option>
+                          <option value="all" >All</option>
+                          <option value="LHWRF Grant" >LHWRF Grant</option>
+                          <option value="Project Fund">Project Fund</option>
+                          
+                        </select>
+                      </div>
+                    </div>
+                    {
+                      this.state.projectCategoryType === "Project Fund" ?
+                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                        <label className="formLable">Project Name</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                          <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                            <option value="all" >All</option>
+                            {
+                              this.state.availableProjects && this.state.availableProjects.length >0 ?
+                              this.state.availableProjects.map((data, index)=>{
+                                return(
+                                  <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                );
+                              })
+                              :
+                              null
+                            }
+                          </select>
+                        </div>
+                      </div>
+                    : 
+                    ""
+                    }                 
+                  </div>
+                  <div className="marginTop11">
+                    <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <IAssureTable 
+                          tableName = "Sectorwise Annual Plan Summary Report"
+                          id = "SectorwiseAnnualPlanSummaryReport"
+                          completeDataCount={this.state.tableDatas.length}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          editId={this.state.editSubId} 
+                          getData={this.getData.bind(this)} 
+                          tableHeading={this.state.tableHeading} 
+                          tableData={this.state.tableData} 
+                          tableObjects={this.state.tableObjects}
+                          getSearchText={this.getSearchText.bind(this)}/>
+                    </div>
+                  </div>  
+                </div>
               </div>
             </section>
           </div>

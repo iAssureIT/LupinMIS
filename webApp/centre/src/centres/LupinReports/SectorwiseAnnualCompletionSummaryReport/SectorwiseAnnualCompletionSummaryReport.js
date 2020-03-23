@@ -2,6 +2,7 @@ import React, { Component }                                  from 'react';
 import swal                                                  from 'sweetalert';
 import $                                                     from 'jquery';
 import axios                                                 from 'axios';
+import moment                                                from 'moment';
 import { Link }                                              from 'react-router-dom';
 import SectorwiseAnnualCompletionSummaryYearlyReport         from '../../Reports/SectorwiseAnnualCompletionSummaryYearlyReport.js';
 import Loader                                                from "../../../common/Loader.js";
@@ -18,13 +19,13 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
         'tableDatas'        : [],
         'reportData'        : {},
         'tableData'         : [],
-        'year'              : "FY 2019 - 2020",
+        // 'year'              : "FY 2019 - 2020",
         "sector"            : "all",
         "sector_ID"         : "all",
         "projectCategoryType": "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
-        "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],      
+        // "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],      
         "startRange"        : 0,
         "limitRange"        : 10000,
         "twoLevelHeader"    : {
@@ -85,11 +86,13 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
   }
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.year();
     this.getAvailableProjects();
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
   }
   componentWillReceiveProps(nextProps){
+    this.year();
     this.getAvailableCenters();
     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
     this.getAvailableProjects();
@@ -222,6 +225,51 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
     }
   }
 
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      // console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        year       :financialYear
+      },()=>{
+        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              console.log('years',this.state.years);
+              console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
+  }
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -293,11 +341,14 @@ class SectorwiseAnnualCompletionSummaryReport extends Component{
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
                           <option className="hidden" >-- Select Year --</option>
-                         {
-                          this.state.years.map((data, i)=>{
-                            return <option key={i}>{data}</option>
-                          })
-                         }
+                          { 
+                            this.state.years 
+                            ? 
+                              this.state.years.map((data, i)=>{
+                                return <option key={i}>{data}</option>
+                              })
+                            : null
+                          }
                         </select>
                       </div>
                       {/*<div className="errorMsg">{this.state.errors.year}</div>*/}

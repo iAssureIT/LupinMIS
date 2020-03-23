@@ -717,6 +717,7 @@ class PlanDetails extends Component{
     });
   }
   componentWillReceiveProps(nextProps){
+    this.year();
     this.getAvailableSectors();
     var editId = nextProps.match.params.id;
     if(nextProps.match.params.id){
@@ -750,6 +751,7 @@ class PlanDetails extends Component{
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.year();
     this.getAvailableSectors();
     if(this.state.editId){     
       this.edit(this.state.editId);       
@@ -1135,6 +1137,52 @@ class PlanDetails extends Component{
       console.log('error', error);
     });
   }
+
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      // console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        year       :financialYear
+      },()=>{
+      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+      var upcomingFirstYear =parseInt(this.state.firstYear)+3
+      var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              console.log('years',this.state.years);
+              console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
+  }
   
   render() {
     var hidden = {
@@ -1179,11 +1227,14 @@ class PlanDetails extends Component{
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
                           <option disabled="disabled" selected="true">-- Select Year --</option>
-                         {
-                          this.state.years.map((data, i)=>{
-                            return <option key={i}>{data}</option>
-                          })
-                         }
+                          { 
+                            this.state.years 
+                            ? 
+                              this.state.years.map((data, i)=>{
+                                return <option key={i}>{data}</option>
+                              })
+                            : null
+                          }
                         </select>
                       </div>
                       <div className="errorMsg">{this.state.errors.year}</div>
