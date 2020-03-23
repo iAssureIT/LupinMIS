@@ -1,3 +1,10 @@
+#FileWiseMonthlyPlanList .col1{
+	text-align: left !important;
+}
+#FileWisePlanList .col1{
+	text-align: left !important;
+}
+
 #PlanDetails .col1, #PlanDetails .col3, #PlanDetails .col4 {
 	width: 80px;
 }

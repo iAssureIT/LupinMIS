@@ -1,3 +1,6 @@
+#FilewiseFamilyList .col1{
+	text-align: left !important;
+}
 #Family .col1, #Family .col3, #Family .col4 {
 	width: 80px;
 }

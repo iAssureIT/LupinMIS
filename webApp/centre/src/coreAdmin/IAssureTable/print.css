@@ -36,4 +36,9 @@
   #section-to-print table td{
     border: 1px solid #333!important;
   }
+  .table-responsive{
+    height:95%;
+  }
+}
+@print{
 }

@@ -14,9 +14,9 @@ class BulkUpload extends Component{
     this.state = {
     	"inputFileData" : [],
       tableData:[],
-    failedRecordsTable:[],
+      failedRecordsTable:[],
     
-    tableObjects : {
+      tableObjects : {
         paginationApply : false,
         searchApply     : false
     }
@@ -172,7 +172,7 @@ class BulkUpload extends Component{
         var record = data[j];
         var attributeArray = [];
         let header = data[0];
-        //console.log('record',record)
+        // console.log('record',record)
         if (record !== undefined && record.length > 0) {
             var k;
             // loop on header columns

@@ -11,6 +11,9 @@
 #Beneficiary .col8{
     width: 60px !important;
 }
+#FilewiseBeneficiaryList .col1{
+	text-align: left !important;
+}
 
 #Beneficiary .scrollContent {
   display: block;

@@ -15,7 +15,8 @@ class PlanDetails extends Component{
     this.state = {
       "center"              :"all",
       "center_ID"           :"all",
-      "sector_id"           :"",
+      "startRange"          : 0,
+      "limitRange"          : 10000,
       "sectorName"          :"-- Select --",
       "subActivity"         :"",
       "activityName"        :"-- Select --",
@@ -37,22 +38,22 @@ class PlanDetails extends Component{
       "month"               :"Annual Plan", 
       "heading"             :"Annual Plan",
       "months"              :["Annual Plan","Till Date","April","May","June","July","August","September","October","November","December","January","February","March"],
-      "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
-      "year"                :"FY 2019 - 2020",
+      // "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+      // "year"                :"FY 2019 - 2020",
       "shown"               : true,
       "twoLevelHeader"     : {
-      "apply"               : true,
-      "firstHeaderData"     : [
-                                {
-                                    heading : 'Activity Details',
-                                    mergedColoums : 14
-                                },
-                                {
-                                    heading : 'Source of Fund',
-                                    mergedColoums : 9
-                                },
-                               
-                              ]
+        "apply"               : true,
+        "firstHeaderData"     : [
+                                  {
+                                      heading : 'Activity Details',
+                                      mergedColoums : 14
+                                  },
+                                  {
+                                      heading : 'Source of Fund',
+                                      mergedColoums : 9
+                                  },
+                                 
+                                ]
       },
       "tableHeading"        : {
         month               : "Month",
@@ -85,8 +86,6 @@ class PlanDetails extends Component{
         searchApply         : false,
         editUrl             : '/plan-details/',
       },   
-      "startRange"          : 0,
-      "limitRange"          : 10000,
       "editId"              : this.props.match.params ? this.props.match.params.id : '',
       "fields"                : {},
       "errors"                : {},
@@ -432,7 +431,7 @@ class PlanDetails extends Component{
                 this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
               }
               this.setState({
-                "year"                : "FY 2019 - 2020",
+                "year"                : this.state.financeYear,
                 "month"               : "Annual Plan",
                 "center"              :"",
                 "sector_id"           :"",
@@ -530,7 +529,7 @@ class PlanDetails extends Component{
               console.log("error"+error);
           }); 
           this.setState({
-            "year"                : "FY 2019 - 2020",
+            "year"                : this.state.financeYear,
             "month"               : "Annual Plan",
             "center"              : "",
             "sector_id"           : "",
@@ -539,7 +538,7 @@ class PlanDetails extends Component{
             "editId"              :"",
             "availableSubActivity":[],
             "months"              :["Annual Plan","Till Date", "April","May","June","July","August","September","October","November","December","January","February","March"],
-            "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+            // "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
             "shown"               : true,
             "apiCall"             : '/api/annualPlans'
           },()=>{
@@ -612,12 +611,28 @@ class PlanDetails extends Component{
   }
   selectMonth(event){
     event.preventDefault();
+    let financeYear;
+    let today = moment();
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }   
+    var firstYear= this.state.financeYear.split('-')[0]
+    var secondYear= this.state.financeYear.split('-')[1]
+    var financialYear = "FY "+firstYear+" - "+secondYear;
+    console.log('financialYear',financialYear);
     var tableObjects = this.state.tableObjects;
     tableObjects["apiLink"] = event.target.value === 'Annual Plan' ? '/api/annualPlans/' : '/api/monthlyPlans/';
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
+    var years= this.state.years
+    console.log('yearspropsselectMonth',this.state.years);
+    console.log('years',years);
+    console.log('event.target.value',event.target.value);
+    var d = new Date();
+    var currentYear = d.getFullYear();
     this.setState({
-      "years"               : event.target.value  === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+      "year"                : event.target.value  === 'Annual Plan' ? financialYear : currentYear,
       "month"               : event.target.value,        
       "apiCall"             : event.target.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
       "sectorName"          : "-- Select --",
@@ -626,20 +641,15 @@ class PlanDetails extends Component{
       tableObjects,
       // fields
     },()=>{
+        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
       this.setState({
-        "year" : this.state.years[0]
+        // "year" : this.state.years[0]
       },()=>{
-        // console.log('month =====', this.state.month, this.state.year)
+        console.log('month =====', this.state.month, this.state.year)
+        console.log('month =====', this.state.years)
         this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
       })
-    });
-    // if (this.validateForm()) {
-    //   let errors = {};
-    //   errors[event.target.name] = "";
-    //   this.setState({
-    //     errors: errors
-    //   });
-    // }
+    });        
   }
   
   addCommas(x) {
@@ -670,59 +680,85 @@ class PlanDetails extends Component{
   }
 
   getData(center_ID, month, year, startRange, limitRange ){
-    console.log('year',year);
-    var data = {
-      center_ID  : center_ID,
-      month      : month,
-      year       : year,
-      startRange : startRange,
-      limitRange : limitRange,
-      startDate  : year+"-04-01",
-      // startDate  : moment().year()+"-04-01",
-      endDate    : moment(new Date()).format("YYYY-MM-DD"),
+    var center_ID =center_ID;
+    var month =month;
+    var year =year;
+    var startRange =startRange;
+    var limitRange =limitRange;
+    let financeYear;
+    let today = moment();
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
     }
-    $(".fullpageloader").show();
-    console.log("data",data);
-    axios.post(this.state.apiCall+'/list', data)
-    .then((response)=>{
-    $(".fullpageloader").hide();
-      console.log("response plan Details===>",response);
-      var tableData = response.data.map((a, i)=>{
-        return {
-          _id                 : a._id,
-          month               : a.month,
-          year                : a.year,
-          projectCategoryType : a.projectCategoryType,
-          projectName         : a.projectName==='all'?'-':a.projectName,
-          sectorName          : a.sectorName,
-          activityName        : a.activityName,
-          subactivityName     : a.subactivityName,
-          unit                : a.unit,
-          physicalUnit        : this.addCommas(a.physicalUnit),
-          unitCost            : this.addCommas(a.unitCost),
-          totalBudget         : this.addCommas(a.totalBudget),
-          noOfBeneficiaries   : this.addCommas(a.noOfBeneficiaries),
-          noOfFamilies        : this.addCommas(a.noOfFamilies),
-          LHWRF               : this.addCommas(a.LHWRF),
-          NABARD              : this.addCommas(a.NABARD),
-          bankLoan            : this.addCommas(a.bankLoan),
-          govtscheme          : this.addCommas(a.govtscheme),
-          directCC            : this.addCommas(a.directCC),
-          indirectCC          : this.addCommas(a.indirectCC),
-          other               : this.addCommas(a.other),
-          remark              : a.remark,
-          
-        }
-      })
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      var financialYear = "FY "+firstYear+" - "+secondYear;
       this.setState({
-        tableData : tableData
-      });
+        financialYear            :financialYear
+      },()=>{
+        // console.log('this.state.financialYear========',this.state.financialYear);
+        var financialYear = this.state.financialYear;
+        var data = {
+            center_ID  : center_ID,
+            month      : month,
+            year       : year,
+            startRange : startRange,
+            limitRange : limitRange,
+            startDate  : financialYear.substring(3, 7)+"-04-01",
+            endDate    : moment(new Date()).format("YYYY-MM-DD"),
+        }
+          // startDate  : moment().year()+"-04-01",
+        $(".fullpageloader").show();
+        // console.log("data",data);
+        axios.post(this.state.apiCall+'/list', data)
+        .then((response)=>{
+          $(".fullpageloader").hide();
+          console.log("response plan Details===>",response);
+          var tableData = response.data.map((a, i)=>{
+            return {
+              _id                 : a._id,
+              month               : a.month,
+              year                : a.year,
+              projectCategoryType : a.projectCategoryType,
+              projectName         : a.projectName==='all'?'-':a.projectName,
+              sectorName          : a.sectorName,
+              activityName        : a.activityName,
+              subactivityName     : a.subactivityName,
+              unit                : a.unit,
+              physicalUnit        : this.addCommas(a.physicalUnit),
+              unitCost            : this.addCommas(a.unitCost),
+              totalBudget         : this.addCommas(a.totalBudget),
+              noOfBeneficiaries   : this.addCommas(a.noOfBeneficiaries),
+              noOfFamilies        : this.addCommas(a.noOfFamilies),
+              LHWRF               : this.addCommas(a.LHWRF),
+              NABARD              : this.addCommas(a.NABARD),
+              bankLoan            : this.addCommas(a.bankLoan),
+              govtscheme          : this.addCommas(a.govtscheme),
+              directCC            : this.addCommas(a.directCC),
+              indirectCC          : this.addCommas(a.indirectCC),
+              other               : this.addCommas(a.other),
+              remark              : a.remark,
+            }
+          })
+          this.setState({
+            tableData : tableData
+          });
+        })
+        .catch(function(error){
+          console.log("error"+error);
+        });
+      })
     })
-    .catch(function(error){
-      console.log("error"+error);
-    });
   }
   componentWillReceiveProps(nextProps){
+    this.year();
+    this.monthYear();
     this.getAvailableSectors();
     var editId = nextProps.match.params.id;
     if(nextProps.match.params.id){
@@ -730,10 +766,12 @@ class PlanDetails extends Component{
         editId : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
+        var years=this.state.years;
+        console.log('yearsprops',this.state.years);
         if(this.state.editId && this.state.month === 'Annual Plan'){
           this.setState({
             "months"              :["Annual Plan"],
-            "years"               : this.refs.month.value === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+            "years"               : this.refs.month.value === 'Annual Plan' ? years : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
             "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
           })
         }else if(this.state.editId && this.state.month !== 'Annual Plan'){
@@ -755,14 +793,16 @@ class PlanDetails extends Component{
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.monthYear();
     this.year();
     this.getAvailableSectors();
+    this.getData(this.state.center_ID, this.state.month, this.state.yearsear, this.state.startRange, this.state.limitRange);
     this.getAvailableCenters();
     if(this.state.editId){     
       this.edit(this.state.editId);       
     }
     this.setState({
-      "year"  : this.state.years[0],
+      // "year"  : this.state.years[0],
       apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
     },()=>{
       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
@@ -772,39 +812,38 @@ class PlanDetails extends Component{
   }
 
   selectCenter(event){
-      var selectedCenter = event.target.value;
+    var selectedCenter = event.target.value;
     console.log('selectedCenter',selectedCenter);
+    this.setState({
+      [event.target.name] : event.target.value,
+      selectedCenter : selectedCenter,
+    },()=>{
+      if(this.state.selectedCenter==="all"){
+        var center = this.state.selectedCenter;
+      }else{
+        var center = this.state.selectedCenter.split('|')[1];
+      }
       this.setState({
-        [event.target.name] : event.target.value,
-        selectedCenter : selectedCenter,
+        center_ID :center,            
       },()=>{
-        if(this.state.selectedCenter==="all"){
-          var center = this.state.selectedCenter;
-        }else{
-          var center = this.state.selectedCenter.split('|')[1];
-        }
-        this.setState({
-          center_ID :center,            
-        },()=>{
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
-        })
-      });
+          this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
+      })
+    });
   } 
   getAvailableCenters(){
     axios({
       method: 'get',
       url: '/api/centers/list',
     }).then((response)=> {
-        this.setState({
-          availableCenters : response.data,
-          // center           : response.data[0].centerName+'|'+response.data[0]._id
-        },()=>{
-      console.log('centersresponse', this.state.availableCenters);
-
-        })
+    this.setState({
+      availableCenters : response.data,
+      // center           : response.data[0].centerName+'|'+response.data[0]._id
+    },()=>{
+      // console.log('centersresponse', this.state.availableCenters);
+    })
     }).catch(function (error) {
-          console.log("error = ",error);
-      });
+      console.log("error = ",error);
+    });
   }
   getAvailableSectors(){
     axios({
@@ -946,8 +985,6 @@ class PlanDetails extends Component{
       });
     }
   }
-
-
   toglehidden(){   
     this.setState({
      shown: !this.state.shown
@@ -1024,7 +1061,21 @@ class PlanDetails extends Component{
           
     }) 
   }
-
+  monthYear(){
+    var d = new Date();
+    var currentYear = d.getFullYear();
+    var monthYears = [];
+    for (var i = 2017; i < currentYear+3; i++) {
+      var monthYear= i
+      monthYears.push(monthYear);
+      this.setState({
+        monthYears  :monthYears,
+        currentYear :currentYear,
+      },()=>{
+        // console.log('monthYears',this.state.monthYears);
+      })
+    }
+  }
   year() {
     let financeYear;
     let today = moment();
@@ -1049,7 +1100,7 @@ class PlanDetails extends Component{
         secondYear :secondYear,
         year            :financialYear
       },()=>{
-              console.log('year',this.state.year);
+      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
       var upcomingFirstYear=parseInt(this.state.firstYear)+3
       var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -1060,6 +1111,7 @@ class PlanDetails extends Component{
               years.push(financeYear);
               this.setState({
                 years  :years,
+                financeyears  :years,
               },()=>{
               // console.log('years',this.state.years);
               })
@@ -1131,11 +1183,31 @@ class PlanDetails extends Component{
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
                           <option disabled="disabled" selected="true">-- Select Year --</option>
-                         {
-                          this.state.years.map((data, i)=>{
-                            return <option key={i}>{data}</option>
-                          })
-                         }
+                          {/* console.log('year render', this.state.year,this.state.month)*/}
+                          {/*
+                            this.state.years.map((data, i)=>{
+                              return (<option key={i}>{data}</option>)
+                            })
+                          */}
+                        {
+                          (this.state.month === "Annual Plan" && this.state.years)
+                          ? 
+                            this.state.years.map((data, i)=>{
+                              // console.log('data',data);
+                              return (<option key={i}>{data}</option>)
+                            })
+                          :
+                          null
+                        }
+                        {
+                          (this.state.month !== "Annual Plan" && this.state.years)
+                          ? 
+                            this.state.monthYears.map((data, i)=>{
+                              return (<option key={i}>{data}</option>)
+                            })
+                          :
+                          null
+                        }
                         </select>
                       </div>
                       <div className="errorMsg">{this.state.errors.year}</div>

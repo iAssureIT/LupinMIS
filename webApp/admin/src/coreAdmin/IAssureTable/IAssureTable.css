@@ -103,14 +103,19 @@
     border: 1px solid #979797 !important;
     border-radius: 3px !important;
 }
+
+.tableprintincon.focus, ..tableprintincon:focus, ..tableprintincon:hover {
+    color: #333 !important;
+    text-decoration: none;
+}
 .tableprintincon{
   font-size: 15px;
-    box-shadow: 0 0 10px #ede1e1;
-    color: #777;
-    background-color: #fff;
-    border: 1px solid #979797 !important;
-    border-radius: 3px !important;
-    padding: 5px 10px;
+  box-shadow: 0 0 10px #ede1e1;
+  color: #777;
+  background-color: #fff;
+  border: 1px solid #979797 !important;
+  border-radius: 3px !important;
+  padding: 5px 10px;
 }
 
 .totalrow{

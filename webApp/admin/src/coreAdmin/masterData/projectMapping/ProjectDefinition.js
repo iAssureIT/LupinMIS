@@ -362,6 +362,7 @@ class ProjectMapping extends Component{
                   "sectorData"                 :editData.sector, 
                   "availableSectors"           :availableSectors
                 },()=>{
+                  console.log('this.state',this.state.projectName);
                   this.getNameOfGoal(this.state.goalType)
                 });
             })
@@ -612,18 +613,18 @@ class ProjectMapping extends Component{
     })
   }
   getAvailableSector(goalType , goalName){
-    // console.log(goalType,goalName)
+    console.log(goalType,goalName)
     axios({
       method: 'get',
       url: 'api/sectorMappings/list_arraySector/' + goalType + '/'+ goalName
     }).then((response)=> {
-      // console.log("getDatafromFrameworkMap",response);
+      console.log("getDatafromFrameworkMap",response);
       if(response){
         this.setState({
           framework : response.data,
           availableSectors : response.data.sector,
         },()=>{
-          // console.log("availableSectors",this.state.availableSectors)
+          console.log("availableSectors",this.state.availableSectors)
         })
       }else{
         this.setState({
@@ -636,7 +637,7 @@ class ProjectMapping extends Component{
       }
       var sectorData = this.state.sectorData;
       var availableSectors = this.state.availableSectors;
-      // console.log("availableSectors.data",availableSectors);
+      console.log("availableSectors.data",availableSectors);
       var availableSectorData = availableSectors.map((block, i)=>{
       // console.log("block.data",block);
         var totalLength = 0;

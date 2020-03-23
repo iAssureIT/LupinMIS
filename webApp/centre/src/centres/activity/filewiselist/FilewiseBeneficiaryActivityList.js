@@ -79,6 +79,7 @@ class FilewiseBeneficiaryActivityList extends Component{
                   <hr className="hr-head"/>
                   <div className="col-lg-10 col-lg-offset-1 col-md-12 col-xs-12 col-sm-12">
                     <IAssureTable 
+                        id = "filewiseBeneficiaryActivityList"
                         tableHeading={this.state.tableHeading}
                         twoLevelHeader={this.state.twoLevelHeader} 
                         dataCount={this.state.dataCount}
