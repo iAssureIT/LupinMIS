@@ -727,7 +727,7 @@ class ProjectMapping extends Component{
     axios.get('/api/projectMappings/list/'+startRange+'/'+limitRange)
     .then((response)=>{
       $(".fullpageloader").hide();
-      // console.log(response)
+      console.log(response)
       if(response&&response.data&&response.data.length>0){
         var tableData = response.data.map((a, i)=>{
         return {
