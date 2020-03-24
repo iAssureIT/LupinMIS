@@ -536,7 +536,7 @@ class IAssureTable extends Component {
 				return paginationArray;
 			}			
 		});
-    } 
+    }    
     printTable(event){
     	event.preventDefault();
         // var mywindow = window.open('', 'PRINT', 'height=400,width=600');
@@ -549,16 +549,12 @@ class IAssureTable extends Component {
 		// mywindow.print();
 		// mywindow.close();
 		// window.print();
-
-
-
 		var printContents = document.getElementById('section-to-screen').innerHTML;    
    		var originalContents = document.body.innerHTML;      
 		document.body.innerHTML = printContents;     
-  		document.body.innerHTML = originalContents;
   		window.print();     
+  		document.body.innerHTML = originalContents;
     }
-    
 	render() {
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
