@@ -29,16 +29,16 @@
     display: none !important;
   }
   .tablerow{
+    width: 100%;
     border: 2px solid #eee !important;
     height: 60px !important;
   }
   
   #section-to-print table td{
     border: 1px solid #333!important;
+    width: 100%;
   }
   .table-responsive{
     height:95%;
   }
-}
-@print{
 }

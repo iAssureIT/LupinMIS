@@ -555,6 +555,19 @@ class IAssureTable extends Component {
   		window.print();     
   		document.body.innerHTML = originalContents;
     }
+
+    printTableA(event){
+    	// event.preventDefault();
+       
+        var DocumentContainer = document.getElementById('section-to-screen');
+
+	    var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
+	    WindowObject.document.write(DocumentContainer.innerHTML);
+	    WindowObject.document.close();
+	    WindowObject.focus();
+	    WindowObject.print();
+	    WindowObject.close();
+    }
 	render() {
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
