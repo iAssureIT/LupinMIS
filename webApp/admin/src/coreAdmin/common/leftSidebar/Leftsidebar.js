@@ -64,7 +64,7 @@ export default class Leftsidebar extends Component{
                 <h4 className="text-center"><b>Admin Lupin MIS</b></h4>
                 <strong className="sidebarLogoName">LFMIS <p className="">Admin</p></strong>
               </div>
-              <ul className="list-unstyled components scrollBox" style={{height:  sidebarHeight+"px"}}>
+              <ul className="list-unstyled components scrollBox" style={{height:  sidebarHeight+15+"px"}}>
                 <li className=" sidebarMenuText">
                   <Link to="/dashboard" title="Dashboard">
                     <i className="glyphicon glyphicon-briefcase"></i>
