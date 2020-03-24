@@ -66,7 +66,6 @@ export default class PieChart extends Component {
           axios.get('/api/reportDashboard/sector_center/'+center_ID+'/'+startDate+'/'+endDate)
           .then((response)=>{ 
             // console.log("respgetData------------->",response) ;
-            response.data.splice(-2);
             var sector = [];
             var piechartcolor =[];
             var annualPlanTotalBudget = [];
