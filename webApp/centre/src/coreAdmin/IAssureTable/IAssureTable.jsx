@@ -537,7 +537,7 @@ class IAssureTable extends Component {
 			}			
 		});
     }    
-    printTable(event){
+    printTableCenter(event){
     	event.preventDefault();
         // var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
@@ -556,7 +556,7 @@ class IAssureTable extends Component {
   		document.body.innerHTML = originalContents;
     }
 
-    printTableA(event){
+    printTable(event){
     	// event.preventDefault();
        
         var DocumentContainer = document.getElementById('section-to-screen');
