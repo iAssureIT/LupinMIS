@@ -845,6 +845,7 @@ class PlanDetails extends Component{
     this.setState({
       [event.target.name]:event.target.value
     },()=>{
+      this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
     });
     let id = $(event.currentTarget).find('option:selected').attr('data-id')
@@ -953,10 +954,10 @@ class PlanDetails extends Component{
       }
     }
     this.handleChange(event);
-    this.getAvailableSubActivity(this.state.sector_ID, activity_ID, this.state.center_ID);
+    this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
   }
   
-  getAvailableSubActivity(sector_ID, activity_ID, center_ID){
+  getAvailableSubActivity(sector_ID, activity_ID, center_ID, projectCategoryType, projectName){
     console.log('sector_ID, activity_ID, center_ID',sector_ID, activity_ID, center_ID);
     var data={
       "sector_ID"   : sector_ID,
@@ -966,10 +967,13 @@ class PlanDetails extends Component{
       "month"       : this.state.month,
       "year"        : this.state.year,
       "dataFor"     : this.state.editId ? "edit" : "add",
+      "projectCategoryType" : projectCategoryType,
+      "projectName"         : projectCategoryType==='LHWRF Grant'?'all':projectName,
     }
+      console.log('data',data)
     axios.post('/api/sectors/activity',data)
     .then((response)=> {
-      // console.log('response.data',response.data)
+      console.log('response.data',response.data)
       if(response&&response.data){
         var newavailableSubActivity = response.data.map((data,index)=>{
           data.physicalUnit = 0;
@@ -1135,10 +1139,13 @@ class PlanDetails extends Component{
       subActivityName : "-- Select --",
       activityName    : '-- Select --',
     },()=>{
+      this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
       // console.log('projectCategoryType',this.state.projectCategoryType);
       if (this.state.projectCategoryType === "LHWRF Grant") {
         this.setState({
           projectName:"-- Select --",
+        },()=>{
+          this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
         })
       }
     })
@@ -1154,8 +1161,8 @@ class PlanDetails extends Component{
         activityName    : '-- Select --',
         availableSubActivity : [],
       },()=>{
+          this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
         // console.log("this.state.type",this.state.type)
-
       })
     }
     else{
@@ -1168,6 +1175,7 @@ class PlanDetails extends Component{
         activityName    : '-- Select --',
         availableSubActivity : [],
       },()=>{
+          this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
       })
     }  
   }
