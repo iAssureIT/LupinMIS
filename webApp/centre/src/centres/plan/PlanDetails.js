@@ -623,11 +623,11 @@ class PlanDetails extends Component{
     var firstYear= this.state.financeYear.split('-')[0]
     var secondYear= this.state.financeYear.split('-')[1]
     var financialYear = "FY "+firstYear+" - "+secondYear;
-    console.log('financialYear',financialYear);
+    // console.log('financialYear',financialYear);
     var years= this.state.years
-    console.log('yearspropsselectMonth',this.state.years);
-    console.log('years',years);
-    console.log('event.target.value',event.target.value);
+    // console.log('yearspropsselectMonth',this.state.years);
+    // console.log('years',years);
+    // console.log('event.target.value',event.target.value);
     var d = new Date();
     var currentYear = d.getFullYear()
     var tableObjects = this.state.tableObjects;
@@ -901,8 +901,11 @@ class PlanDetails extends Component{
     var sector_ID = event.target.value.split('|')[1];
     this.setState({
       sector_ID : sector_ID
+    },()=>{
+      this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
     })
     this.handleChange(event);
+    this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
     this.getAvailableActivity(sector_ID);
   }
 
@@ -937,7 +940,13 @@ class PlanDetails extends Component{
   }
   selectActivity(event){
     event.preventDefault();
-    this.setState({[event.target.name]:event.target.value});
+    var activity_ID = event.target.value.split('|')[1];
+    this.setState({
+      [event.target.name]:event.target.value,
+      activity_ID :activity_ID
+    },()=>{
+      this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
+    });
     var activity_ID = event.target.value.split('|')[1];
     if(this.state.availableSectors&&this.state.availableSectors.length>0){
       let getIndex = this.state.availableSectors.findIndex(x => x._id===this.state.sector_ID)
@@ -958,7 +967,7 @@ class PlanDetails extends Component{
   }
   
   getAvailableSubActivity(sector_ID, activity_ID, center_ID, projectCategoryType, projectName){
-    console.log('sector_ID, activity_ID, center_ID',sector_ID, activity_ID, center_ID);
+    // console.log('sector_ID, activity_ID, center_ID',sector_ID, activity_ID, center_ID);
     var data={
       "sector_ID"   : sector_ID,
       "activity_ID" : activity_ID,
@@ -970,10 +979,10 @@ class PlanDetails extends Component{
       "projectCategoryType" : projectCategoryType,
       "projectName"         : projectCategoryType==='LHWRF Grant'?'all':projectName,
     }
-      console.log('data',data)
+      // console.log('data',data)
     axios.post('/api/sectors/activity',data)
     .then((response)=> {
-      console.log('response.data',response.data)
+      // console.log('response.data',response.data)
       if(response&&response.data){
         var newavailableSubActivity = response.data.map((data,index)=>{
           data.physicalUnit = 0;
@@ -1309,7 +1318,7 @@ class PlanDetails extends Component{
                             (this.state.month === "Annual Plan" && this.state.years )
                             ? 
                               this.state.years.map((data, i)=>{
-                                console.log('data',data);
+                                // console.log('data',data);
                                 return (<option key={i}>{data}</option>)
                               })
                             :
