@@ -23,7 +23,7 @@ class Beneficiary extends Component{
       // "relation"            :"-- Select --",
       "Check"                         :false,
       "relation"                      :"-- Select --",
-      "familyID"                      :"",
+      "familyID"                      :"",  
       "beneficiaryID"                 :"",
       "uidNumberCheck"                :"",
       "firstNameOfBeneficiary"        :"",
@@ -496,8 +496,8 @@ class Beneficiary extends Component{
           return{
               "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
               "familyID"       : a.familyID        ? a.familyID    : '-',
-              "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
               "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+              "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
               "relation"       : a.relation     ? a.relation : '-',
           }
         })
@@ -506,8 +506,8 @@ class Beneficiary extends Component{
         return{
             "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
             "familyID"       : a.familyID        ? a.familyID    : '-',
-            "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
             "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+            "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
             "relation"       : a.relation     ? a.relation : '-',
             "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
             
