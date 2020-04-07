@@ -14,7 +14,8 @@ export default class Header extends Component{
   constructor(props) {
    super(props);
     this.state = {
-              loggedIn : false,
+      loggedIn : false,
+      "role"                : localStorage.getItem("role")
     }
   }
 
@@ -100,9 +101,15 @@ logout(){
                 </div>
                 <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 padd0 pull-right">
                   <div className="">
-                   <div onClick={this.toggleNav.bind(this)} className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
-                    <i className="fa fa-cogs headicon "></i>
-                  </div>
+                  {
+                    this.state.role !== "viewer" ? 
+                      <React.Fragment>
+                        <div onClick={this.toggleNav.bind(this)} className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
+                          <i className="fa fa-cogs headicon "></i>
+                        </div>
+                      </React.Fragment>
+                    : null
+                  }
                   <div className="col-lg-5 col-md-8 col-sm-8 col-xs-8 pull-right padd0">
                     <div className="col-lg-12 col-md-7 col-sm-9 col-xs-12  hover pull-right logoutAct">
                       <div className="row hover" onClick={this.LogoutSectionHover.bind(this)}>
@@ -155,10 +162,9 @@ logout(){
               </div>
             </div>
             </header>
-          <div id="mySidenav" className="sidenav">
-         {/* <a href="javascript:void(0)" className="closebtn" onClick={this.toggleNav.bind(this)} >&times;</a>
-         */}<Rightsidebar/>
-        </div>
+            <div id="mySidenav" className="sidenav">
+              <Rightsidebar/>
+            </div>
       </div>
     );
   }

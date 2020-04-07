@@ -582,24 +582,38 @@ class SectorMapping extends Component{
                         }
                     </form>
                     {this.state.role !== "viewer" ?
-                        <div className="col-lg-12 ">
-                           <hr className=""/>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                          <hr className=""/>
+                          <IAssureTable 
+                            tableName = "Sector Mapping"
+                            id = "SectorMapping" 
+                            tableHeading={this.state.tableHeading}
+                            twoLevelHeader={this.state.twoLevelHeader} 
+                            dataCount={this.state.dataCount}
+                            tableData={this.state.tableData}
+                            getData={this.getData.bind(this)}
+                            tableObjects={this.state.tableObjects}
+                            getSearchText={this.getSearchText.bind(this)}
+                          />
                         </div>
                      : null
-                    }   
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                    <IAssureTable 
-                      tableName = "Sector Mapping"
-                      id = "SectorMapping" 
-                      tableHeading={this.state.tableHeading}
-                      twoLevelHeader={this.state.twoLevelHeader} 
-                      dataCount={this.state.dataCount}
-                      tableData={this.state.tableData}
-                      getData={this.getData.bind(this)}
-                      tableObjects={this.state.tableObjects}
-                      getSearchText={this.getSearchText.bind(this)}
-                    />
-                  </div>
+                    }
+                    {this.state.role === "viewer" ?   
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                        <IAssureTable 
+                          tableName = "Sector Mapping"
+                          id = "ViewerSectorMapping" 
+                          tableHeading={this.state.tableHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          dataCount={this.state.dataCount}
+                          tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          tableObjects={this.state.tableObjects}
+                          getSearchText={this.getSearchText.bind(this)}
+                        />
+                      </div>
+                     : null
+                    }
                 </div>
               </div>
             </section>

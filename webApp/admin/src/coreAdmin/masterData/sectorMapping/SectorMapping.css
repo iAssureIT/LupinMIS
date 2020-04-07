@@ -30,6 +30,38 @@
   overflow: auto;
   width: 100%
 }
+#ViewerSectorMapping .col1
+{
+  width: 200px;
+  white-space: pre-wrap;
+}
+#ViewerSectorMapping .col2 {
+  width: 200px;
+  white-space: pre-wrap;
+}
+#ViewerSectorMapping .col3
+{
+  width: 220px;
+  white-space: pre-wrap;
+}
+#ViewerSectorMapping .col4 {
+  width: 220px;
+  white-space: pre-wrap;
+}
+
+
+#ViewerSectorMapping .scrollContent {
+  display: block;
+  height: 400px;
+  overflow: auto;
+  width: 100%;
+}
+
+#ViewerSectorMapping .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
 
 /*.blockheight{
 	min-height: 200px;
