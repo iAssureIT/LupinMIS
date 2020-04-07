@@ -19,3 +19,24 @@
   overflow: auto;
   width: 100%
 }
+#viewernameOfGoal .col1
+{
+  width: 318px;
+}
+#viewernameOfGoal .col2 {
+  width: 370px;
+}
+
+
+#viewernameOfGoal .scrollContent {
+  display: block;
+  height: 400px;
+  overflow: auto;
+  width: 100%;
+}
+
+#viewernameOfGoal .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}

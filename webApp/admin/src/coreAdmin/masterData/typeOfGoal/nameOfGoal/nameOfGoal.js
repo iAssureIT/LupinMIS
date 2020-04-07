@@ -334,22 +334,39 @@ class nameOfGoal extends Component{
             <div className="col-lg-12 ">
                <hr className="marginT50"/>
             </div>
+
+            <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 mt">
+              <IAssureTable 
+                tableName = "name of Goal"
+                id = "nameOfGoal" 
+                tableHeading={this.state.tableHeading}
+                dataCount={this.state.dataCount}
+                tableData={this.state.tableData}
+                getData={this.getData.bind(this)}
+                tableObjects={this.state.tableObjects}
+                deleteMethod = 'patch'
+                />
+            </div> 
           </React.Fragment>
           :null
         }
-
-        <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 mt">
-          <IAssureTable 
-            tableName = "name of Goal"
-            id = "nameOfGoal" 
-            tableHeading={this.state.tableHeading}
-            dataCount={this.state.dataCount}
-            tableData={this.state.tableData}
-            getData={this.getData.bind(this)}
-            tableObjects={this.state.tableObjects}
-            deleteMethod = 'patch'
-            />
-        </div> 
+        {this.state.role === "viewer" ?
+          <React.Fragment>
+            <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 mt">
+              <IAssureTable 
+                tableName = "name of Goal"
+                id = "viewernameOfGoal" 
+                tableHeading={this.state.tableHeading}
+                dataCount={this.state.dataCount}
+                tableData={this.state.tableData}
+                getData={this.getData.bind(this)}
+                tableObjects={this.state.tableObjects}
+                deleteMethod = 'patch'
+                />
+            </div> 
+          </React.Fragment>
+          :null
+        }
       </div>                            
     );
 
