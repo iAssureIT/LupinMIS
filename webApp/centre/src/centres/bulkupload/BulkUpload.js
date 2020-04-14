@@ -246,9 +246,10 @@ class BulkUpload extends Component{
           })
           .then((response)=> {
             console.log('response',response.data)
+              console.log('response.data.completed',response.data.completed)
             if (response.data.completed) {
 
-              //console.log('endLmt',endLmt)
+              console.log('endLmt',endLmt)
               
               var percentage = Math.round((endLmt*100/totalrows))
               if (percentage > 99 ) {

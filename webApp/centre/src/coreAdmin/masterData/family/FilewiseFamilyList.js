@@ -22,7 +22,7 @@ class FilewiseFamilyList extends Component{
             },
             dataCount:0,
           startRange : 0,
-          limitRange : 10
+          limitRange : 100000
     }
     
   }

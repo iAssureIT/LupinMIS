@@ -20,7 +20,7 @@ class FilewiseBeneficiaryActivityList extends Component{
               searchApply               : false,
             },
           startRange : 0,
-          limitRange : 10
+          limitRange : 100000
     }
     
   }

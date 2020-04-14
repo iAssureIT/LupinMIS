@@ -62,7 +62,7 @@ class Login extends Component {
       axios 
       .post('/api/users/login',auth)
       .then((response)=> {
-        // console.log("-------userData------>>",response);
+        console.log("-------userData------>>",response);
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token;
 
       
@@ -77,6 +77,7 @@ class Login extends Component {
             if(localStorage==null){
               swal("Invalid Email or Password","Please Enter valid email and password");
             }else{
+              localStorage.setItem("user_ID",response.data.user_ID);
               localStorage.setItem("token",response.data.token);
               localStorage.setItem("emailId",response.data.emailId);
               localStorage.setItem("center_ID",response.data.center_ID);

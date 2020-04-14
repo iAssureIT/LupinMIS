@@ -25,7 +25,7 @@ export default class Header extends Component{
     const center_ID = localStorage.getItem("center_ID");
     const fullName  = localStorage.getItem("fullName");
    // console.log("localStorage =",localStorage.getItem('user_ID'));
-    // console.log("localStorage =",localStorage);
+    console.log("localStorage =",localStorage);
     this.setState({
       emailId   : emailId,
       fullName  : fullName,
@@ -101,19 +101,20 @@ logout(){
                 </div>
                 <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 padd0 pull-right">
                   <div className="">
+
                   {
                     this.state.role !== "viewer" ? 
                       <React.Fragment>
-                        <div onClick={this.toggleNav.bind(this)} className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
-                          <i className="fa fa-cogs headicon "></i>
-                        </div>
+                          <div onClick={this.toggleNav.bind(this)} className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
+                            <i className="fa fa-cogs headicon "></i>
+                          </div>
                       </React.Fragment>
                     : null
                   }
                   <div className="col-lg-5 col-md-8 col-sm-8 col-xs-8 pull-right padd0">
                     <div className="col-lg-12 col-md-7 col-sm-9 col-xs-12  hover pull-right logoutAct">
                       <div className="row hover" onClick={this.LogoutSectionHover.bind(this)}>
-{/*                        <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText mailtext"> {this.state.emailId ? this.state.emailId : ""} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i className="fa fa-angle-down"></i> </span>  */}
+                          {/*         <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText mailtext"> {this.state.emailId ? this.state.emailId : ""} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i className="fa fa-angle-down"></i> </span>  */}
                         <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText "> 
                           <span className="col-lg-10 ">
                             <label className="mailtext formLable" ><b>{this.state.emailId ? this.state.emailId : ""}</b></label>

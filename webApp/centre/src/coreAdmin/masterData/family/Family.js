@@ -699,7 +699,7 @@ class Family extends Component{
       axios
       .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
       .then((response)=> {
-      $('.fullpageloader').hide();  
+      // $('.fullpageloader').hide();  
       if (response) {
         this.setState({
             fileDetails:response.data,

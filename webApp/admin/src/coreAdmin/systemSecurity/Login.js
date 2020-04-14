@@ -56,11 +56,14 @@ class Login extends Component {
       axios
       .post('/api/users/login',auth)
       .then((response)=> {
+
+        console.log("response",response)
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token;
+        localStorage.setItem("user_ID",response.data.user_ID);
         localStorage.setItem("token",response.data.token);
         localStorage.setItem("emailId",response.data.emailId);
-        localStorage.setItem("center_ID",response.data.center_ID);
-        localStorage.setItem("centerName",response.data.centerName);
+        // localStorage.setItem("center_ID",response.data.center_ID);
+        // localStorage.setItem("centerName",response.data.centerName);
         localStorage.setItem("fullName",response.data.fullName);
         localStorage.setItem("role",response.data.roles[0]);
         if(axios.defaults.headers.common.Authorization){

@@ -25,7 +25,7 @@ export default class Header extends Component{
     const fullName  = localStorage.getItem("fullName");
     const centerName  = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('fullName'));
-    // console.log("localStorage =",localStorage);
+    console.log("localStorage =",localStorage);
     this.setState({
       emailId   : emailId,
       fullName  : fullName,

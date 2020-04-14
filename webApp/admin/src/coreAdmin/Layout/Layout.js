@@ -29,6 +29,8 @@ import Leftsidebar                                from '../common/leftSidebar/Le
 import Rightsidebar                               from '../common/rightSidebar/Rightsidebar.js'
 import UMListOfUsers                              from '../userManagement/UM/UMListOfUsers.js';
 import UMListOfEmp                                from '../userManagement/UM/OfficeEmpList.js';
+import UserProfile                                from '../userManagement/UM/UserProfile.js';
+import ResetPwd                                   from '../userManagement/UM/ResetPassword.js';
 
 import EditUserProfile                            from '../userManagement/UM/EditUserProfile.js';
 import UMRolesList                                from '../userManagement/Roles/UMRolesList.js';
@@ -126,9 +128,11 @@ componentDidMount(){
                 </div>
                 <div id="dashbordid" className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 NOpadding">
                   <div className="">
-                    <div className=" mainContentBottom">
+                    <div className=" mainCuserprofileontentBottom">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground">                  
                       <Switch>
+                          <Route path="/profile/:id"                component={UserProfile} exact />
+                          <Route path="/reset-password"             component={ResetPwd} exact />
                           <Route path="/CenterwiseBarChart"         component={CenterwiseBarChart} exact />
                           <Route path="/SourcewiseBarChart"         component={SourcewiseBarChart} exact />
                           <Route path="/Chart"                      component={Chart} exact />

@@ -12,7 +12,9 @@ export default class Rightsidebar extends Component{
   
   constructor(props) {
    super(props);
-    this.state = {}
+    this.state = {
+      "role"                : localStorage.getItem("role")
+    }
   }
    
 componentDidMount(){               
@@ -27,40 +29,50 @@ componentDidMount(){
             <div className="wrapper">
               <nav id="sidebar1">       
                 <ul className="list-unstyled components">
-                  <li className="active">
-                    <div className="rightsideHeading ">
-                         {/*   <i className="fa fa-server"></i> &nbsp;*/}
-                           Core Admin Modules
-                    </div>
-                  </li>
-                  <li className="sidebarMenuText">
-                    <a href="/companysetting" >
-                      <i className="fa fa-building" />
-                      Organization Setting
+                 
+                  {/*<li className="sidebarMenuText">
+                    <a href={"/profile/"+localStorage.getItem('user_ID')}>
+                       <i className="fa fa-user"></i> 
+                         My Profile
                     </a>
                   </li>
                   <li className="sidebarMenuText">
-                    <a href="/ViewTemplates" >
-                      <i className="fa fa-envelope" />
-                      Notification Management
+                    <a href="/reset-password">
+                       <i className="fa fa-hand-o-left"></i> 
+                       Reset Password
                     </a>
-                  </li>
-                  <li className="sidebarMenuText">
-                    <a href="/umlistofusers" >
-                       <i className="fa fa-users"></i> 
-                         User Management
-                    </a>
-                  </li>
-                  {/* <li>
-                        <a href="#userman" data-toggle="collapse" aria-expanded="false">
-                           <i className="fa fa-user-circle"></i> &nbsp;
-                           User Management
+                  </li>*/}
+                  {
+                  this.state.role !== "viewer" ? 
+                    <React.Fragment>
+                      <li className="active">
+                        <div className="rightsideHeading ">
+                             {/*   <i className="fa fa-server"></i> &nbsp;*/}
+                               Core Admin Modules
+                        </div>
+                      </li>
+                      <li className="sidebarMenuText">
+                        <a href="/companysetting" >
+                          <i className="fa fa-building" />
+                          Organization Setting
                         </a>
-                        <ul className="collapse list-unstyled " id="userman">
-                          <li><a href="/umlistofusers"><p className="leftpadd">List of Users</p></a></li>
-                          <li><a href="/umlistofemp"><p className="leftpadd">Team Hierarchy</p></a></li>                           
-                        </ul>
-                      </li>*/}     
+                      </li>
+                      <li className="sidebarMenuText">
+                        <a href="/ViewTemplates" >
+                          <i className="fa fa-envelope" />
+                          Notification Management
+                        </a>
+                      </li>
+                      <li className="sidebarMenuText">
+                        <a href="/umlistofusers" >
+                           <i className="fa fa-users"></i> 
+                             User Management
+                        </a>
+                      </li>
+                      </React.Fragment>
+                    : null
+                  }
+                  
                 </ul>
               </nav>
             </div>
