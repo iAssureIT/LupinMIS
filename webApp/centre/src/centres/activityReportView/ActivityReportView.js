@@ -1,8 +1,6 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-import ReactHTMLTableToExcel  from 'react-html-table-to-excel';
-import ReactTable             from "react-table";
 import moment                 from "moment";
 import BenificiaryName        from './BenificiaryName.js';
 import Loader                 from "../../common/Loader.js";

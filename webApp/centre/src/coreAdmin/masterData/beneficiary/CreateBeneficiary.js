@@ -3,13 +3,8 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import moment                 from 'moment';
 import swal                   from 'sweetalert';
-import validate               from 'jquery-validation';
-import DatePicker           from "react-datepicker";
-// import YearPicker from "react-year-picker";
-import Datetime from "react-datetime";
+import Datetime               from "react-datetime";
 import 'react-datetime/css/react-datetime.css';
-import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
-import CreateBeneficiary      from "./CreateBeneficiary.js";
 import "./Beneficiary.css";
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 
@@ -33,6 +28,9 @@ class Beneficiary extends Component{
       "nameofbeneficiaries"           :"",
       "birthYearOfbeneficiary"        :"",
       "genderOfbeneficiary"           :"",
+      "getdistrict"                   : props && props.getdistrict ? props.getdistrict : {},        
+      "getblock"                      : props && props.getblock    ? props.getblock    : {},        
+      "getvillage"                    : props && props.getvillage  ? props.getvillage  : {},        
       // "genderOfbeneficiary"           :"-- Select --",
       "fields"              : {},
       "errors"              : {},
@@ -164,7 +162,8 @@ class Beneficiary extends Component{
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+        this.props.getBeneficiaryData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.getdistrict, this.state.getblock, this.state.getvillage);
+        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
         swal({
           title : response.data.message,
           text  : response.data.message,
@@ -206,7 +205,8 @@ class Beneficiary extends Component{
       // console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+          this.props.getBeneficiaryData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.getdistrict, this.state.getblock, this.state.getvillage);
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
             text  : response.data.message,
@@ -417,7 +417,7 @@ class Beneficiary extends Component{
         // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
       // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
       .then((response)=>{
-        console.log('response', response);
+        // console.log('response', response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
@@ -441,11 +441,11 @@ class Beneficiary extends Component{
       });
     }
   }
-  getAvailableFamilyId(center_ID){
-    if(center_ID){
+  getAvailableFamilyId(event){
+    if(this.state.center_ID){
       axios({
         method: 'get',
-        url: '/api/families/list/'+center_ID,
+        url: '/api/families/list/'+this.state.center_ID,
       }).then((response)=> {
       // console.log("availableFamiliesresponse", response);
           this.setState({
@@ -565,17 +565,19 @@ class Beneficiary extends Component{
     }*/
   }
   handleYear(date){
-        // console.log(' date.year()', date);
-        console.log(' date.year()',moment(date).format('YYYY'));
-      this.setState({
-        birthYearOfbeneficiary    : moment(date).format('YYYY'),
-        date    : date,
-      },()=>{
-      });
-    };
+      // console.log(' date.year()', date);
+      console.log(' date.year()',moment(date).format('YYYY'));
+    this.setState({
+      birthYearOfbeneficiary    : moment(date).format('YYYY'),
+      date    : date,
+    },()=>{
+    });
+  };
+  
   render() {
     return (
       <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable border_Box" id="createBeneficiary">
+        <label className="formLable note col-lg-12 col-md-12 col-sm-12 col-xs-12">Note : You can create Beneficiary of existing Family only. If you want to create Family then <a href="/family" target="_blank">Click Here.</a></label>
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
            <h4 className="pageSubHeader">Create New Beneficiary</h4>
         </div>
@@ -596,6 +598,9 @@ class Beneficiary extends Component{
                   null                            
                 }
               </select>
+              <div className="input-group-addon inputIcon" title="Refresh">
+                <i className="fa fa-refresh"  onClick={this.getAvailableFamilyId.bind(this)} aria-hidden="true"></i>
+              </div>
             </div>
           </div>
          {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
@@ -633,7 +638,7 @@ class Beneficiary extends Component{
             <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
               <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
-                <option selected='true' disabled="disabled" >-- Select --</option>
+                <option selected={true} disabled="disabled" >-- Select --</option>
                 <option>Self</option>
                 <option>Wife</option>
                 <option>Husband</option>
@@ -654,7 +659,7 @@ class Beneficiary extends Component{
             <label className="formLable">Gender</label><span className="asterix"></span>
             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="genderOfbeneficiaryErr" >
               <select className="custom-select form-control inputBox" ref="genderOfbeneficiary" name="genderOfbeneficiary" value={this.state.genderOfbeneficiary} onChange={this.handleChange.bind(this)}  >
-                <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                <option selected={true} value="" disabled="disabled" >-- Select --</option>
                 <option>Female</option>
                 <option>Male</option>
                 <option>Transgender</option>
@@ -664,7 +669,7 @@ class Beneficiary extends Component{
           <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
             <label className="formLable">Birth Year</label>
             <div className="">
-              {console.log('birthYearOfbeneficiary',this.state.birthYearOfbeneficiary)}
+              {/*console.log('birthYearOfbeneficiary',this.state.birthYearOfbeneficiary)*/}
               <Datetime 
                 dateFormat="YYYY"
                 name="birthYearOfbeneficiary" 

@@ -157,3 +157,6 @@
 .ReactTable .rt-tbody .rt-td{
 	font-size: 12px;
 }
+.note{
+	color: #f00 !important
+}

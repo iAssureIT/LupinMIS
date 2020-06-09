@@ -94,11 +94,11 @@ class NewBeneficiary extends Component{
     }
   }
   getData(startRange, limitRange, center_ID, district, block, village){
+    // console.log(startRange, limitRange, center_ID, district, block, village);
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    
     if(center_ID && district && block && village){
       // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
       axios.get('/api/beneficiaries/get/beneficiary/list/'+center_ID+'/'+district+'/'+block+'/'+village)
@@ -334,7 +334,7 @@ class NewBeneficiary extends Component{
           <div className="">
             <h4 className="pageSubHeader col-lg-6 col-sm-6 col-xs-6 noPadding">List of Beneficiaries</h4>
             <div className="col-lg-2 col-lg-offset-4 col-md-4 col-sm-6 col-xs-6 text-center addform" data-toggle="modal" data-target="#myModal">
-            Add Beneficiary
+              Add Beneficiary
             </div>
            {/* <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#myModal">
                <i className="fa fa-plus" aria-hidden="true"></i>
@@ -359,7 +359,12 @@ class NewBeneficiary extends Component{
                         </div>
                        
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style={hidden}>
-                          <CreateBeneficiary getData={this.getData.bind(this)} />
+                          <CreateBeneficiary 
+                            getBeneficiaryData={this.getData.bind(this)}
+                            getdistrict = {this.state.district}
+                            getblock = {this.state.block}
+                            getvillage = {this.state.village}
+                          />
                         </div><br/>
                         <div className=" col-lg-12 col-sm-12 col-xs-12  ">
                           <div className="borderBoxHeight border_Box"> 
@@ -368,7 +373,7 @@ class NewBeneficiary extends Component{
                                   <label className="formLable">District<span className="asterix">*</span></label>
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                     <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
-                                      <option  selected="true">-- Select --</option>
+                                      <option  selected={true}>-- Select --</option>
                                       {
                                         this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                         this.state.listofDistrict.map((data, index)=>{
@@ -388,7 +393,7 @@ class NewBeneficiary extends Component{
                                 <label className="formLable">Block<span className="asterix">*</span></label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                                   <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                    <option disabled="disabled" selected="true">-- Select --</option>
+                                    <option disabled="disabled" selected={true}>-- Select --</option>
                                     {
                                       this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                       this.state.listofBlocks.map((data, index)=>{
@@ -407,7 +412,7 @@ class NewBeneficiary extends Component{
                                 <label className="formLable">Village<span className="asterix">*</span></label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                                   <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                    <option disabled="disabled" selected="true">-- Select --</option>
+                                    <option disabled="disabled" selected={true}>-- Select --</option>
                                     {
                                       this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                       this.state.listofVillages.map((data, index)=>{

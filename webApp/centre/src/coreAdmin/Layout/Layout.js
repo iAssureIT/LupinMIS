@@ -165,6 +165,7 @@ class Layout extends Component{
                               <Route path="/activity"                            exact strict component={ Activity } />
                               <Route path="/activity/"                           exact strict component={ Activity } />
                               <Route path="/activity/:id"                        exact strict component={ Activity } />
+
                               <Route path="/viewActivity"                        exact strict component={ ViewActivity } />
                               <Route path="/activityReportView/:id"              exact strict component={ ActivityReportView } />
                               <Route path="/centerList"                          exact strict component={ CenterList } />

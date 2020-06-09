@@ -29,8 +29,8 @@ class PlanDetails extends Component{
       "govtscheme"          :"",
       "directCC"            :"",
       "indirectCC"          :"",
-      "type"                : true,      
-      "projectName"         : "-- Select --",
+      type                : true,      
+      "projectName"       : "-- Select --",
       "projectCategoryType" : "LHWRF Grant",
       "other"               :"",
       "remark"              :"",
@@ -38,8 +38,9 @@ class PlanDetails extends Component{
       "uID"                 :"",
       "month"               :"Annual Plan", 
       "heading"             :"Annual Plan",
-      // "months"              :["Annual Plan","Till Date","April","May","June","July","August","September","October","November","December","January","February","March"],
-      "months"              :["Annual Plan","Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
+      "months"              :["Annual Plan","Till Date","April","May","June","July","August","September","October","November","December","January","February","March"],
+      // "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
+      // "year"                :"FY 2019 - 2020",
       "shown"               : true,
       "twoLevelHeader"     : {
       "apply"               : true,
@@ -421,9 +422,8 @@ class PlanDetails extends Component{
               }
               this.setState({
                 "year"                : "FY 2019 - 2020",
-                "months"              :["Annual Plan","Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
                 "month"               : "Annual Plan",
-                "projectName"         : "-- Select --",
+                "projectName"        : "-- Select --",
                 "projectCategoryType" : "LHWRF Grant",
                 "type"                : true,
                 "center"              :"",
@@ -463,7 +463,9 @@ class PlanDetails extends Component{
         title : "abc",
         text  : "Please fill atleast one SubActivity Details."
       });
-    }         
+    }
+   
+          
   }
   Update(event){    
     event.preventDefault();
@@ -536,8 +538,7 @@ class PlanDetails extends Component{
             "activityName"        : "-- Select --",
             "editId"              :"",
             "availableSubActivity":[],
-            "months"              :["Annual Plan","Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
-            // "months"              :["Annual Plan","Till Date", "April","May","June","July","August","September","October","November","December","January","February","March"],
+            "months"              :["Annual Plan","Till Date", "April","May","June","July","August","September","October","November","December","January","February","March"],
             // "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
             "shown"               : true,
             "apiCall"             : '/api/annualPlans'
@@ -628,14 +629,16 @@ class PlanDetails extends Component{
     // console.log('years',years);
     // console.log('event.target.value',event.target.value);
     var d = new Date();
-    var currentYear  = d.getFullYear()
+    var currentYear = d.getFullYear()
     var tableObjects = this.state.tableObjects;
     tableObjects["apiLink"] = event.target.value === 'Annual Plan' ? '/api/annualPlans/' : '/api/monthlyPlans/';
 
+    var tableObjects = this.state.tableObjects;
+    tableObjects["apiLink"] = event.target.value === 'Annual Plan' ? '/api/annualPlans/' : '/api/monthlyPlans/';
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
     this.setState({
-      "year"                : event.target.value  === 'Annual Plan' ? financialYear : financialYear,
+      "year"                : event.target.value  === 'Annual Plan' ? financialYear : currentYear,
       "month"               : event.target.value,        
       "apiCall"             : event.target.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
       "sectorName"          : "-- Select --",
@@ -766,7 +769,7 @@ class PlanDetails extends Component{
         editId : editId,
         editSectorId : nextProps.match.params.sectorId
       },()=>{
-      /*  if(this.state.editId && this.state.month === 'Annual Plan'){
+        if(this.state.editId && this.state.month === 'Annual Plan'){
           this.setState({
             "months"              :["Annual Plan"],
             "years"               : this.refs.month.value === 'Annual Plan' ? ["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"] : [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
@@ -778,7 +781,7 @@ class PlanDetails extends Component{
             "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
             "apiCall"             : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
           })
-        }*/
+        }
         this.getAvailableProjectName();
         this.getAvailableActivity(this.state.editSectorId);
         this.getAvailableSubActivity(this.state.editSectorId);
@@ -876,11 +879,7 @@ class PlanDetails extends Component{
       .catch(function(error){
         console.log("error = ",error);
       });
-
-
-
-
-
+      
   }
 
   getAvailableSectors(){
@@ -910,7 +909,7 @@ class PlanDetails extends Component{
     this.getAvailableActivity(sector_ID);
   }
 
-  getAvailableActivity(sector_ID, activityName, activity_ID){
+  getAvailableActivity(sector_ID){
     // console.log("sector_ID",sector_ID);
     if(sector_ID){
       axios({
@@ -925,9 +924,9 @@ class PlanDetails extends Component{
       });
         this.setState({
           availableActivity : sortArray,
-          activityName      : activityName+'|'+activity_ID
+          activityName      : "-- Select --",
         },()=>{
-          // console.log("this.state.availableActivity",this.state.availableActivity);
+          console.log("this.state.availableActivity",this.state.availableActivity);
           if(!this.state.editId){
             this.setState({
                 availableSubActivity : []
@@ -1021,11 +1020,11 @@ class PlanDetails extends Component{
           console.log('editresponse',response);
         var editData = response.data[0];
         if(editData){
-          this.getAvailableActivity(editData.sector_ID, editData.activityName, editData.activity_ID);
+          this.getAvailableActivity(editData.sector_ID);
           // this.getAvailableSubActivity(editData.sector_ID, editData.activity_ID);
           this.setState({
             "availableSubActivity"    : [{
-              "_id"                 : editData.subactivity_ID,
+              "_id"                   : editData.subactivity_ID,
               "subActivityName"     : editData.subactivityName,
               "unit"                : editData.unit,
               "physicalUnit"        : editData.physicalUnit,
@@ -1054,7 +1053,7 @@ class PlanDetails extends Component{
             "type"                    : editData.projectCategoryType==="LHWRF Grant" ? true : false,
             "projectName"             : editData.projectName==='all'?'-- Select --':editData.projectName,
           },()=>{
-            // console.log("edit in func",this.state);
+            // console.log("availableSubActivity in func",this.state.availableSubActivity);
           })      
         }
       }).catch(function (error) {
@@ -1316,7 +1315,7 @@ class PlanDetails extends Component{
                             : null
                           */}
                           {
-                            ( this.state.years )
+                            (this.state.month === "Annual Plan" && this.state.years )
                             ? 
                               this.state.years.map((data, i)=>{
                                 // console.log('data',data);
@@ -1325,7 +1324,7 @@ class PlanDetails extends Component{
                             :
                             null
                           }
-                          {/*
+                          {
                             (this.state.month !== "Annual Plan" && this.state.years)
                             ? 
                               this.state.monthYears.map((data, i)=>{
@@ -1333,7 +1332,7 @@ class PlanDetails extends Component{
                               })
                             :
                             null
-                         */ }
+                          }
                         </select>
                       </div>
                       <div className="errorMsg">{this.state.errors.year}</div>
@@ -1434,17 +1433,17 @@ class PlanDetails extends Component{
                                   <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
                                     <option disabled="disabled" selected="true">-- Select --</option>
                                     {
-                                      this.state.availableActivity && this.state.availableActivity.length >0 ?
-                                      this.state.availableActivity.map((data, index)=>{
-                                        if(data.activityName ){
-                                          return(
-                                            <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
-                                          );
-                                        }
-                                      })
-                                      :
-                                      null
-                                    }
+                                    this.state.availableActivity && this.state.availableActivity.length >0 ?
+                                    this.state.availableActivity.map((data, index)=>{
+                                      if(data.activityName ){
+                                        return(
+                                          <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                        );
+                                      }
+                                    })
+                                    :
+                                    null
+                                  }
                                   </select>
                                 </div>
                                 <div className="errorMsg">{this.state.errors.activityName}</div>

@@ -136,7 +136,7 @@ export default class Leftsidebar extends Component{
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Submit Activity</span>
                       </Link>
-                    </li> 
+                    </li>
                     <li>
                       <Link to="/Filewise-activity-list">
                         <i className="fa fa-circle-o" />

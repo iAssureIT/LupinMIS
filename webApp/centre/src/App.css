@@ -222,6 +222,7 @@ input, select{
   font-size: 18px !important;
   color: #979797 !important;
   background-color: #ffffff !important;
+  border-left: 1px solid #979797 !important;
   border-right: 1px solid #979797 !important;
   border: none !important;
 }

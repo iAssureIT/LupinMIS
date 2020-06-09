@@ -250,9 +250,10 @@
 .listItem{
 	font-family:'Montserrat',sans-serif !important;
 	padding-left:6px;
-  	padding-top: 3px;
+  padding-top: 2px;
 	font-size:11px !important;
 	overflow-wrap: break-word;
+  width: 280px;
 }
 .noPadding{
 	padding: 0px !important;

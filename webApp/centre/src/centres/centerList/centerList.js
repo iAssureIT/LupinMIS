@@ -1,7 +1,6 @@
 import React, { Component }   from 'react';
 import axios                  from 'axios';
 import $                      from 'jquery';
-import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 
 import Loader                 from "../../common/Loader.js";
@@ -76,10 +75,7 @@ class centerList extends Component{
   }
 
   getData(startRange, limitRange){
-  var data = {
-    limitRange : limitRange,
-    startRange : startRange,
-  }
+
     $(".fullpageloader").show();
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
