@@ -299,8 +299,8 @@ class BulkUpload extends Component{
       "csv"
     ]
     return (
-    	 <div className=" container-fluid">
-       <Loader type="fullpageloader" percentage={this.state.percentage}/>
+    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+          <Loader type="fullpageloader" percentage={this.state.percentage}/>
 	        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent">
 	          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 bulkEmployeeImg">
 	            <a href={this.props.fileurl} download>
@@ -337,104 +337,104 @@ class BulkUpload extends Component{
             </div>        
           }
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 filedetailsDiv" style={{display:"none"}}>
-        <br/>
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent NoPadding">
-          {
-            this.props.fileDetails ?
-            <div className="">
-              <ul className="nav nav-tabs">
-                <li className="active"><a data-toggle="tab" href={"#failure"+this.props.failedRecordsCount}>Failure</a></li>
-                <li ><a data-toggle="tab" href={"#success"+this.props.goodDataCount}>Success</a></li>
-              </ul>
-              <div className="tab-content">
-              <h5>Filename: <span>{this.state.fileName}</span></h5>
-                <div id={"failure"+this.props.failedRecordsCount} className="tab-pane fade in active">
-                <h5>
-                Out of {this.props.fileDetails.totalRecords } {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  &nbsp;
+            <br/>
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent NoPadding">
+              {
+                this.props.fileDetails ?
+                <div className="">
+                  <ul className="nav nav-tabs">
+                    <li className="active"><a data-toggle="tab" href={"#failure"+this.props.failedRecordsCount}>Failure</a></li>
+                    <li ><a data-toggle="tab" href={"#success"+this.props.goodDataCount}>Success</a></li>
+                  </ul>
+                  <div className="tab-content">
+                  <h5>Filename: <span>{this.state.fileName}</span></h5>
+                    <div id={"failure"+this.props.failedRecordsCount} className="tab-pane fade in active">
+                    <h5>
+                    Out of {this.props.fileDetails.totalRecords } {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  &nbsp;
 
-                {this.props.fileDetails.failedRecords.length} bad {this.props.fileDetails.failedRecords.length > 1 ? "records were " : "record was " }found.
-                </h5>
-                  <div className="text-right">
-                  <br/>
-                   <ReactHTMLTableToExcel
-                    id="test-table-xls-button"
-                    className="download-table-xls-button"
-                    table={"failedtable"+this.props.failedRecordsCount}
-                    filename="tablexls"
-                    sheet="tablexls"
-                    buttonText="Download as XLS"/>
+                    {this.props.fileDetails.failedRecords.length} bad {this.props.fileDetails.failedRecords.length > 1 ? "records were " : "record was " }found.
+                    </h5>
+                      <div className="text-right">
                       <br/>
-                    </div>  
-                    <div style={{overflowX: "auto"}}>
+                       <ReactHTMLTableToExcel
+                        id="test-table-xls-button"
+                        className="download-table-xls-button"
+                        table={"failedtable"+this.props.failedRecordsCount}
+                        filename="tablexls"
+                        sheet="tablexls"
+                        buttonText="Download as XLS"/>
+                          <br/>
+                        </div>  
+                        <div style={{overflowX: "auto"}}>
 
-                    <IAssureTable 
-                      tableHeading={this.props.failedtableHeading}
-                      twoLevelHeader={this.state.twoLevelHeader} 
-                      dataCount={this.props.failedRecordsCount}
-                      tableData={this.props.failedRecordsTable}
-                      tableObjects={this.state.tableObjects}
-                      />
+                        <IAssureTable 
+                          tableHeading={this.props.failedtableHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          dataCount={this.props.failedRecordsCount}
+                          tableData={this.props.failedRecordsTable}
+                          tableObjects={this.state.tableObjects}
+                          />
 
 
-                    <table className="table" width="50%" id={"failedtable"+this.props.failedRecordsCount} style={{display:"none"}}>
-                      <thead>
-                        <tr>
-                        {
-                          this.props.fileDetails.failedRecords[0] ? 
-                          Object.entries(this.props.fileDetails.failedRecords[0]).map( ([key, value], i)=> {
-                           return(<th>{key}</th>);
-                          }) : null
-                        }
-                        </tr>
-                      </thead>
-                      <tbody>
-                      {
-                        this.props.fileDetails.failedRecords ? 
-                        this.props.fileDetails.failedRecords.map((data,index)=>{
-                         
-                          return(
-                            <tr key={index}>
-                            { Object.entries(data).map( ([key, value], i)=> {
-                                return(<td>{data[key]}</td>);
-                              })
+                        <table className="table" width="50%" id={"failedtable"+this.props.failedRecordsCount} style={{display:"none"}}>
+                          <thead>
+                            <tr>
+                            {
+                              this.props.fileDetails.failedRecords[0] ? 
+                              Object.entries(this.props.fileDetails.failedRecords[0]).map( ([key, value], i)=> {
+                               return(<th>{key}</th>);
+                              }) : null
                             }
-                          </tr>
-                          );
-                        }) 
-                        : null
-                      }
-                      </tbody>
-                    </table>
-                    </div>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {
+                            this.props.fileDetails.failedRecords ? 
+                            this.props.fileDetails.failedRecords.map((data,index)=>{
+                             
+                              return(
+                                <tr key={index}>
+                                { Object.entries(data).map( ([key, value], i)=> {
+                                    return(<td>{data[key]}</td>);
+                                  })
+                                }
+                              </tr>
+                              );
+                            }) 
+                            : null
+                          }
+                          </tbody>
+                        </table>
+                        </div>
 
+                      </div>
+                    <div id={"success"+this.props.goodDataCount} className="tab-pane fade">
+                      <h5>
+                      {
+                        /*Out of {this.props.fileDetails.totalRecords} {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  {this.props.fileDetails.goodrecords.length} {this.props.fileDetails.goodrecords.length > 1 ? "records are" : "record is" } added successfully. &nbsp;
+                      */}
+                      Total {this.props.fileDetails.goodrecords.length} { this.props.fileDetails.totalRecords > 1 ? "records" : "record"} found from this file.
+                      </h5>
+                          <IAssureTable 
+                          tableHeading={this.props.goodRecordsHeading}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          dataCount={this.props.goodDataCount}
+                          tableData={this.props.goodRecordsTable}
+                          //getData={this.getData.bind(this)}
+                          tableObjects={this.state.tableObjects}
+                          />
+                      {
+                      
+                    }
+                    </div>
+                    
                   </div>
-                <div id={"success"+this.props.goodDataCount} className="tab-pane fade">
-                  <h5>
-                  {
-                    /*Out of {this.props.fileDetails.totalRecords} {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  {this.props.fileDetails.goodrecords.length} {this.props.fileDetails.goodrecords.length > 1 ? "records are" : "record is" } added successfully. &nbsp;
-                  */}
-                  Total {this.props.fileDetails.goodrecords.length} { this.props.fileDetails.totalRecords > 1 ? "records" : "record"} found from this file.
-                  </h5>
-                      <IAssureTable 
-                      tableHeading={this.props.goodRecordsHeading}
-                      twoLevelHeader={this.state.twoLevelHeader} 
-                      dataCount={this.props.goodDataCount}
-                      tableData={this.props.goodRecordsTable}
-                      //getData={this.getData.bind(this)}
-                      tableObjects={this.state.tableObjects}
-                      />
-                  {
-                  
-                }
-                </div>
-                
-              </div>
-            </div>  
-            : null
-          }
-        </div>
+                </div>  
+                : null
+              }
+            </div>
+          </div>
       </div>
-    	</div>
     )
   }
 }

@@ -28,8 +28,6 @@ class Activity extends Component{
       "typeofactivity"    : "-- Select --",
       "nameofactivity"    : "",
       "activity"          : "-- Select --",
-      "projectName"       : "-- Select --",
-      "projectCategoryType" : "LHWRF Grant",
       "subactivity"       : "-- Select --",
       "unit"              : "Number",
       "unitCost"          : 0,
@@ -45,9 +43,11 @@ class Activity extends Component{
       "other"             : 0,
       "total"             : 0,
       "remark"            : "",
-      type                : true,      
-      shown               : true,      
-      bActivityActive     : "active",      
+      "projectCategoryType" : "LHWRF Grant",
+      "projectName"         : "-- Select --",
+      "type"                : true,      
+      "shown"               : true,      
+      "bActivityActive"     : "active",      
       "listofDistrict"    :[],
       "listofBlocks"      :[],
       "listofVillages"    :[],
@@ -315,7 +315,7 @@ class Activity extends Component{
       if (this.state.unitCost > 0 & this.state.quantity > 0) {
         // console.log("this.state.unitCost = ",this.state.unitCost);
         var totalcost = (parseFloat(this.state.unitCost) * parseFloat(this.state.quantity)).toFixed(2);
-        console.log("totalcost = ",totalcost);
+        // console.log("totalcost = ",totalcost);
         this.state.LHWRF = 0;
         this.state.NABARD = 0;
         this.state.bankLoan = 0;
@@ -417,14 +417,15 @@ class Activity extends Component{
         "listofBeneficiaries" : this.state.selectedBeneficiaries,
         "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
         "projectCategoryType" : this.state.projectCategoryType,
+        "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
       };
       
-      // console.log("activityValues", activityValues);
+      console.log("activityValues", activityValues);
       if (parseFloat(this.state.total) === parseFloat(this.state.totalcost)) {
 
         axios.post('/api/activityReport',activityValues)
         .then((response)=>{
-          // console.log("response", response);
+          console.log("response", response);
           this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
             this.setState({
               selectedValues : this.state.selectedBeneficiaries 
@@ -446,6 +447,7 @@ class Activity extends Component{
         this.setState({
           "projectName"        : "-- Select --",
           "projectCategoryType" : "LHWRF Grant",
+          "type"                : true,
           "district"          : "-- Select --",
           "block"             : "-- Select --",
           "village"           : "-- Select --",
@@ -525,6 +527,7 @@ class Activity extends Component{
         "listofBeneficiaries" : this.state.selectedBeneficiaries,
         "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
         "projectCategoryType" : this.state.projectCategoryType,
+        "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
       };
       // console.log('activityValues',activityValues)
       axios.patch('/api/activityReport',activityValues)
@@ -542,6 +545,7 @@ class Activity extends Component{
       this.setState({
         "projectName"        : "-- Select --",
         "projectCategoryType" : "LHWRF Grant",
+        "type"                : true,
         "district"          : "-- Select --",
         "block"             : "-- Select --",
         "village"           : "-- Select --",
@@ -690,39 +694,38 @@ class Activity extends Component{
         this.setState({
           listofVillages   : availablevillageInCenter,
         },()=>{
-            console.log('listofVillages',this.state.listofVillages);
-          })
+          // console.log('listofVillages',this.state.listofVillages);
+        })
       }).catch(function (error) {
         console.log("error = ",error);
       });
     }
   getAvailableBlocks(center_ID, districtB)
-    {
-        console.log("center_ID = ",center_ID,"district",districtB);
+  {
+        // console.log("center_ID = ",center_ID,"district",districtB);
     axios({
           method: 'get',
           url: '/api/centers/'+center_ID,
           }).then((response)=> {
-          console.log('availableblockInCenter ==========',response);
+          // console.log('availableblockInCenter ==========',response);
           function removeDuplicates(data, param, district){
             return data.filter(function(item, pos, array){
               return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
             })
           }
-          console.log('villagesCovered',response.data[0].villagesCovered);
+          // console.log('villagesCovered',response.data[0].villagesCovered);
           var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", districtB);
           this.setState({
             listofBlocks     : availableblockInCenter,
           },()=>{
-            console.log('listofBlocks',this.state.listofBlocks);
+            // console.log('listofBlocks',this.state.listofBlocks);
           })
         }).catch(function (error) {
           console.log("error = ",error);
         });
   }
   edit(id){
-    console.log('this.state.center_ID',this.state.center_ID)
-
+    // console.log('this.state.center_ID',this.state.center_ID)
     if(id){
       axios({
         method: 'get',
@@ -730,7 +733,7 @@ class Activity extends Component{
       }).then((response)=> {
 
         var editData = response.data[0];
-        console.log("editData",editData);
+        // console.log("editData",editData);
         if(editData){
           var bentableData = []
           if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
@@ -772,6 +775,7 @@ class Activity extends Component{
             "date"              : editData.date,
             "sector"            : editData.sectorName+'|'+editData.sector_ID,
             "typeofactivity"    : editData.typeofactivity,
+            "bActivityActive"   : editData.typeofactivity==="B Type Activity" ? "inactive" : "active",
             "activity"          : editData.activityName+'|'+editData.activity_ID,
             "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
             "subActivityDetails": editData.unit,
@@ -786,13 +790,15 @@ class Activity extends Component{
             "indirectCC"        : editData.sourceofFund.indirectCC,
             "other"             : editData.sourceofFund.other,
             "total"             : editData.sourceofFund.total,
+            "noOfBeneficiaries" : editData.noOfBeneficiaries ? editData.noOfBeneficiaries : "",
             "remark"            : editData.remark,
             // "listofBeneficiaries"   : this.state.bentableData,
             // "selectedBeneficiaries" : this.state.bentableData,
-            "listofBeneficiaries" : editData.listofBeneficiaries,
+            "listofBeneficiaries"   : editData.listofBeneficiaries,
             "selectedBeneficiaries" : editData.listofBeneficiaries,
             "projectCategoryType"   : editData.projectCategoryType,
             "projectName"           : editData.projectName==='all'?'-- Select --':editData.projectName,
+            "type"                  : editData.projectCategoryType==="LHWRF Grant" ? true : false,
             "sectorId"   : editData.sector_ID,
             "activityId" : editData.activity_ID,
           }, ()=>{
@@ -1248,7 +1254,37 @@ class Activity extends Component{
     });
   }
 
-  handleToggle(event){
+  handleToggle(event) {  
+    event.preventDefault();
+    if (this.state.type===true){
+      this.setState({
+        type: false,
+        projectCategoryType  :"Project Fund",
+        sector           : '-- Select --',
+        subactivity      : "-- Select --",
+        activity         : '-- Select --',
+        availableSubActivity : [],
+        sector_ID            : "",
+        activity_ID          : "",
+      },()=>{
+      })
+    }
+    else{
+      this.setState({
+        type: true,
+        projectCategoryType  :"LHWRF Grant",
+        projectName          :"-- Select --",
+        sectorName           : '-- Select --',
+        subactivity      : "-- Select --",
+        activity         : '-- Select --',
+        availableSubActivity : [],
+        sector_ID            : "",
+        activity_ID          : "",
+      },()=>{
+      })
+    }  
+  }
+  handleToggleP(event){
     // event.preventDefault();
     this.getAvailableSectors()
     this.setState({
@@ -1449,20 +1485,44 @@ class Activity extends Component{
                         </div>
                         <div className="errorMsg">{this.state.errors.typeofactivity}</div>
                       </div>
+
                       <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
                         <div className="" id="projectCategoryType" >
                           <label className=" formLable">Category Type<span className="asterix">*</span></label>
-                          
-                          <div className="switch" >
-                            <input type="radio" className="switch-input pull-left" name="projectCategoryType" checked={this.state.projectCategoryType === "LHWRF Grant"} onChange={this.handleToggle.bind(this)} value="LHWRF Grant" id="week" />
-                            <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                            <input type="radio" className="switch-input pull-right" name="projectCategoryType" checked={this.state.projectCategoryType === "Project Fund"} onChange={this.handleToggle.bind(this)} value="Project Fund" id="month"  />
-                            <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                            <span className="switch-selection"></span>
-                          </div>
+                          {this.state.type===true ?
+
+                           <div className=" switch" onClick={this.handleToggle.bind(this)} >
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
+                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
+                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                              <span className="switch-selection"></span>
+                            </div>
+                            :
+                             <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggle.bind(this)} >
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
+                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                              <span className="switch-selection" ></span>
+                            </div>
+                          }
                         </div>
-                       
                       </div>
+                    {/*  <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
+                                            <div className="" id="projectCategoryType" >
+                                              <label className=" formLable">Category Type<span className="asterix">*</span></label>
+                                              
+                                              <div className="switch" >
+                                                <input type="radio" className="switch-input pull-left" name="projectCategoryType" checked={this.state.projectCategoryType === "LHWRF Grant"} onChange={this.handleToggle.bind(this)} value="LHWRF Grant" id="week" />
+                                                <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                                                <input type="radio" className="switch-input pull-right" name="projectCategoryType" checked={this.state.projectCategoryType === "Project Fund"} onChange={this.handleToggle.bind(this)} value="Project Fund" id="month"  />
+                                                <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                                                <span className="switch-selection"></span>
+                                              </div>
+                                            </div>
+                                           
+                                          </div>*/}
                         {/*console.log("projectCategoryType",this.state.projectCategoryType)*/}
                       {
                         this.state.projectCategoryType ==="Project Fund" ? 
@@ -1821,41 +1881,45 @@ class Activity extends Component{
                     /> 
                   </div> 
                   </div>
-                    <div id="bulkactivity" className="tab-pane fade in ">
-                     <BulkUpload url="/api/activityReport/bulk_upload_activities" 
-                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
-                      uploadedData={this.uploadedData} 
-                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
-                      fileDetailUrl={this.state.fileDetailUrl}
-                      getFileDetails={this.getFileDetails}
-                      fileDetails={this.state.fileDetails}
-                      goodRecordsHeading ={this.state.goodRecordsHeading}
-                      failedtableHeading={this.state.failedtableHeading}
-                      failedRecordsTable ={this.state.failedRecordsTable}
-                      failedRecordsCount={this.state.failedRecordsCount}
-                      goodRecordsTable={this.state.goodRecordsTable}
-                      goodDataCount={this.state.goodDataCount}
-                      />
+                    <div id="bulkactivity" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                        <BulkUpload url="/api/activityReport/bulk_upload_activities" 
+                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
+                          uploadedData={this.uploadedData} 
+                          fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
+                          fileDetailUrl={this.state.fileDetailUrl}
+                          getFileDetails={this.getFileDetails}
+                          fileDetails={this.state.fileDetails}
+                          goodRecordsHeading ={this.state.goodRecordsHeading}
+                          failedtableHeading={this.state.failedtableHeading}
+                          failedRecordsTable ={this.state.failedRecordsTable}
+                          failedRecordsCount={this.state.failedRecordsCount}
+                          goodRecordsTable={this.state.goodRecordsTable}
+                          goodDataCount={this.state.goodDataCount}
+                        />
+                      </div>
                     </div>
-                    <div id="bulkbeneficiary" className="tab-pane fade in ">
-                    { <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
-                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
-                      uploadedData={this.uploadedData} 
-                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Beneficiries+In+Activity+Submission.xlsx"
-                      fileDetailUrl={this.state.beneficiaryFileDetailUrl}
-                      getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
-                      fileDetails={this.state.fileDetails}
-                      goodRecordsHeading ={this.state.beneficiaryGoodRecordsHeading}
-                      failedtableHeading={this.state.beneficiaryFailedtableHeading}
-                      failedRecordsTable ={this.state.beneficiaryFailedRecordsTable}
-                      failedRecordsCount={this.state.beneficiaryFailedRecordsCount}
-                      goodRecordsTable={this.state.beneficiaryGoodRecordsTable}
-                      goodDataCount={this.state.beneficiaryGoodDataCount}
-                      />
-                    }
+                    <div id="bulkbeneficiary" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                        <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
+                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
+                          uploadedData={this.uploadedData} 
+                          fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Beneficiries+In+Activity+Submission.xlsx"
+                          fileDetailUrl={this.state.beneficiaryFileDetailUrl}
+                          getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
+                          fileDetails={this.state.fileDetails}
+                          goodRecordsHeading ={this.state.beneficiaryGoodRecordsHeading}
+                          failedtableHeading={this.state.beneficiaryFailedtableHeading}
+                          failedRecordsTable ={this.state.beneficiaryFailedRecordsTable}
+                          failedRecordsCount={this.state.beneficiaryFailedRecordsCount}
+                          goodRecordsTable={this.state.beneficiaryGoodRecordsTable}
+                          goodDataCount={this.state.beneficiaryGoodDataCount}
+                        />
+                      </div>
+                      </div>
                     </div>
                   </div>
-                  
                 </div>
               </div>
             </section>

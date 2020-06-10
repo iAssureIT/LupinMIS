@@ -101,11 +101,17 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
+                      <Link to="/sector-wise-quaterly-plan-summary-report" title="Sector Quaterly Plan">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Sector Quaterly Plan</span>
+                      </Link>
+                    </li>
+                  {/*  <li>
                       <Link to="/sector-wise-periodic-plan-summary-report" title="Sector Periodic Plan">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector Periodic Plan</span>
                       </Link>
-                    </li>
+                    </li>*/}
 
                     <li>
                       <Link to="/activitywise-annual-plan-report" title="Activity Annual Plan">
