@@ -856,50 +856,76 @@ class Activity extends Component{
     }
   }
 
-  getData(startRange, limitRange, center_ID){ 
+  getData(startRange, limitRange, center_ID,){ 
    var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
     $(".fullpageloader").show();
-    axios.post('/api/activityReport/list/'+center_ID, data)
-    .then((response)=>{
-    $(".fullpageloader").hide();
-      console.log("response",response);
-      var tableData = response.data.map((a, i)=>{
-        return {
-          _id                        : a._id,
-          projectCategoryType        : a.projectCategoryType,
-          projectName                : a.projectName==='all'?'-':a.projectName,
-          date                       : moment(a.date).format('DD-MM-YYYY'),
-          place                      : a.place,
-          sectorName                 : a.sectorName,
-          activityName               : a.activityName,
-          subactivityName            : a.subactivityName,
-          unit                       : a.unit,
-          unitCost                   : this.addCommas(a.unitCost),
-          quantity                   : this.addCommas(a.quantity),
-          totalcost                  : this.addCommas(a.totalcost),
-          numofBeneficiaries         : this.addCommas(a.numofBeneficiaries) !=="0" ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-          LHWRF                      : this.addCommas(a.LHWRF),
-          NABARD                     : this.addCommas(a.NABARD),
-          bankLoan                   : this.addCommas(a.bankLoan),
-          govtscheme                 : this.addCommas(a.govtscheme),
-          directCC                   : this.addCommas(a.directCC),
-          indirectCC                 : this.addCommas(a.indirectCC),
-          other                      : this.addCommas(a.other),
-          remark                     : a.remark,
+      let financeYear;
+    let today = moment();
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      this.setState({
+        year       :financialYear
+      },()=>{
+        if(this.state.year){
+          var startDate = this.state.year.substring(3, 7)+"-04-01";
+          var endDate = this.state.year.substring(10, 15)+"-03-31";    
+          //localhost:3054/api/activityReport/list/5e034ce62d2479a2ed5707ed/2019-04-01/2019-04-31
+          axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
+          // axios.post('/api/activityReport/list/'+center_ID, data)
+          .then((response)=>{
+          $(".fullpageloader").hide();
+            console.log("response",response);
+            var tableData = response.data.map((a, i)=>{
+              return {
+                _id                        : a._id,
+                projectCategoryType        : a.projectCategoryType,
+                projectName                : a.projectName==='all'?'-':a.projectName,
+                date                       : moment(a.date).format('DD-MM-YYYY'),
+                place                      : a.place,
+                sectorName                 : a.sectorName,
+                activityName               : a.activityName,
+                subactivityName            : a.subactivityName,
+                unit                       : a.unit,
+                unitCost                   : this.addCommas(a.unitCost),
+                quantity                   : this.addCommas(a.quantity),
+                totalcost                  : this.addCommas(a.totalcost),
+                // numofBeneficiaries         :( a.numofBeneficiaries !=="0") ||( a.numofBeneficiaries !==0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+                numofBeneficiaries         : (a.noOfBeneficiaries)!==null ? this.addCommas(a.noOfBeneficiaries) : this.addCommas(a.numofBeneficiaries),
+                LHWRF                      : this.addCommas(a.LHWRF),
+                NABARD                     : this.addCommas(a.NABARD),
+                bankLoan                   : this.addCommas(a.bankLoan),
+                govtscheme                 : this.addCommas(a.govtscheme),
+                directCC                   : this.addCommas(a.directCC),
+                indirectCC                 : this.addCommas(a.indirectCC),
+                other                      : this.addCommas(a.other),
+                remark                     : a.remark,
+              }
+            })
+            this.setState({
+              tableData : tableData
+            },()=>{
+              console.log('tableData',this.state.tableData);
+            })
+          })
+          .catch(function(error){      
+            console.log("error = ",error); 
+          });
         }
       })
-      this.setState({
-        tableData : tableData
-      },()=>{
-        // console.log('tableData',this.state.tableData);
-      })
     })
-    .catch(function(error){      
-      console.log("error = ",error); 
-    });
   }
 
   componentDidMount() {
@@ -1102,11 +1128,15 @@ class Activity extends Component{
 
   selectActivity(event){
     event.preventDefault();
-    this.setState({[event.target.name]:event.target.value});
-    var activity_ID = event.target.value.split('|')[1];
     this.setState({
-      subActivityDetails : ""
+      [event.target.name]:event.target.value,
+    },()=>{
+      this.setState({
+        subActivityDetails : "-- Select --",
+        subactivity        : "-- Select --"
+      });
     });
+    var activity_ID = event.target.value.split('|')[1];
     this.handleChange(event);
     this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
   }
@@ -1510,21 +1540,6 @@ class Activity extends Component{
                           }
                         </div>
                       </div>
-                    {/*  <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
-                                            <div className="" id="projectCategoryType" >
-                                              <label className=" formLable">Category Type<span className="asterix">*</span></label>
-                                              
-                                              <div className="switch" >
-                                                <input type="radio" className="switch-input pull-left" name="projectCategoryType" checked={this.state.projectCategoryType === "LHWRF Grant"} onChange={this.handleToggle.bind(this)} value="LHWRF Grant" id="week" />
-                                                <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                                                <input type="radio" className="switch-input pull-right" name="projectCategoryType" checked={this.state.projectCategoryType === "Project Fund"} onChange={this.handleToggle.bind(this)} value="Project Fund" id="month"  />
-                                                <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                                                <span className="switch-selection"></span>
-                                              </div>
-                                            </div>
-                                           
-                                          </div>*/}
-                        {/*console.log("projectCategoryType",this.state.projectCategoryType)*/}
                       {
                         this.state.projectCategoryType ==="Project Fund" ? 
 
@@ -1684,18 +1699,21 @@ class Activity extends Component{
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.subactivity}</div>
-                          </div>   
-                          {
-                            this.state.bActivityActive==="inactive" ?
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                <label className="formLable">No.of Beneficiaries</label>
-                                <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="noOfBeneficiaries" >
-                                  <input type="number" className="form-control inputBox" name="noOfBeneficiaries" placeholder="" ref="noOfBeneficiaries"  value={this.state.noOfBeneficiaries}  onChange={this.handleChange.bind(this)}/>
+                          </div> 
+
+                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div className=""  >
+                              <label className="formLable">Unit of Measurement</label>
+                                <div className="form-control inputBox inputBox-main unit">
+                                  {this.state.subActivityDetails ? 
+                                      <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
+                                    :
+                                      null
+                                  }
                                 </div>
-                                <div className="errorMsg">{this.state.errors.noOfBeneficiaries}</div>
-                              </div>
-                            :null
-                          } 
+                            </div>
+                            <div className="errorMsg">{this.state.errors.unit}</div>
+                          </div>
                           {/*<div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">Activity Type<span className="asterix">*</span></label>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
@@ -1711,19 +1729,6 @@ class Activity extends Component{
                       </div><br/>
                       <div className="row ">
                         <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                            <div className=""  >
-                              <label className="formLable">Unit of Measurement</label>
-                                <div className="form-control inputBox inputBox-main unit">
-                                  {this.state.subActivityDetails ? 
-                                      <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
-                                    :
-                                      null
-                                  }
-                                </div>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.unit}</div>
-                          </div>
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <label className="formLable">Unit Cost</label>
                             <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
@@ -1738,16 +1743,24 @@ class Activity extends Component{
                             </div>
                             <div className="errorMsg">{this.state.errors.quantity}</div>
                           </div>
-                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                             <div className=" " id="PassoutYear" >
-
-                              <label className="formLable">Total Cost of Activity :</label>
-                            
+                              <label className="formLable">Total Cost of Activity :</label>                            
                               <input type="number" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost"  value={(parseFloat(this.state.totalcost)).toFixed(2)} disabled />
-                              
                             </div>
                             <div className="errorMsg">{this.state.errors.totalcost}</div>
                           </div>
+                          {
+                            this.state.bActivityActive==="inactive" ?
+                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <label className="formLable">No.of Beneficiaries</label>
+                                <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="noOfBeneficiaries" >
+                                  <input type="number" className="form-control inputBox" name="noOfBeneficiaries" placeholder="" ref="noOfBeneficiaries"  value={this.state.noOfBeneficiaries}  onChange={this.handleChange.bind(this)}/>
+                                </div>
+                                <div className="errorMsg">{this.state.errors.noOfBeneficiaries}</div>
+                              </div>
+                            :null
+                          } 
                         </div> 
                       </div>
                       <div className="col-lg-12 boxHeightother">

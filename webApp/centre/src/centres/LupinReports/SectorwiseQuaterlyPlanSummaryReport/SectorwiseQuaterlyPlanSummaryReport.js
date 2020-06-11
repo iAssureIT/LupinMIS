@@ -249,7 +249,7 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
     }
   }
   getData(year, center_ID, projectCategoryType, projectName, beneficiaryType, month){        
-    console.log(year, center_ID, projectCategoryType, projectName, beneficiaryType, month);
+    // console.log(year, center_ID, projectCategoryType, projectName, beneficiaryType, month);
     if(year){
       if(month){
         if(month="Q1 (April to June)"){
