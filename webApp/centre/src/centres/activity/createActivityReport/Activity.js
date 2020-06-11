@@ -1327,7 +1327,7 @@ class Activity extends Component{
             "unitCost"            : a.unitCost     ? a.unitCost : '-',
             "quantity"            : a.quantity     ? a.quantity : '-',
             "totalcost"           : a.totalcost     ? a.totalcost : '-',
-            "numofBeneficiaries"  : a.numofBeneficiaries     ? a.numofBeneficiaries : '-',
+            "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
             "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
             "NABARD"              : a.NABARD     ? a.NABARD : '-',
             "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
@@ -1351,7 +1351,7 @@ class Activity extends Component{
             "unit"                : a.unit     ? a.unit : '-',
             "unitCost"            : a.unitCost     ? a.unitCost : '-',
             "quantity"            : a.quantity     ? a.quantity : '-',
-            "numofBeneficiaries"  : a.numofBeneficiaries     ? a.numofBeneficiaries : '-',
+            "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
             "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
             "NABARD"              : a.NABARD     ? a.NABARD : '-',
             "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
@@ -1393,6 +1393,7 @@ class Activity extends Component{
             "activityName"      : a.activityName    ? a.activityName   : '-',
             "subactivityName"   : a.subactivityName ? a.subactivityName : '-',
             "date"              : a.date            ? a.date : '-',  
+            "noOfBeneficiaries" : a.noOfBeneficiaries            ? a.noOfBeneficiaries : '-',  
             "beneficiaryID"     : a.listofBeneficiaries.beneficiaryID ? a.listofBeneficiaries.beneficiaryID      : '-',
             "familyID"          : a.listofBeneficiaries.familyID      ? a.listofBeneficiaries.familyID      : '-',
             "nameofbeneficiary" : a.listofBeneficiaries.nameofbeneficiary ? a.listofBeneficiaries.nameofbeneficiary : '-',
@@ -1882,41 +1883,43 @@ class Activity extends Component{
                   </div> 
                   </div>
                     <div id="bulkactivity" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                        <BulkUpload url="/api/activityReport/bulk_upload_activities" 
-                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
-                          uploadedData={this.uploadedData} 
-                          fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
-                          fileDetailUrl={this.state.fileDetailUrl}
-                          getFileDetails={this.getFileDetails}
-                          fileDetails={this.state.fileDetails}
-                          goodRecordsHeading ={this.state.goodRecordsHeading}
-                          failedtableHeading={this.state.failedtableHeading}
-                          failedRecordsTable ={this.state.failedRecordsTable}
-                          failedRecordsCount={this.state.failedRecordsCount}
-                          goodRecordsTable={this.state.goodRecordsTable}
-                          goodDataCount={this.state.goodDataCount}
-                        />
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                          <BulkUpload url="/api/activityReport/bulk_upload_activities" 
+                            data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
+                            uploadedData={this.uploadedData} 
+                            fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
+                            fileDetailUrl={this.state.fileDetailUrl}
+                            getFileDetails={this.getFileDetails}
+                            fileDetails={this.state.fileDetails}
+                            goodRecordsHeading ={this.state.goodRecordsHeading}
+                            failedtableHeading={this.state.failedtableHeading}
+                            failedRecordsTable ={this.state.failedRecordsTable}
+                            failedRecordsCount={this.state.failedRecordsCount}
+                            goodRecordsTable={this.state.goodRecordsTable}
+                            goodDataCount={this.state.goodDataCount}
+                          />
+                        </div>
                       </div>
                     </div>
                     <div id="bulkbeneficiary" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                        <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
-                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
-                          uploadedData={this.uploadedData} 
-                          fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Beneficiries+In+Activity+Submission.xlsx"
-                          fileDetailUrl={this.state.beneficiaryFileDetailUrl}
-                          getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
-                          fileDetails={this.state.fileDetails}
-                          goodRecordsHeading ={this.state.beneficiaryGoodRecordsHeading}
-                          failedtableHeading={this.state.beneficiaryFailedtableHeading}
-                          failedRecordsTable ={this.state.beneficiaryFailedRecordsTable}
-                          failedRecordsCount={this.state.beneficiaryFailedRecordsCount}
-                          goodRecordsTable={this.state.beneficiaryGoodRecordsTable}
-                          goodDataCount={this.state.beneficiaryGoodDataCount}
-                        />
-                      </div>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                          <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
+                            data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
+                            uploadedData={this.uploadedData} 
+                            fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Beneficiries+In+Activity+Submission.xlsx"
+                            fileDetailUrl={this.state.beneficiaryFileDetailUrl}
+                            getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
+                            fileDetails={this.state.fileDetails}
+                            goodRecordsHeading ={this.state.beneficiaryGoodRecordsHeading}
+                            failedtableHeading={this.state.beneficiaryFailedtableHeading}
+                            failedRecordsTable ={this.state.beneficiaryFailedRecordsTable}
+                            failedRecordsCount={this.state.beneficiaryFailedRecordsCount}
+                            goodRecordsTable={this.state.beneficiaryGoodRecordsTable}
+                            goodDataCount={this.state.beneficiaryGoodDataCount}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
