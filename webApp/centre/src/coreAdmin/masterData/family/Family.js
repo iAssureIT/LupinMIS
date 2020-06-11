@@ -1037,12 +1037,13 @@ class Family extends Component{
                     </div>
                     <div id="bulk" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                        <BulkUpload url="/api/families/bulk_upload_families" 
+                      <BulkUpload url="/api/families/bulk_upload_families" 
                         data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
                         uploadedData={this.uploadedData} 
                         fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
                         fileDetailUrl={this.state.fileDetailUrl}
                         getFileDetails={this.getFileDetails}
+                        getData={this.getData.bind(this)}
                         fileDetails={this.state.fileDetails}
                         goodRecordsHeading ={this.state.goodRecordsHeading}
                         failedtableHeading={this.state.failedtableHeading}

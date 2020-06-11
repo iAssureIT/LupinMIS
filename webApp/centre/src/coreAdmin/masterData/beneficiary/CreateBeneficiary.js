@@ -577,7 +577,7 @@ class Beneficiary extends Component{
   render() {
     return (
       <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable border_Box" id="createBeneficiary">
-        <label className="formLable note col-lg-12 col-md-12 col-sm-12 col-xs-12">Note : You can create Beneficiary of existing Family only. If you want to create Family then <a href="/family" target="_blank">Click Here.</a></label>
+        <label className="formLable note col-lg-12 col-md-12 col-sm-12 col-xs-12">Note : You can create Beneficiary of existing Family only. If you want to create New Family then <a className= "greenColor" href="/family" target="_blank">Click Here.</a></label>
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
            <h4 className="pageSubHeader">Create New Beneficiary</h4>
         </div>

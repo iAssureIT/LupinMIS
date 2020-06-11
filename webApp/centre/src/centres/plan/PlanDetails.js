@@ -1665,6 +1665,7 @@ class PlanDetails extends Component{
                         fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
                         getFileDetails={this.getFileDetails}
                         fileDetails={this.state.fileDetails}
+                        getData={this.getData.bind(this)}
                         goodRecordsHeading ={this.state.goodRecordsHeading}
                         failedtableHeading={this.state.failedtableHeading}
                         failedRecordsTable ={this.state.failedRecordsTable}

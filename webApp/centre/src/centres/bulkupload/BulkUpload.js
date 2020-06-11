@@ -27,7 +27,19 @@ class BulkUpload extends Component{
   } 
   componentWillReceiveProps(){
     
-  }            
+  }  
+  componentDidMount() {
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    // console.log("localStorage =",localStorage.getItem('centerName'));
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+      this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+    });
+  }
+          
   handleChange(e) {
     const files = e.target.files;
     if (files && files[0]){
@@ -258,6 +270,7 @@ class BulkUpload extends Component{
                 $('.fullpageloader').hide();
                 $('.filedetailsDiv').show();
                 this.props.getFileDetails(this.state.fileName) 
+                this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID) 
               }
               this.setState({percentage:percentage},()=>{})
               chunkData = [];

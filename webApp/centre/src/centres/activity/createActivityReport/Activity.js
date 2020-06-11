@@ -1892,7 +1892,8 @@ class Activity extends Component{
                             fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Activity+Submission.xlsx"
                             // fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
                             fileDetailUrl={this.state.fileDetailUrl}
-                            getFileDetails={this.getFileDetails}
+                            getFileDetails={this.getFileDetails.bind(this)}
+                            getData={this.getData.bind(this)}
                             fileDetails={this.state.fileDetails}
                             goodRecordsHeading ={this.state.goodRecordsHeading}
                             failedtableHeading={this.state.failedtableHeading}
@@ -1912,6 +1913,7 @@ class Activity extends Component{
                             uploadedData={this.uploadedData} 
                             fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Beneficiries+In+Activity+Submission.xlsx"
                             fileDetailUrl={this.state.beneficiaryFileDetailUrl}
+                            getData={this.getData.bind(this)}
                             getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
                             fileDetails={this.state.fileDetails}
                             goodRecordsHeading ={this.state.beneficiaryGoodRecordsHeading}

@@ -160,3 +160,11 @@
 .note{
 	color: #f00 !important
 }
+.greenColor{
+	color: #4ca75a !important;
+	text-decoration: underline;
+}
+.greenColor:hover{
+	color: #4ca75a !important;
+	text-decoration: underline;
+}
