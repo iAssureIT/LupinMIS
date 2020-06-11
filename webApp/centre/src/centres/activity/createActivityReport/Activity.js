@@ -1888,7 +1888,9 @@ class Activity extends Component{
                           <BulkUpload url="/api/activityReport/bulk_upload_activities" 
                             data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
                             uploadedData={this.uploadedData} 
-                            fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
+
+                            fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Activity+Submission.xlsx"
+                            // fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
                             fileDetailUrl={this.state.fileDetailUrl}
                             getFileDetails={this.getFileDetails}
                             fileDetails={this.state.fileDetails}
