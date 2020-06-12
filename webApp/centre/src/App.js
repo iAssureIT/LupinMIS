@@ -12,14 +12,10 @@ console.log("process.env.REACT_APP_BASE_URL = ", axios.defaults.baseURL);
 
 function App() {
   return (
-    <div>
-      <Layout />
-    </div>
-    
+	    <div>
+	      <Layout />
+	    </div> 
     );
 }
 
 export default App;
-
- 
-	

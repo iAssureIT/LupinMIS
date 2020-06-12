@@ -237,7 +237,11 @@ class PlanDetails extends Component{
           var currentState = arr[i];
           if (currentState) {
             getsubActivity[currentState] = 0;
-            this.setState({[currentState+"-"+index] : 0 });
+            this.setState({
+              [currentState+"-"+index] : 0 
+            },()=>{
+              console.log("this.state.",this.state)
+            });
           }
         }
       }
@@ -365,94 +369,100 @@ class PlanDetails extends Component{
             "other"               : parseFloat(subActivityDetails[i].other),
             "remark"              : subActivityDetails[i].remark,
           };
-              console.log("planValues",planValues);
-          axios.post(this.state.apiCall, planValues)
-            .then((response)=>{
-              console.log("response",response);
-              if (response.status === 200 ) {
-                swal({
-                  title : response.data.message,
-                  text  : response.data.message
+          console.log("planValues",planValues);
+          var total = (planValues.LHWRF+planValues.NABARD+planValues.bankLoan+planValues.govtscheme+planValues.directCC+planValues.indirectCC+planValues.other)
+          console.log("total",total,"planValues.totalBudget",planValues.totalBudget)
+          if(parseFloat(total) === parseFloat(planValues.totalBudget)){
+            axios.post(this.state.apiCall, planValues)
+              .then((response)=>{
+                console.log("response",response);
+                if (response.status === 200 ) {
+                  swal({
+                    title : response.data.message,
+                    text  : response.data.message
+                  });
+                  // swal("Plan created successfully");
+                }
+                if(this.state.month ==='Annual'){
+                  var email = localStorage.getItem('email')
+                  var msgvariable = {
+                    '[User]'    : localStorage.getItem('fullName'),
+                    '[FY]'    : this.refs.year.value,
+                  }
+                  // console.log("msgvariable :"+JSON.stringify(msgvariable));
+                  var inputObj = {  
+                    to           : email,
+                    templateName : 'User - Annual Plan Submitted',
+                    variables    : msgvariable,
+                  }
+                  // axios
+                  // .post('/api/masternotification/send-mail',inputObj)
+                  // .then((response)=> {
+                  //   // console.log("-------mail------>>",response);
+                    
+                  // })
+                  // .catch(function (error) {
+                  //     console.log(error);
+                  // })
+                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+                }else{
+                  var email = localStorage.getItem('email')
+                  var msgvariable = {
+                    '[User]'    : localStorage.getItem('fullName'),
+                    '[FY]'    : this.refs.year.value,
+                    '[monthName]' : this.refs.month.value
+                  }
+                  // console.log("msgvariable :"+JSON.stringify(msgvariable));
+                  var inputObj = {  
+                    to           : email,
+                    templateName : 'User - Quarterly Plan Submitted',
+                    variables    : msgvariable,
+                  }
+                  // axios
+                  // .post('/api/masternotification/send-mail',inputObj)
+                  // .then((response)=> {
+                  //   // console.log("-------mail------>>",response);
+                    
+                  // })
+                  // .catch(function (error) {
+                  //     console.log(error);
+                  // })
+                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+                }
+                this.setState({
+                  "year"                : "FY 2019 - 2020",
+                  "months"              :["Annual Plan","Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
+                  "month"               : "Annual Plan",
+                  "projectName"         : "-- Select --",
+                  "projectCategoryType" : "LHWRF Grant",
+                  "type"                : true,
+                  "center"              :"",
+                  "sector_id"           :"",
+                  "sectorName"          :"-- Select --",
+                  "activityName"        :"-- Select --",
+                  // "fields"              :fields,
+                  "editId"              :"",
+                  "subActivityDetails"  :[],
+                  "availableSubActivity":[],
+                  "availableActivity"   :[],
+                  "subActivityDetails[i][name]":"",
+                  "shown"               : true,
                 });
-                // swal("Plan created successfully");
-              }
-              if(this.state.month ==='Annual'){
-                var email = localStorage.getItem('email')
-                var msgvariable = {
-                  '[User]'    : localStorage.getItem('fullName'),
-                  '[FY]'    : this.refs.year.value,
-                }
-                // console.log("msgvariable :"+JSON.stringify(msgvariable));
-                var inputObj = {  
-                  to           : email,
-                  templateName : 'User - Annual Plan Submitted',
-                  variables    : msgvariable,
-                }
-                // axios
-                // .post('/api/masternotification/send-mail',inputObj)
-                // .then((response)=> {
-                //   // console.log("-------mail------>>",response);
-                  
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // })
-                this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
-              }else{
-                var email = localStorage.getItem('email')
-                var msgvariable = {
-                  '[User]'    : localStorage.getItem('fullName'),
-                  '[FY]'    : this.refs.year.value,
-                  '[monthName]' : this.refs.month.value
-                }
-                // console.log("msgvariable :"+JSON.stringify(msgvariable));
-                var inputObj = {  
-                  to           : email,
-                  templateName : 'User - Quarterly Plan Submitted',
-                  variables    : msgvariable,
-                }
-                // axios
-                // .post('/api/masternotification/send-mail',inputObj)
-                // .then((response)=> {
-                //   // console.log("-------mail------>>",response);
-                  
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // })
-                this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
-              }
-              this.setState({
-                "year"                : "FY 2019 - 2020",
-                "months"              :["Annual Plan","Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
-                "month"               : "Annual Plan",
-                "projectName"         : "-- Select --",
-                "projectCategoryType" : "LHWRF Grant",
-                "type"                : true,
-                "center"              :"",
-                "sector_id"           :"",
-                "sectorName"          :"-- Select --",
-                "activityName"        :"-- Select --",
-                // "fields"              :fields,
-                "editId"              :"",
-                "subActivityDetails"  :[],
-                "availableSubActivity":[],
-                "availableActivity"   :[],
-                "subActivityDetails[i][name]":"",
-                "shown"               : true,
-              });
-            })
-            .catch(function(error){
-              console.log("error"+error);
-          });
-         
-          Object.entries(planValues).map( 
-            ([key, value], i)=> {
-              this.setState({
-                [key+'-'+this.state.subactivity_ID] : ""
               })
-            }
-          );
+              .catch(function(error){
+                console.log("error"+error);
+            });
+           
+            Object.entries(planValues).map( 
+              ([key, value], i)=> {
+                this.setState({
+                  [key+'-'+this.state.subactivity_ID] : ""
+                })
+              }
+            );
+          }else{
+            swal("abc",'Total Costs are not equal! Please check.');
+          }
         }
       }else{
          swal({
@@ -847,18 +857,16 @@ class PlanDetails extends Component{
     if(this.state.editId){     
       this.edit(this.state.editId);       
     }
-    
-    this.setState({
-      apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
-    },()=>{
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
-    })
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage);
     this.setState({
+      apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
       center_ID    : center_ID,
       centerName   : centerName,
+    },()=>{
+      // console.log(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate)
+      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
     });
   }
 

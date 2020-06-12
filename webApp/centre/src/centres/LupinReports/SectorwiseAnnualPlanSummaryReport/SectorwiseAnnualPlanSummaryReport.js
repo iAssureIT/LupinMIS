@@ -342,8 +342,8 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               this.setState({
                 years  :years,
               },()=>{
-              console.log('years',this.state.years);
-              console.log('year',this.state.year);
+              // console.log('years',this.state.years);
+              // console.log('year',this.state.year);
               })              
             }
           }

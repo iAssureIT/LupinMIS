@@ -641,8 +641,8 @@ margin-right: 12px;
       border: none;
   }
   .adminModal-body {
-      margin-top: 50px;
-      margin-bottom: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
   .adminModal-footer {
       border-radius: 0 0 9px 9px;

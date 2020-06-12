@@ -213,9 +213,9 @@ class Activity extends Component{
   remainTotal(event){
     event.preventDefault(); 
     // console.log("event.target.name",event.target.name);
+    // console.log("subTotal",subTotal);
     var totalBudget = parseFloat(this.state.totalcost);
     var subTotal    = parseFloat(this.state.LHWRF) + parseFloat(this.state.NABARD) + parseFloat(this.state.bankLoan) + parseFloat(this.state.govtscheme) + parseFloat(this.state.directCC) + parseFloat(this.state.indirectCC) + parseFloat(this.state.other);
-    // console.log("subTotal",subTotal);
     var arr = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
     var findIndex = arr.findIndex((obj)=>{return obj  === event.target.name});
     // console.log("findIndex",findIndex);
@@ -264,7 +264,6 @@ class Activity extends Component{
           });
         }
       }
-
       if(event.currentTarget.name==='projectName'){
         let id = $(event.currentTarget).find('option:selected').attr('data-id')
         axios.get('/api/projectMappings/fetch/'+id)
@@ -293,7 +292,6 @@ class Activity extends Component{
                 this.getAvailableActivity(array[0]._id)
               })
             }
-
           }
         })
         .catch(function(error){
@@ -672,15 +670,13 @@ class Activity extends Component{
       return formIsValid;
   }
 
-
   toglehidden(){
    this.setState({
      shown: !this.state.shown
     });
   }
   
-  getAvailableVillages(center_ID, district, block)
-  {
+  getAvailableVillages(center_ID, district, block){
     axios({
         method: 'get',
         url: '/api/centers/'+center_ID,
@@ -699,30 +695,29 @@ class Activity extends Component{
       }).catch(function (error) {
         console.log("error = ",error);
       });
-    }
-  getAvailableBlocks(center_ID, districtB)
-  {
-        // console.log("center_ID = ",center_ID,"district",districtB);
+  }
+  getAvailableBlocks(center_ID, districtB){
+    // console.log("center_ID = ",center_ID,"district",districtB);
     axios({
-          method: 'get',
-          url: '/api/centers/'+center_ID,
-          }).then((response)=> {
-          // console.log('availableblockInCenter ==========',response);
-          function removeDuplicates(data, param, district){
-            return data.filter(function(item, pos, array){
-              return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
-            })
-          }
-          // console.log('villagesCovered',response.data[0].villagesCovered);
-          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", districtB);
-          this.setState({
-            listofBlocks     : availableblockInCenter,
-          },()=>{
-            // console.log('listofBlocks',this.state.listofBlocks);
-          })
-        }).catch(function (error) {
-          console.log("error = ",error);
-        });
+      method: 'get',
+      url: '/api/centers/'+center_ID,
+      }).then((response)=> {
+      // console.log('availableblockInCenter ==========',response);
+      function removeDuplicates(data, param, district){
+        return data.filter(function(item, pos, array){
+          return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+        })
+      }
+      // console.log('villagesCovered',response.data[0].villagesCovered);
+      var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", districtB);
+      this.setState({
+        listofBlocks     : availableblockInCenter,
+      },()=>{
+        // console.log('listofBlocks',this.state.listofBlocks);
+      })
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });
   }
   edit(id){
     // console.log('this.state.center_ID',this.state.center_ID)
@@ -857,7 +852,7 @@ class Activity extends Component{
   }
 
   getData(startRange, limitRange, center_ID,){ 
-   var data = {
+    var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
