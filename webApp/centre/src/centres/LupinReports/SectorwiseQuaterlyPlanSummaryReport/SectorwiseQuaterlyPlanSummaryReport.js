@@ -254,15 +254,15 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
       if(month){
         if(month="Q1 (April to June)"){
           var startDate = year.substring(3, 7)+"-04-01";
-          var endDate   = year.substring(10, 15)+"-06-30";    
+          var endDate   = year.substring(3, 7)+"-06-30";    
         }else if(month="Q2 (July to September)"){
           var startDate = year.substring(3, 7)+"-07-01";
-          var endDate   = year.substring(10, 15)+"-09-31";    
+          var endDate   = year.substring(3, 7)+"-09-30";    
         }else if(month="Q3 (October to December)"){
           var startDate = year.substring(3, 7)+"-10-01";
-          var endDate   = year.substring(10, 15)+"-12-31";
+          var endDate   = year.substring(3, 7)+"-12-31";
         }else if(month="Q4 (January to March)"){
-          var startDate = year.substring(3, 7)+"-01-01";
+          var startDate = year.substring(10, 15)+"-01-01";
           var endDate   = year.substring(10, 15)+"-03-31";
         }
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 

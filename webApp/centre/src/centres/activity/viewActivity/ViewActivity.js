@@ -111,27 +111,31 @@ class ViewActivity extends Component{
     // });
   }
   addCommas(x) {
-    x=x.toString();
-    if(x.includes('%')){
-        return x;
-    }else{
-      if(x.includes('.')){
-        var pointN = x.split('.')[1];
-        var lastN = x.split('.')[0];
-        var lastThree = lastN.substring(lastN.length-3);
-        var otherNumbers = lastN.substring(0,lastN.length-3);
-        if(otherNumbers !== '')
-            lastThree = ',' + lastThree;
-        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
-        return(res);
+    if(x !==undefined || x!==null){
+      x=x.toString();
+      if(x.includes('%')){
+          return x;
       }else{
-        var lastThree = x.substring(x.length-3);
-        var otherNumbers = x.substring(0,x.length-3);
-        if(otherNumbers !== '')
-            lastThree = ',' + lastThree;
-        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        return(res);
+        if(x.includes('.')){
+          var pointN = x.split('.')[1];
+          var lastN = x.split('.')[0];
+          var lastThree = lastN.substring(lastN.length-3);
+          var otherNumbers = lastN.substring(0,lastN.length-3);
+          if(otherNumbers !== '')
+              lastThree = ',' + lastThree;
+          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+          return(res);
+        }else{
+          var lastThree = x.substring(x.length-3);
+          var otherNumbers = x.substring(0,x.length-3);
+          if(otherNumbers !== '')
+              lastThree = ',' + lastThree;
+          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+          return(res);
+        }
       }
+    }else{
+      return(0);
     }
   }
 
@@ -150,6 +154,7 @@ class ViewActivity extends Component{
       $(".fullpageloader").hide();
         console.log("response",response);
         var tableData = response.data.map((a, i)=>{
+              console.log("a.noOfBeneficiaries",a.noOfBeneficiaries,"a.numofBeneficiaries",a.numofBeneficiaries)
           return {
             _id                        : a._id,
             projectCategoryType        : a.projectCategoryType,
@@ -164,7 +169,7 @@ class ViewActivity extends Component{
             quantity                   : this.addCommas(a.quantity),
             totalcost                  : this.addCommas(a.totalcost),
             // numofBeneficiaries         : a.numofBeneficiaries !=="0" || a.numofBeneficiaries !==0 ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-            numofBeneficiaries         : (a.noOfBeneficiaries)!==null ? this.addCommas(a.noOfBeneficiaries) : this.addCommas(a.numofBeneficiaries),
+            numofBeneficiaries         : ((a.noOfBeneficiaries)!==null)? this.addCommas(a.noOfBeneficiaries) : this.addCommas(a.numofBeneficiaries),
             LHWRF                      : this.addCommas(a.LHWRF),
             NABARD                     : this.addCommas(a.NABARD),
             bankLoan                   : this.addCommas(a.bankLoan),
