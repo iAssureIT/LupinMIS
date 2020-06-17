@@ -1338,11 +1338,11 @@ class PlanDetails extends Component{
                       <hr className="hr-head container-fluid row"/>
                     </div>
                   </div>
-                  <ul className="nav tabNav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12 mt">
+                  <ul className="nav tabNav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12">
                     <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualplan">Manual</a></li>
                     <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkplan">Bulk Upload</a></li>
                   </ul> 
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt">                    
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                    
                     <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 boxHeight">
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
@@ -1681,7 +1681,7 @@ class PlanDetails extends Component{
                               "year":this.state.year, 
                             }} 
                         uploadedData={this.uploadedData} 
-                        fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
+                        fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Plan+Submission.xlsx"
                         fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
                         getFileDetails={this.getFileDetails}
                         fileDetails={this.state.fileDetails}

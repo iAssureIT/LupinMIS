@@ -929,8 +929,8 @@ class Activity extends Component{
           var startDate = this.state.year.substring(3, 7)+"-04-01";
           var endDate = this.state.year.substring(10, 15)+"-03-31";    
           //localhost:3054/api/activityReport/list/5e034ce62d2479a2ed5707ed/2019-04-01/2019-04-31
-          // axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
-          axios.post('/api/activityReport/list/'+center_ID, data)
+          axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
+          // axios.post('/api/activityReport/list/'+center_ID, data)
           .then((response)=>{
           $(".fullpageloader").hide();
             console.log("response",response);
@@ -2026,7 +2026,7 @@ class Activity extends Component{
                           data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Family Level Activity"}} 
                           uploadedData={this.uploadedData} 
                           bulkTableID = "activityTypeA"
-                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Activity+Submission.xlsx"
+                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-A-Activity-Submission.xlsx"
                           fileDetailUrl={this.state.fileDetailUrl}
                           getFileDetails={this.getTypeAFileDetails.bind(this)}
                           getData={this.getData.bind(this)}
@@ -2048,7 +2048,7 @@ class Activity extends Component{
                           data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Type B Activity"}} 
                           uploadedData={this.uploadedData} 
                           bulkTableID = "activityTypeB"
-                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Activity+Submission.xlsx"
+                          fileurl= "https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-B-Activity-Submission.xlsx"
                           fileDetailUrl={this.state.fileDetailUrl}
                           getFileDetails={this.getTypeBFileDetails.bind(this)}
                           getData={this.getData.bind(this)}

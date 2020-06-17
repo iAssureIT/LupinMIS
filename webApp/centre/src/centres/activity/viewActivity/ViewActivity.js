@@ -96,20 +96,6 @@ class ViewActivity extends Component{
     }
   }
 
-  getLength(){
-    // axios.get('/api/activityReport/count')
-    // .then((response)=>{
-    //   console.log('response', response.data);
-    //   this.setState({
-    //     dataCount : response.data.dataLength
-    //   },()=>{
-    //     console.log('dataCount', this.state.dataCount);
-    //   })
-    // })
-    // .catch(function(error){
-      
-    // });
-  }
   addCommas(x) {
     if(x !==undefined || x!==null){
       x=x.toString();
@@ -139,18 +125,20 @@ class ViewActivity extends Component{
     }
   }
 
-  getData(startRange, limitRange, center_ID){ 
-   var data = {
+  getData(startRange, limitRange, center_ID, year){ 
+    console.log(startRange, limitRange, center_ID, year);
+    var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
     $(".fullpageloader").show();
-    if(this.state.year){
+    if(year){
       var startDate = this.state.year.substring(3, 7)+"-04-01";
       var endDate = this.state.year.substring(10, 15)+"-03-31";    
       axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
       // axios.post('/api/activityReport/list/'+center_ID, data)
       .then((response)=>{
+        console.log(startDate,endDate);
       $(".fullpageloader").hide();
         console.log("response",response);
         var tableData = response.data.map((a, i)=>{
@@ -197,9 +185,8 @@ class ViewActivity extends Component{
     this.setState({
       dateofIntervention :momentString,
     })
-    this.getLength();
     this.year();
-    this.getData(this.state.startRange, this.state.limitRange);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -208,7 +195,7 @@ class ViewActivity extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
     });
   }
   year() {
@@ -235,7 +222,7 @@ class ViewActivity extends Component{
         secondYear :secondYear,
         year       :financialYear
       },()=>{
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -262,8 +249,8 @@ class ViewActivity extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-      // console.log('name', this.state)
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+      console.log('name', this.state.year)
     });
   }
   render() {
