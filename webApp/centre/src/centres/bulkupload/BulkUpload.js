@@ -349,7 +349,7 @@ class BulkUpload extends Component{
                     disabled>Submit</button>
             </div>        
           }
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 filedetailsDiv" style={{display:"none"}}>
+          <div className="filedetailsDiv" id={this.props.bulkTableID} style={{display:"none"}}>
             <br/>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent NoPadding">
               {
@@ -395,7 +395,9 @@ class BulkUpload extends Component{
                             {
                               this.props.fileDetails.failedRecords[0] ? 
                               Object.entries(this.props.fileDetails.failedRecords[0]).map( ([key, value], i)=> {
-                               return(<th>{key}</th>);
+                                return(
+                                  <th key={i}>{key}</th>
+                                );
                               }) : null
                             }
                             </tr>

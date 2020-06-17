@@ -76,12 +76,13 @@ class ListOfBeneficiaries extends Component{
       this.setState({
         selectedValues : nextProps.selectedValues,
         sendBeneficiary: nextProps.sendBeneficiary,
-        tableData      : nextProps.sendBeneficiary
+        tableData      : nextProps.sendBeneficiary,
+        selectedBeneficiaries: (this.props.sendBeneficiary).length,
       },()=>{
         // if(this.state.selectedValues){
         //   this.setState({
         //     tableData : []
-        //   })
+        //   })sendBeneficiary
         // }
       })
     }
@@ -128,33 +129,29 @@ class ListOfBeneficiaries extends Component{
   listofBeneficiaries(selectedBeneficiaries){
     console.log(selectedBeneficiaries)
     var tableData = selectedBeneficiaries.map((a, i)=>{
-        return {
-            _id                       : a._id,
-            beneficiary_ID            : a.beneficiary_ID,
-            beneficiaryID             : a.beneficiaryID,
-            family_ID                 : a.family_ID,
-            familyID                  : a.familyID,
-            nameofbeneficiaries       : a.nameofbeneficiaries,
-            relation                  : a.relation,
-            dist                      : a.dist,
-            block                     : a.block,
-            village                   : a.village,
-            upgraded                  : a.isUpgraded,
-          }
-      })
-      this.setState({
-        tableData : tableData,
-        selectedBeneficiaries : selectedBeneficiaries.length
-      },()=>{
-      })
-
-    // console.log(selectedBeneficiaries)
-    // this.setState({
-    //   tableData : selectedBeneficiaries
-    // })
+      return {
+        _id                       : a._id,
+        beneficiary_ID            : a.beneficiary_ID,
+        beneficiaryID             : a.beneficiaryID,
+        family_ID                 : a.family_ID,
+        familyID                  : a.familyID,
+        nameofbeneficiaries       : a.nameofbeneficiaries,
+        relation                  : a.relation,
+        dist                      : a.dist,
+        block                     : a.block,
+        village                   : a.village,
+        upgraded                  : a.isUpgraded,
+      }
+    })
+    this.setState({
+      tableData : tableData,
+      // selectedBeneficiaries : selectedBeneficiaries.length
+    },()=>{
+      console.log("tableData",this.state.tableData)
+    })
     this.props.getBeneficiaries(selectedBeneficiaries);
   }
-    render() {
+  render() {
     return (
       <div className="container-fluid">
         <div className="row">

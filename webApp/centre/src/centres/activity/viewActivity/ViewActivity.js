@@ -154,7 +154,6 @@ class ViewActivity extends Component{
       $(".fullpageloader").hide();
         console.log("response",response);
         var tableData = response.data.map((a, i)=>{
-              console.log("a.noOfBeneficiaries",a.noOfBeneficiaries,"a.numofBeneficiaries",a.numofBeneficiaries)
           return {
             _id                        : a._id,
             projectCategoryType        : a.projectCategoryType,
@@ -168,8 +167,8 @@ class ViewActivity extends Component{
             unitCost                   : this.addCommas(a.unitCost),
             quantity                   : this.addCommas(a.quantity),
             totalcost                  : this.addCommas(a.totalcost),
-            // numofBeneficiaries         : a.numofBeneficiaries !=="0" || a.numofBeneficiaries !==0 ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-            numofBeneficiaries         : ((a.noOfBeneficiaries)!==null)? this.addCommas(a.noOfBeneficiaries) : this.addCommas(a.numofBeneficiaries),
+            // numofBeneficiaries         :( a.numofBeneficiaries !=="0") ||( a.numofBeneficiaries !==0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+            numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
             LHWRF                      : this.addCommas(a.LHWRF),
             NABARD                     : this.addCommas(a.NABARD),
             bankLoan                   : this.addCommas(a.bankLoan),

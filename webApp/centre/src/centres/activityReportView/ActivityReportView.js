@@ -121,13 +121,13 @@ class ActivityReportView extends Component{
                                 </div>
                               </div>
                               {
-                                this.state.activity.typeofactivity === "B Type Activity" ?
+                                this.state.activity.typeofactivity === "Type B Activity" ?
                                   <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
                                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
                                       <p><b>No. of Beneficieries</b></p>
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                       <p>{this.state.activity && this.state.activity.noOfBeneficiaries ? this.state.activity.noOfBeneficiaries : "-"}</p>
+                                       <p>{this.state.activity && this.state.activity.noOfBeneficiaries ? this.state.activity.noOfBeneficiaries : 0}</p>
                                     </div>
                                   </div>
                                 : null
@@ -263,7 +263,7 @@ class ActivityReportView extends Component{
                           </div>
                         </div>
                         {
-                          this.state.activity.typeofactivity !== "B Type Activity" ?
+                          this.state.activity.typeofactivity !== "Type B Activity" ?
                           <div className="">
                             <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
                               <h5>List of Beneficieries</h5>

@@ -164,6 +164,50 @@ class Activity extends Component{
         remark                     : "Remark",
         failedRemark               : "Failed Data Remark",
       },
+      bTypeActivitygoodRecordsHeading           :{
+        projectCategoryType        : "Category",
+        projectName                : "Project Name",
+        date                       : "Date",
+        place                      : "Place",
+        sectorName                 : "Sector",
+        activityName               : "Activity",
+        subactivityName            : "Sub-Activity",
+        unit                       : "Unit",
+        unitCost                   : "Unit Cost",
+        quantity                   : "Quantity",
+        totalcost                  : "Total Cost",
+        numofBeneficiaries         : "Beneficiary",
+        LHWRF                      : "LHWRF",
+        NABARD                     : "NABARD",
+        bankLoan                   : "Bank",
+        govtscheme                 : "Government",
+        directCC                   : "DirectCC",
+        indirectCC                 : "IndirectCC",
+        other                      : "Other",
+        remark                     : "Remark",
+      },
+      bTypeActivityfailedtableHeading           :{
+        projectCategoryType        : "Category",
+        projectName                : "Project Name",
+        date                       : "Date",
+        place                      : "Place",
+        sectorName                 : "Sector",
+        activityName               : "Activity",
+        subactivityName            : "Sub-Activity",
+        unit                       : "Unit",
+        unitCost                   : "Unit Cost",
+        quantity                   : "Quantity",
+        numofBeneficiaries         : "Beneficiary",
+        LHWRF                      : "LHWRF",
+        NABARD                     : "NABARD",
+        bankLoan                   : "Bank",
+        govtscheme                 : "Government",
+        directCC                   : "DirectCC",
+        indirectCC                 : "IndirectCC",
+        other                      : "Other",
+        remark                     : "Remark",
+        failedRemark               : "Failed Data Remark",
+      },
       beneficiaryGoodRecordsHeading           :{
         sectorName                 : "Sector Name",
         activityName               : "Activity Name",
@@ -206,9 +250,9 @@ class Activity extends Component{
     }
     this.uploadedData = this.uploadedData.bind(this);
     this.handleTotalChange = this.handleTotalChange.bind(this);
-    this.getFileDetails = this.getFileDetails.bind(this);
+    this.getTypeBFileDetails = this.getTypeBFileDetails.bind(this);
+    this.getTypeAFileDetails = this.getTypeAFileDetails.bind(this);
   }
-
  
   remainTotal(event){
     event.preventDefault(); 
@@ -390,6 +434,7 @@ class Activity extends Component{
         "district"          : this.refs.district.value,
         "block"             : this.refs.block.value,
         "village"           : this.refs.village.value,
+        "location"          : this.refs.location.value,
         "dateofIntervention": this.refs.dateofIntervention.value,
         "sector_ID"         : this.refs.sector.value.split('|')[1],
         "sectorName"        : this.refs.sector.value.split('|')[0],
@@ -400,7 +445,7 @@ class Activity extends Component{
         "subactivityName"   : this.refs.subactivity.value.split('|')[0],
         "unit"              : document.getElementById('unit').innerHTML,
         "unitCost"          : this.refs.unitCost.value,
-        "noOfBeneficiaries" : this.refs.typeofactivity.value==="B Type Activity" ? this.refs.noOfBeneficiaries.value : "",
+        "noOfBeneficiaries" : this.refs.typeofactivity.value==="Type B Activity" ? this.refs.noOfBeneficiaries.value : 0,
         "quantity"          : this.refs.quantity.value,
         "totalcost"         : this.state.totalcost,
         "LHWRF"             : this.refs.LHWRF.value,
@@ -455,6 +500,7 @@ class Activity extends Component{
           "nameofactivity"    : "",
           "activity"          : "-- Select --",
           "subactivity"       : "-- Select --",
+          "location"          : "",
           "unit"              : "",
           "unitCost"          : "0",
           "quantity"          : "0",
@@ -501,6 +547,7 @@ class Activity extends Component{
         "district"          : this.refs.district.value,
         "block"             : this.refs.block.value,
         "village"           : this.refs.village.value,
+        "location"          : this.refs.location.value,
         "sector_ID"         : this.refs.sector.value.split('|')[1],
         "sectorName"        : this.refs.sector.value.split('|')[0],
         "typeofactivity"    : this.refs.typeofactivity.value,
@@ -510,7 +557,7 @@ class Activity extends Component{
         "subactivityName"   : this.refs.subactivity.value.split('|')[0],
         "unit"              : document.getElementById('unit').innerHTML,
         "unitCost"          : this.refs.unitCost.value,
-        "noOfBeneficiaries" : this.refs.typeofactivity.value==="B Type Activity" ? this.refs.noOfBeneficiaries.value : "",
+        "noOfBeneficiaries" : this.refs.typeofactivity.value==="Type B Activity" ? this.refs.noOfBeneficiaries.value : 0,
         "quantity"          : this.refs.quantity.value,
         "totalcost"         : this.state.totalcost,
         "LHWRF"             : this.refs.LHWRF.value,
@@ -554,8 +601,9 @@ class Activity extends Component{
         "activity"          : "-- Select --",
         "subactivity"       : "-- Select --",
         "unit"              : "",
+        "location"          : "",
         "unitCost"          : "0",
-        "noOfBeneficiaries"      : "0",
+        "noOfBeneficiaries" : "0",
         "quantity"          : "0",
         "totalcost"         : "0",
         "LHWRF"             : "0",
@@ -726,9 +774,9 @@ class Activity extends Component{
         method: 'get',
         url: '/api/activityReport/'+id,
       }).then((response)=> {
+        console.log("editData",response);
 
         var editData = response.data[0];
-        // console.log("editData",editData);
         if(editData){
           var bentableData = []
           if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
@@ -752,6 +800,8 @@ class Activity extends Component{
                 if(editData.listofBeneficiaries.length===(i+1)){
                   this.setState({
                     selectedBeneficiaries : bentableData
+                  },()=>{
+                    this.getBeneficiaries(this.state.selectedBeneficiaries);
                   })
                 }
               })
@@ -767,10 +817,11 @@ class Activity extends Component{
             "district"          : editData.district,
             "block"             : editData.block,
             "village"           : editData.village,
+            "location"          : editData.location,
             "date"              : editData.date,
             "sector"            : editData.sectorName+'|'+editData.sector_ID,
             "typeofactivity"    : editData.typeofactivity,
-            "bActivityActive"   : editData.typeofactivity==="B Type Activity" ? "inactive" : "active",
+            "bActivityActive"   : editData.typeofactivity==="Type B Activity" ? "inactive" : "active",
             "activity"          : editData.activityName+'|'+editData.activity_ID,
             "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
             "subActivityDetails": editData.unit,
@@ -878,8 +929,8 @@ class Activity extends Component{
           var startDate = this.state.year.substring(3, 7)+"-04-01";
           var endDate = this.state.year.substring(10, 15)+"-03-31";    
           //localhost:3054/api/activityReport/list/5e034ce62d2479a2ed5707ed/2019-04-01/2019-04-31
-          axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
-          // axios.post('/api/activityReport/list/'+center_ID, data)
+          // axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
+          axios.post('/api/activityReport/list/'+center_ID, data)
           .then((response)=>{
           $(".fullpageloader").hide();
             console.log("response",response);
@@ -898,7 +949,7 @@ class Activity extends Component{
                 quantity                   : this.addCommas(a.quantity),
                 totalcost                  : this.addCommas(a.totalcost),
                 // numofBeneficiaries         :( a.numofBeneficiaries !=="0") ||( a.numofBeneficiaries !==0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-                numofBeneficiaries         : (a.noOfBeneficiaries)!==null ? this.addCommas(a.noOfBeneficiaries) : this.addCommas(a.numofBeneficiaries),
+                numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
                 LHWRF                      : this.addCommas(a.LHWRF),
                 NABARD                     : this.addCommas(a.NABARD),
                 bankLoan                   : this.addCommas(a.bankLoan),
@@ -1053,6 +1104,7 @@ class Activity extends Component{
       "typeofactivity"    : '-- Select --',
       "activity"          : '-- Select --',
       "subactivity"       : '-- Select --',
+      "location"          : '',
       "subActivityDetails": '',
       "unitCost"          : 0,
       "quantity"          : 0,
@@ -1328,23 +1380,23 @@ class Activity extends Component{
       }
     })
   }
-  getFileDetails(fileName){
+  getTypeAFileDetails(fileName){
     axios
     .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
       $('.fullpageloader').hide();  
       if(response&&response.data) {
         this.setState({
-          fileDetails:response.data,
-          failedRecordsCount : response.data.failedRecords.length,
-          goodDataCount : response.data.goodrecords.length
+          fileDetailsTypeA:response.data,
+          failedRecordsCountTypeA : response.data.failedRecords.length,
+          goodDataCountTypeA : response.data.goodrecords.length
         });
         var tableData = response.data.goodrecords.map((a, i)=>{
           return{
             "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
             "projectName"         : a.projectName        ? a.projectName    : '-',
             "date"                : a.date     ? a.date : '-',
-            "place"               : a.district + ", " + a.block + ", " + a.village ,
+            "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName     ? a.sectorName : '-',
             "activityName"        : a.activityName     ? a.activityName : '-',
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
@@ -1369,7 +1421,7 @@ class Activity extends Component{
             "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
             "projectName"         : a.projectName        ? a.projectName    : '-',
             "date"                : a.date     ? a.date : '-',
-            "place"               : a.district + ", " + a.block + ", " + a.village ,
+            "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName     ? a.sectorName : '-',
             "activityName"        : a.activityName     ? a.activityName : '-',
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
@@ -1389,8 +1441,79 @@ class Activity extends Component{
           }
         })
         this.setState({
-          goodRecordsTable : tableData,
-          failedRecordsTable : failedRecordsTable
+          goodRecordsTableTypeA : tableData,
+          failedRecordsTableTypeA : failedRecordsTable
+        })
+      }
+    })
+    .catch((error)=> { 
+          
+    }) 
+  } 
+  
+  getTypeBFileDetails(fileName){
+    axios
+    .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
+    .then((response)=> {
+      $('.fullpageloader').hide();  
+      if(response&&response.data) {
+        this.setState({
+          fileDetailsTypeB:response.data,
+          failedRecordsCountTypeB : response.data.failedRecords.length,
+          goodDataCountTypeB : response.data.goodrecords.length
+        });
+        var tableData = response.data.goodrecords.map((a, i)=>{
+          return{
+            "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
+            "projectName"         : a.projectName        ? a.projectName    : '-',
+            "date"                : a.date     ? a.date : '-',
+            "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
+            "sectorName"          : a.sectorName     ? a.sectorName : '-',
+            "activityName"        : a.activityName     ? a.activityName : '-',
+            "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
+            "unit"                : a.unit     ? a.unit : '-',
+            "unitCost"            : a.unitCost     ? a.unitCost : '-',
+            "quantity"            : a.quantity     ? a.quantity : '-',
+            "totalcost"           : a.totalcost     ? a.totalcost : '-',
+            "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
+            "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
+            "NABARD"              : a.NABARD     ? a.NABARD : '-',
+            "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
+            "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
+            "directCC"            : a.directCC     ? a.directCC : '-',
+            "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
+            "other"               : a.other     ? a.other : '-',
+            "remark"              : a.remark     ? a.remark : '-',
+          }
+        })
+
+        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+          return{
+            "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
+            "projectName"         : a.projectName        ? a.projectName    : '-',
+            "date"                : a.date     ? a.date : '-',
+            "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
+            "sectorName"          : a.sectorName     ? a.sectorName : '-',
+            "activityName"        : a.activityName     ? a.activityName : '-',
+            "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
+            "unit"                : a.unit     ? a.unit : '-',
+            "unitCost"            : a.unitCost     ? a.unitCost : '-',
+            "quantity"            : a.quantity     ? a.quantity : '-',
+            "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
+            "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
+            "NABARD"              : a.NABARD     ? a.NABARD : '-',
+            "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
+            "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
+            "directCC"            : a.directCC     ? a.directCC : '-',
+            "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
+            "other"               : a.other     ? a.other : '-',
+            "remark"              : a.remark     ? a.remark : '-',
+            "failedRemark"        : a.failedRemark     ? a.failedRemark : '-',
+          }
+        })
+        this.setState({
+          goodRecordsTableTypeB : tableData,
+          failedRecordsTableTypeB : failedRecordsTable
         })
       }
     })
@@ -1445,7 +1568,7 @@ class Activity extends Component{
             "landCategory"    : a.landCategory    ? a.landCategory : '-',
             "incomeCategory"  : a.incomeCategory  ? a.incomeCategory : '-',
             "specialCategory" : a.specialCategory ? a.specialCategory : '-',
-            "place"           : a.dist + ", " + a.block + ", " + a.village,
+            "place"           : a.dist + ", " + a.block + ", " + a.village + ", " + a.location,
             "beneficiaryID"   : a.beneficiaryID     ? a.beneficiaryID : '-',
             "surnameOfBeneficiary"    : a.surnameOfBeneficiary     ? a.surnameOfBeneficiary : '-',
             "firstNameOfBeneficiary"  : a.firstNameOfBeneficiary     ? a.firstNameOfBeneficiary : '-',
@@ -1487,29 +1610,36 @@ class Activity extends Component{
                      </div>
                     <hr className="hr-head container-flui7d row"/>
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                      <h4 className="col-lg-6 col-md-6 col-xs-12 col-sm-12 pageSubHeader NOpadding">Activity Details</h4>
-                      <ul className="nav tabNav nav-pills col-lg-6 col-md-3 col-sm-12 col-xs-12 NOpadding">
+                      <h4 className="col-lg-5 col-md-6 col-xs-12 col-sm-12 pageSubHeader NOpadding">Activity Details</h4>
+                      <ul className="nav tabNav nav-pills col-lg-7 col-md-6 col-sm-12 col-xs-12 NOpadding">
                         <li className="active col-lg-3 col-md-3 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
-                        <li className="col-lg-3 col-md-3 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivity" ><a data-toggle="pill"  href="#bulkactivity">Bulk Upload</a></li>
-                        <li className="col-lg-5 col-md-5 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkbeneficiary" ><a data-toggle="pill"  href="#bulkbeneficiary">Beneficiary Bulk Upload</a></li>
+                        <li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeA" ><a data-toggle="pill"  href="#bulkactivityTypeA">Type A Activity BulkUpload</a></li>
+                        <li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeB" ><a data-toggle="pill"  href="#bulkactivityTypeB">Type B Activity BulkUpload</a></li>
                       </ul>
                     </div>
                   </div>
-                  <div className="tab-content ">
+                  <div className="tab-content">
                     <div id="manualactivity"  className="tab-pane fade in active ">
-                    <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="Academic_details">
+                    <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="Academic_details">
 
                       <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                         <label className="formLable">Activity Type<span className="asterix">*</span></label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                           <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
                             <option disabled="disabled" selected={true}>-- Select --</option>
-                            <option data-id="commonlevel">Common Level Activity</option>
+                          {/*  <option data-id="commonlevel">Common Level Activity</option>*/}
                             <option data-id="familylevel">Family Level Activity</option>
-                            <option data-id="BtypeActivity">B Type Activity</option>
+                            <option data-id="BtypeActivity">Type B Activity</option>
                           </select>
                         </div>
                         <div className="errorMsg">{this.state.errors.typeofactivity}</div>
+                      </div>
+                      <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                        <label className="formLable">Date of Intervention</label>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
+                          <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)} required/>
+                        </div>
+                        <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
                       </div>
 
                       <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
@@ -1563,14 +1693,6 @@ class Activity extends Component{
                       
                       <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                          
-                          <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Date of Intervention</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
-                              <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)} required/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
-                          </div>
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                               <label className="formLable">District<span className="asterix">*</span></label>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
@@ -1628,6 +1750,13 @@ class Activity extends Component{
                               </select>
                             </div>
                             <div className="errorMsg">{this.state.errors.village}</div>
+                          </div>
+                          <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                            <label className="formLable">Location<span className="asterix"></span></label>
+                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="location" >
+                              <input type="text"   className="form-control inputBox" name="location" placeholder="" ref="location" value={this.state.location} onChange={this.handleChange.bind(this)}/>
+                            </div>
+                            <div className="errorMsg">{this.state.errors.location}</div>
                           </div>
                         </div> 
                       </div><br/>
@@ -1760,10 +1889,10 @@ class Activity extends Component{
                       </div>
                       <div className="col-lg-12 boxHeightother">
                         <label className="formLable">Remark</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
-                              <input type="text"   className="form-control inputBox" name="remark" placeholder="" ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.remark}</div>
+                        <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
+                          <input type="text"   className="form-control inputBox" name="remark" placeholder="" ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
+                        </div>
+                        <div className="errorMsg">{this.state.errors.remark}</div>
                       </div>
                       <div className="col-lg-12 ">
                          <hr className=""/>
@@ -1890,50 +2019,71 @@ class Activity extends Component{
                     /> 
                   </div> 
                   </div>
-                    <div id="bulkactivity" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                          <BulkUpload url="/api/activityReport/bulk_upload_activities" 
-                            data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
-                            uploadedData={this.uploadedData} 
-
-                            fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Activity+Submission.xlsx"
-                            // fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Activity+Submission.xlsx"
-                            fileDetailUrl={this.state.fileDetailUrl}
-                            getFileDetails={this.getFileDetails.bind(this)}
-                            getData={this.getData.bind(this)}
-                            fileDetails={this.state.fileDetails}
-                            goodRecordsHeading ={this.state.goodRecordsHeading}
-                            failedtableHeading={this.state.failedtableHeading}
-                            failedRecordsTable ={this.state.failedRecordsTable}
-                            failedRecordsCount={this.state.failedRecordsCount}
-                            goodRecordsTable={this.state.goodRecordsTable}
-                            goodDataCount={this.state.goodDataCount}
-                          />
-                        </div>
+                  <div id="bulkactivityTypeA" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                        <BulkUpload url="/api/activityReport/bulk_upload_activities" 
+                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Family Level Activity"}} 
+                          uploadedData={this.uploadedData} 
+                          bulkTableID = "activityTypeA"
+                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Activity+Submission.xlsx"
+                          fileDetailUrl={this.state.fileDetailUrl}
+                          getFileDetails={this.getTypeAFileDetails.bind(this)}
+                          getData={this.getData.bind(this)}
+                          fileDetails={this.state.fileDetailsTypeA}
+                          goodRecordsHeading ={this.state.goodRecordsHeading}
+                          failedtableHeading={this.state.failedtableHeading}
+                          failedRecordsTable ={this.state.failedRecordsTableTypeA}
+                          failedRecordsCount={this.state.failedRecordsCountTypeA}
+                          goodRecordsTable={this.state.goodRecordsTableTypeA}
+                          goodDataCount={this.state.goodDataCountTypeA}
+                        />
                       </div>
                     </div>
-                    <div id="bulkbeneficiary" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                          <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
-                            data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
-                            uploadedData={this.uploadedData} 
-                            fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Beneficiries+In+Activity+Submission.xlsx"
-                            fileDetailUrl={this.state.beneficiaryFileDetailUrl}
-                            getData={this.getData.bind(this)}
-                            getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
-                            fileDetails={this.state.fileDetails}
-                            goodRecordsHeading ={this.state.beneficiaryGoodRecordsHeading}
-                            failedtableHeading={this.state.beneficiaryFailedtableHeading}
-                            failedRecordsTable ={this.state.beneficiaryFailedRecordsTable}
-                            failedRecordsCount={this.state.beneficiaryFailedRecordsCount}
-                            goodRecordsTable={this.state.beneficiaryGoodRecordsTable}
-                            goodDataCount={this.state.beneficiaryGoodDataCount}
-                          />
-                        </div>
+                  </div>
+                  <div id="bulkactivityTypeB" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                        <BulkUpload url="/api/activityReport/bulk_upload_activities" 
+                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Type B Activity"}} 
+                          uploadedData={this.uploadedData} 
+                          bulkTableID = "activityTypeB"
+                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Activity+Submission.xlsx"
+                          fileDetailUrl={this.state.fileDetailUrl}
+                          getFileDetails={this.getTypeBFileDetails.bind(this)}
+                          getData={this.getData.bind(this)}
+                          fileDetails={this.state.fileDetailsTypeB}
+                          goodRecordsHeading ={this.state.bTypeActivitygoodRecordsHeading}
+                          failedtableHeading={this.state.bTypeActivityfailedtableHeading}
+                          failedRecordsTable ={this.state.failedRecordsTableTypeB}
+                          failedRecordsCount={this.state.failedRecordsCountTypeB}
+                          goodRecordsTable={this.state.goodRecordsTableTypeB}
+                          goodDataCount={this.state.goodDataCountTypeB}
+                        />
                       </div>
                     </div>
+                  </div>
+                   {/* <div id="bulkbeneficiary" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                      <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
+                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
+                      uploadedData={this.uploadedData} 
+                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Beneficiries+In+Activity+Submission.xlsx"
+                      fileDetailUrl={this.state.beneficiaryFileDetailUrl}
+                      getData={this.getData.bind(this)}
+                      getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
+                      fileDetails={this.state.fileDetails}
+                      goodRecordsHeading ={this.state.beneficiaryGoodRecordsHeading}
+                      failedtableHeading={this.state.beneficiaryFailedtableHeading}
+                      failedRecordsTable ={this.state.beneficiaryFailedRecordsTable}
+                      failedRecordsCount={this.state.beneficiaryFailedRecordsCount}
+                      goodRecordsTable={this.state.beneficiaryGoodRecordsTable}
+                      goodDataCount={this.state.beneficiaryGoodDataCount}
+                      />
+                      </div>
+                      </div>
+                      </div>*/}
                   </div>
                 </div>
               </div>

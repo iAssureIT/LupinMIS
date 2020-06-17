@@ -104,6 +104,8 @@ class PlanDetails extends Component{
       "goodRecordsHeading" :{
         month               : "Month",
         year                : "Year",
+        projectCategoryType : "Category",
+        projectName         : "Project Name",
         sectorName          : "Sector",
         activityName        : "Activity",
         subactivityName     : "Sub-Activity",
@@ -849,7 +851,6 @@ class PlanDetails extends Component{
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    this.year();
     this.monthYear();
     this.getLength();
     this.getAvailableSectors();
@@ -865,6 +866,7 @@ class PlanDetails extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
+      this.year();
       // console.log(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate)
       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
     });
@@ -1124,6 +1126,8 @@ class PlanDetails extends Component{
     axios
     .get(fileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
+      console.log(" response.data.failedRecords", response.data.failedRecords);
+      console.log(" response.data.goodrecords", response.data.goodrecords);
       $('.fullpageloader').hide();  
       if (response) {
         this.setState({
@@ -1133,46 +1137,53 @@ class PlanDetails extends Component{
         });
         var tableData = response.data.goodrecords.map((a, i)=>{ 
           return{
-            "month"        : a.month        ? a.month    : '-',
-            "year"        : a.year        ? a.year    : '-',
-            "sectorName"        : a.sectorName        ? a.sectorName    : '-',
-            "activityName"       : a.activityName        ? a.activityName    : '-',
+            "month"                : a.month        ? a.month    : '-',
+            "year"                 : a.year        ? a.year    : '-',
+            "projectCategoryType"  : a.projectCategoryType        ? a.projectCategoryType    : '-',
+            "projectName"          : a.projectName        ? a.projectName    : '-',
+            "sectorName"           : a.sectorName        ? a.sectorName    : '-',
+            "activityName"         : a.activityName        ? a.activityName    : '-',
             "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
-            "unit"         : a.unit     ? a.unit : '-',
-            "physicalUnit"   : a.physicalUnit     ? a.physicalUnit : '-',
-            "unitCost"   : a.unitCost     ? a.unitCost : '-',
-            "totalBudget"   : a.totalBudget     ? a.totalBudget : '-',
-            "noOfBeneficiaries"      : a.noOfBeneficiaries     ? a.noOfBeneficiaries : '-',
-            "noOfFamilies"   : a.noOfFamilies     ? a.noOfFamilies : '-',
-            "LHWRF" : a.LHWRF ? a.LHWRF : '-',
-            "NABARD" : a.NABARD ? a.NABARD : '-', 
-            "bankLoan"   : a.bankLoan     ? a.bankLoan : '-', 
-            "govtscheme"   : a.govtscheme     ? a.govtscheme : '-',
-            "directCC"   : a.directCC     ? a.directCC : '-',
-            "indirectCC"   : a.indirectCC     ? a.indirectCC : '-',
-            "other"   : a.other     ? a.other : '-',
-            "remark"   : a.remark     ? a.remark : '-'
+            "unit"                 : a.unit     ? a.unit : '-',
+            "physicalUnit"         : a.physicalUnit     ? a.physicalUnit : '-',
+            "unitCost"             : a.unitCost     ? a.unitCost : '-',
+            "totalBudget"          : a.totalBudget     ? a.totalBudget : '-',
+            "noOfBeneficiaries"    : a.noOfBeneficiaries     ? a.noOfBeneficiaries : '-',
+            "noOfFamilies"         : a.noOfFamilies     ? a.noOfFamilies : '-',
+            "LHWRF"                : a.LHWRF ? a.LHWRF : '-',
+            "NABARD"               : a.NABARD ? a.NABARD : '-', 
+            "bankLoan"             : a.bankLoan     ? a.bankLoan : '-', 
+            "govtscheme"           : a.govtscheme     ? a.govtscheme : '-',
+            "directCC"             : a.directCC     ? a.directCC : '-',
+            "indirectCC"           : a.indirectCC     ? a.indirectCC : '-',
+            "other"                : a.other     ? a.other : '-',
+            "remark"               : a.remark     ? a.remark : '-'
           }
         })
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
-            "sectorName"        : a.sectorName        ? a.sectorName    : '-',
-            "activityName"       : a.activityName        ? a.activityName    : '-',
+            // "month"                : a.month        ? a.month    : '-',
+            // "year"                 : a.year        ? a.year    : '-',
+            // "projectCategoryType"  : a.projectCategoryType        ? a.projectCategoryType    : '-',
+            // "projectName"          : a.projectName        ? a.projectName    : '-',
+            "sectorName"           : a.sectorName        ? a.sectorName    : '-',
+            "activityName"         : a.activityName        ? a.activityName    : '-',
             "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
-            "unit"         : a.unit     ? a.unit : '-',
-            "physicalUnit"   : a.physicalUnit     ? a.physicalUnit : '-',
-            "unitCost"   : a.unitCost     ? a.unitCost : '-',
-            "noOfBeneficiaries"      : a.noOfBeneficiaries     ? a.noOfBeneficiaries : '-',
-            "noOfFamilies"   : a.noOfFamilies     ? a.noOfFamilies : '-',
-            "LHWRF" : a.LHWRF ? a.LHWRF : '-',
-            "NABARD" : a.NABARD ? a.NABARD : '-', 
-            "bankLoan"   : a.bankLoan     ? a.bankLoan : '-', 
-            "govtscheme"   : a.govtscheme     ? a.govtscheme : '-',
-            "directCC"   : a.directCC     ? a.directCC : '-',
-            "indirectCC"   : a.indirectCC     ? a.indirectCC : '-',
-            "other"   : a.other     ? a.other : '-',
-            "remark"   : a.remark     ? a.remark : '-',
-            "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
+            "unit"                 : a.unit     ? a.unit : '-',
+            "physicalUnit"         : a.physicalUnit     ? a.physicalUnit : '-',
+            "unitCost"             : a.unitCost     ? a.unitCost : '-',
+            "totalBudget"          : a.totalBudget     ? a.totalBudget : '-',
+            "noOfBeneficiaries"    : a.noOfBeneficiaries     ? a.noOfBeneficiaries : '-',
+            "noOfFamilies"         : a.noOfFamilies     ? a.noOfFamilies : '-',
+            "LHWRF"                : a.LHWRF ? a.LHWRF : '-',
+            "NABARD"               : a.NABARD ? a.NABARD : '-', 
+            "bankLoan"             : a.bankLoan     ? a.bankLoan : '-', 
+            "govtscheme"           : a.govtscheme     ? a.govtscheme : '-',
+            "directCC"             : a.directCC     ? a.directCC : '-',
+            "indirectCC"           : a.indirectCC     ? a.indirectCC : '-',
+            "other"                : a.other     ? a.other : '-',
+            "remark"               : a.remark     ? a.remark : '-',
+            "failedRemark"         : a.failedRemark     ? a.failedRemark : '-'
           }
         })
         this.setState({
@@ -1381,53 +1392,7 @@ class PlanDetails extends Component{
                         </select>
                       </div>
                       <div className="errorMsg">{this.state.errors.year}</div>
-                    </div>          
-                    <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
-                      <div className="" id="projectCategoryType" >
-                        <label className=" formLable">Category Type<span className="asterix">*</span></label>
-                        {this.state.type===true ?
-
-                         <div className=" switch" onClick={this.handleToggleP.bind(this)} >
-                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
-                            <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
-                            <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                            <span className="switch-selection"></span>
-                          </div>
-                          :
-                           <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggleP.bind(this)} >
-                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
-                            <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                            <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
-                            <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                            <span className="switch-selection" ></span>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                    {
-                      this.state.projectCategoryType ==="Project Fund" ? 
-                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
-                          <label className="formLable">Project Name</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectProjectName.bind(this)} >
-                                <option className="hidden" >-- Select --</option>
-                                {
-                                  this.state.availableProjects && this.state.availableProjects.length > 0  ? 
-                                  this.state.availableProjects.map((data, index)=>{
-                                    return(
-                                      <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                }  
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.block}</div>
-                        </div>
-                      : ""
-                    }                            
+                    </div>                 
                   </div> 
                   <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                     <div id="manualplan"  className="tab-pane fade in active ">
@@ -1447,7 +1412,53 @@ class PlanDetails extends Component{
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                       <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt outerForm"  style={hidden}>
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 NOpadding "> 
+                          <div className=" col-lg-12 col-sm-12 col-xs-12 NOpadding ">         
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
+                              <div className="" id="projectCategoryType" >
+                                <label className=" formLable">Category Type<span className="asterix">*</span></label>
+                                {this.state.type===true ?
+
+                                 <div className=" switch" onClick={this.handleToggleP.bind(this)} >
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
+                                    <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
+                                    <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                                    <span className="switch-selection"></span>
+                                  </div>
+                                  :
+                                   <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggleP.bind(this)} >
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
+                                    <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                                    <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                                    <span className="switch-selection" ></span>
+                                  </div>
+                                }
+                              </div>
+                            </div>
+                            {
+                              this.state.projectCategoryType ==="Project Fund" ? 
+                                <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
+                                  <label className="formLable">Project Name</label>
+                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                      <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectProjectName.bind(this)} >
+                                        <option className="hidden" >-- Select --</option>
+                                        {
+                                          this.state.availableProjects && this.state.availableProjects.length > 0  ? 
+                                          this.state.availableProjects.map((data, index)=>{
+                                            return(
+                                              <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
+                                            );
+                                          })
+                                          :
+                                          null
+                                        }  
+                                      </select>
+                                    </div>
+                                    <div className="errorMsg">{this.state.errors.block}</div>
+                                </div>
+                              : ""
+                            }             
                             <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 ">
                               <label className="formLable">Sector</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
@@ -1658,6 +1669,8 @@ class PlanDetails extends Component{
                     </div>
                     <div id="bulkplan" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                           {  /* "projectCategoryType" : this.state.projectCategoryType, 
+                                                         "projectName":this.state.projectCategoryType==="LHWRF Grant" ? "-" : this.state.projectName*/}
                         <BulkUpload url={this.state.month === "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
                         data={{
                               "centerName" : this.state.centerName, 
@@ -1666,8 +1679,7 @@ class PlanDetails extends Component{
                               "startDate" : this.state.startDate,
                               "endDate"  : this.state.endDate,
                               "year":this.state.year, 
-                              "projectCategoryType" : this.state.projectCategoryType, 
-                              "projectName":this.state.projectCategoryType==="LHWRF Grant" ? "-" : this.state.projectName}} 
+                            }} 
                         uploadedData={this.uploadedData} 
                         fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Plan+Submission.xlsx"
                         fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}

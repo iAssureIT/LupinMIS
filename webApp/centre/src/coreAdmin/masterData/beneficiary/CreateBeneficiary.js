@@ -391,7 +391,7 @@ class Beneficiary extends Component{
   }
   
   getLength(center_ID){
-    axios.get('/api/beneficiaries/count/'+center_ID)
+    /*axios.get('/api/beneficiaries/count/'+center_ID)
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -402,7 +402,7 @@ class Beneficiary extends Component{
     })
     .catch(function(error){
       
-    });
+    });*/
   }
 
   getData(startRange, limitRange, center_ID){
