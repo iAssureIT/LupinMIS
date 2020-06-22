@@ -89,12 +89,12 @@ export default class BarChart extends Component{
     }
   }
   componentDidMount(){
-    console.log('center_ID',this.props.center_ID);
+    // console.log('center_ID',this.props.center_ID);
     this.getSectorwiseFamilyupg(this.props.year,this.props.center_ID);
     this.getData(this.props.year,this.props.center_ID);
   }
   getSectorwiseFamilyupg(year,center_ID){
-    console.log('center_ID',center_ID);
+    // console.log('center_ID',center_ID);
     var oudata = {...this.state.data};
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
@@ -159,7 +159,7 @@ export default class BarChart extends Component{
   }
   getData(year, center_ID){
     if(year){
-      console.log("year========",year);
+      // console.log("year========",year);
       var sectordata = {...this.state.data};
       var startDate = year.substring(3, 7)+"-04-01";
       var endDate = year.substring(10, 15)+"-03-31";

@@ -89,7 +89,7 @@ class NewBeneficiary extends Component{
       this.setState({
         selectedValues : nextProps.selectedValues,
         sendBeneficiary: nextProps.sendBeneficiary,
-        // selectedBeneficiaries: nextProps.sendBeneficiary
+        selectedBeneficiaries: nextProps.sendBeneficiary
       })
     }
   }

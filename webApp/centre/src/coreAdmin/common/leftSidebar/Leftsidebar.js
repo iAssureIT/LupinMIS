@@ -222,6 +222,12 @@ export default class Leftsidebar extends Component{
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Family Report</span>
                       </Link>
+                    </li>         
+                    <li>
+                      <Link to="/family-coverage-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Family Coverage Report</span>
+                      </Link>
                     </li>                    
                     <li>
                       <Link to="/upgraded-beneficiary-report" title="Beneficiary Report">

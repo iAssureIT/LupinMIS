@@ -2,6 +2,7 @@ import React,{Component}         from 'react';
 import axios                     from 'axios';
 import $                         from "jquery";
 import { render }                from 'react-dom';
+import moment                    from 'moment';
 import html2canvas               from 'html2canvas';
 import Chart                     from 'chart.js';
 import ReactHTMLTableToExcel     from 'react-html-table-to-excel';
@@ -65,7 +66,7 @@ export default class Dashboard extends Component{
       // 'ActualBeneficiaries' : ['1800', '3000', '1900', '2100', '2900', '2200', '2450', '3000', '1800', '1500', '2900', '2000'],
       // 'expenditure'         : ['18000', '30000', '19000', '21000', '29000', '20200', '24500', '30000', '18000', '15000', '20900', '20000'],
       // 'budget'              : ['20000', '35000', '20000', '21000', '30000', '23000', '25000', '31000', '19800', '16500', '30000', '20000'],
-      "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"], 
+      // "years"               :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"], 
       "centerData" : [
         {"typeOfCenter" :"ADP Program",
           "count"       : 0
@@ -96,22 +97,24 @@ export default class Dashboard extends Component{
  
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.year();
     this.getcenter();
     this.getCountOfSectors();
     this.getCountOfActivities();
-    // const center_ID = localStorage.getItem("center_ID");
-    // const centerName = localStorage.getItem("centerName");
-    // this.setState({
-    //   center_ID    : center_ID,
-    //   centerName   : centerName,
-    // },()=>{
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
       this.getAvailableCenters(this.state.center_ID);
       this.getCenterwiseData(this.state.year, this.state.center_ID);
-    // })
+    })
   }
 
   componentWillReceiveProps(nextProps){
     this.getAvailableCenters(this.state.center_ID);
+    this.year();
     this.getCountOfSectors();
     this.getCountOfActivities();
     this.getCenterwiseData(this.state.year, this.state.center_ID);
@@ -130,7 +133,7 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
     }).then((response)=> {
-      console.log("response ==>",response.data[0]);
+      // console.log("response ==>",response.data[0]);
 
       function removeDuplicates(data, param){
           return data.filter(function(item, pos, array){
@@ -220,7 +223,6 @@ export default class Dashboard extends Component{
       console.log('error', error);
     });
   } 
- 
   getCenterwiseData(year, center_ID){
     // console.log('year', year);
     var startDate = year.substring(3, 7)+"-04-01";
@@ -228,7 +230,7 @@ export default class Dashboard extends Component{
     if(startDate && endDate && center_ID){
         axios.get('/api/report/center/'+startDate+'/'+endDate+'/'+center_ID+'/all/all/all/all')
         .then((response)=>{
-          console.log("centerresponse",response);
+          // console.log("centerresponse",response);
       /*******************************Dashboard Status Data***************************/
           var centerwiseData = response.data;
           var totalindex = (centerwiseData.length)-2;
@@ -296,7 +298,6 @@ export default class Dashboard extends Component{
       });
     }
   }
-
   getRandomColor(){
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -312,19 +313,19 @@ export default class Dashboard extends Component{
       // return color;
   }
   getRandomColor_sector(){
-      var letters = '01234ABCDEF56789';
-      var color = '#';
-      for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-      // var letters = 'BCDEF'.split('');
-      // var color = '#';
-      // for (var i = 0; i < 6; i++ ) {
-      //     color += letters[Math.floor(Math.random() * letters.length)];
-      // }
-      // return color;
+    var letters = '01234ABCDEF56789';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+    // var letters = 'BCDEF'.split('');
+    // var color = '#';
+    // for (var i = 0; i < 6; i++ ) {
+    //     color += letters[Math.floor(Math.random() * letters.length)];
+    // }
+    // return color;
+  }
 
   getmonthwiseExpen(year, center_ID){
     // console.log('year', year, 'center_ID', center_ID);
@@ -398,7 +399,53 @@ export default class Dashboard extends Component{
       $('#dataShow').css({"display": "none"});
       $('#dataShow').removeClass('in');  
   }
-
+ 
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      // console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        year       :financialYear
+      },()=>{
+        this.getCenterwiseData(this.state.year, this.state.center_ID);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              // console.log('years',this.state.years);
+              // console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
+  }
+ 
   render(){
   // console.log("this.state.center_ID",this.state.center_ID);
     return(
@@ -449,20 +496,23 @@ export default class Dashboard extends Component{
                                 </select>
                             </div>
                         </div>*/}
-                        <div className=" col-lg-4 col-lg-offset-4 col-md-6 col-sm-6 col-xs-12">
-                          <label className="formLable">Year</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                            <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
-                             <option className="hidden" >-- Select Year --</option>
-                             {
-                              this.state.years.map((data, i)=>{
-                                return <option key={i}>{data}</option>
-                              })
-                             }
-                            </select>
-                          </div>
-                          {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
-                        </div>  
+                      <div className=" col-lg-4 col-lg-offset-4 col-md-6 col-sm-6 col-xs-12">
+                        <label className="formLable">Year</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                          <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                            <option className="hidden" >-- Select--</option>
+                            { 
+                              this.state.years 
+                              ? 
+                                this.state.years.map((data, i)=>{
+                                  return <option key={i}>{data}</option>
+                                })
+                              : null
+                            }
+                          </select>
+                        </div>
+                        {/*<div className="errorMsg">{this.state.errors.year}</div>*/}
+                      </div> 
                     </div>  
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                       <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5">

@@ -1,48 +1,6 @@
 .fixedTable .colSr{
 	width: 30px !important;
 }
-#VillagewisefamilyReport .col1{
-	width: 100px !important;
-	white-space: pre-wrap!important;
-}
-#VillagewisefamilyReport .col2{
-	white-space: pre-wrap!important;
-	width: 80px !important;
-}
-#VillagewisefamilyReport .col3{
-	white-space: pre-wrap!important;
-	width: 100px !important;
-}
-#VillagewisefamilyReport .col4{
-	white-space: pre-wrap!important;
-	width: 90px !important;
-}
-#VillagewisefamilyReport .col9, #VillagewisefamilyReport .col7
-{
-	white-space: pre-wrap!important;
-	width: 62px !important;
-} 
-#VillagewisefamilyReport .col5{
-	white-space: pre-wrap!important;
-	width: 200px !important;
-}
-#VillagewisefamilyReport .col8{
-	white-space: pre-wrap!important;
-	width: 72px !important;
-}
-#VillagewisefamilyReport .col6, #VillagewisefamilyReport .col12{
-	white-space: pre-wrap!important;
-	width: 72px !important;
-}
-
-#VillagewisefamilyReport .col10, #VillagewisefamilyReport .col11, #VillagewisefamilyReport .col13, #VillagewisefamilyReport .col14{
-	white-space: pre-wrap!important;
-	width: 62px !important;
-} 
-#VillagewisefamilyReport .col15, #VillagewisefamilyReport .col16, #VillagewisefamilyReport .col17, #VillagewisefamilyReport .col18, #VillagewisefamilyReport .col19{
-	white-space: pre-wrap!important;
-	width: 62px !important;
-} 
 #VillagewisefamilyReport .scrollContent {
   display: block;
   height: 350px;
@@ -55,9 +13,7 @@
   overflow: auto;
   width: 100%
 }
-
-
-/*#VillagewisefamilyReport .col1{
+#VillagewisefamilyReport .col1{
 	width: 100px !important;
 	white-space: pre-wrap!important;
 }
@@ -86,8 +42,4 @@
 #VillagewisefamilyReport .col8, #VillagewisefamilyReport .col6{
 	white-space: pre-wrap!important;
 	width: 82px !important;
-}*/
-
-.tablerow > td {
-    border: 1px solid #2f9c3f !important;
 }

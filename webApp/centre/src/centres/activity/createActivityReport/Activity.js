@@ -415,6 +415,8 @@ class Activity extends Component{
   getBeneficiaries(selectedBeneficiaries){
     this.setState({
       selectedBeneficiaries : selectedBeneficiaries
+    },()=>{
+      console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
     })
   }
 
@@ -854,6 +856,7 @@ class Activity extends Component{
             this.getAvailableVillages(this.state.center_ID, this.state.district, this.state.block);
             this.getAvailableBlocks(this.state.center_ID, this.state.district);
             this.getAvailableCenter(this.state.center_ID);
+            this.getBeneficiaries(this.state.selectedBeneficiaries);
           });
         }
       })
@@ -1613,8 +1616,8 @@ class Activity extends Component{
                       <h4 className="col-lg-5 col-md-6 col-xs-12 col-sm-12 pageSubHeader NOpadding">Activity Details</h4>
                       <ul className="nav tabNav nav-pills col-lg-7 col-md-6 col-sm-12 col-xs-12 NOpadding">
                         <li className="active col-lg-3 col-md-3 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
-                        <li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeA" ><a data-toggle="pill"  href="#bulkactivityTypeA">Type A Activity BulkUpload</a></li>
-                        <li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeB" ><a data-toggle="pill"  href="#bulkactivityTypeB">Type B Activity BulkUpload</a></li>
+                        <li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeA" ><a data-toggle="pill"  href="#bulkactivityTypeA">Type A Bulk Upload</a></li>
+                        <li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeB" ><a data-toggle="pill"  href="#bulkactivityTypeB">Type B Bulk Upload</a></li>
                       </ul>
                     </div>
                   </div>
@@ -2022,7 +2025,8 @@ class Activity extends Component{
                   <div id="bulkactivityTypeA" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                        <BulkUpload url="/api/activityReport/bulk_upload_activities" 
+                        <BulkUpload 
+                          url="/api/activityReport/bulk_upload_activities" 
                           data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Family Level Activity"}} 
                           uploadedData={this.uploadedData} 
                           bulkTableID = "activityTypeA"
@@ -2044,7 +2048,8 @@ class Activity extends Component{
                   <div id="bulkactivityTypeB" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                        <BulkUpload url="/api/activityReport/bulk_upload_activities" 
+                        <BulkUpload 
+                          url="/api/activityReport/bulk_upload_type_B_activities" 
                           data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Type B Activity"}} 
                           uploadedData={this.uploadedData} 
                           bulkTableID = "activityTypeB"

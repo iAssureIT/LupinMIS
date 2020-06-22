@@ -7,9 +7,9 @@ import moment               from 'moment';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
 
-import "./VillagewisefamilyReport.css"
+import "./FamilyCoverageReport.css"
 import "../../Reports/Reports.css";
-class VillagewisefamilyReport extends Component{
+class FamilyCoverageReport extends Component{
 	constructor(props){
     super(props);
     this.state = {
@@ -53,10 +53,10 @@ class VillagewisefamilyReport extends Component{
             "familyID"            : 'Family ID',
             "projectCategoryType" : 'Project Category',
             "projectName"         : 'Project Name',
-            // "name"                : 'Activity',
-            "sectorName"          : 'Sector',
-            "activityName"        : 'Activity',
-            "subactivityName"     : 'Subactivity',
+            "name"                : 'Activity',
+            // "sectorName"          : 'Sector',
+            // "activityName"        : 'Activity',
+            // "subactivityName"     : 'Subactivity',
             "unit"                : "Unit",    
             "UnitCost"            : "Unit Cost",    
             "quantity"            : "Quantity",    
@@ -445,30 +445,21 @@ class VillagewisefamilyReport extends Component{
         if(sector_ID==="all"){
           $(".fullpageloader").show();
 
-          axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
+          axios.get('/api/report/family_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
           .then((response)=>{
             $(".fullpageloader").hide();
-            // console.log("resp",response);
+            console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
-                _id                : a._id,   
-                // projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
-                // projectName            : a.projectName ==="all"|| 0 ? "-" :a.projectName,                       
-                // name                   : a.name,
-                // familyID               : a.familyID,
-                // name_family            : a.name_family,
-                // village                : a.village,
-                // block                  : a.block,
-                // district               : a.district,             
-
+                _id                 : a._id,   
                 name_family         : a.name_family,
                 familyID            : a.familyID,
                 projectCategoryType : a.projectCategoryType ? a.projectCategoryType : "-",
                 projectName         : a.projectName ==="all"|| 0 ? "-" :a.projectName,
-                // name                : a.name,
-                sectorName          : a.sectorName,
-                activityName        : a.activityName,
-                subactivityName     : a.subactivityName,
+                name                : a.name,
+                // sectorName          : a.sectorName,
+                // activityName        : a.activityName,
+                // subactivityName     : a.subactivityName,
                 unit                : a.unit,
                 UnitCost            : a.UnitCost,
                 quantity            : a.quantity,
@@ -498,17 +489,20 @@ class VillagewisefamilyReport extends Component{
             }
           });
         }else{
-          axios.get('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
+          axios.get('/api/report/family_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
           .then((response)=>{
-            // console.log("resp",response);
+            console.log("resp",response);
               var tableData = response.data.map((a, i)=>{
               return {
-                _id                 : a._id,       
+                _id                 : a._id,   
                 name_family         : a.name_family,
                 familyID            : a.familyID,
                 projectCategoryType : a.projectCategoryType ? a.projectCategoryType : "-",
                 projectName         : a.projectName ==="all"|| 0 ? "-" :a.projectName,
                 name                : a.name,
+                // sectorName          : a.sectorName,
+                // activityName        : a.activityName,
+                // subactivityName     : a.subactivityName,
                 unit                : a.unit,
                 UnitCost            : a.UnitCost,
                 quantity            : a.quantity,
@@ -654,7 +648,7 @@ class VillagewisefamilyReport extends Component{
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                          Family Report
+                          Family Coverage Report
                         </div>
                     </div>
                     <hr className="hr-head"/>
@@ -847,162 +841,155 @@ class VillagewisefamilyReport extends Component{
                       </div>
                     </div>  
                     <div className="marginTop11">
-                      <div className="">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            {/*<IAssureTable 
-                                tableName = "Villagewise Family Report"
-                                id = "VillagewisefamilyReport"
-                                completeDataCount={this.state.tableDatas.length}
-                                twoLevelHeader={this.state.twoLevelHeader} 
-                                editId={this.state.editSubId} 
-                                getData={this.getData.bind(this)} 
-                                tableHeading={this.state.tableHeading} 
-                                tableData={this.state.tableData} 
-                                tableObjects={this.state.tableObjects}
-                                getSearchText={this.getSearchText.bind(this)}/>*/}
-
-                        
-                                <div className="table-responsive" id="section-to-screen">
-                                  <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="VillagewisefamilyReport">
-                                    <thead className="tempTableHeader fixedHeader">
-                                      <tr className="tempTableHeader"></tr>
-                                      <tr className="">
-                                        <th className="umDynamicHeader srpadd text-center">
-                                          <div className="colSr">Sr.No.</div>
-                                        </th>
-                                        <th id="name_family" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col1">Family Head Name</div>
-                                          <span id="name_family" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="familyID" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col2">Family ID</div>
-                                          <span id="familyID" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="projectCategoryType" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col3">Project Category</div>
-                                          <span id="projectCategoryType" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="projectName" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col4">Project Name</div>
-                                          <span id="projectName" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="sectorName" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col5">Sector</div>
-                                          <span id="sectorName" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col6">Activity</div>
-                                          <span id="activityName" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="subactivityName" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col7">Subactivity</div>
-                                          <span id="subactivityName" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="unit" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col8">Unit</div>
-                                          <span id="unit" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col9">Unit Cost</div>
-                                          <span id="UnitCost" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                       <th id="quantity" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col10">Quantity</div>
-                                          <span id="quantity" className="fa fa-sort tableSort"></span></th><th id="total" className="umDynamicHeader srpadd textAlignLeft "><div className="wrapWord col11">Total</div><span id="total" className="fa fa-sort tableSort"></span></th>
-                                        <th id="LHWRF" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col12">LHWRF</div>
-                                          <span id="LHWRF" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="NABARD" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col13">NABARD</div>
-                                          <span id="NABARD" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="Bank_Loan" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col14">Bank_Loan</div>
-                                          <span id="Bank_Loan" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="Govt" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col15">Govt</div>
-                                          <span id="Govt" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="DirectCC" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col16">DirectCC</div>
-                                          <span id="DirectCC" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="IndirectCC" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col17">IndirectCC</div>
-                                          <span id="IndirectCC" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="Other" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col18">Other</div>
-                                          <span id="Other" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="village" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col19">Village</div>
-                                          <span id="village" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="block" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col20">Block</div>
-                                          <span id="block" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                        <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
-                                          <div className="wrapWord col21">District</div>
-                                          <span id="district" className="fa fa-sort tableSort"></span>
-                                        </th>
-                                      </tr>
-                                    </thead>
-                                            <tbody className="scrollContent" >
-                                      { this.state.tableData?
-                                          this.state.tableData.map((value, i)=> {
-                                            console.log("value.sectorData",value.sectorData)
-                                                return(
+                          <div className="table-responsive" id="section-to-screen">
+                            <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="FamilyCoverageReport">
+                              <thead className="tempTableHeader fixedHeader">
+                                <tr className="tempTableHeader"></tr>
+                                <tr className="">
+                                  <th className="umDynamicHeader srpadd text-center">
+                                    <div className="colSr">Sr.No.</div>
+                                  </th>
+                                  <th id="name_family" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col1">Family Head Name</div>
+                                    <span id="name_family" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="familyID" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col2">Family ID</div>
+                                    <span id="familyID" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="projectCategoryType" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col3">Project Category</div>
+                                    <span id="projectCategoryType" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="projectName" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col4">Project Name</div>
+                                    <span id="projectName" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="name" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col5">Activity</div>
+                                    <span id="name" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  {/*<th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col6">Activity</div>
+                                    <span id="activityName" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="subactivityName" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col7">Subactivity</div>
+                                    <span id="subactivityName" className="fa fa-sort tableSort"></span>
+                                  </th>*/}
+                                  <th id="unit" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col8">Unit</div>
+                                    <span id="unit" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col9">Unit Cost</div>
+                                    <span id="UnitCost" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                 <th id="quantity" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col10">Quantity</div>
+                                    <span id="quantity" className="fa fa-sort tableSort"></span></th><th id="total" className="umDynamicHeader srpadd textAlignLeft "><div className="wrapWord col11">Total</div><span id="total" className="fa fa-sort tableSort"></span></th>
+                                  <th id="LHWRF" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col12">LHWRF</div>
+                                    <span id="LHWRF" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="NABARD" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col13">NABARD</div>
+                                    <span id="NABARD" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="Bank_Loan" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col14">Bank_Loan</div>
+                                    <span id="Bank_Loan" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="Govt" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col15">Govt</div>
+                                    <span id="Govt" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="DirectCC" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col16">DirectCC</div>
+                                    <span id="DirectCC" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="IndirectCC" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col17">IndirectCC</div>
+                                    <span id="IndirectCC" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="Other" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col18">Other</div>
+                                    <span id="Other" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="village" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col19">Village</div>
+                                    <span id="village" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="block" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col20">Block</div>
+                                    <span id="block" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col21">District</div>
+                                    <span id="district" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody className="scrollContent" >
+                                { this.state.tableData?
+                                  this.state.tableData.map((value, i)=> {
+                                            console.log("value",value,"i", i)
+                                    // console.log("value.sectorData",value.sectorData)
+                                    var sectorLength=value.sectorData.length
+                                      return(
+                                    
+                                        <tr className="tablerow"  key={i}>
+                                          <td className="textAlignCenter"><div className="colSr">{i+1}</div>
+                                          </td>
+                                          <td className=""><div className=" col1">{value._id.name_family}</div>
+                                          </td>
+                                          <td className=""><div className=" col2">{value._id.familyID}</div>
+                                          </td>
+                                          { 
+                                            sectorLength !== 0 && value.sectorData ?
                                               Object.entries(value.sectorData).map(([key, value1], index)=> {
-                                                var sectorLength=value.sectorData.length
-                                                console.log("value",value,"i", i)
-                                                // console.log("value1===================",value1[0])
-                                                console.log("value1", value1,"index", index)
+                                              // console.log("value1===================",value1[0])
+                                              // console.log("value1", value1,"index", index)
                                                 return(
-                                                  <tr className="tablerow"  key={i}>
-                                                    <td rowSpan={sectorLength} className="textAlignCenter"><div className="colSr">{i+1}</div>
-                                                    </td>
-                                                    <td rowSpan={sectorLength} className=""><div className=" col1">{value._id.name_family}</div>
-                                                    </td>
-                                                    <td rowSpan={sectorLength} className=""><div className=" col2">{value._id.familyID}</div>
-                                                    </td>
-                                                    <td className="textAlignLeft noWrapText" key={index}>
-                                                      {  console.log("value1.projectCategoryType",value1.projectCategoryType)}
-                                                      <div className="textAlignLeft noWrapText  col3">{value1.projectCategoryType}</div>
-                                                    </td>
+                                                  <tr className="tablerow" key={index}>
+                                                    <td className=""><div className="col3">{value1.projectCategoryType}</div></td>
                                                     <td className=""><div className="col4">{value1.projectName}</div></td>
-                                                    <td className=""><div className="col5">{value1.sectorName}</div></td>
-                                                    <td className=""><div className="col6">{value1.activityName}</div></td>
-                                                    <td className=""><div className="col7">{value1.subactivityName}</div></td>
+                                                    <td className="">
+                                                      <div className='wrapText col5 text-left'>
+                                                        <b>Sector : </b> {value1.sectorName}<br/>
+                                                        <b>Activity : </b>{value1.activityName}<br/>
+                                                        <b>Sub-Activity : </b>{value1.subactivityName}
+                                                      </div>
+                                                    </td>
                                                     <td className=""><div className="col8">{value1.unit}</div></td>
-                                                    <td className=""><div className="col9">{value1.UnitCost}</div></td>
-                                                    <td className=""><div className="col10">{value1.quantity}</div></td>
-                                                    <td className=""><div className="col11">{value1.total}</div></td>
-                                                    <td className=""><div className="col12">{value1.LHWRF}</div></td>
-                                                    <td className=""><div className="col13">{value1.NABARD}</div></td>
-                                                    <td className=""><div className="col14">{value1.Bank_Loan}</div></td>
-                                                    <td className=""><div className="col15">{value1.Govt}</div></td>
-                                                    <td className=""><div className="col16">{value1.DirectCC}</div></td>
-                                                    <td className=""><div className="col17">{value1.IndirectCC}</div></td>
-                                                    <td className=""><div className="col18">{value1.Other}</div></td>
+                                                    <td className="textAlignRight"><div className="col9">{value1.UnitCost}</div></td>
+                                                    <td className="textAlignRight"><div className="col10">{value1.quantity}</div></td>
+                                                    <td className="textAlignRight"><div className="col11">{value1.total}</div></td>
+                                                    <td className="textAlignRight"><div className="col12">{value1.LHWRF}</div></td>
+                                                    <td className="textAlignRight"><div className="col13">{value1.NABARD}</div></td>
+                                                    <td className="textAlignRight"><div className="col14">{value1.Bank_Loan}</div></td>
+                                                    <td className="textAlignRight"><div className="col15">{value1.Govt}</div></td>
+                                                    <td className="textAlignRight"><div className="col16">{value1.DirectCC}</div></td>
+                                                    <td className="textAlignRight"><div className="col17">{value1.IndirectCC}</div></td>
+                                                    <td className="textAlignRight"><div className="col18">{value1.Other}</div></td>
                                                     <td className=""><div className="col19">{value1.village}</div></td>
                                                     <td className=""><div className="col20">{value1.block}</div></td>
                                                     <td className=""><div className="col21">{value1.district}</div></td>
-
                                                   </tr>
                                                 )
                                               })
-                                                )
-                                        })
-                                          :null
-                                      } 
-                                          </tbody>
-                                  </table>
-
-                                </div>
+                                            : null
+                                          }
+                                        </tr>
+                                      )
+                                    })
+                                  :null
+                                } 
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1016,4 +1003,4 @@ class VillagewisefamilyReport extends Component{
     );
   }
 }
-export default VillagewisefamilyReport
+export default FamilyCoverageReport

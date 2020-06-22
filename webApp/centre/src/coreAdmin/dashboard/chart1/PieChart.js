@@ -43,6 +43,7 @@ export default class PieChart extends Component {
  
   componentDidUpdate(prevProps, prevState){
     if (prevProps.year !== this.props.year) {
+      // console.log("year========",this.props.year);
       this.getData(this.props.year,this.props.center_ID);
       this.getSectorwiseData(this.props.year,this.props.center_ID);
     }
@@ -145,7 +146,7 @@ export default class PieChart extends Component {
   }
   getData(year, center_ID){
     if(year){
-      // console.log("year========",year);
+      console.log("year========",year);
       var sectordata = {...this.state.data};
       var startDate = year.substring(3, 7)+"-04-01";
       var endDate = year.substring(10, 15)+"-03-31";

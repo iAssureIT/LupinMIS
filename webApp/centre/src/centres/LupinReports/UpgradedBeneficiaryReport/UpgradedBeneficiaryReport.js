@@ -251,7 +251,7 @@ class UpgradedBeneficiaryReport extends Component{
         axios.get(url)
         .then((response)=>{
           $(".fullpageloader").hide();
-          // console.log("resp",response);
+          console.log("resp",response);
           var data = response.data
           var tableData = [];
           if(data.length>0){
@@ -259,7 +259,7 @@ class UpgradedBeneficiaryReport extends Component{
 
               axios.get('/api/beneficiaries/'+a.beneficiaryID)
               .then((response)=>{
-                console.log('response',response)
+                // console.log('response',response)
                 tableData.push({
                   _id             : a._id,            
                   date            : moment(a.date).format('DD-MM-YYYY'),

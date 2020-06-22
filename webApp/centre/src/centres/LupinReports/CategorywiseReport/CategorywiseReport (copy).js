@@ -246,9 +246,7 @@ class CategorywiseReport extends Component{
     if(center_ID){
       if( startDate && endDate && center_ID && selectedDistrict && projectCategoryType  && beneficiaryType){
         $(".fullpageloader").show();
-        // console.log('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType);
         axios.get('/api/reports/category_reports/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+incomeCategory+'/'+landCategory+'/'+specialCategory)
-        // axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
         .then((response)=>{
           $(".fullpageloader").hide();
 
