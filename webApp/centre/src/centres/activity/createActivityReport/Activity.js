@@ -1387,6 +1387,7 @@ class Activity extends Component{
     axios
     .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
+      console.log('response',response);
       $('.fullpageloader').hide();  
       if(response&&response.data) {
         this.setState({
