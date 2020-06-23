@@ -1396,6 +1396,7 @@ class Activity extends Component{
           goodDataCountTypeA : response.data.goodrecords.length
         });
         var tableData = response.data.goodrecords.map((a, i)=>{
+          var numofBeneficiaries = a.listofBeneficiaries && a.listofBeneficiaries.length > 0 ? a.listofBeneficiaries.length : 0;
           return{
             "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
             "projectName"         : a.projectName        ? a.projectName    : '-',
@@ -1408,40 +1409,40 @@ class Activity extends Component{
             "unitCost"            : a.unitCost     ? a.unitCost : '-',
             "quantity"            : a.quantity     ? a.quantity : '-',
             "totalcost"           : a.totalcost     ? a.totalcost : '-',
-            "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
-            "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
-            "NABARD"              : a.NABARD     ? a.NABARD : '-',
-            "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
-            "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
-            "directCC"            : a.directCC     ? a.directCC : '-',
-            "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
-            "other"               : a.other     ? a.other : '-',
-            "remark"              : a.remark     ? a.remark : '-',
+            "numofBeneficiaries"  : numofBeneficiaries,
+            "LHWRF"               : a.sourceofFund.LHWRF        ? a.sourceofFund.LHWRF : '-',
+            "NABARD"              : a.sourceofFund.NABARD       ? a.sourceofFund.NABARD : '-',
+            "bankLoan"            : a.sourceofFund.bankLoan     ? a.sourceofFund.bankLoan : '-',
+            "govtscheme"          : a.sourceofFund.govtscheme   ? a.sourceofFund.govtscheme : '-',
+            "directCC"            : a.sourceofFund.directCC     ? a.sourceofFund.directCC : '-',
+            "indirectCC"          : a.sourceofFund.indirectCC   ? a.sourceofFund.indirectCC : '-',
+            "other"               : a.sourceofFund.other        ? a.sourceofFund.other : '-',
+            "remark"              : a.remark                    ? a.remark : '-',
           }
         })
 
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
-            "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            "projectName"         : a.projectName        ? a.projectName    : '-',
-            "date"                : a.date     ? a.date : '-',
+            "projectCategoryType" : a.projectCategoryType ? a.projectCategoryType    : '-',
+            "projectName"         : a.projectName         ? a.projectName    : '-',
+            "date"                : a.date                ? a.date : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
-            "sectorName"          : a.sectorName     ? a.sectorName : '-',
-            "activityName"        : a.activityName     ? a.activityName : '-',
+            "sectorName"          : a.sectorName          ? a.sectorName : '-',
+            "activityName"        : a.activityName        ? a.activityName : '-',
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
-            "unit"                : a.unit     ? a.unit : '-',
-            "unitCost"            : a.unitCost     ? a.unitCost : '-',
-            "quantity"            : a.quantity     ? a.quantity : '-',
+            "unit"                : a.unit                ? a.unit : '-',
+            "unitCost"            : a.unitCost            ? a.unitCost : '-',
+            "quantity"            : a.quantity            ? a.quantity : '-',
             "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
-            "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
-            "NABARD"              : a.NABARD     ? a.NABARD : '-',
+            "LHWRF"               : a.LHWRF        ? a.LHWRF : '-',
+            "NABARD"              : a.NABARD       ? a.NABARD : '-',
             "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
-            "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
+            "govtscheme"          : a.govtscheme   ? a.govtscheme : '-',
             "directCC"            : a.directCC     ? a.directCC : '-',
-            "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
-            "other"               : a.other     ? a.other : '-',
-            "remark"              : a.remark     ? a.remark : '-',
-            "failedRemark"        : a.failedRemark     ? a.failedRemark : '-',
+            "indirectCC"          : a.indirectCC   ? a.indirectCC : '-',
+            "other"               : a.other        ? a.other : '-',
+            "remark"              : a.remark                    ? a.remark : '-',
+            "failedRemark"        : a.failedRemark              ? a.failedRemark : '-',
           }
         })
         this.setState({
@@ -1480,14 +1481,14 @@ class Activity extends Component{
             "quantity"            : a.quantity     ? a.quantity : '-',
             "totalcost"           : a.totalcost     ? a.totalcost : '-',
             "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
-            "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
-            "NABARD"              : a.NABARD     ? a.NABARD : '-',
-            "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
-            "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
-            "directCC"            : a.directCC     ? a.directCC : '-',
-            "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
-            "other"               : a.other     ? a.other : '-',
-            "remark"              : a.remark     ? a.remark : '-',
+            "LHWRF"               : a.sourceofFund.LHWRF        ? a.sourceofFund.LHWRF : '-',
+            "NABARD"              : a.sourceofFund.NABARD       ? a.sourceofFund.NABARD : '-',
+            "bankLoan"            : a.sourceofFund.bankLoan     ? a.sourceofFund.bankLoan : '-',
+            "govtscheme"          : a.sourceofFund.govtscheme   ? a.sourceofFund.govtscheme : '-',
+            "directCC"            : a.sourceofFund.directCC     ? a.sourceofFund.directCC : '-',
+            "indirectCC"          : a.sourceofFund.indirectCC   ? a.sourceofFund.indirectCC : '-',
+            "other"               : a.sourceofFund.other        ? a.sourceofFund.other : '-',
+            "remark"              : a.remark                    ? a.remark : '-',
           }
         })
 
@@ -1504,15 +1505,15 @@ class Activity extends Component{
             "unitCost"            : a.unitCost     ? a.unitCost : '-',
             "quantity"            : a.quantity     ? a.quantity : '-',
             "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
-            "LHWRF"               : a.LHWRF     ? a.LHWRF : '-',
-            "NABARD"              : a.NABARD     ? a.NABARD : '-',
+            "LHWRF"               : a.LHWRF        ? a.LHWRF : '-',
+            "NABARD"              : a.NABARD       ? a.NABARD : '-',
             "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
-            "govtscheme"          : a.govtscheme     ? a.govtscheme : '-',
+            "govtscheme"          : a.govtscheme   ? a.govtscheme : '-',
             "directCC"            : a.directCC     ? a.directCC : '-',
-            "indirectCC"          : a.indirectCC     ? a.indirectCC : '-',
-            "other"               : a.other     ? a.other : '-',
-            "remark"              : a.remark     ? a.remark : '-',
-            "failedRemark"        : a.failedRemark     ? a.failedRemark : '-',
+            "indirectCC"          : a.indirectCC   ? a.indirectCC : '-',
+            "other"               : a.other        ? a.other : '-',
+            "remark"              : a.remark                    ? a.remark : '-',
+            "failedRemark"        : a.failedRemark              ? a.failedRemark : '-',
           }
         })
         this.setState({
