@@ -70,6 +70,7 @@ import report15                                   from "../../centres/LupinRepor
 import report16                                   from "../../centres/LupinReports/SectorwiseAnnualPlanSummaryReport/SectorwiseAnnualPlanSummaryReport.js";
 import report17                                   from "../../centres/LupinReports/SectorwiseQuaterlyPlanSummaryReport/SectorwiseQuaterlyPlanSummaryReport.js";
 import report18                                   from "../../centres/LupinReports/FamilyCoverageReport/FamilyCoverageReport.js";
+import report19                                   from "../../centres/LupinReports/Activities_in_beneficiary_Report/Activities_in_beneficiary_Report.js";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -198,6 +199,7 @@ class Layout extends Component{
                               <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
                               <Route path="/sector-wise-quaterly-plan-summary-report"                     exact strict component={ report17 } />
                               <Route path="/family-coverage-report"                                       exact strict component={ report18 } />
+                              <Route path="/list-activities-by-beneficiary"                                       exact strict component={ report19 } />
                             </Switch>        
                       </div>
                     </div>

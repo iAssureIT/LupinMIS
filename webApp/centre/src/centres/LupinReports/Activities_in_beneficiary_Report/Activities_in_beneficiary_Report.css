@@ -1,0 +1,67 @@
+.fixedTable .colSr{
+	width: 30px !important;
+}
+#Activities_in_beneficiary_Report .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#Activities_in_beneficiary_Report .col2{
+	white-space: pre-wrap!important;
+	width: 90px !important;
+}
+#Activities_in_beneficiary_Report .col3{
+	white-space: pre-wrap!important;
+	width: 100px !important;
+}
+#Activities_in_beneficiary_Report .col4{
+	white-space: pre-wrap!important;
+	width: 90px !important;
+}
+#Activities_in_beneficiary_Report .col9, #Activities_in_beneficiary_Report .col7
+{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#Activities_in_beneficiary_Report .col5{
+	white-space: pre-wrap!important;
+	width: 200px !important;
+}
+#Activities_in_beneficiary_Report .col8{
+	white-space: pre-wrap!important;
+	width: 72px !important;
+}
+#Activities_in_beneficiary_Report .col6, #Activities_in_beneficiary_Report .col12, #Activities_in_beneficiary_Report .col20, #Activities_in_beneficiary_Report .col21{
+	white-space: pre-wrap!important;
+	width: 72px !important;
+}
+#Activities_in_beneficiary_Report .col14{
+	white-space: pre-wrap!important;
+	width: 70px !important;
+} 
+#Activities_in_beneficiary_Report .col10, #Activities_in_beneficiary_Report .col11, #Activities_in_beneficiary_Report .col13{	
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#Activities_in_beneficiary_Report .col15, #Activities_in_beneficiary_Report .col16, #Activities_in_beneficiary_Report .col17, #Activities_in_beneficiary_Report .col18, #Activities_in_beneficiary_Report .col19{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#Activities_in_beneficiary_Report .scrollContent {
+  display: block;
+  height: 450px;
+  overflow: auto;
+  width: 100%;
+}
+
+#Activities_in_beneficiary_Report .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+.tablerow > td {
+    border: 1px solid #2f9c3f !important;
+	padding: 8px;
+	line-height: 1.42857143;
+	vertical-align: top
+}

@@ -164,9 +164,6 @@ export default class Leftsidebar extends Component{
                   </ul>
                 </li>             
 
-
-
-
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
                   <Link to="#report" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Reporting System">
                     <i className="fa fa-files-o" />
@@ -249,6 +246,23 @@ export default class Leftsidebar extends Component{
                     </li>*/}
                   </ul>
                 </li> 
+
+                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
+                  <Link to="#Familyreport" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Family Tracking System">
+                    <i className="fa fa-files-o" />
+                    Family Tracking System
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
+                  </Link>
+
+                  <ul className="collapse list-unstyled activeClass" id="Familyreport">
+                    <li>
+                      <Link to="/list-activities-by-beneficiary" title="List of Activities by beneficiary">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">List of Activ. by Beneficiary</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
 
 
                 {/*<li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>

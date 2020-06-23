@@ -6,10 +6,10 @@ import _                    from 'underscore';
 import moment               from 'moment';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
-
-import "./FamilyCoverageReport.css"
+import jQuery               from 'jquery';
+import "./Activities_in_beneficiary_Report.css"
 import "../../Reports/Reports.css";
-class FamilyCoverageReport extends Component{
+class Activities_in_beneficiary_Report extends Component{
 	constructor(props){
     super(props);
     this.state = {
@@ -49,7 +49,7 @@ class FamilyCoverageReport extends Component{
             ]
         },
         "tableHeading"      : {         
-            "name_family"         : 'Family Head Name',     
+            "name_beneficiary"         : 'Family Head Name',     
             "familyID"            : 'Family ID',
             "projectCategoryType" : 'Project Category',
             "projectName"         : 'Project Name',
@@ -199,7 +199,7 @@ class FamilyCoverageReport extends Component{
     },()=>{
         this.getAvailableActivity(this.state.sector_ID);
         this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
-        console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
     })
   }
@@ -437,7 +437,171 @@ class FamilyCoverageReport extends Component{
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
   }
-      
+
+  sortNumber(key, tableData){
+    var nameA = '';
+    var nameB = '';
+    var reA = /[^a-zA-Z]/g;
+    var reN = /[^0-9]/g;
+    var aN = 0;
+    var bN = 0;
+    var sortedData = tableData.sort((a, b)=> {
+      Object.entries(a).map( 
+        ([key1, value1], i)=> {
+          if(key === key1){
+            nameA = value1.replace(reA, "");        
+          }
+        }
+      );
+      Object.entries(b).map( 
+        ([key2, value2], i)=> {
+          if(key === key2){
+            nameB = value2.replace(reA, "");
+          }
+        }
+      );
+      if(this.state.sort === true){
+        this.setState({
+          sort    : false
+        })
+        if (nameA === nameB) {
+          Object.entries(a).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                aN = parseInt(value1.replace(reN, ""), 10);       
+              }
+            }
+          );
+          Object.entries(b).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                bN = parseInt(value1.replace(reN, ""), 10);         
+              }
+            }
+          );
+          if (aN < bN) {
+            return -1;
+          }
+          if (aN > bN) {
+            return 1;
+          }
+          return 0;
+        } else {
+
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        }
+      }else if(this.state.sort === false){
+        this.setState({
+          sort    : true
+        })
+        if (nameA === nameB) {
+          Object.entries(a).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                aN = parseInt(value1.replace(reN, ""), 10);     
+              }
+            }
+          );
+          Object.entries(b).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                bN = parseInt(value1.replace(reN, ""), 10);         
+              }
+            }
+          );
+          if (aN > bN) {
+            return -1;
+          }
+          if (aN < bN) {
+            return 1;
+          }
+          return 0;
+        } else {
+          if (nameA > nameB) {
+            return -1;
+          }
+          if (nameA < nameB) {
+            return 1;
+          }
+          return 0;
+        }
+      }       
+    });
+    this.setState({
+      tableData : sortedData,
+    });
+  }
+  sortString(key, tableData){
+    var nameA = '';
+    var nameB = '';
+    var sortedData = tableData.sort((a, b)=> {
+      Object.entries(a).map( 
+        ([key1, value1], i)=> {
+          if(key === key1){
+            if(jQuery.type( value1 ) === 'string'){
+              nameA = value1.toUpperCase();
+            }else{
+              nameA = value1;
+            }           
+          }
+        }
+      );
+      Object.entries(b).map( 
+        ([key2, value2], i)=> {
+          if(key === key2){
+            if(jQuery.type( value2 ) === 'string'){
+              nameB = value2.toUpperCase();
+            }else{
+              nameB = value2;
+            } 
+          }
+        }
+      );
+      if(this.state.sort === true){ 
+        this.setState({
+          sort    : false
+        })    
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      }else if(this.state.sort === false){
+        this.setState({
+          sort    : true
+        })  
+        if (nameA > nameB) {
+          return -1;
+        }
+        if (nameA < nameB) {
+          return 1;
+        }
+        return 0;
+      }
+    });
+    this.setState({
+      tableData : sortedData,
+    });
+  }
+  sort(event){
+    event.preventDefault();
+    var key = event.target.getAttribute('id');
+    var tableData = this.state.tableData;
+    console.log('tableData');
+    if(key === 'number'){
+      this.sortNumber(key, tableData);
+    }else{
+      this.sortString(key, tableData);
+    }
+  }
   getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID, activity_ID, subActivity_ID){        
     // console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
       // var endDate = "2021-06-17"
@@ -445,11 +609,10 @@ class FamilyCoverageReport extends Component{
         if(sector_ID==="all"){
           $(".fullpageloader").show();
 
-          axios.get('/api/report/family_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
+          axios.get('/api/report/list_Activities_in_beneficiary/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
           .then((response)=>{
             $(".fullpageloader").hide();
             console.log("resp",response);
-            
             this.setState({
               tableData : response.data
             },()=>{
@@ -463,10 +626,9 @@ class FamilyCoverageReport extends Component{
             }
           });
         }else{
-          axios.get('/api/report/family_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
+          axios.get('/api/report/list_Activities_in_beneficiary/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
           .then((response)=>{
             console.log("resp",response);
-   
             this.setState({
               tableData : response.data
             },()=>{
@@ -596,7 +758,7 @@ class FamilyCoverageReport extends Component{
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                          Family Coverage Report
+                          List of Activities participated by Beneficiary
                         </div>
                     </div>
                     <hr className="hr-head"/>
@@ -792,91 +954,92 @@ class FamilyCoverageReport extends Component{
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <div className="table-responsive" id="section-to-screen">
-                            <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="FamilyCoverageReport">
+                            <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="Activities_in_beneficiary_Report">
                               <thead className="tempTableHeader fixedHeader">
                                 <tr className="tempTableHeader"></tr>
                                 <tr className="">
                                   <th className="umDynamicHeader srpadd text-center">
                                     <div className="colSr">Sr.No.</div>
                                   </th>
-                                  <th id="name_family" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col1">Family Head Name</div>
-                                    <span id="name_family" className="fa fa-sort tableSort"></span>
+                                  <th id="name_beneficiary" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col1">Name of Beneficiary</div>
+                                    <span onClick={this.sort.bind(this)} id="name_beneficiary" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="beneficiaryID" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col2">Beneficiary ID</div>
+                                    <span onClick={this.sort.bind(this)} id="beneficiaryID" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="familyID" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col2">Family ID</div>
-                                    <span id="familyID" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="familyID" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="projectCategoryType" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col3">Project Category</div>
-                                    <span id="projectCategoryType" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="projectCategoryType" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="projectName" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col4">Project Name</div>
-                                    <span id="projectName" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="projectName" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="name" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col5">Activity</div>
-                                    <span id="name" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="name" className="fa fa-sort tableSort"></span>
                                   </th>
-                                  {/*<th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col6">Activity</div>
-                                    <span id="activityName" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="subactivityName" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col7">Subactivity</div>
-                                    <span id="subactivityName" className="fa fa-sort tableSort"></span>
-                                  </th>*/}
                                   <th id="unit" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col8">Unit</div>
-                                    <span id="unit" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="unit" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col9">Unit Cost</div>
-                                    <span id="UnitCost" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="UnitCost" className="fa fa-sort tableSort"></span>
                                   </th>
                                  <th id="quantity" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col10">Quantity</div>
-                                    <span id="quantity" className="fa fa-sort tableSort"></span></th><th id="total" className="umDynamicHeader srpadd textAlignLeft "><div className="wrapWord col11">Total</div><span id="total" className="fa fa-sort tableSort"></span></th>
+                                    <span onClick={this.sort.bind(this)} id="quantity" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="total" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col11">Total</div>
+                                    <span onClick={this.sort.bind(this)} id="total" className="fa fa-sort tableSort"></span>
+                                  </th>
                                   <th id="LHWRF" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col12">LHWRF</div>
-                                    <span id="LHWRF" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="LHWRF" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="NABARD" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col13">NABARD</div>
-                                    <span id="NABARD" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="NABARD" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="Bank_Loan" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col14">Bank Loan</div>
-                                    <span id="Bank_Loan" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="Bank_Loan" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="Govt" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col15">Govt</div>
-                                    <span id="Govt" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="Govt" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="DirectCC" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col16">DirectCC</div>
-                                    <span id="DirectCC" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="DirectCC" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="IndirectCC" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col17">IndirectCC</div>
-                                    <span id="IndirectCC" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="IndirectCC" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="Other" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col18">Other</div>
-                                    <span id="Other" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="Other" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="village" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col19">Village</div>
-                                    <span id="village" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="village" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="block" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col20">Block</div>
-                                    <span id="block" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="block" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col21">District</div>
-                                    <span id="district" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)} id="district" className="fa fa-sort tableSort"></span>
                                   </th>
                                 </tr>
                               </thead>
@@ -890,7 +1053,9 @@ class FamilyCoverageReport extends Component{
                                         <tr className="tablerow"  key={i}>
                                           <td className="textAlignCenter"><div className="colSr">{i+1}</div>
                                           </td>
-                                          <td className=""><div className=" col1">{value._id.name_family}</div>
+                                          <td className=""><div className=" col1">{value._id.name_beneficiary}</div>
+                                          </td>
+                                          <td className=""><div className=" col2">{value._id.beneficiaryID}</div>
                                           </td>
                                           <td className=""><div className=" col2">{value._id.familyID}</div>
                                           </td>
@@ -951,4 +1116,4 @@ class FamilyCoverageReport extends Component{
     );
   }
 }
-export default FamilyCoverageReport
+export default Activities_in_beneficiary_Report

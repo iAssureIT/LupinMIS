@@ -541,7 +541,13 @@ class IAssureTable extends Component {
 						dist          	    : id.split('|')[7],
 						block               : id.split('|')[8],
 						village             : id.split('|')[9],
-						isUpgraded 			: id.split('|')[10]&&value?'Yes':id.split('|')[10]&&!value?'No':this.state[id+"|upgrade"]?'Yes':'No'
+						isUpgraded 			: id.split('|')[10]&&value?'Yes':id.split('|')[10]&&!value?'No':this.state[id+"|upgrade"]?'Yes':'No',
+			            caste                 : id.split('|')[11],
+			            incomeCategory        : id.split('|')[12],
+			            landCategory          : id.split('|')[13],
+			            specialCategory       : id.split('|')[14],
+			            genderOfbeneficiary   : id.split('|')[15],
+			            birthYearOfbeneficiary: id.split('|')[16],
 			    	});
 			    	this.setState({
 			          selectedBeneficiaries : selectedBeneficiaries
@@ -649,14 +655,14 @@ class IAssureTable extends Component {
 										(value, i)=> {			
 											return(
 												<tr key={i} className="">
-													<td className="textAlignCenter checkboxContainer">
-														<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village]?true:false} id={value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village} onChange={this.selectBeneficiary.bind(this)}/>
+													<td className="textAlignCenter checkboxContainer">													
+														<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary]?true:false} id={value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary} onChange={this.selectBeneficiary.bind(this)}/>
 														<span className="checkboxMark"></span>
 													</td>
 													{
 														this.state.showUpgradation === 'Yes'?
 														<td className="textAlignCenter checkboxContainer">
-															<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade']?true:false} id={value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'} onChange={this.selectBeneficiary.bind(this)}/>
+															<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary]?true:false} id={value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiaries+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary} onChange={this.selectBeneficiary.bind(this)}/>
 															<span className="checkboxMark"></span>
 														</td>
 														:

@@ -117,6 +117,12 @@ class NewBeneficiary extends Component{
             dist                      : a.dist,
             block                     : a.block,
             village                   : a.village,
+            caste                     : a.caste,
+            incomeCategory            : a.incomeCategory,
+            landCategory              : a.landCategory,
+            specialCategory           : a.specialCategory,
+            genderOfbeneficiary       : a.genderOfbeneficiary,
+            birthYearOfbeneficiary    : a.birthYearOfbeneficiary,
           }
         })
         this.setState({
