@@ -75,7 +75,7 @@ class FileWiseMonthlyPlanList extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                      Filewise Monthly Plan Details
+                      Filewise Quaterly Plan Details
                     </div>
                   </div>
                   <hr className="hr-head"/>

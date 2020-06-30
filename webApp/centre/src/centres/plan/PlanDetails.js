@@ -36,10 +36,10 @@ class PlanDetails extends Component{
       "remark"              :"",
       "shown"               : true,
       "uID"                 :"",
-      "month"               :"Annual Plan", 
+      "month"               :"Q1 (April to June)", 
       "heading"             :"Annual Plan",
       // "months"              :["Annual Plan","Till Date","April","May","June","July","August","September","October","November","December","January","February","March"],
-      "months"              :["Annual Plan","Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
+      "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
       "shown"               : true,
       "twoLevelHeader"     : {
       "apply"               : true,
@@ -83,7 +83,7 @@ class PlanDetails extends Component{
       },
       "tableObjects"        : {
         deleteMethod        : 'delete',
-        apiLink             : '/api/annualPlans/',
+        apiLink             : '/api/monthlyplans/',
         paginationApply     : false,
         downloadApply       : true,
         searchApply         : false,
@@ -95,7 +95,7 @@ class PlanDetails extends Component{
       "fields"                : {},
       "errors"                : {},
       "subActivityDetails"    : [],
-      "apiCall"               : '/api/annualPlans',
+      "apiCall"               : '/api/monthlyplans',
       "totalBud"              : 0,
       "annualFileDetailUrl"   : "/api/annualPlans/get/filedetails/",
       "monthlyFileDetailUrl"  : "/api/monthlyplans/get/filedetails/",
@@ -201,6 +201,8 @@ class PlanDetails extends Component{
         ["govtscheme-"+index] : 0,
         ["indirectCC-"+index] : 0,
         ["other-"+index] : 0,
+      },()=>{
+        console.log('this.state.',this.state);
       })
 
     }
@@ -341,10 +343,10 @@ class PlanDetails extends Component{
       if (!nooffamily) {
         for(var i=0; i<subActivityDetails.length; i++){
           var planValues = {
+            "year"                : this.state.year,          
             "startDate"           : this.state.startDate,          
             "endDate"             : this.state.endDate,          
             "month"               : this.state.month,          
-            "year"                : this.state.year,          
             "center_ID"           : this.state.center_ID,
             "center"              : this.state.centerName,
             "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
@@ -423,7 +425,7 @@ class PlanDetails extends Component{
                   // axios
                   // .post('/api/masternotification/send-mail',inputObj)
                   // .then((response)=> {
-                  //   // console.log("-------mail------>>",response);
+                  //   console.log("-------mail------>>",response);
                     
                   // })
                   // .catch(function (error) {
@@ -431,10 +433,10 @@ class PlanDetails extends Component{
                   // })
                   this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
                 }
+                this.year();
                 this.setState({
-                  "year"                : "FY 2019 - 2020",
-                  "months"              :["Annual Plan","Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
-                  "month"               : "Annual Plan",
+                  "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
+                  "month"               : "Q1 (April to June)",
                   "projectName"         : "-- Select --",
                   "projectCategoryType" : "LHWRF Grant",
                   "type"                : true,
@@ -449,6 +451,9 @@ class PlanDetails extends Component{
                   "availableActivity"   :[],
                   "subActivityDetails[i][name]":"",
                   "shown"               : true,
+                  "apiCall"             : '/api/monthlyplans'
+                },()=>{
+                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
                 });
               })
               .catch(function(error){
@@ -541,11 +546,12 @@ class PlanDetails extends Component{
           .catch(function(error){
               console.log("error"+error);
           }); 
+          this.year();
           this.setState({
-            "year"                : "FY 2019 - 2020",
-            "month"               : "Annual Plan",
-            "center"              : "",
-            "projectName"        : "-- Select --",
+            "subActivityDetails"  :[],
+            "availableActivity"   :[],
+            "month"               : "Q1 (April to June)",
+            "projectName"         : "-- Select --",
             "projectCategoryType" : "LHWRF Grant",
             "type"                : true,
             "sector_id"           : "",
@@ -553,16 +559,13 @@ class PlanDetails extends Component{
             "activityName"        : "-- Select --",
             "editId"              :"",
             "availableSubActivity":[],
-            "months"              :["Annual Plan","Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
-            // "months"              :["Annual Plan","Till Date", "April","May","June","July","August","September","October","November","December","January","February","March"],
-            // "years"               :[2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035],
+            "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
             "shown"               : true,
-            "apiCall"             : '/api/annualPlans'
+            "apiCall"             : '/api/monthlyplans'
           },()=>{
             this.props.history.push('/plan-details');
           });
         }
-
       }else{
          swal({
             title : "abc",
@@ -739,12 +742,14 @@ class PlanDetails extends Component{
       }
     }
   }
-  getData(center_ID, month, year, startRange, limitRange ){
+  getData(center_ID, month, year, startRange, limitRange,startDate,endDate ){
     var center_ID =center_ID;
     var month =month;
     var year =year;
     var startRange =startRange;
     var limitRange =limitRange;
+    var startDate =startDate;
+    var endDate   =endDate;
     let financeYear;
     let today = moment();
     if(today.month() >= 3){
@@ -770,8 +775,8 @@ class PlanDetails extends Component{
             year       : year,
             startRange : startRange,
             limitRange : limitRange,
-            startDate  : financialYear.substring(3, 7)+"-04-01",
-            endDate    : moment(new Date()).format("YYYY-MM-DD"),
+            startDate  : startDate,
+            endDate    : endDate,
         }
         // console.log("data",data);
         $(".fullpageloader").show();
@@ -814,6 +819,7 @@ class PlanDetails extends Component{
         });
       })
     })
+    
   }
   componentWillReceiveProps(nextProps){
     this.year();
@@ -855,6 +861,7 @@ class PlanDetails extends Component{
     this.getLength();
     this.getAvailableSectors();
     this.getAvailableProjectName();
+    this.year();
     if(this.state.editId){     
       this.edit(this.state.editId);       
     }
@@ -866,8 +873,7 @@ class PlanDetails extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      this.year();
-      // console.log(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate)
+      console.log(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate)
       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
     });
   }
@@ -1293,6 +1299,14 @@ class PlanDetails extends Component{
             // console.log('this.state.',this.state.startDate,this.state.endDate);
             this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
           })
+        }else if(this.state.month==="Q1 (April to June)"){
+          this.setState({
+            "startDate" : this.state.year.substring(3, 7)+"-04-01",
+            "endDate"   : this.state.year.substring(3, 7)+"-06-30",  
+          },()=>{
+            // console.log('this.state.',this.state.startDate,this.state.endDate);
+            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+          })
         }
 
         this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
@@ -1333,7 +1347,7 @@ class PlanDetails extends Component{
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                          Plan Details                          
+                          Quarterly Plan                          
                       </div>
                       <hr className="hr-head container-fluid row"/>
                     </div>

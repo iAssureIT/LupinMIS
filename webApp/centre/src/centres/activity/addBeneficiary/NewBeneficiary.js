@@ -76,7 +76,7 @@ class NewBeneficiary extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    this.getAvailableFamilyId(this.state.center_ID);
+    this.getAvailableFamilyId(this.state.center_ID)
     this.getAvailableCenter(this.state.center_ID);
     this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
     // console.log("center_ID =",this.state.center_ID);
@@ -85,6 +85,7 @@ class NewBeneficiary extends Component{
 
   componentWillReceiveProps(nextProps){
     this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
+      // console.log("nextProps.sendBeneficiary",nextProps.sendBeneficiary);
     if(nextProps){
       this.setState({
         selectedValues : nextProps.selectedValues,
@@ -149,7 +150,6 @@ class NewBeneficiary extends Component{
   addBeneficiaries(event){
     event.preventDefault();
     if(this.state.selectedBeneficiaries){
-      // console.log(this.state.selectedBeneficiaries);
       this.props.listofBeneficiaries(this.state.selectedBeneficiaries);
     }else{
       swal({
@@ -231,7 +231,6 @@ class NewBeneficiary extends Component{
         console.log("error = ",error);
       });
     });
-    
   }
  
   selectBlock(event){
@@ -259,8 +258,7 @@ class NewBeneficiary extends Component{
       });
       // console.log("block",block);
       // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
-    });
-    
+    });    
   }
 
   selectVillage(event){
@@ -270,8 +268,7 @@ class NewBeneficiary extends Component{
       village : village
     },()=>{
       this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
-    });
-    
+    });  
   }
   camelCase(str){
     return str

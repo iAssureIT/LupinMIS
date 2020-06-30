@@ -78,8 +78,14 @@ export default class Leftsidebar extends Component{
                   <ul className="collapse list-unstyled activeClass" id="planreport">
                     <li className="sidebarMenuText">
                       <Link to="/plan-details" title="Add New Plan">
-                        <i className="fa fa-pie-chart" />
+                        <i className="fa fa-circle-o" />
                         Add New Plan
+                      </Link>
+                    </li>
+                    <li className="sidebarMenuText">
+                      <Link to="/annual-plan-details" title="Annual Plan">
+                        <i className="fa fa-circle-o" />
+                        Annual Plan
                       </Link>
                     </li>
                     <li className="sidebarMenuText">
@@ -91,7 +97,7 @@ export default class Leftsidebar extends Component{
                     <li className="sidebarMenuText">
                       <Link to="/filewise-monthly-plan-list" >
                         <i className="fa fa-circle-o" />
-                        Filewise Monthly Plans
+                        Filewise Quaterly Plans
                       </Link>
                     </li>                                     
                     <li>
@@ -221,12 +227,6 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>         
                     <li>
-                      <Link to="/family-coverage-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Family Coverage Report</span>
-                      </Link>
-                    </li>                    
-                    <li>
                       <Link to="/upgraded-beneficiary-report" title="Beneficiary Report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Beneficiary Report</span>
@@ -237,7 +237,19 @@ export default class Leftsidebar extends Component{
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Goal Report</span>
                       </Link>
-                    </li>
+                    </li>      
+                    <li>
+                      <Link to="/family-coverage-report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Family Coverage Report</span>
+                      </Link>
+                    </li>                 
+                    <li>
+                      <Link to="/family-tracking-system">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Family Tracking System</span>
+                      </Link>
+                    </li>              
                     {/*<li>
                       <Link to="/Project-report" title="Project Achievement Report">
                         <i className="fa fa-circle-o" />
@@ -246,23 +258,6 @@ export default class Leftsidebar extends Component{
                     </li>*/}
                   </ul>
                 </li> 
-
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#Familyreport" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Family Tracking System">
-                    <i className="fa fa-files-o" />
-                    Family Tracking System
-                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
-                  </Link>
-
-                  <ul className="collapse list-unstyled activeClass" id="Familyreport">
-                    <li>
-                      <Link to="/list-activities-by-beneficiary" title="List of Activities by beneficiary">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">List of Activ. by Beneficiary</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
 
 
                 {/*<li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>

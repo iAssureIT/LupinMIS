@@ -816,17 +816,17 @@ class FamilyCoverageReport extends Component{
                                     <span id="projectName" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="name" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col5">Activity</div>
+                                    <div className="wrapWord col5">Sector</div>
                                     <span id="name" className="fa fa-sort tableSort"></span>
                                   </th>
-                                  {/*<th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col6">Activity</div>
                                     <span id="activityName" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="subactivityName" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col7">Subactivity</div>
                                     <span id="subactivityName" className="fa fa-sort tableSort"></span>
-                                  </th>*/}
+                                  </th>
                                   <th id="unit" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col8">Unit</div>
                                     <span id="unit" className="fa fa-sort tableSort"></span>
@@ -866,7 +866,7 @@ class FamilyCoverageReport extends Component{
                                     <div className="wrapWord col18">Other</div>
                                     <span id="Other" className="fa fa-sort tableSort"></span>
                                   </th>
-                                  <th id="village" className="umDynamicHeader srpadd textAlignLeft ">
+                                  {/*<th id="village" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col19">Village</div>
                                     <span id="village" className="fa fa-sort tableSort"></span>
                                   </th>
@@ -877,7 +877,7 @@ class FamilyCoverageReport extends Component{
                                   <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col21">District</div>
                                     <span id="district" className="fa fa-sort tableSort"></span>
-                                  </th>
+                                  </th>*/}
                                 </tr>
                               </thead>
                               <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
@@ -901,15 +901,11 @@ class FamilyCoverageReport extends Component{
                                               // console.log("value1", value1,"index", index)
                                                 return(
                                                   <tr className="tablerow" key={index}>
-                                                    <td className=""><div className="col3">{value1.projectCategoryType}</div></td>
-                                                    <td className=""><div className="col4">{value1.projectName}</div></td>
-                                                    <td className="">
-                                                      <div className='wrapText col5 text-left'>
-                                                        <b>Sector : </b> {value1.sectorName}<br/>
-                                                        <b>Activity : </b>{value1.activityName}<br/>
-                                                        <b>Sub-Activity : </b>{value1.subactivityName}
-                                                      </div>
-                                                    </td>
+                                                    <td className=""><div className="col3">{value1.projectCategoryType ? value1.projectCategoryType : "-"}</div></td>
+                                                    <td className=""><div className="col4">{value1.projectName === "all" ? "-" : value1.projectName}</div></td>
+                                                    <td className=""><div className="col5">{value1.sectorName}</div></td>
+                                                    <td className=""><div className="col6">{value1.activityName}</div></td>
+                                                    <td className=""><div className="col7">{value1.subactivityName}</div></td>
                                                     <td className=""><div className="col8">{value1.unit}</div></td>
                                                     <td className="textAlignRight"><div className="col9">{value1.UnitCost}</div></td>
                                                     <td className="textAlignRight"><div className="col10">{value1.quantity}</div></td>
@@ -921,9 +917,9 @@ class FamilyCoverageReport extends Component{
                                                     <td className="textAlignRight"><div className="col16">{value1.DirectCC}</div></td>
                                                     <td className="textAlignRight"><div className="col17">{value1.IndirectCC}</div></td>
                                                     <td className="textAlignRight"><div className="col18">{value1.Other}</div></td>
-                                                    <td className=""><div className="col19">{value1.village}</div></td>
+                                                    {/*<td className=""><div className="col19">{value1.village}</div></td>
                                                     <td className=""><div className="col20">{value1.block}</div></td>
-                                                    <td className=""><div className="col21">{value1.district}</div></td>
+                                                    <td className=""><div className="col21">{value1.district}</div></td>*/}
                                                   </tr>
                                                 )
                                               })

@@ -10,3 +10,40 @@
 .aHeadMarg{margin-right: 10px;}
 .NOpadding{padding:0;}
 .marginAll{margin: 2%;}
+
+
+
+
+.nav-tabs>li.active>.successTab, .nav-tabs>li.active>.successTab:focus, .nav-tabs>li.active>.successTab:hover{
+    color: #fff;
+    cursor: default;
+    background-color: #4ebb67;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    font-weight: bold;
+}
+.nav-tabs>li.active>.failTab, .nav-tabs>li.active>.failTab:focus, .nav-tabs>li.active>.failTab:hover{
+    color: #fff;
+    cursor: default;
+    background-color: #e65959;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    font-weight: bold;
+}
+.nav>li>.successTab, .nav>li>.failTab {
+    position: relative;
+    display: block;
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 900;
+}
+.badDwldButton{
+    background: #e65959;
+    height: 35px;
+    color: #fff;
+    font-weight: 600 !important;
+    font-family:'Montserrat',sans-serif;
+    font-size: 12px !important;
+    border-radius: 3px;
+    border: none;
+}

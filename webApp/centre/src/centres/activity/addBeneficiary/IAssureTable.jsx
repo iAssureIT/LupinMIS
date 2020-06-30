@@ -512,7 +512,7 @@ class IAssureTable extends Component {
     	var value = event.target.checked;
 	    var id    = event.target.id;
 	    var operation = false
-	    console.log('value',value,id)
+	    // console.log('value',value,id)
 	    if(id.split('|')[10]){
 			let newId = id.replace('|upgrade','')
 			operation = true
@@ -553,7 +553,7 @@ class IAssureTable extends Component {
 			          selectedBeneficiaries : selectedBeneficiaries
 			        },()=>{
 			          	this.props.getBeneficiaries(this.state.selectedBeneficiaries);
-			        	console.log('this.state.selectedBeneficiaries',this.state.selectedBeneficiaries);
+			        	// console.log('this.state.selectedBeneficiaries',this.state.selectedBeneficiaries);
 			        });
 				}
 			}else{
@@ -564,7 +564,7 @@ class IAssureTable extends Component {
 			          selectedBeneficiaries : selectedBeneficiaries
 			        },()=>{
 			          	this.props.getBeneficiaries(this.state.selectedBeneficiaries);
-			        	console.log('this.state.selectedBeneficiaries=====',this.state.selectedBeneficiaries);
+			        	// console.log('this.state.selectedBeneficiaries=====',this.state.selectedBeneficiaries);
 			        });
 				}
 			}

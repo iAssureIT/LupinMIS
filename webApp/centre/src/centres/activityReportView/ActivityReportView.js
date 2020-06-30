@@ -283,7 +283,7 @@ class ActivityReportView extends Component{
                                     this.state.activity.listofBeneficiaries.map((beneficiery,index)=>{
                                       return(
                                           <tr key={index}>
-                                            <td>{index+1}</td>
+                                            <td className="textAlignCenter">{index+1}</td>
                                             <td>{beneficiery.familyID}</td>
                                             <td><BenificiaryName beni_ID={beneficiery.beneficiary_ID} /></td>
                                             <td>{beneficiery.beneficiaryID}</td>

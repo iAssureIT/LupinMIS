@@ -758,7 +758,7 @@ class Activities_in_beneficiary_Report extends Component{
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                          List of Activities participated by Beneficiary
+                          Family Tracking System
                         </div>
                     </div>
                     <hr className="hr-head"/>
@@ -982,8 +982,16 @@ class Activities_in_beneficiary_Report extends Component{
                                     <span onClick={this.sort.bind(this)} id="projectName" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="name" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col5">Activity</div>
-                                    <span onClick={this.sort.bind(this)} id="name" className="fa fa-sort tableSort"></span>
+                                    <div className="wrapWord col5">Sector</div>
+                                    <span id="name" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col6">Activity</div>
+                                    <span id="activityName" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="subactivityName" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col7">Subactivity</div>
+                                    <span id="subactivityName" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="unit" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col8">Unit</div>
@@ -1029,7 +1037,7 @@ class Activities_in_beneficiary_Report extends Component{
                                     <div className="wrapWord col18">Other</div>
                                     <span onClick={this.sort.bind(this)} id="Other" className="fa fa-sort tableSort"></span>
                                   </th>
-                                  <th id="village" className="umDynamicHeader srpadd textAlignLeft ">
+                                  {/*<th id="village" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col19">Village</div>
                                     <span onClick={this.sort.bind(this)} id="village" className="fa fa-sort tableSort"></span>
                                   </th>
@@ -1040,7 +1048,7 @@ class Activities_in_beneficiary_Report extends Component{
                                   <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col21">District</div>
                                     <span onClick={this.sort.bind(this)} id="district" className="fa fa-sort tableSort"></span>
-                                  </th>
+                                  </th>*/}
                                 </tr>
                               </thead>
                               <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
@@ -1068,13 +1076,9 @@ class Activities_in_beneficiary_Report extends Component{
                                                   <tr className="tablerow" key={index}>
                                                     <td className=""><div className="col3">{value1.projectCategoryType}</div></td>
                                                     <td className=""><div className="col4">{value1.projectName}</div></td>
-                                                    <td className="">
-                                                      <div className='wrapText col5 text-left'>
-                                                        <b>Sector : </b> {value1.sectorName}<br/>
-                                                        <b>Activity : </b>{value1.activityName}<br/>
-                                                        <b>Sub-Activity : </b>{value1.subactivityName}
-                                                      </div>
-                                                    </td>
+                                                    <td className=""><div className="col5">{value1.sectorName}</div></td>
+                                                    <td className=""><div className="col6">{value1.activityName}</div></td>
+                                                    <td className=""><div className="col7">{value1.subactivityName}</div></td>
                                                     <td className=""><div className="col8">{value1.unit}</div></td>
                                                     <td className="textAlignRight"><div className="col9">{value1.UnitCost}</div></td>
                                                     <td className="textAlignRight"><div className="col10">{value1.quantity}</div></td>
@@ -1086,9 +1090,9 @@ class Activities_in_beneficiary_Report extends Component{
                                                     <td className="textAlignRight"><div className="col16">{value1.DirectCC}</div></td>
                                                     <td className="textAlignRight"><div className="col17">{value1.IndirectCC}</div></td>
                                                     <td className="textAlignRight"><div className="col18">{value1.Other}</div></td>
-                                                    <td className=""><div className="col19">{value1.village}</div></td>
+                                                    {/*<td className=""><div className="col19">{value1.village}</div></td>
                                                     <td className=""><div className="col20">{value1.block}</div></td>
-                                                    <td className=""><div className="col21">{value1.district}</div></td>
+                                                    <td className=""><div className="col21">{value1.district}</div></td>*/}
                                                   </tr>
                                                 )
                                               })

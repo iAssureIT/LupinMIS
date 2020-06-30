@@ -38,6 +38,7 @@ import ViewActivity                               from "../../centres/activity/v
 import ActivityReportView                         from "../../centres/activityReportView/ActivityReportView.js";
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import Plan                                       from "../../centres/plan/PlanDetails.js";
+import AnnualPlanDetails                                       from "../../centres/plan/AnnualPlanDetails.js";
 import FileWisePlanList                           from "../../centres/plan/FileWisePlanList.js";
 import FileWiseMonthlyPlanList                    from "../../centres/plan/FileWiseMonthlyPlanList.js";
 
@@ -158,6 +159,7 @@ class Layout extends Component{
                               <Route path="/Filewise-family-list"                exact strict component={ FilewiseFamilyList } />
                               
                              {/*Plans Routes*/}
+                              <Route path="/annual-plan-details"                 exact strict component={ AnnualPlanDetails } />
                               <Route path="/plan-details"                        exact strict component={ Plan } />
                               <Route path="/plan-details/"                       exact strict component={ Plan } />
                               <Route path="/plan-details/:id"                    exact strict component={ Plan } />
@@ -199,7 +201,7 @@ class Layout extends Component{
                               <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
                               <Route path="/sector-wise-quaterly-plan-summary-report"                     exact strict component={ report17 } />
                               <Route path="/family-coverage-report"                                       exact strict component={ report18 } />
-                              <Route path="/list-activities-by-beneficiary"                                       exact strict component={ report19 } />
+                              <Route path="/family-tracking-system"                                       exact strict component={ report19 } />
                             </Switch>        
                       </div>
                     </div>

@@ -17,20 +17,20 @@
 	white-space: pre-wrap!important;
 	width: 90px !important;
 }
-#FamilyCoverageReport .col9, #FamilyCoverageReport .col7
+#FamilyCoverageReport .col9
 {
 	white-space: pre-wrap!important;
 	width: 62px !important;
 } 
-#FamilyCoverageReport .col5{
+#FamilyCoverageReport .col5, #FamilyCoverageReport .col6, #FamilyCoverageReport .col7{
 	white-space: pre-wrap!important;
-	width: 200px !important;
+	width: 100px !important;
 }
 #FamilyCoverageReport .col8{
 	white-space: pre-wrap!important;
 	width: 72px !important;
 }
-#FamilyCoverageReport .col6, #FamilyCoverageReport .col12, #FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
+#FamilyCoverageReport .col12, #FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
 	white-space: pre-wrap!important;
 	width: 72px !important;
 }

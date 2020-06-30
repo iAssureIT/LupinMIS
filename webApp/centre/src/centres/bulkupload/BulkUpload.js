@@ -356,8 +356,8 @@ class BulkUpload extends Component{
                 this.props.fileDetails ?
                 <div className="">
                   <ul className="nav nav-tabs">
-                    <li className="active"><a data-toggle="tab" href={"#failure"+this.props.failedRecordsCount}>Failure</a></li>
-                    <li ><a data-toggle="tab" href={"#success"+this.props.goodDataCount}>Success</a></li>
+                    <li className="active"><a className="failTab" data-toggle="tab" href={"#failure"+this.props.failedRecordsCount}>Failure</a></li>
+                    <li ><a className="successTab" data-toggle="tab" href={"#success"+this.props.goodDataCount}>Success</a></li>
                   </ul>
                   <div className="tab-content">
                   <h5>Filename: <span>{this.state.fileName}</span></h5>
@@ -371,11 +371,11 @@ class BulkUpload extends Component{
                       <br/>
                        <ReactHTMLTableToExcel
                         id="test-table-xls-button"
-                        className="download-table-xls-button"
+                        className="download-table-xls-button badDwldButton"
                         table={"failedtable"+this.props.failedRecordsCount}
                         filename="tablexls"
                         sheet="tablexls"
-                        buttonText="Download as XLS"/>
+                        buttonText="Download Bad Records"/>
                           <br/>
                         </div>  
                         <div style={{overflowX: "auto"}}>
@@ -410,7 +410,7 @@ class BulkUpload extends Component{
                               return(
                                 <tr key={index}>
                                 { Object.entries(data).map( ([key, value], i)=> {
-                                    return(<td>{data[key]}</td>);
+                                    return(<td key={i}>{data[key]}</td>);
                                   })
                                 }
                               </tr>

@@ -178,7 +178,7 @@ class CaseStudy extends Component{
 
       axios.post('/api/caseStudies', caseStudyValues)
         .then((response)=>{
-          console.log('response', response);
+          // console.log('response', response);
           this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
@@ -471,7 +471,6 @@ class CaseStudy extends Component{
                         {
                           this.state.tableData && this.state.tableData.length >0 ?
                           this.state.tableData.map((data, index)=>{
-                            console.log(data);
                             return(
                               <div key={index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt outerForm">
                                 <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12">

@@ -17,20 +17,19 @@
 	white-space: pre-wrap!important;
 	width: 90px !important;
 }
-#Activities_in_beneficiary_Report .col9, #Activities_in_beneficiary_Report .col7
-{
+#Activities_in_beneficiary_Report .col9{
 	white-space: pre-wrap!important;
 	width: 62px !important;
 } 
-#Activities_in_beneficiary_Report .col5{
+#Activities_in_beneficiary_Report .col5, #Activities_in_beneficiary_Report .col6, #Activities_in_beneficiary_Report .col7{
 	white-space: pre-wrap!important;
-	width: 200px !important;
+	width: 100px !important;
 }
 #Activities_in_beneficiary_Report .col8{
 	white-space: pre-wrap!important;
 	width: 72px !important;
 }
-#Activities_in_beneficiary_Report .col6, #Activities_in_beneficiary_Report .col12, #Activities_in_beneficiary_Report .col20, #Activities_in_beneficiary_Report .col21{
+#Activities_in_beneficiary_Report .col12, #Activities_in_beneficiary_Report .col20, #Activities_in_beneficiary_Report .col21{
 	white-space: pre-wrap!important;
 	width: 72px !important;
 }
