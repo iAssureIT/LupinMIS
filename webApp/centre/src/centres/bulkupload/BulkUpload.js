@@ -36,7 +36,9 @@ class BulkUpload extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+                console.log("propsdata",this.props.propsdata)
+      this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
+      // this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
     });
   }
           
@@ -242,7 +244,7 @@ class BulkUpload extends Component{
             totalRecords : totalrows,
             updateBadData : i > factor ? false : true
           };
-          console.log('formValue',formValues)
+          // console.log('formValue',formValues)
           // var formValues ={
           // "finaldata"     : chunkData,
           // "invalidData"   : invalidData,
@@ -258,10 +260,10 @@ class BulkUpload extends Component{
           })
           .then((response)=> {
             console.log('response',response.data)
-              console.log('response.data.completed',response.data.completed)
+              // console.log('response.data.completed',response.data.completed)
             if (response.data.completed) {
 
-              console.log('endLmt',endLmt)
+              // console.log('endLmt',endLmt)
               
               var percentage = Math.round((endLmt*100/totalrows))
               if (percentage > 99 ) {
@@ -270,7 +272,8 @@ class BulkUpload extends Component{
                 $('.fullpageloader').hide();
                 $('.filedetailsDiv').show();
                 this.props.getFileDetails(this.state.fileName) 
-                this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID) 
+                console.log("propsdata",this.props.propsdata)
+                this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
               }
               this.setState({percentage:percentage},()=>{})
               chunkData = [];
@@ -301,9 +304,7 @@ class BulkUpload extends Component{
     //         console.log('error', error);
     //     })
   }
-  getData(){
 
-  }
   render() {
     // console.log("goodrecords",this.props.fileDetails)
   	 const SheetJSFT = [

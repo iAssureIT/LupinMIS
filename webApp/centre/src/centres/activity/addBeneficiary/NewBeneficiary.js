@@ -285,8 +285,8 @@ class NewBeneficiary extends Component{
     if(searchText) {
       if(tableData&&tableData.length>0){
         tableData.map((a,i)=>{
-          console.log(a);
-          console.log(a.nameofbeneficiaries.toUpperCase().includes(searchText.toUpperCase()))
+          // console.log(a);
+          // console.log(a.nameofbeneficiaries.toUpperCase().includes(searchText.toUpperCase()))
           if(a.familyID.toUpperCase().includes(searchText.toUpperCase())||
             a.beneficiaryID.toUpperCase().includes(searchText.toUpperCase())||
             a.nameofbeneficiaries.toUpperCase().includes(searchText.toUpperCase())||
@@ -313,7 +313,7 @@ class NewBeneficiary extends Component{
         this.setState({
           tableData     : tableData
         },()=>{
-          console.log('this.state.tableData',this.state.tableData)
+          // console.log('this.state.tableData',this.state.tableData)
         })
       }
     }else{

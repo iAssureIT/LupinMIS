@@ -260,7 +260,7 @@ class PlanDetails extends Component{
     const value = event.target.value;
     let fields = this.state.fields;
     const x =  this.refs["physicalUnit-"+id].value * this.refs["unitCost-"+id].value;
-    console.log('x',x)
+    // console.log('x',x)
     this.setState({
       [event.target.name] : event.target.value,
       totalBud : x.toFixed(2),
@@ -373,9 +373,9 @@ class PlanDetails extends Component{
             "other"               : parseFloat(subActivityDetails[i].other),
             "remark"              : subActivityDetails[i].remark,
           };
-          console.log("planValues",planValues);
+          // console.log("planValues",planValues);
           var total = (planValues.LHWRF+planValues.NABARD+planValues.bankLoan+planValues.govtscheme+planValues.directCC+planValues.indirectCC+planValues.other)
-          console.log("total",total,"planValues.totalBudget",planValues.totalBudget)
+          // console.log("total",total,"planValues.totalBudget",planValues.totalBudget)
           if(parseFloat(total) === parseFloat(planValues.totalBudget)){
             axios.post(this.state.apiCall, planValues)
               .then((response)=>{
@@ -778,7 +778,10 @@ class PlanDetails extends Component{
             startDate  : startDate,
             endDate    : endDate,
         }
-        // console.log("data",data);
+        this.setState({
+          propsdata : data
+        });
+        console.log("data",data);
         $(".fullpageloader").show();
         axios.post(this.state.apiCall+'/list', data)
         .then((response)=>{
@@ -873,6 +876,7 @@ class PlanDetails extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
+      this.year();
       console.log(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate)
       this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
     });
@@ -928,7 +932,7 @@ class PlanDetails extends Component{
               availableSubActivity : [],
               sector_ID : array[0]._id
             },()=>{
-              console.log('activityName0',this.state.activityName);
+              // console.log('activityName0',this.state.activityName);
               this.getAvailableActivity(array[0]._id)
             })
           }
@@ -1376,14 +1380,6 @@ class PlanDetails extends Component{
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
                           <option disabled="disabled" selected={true}>-- Select Year --</option>
-                          {/* 
-                            this.state.years 
-                            ? 
-                              this.state.years.map((data, i)=>{
-                                return <option key={i}>{data}</option>
-                              })
-                            : null
-                          */}
                           {
                             ( this.state.years )
                             ? 
@@ -1394,15 +1390,6 @@ class PlanDetails extends Component{
                             :
                             null
                           }
-                          {/*
-                            (this.state.month !== "Annual Plan" && this.state.years)
-                            ? 
-                              this.state.monthYears.map((data, i)=>{
-                                return (<option key={i}>{data}</option>)
-                              })
-                            :
-                            null
-                         */ }
                         </select>
                       </div>
                       <div className="errorMsg">{this.state.errors.year}</div>
@@ -1411,21 +1398,12 @@ class PlanDetails extends Component{
                   <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                     <div id="manualplan"  className="tab-pane fade in active ">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt"> 
-                        <div className="AnnualHeadCont col-lg-8 col-md-8 col-sm-8 col-xs-8 NOpadding">
-                          <div className="annualHead">
-                            {
-                              <h5 defaultValue="Annual Plan">{this.state.month === "Annual Plan" ? "Annual Plan": "Quarterly Plan" || this.state.month !== "Annual Plan" ? "Quarterly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
-                              // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
-                            }
-                          </div>
-                        </div>
-                
                         <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
                             <button type="button" className="btn addBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick={this.toglehidden.bind(this)}>Add Plan</button>
                         </div> 
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt outerForm"  style={hidden}>
+                        <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt outerForm"  style={hidden}>
                           <div className=" col-lg-12 col-sm-12 col-xs-12 NOpadding ">         
                             <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
                               <div className="" id="projectCategoryType" >
@@ -1514,10 +1492,10 @@ class PlanDetails extends Component{
                               <div className="errorMsg">{this.state.errors.activityName}</div>
                             </div>                  
                           </div> 
-                        <br/>  
-                        <div>
-                          {this.state.availableSubActivity ? <hr className=""/> :""}
-                        </div>
+                          <br/>  
+                          <div>
+                            {this.state.availableSubActivity ? <hr className=""/> :""}
+                          </div>
                           {
                             this.state.availableActivity && this.state.availableSubActivity && this.state.availableSubActivity.length >0?
                             this.state.availableSubActivity.map((data, index)=>{
@@ -1653,17 +1631,28 @@ class PlanDetails extends Component{
                             })
                             : 
                             null
-                          }   
-                                                
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                         <br/>{
-                          this.state.editId ? 
-                          <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
-                          :
-                          <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
-                        }
-                        </div>                        
-                      </form>
+                          }                                                   
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                            <br/>
+                            {
+                              this.state.editId ? 
+                              <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
+                              :
+                              <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitAnnualPlan.bind(this)}> Submit </button>
+                            }
+                          </div>                        
+                        </form>
+                      </div>
+                      <div className="AnnualHeadCont col-lg-8 col-md-8 col-sm-8 col-xs-8 NOpadding">
+                        <div className="annualHead">
+                          {
+                            <h5 defaultValue="Annual Plan">
+                              {this.state.month ? this.state.month : "Quarterly Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}
+                              </h5> 
+                            // <h5 defaultValue="Annual Plan">{this.state.month === "Annual Plan" ? "Annual Plan": "Quarterly Plan" || this.state.month !== "Annual Plan" ? "Quarterly Plan": "Annual Plan"}{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                            // <h5>{this.state.month !== "Annually" ? "Monthly Plan "+ this.state.month : "Annual Plan " }{ this.state.year !=="-- Select Year --" ? "  "+(this.state.year ? "- "+this.state.year :"" ) : null}</h5> 
+                          }
+                        </div>
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  formLable " >
                         <div className="row">  
@@ -1674,6 +1663,7 @@ class PlanDetails extends Component{
                             twoLevelHeader={this.state.twoLevelHeader} 
                             dataCount={this.state.dataCount}
                             tableData={this.state.tableData}
+                            data={this.state.data}
                             getData={this.getData.bind(this)}
                             tableObjects={this.state.tableObjects}
                             getSearchText={this.getSearchText.bind(this)}
@@ -1686,26 +1676,27 @@ class PlanDetails extends Component{
                            {  /* "projectCategoryType" : this.state.projectCategoryType, 
                                                          "projectName":this.state.projectCategoryType==="LHWRF Grant" ? "-" : this.state.projectName*/}
                         <BulkUpload url={this.state.month === "Annual Plan" ? "/api/annualPlans/bulk_upload_annual_plan" : "/api/monthlyPlans/bulk_upload_manual_plan"}  
-                        data={{
-                              "centerName" : this.state.centerName, 
-                              "center_ID" : this.state.center_ID,
-                              "month":this.state.month,
-                              "startDate" : this.state.startDate,
-                              "endDate"  : this.state.endDate,
-                              "year":this.state.year, 
-                            }} 
-                        uploadedData={this.uploadedData} 
-                        fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Plan+Submission.xlsx"
-                        fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
-                        getFileDetails={this.getFileDetails}
-                        fileDetails={this.state.fileDetails}
-                        getData={this.getData.bind(this)}
-                        goodRecordsHeading ={this.state.goodRecordsHeading}
-                        failedtableHeading={this.state.failedtableHeading}
-                        failedRecordsTable ={this.state.failedRecordsTable}
-                        failedRecordsCount={this.state.failedRecordsCount}
-                        goodRecordsTable={this.state.goodRecordsTable}
-                        goodDataCount={this.state.goodDataCount}/>
+                          data={{
+                                "centerName" : this.state.centerName, 
+                                "center_ID" : this.state.center_ID,
+                                "month":this.state.month,
+                                "startDate" : this.state.startDate,
+                                "endDate"  : this.state.endDate,
+                                "year":this.state.year, 
+                              }} 
+                          uploadedData={this.uploadedData} 
+                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Plan+Submission.xlsx"
+                          fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
+                          getFileDetails={this.getFileDetails}
+                          fileDetails={this.state.fileDetails}
+                          propsdata={this.state.propsdata}
+                          getData={this.getData.bind(this)}
+                          goodRecordsHeading ={this.state.goodRecordsHeading}
+                          failedtableHeading={this.state.failedtableHeading}
+                          failedRecordsTable ={this.state.failedRecordsTable}
+                          failedRecordsCount={this.state.failedRecordsCount}
+                          goodRecordsTable={this.state.goodRecordsTable}
+                          goodDataCount={this.state.goodDataCount}/>
                       </div>
                     </div>
                   </div>

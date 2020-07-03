@@ -17,18 +17,22 @@ class Family extends Component{
     super(props);
    
     this.state = {
-      "center_ID"            : "",
-      "centerName"           : "",
       "familyID"             :"",
       "nameOfFamilyHead"     :"",
       "uID"                  :"",
       "category"             :"",
       "LHWRFCentre"          :"",
-      "state"                :"Maharastra",
       "caste"                :"",
       "district"             :"-- Select --",
       "block"                :"-- Select --",
       "village"              :"-- Select --",
+      "casteFilter"          :"all",
+      "districtFilter"       :"all",
+      "blockFilter"          :"all",
+      "villageFilter"        :"all",
+      "specialCategoryFilter":"all",
+      "landCategoryFilter"   :"all",
+      "incomeCategoryFilter" :"all",
       "contact"              :"",       
       "surnameOfFH"          :"",
       "firstNameOfFH"        :"",
@@ -38,6 +42,7 @@ class Family extends Component{
       "landCategory"         :"",
       "specialCategory"      :"",
       "date"                 :"",
+      "shown"                : true,
       "FHYearOfBirth"        :"",
       // "FHGender"             :"-- Select --",
       "listofDistrict"       :[],
@@ -68,12 +73,12 @@ class Family extends Component{
         village               : "Village",
         actions               : 'Action',
       },            
-      "startRange"            : 0,
-      "limitRange"            : 10000,
+      // "startRange"            : 0,
+      // "limitRange"            : 10000,
       "editId"                : this.props.match.params ? this.props.match.params.id : '',    
       fileDetailUrl           : "/api/families/get/filedetails/",
-      goodRecordsTable      : [],
-      failedRecordsTable    : [],
+      goodRecordsTable        : [],
+      failedRecordsTable      : [],
       goodRecordsHeading :{
         familyID              : "Family ID",
         nameOfFH              : "Name of Family Head",
@@ -117,7 +122,7 @@ class Family extends Component{
     if(nextProps){
       this.getLength();
     }      
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+    this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
     }
   }
   
@@ -127,16 +132,19 @@ class Family extends Component{
       this.edit(this.state.editId);
     }
     this.getLength();
-    this.getData(this.state.startRange, this.state.limitRange);
+    this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     this.setState({
       center_ID    : center_ID,
+      centerID    : center_ID,
       centerName   : centerName,
     },()=>{
-    this.getAvailableCenter(this.state.center_ID);
-    this.getLength(this.state.center_ID);
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+      console.log(this.state.centerID);
+      this.getAvailableCenter(this.state.center_ID);
+      this.getLength(this.state.center_ID);
+      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
+      console.log(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
     }); 
 
     $.validator.addMethod("regxUID", function(value, element, regexpr) {         
@@ -151,7 +159,7 @@ class Family extends Component{
        $.validator.addMethod("regxfirstNameOfFH", function(value, element, regexpr) {         
       return regexpr.test(value);
     }, "Please enter a valid First Name.");
-    //    $.validator.addMethod("regxmiddleNameOfFH", function(value, element, regexpr) {         
+    //    $.validator.addMethod("regxmiddleNameOfFH", functio n(value, element, regexpr) {         
     //   return regexpr.test(value);
     // }, "Please enter a valid Middle Name.");
         $("#createFamily").validate({
@@ -245,7 +253,6 @@ class Family extends Component{
       "contact"              :this.refs.contact.value,
     });
   }
-
   isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
    if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
@@ -285,7 +292,7 @@ class Family extends Component{
       .then((response)=>{
         if(response.data.message==="UID Already Exists"){
           console.log('response', response);
-          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+          this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -296,6 +303,7 @@ class Family extends Component{
         }else{
           // console.log('response', response);
           this.setState({
+            "shown"               : true,
             "familyID"             :"",
             "caste"                :"",
             "district"             :"-- Select --",
@@ -316,7 +324,7 @@ class Family extends Component{
             "FHYearOfBirth"        :"",
             // "FHGender"             :"-- Select --",
           });
-          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+          this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -356,7 +364,7 @@ class Family extends Component{
         .then((response)=>{
           if(response.data.message==="UID Already Exists"){
             // console.log('response', response);
-            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
             swal({
               title : response.data.message,
               text  : response.data.message
@@ -365,12 +373,13 @@ class Family extends Component{
               "uID"                  :"",
             });
           }else{
-            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
             swal({
               title : response.data.message,
               text  : response.data.message
             });
             this.setState({
+              "shown"               : true,
               "familyID"             :"",
               "uID"                  :"",
               "caste"                :"",
@@ -447,7 +456,7 @@ class Family extends Component{
     }).then((response)=> {
       console.log('editData',response);
       var editData = response.data[0];
-      console.log('editData',editData.center_ID);
+      // console.log('editData',editData.center_ID);
       this.getAvailableCenter(editData.center_ID);
       this.getAvailableVillages();
       this.getAvailableBlocks();
@@ -469,9 +478,10 @@ class Family extends Component{
           "district"              : editData.dist, 
           "block"                 : editData.block, 
           "village"               : editData.village, 
+          "shown"                   : false,
         },()=>{
           this.getAvailableCenter(this.state.center_ID);
-          console.log('editdistrict',this.state.district);
+          // console.log('editdistrict',this.state.district);
         });
         let fields = this.state.fields;
         let errors = {};
@@ -487,8 +497,13 @@ class Family extends Component{
     });
   }
 
+  toglehidden(){   
+    this.setState({
+     shown: !this.state.shown
+    });
+  }
   uploadedData(data){
-    this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
+    this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter )
   }
 
   getLength(center_ID){
@@ -504,17 +519,37 @@ class Family extends Component{
       // console.log("error"+error);
     });
   }
-  getData(startRange, limitRange, center_ID){ 
+  getData(centerID, casteFilter, districtFilter, blockFilter, villageFilter, specialCategoryFilter, landCategoryFilter, incomeCategoryFilter){ 
+    // var data = {
+    //   limitRange : limitRange,
+    //   startRange : startRange,
+    // } 
+
+    console.log(centerID);
+    console.log(centerID, casteFilter, districtFilter, blockFilter, villageFilter, specialCategoryFilter, landCategoryFilter, incomeCategoryFilter);
     var data = {
-      limitRange : limitRange,
-      startRange : startRange,
+      "center_ID"       : centerID,
+      "caste"           : casteFilter,
+      "district"        : districtFilter,
+      "blocks"          : blockFilter,
+      "village"         : villageFilter, 
+      "specialCategory" : specialCategoryFilter,
+      "landCategory"    : landCategoryFilter,
+      "incomeCategory"  : incomeCategoryFilter,
     }
-    if (center_ID){
+    console.log("data",data)
+    this.setState({
+      propsdata : data
+    },()=>{
+    console.log("propsdata",this.state.propsdata)
+    })
+    if (centerID){
     $(".fullpageloader").show();
-      axios.post('/api/families/list/'+center_ID,data)
+      // axios.post('/api/families/list/'+center_ID,data)
+      axios.post('/api/families/get/family/list',data)
       .then((response)=>{
-      $(".fullpageloader").hide();
-        // console.log('response', response.data);
+        $(".fullpageloader").hide();
+        console.log('response', response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                   : a._id,
@@ -534,6 +569,7 @@ class Family extends Component{
           }
         })
         this.setState({
+          propsdata : data,
           tableData : tableData
         })
       })    
@@ -585,8 +621,12 @@ class Family extends Component{
     event.preventDefault();
     var district = event.target.value;
     this.setState({
-      district: district
+      district       : district,
+      districtFilter : district,
+      blockFilter    : "all",
+      villageFilter  : "all",
     },()=>{
+      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter )
       var selectedDistrict = this.state.district;
       this.setState({
         selectedDistrict :selectedDistrict,
@@ -641,8 +681,11 @@ class Family extends Component{
     event.preventDefault();
     var block = event.target.value;
     this.setState({
-      block : block
+      block          : block,
+      blockFilter    : block,
+      villageFilter  : "all",
     },()=>{
+      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter )
       axios({
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
@@ -685,8 +728,10 @@ class Family extends Component{
     event.preventDefault();
     var village = event.target.value;
     this.setState({
-      village : village
+      village       : village,
+      villageFilter : village
     },()=>{
+      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter )
       // console.log("village",village);
     });  
   } 
@@ -798,7 +843,30 @@ class Family extends Component{
     },()=>{
     });
   };
+
+  handleFilters(event){
+    event.preventDefault();
+    this.setState({
+      "casteFilter"                :this.refs.casteFilter.value, 
+      "specialCategoryFilter"      :this.refs.specialCategoryFilter.value, 
+      "landCategoryFilter"         :this.refs.landCategoryFilter.value, 
+      "incomeCategoryFilter"       :this.refs.incomeCategoryFilter.value, 
+      "districtFilter"             :this.refs.districtFilter.value, 
+      "blockFilter"                :this.refs.blockFilter.value, 
+      "villageFilter"              :this.refs.villageFilter.value, 
+    },()=>{
+      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
+      // this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.caste, this.state.specialCategory, this.state.landCategory, this.state.incomeCategory, this.state.district, this.state.block, this.state.village);
+    });
+  }
+
   render() {     
+    var hidden = {
+      display: this.state.shown ? "none" : "block"
+    } 
+    var displayBlock = {
+      display: this.state.shown ? "block" : "none"
+    }
     return (
       <div className="container-fluid">
         <Loader type="fullpageloader" />
@@ -809,7 +877,7 @@ class Family extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                      Beneficiary Management    
+                      Beneficiary Management
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
@@ -820,19 +888,17 @@ class Family extends Component{
 
                   <div className="tab-content ">
                     <div id="manual"  className="tab-pane fade in active ">
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="createFamily">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                           <h4 className="pageSubHeader">Create New Family</h4>
-                        </div>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt"> 
+                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
+                            <button type="button" className="btn addBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick={this.toglehidden.bind(this)}>Add Family</button>
+                        </div> 
+                      </div>
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="createFamily" style={hidden}>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 border_Box ">
-                            {/*<div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box ">
-                              <label className="formLable">Family ID</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="familyID" >
-                                <input type="text" className="form-control inputBox " ref="familyID" name="familyID" value={this.state.familyID } onChange={this.handleChange.bind(this)} />
-                              </div>
-                              <div className="errorMsg">{this.state.errors.familyID}</div>
-                            </div>*/}
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter">
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                              Create New Family
+                            </div>
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Surname </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfFHErr" >
@@ -952,7 +1018,7 @@ class Family extends Component{
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
-                                      console.log('this.state.listofDistrict',this.state.listofDistrict);
+                                      // console.log('this.state.listofDistrict',this.state.listofDistrict);
                                       return(
                                         <option key={index} value={(data.district).split('|')[0]}>{this.camelCase(data.district).split('|')[0]}</option>
                                       );
@@ -1016,7 +1082,126 @@ class Family extends Component{
                           </div>
                         </div>
                       </form>
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt" style={displayBlock}>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter">
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                              Filters for List
+                            </div>
+                            <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box  ">
+                              <label className="formLable">Caste</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="casteErr" >
+                                <select className="custom-select form-control inputBox" ref="casteFilter" name="casteFilter" value={this.state.casteFilter} onChange={this.handleFilters.bind(this)}>
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  <option>General</option>
+                                  <option>SC</option>
+                                  <option>ST</option>
+                                  <option>NT</option>
+                                  <option>Other</option>                              
+                                </select>
+                              </div>
+                            </div>                      
+                            <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Land holding Category</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
+                                <select className="custom-select form-control inputBox"ref="landCategoryFilter" name="landCategoryFilter" value={this.state.landCategoryFilter} onChange={this.handleFilters.bind(this)}  >
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  <option>Big Farmer</option>
+                                  <option>Landless</option>
+                                  <option>Marginal Farmer</option>
+                                  <option>Small Farmer</option>
+                                </select>
+                              </div>
+                            </div>                          
+                            <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Income Category </label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
+                                <select className="custom-select form-control inputBox" ref="incomeCategoryFilter" name="incomeCategoryFilter" value={this.state.incomeCategoryFilter} onChange={this.handleFilters.bind(this)}  >
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  <option>APL</option>
+                                  <option>BPL</option>
+                                </select>
+                              </div>
+                            </div>                          
+                            <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Special Category</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
+                                <select className="custom-select form-control inputBox" ref="specialCategoryFilter" name="specialCategoryFilter" value={this.state.specialCategoryFilter} onChange={this.handleFilters.bind(this)}  >
+                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  <option>Normal</option>
+                                  <option>Differently Abled</option>
+                                  <option>Veerangana</option>
+                                  <option>Widow Headed</option>
+                                </select>
+                              </div>
+                            </div>            
+                            <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">District</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
+                                <select className="custom-select form-control inputBox" ref="districtFilter" name="districtFilter" value={this.state.districtFilter} onChange={this.districtChange.bind(this)}  >
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  {
+                                    this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                                    this.state.listofDistrict.map((data, index)=>{
+                                      // console.log('this.state.listofDistrict',this.state.listofDistrict);
+                                      return(
+                                        <option key={index} value={(data.district).split('|')[0]}>{this.camelCase(data.district).split('|')[0]}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }                               
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Block</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
+                                <select className="custom-select form-control inputBox" ref="blockFilter" name="blockFilter" value={this.state.blockFilter?this.state.blockFilter:""} onChange={this.selectBlock.bind(this)} >
+                                  <option selected='true'  disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  {
+
+                                    this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                    this.state.listofBlocks.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={data.block}>{this.camelCase(data.block)}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }                              
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
+                              <label className="formLable">Village</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
+                                <select className="custom-select form-control inputBox" ref="villageFilter" name="villageFilter" value={this.state.villageFilter?this.state.villageFilter:""} onChange={this.selectVillage.bind(this)}  >
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  {
+                                    this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                    this.state.listofVillages.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={data.village}>{this.camelCase(data.village)}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  } 
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
                           tableName = "Family"
                           id = "Family"
@@ -1024,15 +1209,16 @@ class Family extends Component{
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}
                           tableData={this.state.tableData}
+                          data={this.state.propsdata}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}                          
                           getSearchText={this.getSearchText}
                         />
                       </div>
                     </div>
-                    <div id="bulk" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                    <div id="bulk" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm mt">
                           <BulkUpload 
                             url="/api/families/bulk_upload_families" 
                             data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
@@ -1040,6 +1226,7 @@ class Family extends Component{
                             fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
                             fileDetailUrl={this.state.fileDetailUrl}
                             getFileDetails={this.getFileDetails}
+                            propsdata={this.state.propsdata}
                             getData={this.getData.bind(this)}
                             fileDetails={this.state.fileDetails}
                             goodRecordsHeading ={this.state.goodRecordsHeading}

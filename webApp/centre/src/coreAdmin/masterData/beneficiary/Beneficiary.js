@@ -22,6 +22,9 @@ class Beneficiary extends Component{
     this.state = {
       // "relation"            :"-- Select --",
       "Check"                         :false,
+      "districtFilter"                :"all",
+      "blockFilter"                   :"all",
+      "villageFilter"                 :"all",
       "relation"                      :"-- Select --",
       "familyID"                      :"",  
       "beneficiaryID"                 :"",
@@ -35,6 +38,7 @@ class Beneficiary extends Component{
       "birthYearOfbeneficiary"        :"",
       "genderOfbeneficiary"           :"",
       // "genderOfbeneficiary"           :"-- Select --",
+      "shown"               : true,
       "fields"              : {},
       "errors"              : {},
       "tableHeading"        : {
@@ -45,6 +49,9 @@ class Beneficiary extends Component{
         relation            : "Relation with Family Head",
         genderOfbeneficiary : "Gender",
         birthYearOfbeneficiary : "Birth Year",
+        dist                : "District",
+        block               : "Block",
+        village             : "Village",
         actions             : 'Action',
       },
       "tableObjects"        : {
@@ -168,6 +175,7 @@ class Beneficiary extends Component{
     // fields["middleNameOfBeneficiary"]   = "";
 
     this.setState({
+      "shown"                    : true,
       "familyID"                 :"",
       "beneficiaryID"            :"",
       "surnameOfBeneficiary"     :"",   
@@ -183,7 +191,7 @@ class Beneficiary extends Component{
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
         swal({
           title : response.data.message,
           text  : response.data.message,
@@ -225,7 +233,7 @@ class Beneficiary extends Component{
       // console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
           swal({
             title : response.data.message,
             text  : response.data.message,
@@ -236,6 +244,7 @@ class Beneficiary extends Component{
           console.log("error = ",error);
         });
       this.setState({
+        "shown"                    : true,
         "familyID"                 :"",
         "nameofbeneficiaries"      :"",   
         "uidNumber"                :"",
@@ -276,10 +285,8 @@ class Beneficiary extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-
     this.getLength();
-    // this.getData();
-    this.getData(this.state.startRange, this.state.limitRange);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
     this.getAvailableFamilyId();
     const center_ID = localStorage.getItem("center_ID");
     // const token = localStorage.getItem("token");
@@ -290,9 +297,9 @@ class Beneficiary extends Component{
       centerName   : centerName,
     },()=>{
     // console.log("center_ID =",this.state.center_ID);
-     this.getLength(this.state.center_ID);
-    // this.getData();
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+    this.getLength(this.state.center_ID);
+    this.getAvailableCenter(this.state.center_ID);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
     this.getAvailableFamilyId(this.state.center_ID);
     });    
  
@@ -369,6 +376,7 @@ class Beneficiary extends Component{
       console.log('editData',response);
       if(editData){
         this.setState({
+          "shown"                    : false,
           "beneficiaryID"            : editData.beneficiaryID,
           "familyID"                 : editData.familyID+"|"+editData.family_ID,          
           "surnameOfBeneficiary"     : editData.surnameOfBeneficiary,
@@ -426,21 +434,54 @@ class Beneficiary extends Component{
     });*/
   }
 
-  getData(startRange, limitRange, center_ID){
+  // getData(startRange, limitRange, center_ID){
+  //   var data = {
+  //     limitRange : limitRange,
+  //     startRange : startRange,
+  //   }
+  //   // console.log(center_ID);
+  //   // var centerID = this.state.center_ID;
+  //   $(".fullpageloader").show();
+  //   if (center_ID){
+  //     axios.post('/api/beneficiaries/list/'+center_ID,data)
+  //       // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
+  //     // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
+  //     .then((response)=>{
+  //       $(".fullpageloader").hide();
+  //       console.log('response', response);
+  //       var tableData = response.data.map((a, i)=>{
+  //         return {
+  //           _id                       : a._id,
+  //           beneficiaryID             : a.beneficiaryID,
+  //           familyID                  : a.familyID,
+  //           nameofbeneficiaries       : a.nameofbeneficiaries,
+  //           uidNumber                 : a.uidNumber,
+  //           relation                  : a.relation,
+  //           genderOfbeneficiary       : a.genderOfbeneficiary,   
+  //           birthYearOfbeneficiary    : a.birthYearOfbeneficiary,   
+  //         }
+  //       })
+  //       this.setState({
+  //         tableData : tableData
+  //       },()=>{
+  //         // console.log("tableData",this.state.tableData)
+  //       })
+  //     })
+  //     .catch(function(error){
+  //       console.log("error = ",error);
+  //     });
+  //   }
+  // }
+
+  getData(startRange, limitRange, center_ID, district, block, village){
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    // console.log(center_ID);
-    // var centerID = this.state.center_ID;
-    $(".fullpageloader").show();
-    if (center_ID){
-      axios.post('/api/beneficiaries/list/'+center_ID,data)
-        // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
-      // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
+    if(center_ID && district && block && village){
+      axios.get('/api/beneficiaries/get/beneficiary/list/'+center_ID+'/'+district+'/'+block+'/'+village)
       .then((response)=>{
-        $(".fullpageloader").hide();
-        console.log('response', response);
+        console.log('bbbbbbbbbbbbbbbbbbbresponse', response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
@@ -451,19 +492,22 @@ class Beneficiary extends Component{
             relation                  : a.relation,
             genderOfbeneficiary       : a.genderOfbeneficiary,   
             birthYearOfbeneficiary    : a.birthYearOfbeneficiary,   
+            dist                      : a.dist,
+            block                     : a.block,
+            village                   : a.village,
           }
         })
         this.setState({
-          tableData : tableData
-        },()=>{
-          // console.log("tableData",this.state.tableData)
+          tableData : tableData,
+          prevtableData : tableData
         })
       })
       .catch(function(error){
         console.log("error = ",error);
-      });
-    }
+      }); 
+    }      
   }
+
   getAvailableFamilyId(center_ID){
     if(center_ID){
       axios({
@@ -561,8 +605,7 @@ class Beneficiary extends Component{
       });
     }
   }
-  getUID(event)
-  {
+  getUID(event) {
   /*  if(this.state.firstNameOfBeneficiary === this.state.firstNameOfBeneficiaryCheck )
     {
        
@@ -587,16 +630,154 @@ class Beneficiary extends Component{
 
     }*/
   }
+
+  toglehidden(){   
+    this.setState({
+     shown: !this.state.shown
+    });
+  }
   handleYear(date){
-        // console.log(' date.year()', date);
-        console.log(' date.year()',moment(date).format('YYYY'));
-      this.setState({
-        birthYearOfbeneficiary    : moment(date).format('YYYY'),
-        date    : date,
-      },()=>{
+      // console.log(' date.year()', date);
+      console.log(' date.year()',moment(date).format('YYYY'));
+    this.setState({
+      birthYearOfbeneficiary    : moment(date).format('YYYY'),
+      date    : date,
+    },()=>{
+    });
+  };
+
+  handleFilters(event){
+    event.preventDefault();
+    this.setState({
+      "districtFilter"             :this.refs.districtFilter.value, 
+      "blockFilter"                :this.refs.blockFilter.value, 
+      "villageFilter"              :this.refs.villageFilter.value, 
+    },()=>{
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+    });
+  }
+
+  getAvailableCenter(center_ID){
+    axios({
+      method: 'get',
+      url: '/api/centers/'+center_ID,
+      }).then((response)=> {
+        if(response.data){
+          function removeDuplicates(data, param){
+              return data.filter(function(item, pos, array){
+                  return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+              })
+          }
+          var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+          this.setState({
+            listofDistrict  : availableDistInCenter,
+          },()=>{
+          })
+        }
+      }).catch(function (error) {
+        console.log("error"+error);
       });
-    };
+  }
+
+  districtChange(event){    
+    event.preventDefault();
+    var district = event.target.value;
+    this.setState({
+      district       : district,
+      districtFilter : district,
+      blockFilter    : "all",
+      villageFilter  : "all",
+    },()=>{
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+      var selectedDistrict = this.state.district;
+      this.setState({
+        selectedDistrict :selectedDistrict,
+        village : '-- Select --',
+        block : '-- Select --',
+        listofVillages :[]
+      },()=>{
+        axios({
+          method: 'get',
+          url: '/api/centers/'+this.state.center_ID,
+          }).then((response)=> {
+          // console.log('availableblockInCenter ==========',response);
+          function removeDuplicates(data, param, district){
+            return data.filter(function(item, pos, array){
+              return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+            })
+          }
+          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+          this.setState({
+            listofBlocks     : availableblockInCenter,
+            block : '-- Select --',
+          },()=>{
+            // console.log('this.state.listofBlocks',this.state.listofBlocks);
+            // console.log('this.state.block',this.state.block);
+          })
+        }).catch(function (error) {
+          console.log("error = ",error);
+        });
+        // console.log('selectedDistrict,listofBlocks',this.state.selectedDistrict,this.state.listofVillages);
+        // this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      })
+    });
+  }
+  selectBlock(event){
+    event.preventDefault();
+    var block = event.target.value;
+    this.setState({
+      block          : block,
+      blockFilter    : block,
+      villageFilter  : "all",
+    },()=>{
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
+          village : "-- Select --"
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+      // console.log("block",block);
+      // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+    });
+  }
+  selectVillage(event){
+    event.preventDefault();
+    var village = event.target.value;
+    this.setState({
+      village       : village,
+      villageFilter : village
+    },()=>{
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+      // console.log("village",village);
+    });  
+  } 
+
+  camelCase(str){
+    return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  }
   render() {
+    var hidden = {
+      display: this.state.shown ? "none" : "block"
+    }
+    var displayBlock = {
+      display: this.state.shown ? "block" : "none"
+    }
     return (
       <div className="container-fluid">
         <Loader type="fullpageloader" />
@@ -607,7 +788,7 @@ class Beneficiary extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                      Beneficiary Management                                       
+                      Beneficiary Management
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
@@ -617,12 +798,17 @@ class Beneficiary extends Component{
                   </ul> 
                   <div className="tab-content ">
                     <div id="manualbenificiary"  className="tab-pane fade in active ">
-                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable" id="createBeneficiary">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt"> 
+                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
+                            <button type="button" className="btn addBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick={this.toglehidden.bind(this)}>Add Beneficiary</button>
+                        </div> 
+                      </div>
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="createBeneficiary"  style={hidden}>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                           <h4 className="pageSubHeader">Create New Beneficiary</h4>
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                          <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter">
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                              Create New Beneficiary
+                            </div>
                             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Family ID</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="familyIDErr" >
@@ -641,13 +827,6 @@ class Beneficiary extends Component{
                                 </select>
                               </div>
                             </div>
-                           {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12  valid_box">
-                              <label className="formLable">Beneficiary ID</label><span className="asterix">*</span>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="beneficiaryID" >
-                                <input type="text" className="form-control inputBox"  placeholder=""value={this.state.beneficiaryID} ref="beneficiaryID" name="beneficiaryID" onChange={this.handleChange.bind(this)} />
-                              </div>
-                              <div className="errorMsg">{this.state.errors.beneficiaryID}</div>
-                            </div>*/}
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Surname  </label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="surnameOfBeneficiaryErr" >
@@ -707,7 +886,6 @@ class Beneficiary extends Component{
                             <div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
                               <label className="formLable">Birth Year</label>
                               <div className="">
-                                {console.log('birthYearOfbeneficiary',this.state.birthYearOfbeneficiary)}
                                 <Datetime 
                                   dateFormat="YYYY"
                                   name="birthYearOfbeneficiary" 
@@ -734,18 +912,86 @@ class Beneficiary extends Component{
                             </div>
                             </div>*/}
 
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                              {
+                                this.state.editId ? 
+                                <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
+                                :
+                                <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
+                              }
                           </div> 
                         </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                          {
-                            this.state.editId ? 
-                            <button className=" col-lg-2 btn submit pull-right" onClick={this.Update.bind(this)}> Update </button>
-                            :
-                            <button className=" col-lg-2 btn submit pull-right" onClick={this.SubmitBeneficiary.bind(this)}> Submit </button>
-                          }
                         </div> 
                       </form>
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt" style={displayBlock}>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter">
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                              Filters for List
+                            </div>           
+                            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box">
+                              <label className="formLable">District</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
+                                <select className="custom-select form-control inputBox" ref="districtFilter" name="districtFilter" value={this.state.districtFilter} onChange={this.districtChange.bind(this)}  >
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  {
+                                    this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                                    this.state.listofDistrict.map((data, index)=>{
+                                      // console.log('this.state.listofDistrict',this.state.listofDistrict);
+                                      return(
+                                        <option key={index} value={(data.district).split('|')[0]}>{this.camelCase(data.district).split('|')[0]}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }                               
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box">
+                              <label className="formLable">Block</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
+                                <select className="custom-select form-control inputBox" ref="blockFilter" name="blockFilter" value={this.state.blockFilter?this.state.blockFilter:""} onChange={this.selectBlock.bind(this)} >
+                                  <option selected='true'  disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  {
+
+                                    this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                    this.state.listofBlocks.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={data.block}>{this.camelCase(data.block)}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  }                              
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box">
+                              <label className="formLable">Village</label><span className="asterix">*</span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
+                                <select className="custom-select form-control inputBox" ref="villageFilter" name="villageFilter" value={this.state.villageFilter?this.state.villageFilter:""} onChange={this.selectVillage.bind(this)}  >
+                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value="all">All</option>
+                                  {
+                                    this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                    this.state.listofVillages.map((data, index)=>{
+                                      return(
+                                        <option key={index} value={data.village}>{this.camelCase(data.village)}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                                  } 
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
                           tableName = "Beneficiary"
                           id = "Beneficiary"

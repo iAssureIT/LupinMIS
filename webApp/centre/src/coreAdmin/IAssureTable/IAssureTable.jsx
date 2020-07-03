@@ -85,7 +85,7 @@ class IAssureTable extends Component {
 	      center_ID    : center_ID,
 	      centerName   : centerName,
 	    },()=>{
-		    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+		    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }); 
       
       // this.palindrome('Moam');
@@ -134,7 +134,8 @@ class IAssureTable extends Component {
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
 	    	// this.props.isDeleted()
-	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    	console.log("this.props.data ",this.props.data )
+	    	this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        swal({
 	        	text : response.data.message,
 	        	title : response.data.message
@@ -353,6 +354,7 @@ class IAssureTable extends Component {
 		var limitRange = $(event.target).attr('id').split('|')[0];
 		var limitRange2     = parseInt(limitRange);
 		var startRange = parseInt($(event.target).attr('id').split('|')[1]);
+		// this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 		this.props.getData(startRange, limitRange);
 		this.setState({
 			startRange:startRange,
@@ -372,7 +374,8 @@ class IAssureTable extends Component {
 		},()=>{
 			this.paginationFunction();
 			if(this.state.normalData === true){
-				this.props.getData(this.state.startRange, this.state.limitRange);
+				this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
+				// this.props.getData(this.state.startRange, this.state.limitRange);
 			}	
 			if(this.state.searchData === true){
 				this.tableSearch();
@@ -390,7 +393,7 @@ class IAssureTable extends Component {
 				this.props.getSearchText(searchText);
 			});	    	
 	    }else{
-			this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+			this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }    	 
     }
     showNextPaginationButtons(){
@@ -589,7 +592,6 @@ class IAssureTable extends Component {
                 <React.Fragment>
           
                     <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
-		        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding whiteText">&nbsp;	</label>
                         <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
                            <ReactHTMLTableToExcel
                                 id="table-to-xls"                           

@@ -1,4 +1,8 @@
-#Beneficiary .col1, #Beneficiary .col2, #Beneficiary .col4 {
+#Beneficiary .col1, #Beneficiary .col2{
+	width: 100px;
+	text-align: left !important;
+}
+#Beneficiary .col4 {
 	width: 100px;
 }
 #Beneficiary .col3, #Beneficiary .col5{
@@ -8,7 +12,7 @@
 	width: 90px;
 }
 
-#Beneficiary .col8{
+#Beneficiary .col8,#Beneficiary .col9,#Beneficiary .col10,#Beneficiary .col11{
     width: 60px !important;
 }
 #FilewiseBeneficiaryList .col1{

@@ -85,15 +85,15 @@ export default class Leftsidebar extends Component{
                     <li className="sidebarMenuText">
                       <Link to="/annual-plan-details" title="Annual Plan">
                         <i className="fa fa-circle-o" />
-                        Annual Plan
+                        View Annual Plan
                       </Link>
                     </li>
-                    <li className="sidebarMenuText">
+                    {/*  <li className="sidebarMenuText">
                       <Link to="/filewise-plan-list" >
                         <i className="fa fa-circle-o" />
                         Filewise Annual Plans
                       </Link>
-                    </li>
+                    </li>*/}
                     <li className="sidebarMenuText">
                       <Link to="/filewise-monthly-plan-list" >
                         <i className="fa fa-circle-o" />

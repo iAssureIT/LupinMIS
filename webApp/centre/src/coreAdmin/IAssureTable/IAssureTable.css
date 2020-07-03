@@ -104,7 +104,7 @@
   background-color: #fff;
   border: 1px solid #979797 !important;
   border-radius: 3px !important;
-  margin-top: 5px;
+  margin-top: 25px;
 }
 
 .tableprintincon.focus, ..tableprintincon:focus, ..tableprintincon:hover {
@@ -120,7 +120,7 @@
   border: 1px solid #979797 !important;
   border-radius: 3px !important;
   padding: 5px 10px;
-  margin-top: 5px;
+  margin-top: 25px;
 }
 .scrollit{
   overflow:scroll;

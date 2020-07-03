@@ -1,4 +1,4 @@
-#FilewiseFamilyList .col1{
+#FilewiseFamilyList .col1, #Family .col1{
 	text-align: left !important;
 }
 #Family .col1, #Family .col3, #Family .col4 {
