@@ -475,9 +475,22 @@ class Beneficiary extends Component{
 
   getData(startRange, limitRange, center_ID, district, block, village){
     var data = {
-      limitRange : limitRange,
       startRange : startRange,
+      limitRange : limitRange,
     }
+    var propsdata = {
+      startRange : startRange,
+      limitRange : limitRange,
+      center_ID  : center_ID,
+      district   : district,
+      block      : block,
+      village    : village,
+    }
+    this.setState({
+      propsdata : propsdata
+    },()=>{
+    console.log("propsdata",this.state.propsdata)
+    })
     if(center_ID && district && block && village){
       axios.get('/api/beneficiaries/get/beneficiary/list/'+center_ID+'/'+district+'/'+block+'/'+village)
       .then((response)=>{
@@ -637,8 +650,8 @@ class Beneficiary extends Component{
     });
   }
   handleYear(date){
-      // console.log(' date.year()', date);
-      console.log(' date.year()',moment(date).format('YYYY'));
+    // console.log(' date.year()', date);
+    console.log(' date.year()',moment(date).format('YYYY'));
     this.setState({
       birthYearOfbeneficiary    : moment(date).format('YYYY'),
       date    : date,
@@ -999,6 +1012,7 @@ class Beneficiary extends Component{
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}
                           tableData={this.state.tableData}
+                          data={this.state.propsdata}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
                           getSearchText={this.getSearchText.bind(this)}
@@ -1014,6 +1028,7 @@ class Beneficiary extends Component{
                           fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Beneficiaries.xlsx"
                           fileDetailUrl={this.state.fileDetailUrl}
                           getData={this.getData.bind(this)}
+                          propsdata={this.state.propsdata}
                           getFileDetails={this.getFileDetails}
                           fileDetails={this.state.fileDetails}
                           goodRecordsHeading ={this.state.goodRecordsHeading}
