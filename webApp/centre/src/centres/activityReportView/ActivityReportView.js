@@ -60,13 +60,14 @@ class ActivityReportView extends Component{
       // $('#editPen').hide();
       // $('#statusDiv').hide();
       // $('#btnDiv').hide();
+      
 
 
       $('#sidebar').toggleClass('active');
       $('#headerid').toggleClass('headereffect');
       $('#dashbordid').toggleClass('dashboardeffect')
       $('#sidebar').hide();
-      $('#widgets').hide();
+      // $('#widgets').hide();
       $('#printButton').hide();
       // $('.button2').hide();
       $('.main-footer').hide();
@@ -79,7 +80,7 @@ class ActivityReportView extends Component{
       $('#headerid').toggleClass('headereffect');
       $('#dashbordid').toggleClass('dashboardeffect')
       $('#sidebar').show();
-      $('#widgets').show();
+      // $('#widgets').show();
       $('#printButton').show();
       // $('.button2').show();
       // $('#editPen').show();
@@ -102,9 +103,9 @@ class ActivityReportView extends Component{
                       <div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 pageSubHeader">
                         Activity Report View
                       </div>
-                      {/*<div className="col-lg-1 col-lg-offset-5 col-md-1 col-md-offset-5">
+                      {<div className="col-lg-1 col-lg-offset-5 col-md-1 col-md-offset-5">
                           <i id="printButton" onClick={this.download.bind(this)} className="fa fa-download tableDwldicons"></i>
-                      </div>*/}
+                      </div>}
                       </div>
                       <hr className="hr-head"/>
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -114,114 +115,114 @@ class ActivityReportView extends Component{
                               <h5>Activity Details</h5>
                             </div>
                             <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt"> 
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt"> 
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Date</b></p>
+                                  <div><b>Date</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity  ? moment(this.state.activity.createdAt).format('DD-MM-YYYY') : "-"}</p>
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Sector</b></p>
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.sectorName ? this.state.activity.sectorName : "-"}</p>
+                                   <div>{this.state.activity  ? moment(this.state.activity.createdAt).format('DD-MM-YYYY') : "-"}</div>
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Activity</b></p>
+                                  <div><b>Sector</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.activityName ? this.state.activity.activityName : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.sectorName ? this.state.activity.sectorName : "-"}</div>
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Sub-Activity</b></p>
+                                  <div><b>Activity</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.subactivityName ? this.state.activity.subactivityName : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.activityName ? this.state.activity.activityName : "-"}</div>
+                                </div>
+                              </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Sub-Activity</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.subactivityName ? this.state.activity.subactivityName : "-"}</div>
                                 </div>
                               </div>
                             </div>
                             <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Type</b></p>
+                                  <div><b>Type</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.typeofactivity ? this.state.activity.typeofactivity : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.typeofactivity ? this.state.activity.typeofactivity : "-"}</div>
                                 </div>
                               </div>
                               {
                                 this.state.activity.typeofactivity === "Type B Activity" ?
-                                  <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
+                                  <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                      <p><b>No. of Beneficieries</b></p>
+                                      <div><b>No. of Beneficieries</b></div>
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                       <p>{this.state.activity && this.state.activity.noOfBeneficiaries ? this.state.activity.noOfBeneficiaries : 0}</p>
+                                       <div>{this.state.activity && this.state.activity.noOfBeneficiaries ? this.state.activity.noOfBeneficiaries : 0}</div>
                                     </div>
                                   </div>
                                 : null
                               }
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt"> 
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt"> 
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>District</b></p>
+                                  <div><b>District</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.district ? this.state.activity.district : "-"} </p>                  
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt"> 
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Block</b></p>
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.block ? this.state.activity.block : "-"} </p>
+                                   <div>{this.state.activity && this.state.activity.district ? this.state.activity.district : "-"} </div>                  
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt"> 
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt"> 
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Village</b></p>
+                                  <div><b>Block</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.village ? this.state.activity.village : "-"} </p>                  
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Unit</b></p>
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.unit ? this.state.activity.unit : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.block ? this.state.activity.block : "-"} </div>
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt"> 
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Unit Cost</b></p>
+                                  <div><b>Village</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.unitCost ? this.state.activity.unitCost : "-"}</p>
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Quantity</b></p>
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.quantity ? this.state.activity.quantity : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.village ? this.state.activity.village : "-"} </div>                  
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Total Cost</b></p>
+                                  <div><b>Unit</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.totalcost ? this.state.activity.totalcost : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.unit ? this.state.activity.unit : "-"}</div>
+                                </div>
+                              </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Unit Cost</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.unitCost ? this.state.activity.unitCost : "-"}</div>
+                                </div>
+                              </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Quantity</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.quantity ? this.state.activity.quantity : "-"}</div>
+                                </div>
+                              </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Total Cost</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.totalcost ? this.state.activity.totalcost : "-"}</div>
                                 </div>
                               </div>
                             </div>
@@ -231,68 +232,68 @@ class ActivityReportView extends Component{
                               <h5>Sources of Fund</h5>
                             </div>
                             <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails NOpadding outerBlockclss">
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt"> 
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt"> 
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>LHWRF</b></p>
+                                  <div><b>LHWRF</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.LHWRF : "-"}</p>
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>NABARD</b></p>
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.NABARD : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.LHWRF : "-"}</div>
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Bank Loan</b></p>
+                                  <div><b>NABARD</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.bankLoan : "-"}</p>
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Govt. Scheme</b></p>
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.govtscheme : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.NABARD : "-"}</div>
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Direct CC</b></p>
+                                  <div><b>Bank Loan</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.directCC : "-"}</p>
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt"> 
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Indirect CC</b></p>
-                                </div>
-                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.indirectCC : "-"} </p>                  
+                                   <div>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.bankLoan : "-"}</div>
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt"> 
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Other</b></p>
+                                  <div><b>Govt. Scheme</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.other : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.govtscheme : "-"}</div>
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mt">
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <p><b>Total</b></p>
+                                  <div><b>Direct CC</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <p>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.total : "-"}</p>
+                                   <div>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.directCC : "-"}</div>
+                                </div>
+                              </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt"> 
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Indirect CC</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.indirectCC : "-"} </div>                  
+                                </div>
+                              </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt"> 
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Other</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.other : "-"}</div>
+                                </div>
+                              </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Total</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.sourceofFund ? this.state.activity.sourceofFund.total : "-"}</div>
                                 </div>
                               </div>
                             </div>

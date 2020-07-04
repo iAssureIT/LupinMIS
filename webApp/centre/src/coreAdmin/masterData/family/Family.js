@@ -52,7 +52,7 @@ class Family extends Component{
       errors: {},
       "tableObjects"         : {
         apiLink               : '/api/families/',
-        editUrl               : '/family/',      
+        editUrl               : '/family',      
         paginationApply       : false,
         searchApply           : true,
         downloadApply         : true,
@@ -285,7 +285,7 @@ class Family extends Component{
       "dist"                 :this.refs.district.value, 
       "block"                :this.refs.block.value, 
       "village"              :this.refs.village.value, 
-      "FHYearOfBirth"        :this.state.FHYearOfBirth,
+      "FHYearOfBirth"        :(this.state.FHYearOfBirth).year(),
       "FHGender"             :this.refs.FHGender.value,
     };
     axios.post('/api/families',familyValues)
@@ -357,7 +357,7 @@ class Family extends Component{
         "dist"                 :this.refs.district.value, 
         "block"                :this.refs.block.value, 
         "village"              :this.refs.village.value, 
-        "FHYearOfBirth"        :this.state.FHYearOfBirth,
+        "FHYearOfBirth"        :(this.state.FHYearOfBirth).year(),
         "FHGender"             :this.refs.FHGender.value,
       };
       axios.patch('/api/families/update', familyValues)
@@ -520,12 +520,6 @@ class Family extends Component{
     });
   }
   getData(centerID, casteFilter, districtFilter, blockFilter, villageFilter, specialCategoryFilter, landCategoryFilter, incomeCategoryFilter){ 
-    // var data = {
-    //   limitRange : limitRange,
-    //   startRange : startRange,
-    // } 
-    // console.log(centerID);
-    console.log(centerID, casteFilter, districtFilter, blockFilter, villageFilter, specialCategoryFilter, landCategoryFilter, incomeCategoryFilter);
     var data = {
       "center_ID"       : centerID,
       "caste"           : casteFilter,
@@ -836,8 +830,9 @@ class Family extends Component{
   }
 
   handleYear(date){
+    console.log("date",date);
     this.setState({
-      FHYearOfBirth    : date.year(),
+      FHYearOfBirth    : date,
       date             : date,
     },()=>{
     });
@@ -1222,7 +1217,7 @@ class Family extends Component{
                             url="/api/families/bulk_upload_families" 
                             data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
                             uploadedData={this.uploadedData} 
-                            fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
+                            fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Create-Family.xlsx"
                             fileDetailUrl={this.state.fileDetailUrl}
                             getFileDetails={this.getFileDetails}
                             propsdata={this.state.propsdata}

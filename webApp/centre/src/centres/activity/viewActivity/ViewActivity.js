@@ -81,6 +81,7 @@ class ViewActivity extends Component{
         other                      : "Other",
         // total                      : "Total",
         remark                     : "Remark",
+        viewactions                : 'Action',
       },
       "tableObjects"               : {
         deleteMethod               : 'delete',
@@ -298,6 +299,8 @@ class ViewActivity extends Component{
                       tableData={this.state.tableData}
                       getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects}
+                      viewTable = {true}
+                      viewLink = "activityReportView"
                     />
                   </div> 
                 </div>

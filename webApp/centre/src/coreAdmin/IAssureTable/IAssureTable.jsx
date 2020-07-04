@@ -73,6 +73,11 @@ class IAssureTable extends Component {
 	    }
 
 	}
+
+	componentWillUnmount(){
+    	$("script[src='/js/adminSide.js']").remove();
+    	$("link[href='/css/dashboard.css']").remove();
+	}
  
 	componentDidMount() {
 	    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -100,22 +105,18 @@ class IAssureTable extends Component {
       // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
-		// console.log('nextProps',nextProps)
 		if(nextProps){
 	        this.setState({
 	            id	            : nextProps.id,
 	            tableData	    : nextProps.tableData,
 	            tableName	    : nextProps.tableName,
 	            dataCount 		: nextProps.dataCount,
+	            data 	     	: nextProps.data,
 	        },()=>{
 	        	this.paginationFunction();
 	        })
 		}
     }
-	componentWillUnmount(){
-    	$("script[src='/js/adminSide.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
-	}
 	edit(event){
 		event.preventDefault();
 		$("html,body").scrollTop(0);
@@ -124,24 +125,26 @@ class IAssureTable extends Component {
 		
 		this.props.history.push(tableObjects.editUrl+id);
 	}
+
     delete(e){
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 	  	var deleteMethod =  this.props.deleteMethod;
-		let id = e.target.id;
+		// let id = e.target.id;
+		let id = (e.target.id).replace(".", "/");
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
-	    	// this.props.isDeleted()
-	    	console.log("deleteresponse ",response )
 	    	console.log("this.props.data ",this.props.data )
 	    	this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    	// this.props.isDeleted()
+	    	// console.log("deleteresponse ",response )
+	        this.props.history.push(tableObjects.editUrl);
 	        swal({
 	        	text : response.data.message,
 	        	title : response.data.message
 	        });
-	        this.props.history.push(tableObjects.editUrl);
 	    }).catch(function (error) {
 	        console.log('error', error);
 	    });
@@ -742,6 +745,23 @@ class IAssureTable extends Component {
 															}
 														)
 													}
+													{this.state.tableHeading && this.state.tableHeading.viewactions ? 
+														<td className="textAlignCenter">
+															<span className="actionDiv">
+																{this.props.viewTable ? 
+																	<React.Fragment>
+																		<Link to={"/"+ this.props.viewLink +"/"+value._id}>
+															     			<i className="fa fa-eye" title="View"></i>&nbsp; &nbsp;
+															     		</Link>
+															     	</React.Fragment>
+																	: 
+																null}
+															</span>
+														</td>
+														:
+														null
+													}
+
 													{this.state.tableHeading && this.state.tableHeading.actions ? 
 														<td className="textAlignCenter">
 															<span className="actionDiv">

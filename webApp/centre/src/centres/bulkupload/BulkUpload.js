@@ -272,8 +272,6 @@ class BulkUpload extends Component{
                 $('.fullpageloader').hide();
                 $('.filedetailsDiv').show();
                 this.props.getFileDetails(this.state.fileName) 
-                console.log("propsdata",this.props.propsdata)
-                this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
               }
               this.setState({percentage:percentage},()=>{})
               chunkData = [];
@@ -284,6 +282,8 @@ class BulkUpload extends Component{
         }
       }
     }
+    console.log("propsdata",this.props.propsdata)
+    this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
     startProcess(this.props.data);
 
     

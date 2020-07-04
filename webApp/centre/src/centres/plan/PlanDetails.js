@@ -87,7 +87,7 @@ class PlanDetails extends Component{
         paginationApply     : false,
         downloadApply       : true,
         searchApply         : false,
-        editUrl             : '/plan-details/',
+        editUrl             : '/plan-details',
       },   
       "startRange"          : 0,
       "limitRange"          : 10000,
@@ -1685,7 +1685,7 @@ class PlanDetails extends Component{
                                 "year":this.state.year, 
                               }} 
                           uploadedData={this.uploadedData} 
-                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Plan+Submission.xlsx"
+                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Plan-Submission.xlsx"
                           fileDetailUrl={this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl}
                           getFileDetails={this.getFileDetails}
                           fileDetails={this.state.fileDetails}

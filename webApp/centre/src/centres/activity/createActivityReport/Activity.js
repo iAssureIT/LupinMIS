@@ -108,7 +108,7 @@ class Activity extends Component{
         paginationApply            : false,
         downloadApply              : true,
         searchApply                : false,
-        editUrl                    : '/activity/'
+        editUrl                    : '/activity'
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
@@ -2055,7 +2055,7 @@ class Activity extends Component{
                           data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Type B Activity"}} 
                           uploadedData={this.uploadedData} 
                           bulkTableID = "activityTypeB"
-                          fileurl= "https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-B-Activity-Submission.xlsx"
+                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-B-Activity-Submission.xlsx"
                           fileDetailUrl={this.state.fileDetailUrl}
                           getFileDetails={this.getTypeBFileDetails.bind(this)}
                           getData={this.getData.bind(this)}
