@@ -4,6 +4,7 @@ import swal                 from 'sweetalert';
 import axios                from 'axios';
 import _                    from 'underscore';
 import moment               from 'moment';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
 import jQuery               from 'jquery';
@@ -730,23 +731,33 @@ class Activities_in_beneficiary_Report extends Component{
     })
   }
   onBlurEventFrom(){
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        // console.log("startDate",startDate,endDate)
-        if ((Date.parse(endDate) < Date.parse(startDate))) {
-            swal("Start date","From date should be less than To date");
-            this.refs.startDate.value="";
-        }
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    // console.log("startDate",startDate,endDate)
+    if ((Date.parse(endDate) < Date.parse(startDate))) {
+        swal("Start date","From date should be less than To date");
+        this.refs.startDate.value="";
     }
-    onBlurEventTo(){
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        // console.log("startDate",startDate,endDate)
-          if ((Date.parse(startDate) > Date.parse(endDate))) {
-            swal("End date","To date should be greater than From date");
-            this.refs.endDate.value="";
-        }
+  }
+  onBlurEventTo(){
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    // console.log("startDate",startDate,endDate)
+      if ((Date.parse(startDate) > Date.parse(endDate))) {
+        swal("End date","To date should be greater than From date");
+        this.refs.endDate.value="";
     }
+  }
+  
+  printTable(event){
+    var DocumentContainer = document.getElementById('section-to-screen');
+    var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
+    WindowObject.document.write(DocumentContainer.innerHTML);
+    WindowObject.document.close();
+    WindowObject.focus();
+    WindowObject.print();
+    WindowObject.close();
+  }
   render(){
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -951,7 +962,25 @@ class Activities_in_beneficiary_Report extends Component{
                       </div>
                     </div>  
                     <div className="marginTop11">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          { 
+                            this.state.tableData && this.state.tableData.length != 0 ?
+                              <React.Fragment>
+                                <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                                  <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+                                    <ReactHTMLTableToExcel
+                                            id="table-to-xls"                           
+                                            className="download-table-xls-button fa fa-download tableicons pull-right"
+                                            table="FamilyCoverageReport"
+                                            sheet="tablexls"
+                                            filename="FamilyCoverageReport"
+                                            buttonText=""/>
+                                </div>
+                              </React.Fragment>
+                            : null
+                          }   
+                        </div>
                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <div className="table-responsive" id="section-to-screen">
                             <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="Activities_in_beneficiary_Report">

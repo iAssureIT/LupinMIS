@@ -54,6 +54,39 @@ class ActivityReportView extends Component{
        shown: !this.state.shown
       });
   }
+  download(event) {
+      event.preventDefault();
+      $('#headerid').hide();
+      // $('#editPen').hide();
+      // $('#statusDiv').hide();
+      // $('#btnDiv').hide();
+
+
+      $('#sidebar').toggleClass('active');
+      $('#headerid').toggleClass('headereffect');
+      $('#dashbordid').toggleClass('dashboardeffect')
+      $('#sidebar').hide();
+      $('#widgets').hide();
+      $('#printButton').hide();
+      // $('.button2').hide();
+      $('.main-footer').hide();
+      $(".box-header").hide();
+
+      window.print();
+
+      $('#headerid').show();
+      $('#sidebar').toggleClass('active')
+      $('#headerid').toggleClass('headereffect');
+      $('#dashbordid').toggleClass('dashboardeffect')
+      $('#sidebar').show();
+      $('#widgets').show();
+      $('#printButton').show();
+      // $('.button2').show();
+      // $('#editPen').show();
+      // $('#statusDiv').show();
+      $('.main-footer').show();
+      $(".box-header").show();
+  }
 
   render() {
     return (
@@ -65,10 +98,13 @@ class ActivityReportView extends Component{
               <div className="">
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
                   <div className="row">
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                      <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact headingBox">
+                      <div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 pageSubHeader">
                         Activity Report View
                       </div>
+                      {/*<div className="col-lg-1 col-lg-offset-5 col-md-1 col-md-offset-5">
+                          <i id="printButton" onClick={this.download.bind(this)} className="fa fa-download tableDwldicons"></i>
+                      </div>*/}
                       </div>
                       <hr className="hr-head"/>
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">

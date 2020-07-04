@@ -140,11 +140,11 @@ class Family extends Component{
       centerID    : center_ID,
       centerName   : centerName,
     },()=>{
-      console.log(this.state.centerID);
+      // console.log(this.state.centerID);
       this.getAvailableCenter(this.state.center_ID);
       this.getLength(this.state.center_ID);
       this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
-      console.log(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
+      // console.log(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
     }); 
 
     $.validator.addMethod("regxUID", function(value, element, regexpr) {         
@@ -524,8 +524,7 @@ class Family extends Component{
     //   limitRange : limitRange,
     //   startRange : startRange,
     // } 
-
-    console.log(centerID);
+    // console.log(centerID);
     console.log(centerID, casteFilter, districtFilter, blockFilter, villageFilter, specialCategoryFilter, landCategoryFilter, incomeCategoryFilter);
     var data = {
       "center_ID"       : centerID,
@@ -537,7 +536,7 @@ class Family extends Component{
       "landCategory"    : landCategoryFilter,
       "incomeCategory"  : incomeCategoryFilter,
     }
-    console.log("data",data)
+    // console.log("data",data)
     this.setState({
       propsdata : data
     },()=>{
