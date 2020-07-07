@@ -313,6 +313,10 @@ class ActivityReportView extends Component{
                                     <th className="text-center"> Family ID</th> 
                                     <th className="text-center"> Name of Beneficieries </th>
                                     <th className="text-center"> Beneficiery ID </th>
+                                    <th className="text-center"> Relation </th>
+                                    <th className="text-center"> District </th>
+                                    <th className="text-center"> Block </th>
+                                    <th className="text-center"> Village </th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -322,8 +326,12 @@ class ActivityReportView extends Component{
                                           <tr key={index}>
                                             <td className="textAlignCenter">{index+1}</td>
                                             <td>{beneficiery.familyID}</td>
-                                            <td><BenificiaryName beni_ID={beneficiery.beneficiary_ID} /></td>
+                                            <td>{beneficiery.nameofbeneficiary}</td>
                                             <td>{beneficiery.beneficiaryID}</td>
+                                            <td>{beneficiery.relation}</td>
+                                            <td>{beneficiery.dist}</td>
+                                            <td>{beneficiery.block}</td>
+                                            <td>{beneficiery.village}</td>
                                           </tr>
                                         )
                                     })  

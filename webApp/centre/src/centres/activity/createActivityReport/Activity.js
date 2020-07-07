@@ -1831,9 +1831,9 @@ class Activity extends Component{
                           </div> 
 
                           <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <label className="formLable">Unit of Measurement</label>
                             <div className=""  >
-                              <label className="formLable">Unit of Measurement</label>
-                                <div className="form-control inputBox inputBox-main unit">
+                                <div className="form-control inputBox inputBox-main unitDiasbleBox">
                                   {this.state.subActivityDetails ? 
                                       <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
                                     :
@@ -1841,7 +1841,6 @@ class Activity extends Component{
                                   }
                                 </div>
                             </div>
-                            <div className="errorMsg">{this.state.errors.unit}</div>
                           </div>
                           {/*<div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                             <label className="formLable">Activity Type<span className="asterix">*</span></label>
