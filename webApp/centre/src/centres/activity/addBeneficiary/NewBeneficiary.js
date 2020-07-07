@@ -35,7 +35,7 @@ class NewBeneficiary extends Component{
       "tableHeading"        : {
         beneficiaryID       : "Beneficiary ID",
         familyID            : "Family ID",
-        nameofbeneficiaries : "Beneficiary Name",
+        nameofbeneficiary   : "Beneficiary Name",
         relation            : "Relation with Family Head",
         dist                : "District",
         block               : "Block",
@@ -49,7 +49,7 @@ class NewBeneficiary extends Component{
         apiLink             : '/api/activityReport/',
         paginationApply     : false,
         searchApply         : true,
-        editUrl             : '/activity/'
+        editUrl             : '/activity'
       },
      
       // selectedBeneficiaries : [],
@@ -113,7 +113,7 @@ class NewBeneficiary extends Component{
             beneficiaryID             : a.beneficiaryID,
             family_ID                 : a.family_ID,
             familyID                  : a.familyID,
-            nameofbeneficiaries       : a.nameofbeneficiaries,
+            nameofbeneficiary       : a.nameofbeneficiary,
             relation                  : a.relation,
             dist                      : a.dist,
             block                     : a.block,
@@ -207,9 +207,9 @@ class NewBeneficiary extends Component{
     var district = event.target.value;
      // console.log('district=', district);
     this.setState({
-      district: district,
-      block : '-- Select --',
-      village : '-- Select --',
+      district       : district,
+      block          : 'all',
+      village        : 'all',
       listofVillages : []
     },()=>{      
       this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, "all", "all");
@@ -237,7 +237,8 @@ class NewBeneficiary extends Component{
     event.preventDefault();
     var block = event.target.value;
     this.setState({
-      block : block
+      block   : block,
+      village : 'all',
     },()=>{
       this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, "all");
       axios({
@@ -286,10 +287,10 @@ class NewBeneficiary extends Component{
       if(tableData&&tableData.length>0){
         tableData.map((a,i)=>{
           // console.log(a);
-          // console.log(a.nameofbeneficiaries.toUpperCase().includes(searchText.toUpperCase()))
+          // console.log(a.nameofbeneficiary.toUpperCase().includes(searchText.toUpperCase()))
           if(a.familyID.toUpperCase().includes(searchText.toUpperCase())||
             a.beneficiaryID.toUpperCase().includes(searchText.toUpperCase())||
-            a.nameofbeneficiaries.toUpperCase().includes(searchText.toUpperCase())||
+            a.nameofbeneficiary.toUpperCase().includes(searchText.toUpperCase())||
             a.relation.toUpperCase().includes(searchText.toUpperCase())||
             a.dist.toUpperCase().includes(searchText.toUpperCase())||
             a.block.toUpperCase().includes(searchText.toUpperCase())||
@@ -300,7 +301,7 @@ class NewBeneficiary extends Component{
               beneficiaryID             : a.beneficiaryID,
               family_ID                 : a.family_ID,
               familyID                  : a.familyID,
-              nameofbeneficiaries       : a.nameofbeneficiaries,
+              nameofbeneficiary       : a.nameofbeneficiary,
               relation                  : a.relation,
               dist                      : a.dist,
               block                     : a.block,
@@ -377,6 +378,7 @@ class NewBeneficiary extends Component{
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                     <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
                                       <option  selected={true}>-- Select --</option>
+                                      <option value="all">All</option>
                                       {
                                         this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                         this.state.listofDistrict.map((data, index)=>{
@@ -397,6 +399,7 @@ class NewBeneficiary extends Component{
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                                   <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
                                     <option disabled="disabled" selected={true}>-- Select --</option>
+                                    <option value="all">All</option>
                                     {
                                       this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                       this.state.listofBlocks.map((data, index)=>{
@@ -416,6 +419,7 @@ class NewBeneficiary extends Component{
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                                   <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
                                     <option disabled="disabled" selected={true}>-- Select --</option>
+                                    <option value="all">All</option>
                                     {
                                       this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                       this.state.listofVillages.map((data, index)=>{

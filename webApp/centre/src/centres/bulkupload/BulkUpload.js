@@ -282,8 +282,8 @@ class BulkUpload extends Component{
         }
       }
     }
-    console.log("propsdata",this.props.propsdata)
-    this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
+    // console.log("propsdata",this.props.propsdata)
+    // this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
     startProcess(this.props.data);
 
     
@@ -369,18 +369,17 @@ class BulkUpload extends Component{
                     {this.props.fileDetails.failedRecords.length} bad {this.props.fileDetails.failedRecords.length > 1 ? "records were " : "record was " }found.
                     </h5>
                       <div className="text-right">
-                      <br/>
-                       <ReactHTMLTableToExcel
-                        id="test-table-xls-button"
-                        className="download-table-xls-button badDwldButton"
-                        table={"failedtable"+this.props.failedRecordsCount}
-                        filename="tablexls"
-                        sheet="tablexls"
-                        buttonText="Download Bad Records"/>
-                          <br/>
-                        </div>  
-                        <div style={{overflowX: "auto"}}>
-
+                        <br/>
+                        <ReactHTMLTableToExcel
+                          id="test-table-xls-button"
+                          className="download-table-xls-button badDwldButton"
+                          table={"failedtable"+this.props.failedRecordsCount}
+                          filename="tablexls"
+                          sheet="tablexls"
+                          buttonText="Download Bad Records"/>
+                        <br/>
+                      </div>  
+                      <div style={{overflowX: "auto"}}>
                         <IAssureTable 
                           tableHeading={this.props.failedtableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
@@ -388,8 +387,6 @@ class BulkUpload extends Component{
                           tableData={this.props.failedRecordsTable}
                           tableObjects={this.state.tableObjects}
                           />
-
-
                         <table className="table" width="50%" id={"failedtable"+this.props.failedRecordsCount} style={{display:"none"}}>
                           <thead>
                             <tr>
@@ -421,7 +418,7 @@ class BulkUpload extends Component{
                           }
                           </tbody>
                         </table>
-                        </div>
+                      </div>
 
                       </div>
                     <div id={"success"+this.props.goodDataCount} className="tab-pane fade">
@@ -429,7 +426,7 @@ class BulkUpload extends Component{
                       {
                         /*Out of {this.props.fileDetails.totalRecords} {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  {this.props.fileDetails.goodrecords.length} {this.props.fileDetails.goodrecords.length > 1 ? "records are" : "record is" } added successfully. &nbsp;
                       */}
-                      Total {this.props.fileDetails.goodrecords.length} { this.props.fileDetails.totalRecords > 1 ? "records" : "record"} found from this file.
+                      Total {this.props.fileDetails.goodrecords.length} { this.props.fileDetails.goodrecords.length > 1 ? "records" : "record"} found from this file.
                       </h5>
                           <IAssureTable 
                           tableHeading={this.props.goodRecordsHeading}

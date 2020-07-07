@@ -73,6 +73,8 @@ import report17                                   from "../../centres/LupinRepor
 import report18                                   from "../../centres/LupinReports/FamilyCoverageReport/FamilyCoverageReport.js";
 import report19                                   from "../../centres/LupinReports/Activities_in_beneficiary_Report/Activities_in_beneficiary_Report.js";
 
+import centerDetail                               from '../../coreAdmin/masterData/centerDetail/centerDetail.js';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import '../IAssureTable/print.css';
@@ -171,6 +173,10 @@ class Layout extends Component{
                               <Route path="/activity/"                           exact strict component={ Activity } />
                               <Route path="/activity/:id"                        exact strict component={ Activity } />
 
+                              <Route path="/center-details"                      exact strict component={ centerDetail } />
+                              <Route path="/center-details/"                     exact strict component={ centerDetail } />
+                              <Route path="/center-details/:id"                  exact strict component={ centerDetail } />
+                         
                               <Route path="/viewActivity"                        exact strict component={ ViewActivity } />
                               <Route path="/activityReportView/:id"              exact strict component={ ActivityReportView } />
                               <Route path="/centerList"                          exact strict component={ CenterList } />

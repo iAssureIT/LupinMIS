@@ -128,7 +128,7 @@ logout(){
                           <div className=" " > 
                             <p className="pull-right fntC" style={{"cursor":"pointer"}} title="Close">X</p><br/>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-left padd0 ">
-                              <img src="images/person.png" height="50px" className=" marLeft "/>
+                              <img src="/images/person.png" height="50px" className=" marLeft "/>
                             </div>
                             <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12 pull-right  padd0 ">
                              <h5 className="fontB fs12 nomargin ">

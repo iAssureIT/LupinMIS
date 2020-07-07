@@ -18,16 +18,18 @@ export default class Leftsidebar extends Component{
   }
    
   componentDidMount(){
-
-    /* Highlight current li*/
-     $(document).ready(function () {
-
+    $(document).ready(function () {
       $('.activeClass li').on('click', function() {
         $('.activeClass li').removeClass('activeOne');
         $(this).addClass('activeOne');
 
       });
     });
+    const center_ID = localStorage.getItem("center_ID");
+    this.setState({
+      center_ID    : center_ID,
+    },()=>{
+    })
   }    
 
   eventclk1(event){
@@ -48,6 +50,7 @@ export default class Leftsidebar extends Component{
  
   }   
   render(){
+    var center_ID = this.state.center_ID;
     // console.log('nkhjh',  window.screen.height );  
     var sidebarHeight = window.screen.height - 155;
     return(
@@ -356,9 +359,12 @@ export default class Leftsidebar extends Component{
                     Sector List
                   </Link>
                 </li>
-
-
-
+                <li className="sidebarMenuText" >
+                  <Link to={"/center-details/"+center_ID} title="Center Details">
+                    <i className="fa fa-clipboard" /> 
+                    Center Details
+                  </Link>
+                </li> 
 
               </ul>
             </nav>

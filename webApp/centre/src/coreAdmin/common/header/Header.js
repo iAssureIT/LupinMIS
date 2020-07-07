@@ -120,10 +120,9 @@ logout(){
                             <img src="images/person.png" height="50px" className=" marLeft "/>
                           </div>
                           <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12 pull-right  padd0 ">
-                           <h5 className="fontB fs12 nomargin ">
+                            <h5 className="fontB fs12 nomargin ">
                               {this.state.fullName ? this.state.fullName : ""}
-                           {/*   Super Admin*/}
-                           </h5>
+                            </h5>
                             <h6 className="fontB fs12 dropmailtext">{/*superAdmin@gmail.com*/} {this.state.emailId ? this.state.emailId : ""}</h6>
                           </div>
                         </div>
@@ -156,7 +155,3 @@ logout(){
     );
   }
 }
-
-
-/*
-                    */

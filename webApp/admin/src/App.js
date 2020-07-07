@@ -8,9 +8,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './coreAdmin/css/root.css'
 
-// console.log("process.env.REACT_APP_BASE_URL = ",process.env.REACT_APP_BASE_URL);
+// axios.defaults.baseURL  = "http://localhost:3054"
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+console.log("process.env.REACT_APP_BASE_URL = ", axios.defaults.baseURL);
  
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 

@@ -117,14 +117,23 @@ class IAssureTable extends Component {
 	        })
 		}
     }
-	edit(event){
+
+
+	edit(event) {
 		event.preventDefault();
 		$("html,body").scrollTop(0);
-		var tableObjects =  this.props.tableObjects;
+		var tableObjects = this.props.tableObjects;
 		var id = event.target.id;
-		
-		this.props.history.push(tableObjects.editUrl+id);
+		this.props.history.push(tableObjects.editUrl + "/" + id);
 	}
+	// edit(event){
+	// 	event.preventDefault();
+	// 	$("html,body").scrollTop(0);
+	// 	var tableObjects =  this.props.tableObjects;
+	// 	var id = event.target.id;
+		
+	// 	this.props.history.push(tableObjects.editUrl+id);
+	// }
 
     delete(e){
 	  	e.preventDefault();

@@ -215,7 +215,7 @@ class Activity extends Component{
         date                       : "Date",
         beneficiaryID              : "Beneficiary ID",
         familyID                   : "Family ID",
-        nameofbeneficiary          : "Beneficiary Name",
+        nameofbeneficiaries        : "Beneficiary Name",
         relation                   : "Relation",
         place                      : "Place" 
       },
@@ -1549,7 +1549,7 @@ class Activity extends Component{
             "noOfBeneficiaries" : a.noOfBeneficiaries            ? a.noOfBeneficiaries : '-',  
             "beneficiaryID"     : a.listofBeneficiaries.beneficiaryID ? a.listofBeneficiaries.beneficiaryID      : '-',
             "familyID"          : a.listofBeneficiaries.familyID      ? a.listofBeneficiaries.familyID      : '-',
-            "nameofbeneficiary" : a.listofBeneficiaries.nameofbeneficiary ? a.listofBeneficiaries.nameofbeneficiary : '-',
+            "nameofbeneficiaries" : a.listofBeneficiaries.nameofbeneficiaries ? a.listofBeneficiaries.nameofbeneficiaries : '-',
             "relation"          : a.listofBeneficiaries.relation ? a.listofBeneficiaries.relation : '-', 
             "place"             : a.listofBeneficiaries.dist + ", " + a.listofBeneficiaries.block + ", " + a.listofBeneficiaries.village,
           }

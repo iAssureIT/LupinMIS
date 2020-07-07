@@ -26,7 +26,6 @@ class Beneficiary extends Component{
       "districtFilter"                :"all",
       "blockFilter"                   :"all",
       "villageFilter"                 :"all",
-      "relation"                      :"-- Select --",
       "familyID"                      :"",  
       "beneficiaryID"                 :"",
       "uidNumberCheck"                :"",
@@ -36,9 +35,6 @@ class Beneficiary extends Component{
       "middleNameOfBeneficiary"       :"",
       "surnameOfBeneficiary"          :"",
       "nameofbeneficiaries"           :"",
-      "birthYearOfbeneficiary"        :"",
-      "genderOfbeneficiary"           :"",
-      // "genderOfbeneficiary"           :"-- Select --",
       "shown"               : true,
       "fields"              : {},
       "errors"              : {},
@@ -160,11 +156,11 @@ class Beneficiary extends Component{
       "familyID"                  : this.refs.familyID.value.split('|')[0],             
       "surnameOfBeneficiary"      : this.refs.surnameOfBeneficiary.value,
       "firstNameOfBeneficiary"    : this.refs.firstNameOfBeneficiary.value,
-      "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value,     
+      "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value ? this.refs.middleNameOfBeneficiary.value : "-",     
       "uidNumber"                 : this.refs.uidNumber.value,
-      "relation"                  : this.refs.relation.value,
-      "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary,
-      "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
+      "relation"                  : this.refs.relation.value ? this.refs.relation.value : "-",
+      "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary ? this.state.birthYearOfbeneficiary : "-",
+      "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value ? this.refs.genderOfbeneficiary.value : "-",
     };
     // let fields                          = {};
     // fields["familyID"]                  = "";
@@ -225,11 +221,11 @@ class Beneficiary extends Component{
         "familyID"              : this.refs.familyID.value.split('|')[0],           
         "surnameOfBeneficiary"      : this.refs.surnameOfBeneficiary.value,
         "firstNameOfBeneficiary"    : this.refs.firstNameOfBeneficiary.value,
-        "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value,          
+        "middleNameOfBeneficiary"   : this.refs.middleNameOfBeneficiary.value ? this.refs.middleNameOfBeneficiary.value : "-",     
         "uidNumber"                 : this.refs.uidNumber.value,
-        "relation"                  : this.refs.relation.value,
-        "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary,
-        "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
+        "relation"                  : this.refs.relation.value ? this.refs.relation.value : "-",
+        "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary ? this.state.birthYearOfbeneficiary : "-",
+        "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value ? this.refs.genderOfbeneficiary.value : "-",
       };
       // console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
@@ -875,7 +871,7 @@ class Beneficiary extends Component{
                               <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
                                 <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option selected='true' value="-" disabled="disabled" >-- Select --</option>
                                   <option>Self</option>
                                   <option>Wife</option>
                                   <option>Husband</option>
@@ -896,7 +892,7 @@ class Beneficiary extends Component{
                               <label className="formLable">Gender</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="genderOfbeneficiaryErr" >
                                 <select className="custom-select form-control inputBox" ref="genderOfbeneficiary" name="genderOfbeneficiary" value={this.state.genderOfbeneficiary} onChange={this.handleChange.bind(this)}  >
-                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option selected='true' value="-" disabled="disabled" >-- Select --</option>
                                   <option>Female</option>
                                   <option>Male</option>
                                   <option>Transgender</option>
