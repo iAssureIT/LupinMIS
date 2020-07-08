@@ -785,7 +785,7 @@ class PlanDetails extends Component{
         this.setState({
           propsdata : data
         });
-        console.log("data",data);
+        // console.log("data",data);
         $(".fullpageloader").show();
         axios.post(this.state.apiCall+'/list', data)
         .then((response)=>{
