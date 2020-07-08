@@ -125,6 +125,8 @@ class PlanDetails extends Component{
         remark              : "Remark"
     },
     "failedtableHeading" :{
+      programCategory     : "Category",
+      projectName         : "Project Name",
       sectorName          : "Sector",
       activityName        : "Activity",
       subactivityName     : "Sub-Activity",
@@ -1152,7 +1154,7 @@ class PlanDetails extends Component{
             "month"                : a.month        ? a.month    : '-',
             "year"                 : a.year        ? a.year    : '-',
             "projectCategoryType"  : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            "projectName"          : a.projectName        ? a.projectName    : '-',
+            "projectName"          : a.projectName=="all"  ? '-' : a.projectName,
             "sectorName"           : a.sectorName        ? a.sectorName    : '-',
             "activityName"         : a.activityName        ? a.activityName    : '-',
             "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
@@ -1176,8 +1178,8 @@ class PlanDetails extends Component{
           return{
             // "month"                : a.month        ? a.month    : '-',
             // "year"                 : a.year        ? a.year    : '-',
-            // "projectCategoryType"  : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            // "projectName"          : a.projectName        ? a.projectName    : '-',
+            "programCategory"      : a.programCategory        ? a.programCategory    : '-',
+            "projectName"          : a.projectName=="all"  ? '-' : a.projectName,
             "sectorName"           : a.sectorName        ? a.sectorName    : '-',
             "activityName"         : a.activityName        ? a.activityName    : '-',
             "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
