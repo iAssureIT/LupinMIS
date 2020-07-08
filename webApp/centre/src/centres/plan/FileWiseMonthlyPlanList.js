@@ -11,7 +11,7 @@ class FileWiseMonthlyPlanList extends Component{
     this.state = {
        tableHeading:{
             "fileName"     : "File Name",
-            "count" 	     : "Monthly Plans Count",
+            "count" 	     : "Quaterly Plans Count",
             "actions"      : "Action"
           },
           "tableObjects"              : {

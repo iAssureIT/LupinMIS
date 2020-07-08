@@ -162,7 +162,7 @@ class PlanDetails extends Component{
     this.setState({
       [event.target.name]: value,
     },()=>{
-      // console.log("name",name);
+      console.log("name",name);
       if (name === "physicalUnit" || name === "unitCost") {
         this.calculateTotalBudget(index); 
       }
@@ -181,9 +181,11 @@ class PlanDetails extends Component{
     });  
   }
   calculateTotalBudget(index){
+    console.log("index",index);
+    console.log(this.state["physicalUnit-"+index] , this.state["unitCost-"+index])
     if (this.state["physicalUnit-"+index] && this.state["unitCost-"+index]) {
       const total =  parseFloat(this.state["physicalUnit-"+index]) * parseFloat(this.state["unitCost-"+index]);
-      // console.log("total",total);
+      console.log("total",total);
       this.state.availableSubActivity[parseFloat(index)].totalBudget = (total).toFixed(2);
       this.state.availableSubActivity[parseFloat(index)].LHWRF = (total).toFixed(2);
       this.state.availableSubActivity[parseFloat(index)].NABARD = 0;
@@ -509,7 +511,7 @@ class PlanDetails extends Component{
             "year"                : this.state.year,           
             "center_ID"           : this.state.center_ID,
             "center"              : this.state.centerName,
-            "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName.split('|')[0],
+            "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
             "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
             "projectCategoryType" : this.state.projectCategoryType,
             "sector_ID"           : this.state.sectorName.split('|')[1],

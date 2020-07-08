@@ -1365,7 +1365,6 @@ class Activity extends Component{
     }  
   }
   handleToggleP(event){
-    // event.preventDefault();
     this.getAvailableSectors()
     this.setState({
       [event.target.name] : event.target.value,
@@ -1963,7 +1962,7 @@ class Activity extends Component{
                             <div className="" id="total" >
                               <label className="formLable">Total :</label>                            
                                
-                                  <div className="form-control inputBox inputBox-main unit">
+                                  <div className="form-control inputBox inputBox-main unitDiasbleBox">
                                     {this.state.total ? 
                                         <label className="formLable" id="total">{(parseFloat(this.state.total)).toFixed(2)}</label>
                                       :
