@@ -1,7 +1,8 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+
+import IAssureTable         from "../IAssureTable/IAssureTable.js";
 import "./Beneficiary.css";
 
 class FilewiseBeneficiaryList extends Component{
@@ -27,6 +28,7 @@ class FilewiseBeneficiaryList extends Component{
   }
   componentDidMount(){
     this.getCount();
+    this.getData(this.state.startRange, this.state.limitRange);
   }
   getData(startRange, limitRange){
       var data = {
@@ -36,7 +38,7 @@ class FilewiseBeneficiaryList extends Component{
       }
       axios.post('/api/beneficiaries/get/files', data)
       .then((response)=>{
-        console.log(response.data);
+        // console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             fileName: a.fileName != null ? a.fileName : "-", 
@@ -56,7 +58,7 @@ class FilewiseBeneficiaryList extends Component{
     getCount(){
       axios.get('/api/beneficiaries/get/files/count/'+localStorage.getItem('center_ID'))
       .then((response)=>{
-        console.log(response.data)
+        // console.log(response.data)
         this.setState({
           dataCount : response.data
         })

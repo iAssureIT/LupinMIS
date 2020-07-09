@@ -221,7 +221,7 @@ class BulkUpload extends Component{
   bulkUpload() {
     $('.fullpageloader').show();
     var initialLmt = 0;
-    var factor = 100;
+    var factor = 200;
     var endLmt = initialLmt+factor;
     var totalrows = this.state.inputFileData.length;
     var chunkData = [];
@@ -244,7 +244,7 @@ class BulkUpload extends Component{
             totalRecords : totalrows,
             updateBadData : i > factor ? false : true
           };
-          // console.log('formValue',formValues)
+          console.log('formValue',formValues)
           // var formValues ={
           // "finaldata"     : chunkData,
           // "invalidData"   : invalidData,

@@ -84,7 +84,7 @@ class IAssureTable extends Component {
 	    $("html,body").scrollTop(0); 
 	    const center_ID = localStorage.getItem("center_ID");
 	    const centerName = localStorage.getItem("centerName");
-	    // console.log("localStorage =",localStorage.getItem('centerName'));
+	    console.log("localStorage =",localStorage.getItem('centerName'));
 	    // console.log("localStorage =",localStorage);
 	    this.setState({
 	      center_ID    : center_ID,
@@ -139,17 +139,16 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 	  	var deleteMethod =  this.props.deleteMethod;
-		// let id = e.target.id;
-		let id = (e.target.id).replace(".", "/");
-	    	// console.log("tableObjects.apiLink+id ",tableObjects.apiLink+id )
+		let id = e.target.id;
+		// let id = (e.target.id).replace(".", "/");
+    	console.log("tableObjects.apiLink+id ",tableObjects.apiLink+id )
 	    	// console.log("id ",id )
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
-	    	// console.log("response ",response )
-	    	// console.log("this.props.data ",this.props.data )
-	    	this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    	console.log("response ",response )
+	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    	// this.props.isDeleted()
 	    	// console.log("deleteresponse ",response )
 	        this.props.history.push(tableObjects.editUrl);
