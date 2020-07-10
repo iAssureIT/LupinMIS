@@ -79,7 +79,7 @@ class Activity extends Component{
                           ]
       },
       "tableHeading"      : {
-        projectCategoryType        : "Category",
+        projectCategoryType        : "Program Type",
         projectName                : "Project Name",
         date                       : "Intervention Date",
         place                      : "Intervention Place",
@@ -121,7 +121,7 @@ class Activity extends Component{
       beneficiaryGoodRecordsTable  : [],
       beneficiaryFailedRecordsTable : [],
       goodRecordsHeading           :{
-        projectCategoryType        : "Category",
+        projectCategoryType        : "Program Type",
         projectName                : "Project Name",
         date                       : "Date",
         place                      : "Place",
@@ -143,7 +143,7 @@ class Activity extends Component{
         remark                     : "Remark",
       },
       failedtableHeading           :{
-        projectCategoryType        : "Category",
+        projectCategoryType        : "Program Type",
         projectName                : "Project Name",
         date                       : "Date",
         place                      : "Place",
@@ -165,7 +165,7 @@ class Activity extends Component{
         failedRemark               : "Failed Data Remark",
       },
       bTypeActivitygoodRecordsHeading           :{
-        projectCategoryType        : "Category",
+        projectCategoryType        : "Program Type",
         projectName                : "Project Name",
         date                       : "Date",
         place                      : "Place",
@@ -187,7 +187,7 @@ class Activity extends Component{
         remark                     : "Remark",
       },
       bTypeActivityfailedtableHeading           :{
-        projectCategoryType        : "Category",
+        projectCategoryType        : "Program Type",
         projectName                : "Project Name",
         date                       : "Date",
         place                      : "Place",
@@ -1648,7 +1648,7 @@ class Activity extends Component{
 
                       <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
                         <div className="" id="projectCategoryType" >
-                          <label className=" formLable">Category Type<span className="asterix">*</span></label>
+                          <label className=" formLable">Program Type<span className="asterix">*</span></label>
                           {this.state.type===true ?
 
                            <div className=" switch" onClick={this.handleToggle.bind(this)} >

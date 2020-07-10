@@ -60,7 +60,7 @@ class PlanDetails extends Component{
       "tableHeading"        : {
         month               : "Month",
         year                : "Year",
-        projectCategoryType : "Category",
+        projectCategoryType : "Program Type",
         projectName         : "Project Name",
         sectorName          : "Sector",
         activityName        : "Activity",
@@ -104,7 +104,7 @@ class PlanDetails extends Component{
       "goodRecordsHeading" :{
         month               : "Month",
         year                : "Year",
-        projectCategoryType : "Category",
+        projectCategoryType : "Program Type",
         projectName         : "Project Name",
         sectorName          : "Sector",
         activityName        : "Activity",
@@ -125,7 +125,7 @@ class PlanDetails extends Component{
         remark              : "Remark"
     },
     "failedtableHeading" :{
-      programCategory     : "Category",
+      programCategory     : "Program Type",
       projectName         : "Project Name",
       sectorName          : "Sector",
       activityName        : "Activity",
@@ -1411,7 +1411,7 @@ class PlanDetails extends Component{
                           <div className=" col-lg-12 col-sm-12 col-xs-12 NOpadding ">         
                             <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
                               <div className="" id="projectCategoryType" >
-                                <label className=" formLable">Category Type<span className="asterix">*</span></label>
+                                <label className=" formLable">Program Type<span className="asterix">*</span></label>
                                 {this.state.type===true ?
 
                                  <div className=" switch" onClick={this.handleToggleP.bind(this)} >

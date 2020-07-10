@@ -125,6 +125,22 @@ class ActivityReportView extends Component{
                               </div>
                               <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Program Type</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.projectCategoryType ? this.state.activity.projectCategoryType : "-"}</div>
+                                </div>
+                              </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Project Name</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.projectName==="all" ? "-" : this.state.activity.projectName}</div>
+                                </div>
+                              </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
                                   <div><b>Sector</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
@@ -147,8 +163,6 @@ class ActivityReportView extends Component{
                                    <div>{this.state.activity && this.state.activity.subactivityName ? this.state.activity.subactivityName : "-"}</div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
                               <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
                                   <div><b>Type</b></div>
@@ -157,6 +171,16 @@ class ActivityReportView extends Component{
                                    <div>{this.state.activity && this.state.activity.typeofactivity ? this.state.activity.typeofactivity : "-"}</div>
                                 </div>
                               </div>
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                  <div><b>Unit</b></div>
+                                </div>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                                   <div>{this.state.activity && this.state.activity.unit ? this.state.activity.unit : "-"}</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
                               {
                                 this.state.activity.typeofactivity === "Type B Activity" ?
                                   <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
@@ -193,12 +217,12 @@ class ActivityReportView extends Component{
                                    <div>{this.state.activity && this.state.activity.village ? this.state.activity.village : "-"} </div>                  
                                 </div>
                               </div>
-                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
+                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt"> 
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                  <div><b>Unit</b></div>
+                                  <div><b>Location</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <div>{this.state.activity && this.state.activity.unit ? this.state.activity.unit : "-"}</div>
+                                   <div>{this.state.activity && this.state.activity.location ? this.state.activity.location : "-"} </div>                  
                                 </div>
                               </div>
                               <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">

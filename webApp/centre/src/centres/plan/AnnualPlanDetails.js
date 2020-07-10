@@ -60,7 +60,7 @@ class PlanDetails extends Component{
       "tableHeading"        : {
         month               : "Month",
         year                : "Year",
-        projectCategoryType : "Category",
+        projectCategoryType : "Program Type",
         projectName         : "Project Name",
         sectorName          : "Sector",
         activityName        : "Activity",

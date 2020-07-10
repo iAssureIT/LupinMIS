@@ -60,7 +60,7 @@ class ViewActivity extends Component{
                             ]
       },
       "tableHeading"      : {
-        projectCategoryType        : "Category",
+        projectCategoryType        : "Program Type",
         projectName                : "Project Name",
         date                       : "Intervention Date",
         place                      : "Intervention Place",
