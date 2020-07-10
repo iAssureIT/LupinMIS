@@ -221,12 +221,11 @@ class BulkUpload extends Component{
   bulkUpload() {
     $('.fullpageloader').show();
     var initialLmt = 0;
-    var factor = 200;
+    var factor = 100;
     var endLmt = initialLmt+factor;
     var totalrows = this.state.inputFileData.length;
     var chunkData = [];
     var excelChunkData = [];
-
     
     const startProcess = async (data)=>{
       for (var i = initialLmt; i < endLmt; i++) {
