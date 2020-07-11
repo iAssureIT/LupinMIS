@@ -36,9 +36,7 @@ class BulkUpload extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      if(this.props.propsdata){
-        this.props.getData(this.props.propsdata);
-      } 
+      this.props.getData(this.props.propsdata ? this.props.propsdata : (this.state.startRange, this.state.limitRange, this.state.center_ID));
     });
   }
           
@@ -243,7 +241,7 @@ class BulkUpload extends Component{
             totalRecords : totalrows,
             updateBadData : i > factor ? false : true
           };
-          console.log('formValue',formValues)
+          // console.log('formValue',formValues)
           // var formValues ={
           // "finaldata"     : chunkData,
           // "invalidData"   : invalidData,
@@ -271,9 +269,7 @@ class BulkUpload extends Component{
                 $('.fullpageloader').hide();
                 $('.filedetailsDiv').show();
                 this.props.getFileDetails(this.state.fileName) 
-                if(this.props.propsdata){
-                  this.props.getData(this.props.propsdata);
-                } 
+                this.props.getData(this.props.propsdata ? this.props.propsdata : (this.state.startRange, this.state.limitRange, this.state.center_ID));
               }
               this.setState({percentage:percentage},()=>{})
               chunkData = [];

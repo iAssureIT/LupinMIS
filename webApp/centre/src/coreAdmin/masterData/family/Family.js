@@ -716,7 +716,7 @@ class Family extends Component{
             listofBlocks     : availableblockInCenter,
             block : '-- Select --',
           },()=>{
-            console.log("this.state.listofBlocks",this.state.listofBlocks);
+            // console.log("this.state.listofBlocks",this.state.listofBlocks);
           })
         }).catch(function (error) {
           console.log("error = ",error);
@@ -882,7 +882,7 @@ class Family extends Component{
     }
   }
   handleYear(date){
-    console.log("date",date);
+    // console.log("date",date);
     this.setState({
       FHYearOfBirth    : date,
       date             : date,

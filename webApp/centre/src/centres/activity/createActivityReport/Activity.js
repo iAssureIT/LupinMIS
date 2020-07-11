@@ -416,7 +416,7 @@ class Activity extends Component{
     this.setState({
       selectedBeneficiaries : selectedBeneficiaries
     },()=>{
-      console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
+      // console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
     })
   }
 
@@ -465,7 +465,7 @@ class Activity extends Component{
         "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
       };
       
-      console.log("activityValues", activityValues);
+      // console.log("activityValues", activityValues);
       if (parseFloat(this.state.total) === parseFloat(this.state.totalcost)) {
 
         axios.post('/api/activityReport',activityValues)
@@ -747,7 +747,6 @@ class Activity extends Component{
       });
   }
   getAvailableBlocks(center_ID, districtB){
-    // console.log("center_ID = ",center_ID,"district",districtB);
     axios({
       method: 'get',
       url: '/api/centers/'+center_ID,
@@ -777,7 +776,6 @@ class Activity extends Component{
         url: '/api/activityReport/'+id,
       }).then((response)=> {
         console.log("editData",response);
-
         var editData = response.data[0];
         if(editData){
           var bentableData = []

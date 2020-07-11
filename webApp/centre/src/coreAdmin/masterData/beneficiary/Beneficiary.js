@@ -366,7 +366,7 @@ class Beneficiary extends Component{
           "date"                     : editData.birthYearOfbeneficiary,          
           "genderOfbeneficiary"      : editData.genderOfbeneficiary,          
         },()=>{
-          console.log('edit===',this.state.birthYearOfbeneficiary);
+          // console.log('edit===',this.state.birthYearOfbeneficiary);
         });      
       }
       let fields = this.state.fields;
@@ -455,7 +455,7 @@ class Beneficiary extends Component{
     this.setState({
       propsdata : inputGetData
     },()=>{
-    console.log("propsdata",this.state.propsdata)
+    // console.log("propsdata",this.state.propsdata)
     })
     if(inputGetData){
       axios.post('/api/beneficiaries/get/beneficiary/list', inputGetData)
@@ -513,9 +513,7 @@ class Beneficiary extends Component{
             failedRecordsCount : response.data.failedRecords.length,
             goodDataCount : response.data.goodrecords.length
         });
-
-          var tableData = response.data.goodrecords.map((a, i)=>{
-           
+        var tableData = response.data.goodrecords.map((a, i)=>{
           return{
               "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
               "familyID"       : a.familyID        ? a.familyID    : '-',
@@ -524,7 +522,6 @@ class Beneficiary extends Component{
               "relation"       : a.relation     ? a.relation : '-',
           }
         })
-
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
         return{
             "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
@@ -533,7 +530,6 @@ class Beneficiary extends Component{
             "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
             "relation"       : a.relation     ? a.relation : '-',
             "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
-            
         }
         })
         this.setState({
@@ -616,8 +612,6 @@ class Beneficiary extends Component{
     });
   }
   handleYear(date){
-    // console.log(' date.year()', date);
-    console.log(' date.year()',moment(date).format('YYYY'));
     this.setState({
       birthYearOfbeneficiary    : moment(date).format('YYYY'),
       date    : date,

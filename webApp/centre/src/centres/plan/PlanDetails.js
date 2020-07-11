@@ -183,11 +183,11 @@ class PlanDetails extends Component{
     });  
   }
   calculateTotalBudget(index){
-    console.log("index",index);
-    console.log(this.state["physicalUnit-"+index] , this.state["unitCost-"+index])
+    // console.log("index",index);
+    // console.log(this.state["physicalUnit-"+index] , this.state["unitCost-"+index])
     if (this.state["physicalUnit-"+index] && this.state["unitCost-"+index]) {
       const total =  parseFloat(this.state["physicalUnit-"+index]) * parseFloat(this.state["unitCost-"+index]);
-      console.log("total",total);
+      // console.log("total",total);
       this.state.availableSubActivity[parseFloat(index)].totalBudget = (total).toFixed(2);
       this.state.availableSubActivity[parseFloat(index)].LHWRF = (total).toFixed(2);
       this.state.availableSubActivity[parseFloat(index)].NABARD = 0;
@@ -248,7 +248,7 @@ class PlanDetails extends Component{
             this.setState({
               [currentState+"-"+index] : 0 
             },()=>{
-              console.log("this.state.",this.state)
+              // console.log("this.state.",this.state)
             });
           }
         }
@@ -287,13 +287,6 @@ class PlanDetails extends Component{
       }
       this.addsubActivityDetails(id,name,value,this.state.totalBud);
     });
-    // if (this.validateForm()) {
-    //   let errors = {};
-    //   errors[event.target.name] = "";
-    //   this.setState({
-    //     errors: errors
-    //   });
-    // }
   }
   addsubActivityDetails(id,name,value,totalBud){
     var subActivityDetails = this.state.subActivityDetails;
@@ -326,7 +319,16 @@ class PlanDetails extends Component{
     })
   }
   uploadedData(data){
-    this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+    var inputGetData = {
+      center_ID  : this.state.center_ID,
+      month      : this.state.month,
+      year       : this.state.year,
+      startRange : this.state.startRange,
+      limitRange : this.state.limitRange,
+      startDate  : this.state.startDate,
+      endDate    : this.state.endDate,
+    }
+    this.getData(inputGetData);
   }
   SubmitAnnualPlan(event){
     event.preventDefault();
@@ -412,7 +414,17 @@ class PlanDetails extends Component{
                   // .catch(function (error) {
                   //     console.log(error);
                   // })
-                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+
+                  var inputGetData = {
+                    center_ID  : this.state.center_ID,
+                    month      : this.state.month,
+                    year       : this.state.year,
+                    startRange : this.state.startRange,
+                    limitRange : this.state.limitRange,
+                    startDate  : this.state.startDate,
+                    endDate    : this.state.endDate,
+                  }
+                  this.getData(inputGetData);
                 }else{
                   var email = localStorage.getItem('email')
                   var msgvariable = {
@@ -435,7 +447,6 @@ class PlanDetails extends Component{
                   // .catch(function (error) {
                   //     console.log(error);
                   // })
-                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
                 }
                 this.year();
                 this.setState({
@@ -457,13 +468,21 @@ class PlanDetails extends Component{
                   "shown"               : true,
                   "apiCall"             : '/api/monthlyplans'
                 },()=>{
-                  this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+                  var inputGetData = {
+                    center_ID  : this.state.center_ID,
+                    month      : this.state.month,
+                    year       : this.state.year,
+                    startRange : this.state.startRange,
+                    limitRange : this.state.limitRange,
+                    startDate  : this.state.startDate,
+                    endDate    : this.state.endDate,
+                  }
+                  this.getData(inputGetData);
                 });
               })
               .catch(function(error){
                 console.log("error"+error);
             });
-           
             Object.entries(planValues).map( 
               ([key, value], i)=> {
                 this.setState({
@@ -545,36 +564,45 @@ class PlanDetails extends Component{
               title : response.data.message,
               text  : response.data.message
             });
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
-          })
-          .catch(function(error){
-              console.log("error"+error);
-          }); 
-          this.year();
-          this.setState({
-            "subActivityDetails"  :[],
-            "availableActivity"   :[],
-            "month"               : "Q1 (April to June)",
-            "projectName"         : "-- Select --",
-            "projectCategoryType" : "LHWRF Grant",
-            "type"                : true,
-            "sector_id"           : "",
-            "sectorName"          : "-- Select --",
-            "activityName"        : "-- Select --",
-            "editId"              :"",
-            "availableSubActivity":[],
-            "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
-            "shown"               : true,
-            "apiCall"             : '/api/monthlyplans'
-          },()=>{
-            this.props.history.push('/plan-details');
-          });
+            this.year();
+            this.setState({
+              "subActivityDetails"  :[],
+              "availableActivity"   :[],
+              "month"               : "Q1 (April to June)",
+              "projectName"         : "-- Select --",
+              "projectCategoryType" : "LHWRF Grant",
+              "type"                : true,
+              "sector_id"           : "",
+              "sectorName"          : "-- Select --",
+              "activityName"        : "-- Select --",
+              "editId"              :"",
+              "availableSubActivity":[],
+              "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
+              "shown"               : true,
+              "apiCall"             : '/api/monthlyplans'
+            },()=>{
+              this.props.history.push('/plan-details');
+              var inputGetData = {
+                center_ID  : this.state.center_ID,
+                month      : this.state.month,
+                year       : this.state.year,
+                startRange : this.state.startRange,
+                limitRange : this.state.limitRange,
+                startDate  : this.state.startDate,
+                endDate    : this.state.endDate,
+              }
+              this.getData(inputGetData);
+            });
+            })
+            .catch(function(error){
+                console.log("error"+error);
+            }); 
         }
       }else{
-         swal({
-            title : "abc",
-            text  : "No. of families of "+subactivityname+" is zero. It must not be zero."
-          });
+        swal({
+          title : "abc",
+          text  : "No. of families of "+subactivityname+" is zero. It must not be zero."
+        });
       }
     }
   }
@@ -647,11 +675,8 @@ class PlanDetails extends Component{
     var firstYear= this.state.financeYear.split('-')[0]
     var secondYear= this.state.financeYear.split('-')[1]
     var financialYear = "FY "+firstYear+" - "+secondYear;
-    // console.log('financialYear',financialYear);
     var years= this.state.years
-    // console.log('yearspropsselectMonth',this.state.years);
-    // console.log('years',years);
-    console.log('event.target.value',event.target.value);
+    // console.log('event.target.value',event.target.value);
     var d = new Date();
     var currentYear  = d.getFullYear()
     var tableObjects = this.state.tableObjects;
@@ -668,9 +693,17 @@ class PlanDetails extends Component{
       "activityName"        : "-- Select --",
       "availableSubActivity": [],
       tableObjects,
-      // fields
     },()=>{
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+      var inputGetData = {
+        center_ID  : this.state.center_ID,
+        month      : this.state.month,
+        year       : this.state.year,
+        startRange : this.state.startRange,
+        limitRange : this.state.limitRange,
+        startDate  : this.state.startDate,
+        endDate    : this.state.endDate,
+      }
+      this.getData(inputGetData);
       if(this.state.year){
         // console.log('month ======', this.state.month, this.state.year)
         var month = this.state.month;
@@ -681,7 +714,6 @@ class PlanDetails extends Component{
             "endDate"   : year.substring(10, 15)+"-03-31",
           },()=>{
             // console.log('this.state.',this.state.startDate,this.state.endDate);
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
           })
         }else if(month==="Q1 (April to June)"){
           this.setState({
@@ -689,7 +721,6 @@ class PlanDetails extends Component{
             "endDate"   : year.substring(3, 7)+"-06-30",    
           },()=>{
             // console.log('this.state.',this.state.startDate,this.state.endDate);
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
           })
         }else if(month==="Q2 (July to September)"){
           this.setState({
@@ -697,7 +728,6 @@ class PlanDetails extends Component{
             "endDate"   : year.substring(3, 7)+"-09-30",    
           },()=>{
             // console.log('this.state.',this.state.startDate,this.state.endDate);
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
           })
         }else if(month==="Q3 (October to December)"){
           this.setState({
@@ -705,7 +735,6 @@ class PlanDetails extends Component{
             "endDate"   : year.substring(3, 7)+"-12-31",
           },()=>{
             // console.log('this.state.',this.state.startDate,this.state.endDate);
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
           })
         }else if(month==="Q4 (January to March)"){
           this.setState({
@@ -713,9 +742,18 @@ class PlanDetails extends Component{
             "endDate"   : year.substring(10, 15)+"-03-31",
           },()=>{
             // console.log('this.state.',this.state.startDate,this.state.endDate);
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
           })
         }
+        var inputGetData = {
+          center_ID  : this.state.center_ID,
+          month      : this.state.month,
+          year       : this.state.year,
+          startRange : this.state.startRange,
+          limitRange : this.state.limitRange,
+          startDate  : this.state.startDate,
+          endDate    : this.state.endDate,
+        }
+        this.getData(inputGetData);
       }
     });
   }
@@ -746,87 +784,50 @@ class PlanDetails extends Component{
       }
     }
   }
-  getData(center_ID, month, year, startRange, limitRange,startDate,endDate ){
-    var center_ID =center_ID;
-    var month =month;
-    var year =year;
-    var startRange =startRange;
-    var limitRange =limitRange;
-    var startDate =startDate;
-    var endDate   =endDate;
-    let financeYear;
-    let today = moment();
-    if(today.month() >= 3){
-      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
-    else{
-      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
+  getData(inputGetData){
     this.setState({
-        financeYear :financeYear
-    },()=>{
-      var firstYear= this.state.financeYear.split('-')[0]
-      var secondYear= this.state.financeYear.split('-')[1]
-      var financialYear = "FY "+firstYear+" - "+secondYear;
-      this.setState({
-        financialYear            :financialYear
-      },()=>{
-        // console.log('this.state.financialYear========',this.state.financialYear);
-        var financialYear = this.state.financialYear;
-        var data = {
-            center_ID  : center_ID,
-            month      : month,
-            year       : year,
-            startRange : startRange,
-            limitRange : limitRange,
-            startDate  : startDate,
-            endDate    : endDate,
-        }
-        this.setState({
-          propsdata : data
-        });
-        // console.log("data",data);
-        $(".fullpageloader").show();
-        axios.post(this.state.apiCall+'/list', data)
-        .then((response)=>{
-          $(".fullpageloader").hide();
-          console.log("response plan Details===>",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-              _id                 : a._id,
-              month               : a.month,
-              year                : a.year,
-              projectCategoryType : a.projectCategoryType,
-              projectName         : a.projectName==='all'?'-':a.projectName,
-              sectorName          : a.sectorName,
-              activityName        : a.activityName,
-              subactivityName     : a.subactivityName,
-              unit                : a.unit,
-              physicalUnit        : this.addCommas(a.physicalUnit),
-              unitCost            : this.addCommas(a.unitCost),
-              totalBudget         : this.addCommas(a.totalBudget),
-              noOfBeneficiaries   : this.addCommas((a.noOfBeneficiaries)),
-              noOfFamilies        : this.addCommas((a.noOfFamilies)),
-              LHWRF               : this.addCommas(a.LHWRF),
-              NABARD              : this.addCommas(a.NABARD),
-              bankLoan            : this.addCommas(a.bankLoan),
-              govtscheme          : this.addCommas(a.govtscheme),
-              directCC            : this.addCommas(a.directCC),
-              indirectCC          : this.addCommas(a.indirectCC),
-              other               : this.addCommas(a.other),
-              remark              : a.remark,
-            }
-          })
-          this.setState({
-            tableData : tableData
-          });
+      propsdata : inputGetData
+    });
+    $(".fullpageloader").show();
+    if(inputGetData){
+      axios.post(this.state.apiCall+'/list', inputGetData)
+      .then((response)=>{
+        $(".fullpageloader").hide();
+        console.log("response plan Details===>",response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                 : a._id,
+            month               : a.month,
+            year                : a.year,
+            projectCategoryType : a.projectCategoryType,
+            projectName         : a.projectName==='all'?'-':a.projectName,
+            sectorName          : a.sectorName,
+            activityName        : a.activityName,
+            subactivityName     : a.subactivityName,
+            unit                : a.unit,
+            physicalUnit        : this.addCommas(a.physicalUnit),
+            unitCost            : this.addCommas(a.unitCost),
+            totalBudget         : this.addCommas(a.totalBudget),
+            noOfBeneficiaries   : this.addCommas((a.noOfBeneficiaries)),
+            noOfFamilies        : this.addCommas((a.noOfFamilies)),
+            LHWRF               : this.addCommas(a.LHWRF),
+            NABARD              : this.addCommas(a.NABARD),
+            bankLoan            : this.addCommas(a.bankLoan),
+            govtscheme          : this.addCommas(a.govtscheme),
+            directCC            : this.addCommas(a.directCC),
+            indirectCC          : this.addCommas(a.indirectCC),
+            other               : this.addCommas(a.other),
+            remark              : a.remark,
+          }
         })
-        .catch(function(error){
-          console.log("error"+error);
+        this.setState({
+          tableData : tableData
         });
       })
-    })
-    
+      .catch(function(error){
+        console.log("error"+error);
+      });
+    }
   }
   componentWillReceiveProps(nextProps){
     this.year();
@@ -857,7 +858,16 @@ class PlanDetails extends Component{
         this.edit(this.state.editId);
       })    
     }    
-    this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+    var inputGetData = {
+      center_ID  : this.state.center_ID,
+      month      : this.state.month,
+      year       : this.state.year,
+      startRange : this.state.startRange,
+      limitRange : this.state.limitRange,
+      startDate  : this.state.startDate,
+      endDate    : this.state.endDate,
+    }
+    this.getData(inputGetData);
     if(nextProps){
       this.getLength();
     }
@@ -875,26 +885,44 @@ class PlanDetails extends Component{
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage);
+    this.year();
     this.setState({
       apiCall : this.refs.month.value === 'Annual Plan' ? '/api/annualPlans' : '/api/monthlyPlans',
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      this.year();
-      console.log(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate)
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+      var inputGetData = {
+        center_ID  : this.state.center_ID,
+        month      : this.state.month,
+        year       : this.state.year,
+        startRange : this.state.startRange,
+        limitRange : this.state.limitRange,
+        startDate  : this.state.startDate,
+        endDate    : this.state.endDate,
+      }
+      // console.log("inputGetData",inputGetData)
+      this.getData(inputGetData);
     });
   }
 
   handleChange(event){
     let fields = this.state.fields;
     fields[event.target.name] = event.target.value;
-    
     this.setState({
       [event.target.name] : event.target.value,
       fields
     },()=>{
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+      var inputGetData = {
+        center_ID  : this.state.center_ID,
+        month      : this.state.month,
+        year       : this.state.year,
+        startRange : this.state.startRange,
+        limitRange : this.state.limitRange,
+        startDate  : this.state.startDate,
+        endDate    : this.state.endDate,
+      }
+      // console.log("inputGetData",inputGetData)
+      this.getData(inputGetData);
     });
     if (this.validateForm()) {
       let errors = {};
@@ -904,14 +932,12 @@ class PlanDetails extends Component{
       });
     }
   }
-
   selectProjectName(event){
     event.preventDefault();
     this.setState({
       [event.target.name]:event.target.value
     },()=>{
       this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
     });
     let id = $(event.currentTarget).find('option:selected').attr('data-id')
     axios.get('/api/projectMappings/fetch/'+id)
@@ -946,7 +972,6 @@ class PlanDetails extends Component{
         console.log("error = ",error);
       });
   }
-
   getAvailableSectors(){
     axios({
       method: 'get',
@@ -1025,8 +1050,7 @@ class PlanDetails extends Component{
     }
     this.handleChange(event);
     this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID, this.state.center_ID, this.state.projectCategoryType, this.state.projectName);
-  }
-  
+  }  
   getAvailableSubActivity(sector_ID, activity_ID, center_ID, projectCategoryType, projectName){
     // console.log('sector_ID, activity_ID, center_ID',sector_ID, activity_ID, center_ID);
     var data={
@@ -1124,7 +1148,6 @@ class PlanDetails extends Component{
       });
     }
   }
-
   toglehidden(){   
     this.setState({
      shown: !this.state.shown
@@ -1140,8 +1163,8 @@ class PlanDetails extends Component{
     axios
     .get(fileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
-      console.log(" response.data.failedRecords", response.data.failedRecords);
-      console.log(" response.data.goodrecords", response.data.goodrecords);
+      // console.log(" response.data.failedRecords", response.data.failedRecords);
+      // console.log(" response.data.goodrecords", response.data.goodrecords);
       $('.fullpageloader').hide();  
       if (response) {
         this.setState({
@@ -1207,10 +1230,8 @@ class PlanDetails extends Component{
       }
     })
     .catch((error)=> { 
-          
     }) 
   }
-
   handleToggleP(event) {  
     event.preventDefault();
     if (this.state.type===true){
@@ -1231,7 +1252,6 @@ class PlanDetails extends Component{
       })
     }
     else{
-
       this.setState({
         type: true,
         projectCategoryType  :"LHWRF Grant",
@@ -1304,20 +1324,34 @@ class PlanDetails extends Component{
             "startDate" : this.state.year.substring(3, 7)+"-04-01",
             "endDate"   : this.state.year.substring(10, 15)+"-03-31",
           },()=>{
-            // console.log('this.state.',this.state.startDate,this.state.endDate);
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+            var inputGetData = {
+              center_ID  : this.state.center_ID,
+              month      : this.state.month,
+              year       : this.state.year,
+              startRange : this.state.startRange,
+              limitRange : this.state.limitRange,
+              startDate  : this.state.startDate,
+              endDate    : this.state.endDate,
+            }
+            this.getData(inputGetData);
           })
         }else if(this.state.month==="Q1 (April to June)"){
           this.setState({
             "startDate" : this.state.year.substring(3, 7)+"-04-01",
             "endDate"   : this.state.year.substring(3, 7)+"-06-30",  
           },()=>{
-            // console.log('this.state.',this.state.startDate,this.state.endDate);
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+            var inputGetData = {
+              center_ID  : this.state.center_ID,
+              month      : this.state.month,
+              year       : this.state.year,
+              startRange : this.state.startRange,
+              limitRange : this.state.limitRange,
+              startDate  : this.state.startDate,
+              endDate    : this.state.endDate,
+            }
+            this.getData(inputGetData);
           })
         }
-
-        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
         var upcomingFirstYear=parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -1343,8 +1377,6 @@ class PlanDetails extends Component{
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
-    // console.log('month ======', this.state.month, this.state.year)
-    // console.log('month ======', this.state.startDate, this.state.endDate)
     return ( 
       <div className="container-fluid">
         <div className="row">

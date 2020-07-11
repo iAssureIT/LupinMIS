@@ -92,7 +92,6 @@ class IAssureTable extends Component {
 	    },()=>{
 		    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }); 
-      
       // this.palindrome('Moam');
       this.setState({
       	tableHeading	: this.props.tableHeading,
