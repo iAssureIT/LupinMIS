@@ -112,10 +112,20 @@ class Family extends Component{
       },()=>{
         this.edit(this.state.editId);
       })
-    if(nextProps){
-      this.getLength();
-    }      
-    this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
+      if(nextProps){
+        this.getLength();
+      }    
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "caste"           : this.state.casteFilter,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+        "specialCategory" : this.state.specialCategoryFilter,
+        "landCategory"    : this.state.landCategoryFilter,
+        "incomeCategory"  : this.state.incomeCategoryFilter,
+      }  
+      this.getData(inputGetData);
     }
   }
   
@@ -125,19 +135,27 @@ class Family extends Component{
       this.edit(this.state.editId);
     }
     this.getLength();
-    this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     this.setState({
       center_ID    : center_ID,
-      centerID    : center_ID,
       centerName   : centerName,
     },()=>{
-      // console.log(this.state.centerID);
       this.getAvailableCenter(this.state.center_ID);
       this.getLength(this.state.center_ID);
-      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
       // console.log(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "caste"           : this.state.casteFilter,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+        "specialCategory" : this.state.specialCategoryFilter,
+        "landCategory"    : this.state.landCategoryFilter,
+        "incomeCategory"  : this.state.incomeCategoryFilter,
+      }
+      console.log("Did", inputGetData);
+      this.getData(inputGetData);
     }); 
 
     $.validator.addMethod("regxUID", function(value, element, regexpr) {         
@@ -155,77 +173,77 @@ class Family extends Component{
     //    $.validator.addMethod("regxmiddleNameOfFH", functio n(value, element, regexpr) {         
     //   return regexpr.test(value);
     // }, "Please enter a valid Middle Name.");
-        $("#createFamily").validate({
-          rules: {
-            district: {
-              required: true,
-            },
-            block: {
-              required: true,
-            },
-            uID: {
-              // required: true,
-              regxUID: /^[_0-9]*((-|\s)*[_0-9]){12}$|^$/,
-            },
-            caste: {
-              // required: true,
-            },
-            surnameOfFH: {
-              required: true,
-              regxsurnameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
+    $("#createFamily").validate({
+      rules: {
+        district: {
+          required: true,
+        },
+        block: {
+          required: true,
+        },
+        uID: {
+          // required: true,
+          regxUID: /^[_0-9]*((-|\s)*[_0-9]){12}$|^$/,
+        },
+        caste: {
+          // required: true,
+        },
+        surnameOfFH: {
+          required: true,
+          regxsurnameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
 
-            },
-            firstNameOfFH: {
-              required: true,
-              regxfirstNameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
+        },
+        firstNameOfFH: {
+          required: true,
+          regxfirstNameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
 
-            },
-            middleNameOfFH: {
-              // required: true,
-              // regxmiddleNameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
+        },
+        middleNameOfFH: {
+          // required: true,
+          // regxmiddleNameOfFH:/^[A-za-z']+( [A-Za-z']+)*$/,
 
-            },
-            village: {
-              required: true,
+        },
+        village: {
+          required: true,
 
-            },
-            contact: {
-              // required: true,
-              maxlength: 10,
-              minlength: 10,
-            // regxcontact: /^\+?\d+$/,
-            },
-          },
-          errorPlacement: function(error, element) {
-            if (element.attr("name") === "district"){
-              error.insertAfter("#districtErr");
-            }
-            if (element.attr("name") === "block"){
-              error.insertAfter("#blockErr");
-            }
-            if (element.attr("name") === "uID"){
-              error.insertAfter("#uIDErr");
-            }
-            if (element.attr("name") === "caste"){
-              error.insertAfter("#casteErr");
-            }
-            if (element.attr("name") === "surnameOfFH"){
-              error.insertAfter("#surnameOfFHErr");
-            }
-            if (element.attr("name") === "firstNameOfFH"){
-              error.insertAfter("#firstNameOfFHErr");
-            }
-            if (element.attr("name") === "middleNameOfFH"){
-              error.insertAfter("#middleNameOfFHErr");
-            }
-            if (element.attr("name") === "village"){
-              error.insertAfter("#villageErr");
-            }
-            if (element.attr("name") === "contact"){
-              error.insertAfter("#contactErr");
-            }
-          }
-        });
+        },
+        contact: {
+          // required: true,
+          maxlength: 10,
+          minlength: 10,
+        // regxcontact: /^\+?\d+$/,
+        },
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") === "district"){
+          error.insertAfter("#districtErr");
+        }
+        if (element.attr("name") === "block"){
+          error.insertAfter("#blockErr");
+        }
+        if (element.attr("name") === "uID"){
+          error.insertAfter("#uIDErr");
+        }
+        if (element.attr("name") === "caste"){
+          error.insertAfter("#casteErr");
+        }
+        if (element.attr("name") === "surnameOfFH"){
+          error.insertAfter("#surnameOfFHErr");
+        }
+        if (element.attr("name") === "firstNameOfFH"){
+          error.insertAfter("#firstNameOfFHErr");
+        }
+        if (element.attr("name") === "middleNameOfFH"){
+          error.insertAfter("#middleNameOfFHErr");
+        }
+        if (element.attr("name") === "village"){
+          error.insertAfter("#villageErr");
+        }
+        if (element.attr("name") === "contact"){
+          error.insertAfter("#contactErr");
+        }
+      }
+    });
   }
  
   handleChange(event){
@@ -283,9 +301,8 @@ class Family extends Component{
     };
     axios.post('/api/families',familyValues)
       .then((response)=>{
-        if(response.data.message==="UID Already Exists"){
           console.log('response', response);
-          this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
+        if(response.data.message==="UID Already Exists"){
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -294,7 +311,6 @@ class Family extends Component{
             "uID"                  :"",
           });
         }else{
-          // console.log('response', response);
           this.setState({
             "shown"               : true,
             "familyID"             :"",
@@ -317,12 +333,22 @@ class Family extends Component{
             "FHYearOfBirth"        :"",
             // "FHGender"             :"-- Select --",
           });
-          this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
           swal({
             title : response.data.message,
             text  : response.data.message
           });
         }
+        var inputGetData = {
+          "center_ID"       : this.state.center_ID,
+          "caste"           : this.state.casteFilter,
+          "district"        : this.state.districtFilter,
+          "blocks"          : this.state.blockFilter,
+          "village"         : this.state.villageFilter, 
+          "specialCategory" : this.state.specialCategoryFilter,
+          "landCategory"    : this.state.landCategoryFilter,
+          "incomeCategory"  : this.state.incomeCategoryFilter,
+        }
+        this.getData(inputGetData);
       })
       .catch(function(error){
         console.log("error = ",error);
@@ -356,8 +382,6 @@ class Family extends Component{
       axios.patch('/api/families/update', familyValues)
         .then((response)=>{
           if(response.data.message==="UID Already Exists"){
-            // console.log('response', response);
-            this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
             swal({
               title : response.data.message,
               text  : response.data.message
@@ -366,7 +390,6 @@ class Family extends Component{
               "uID"                  :"",
             });
           }else{
-            this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
             swal({
               title : response.data.message,
               text  : response.data.message
@@ -427,7 +450,6 @@ class Family extends Component{
       method: 'get',
       url: '/api/centers/'+this.state.center_ID,
       }).then((response)=> {
-        // console.log('availableblockInCenter ==========',response);
         function removeDuplicates(data, param, district){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
@@ -437,7 +459,6 @@ class Family extends Component{
         this.setState({
           listofBlocks     : availableblockInCenter,
         })
-        // console.log("availableblockInCenter",availableblockInCenter);
       }).catch(function (error) {
         console.log("error = ",error);
       });
@@ -489,50 +510,46 @@ class Family extends Component{
       console.log("error"+error);
     });
   }
-
   toglehidden(){   
     this.setState({
      shown: !this.state.shown
     });
   }
   uploadedData(data){
-    this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter )
+    var inputGetData = {
+      "center_ID"       : this.state.center_ID,
+      "caste"           : this.state.casteFilter,
+      "district"        : this.state.districtFilter,
+      "blocks"          : this.state.blockFilter,
+      "village"         : this.state.villageFilter, 
+      "specialCategory" : this.state.specialCategoryFilter,
+      "landCategory"    : this.state.landCategoryFilter,
+      "incomeCategory"  : this.state.incomeCategoryFilter,
+    }
+    this.getData(inputGetData);
   }
-
   getLength(center_ID){
     axios.get('/api/families/count/'+center_ID)
     .then((response)=>{
-      // console.log('response', response.data);
       this.setState({
         dataCount : response.data.dataLength
       },()=>{
       })
     })
     .catch(function(error){
-      // console.log("error"+error);
     });
   }
-  getData(centerID, casteFilter, districtFilter, blockFilter, villageFilter, specialCategoryFilter, landCategoryFilter, incomeCategoryFilter){ 
-    var data = {
-      "center_ID"       : centerID,
-      "caste"           : casteFilter,
-      "district"        : districtFilter,
-      "blocks"          : blockFilter,
-      "village"         : villageFilter, 
-      "specialCategory" : specialCategoryFilter,
-      "landCategory"    : landCategoryFilter,
-      "incomeCategory"  : incomeCategoryFilter,
-    }
-    // console.log("data",data)
+  getData(inputGetData){ 
+    console.log("inputGetData",inputGetData);
     this.setState({
-      propsdata : data
+      propsdata : inputGetData
     },()=>{
-    console.log("propsdata",this.state.propsdata)
+      console.log("propsdata",this.state.propsdata)
     })
-    if (centerID){
-    $(".fullpageloader").show();
+    if (inputGetData){
+      $(".fullpageloader").show();
       // axios.post('/api/families/list/'+center_ID,data)
-      axios.post('/api/families/get/family/list',data)
+      axios.post('/api/families/get/family/list',inputGetData)
       .then((response)=>{
         $(".fullpageloader").hide();
         console.log('response', response);
@@ -555,7 +572,6 @@ class Family extends Component{
           }
         })
         this.setState({
-          propsdata : data,
           tableData : tableData
         })
       })    
@@ -564,7 +580,6 @@ class Family extends Component{
       }); 
     }
   }
-
   getAvailableCenter(center_ID){
     axios({
       method: 'get',
@@ -572,30 +587,20 @@ class Family extends Component{
       }).then((response)=> {
         if(response.data){
           function removeDuplicates(data, param){
-              return data.filter(function(item, pos, array){
-                  return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
-              })
+            return data.filter(function(item, pos, array){
+              return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+            })
           }
           var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
           this.setState({
             listofDistrict  : availableDistInCenter,
-            // address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-            // address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-            // districtsCovered : response.data[0].districtsCovered
           },()=>{
-          // var stateCode =this.state.address.split('|')[0];
-           // this.setState({
-            // stateCode  : stateCode,
-            // },()=>{
-            // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
-            // });
           })
         }
       }).catch(function (error) {
         console.log("error"+error);
       });
   }
-  
   camelCase(str){
     return str
     .toLowerCase()
@@ -608,11 +613,7 @@ class Family extends Component{
     var district = event.target.value;
     this.setState({
       district       : district,
-      districtFilter : district,
-      blockFilter    : "all",
-      villageFilter  : "all",
     },()=>{
-      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter )
       var selectedDistrict = this.state.district;
       this.setState({
         selectedDistrict :selectedDistrict,
@@ -624,7 +625,6 @@ class Family extends Component{
           method: 'get',
           url: '/api/centers/'+this.state.center_ID,
           }).then((response)=> {
-          // console.log('availableblockInCenter ==========',response);
           function removeDuplicates(data, param, district){
             return data.filter(function(item, pos, array){
               return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
@@ -635,43 +635,19 @@ class Family extends Component{
             listofBlocks     : availableblockInCenter,
             block : '-- Select --',
           },()=>{
-            // console.log('this.state.listofBlocks',this.state.listofBlocks);
-            // console.log('this.state.block',this.state.block);
           })
         }).catch(function (error) {
           console.log("error = ",error);
         });
-        // console.log('selectedDistrict,listofBlocks',this.state.selectedDistrict,this.state.listofVillages);
-        // this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
-  // getBlock(stateCode, selectedDistrict){
-  //   console.log("sd", stateCode,selectedDistrict);
-  //   axios({
-  //     method: 'get',
-  //     // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
-  //     url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-  //   }).then((response)=> {
-  //       // console.log('response ==========', response.data);
-  //       this.setState({
-  //         listofBlocks : response.data
-  //       },()=>{
-  //       // console.log('listofBlocks', this.state.listofBlocks);
-  //       })
-  //   }).catch(function (error) {
-  //     console.log('error', error);
-  //   });
-  // }
   selectBlock(event){
     event.preventDefault();
     var block = event.target.value;
     this.setState({
       block          : block,
-      blockFilter    : block,
-      villageFilter  : "all",
     },()=>{
-      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter )
       axios({
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
@@ -689,36 +665,119 @@ class Family extends Component{
       }).catch(function (error) {
         console.log("error = ",error);
       });
-      // console.log("block",block);
-      // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
-  // getVillages(stateCode, selectedDistrict, block){
-  //   // console.log(stateCode, selectedDistrict, block);
-  //   axios({
-  //     method: 'get',
-  //     // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
-  //     url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
-  //   }).then((response)=> {
-  //       // console.log('response ==========', response.data);
-  //       this.setState({
-  //         listofVillages : response.data
-  //       },()=>{
-  //       // console.log('listofVillages', this.state.listofVillages);
-  //       })
-  //   }).catch(function (error) {
-  //     console.log('error', error);
-  //   });
-  // }
   selectVillage(event){
     event.preventDefault();
     var village = event.target.value;
     this.setState({
       village       : village,
+    },()=>{
+      // console.log("village",village);
+    });  
+  } 
+  districtFilterChange(event){    
+    event.preventDefault();
+    var district = event.target.value;
+    this.setState({
+      districtFilter : district,
+      blockFilter    : "all",
+      villageFilter  : "all",
+    },()=>{
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "caste"           : this.state.casteFilter,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+        "specialCategory" : this.state.specialCategoryFilter,
+        "landCategory"    : this.state.landCategoryFilter,
+        "incomeCategory"  : this.state.incomeCategoryFilter,
+      }
+      this.getData(inputGetData);
+      var selectedDistrict = this.state.district;
+      this.setState({
+        selectedDistrict :selectedDistrict,
+        village : '-- Select --',
+        block : '-- Select --',
+        listofVillages :[]
+      },()=>{
+        axios({
+          method: 'get',
+          url: '/api/centers/'+this.state.center_ID,
+          }).then((response)=> {
+          function removeDuplicates(data, param, district){
+            return data.filter(function(item, pos, array){
+              return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+            })
+          }
+          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.districtFilter);
+          this.setState({
+            listofBlocks     : availableblockInCenter,
+            block : '-- Select --',
+          },()=>{
+            console.log("this.state.listofBlocks",this.state.listofBlocks);
+          })
+        }).catch(function (error) {
+          console.log("error = ",error);
+        });
+      })
+    });
+  }
+  selectFilterBlock(event){
+    event.preventDefault();
+    var block = event.target.value;
+    this.setState({
+      blockFilter    : block,
+      villageFilter  : "all",
+    },()=>{
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "caste"           : this.state.casteFilter,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+        "specialCategory" : this.state.specialCategoryFilter,
+        "landCategory"    : this.state.landCategoryFilter,
+        "incomeCategory"  : this.state.incomeCategoryFilter,
+      }
+      this.getData(inputGetData);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.districtFilter,this.state.blockFilter);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
+          village : "-- Select --"
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+    });
+  }
+  selectFilterVillage(event){
+    event.preventDefault();
+    var village = event.target.value;
+    this.setState({
       villageFilter : village
     },()=>{
-      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter )
-      // console.log("village",village);
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "caste"           : this.state.casteFilter,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+        "specialCategory" : this.state.specialCategoryFilter,
+        "landCategory"    : this.state.landCategoryFilter,
+        "incomeCategory"  : this.state.incomeCategoryFilter,
+      }
+      this.getData(inputGetData);
     });  
   } 
   getFileDetails(fileName){
@@ -822,7 +881,6 @@ class Family extends Component{
       });
     }
   }
-
   handleYear(date){
     console.log("date",date);
     this.setState({
@@ -831,7 +889,6 @@ class Family extends Component{
     },()=>{
     });
   };
-
   handleFilters(event){
     event.preventDefault();
     this.setState({
@@ -843,11 +900,19 @@ class Family extends Component{
       "blockFilter"                :this.refs.blockFilter.value, 
       "villageFilter"              :this.refs.villageFilter.value, 
     },()=>{
-      this.getData(this.state.centerID, this.state.casteFilter, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter, this.state.specialCategoryFilter, this.state.landCategoryFilter, this.state.incomeCategoryFilter);
-      // this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.caste, this.state.specialCategory, this.state.landCategory, this.state.incomeCategory, this.state.district, this.state.block, this.state.village);
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "caste"           : this.state.casteFilter,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+        "specialCategory" : this.state.specialCategoryFilter,
+        "landCategory"    : this.state.landCategoryFilter,
+        "incomeCategory"  : this.state.incomeCategoryFilter,
+      }
+      this.getData(inputGetData);
     });
   }
-
   render() {     
     var hidden = {
       display: this.state.shown ? "none" : "block"
@@ -1130,7 +1195,7 @@ class Family extends Component{
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
-                                <select className="custom-select form-control inputBox" ref="districtFilter" name="districtFilter" value={this.state.districtFilter} onChange={this.districtChange.bind(this)}  >
+                                <select className="custom-select form-control inputBox" ref="districtFilter" name="districtFilter" value={this.state.districtFilter} onChange={this.districtFilterChange.bind(this)}  >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   <option value="all">All</option>
                                   {
@@ -1150,7 +1215,7 @@ class Family extends Component{
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Block</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
-                                <select className="custom-select form-control inputBox" ref="blockFilter" name="blockFilter" value={this.state.blockFilter?this.state.blockFilter:""} onChange={this.selectBlock.bind(this)} >
+                                <select className="custom-select form-control inputBox" ref="blockFilter" name="blockFilter" value={this.state.blockFilter?this.state.blockFilter:""} onChange={this.selectFilterBlock.bind(this)} >
                                   <option selected='true'  disabled="disabled" >-- Select --</option>
                                   <option value="all">All</option>
                                   {
@@ -1170,7 +1235,7 @@ class Family extends Component{
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
                               <label className="formLable">Village</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
-                                <select className="custom-select form-control inputBox" ref="villageFilter" name="villageFilter" value={this.state.villageFilter?this.state.villageFilter:""} onChange={this.selectVillage.bind(this)}  >
+                                <select className="custom-select form-control inputBox" ref="villageFilter" name="villageFilter" value={this.state.villageFilter?this.state.villageFilter:""} onChange={this.selectFilterVillage.bind(this)}  >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   <option value="all">All</option>
                                   {

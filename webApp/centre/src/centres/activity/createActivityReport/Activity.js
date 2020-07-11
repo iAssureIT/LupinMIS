@@ -1398,7 +1398,7 @@ class Activity extends Component{
           var numofBeneficiaries = a.listofBeneficiaries && a.listofBeneficiaries.length > 0 ? a.listofBeneficiaries.length : 0;
           return{
             "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            "projectName"         : a.projectName        ? a.projectName    : '-',
+            "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
             "date"                : a.date     ? a.date : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName     ? a.sectorName : '-',
@@ -1423,7 +1423,7 @@ class Activity extends Component{
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
             "projectCategoryType" : a.projectCategoryType ? a.projectCategoryType    : '-',
-            "projectName"         : a.projectName         ? a.projectName    : '-',
+            "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
             "date"                : a.date                ? a.date : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName          ? a.sectorName : '-',
@@ -1469,7 +1469,7 @@ class Activity extends Component{
         var tableData = response.data.goodrecords.map((a, i)=>{
           return{
             "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            "projectName"         : a.projectName        ? a.projectName    : '-',
+            "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
             "date"                : a.date     ? a.date : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName     ? a.sectorName : '-',
@@ -1494,7 +1494,7 @@ class Activity extends Component{
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
             "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            "projectName"         : a.projectName        ? a.projectName    : '-',
+            "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
             "date"                : a.date     ? a.date : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName     ? a.sectorName : '-',

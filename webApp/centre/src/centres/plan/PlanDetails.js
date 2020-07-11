@@ -1667,7 +1667,7 @@ class PlanDetails extends Component{
                             twoLevelHeader={this.state.twoLevelHeader} 
                             dataCount={this.state.dataCount}
                             tableData={this.state.tableData}
-                            data={this.state.data}
+                            data={this.state.propsdata}
                             getData={this.getData.bind(this)}
                             tableObjects={this.state.tableObjects}
                             getSearchText={this.getSearchText.bind(this)}

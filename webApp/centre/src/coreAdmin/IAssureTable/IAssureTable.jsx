@@ -126,32 +126,18 @@ class IAssureTable extends Component {
 		var id = event.target.id;
 		this.props.history.push(tableObjects.editUrl + "/" + id);
 	}
-	// edit(event){
-	// 	event.preventDefault();
-	// 	$("html,body").scrollTop(0);
-	// 	var tableObjects =  this.props.tableObjects;
-	// 	var id = event.target.id;
-		
-	// 	this.props.history.push(tableObjects.editUrl+id);
-	// }
-
     delete(e){
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 	  	var deleteMethod =  this.props.deleteMethod;
-		// let id = e.target.id;
 		let id = (e.target.id).replace(".", "/");
-	    	// console.log("tableObjects.apiLink+id ",tableObjects.apiLink+id )
-	    	// console.log("id ",id )
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
 	    	// console.log("response ",response )
-	    	// console.log("this.props.data ",this.props.data )
-	    	this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
-	    	// this.props.isDeleted()
-	    	// console.log("deleteresponse ",response )
+	    	console.log("line 139  this.props.data ",this.props.data )
+	    	this.props.getData(this.props.data ? this.props.data :( this.state.startRange, this.state.limitRange, this.state.center_ID));
 	        this.props.history.push(tableObjects.editUrl);
 	        swal({
 	        	text : response.data.message,

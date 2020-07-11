@@ -17,8 +17,7 @@ import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 class Beneficiary extends Component{
   
   constructor(props){
-    super(props);
-   
+    super(props);  
     this.state = {
       // "relation"            :"-- Select --",
       "selector"                      :{},
@@ -86,10 +85,8 @@ class Beneficiary extends Component{
 
   handleChange(event){
     event.preventDefault();
-    // console.log(event);
     if(event.currentTarget.name==='familyID'){
       let id = $(event.currentTarget).find('option:selected').attr('data-id')
-      // $(".fullpageloader").show();
       axios.get('/api/families/'+id)
       .then((response)=>{
         // console.log('response families',response)
@@ -103,8 +100,6 @@ class Beneficiary extends Component{
           "uidNumber"                 :"",
           "relation"                  : "-- Select --",
         })
-        // $(".fullpageloader").hide();
-
       })
       .catch(function(error){ 
         console.log("error = ",error);
@@ -119,35 +114,12 @@ class Beneficiary extends Component{
       "relation"                  : this.refs.relation.value,
       "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
     });
-  /*    if(this.refs.firstNameOfBeneficiary.value === this.state.firstNameOfBeneficiaryCheck )
-    {
-       
-      var uidNumber = this.state.uidNumberCheck;
-      var middleNameOfBeneficiaryCheck = this.state.middleNameOfBeneficiaryCheck;
-      this.setState({
-          uidNumber : uidNumber,
-          relation  : "Self",
-          middleNameOfBeneficiary : middleNameOfBeneficiaryCheck,
-          Check     : false,
-      })
-          
-    }
-    else{
-      this.setState({
-          uidNumber : "",
-          relation  : "-- Select --",
-          middleNameOfBeneficiary : "",
-          Check     : false,
-      })
-
-    }*/
   } 
 
   SubmitBeneficiary(event){
     event.preventDefault();
     var id2 = this.state.uidNumber;
     if($('#createBeneficiary').valid()){
-    // if (this.validateFormReq() && this.validateForm()){
     var beneficiaryValue= 
     {
       "center_ID"                 : this.state.center_ID,
@@ -162,15 +134,6 @@ class Beneficiary extends Component{
       "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary ? this.state.birthYearOfbeneficiary : "-",
       "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value ? this.refs.genderOfbeneficiary.value : "-",
     };
-    // let fields                          = {};
-    // fields["familyID"]                  = "";
-    // fields["beneficiaryID"]             = "";
-    // fields["uidNumber"]                 = "";
-    // fields["relation"]                  = "";
-    // fields["surnameOfBeneficiary"]      = "";
-    // fields["firstNameOfBeneficiary"]    = "";
-    // fields["middleNameOfBeneficiary"]   = "";
-
     this.setState({
       "shown"                    : true,
       "familyID"                 :"",
@@ -180,15 +143,19 @@ class Beneficiary extends Component{
       "middleNameOfBeneficiary"  :"",   
       "uidNumber"                :"",   
       "relation"                 :"-- Select --",
-      "genderOfbeneficiary"      :"",
-      // "genderOfbeneficiary"      :"-- Select --",
+      "genderOfbeneficiary"      :"-- Select --",
       "date"                     :"",   
       "birthYearOfbeneficiary"   :"",   
-      // fields:fields
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
-      this.getData(this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+        var inputGetData = {
+          "center_ID"       : this.state.center_ID,
+          "district"        : this.state.districtFilter,
+          "blocks"          : this.state.blockFilter,
+          "village"         : this.state.villageFilter, 
+        }
+        this.getData(inputGetData);   
         swal({
           title : response.data.message,
           text  : response.data.message,
@@ -200,16 +167,16 @@ class Beneficiary extends Component{
     }
   }
   uploadedData(data){
-    this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
+    var inputGetData = {
+      "center_ID"       : this.state.center_ID,
+      "district"        : this.state.districtFilter,
+      "blocks"          : this.state.blockFilter,
+      "village"         : this.state.villageFilter, 
+    }
+    this.getData(inputGetData);
   }
   Update(event){
     event.preventDefault();
-      /*if(this.refs.familyID.value === "" ||  this.refs.relation.value===""
-        || this.refs.surnameOfBeneficiary.value===""|| this.refs.firstNameOfBeneficiary.value===""|| this.refs.middleNameOfBeneficiary.value==="")
-      {
-        if (this.validateFormReq() && this.validateForm()){
-        }
-      }else{*/
     if($('#createBeneficiary').valid()){
       var beneficiaryValue= 
       {
@@ -230,7 +197,13 @@ class Beneficiary extends Component{
       // console.log('beneficiaryValue', beneficiaryValue);
       axios.patch('/api/beneficiaries/update',beneficiaryValue)
         .then((response)=>{
-        this.getData(this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+          var inputGetData = {
+            "center_ID"       : this.state.center_ID,
+            "district"        : this.state.districtFilter,
+            "blocks"          : this.state.blockFilter,
+            "village"         : this.state.villageFilter, 
+          }
+          this.getData(inputGetData);
           swal({
             title : response.data.message,
             text  : response.data.message,
@@ -263,14 +236,19 @@ class Beneficiary extends Component{
 
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
-    // console.log('mani ',nextProps.match.params.id);
     if(nextProps.match.params.id){
       this.setState({
         editId : editId
       })
       this.edit(editId);
+    }    
+    var inputGetData = {
+      "center_ID"       : this.state.center_ID,
+      "district"        : this.state.districtFilter,
+      "blocks"          : this.state.blockFilter,
+      "village"         : this.state.villageFilter, 
     }
-   
+    this.getData(inputGetData);
     if(nextProps){
       this.getLength();
     }  
@@ -278,12 +256,10 @@ class Beneficiary extends Component{
 
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    // console.log('editId componentDidMount', this.state.editId);
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
     this.getLength();
-    this.getData(this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
     this.getAvailableFamilyId();
     const center_ID = localStorage.getItem("center_ID");
     // const token = localStorage.getItem("token");
@@ -296,7 +272,13 @@ class Beneficiary extends Component{
     // console.log("center_ID =",this.state.center_ID);
     this.getLength(this.state.center_ID);
     this.getAvailableCenter(this.state.center_ID);
-    this.getData(this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+    var inputGetData = {
+      "center_ID"       : this.state.center_ID,
+      "district"        : this.state.districtFilter,
+      "blocks"          : this.state.blockFilter,
+      "village"         : this.state.villageFilter, 
+    }
+    this.getData(inputGetData);
     this.getAvailableFamilyId(this.state.center_ID);
     });    
  
@@ -412,12 +394,11 @@ class Beneficiary extends Component{
         "date"                     :"",   
         "birthYearOfbeneficiary"   :"",   
       });     
-    }
-    
+    }    
   }
   
   getLength(center_ID){
-  /*  axios.get('/api/beneficiaries/count/'+center_ID)
+    /*  axios.get('/api/beneficiaries/count/'+center_ID)
     .then((response)=>{
       // console.log('response', response.data);
       this.setState({
@@ -431,71 +412,53 @@ class Beneficiary extends Component{
     });*/
   }
 
-  // getData(startRange, limitRange, center_ID){
-  //   var data = {
-  //     limitRange : limitRange,
-  //     startRange : startRange,
-  //   }
-  //   // console.log(center_ID);
-  //   // var centerID = this.state.center_ID;
-  //   $(".fullpageloader").show();
-  //   if (center_ID){
-  //     axios.post('/api/beneficiaries/list/'+center_ID,data)
-  //       // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
-  //     // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
-  //     .then((response)=>{
-  //       $(".fullpageloader").hide();
-  //       console.log('response', response);
-  //       var tableData = response.data.map((a, i)=>{
-  //         return {
-  //           _id                       : a._id,
-  //           beneficiaryID             : a.beneficiaryID,
-  //           familyID                  : a.familyID,
-  //           nameofbeneficiaries       : a.nameofbeneficiaries,
-  //           uidNumber                 : a.uidNumber,
-  //           relation                  : a.relation,
-  //           genderOfbeneficiary       : a.genderOfbeneficiary,   
-  //           birthYearOfbeneficiary    : a.birthYearOfbeneficiary,   
-  //         }
-  //       })
-  //       this.setState({
-  //         tableData : tableData
-  //       },()=>{
-  //         // console.log("tableData",this.state.tableData)
-  //       })
-  //     })
-  //     .catch(function(error){
-  //       console.log("error = ",error);
-  //     });
-  //   }
-  // }
-
-  getData(center_ID, district, block, village){
-    // console.log(center_ID, district, block, village)
-    var selector =this.state.selector;
-
-    // selector.startRange = startRange;
-    // selector.limitRange = limitRange;
-    // selector.centerID  = center_ID;
-    // selector.district   = district;
-    // selector.block      = block;
-    // selector.village    = village;
-    // console.log("selector",selector)
+  /*getData(startRange, limitRange, center_ID){
     var data = {
-      "center_ID"       : center_ID,
-      "district"        : district,
-      "block"           : block,
-      "village"         : village, 
+      limitRange : limitRange,
+      startRange : startRange,
     }
-    // console.log("data",data)
+    // console.log(center_ID);
+    // var centerID = this.state.center_ID;
+    $(".fullpageloader").show();
+    if (center_ID){
+      axios.post('/api/beneficiaries/list/'+center_ID,data)
+        // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
+      // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
+      .then((response)=>{
+        $(".fullpageloader").hide();
+        console.log('response', response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                       : a._id,
+            beneficiaryID             : a.beneficiaryID,
+            familyID                  : a.familyID,
+            nameofbeneficiaries       : a.nameofbeneficiaries,
+            uidNumber                 : a.uidNumber,
+            relation                  : a.relation,
+            genderOfbeneficiary       : a.genderOfbeneficiary,   
+            birthYearOfbeneficiary    : a.birthYearOfbeneficiary,   
+          }
+        })
+        this.setState({
+          tableData : tableData
+        },()=>{
+          // console.log("tableData",this.state.tableData)
+        })
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+    }
+  }
+*/
+  getData(inputGetData){
     this.setState({
-      propsdata : data
+      propsdata : inputGetData
     },()=>{
     console.log("propsdata",this.state.propsdata)
     })
-    if(center_ID && district && block && village){
-      axios.get('/api/beneficiaries/get/beneficiary/list/'+center_ID+'/'+district+'/'+block+'/'+village)
-      // axios.post('/api/beneficiaries/get/beneficiary/list/', selector)
+    if(inputGetData){
+      axios.post('/api/beneficiaries/get/beneficiary/list', inputGetData)
       .then((response)=>{
         console.log('response', response);
         var tableData = response.data.map((a, i)=>{
@@ -668,11 +631,16 @@ class Beneficiary extends Component{
       "districtFilter"             :this.refs.districtFilter.value, 
       "blockFilter"                :this.refs.blockFilter.value, 
       "villageFilter"              :this.refs.villageFilter.value, 
-    },()=>{
-      this.getData(this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+    },()=>{      
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+      }
+      this.getData(inputGetData);
     });
   }
-
   getAvailableCenter(center_ID){
     axios({
       method: 'get',
@@ -694,17 +662,28 @@ class Beneficiary extends Component{
         console.log("error"+error);
       });
   }
-
-  districtChange(event){    
+  camelCase(str){
+    return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  }  
+  districtFilterChange(event){    
     event.preventDefault();
     var district = event.target.value;
     this.setState({
-      district       : district,
       districtFilter : district,
       blockFilter    : "all",
       villageFilter  : "all",
     },()=>{
-      this.getData(this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+      }
+      this.getData(inputGetData);
       var selectedDistrict = this.state.district;
       this.setState({
         selectedDistrict :selectedDistrict,
@@ -716,37 +695,38 @@ class Beneficiary extends Component{
           method: 'get',
           url: '/api/centers/'+this.state.center_ID,
           }).then((response)=> {
-          // console.log('availableblockInCenter ==========',response);
           function removeDuplicates(data, param, district){
             return data.filter(function(item, pos, array){
               return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
             })
           }
-          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.districtFilter);
           this.setState({
             listofBlocks     : availableblockInCenter,
             block : '-- Select --',
           },()=>{
-            // console.log('this.state.listofBlocks',this.state.listofBlocks);
-            // console.log('this.state.block',this.state.block);
+            console.log("this.state.listofBlocks",this.state.listofBlocks);
           })
         }).catch(function (error) {
           console.log("error = ",error);
         });
-        // console.log('selectedDistrict,listofBlocks',this.state.selectedDistrict,this.state.listofVillages);
-        // this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
-  selectBlock(event){
+  selectFilterBlock(event){
     event.preventDefault();
     var block = event.target.value;
     this.setState({
-      block          : block,
       blockFilter    : block,
       villageFilter  : "all",
     },()=>{
-      this.getData(this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+      }
+      this.getData(inputGetData);
       axios({
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
@@ -756,7 +736,7 @@ class Beneficiary extends Component{
             return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
           })
         }
-        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.districtFilter,this.state.blockFilter);
         this.setState({
           listofVillages   : availablevillageInCenter,
           village : "-- Select --"
@@ -764,29 +744,23 @@ class Beneficiary extends Component{
       }).catch(function (error) {
         console.log("error = ",error);
       });
-      // console.log("block",block);
-      // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
     });
   }
-  selectVillage(event){
+  selectFilterVillage(event){
     event.preventDefault();
     var village = event.target.value;
     this.setState({
-      village       : village,
       villageFilter : village
     },()=>{
-      this.getData(this.state.center_ID, this.state.districtFilter, this.state.blockFilter, this.state.villageFilter);
-      // console.log("village",village);
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+      }
+      this.getData(inputGetData);
     });  
   } 
-
-  camelCase(str){
-    return str
-    .toLowerCase()
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-  }
   render() {
     var hidden = {
       display: this.state.shown ? "none" : "block"
@@ -948,7 +922,7 @@ class Beneficiary extends Component{
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box">
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
-                                <select className="custom-select form-control inputBox" ref="districtFilter" name="districtFilter" value={this.state.districtFilter} onChange={this.districtChange.bind(this)}  >
+                                <select className="custom-select form-control inputBox" ref="districtFilter" name="districtFilter" value={this.state.districtFilter} onChange={this.districtFilterChange.bind(this)}  >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   <option value="all">All</option>
                                   {
@@ -968,7 +942,7 @@ class Beneficiary extends Component{
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box">
                               <label className="formLable">Block</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
-                                <select className="custom-select form-control inputBox" ref="blockFilter" name="blockFilter" value={this.state.blockFilter?this.state.blockFilter:""} onChange={this.selectBlock.bind(this)} >
+                                <select className="custom-select form-control inputBox" ref="blockFilter" name="blockFilter" value={this.state.blockFilter?this.state.blockFilter:""} onChange={this.selectFilterBlock.bind(this)} >
                                   <option selected='true'  disabled="disabled" >-- Select --</option>
                                   <option value="all">All</option>
                                   {
@@ -988,7 +962,7 @@ class Beneficiary extends Component{
                             <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box">
                               <label className="formLable">Village</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
-                                <select className="custom-select form-control inputBox" ref="villageFilter" name="villageFilter" value={this.state.villageFilter?this.state.villageFilter:""} onChange={this.selectVillage.bind(this)}  >
+                                <select className="custom-select form-control inputBox" ref="villageFilter" name="villageFilter" value={this.state.villageFilter?this.state.villageFilter:""} onChange={this.selectFilterVillage.bind(this)}  >
                                   <option selected='true' disabled="disabled" >-- Select --</option>
                                   <option value="all">All</option>
                                   {
