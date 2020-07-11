@@ -154,7 +154,7 @@ class Family extends Component{
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
       }
-      console.log("Did", inputGetData);
+      // console.log("Did", inputGetData);
       this.getData(inputGetData);
     }); 
 
@@ -544,7 +544,7 @@ class Family extends Component{
     this.setState({
       propsdata : inputGetData
     },()=>{
-      console.log("propsdata",this.state.propsdata)
+      // console.log("propsdata",this.state.propsdata)
     })
     if (inputGetData){
       $(".fullpageloader").show();

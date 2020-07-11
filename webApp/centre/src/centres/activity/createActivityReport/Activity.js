@@ -725,7 +725,6 @@ class Activity extends Component{
      shown: !this.state.shown
     });
   }
-  
   getAvailableVillages(center_ID, district, block){
     axios({
         method: 'get',
@@ -863,7 +862,6 @@ class Activity extends Component{
       });
     }
   }
-
   getLength(center_ID){
    /* axios.get('/api/activityReport/count/'+center_ID)
     .then((response)=>{
@@ -876,8 +874,7 @@ class Activity extends Component{
     })
     .catch(function(error){
     });*/
-  }
-  
+  }  
   addCommas(x) {
     x=x.toString();
     if(x.includes('%')){
@@ -902,12 +899,8 @@ class Activity extends Component{
       }
     }
   }
-
-  getData(startRange, limitRange, center_ID,){ 
-    var data = {
-      limitRange : limitRange,
-      startRange : startRange,
-    }
+  getData(startRange, limitRange, center_ID){ 
+    console.log(startRange, limitRange, center_ID);
     $(".fullpageloader").show();
       let financeYear;
     let today = moment();
@@ -1090,7 +1083,6 @@ class Activity extends Component{
       this.getLength();
     }
   }
-  
   deleted(){
     var dateObj = new Date();
     var momentObj = moment(dateObj);
@@ -1127,7 +1119,6 @@ class Activity extends Component{
       "projectName"           : '-- Select --',
     })
   } 
-
   getAvailableSectors(){
     axios({
       method: 'get',
@@ -1156,7 +1147,6 @@ class Activity extends Component{
     this.handleChange(event);
     this.getAvailableActivity(sector_ID);
   }
-
   getAvailableActivity(sector_ID){
     if(sector_ID){
       axios({
@@ -1173,7 +1163,6 @@ class Activity extends Component{
       });
     }
   }
-
   selectActivity(event){
     event.preventDefault();
     this.setState({
@@ -1188,7 +1177,6 @@ class Activity extends Component{
     this.handleChange(event);
     this.getAvailableSubActivity(this.state.sector_ID, activity_ID);
   }
-
   getAvailableSubActivity(sector_ID, activity_ID){
     axios({
       method: 'get',
@@ -1214,7 +1202,6 @@ class Activity extends Component{
     })
     this.handleChange(event);
   }
-
   getAvailableCenter(center_ID){
     // console.log("CID"  ,center_ID);
     if(center_ID){
@@ -1280,7 +1267,6 @@ class Activity extends Component{
     });
     this.handleChange(event);
   }
-  
   selectBlock(event){
     event.preventDefault();
     var block = event.target.value;
@@ -1308,7 +1294,6 @@ class Activity extends Component{
     });
     this.handleChange(event);
   }
-  
   selectVillage(event){
     event.preventDefault();
     var village = event.target.value;
@@ -1317,7 +1302,6 @@ class Activity extends Component{
     });
     this.handleChange(event);
   }
-
   getAvailableProjectName(){
     axios({
       method: 'get',
@@ -1331,7 +1315,6 @@ class Activity extends Component{
       console.log('error', error);
     });
   }
-
   handleToggle(event) {  
     event.preventDefault();
     if (this.state.type===true){
@@ -1452,7 +1435,6 @@ class Activity extends Component{
           
     }) 
   } 
-  
   getTypeBFileDetails(fileName){
     axios
     .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
@@ -1522,10 +1504,8 @@ class Activity extends Component{
     .catch((error)=> { 
           
     }) 
-  } 
-  
-  getBenefiaciaryFileDetails(fileName){
-    
+  }  
+  getBenefiaciaryFileDetails(fileName){   
     axios
     .get(this.state.beneficiaryFileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
