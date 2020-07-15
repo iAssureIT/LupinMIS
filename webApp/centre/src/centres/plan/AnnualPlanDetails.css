@@ -1,0 +1,35 @@
+#FileWiseMonthlyPlanList .col1{
+	text-align: left !important;
+}
+#FileWisePlanList .col1{
+	text-align: left !important;
+}
+#AnnualPlanDetails .col1, #AnnualPlanDetails .col2, #AnnualPlanDetails .col3{
+	width: 90px;
+}
+
+#AnnualPlanDetails .col5, #AnnualPlanDetails .col6, #AnnualPlanDetails .col4, #AnnualPlanDetails .col20{
+	width: 200px;
+}
+ #AnnualPlanDetails .col7, #AnnualPlanDetails .col17, #AnnualPlanDetails .col16{
+	width: 90px;
+}
+#AnnualPlanDetails .col8, #AnnualPlanDetails .col9, #AnnualPlanDetails .col10, #AnnualPlanDetails .col11, #AnnualPlanDetails .col12, #AnnualPlanDetails .col13{
+	width: 70px;
+}
+#AnnualPlanDetails .col14, #AnnualPlanDetails .col15, #AnnualPlanDetails .col18, #AnnualPlanDetails .col19{
+	width: 70px;
+}
+#AnnualPlanDetails .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#AnnualPlanDetails .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

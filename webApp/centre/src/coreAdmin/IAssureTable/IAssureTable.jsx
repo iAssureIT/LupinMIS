@@ -147,6 +147,7 @@ class IAssureTable extends Component {
 	    });
     } 
     sortNumber(key, tableData){
+    console.log('tableData.......',key,tableData);
     	var nameA = '';
     	var nameB = '';
     	var reA = /[^a-zA-Z]/g;
@@ -251,6 +252,7 @@ class IAssureTable extends Component {
 		this.setState({
 			tableData : sortedData,
 		});
+    console.log('tableData',key,tableData);
     }
     sortString(key, tableData){
     	var nameA = '';
@@ -305,6 +307,7 @@ class IAssureTable extends Component {
 		this.setState({
 			tableData : sortedData,
 		});
+    console.log('tableData',key,tableData);
     }
     sort(event){
     	event.preventDefault();
@@ -315,6 +318,7 @@ class IAssureTable extends Component {
 		}else{
 			this.sortString(key, tableData);
 		}
+    console.log('tableData',key,tableData);
     }
    	paginationFunction(event){
 		var dataLen = this.state.dataCount > 20 || this.state.dataCount === 20 ? 20 : this.state.dataCount;

@@ -4,10 +4,10 @@ import swal                 from 'sweetalert';
 import axios                from 'axios';
 import _                    from 'underscore';
 import moment               from 'moment';
+import jQuery               from 'jquery';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
-import jQuery               from 'jquery';
 import "./Activities_in_beneficiary_Report.css"
 import "../../Reports/Reports.css";
 class Activities_in_beneficiary_Report extends Component{
@@ -596,7 +596,7 @@ class Activities_in_beneficiary_Report extends Component{
     event.preventDefault();
     var key = event.target.getAttribute('id');
     var tableData = this.state.tableData;
-    console.log('tableData');
+    console.log('tableData',tableData, "key",key);
     if(key === 'number'){
       this.sortNumber(key, tableData);
     }else{
@@ -1104,7 +1104,7 @@ class Activities_in_beneficiary_Report extends Component{
                                                 return(
                                                   <tr className="tablerow" key={index}>
                                                     <td className=""><div className="col3">{value1.projectCategoryType}</div></td>
-                                                    <td className=""><div className="col4">{value1.projectName}</div></td>
+                                                    <td className=""><div className="col4">{value1.projectName === "all" ? "-" : value1.projectName}</div></td>
                                                     <td className=""><div className="col5">{value1.sectorName}</div></td>
                                                     <td className=""><div className="col6">{value1.activityName}</div></td>
                                                     <td className=""><div className="col7">{value1.subactivityName}</div></td>

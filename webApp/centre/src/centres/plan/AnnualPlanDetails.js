@@ -7,10 +7,10 @@ import BulkUpload             from "../bulkupload/BulkUpload.js";
 import $                      from 'jquery';
 import moment                 from "moment";
 import 'bootstrap/js/tab.js';
-import "./PlanDetails.css";
+import "./AnnualPlanDetails.css";
 
 var add=0
-class PlanDetails extends Component{
+class AnnualPlanDetails extends Component{
   constructor(props){
     super(props); 
     this.state = {
@@ -46,7 +46,7 @@ class PlanDetails extends Component{
       "firstHeaderData"     : [
                                 {
                                     heading : 'Activity Details',
-                                    mergedColoums : 14,
+                                    mergedColoums : 13,
                                     hide :false,
                                 },
                                 {
@@ -58,7 +58,7 @@ class PlanDetails extends Component{
                               ]
       },
       "tableHeading"        : {
-        month               : "Month",
+        // month               : "Month",
         year                : "Year",
         projectCategoryType : "Program Type",
         projectName         : "Project Name",
@@ -129,88 +129,67 @@ class PlanDetails extends Component{
       }
     }
   }
-  getData(center_ID, month, year, startRange, limitRange ){
-    var center_ID =center_ID;
-    var month =month;
-    var year =year;
-    var startRange =startRange;
-    var limitRange =limitRange;
-    let financeYear;
-    let today = moment();
-    if(today.month() >= 3){
-      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
-    else{
-      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
+
+  getData(inputGetData){
     this.setState({
-        financeYear :financeYear
-    },()=>{
-      var firstYear= this.state.financeYear.split('-')[0]
-      var secondYear= this.state.financeYear.split('-')[1]
-      var financialYear = "FY "+firstYear+" - "+secondYear;
-      this.setState({
-        financialYear            :financialYear
-      },()=>{
-        // console.log('this.state.financialYear========',this.state.financialYear);
-        var financialYear = this.state.financialYear;
-        var data = {
-            center_ID  : center_ID,
-            month      : month,
-            year       : year,
-            startRange : startRange,
-            limitRange : limitRange,
-            startDate  : financialYear.substring(3, 7)+"-04-01",
-            endDate    : moment(new Date()).format("YYYY-MM-DD"),
-        }
-        // console.log("data",data);
-        $(".fullpageloader").show();
-        axios.post(this.state.apiCall+'/list', data)
-        .then((response)=>{
-          $(".fullpageloader").hide();
-          console.log("response plan Details===>",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-              _id                 : a._id,
-              month               : a.month,
-              year                : a.year,
-              projectCategoryType : a.projectCategoryType,
-              projectName         : a.projectName==='all'?'-':a.projectName,
-              sectorName          : a.sectorName,
-              activityName        : a.activityName,
-              subactivityName     : a.subactivityName,
-              unit                : a.unit,
-              physicalUnit        : this.addCommas(a.physicalUnit),
-              unitCost            : this.addCommas(a.unitCost),
-              totalBudget         : this.addCommas(a.totalBudget),
-              noOfBeneficiaries   : this.addCommas((a.noOfBeneficiaries)),
-              noOfFamilies        : this.addCommas((a.noOfFamilies)),
-              LHWRF               : this.addCommas(a.LHWRF),
-              NABARD              : this.addCommas(a.NABARD),
-              bankLoan            : this.addCommas(a.bankLoan),
-              govtscheme          : this.addCommas(a.govtscheme),
-              directCC            : this.addCommas(a.directCC),
-              indirectCC          : this.addCommas(a.indirectCC),
-              other               : this.addCommas(a.other),
-              remark              : a.remark,
-            }
-          })
-          this.setState({
-            tableData : tableData
-          });
+      propsdata : inputGetData
+    });
+    $(".fullpageloader").show();
+    if(inputGetData){
+      console.log("inputGetData",inputGetData);
+      axios.post(this.state.apiCall+'/list', inputGetData)
+      .then((response)=>{
+        $(".fullpageloader").hide();
+        console.log("response plan Details===>",response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                 : a._id,
+            // month               : a.month,
+            year                : a.year,
+            projectCategoryType : a.projectCategoryType,
+            projectName         : a.projectName==='all'?'-':a.projectName,
+            sectorName          : a.sectorName,
+            activityName        : a.activityName,
+            subactivityName     : a.subactivityName,
+            unit                : a.unit,
+            physicalUnit        : this.addCommas(a.physicalUnit),
+            unitCost            : this.addCommas(a.unitCost),
+            totalBudget         : this.addCommas(a.totalBudget),
+            noOfBeneficiaries   : this.addCommas((a.noOfBeneficiaries)),
+            noOfFamilies        : this.addCommas((a.noOfFamilies)),
+            LHWRF               : this.addCommas(a.LHWRF),
+            NABARD              : this.addCommas(a.NABARD),
+            bankLoan            : this.addCommas(a.bankLoan),
+            govtscheme          : this.addCommas(a.govtscheme),
+            directCC            : this.addCommas(a.directCC),
+            indirectCC          : this.addCommas(a.indirectCC),
+            other               : this.addCommas(a.other),
+            remark              : a.remark,
+          }
         })
-        .catch(function(error){
-          console.log("error"+error);
+        this.setState({
+          tableData : tableData
         });
       })
-    })
-    
+      .catch(function(error){
+        console.log("error"+error);
+      });
+    }
   }
   componentWillReceiveProps(nextProps){
     this.year();
     this.monthYear();
-    this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
-    
+    var inputGetData = {
+      center_ID  : this.state.center_ID,
+      month      : this.state.month,
+      year       : this.state.year,
+      startRange : this.state.startRange,
+      limitRange : this.state.limitRange,
+      startDate  : this.state.startDate,
+      endDate    : this.state.endDate,
+    }
+    // console.log("inputGetData",inputGetData)
+    this.getData(inputGetData);   
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -224,8 +203,17 @@ class PlanDetails extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      console.log(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate)
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+      var inputGetData = {
+        center_ID  : this.state.center_ID,
+        month      : this.state.month,
+        year       : this.state.year,
+        startRange : this.state.startRange,
+        limitRange : this.state.limitRange,
+        startDate  : this.state.startDate,
+        endDate    : this.state.endDate,
+      }
+      // console.log("inputGetData",inputGetData)
+      this.getData(inputGetData);
     });
   }
 
@@ -233,7 +221,22 @@ class PlanDetails extends Component{
     this.setState({
       [event.target.name] : event.target.value,
     },()=>{
-      this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+        this.setState({
+          "startDate" : this.state.year.substring(3, 7)+"-04-01",
+          "endDate"   : this.state.year.substring(10, 15)+"-03-31",
+        },()=>{
+          var inputGetData = {
+            center_ID  : this.state.center_ID,
+            month      : this.state.month,
+            year       : this.state.year,
+            startRange : this.state.startRange,
+            limitRange : this.state.limitRange,
+            startDate  : this.state.startDate,
+            endDate    : this.state.endDate,
+          }
+          // console.log("inputGetData",inputGetData)
+          this.getData(inputGetData);
+        })
     });
   }
 
@@ -281,12 +284,19 @@ class PlanDetails extends Component{
             "startDate" : this.state.year.substring(3, 7)+"-04-01",
             "endDate"   : this.state.year.substring(10, 15)+"-03-31",
           },()=>{
-            // console.log('this.state.',this.state.startDate,this.state.endDate);
-            this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
+            var inputGetData = {
+              center_ID  : this.state.center_ID,
+              month      : this.state.month,
+              year       : this.state.year,
+              startRange : this.state.startRange,
+              limitRange : this.state.limitRange,
+              startDate  : this.state.startDate,
+              endDate    : this.state.endDate,
+            }
+            // console.log("inputGetData",inputGetData)
+            this.getData(inputGetData);
           })
         }
-
-        this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange, this.state.startDate, this.state.endDate);
         var upcomingFirstYear=parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -357,11 +367,12 @@ class PlanDetails extends Component{
                         <div className="row">  
                          <IAssureTable 
                             tableName = "Plan Details"
-                            id = "PlanDetails"
+                            id = "AnnualPlanDetails"
                             tableHeading={this.state.tableHeading}
                             twoLevelHeader={this.state.twoLevelHeader} 
                             dataCount={this.state.dataCount}
                             tableData={this.state.tableData}
+                            data={this.state.propsdata}
                             getData={this.getData.bind(this)}
                             tableObjects={this.state.tableObjects}
                           />
@@ -378,4 +389,4 @@ class PlanDetails extends Component{
     );
   }
 }
-export default PlanDetails
+export default AnnualPlanDetails

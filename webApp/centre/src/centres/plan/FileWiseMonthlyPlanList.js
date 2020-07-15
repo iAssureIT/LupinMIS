@@ -44,7 +44,7 @@ class FileWiseMonthlyPlanList extends Component{
             _id: a._id != null ? a._id : "-", 
           }
         })
-        console.log('tableData', tableData)
+        // console.log('tableData', tableData)
         this.setState({
           tableData : tableData
         })
@@ -81,13 +81,13 @@ class FileWiseMonthlyPlanList extends Component{
                   <hr className="hr-head"/>
                   <div className="col-lg-10 col-lg-offset-1 col-md-12 col-xs-12 col-sm-12">
                     <IAssureTable 
-                        id ="FileWiseMonthlyPlanList"
-                        tableHeading={this.state.tableHeading}
-                        twoLevelHeader={this.state.twoLevelHeader} 
-                        dataCount={this.state.dataCount}
-                        tableData={this.state.tableData}
-                        getData={this.getData.bind(this)}
-                        tableObjects={this.state.tableObjects}
+                        id            = "FileWiseMonthlyPlanList"
+                        tableHeading  = {this.state.tableHeading}
+                        twoLevelHeader= {this.state.twoLevelHeader} 
+                        dataCount     = {this.state.dataCount}
+                        tableData     = {this.state.tableData}
+                        getData       = {this.getData.bind(this)}
+                        tableObjects  = {this.state.tableObjects}
                       />
                   </div>
                 </div>

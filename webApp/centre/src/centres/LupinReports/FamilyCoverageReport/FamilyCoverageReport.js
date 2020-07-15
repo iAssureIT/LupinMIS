@@ -3,6 +3,7 @@ import $                    from 'jquery';
 import swal                 from 'sweetalert';
 import axios                from 'axios';
 import _                    from 'underscore';
+import jQuery               from 'jquery';
 import moment               from 'moment';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
@@ -441,7 +442,7 @@ class FamilyCoverageReport extends Component{
   }
       
   getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID, activity_ID, subActivity_ID){        
-    // console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
+    console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
       // var endDate = "2021-06-17"
       if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
         if(sector_ID==="all"){
@@ -588,6 +589,170 @@ class FamilyCoverageReport extends Component{
     }
   }
 
+  sortNumber(key, tableData){
+    var nameA = '';
+    var nameB = '';
+    var reA = /[^a-zA-Z]/g;
+    var reN = /[^0-9]/g;
+    var aN = 0;
+    var bN = 0;
+    var sortedData = tableData.sort((a, b)=> {
+      Object.entries(a).map( 
+        ([key1, value1], i)=> {
+          if(key === key1){
+            nameA = value1.replace(reA, "");        
+          }
+        }
+      );
+      Object.entries(b).map( 
+        ([key2, value2], i)=> {
+          if(key === key2){
+            nameB = value2.replace(reA, "");
+          }
+        }
+      );
+      if(this.state.sort === true){
+        this.setState({
+          sort    : false
+        })
+        if (nameA === nameB) {
+          Object.entries(a).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                aN = parseInt(value1.replace(reN, ""), 10);       
+              }
+            }
+          );
+          Object.entries(b).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                bN = parseInt(value1.replace(reN, ""), 10);         
+              }
+            }
+          );
+          if (aN < bN) {
+            return -1;
+          }
+          if (aN > bN) {
+            return 1;
+          }
+          return 0;
+        } else {
+
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        }
+      }else if(this.state.sort === false){
+        this.setState({
+          sort    : true
+        })
+        if (nameA === nameB) {
+          Object.entries(a).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                aN = parseInt(value1.replace(reN, ""), 10);     
+              }
+            }
+          );
+          Object.entries(b).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                bN = parseInt(value1.replace(reN, ""), 10);         
+              }
+            }
+          );
+          if (aN > bN) {
+            return -1;
+          }
+          if (aN < bN) {
+            return 1;
+          }
+          return 0;
+        } else {
+          if (nameA > nameB) {
+            return -1;
+          }
+          if (nameA < nameB) {
+            return 1;
+          }
+          return 0;
+        }
+      }       
+    });
+    this.setState({
+      tableData : sortedData,
+    });
+  }
+  sortString(key, tableData){
+    var nameA = '';
+    var nameB = '';
+    var sortedData = tableData.sort((a, b)=> {
+      Object.entries(a).map( 
+        ([key1, value1], i)=> {
+          if(key === key1){
+            if(jQuery.type( value1 ) === 'string'){
+              nameA = value1.toUpperCase();
+            }else{
+              nameA = value1;
+            }           
+          }
+        }
+      );
+      Object.entries(b).map( 
+        ([key2, value2], i)=> {
+          if(key === key2){
+            if(jQuery.type( value2 ) === 'string'){
+              nameB = value2.toUpperCase();
+            }else{
+              nameB = value2;
+            } 
+          }
+        }
+      );
+      if(this.state.sort === true){ 
+        this.setState({
+          sort    : false
+        })    
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      }else if(this.state.sort === false){
+        this.setState({
+          sort    : true
+        })  
+        if (nameA > nameB) {
+          return -1;
+        }
+        if (nameA < nameB) {
+          return 1;
+        }
+        return 0;
+      }
+    });
+    this.setState({
+      tableData : sortedData,
+    });
+  }
+  sort(event){
+    event.preventDefault();
+    var key = event.target.getAttribute('id');
+    var tableData = this.state.tableData;
+    console.log('tableData',key,tableData);
+    if(key === 'number'){
+      this.sortNumber(key, tableData);
+    }else{
+      this.sortString(key, tableData);
+    }
+  }
   printTable(event){
     var DocumentContainer = document.getElementById('section-to-screen');
     var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
@@ -831,70 +996,75 @@ class FamilyCoverageReport extends Component{
                                   </th>
                                   <th id="name_family" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col1">Family Head Name</div>
-                                    <span id="name_family" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="name_family" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="familyID" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col2">Family ID</div>
-                                    <span id="familyID" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="familyID" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="projectCategoryType" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col3">Project Category</div>
-                                    <span id="projectCategoryType" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="projectCategoryType" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="projectName" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col4">Project Name</div>
-                                    <span id="projectName" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="projectName" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="name" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col5">Sector</div>
-                                    <span id="name" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="name" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col6">Activity</div>
-                                    <span id="activityName" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="activityName" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="subactivityName" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col7">Subactivity</div>
-                                    <span id="subactivityName" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="subactivityName" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="unit" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col8">Unit</div>
-                                    <span id="unit" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="unit" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col9">Unit Cost</div>
-                                    <span id="UnitCost" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="UnitCost" className="fa fa-sort tableSort"></span>
                                   </th>
                                  <th id="quantity" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col10">Quantity</div>
-                                    <span id="quantity" className="fa fa-sort tableSort"></span></th><th id="total" className="umDynamicHeader srpadd textAlignLeft "><div className="wrapWord col11">Total</div><span id="total" className="fa fa-sort tableSort"></span></th>
+                                    <span onClick={this.sort.bind(this)}  id="quantity" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="total" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col11">Total</div>
+                                    <span onClick={this.sort.bind(this)}  id="total" className="fa fa-sort tableSort"></span>
+                                  </th>
                                   <th id="LHWRF" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col12">LHWRF</div>
-                                    <span id="LHWRF" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="LHWRF" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="NABARD" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col13">NABARD</div>
-                                    <span id="NABARD" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="NABARD" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="Bank_Loan" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col14">Bank Loan</div>
-                                    <span id="Bank_Loan" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="Bank_Loan" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="Govt" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col15">Govt</div>
-                                    <span id="Govt" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="Govt" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="DirectCC" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col16">DirectCC</div>
-                                    <span id="DirectCC" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="DirectCC" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="IndirectCC" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col17">IndirectCC</div>
-                                    <span id="IndirectCC" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="IndirectCC" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="Other" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col18">Other</div>
-                                    <span id="Other" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
                                   </th>
                                   {/*<th id="village" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col19">Village</div>

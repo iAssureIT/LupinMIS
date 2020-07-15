@@ -694,16 +694,6 @@ class PlanDetails extends Component{
       "availableSubActivity": [],
       tableObjects,
     },()=>{
-      var inputGetData = {
-        center_ID  : this.state.center_ID,
-        month      : this.state.month,
-        year       : this.state.year,
-        startRange : this.state.startRange,
-        limitRange : this.state.limitRange,
-        startDate  : this.state.startDate,
-        endDate    : this.state.endDate,
-      }
-      this.getData(inputGetData);
       if(this.state.year){
         // console.log('month ======', this.state.month, this.state.year)
         var month = this.state.month;
@@ -713,47 +703,86 @@ class PlanDetails extends Component{
             "startDate" : year.substring(3, 7)+"-04-01",
             "endDate"   : year.substring(10, 15)+"-03-31",
           },()=>{
-            // console.log('this.state.',this.state.startDate,this.state.endDate);
-          })
+            var inputGetData = {
+              center_ID  : this.state.center_ID,
+              month      : this.state.month,
+              year       : this.state.year,
+              startRange : this.state.startRange,
+              limitRange : this.state.limitRange,
+              startDate  : this.state.startDate,
+              endDate    : this.state.endDate,
+            }
+            // console.log("inputGetData",inputGetData)
+            this.getData(inputGetData);          })
         }else if(month==="Q1 (April to June)"){
           this.setState({
             "startDate" : year.substring(3, 7)+"-04-01",
             "endDate"   : year.substring(3, 7)+"-06-30",    
           },()=>{
-            // console.log('this.state.',this.state.startDate,this.state.endDate);
+            var inputGetData = {
+              center_ID  : this.state.center_ID,
+              month      : this.state.month,
+              year       : this.state.year,
+              startRange : this.state.startRange,
+              limitRange : this.state.limitRange,
+              startDate  : this.state.startDate,
+              endDate    : this.state.endDate,
+            }
+            // console.log("inputGetData",inputGetData)
+            this.getData(inputGetData);
           })
         }else if(month==="Q2 (July to September)"){
           this.setState({
             "startDate" : year.substring(3, 7)+"-07-01",
             "endDate"   : year.substring(3, 7)+"-09-30",    
           },()=>{
-            // console.log('this.state.',this.state.startDate,this.state.endDate);
+            var inputGetData = {
+              center_ID  : this.state.center_ID,
+              month      : this.state.month,
+              year       : this.state.year,
+              startRange : this.state.startRange,
+              limitRange : this.state.limitRange,
+              startDate  : this.state.startDate,
+              endDate    : this.state.endDate,
+            }
+            // console.log("inputGetData",inputGetData)
+            this.getData(inputGetData);
           })
         }else if(month==="Q3 (October to December)"){
           this.setState({
             "startDate" : year.substring(3, 7)+"-10-01",
             "endDate"   : year.substring(3, 7)+"-12-31",
           },()=>{
-            // console.log('this.state.',this.state.startDate,this.state.endDate);
+            var inputGetData = {
+              center_ID  : this.state.center_ID,
+              month      : this.state.month,
+              year       : this.state.year,
+              startRange : this.state.startRange,
+              limitRange : this.state.limitRange,
+              startDate  : this.state.startDate,
+              endDate    : this.state.endDate,
+            }
+            // console.log("inputGetData",inputGetData)
+            this.getData(inputGetData);
           })
         }else if(month==="Q4 (January to March)"){
           this.setState({
             "startDate" : year.substring(10, 15)+"-01-01",
             "endDate"   : year.substring(10, 15)+"-03-31",
           },()=>{
-            // console.log('this.state.',this.state.startDate,this.state.endDate);
+            var inputGetData = {
+              center_ID  : this.state.center_ID,
+              month      : this.state.month,
+              year       : this.state.year,
+              startRange : this.state.startRange,
+              limitRange : this.state.limitRange,
+              startDate  : this.state.startDate,
+              endDate    : this.state.endDate,
+            }
+            // console.log("inputGetData",inputGetData)
+            this.getData(inputGetData);
           })
         }
-        var inputGetData = {
-          center_ID  : this.state.center_ID,
-          month      : this.state.month,
-          year       : this.state.year,
-          startRange : this.state.startRange,
-          limitRange : this.state.limitRange,
-          startDate  : this.state.startDate,
-          endDate    : this.state.endDate,
-        }
-        this.getData(inputGetData);
       }
     });
   }
@@ -912,17 +941,75 @@ class PlanDetails extends Component{
       [event.target.name] : event.target.value,
       fields
     },()=>{
-      var inputGetData = {
-        center_ID  : this.state.center_ID,
-        month      : this.state.month,
-        year       : this.state.year,
-        startRange : this.state.startRange,
-        limitRange : this.state.limitRange,
-        startDate  : this.state.startDate,
-        endDate    : this.state.endDate,
+      if(this.state.month==="Q1 (April to June)"){
+        this.setState({
+          "startDate" : this.state.year.substring(3, 7)+"-04-01",
+          "endDate"   : this.state.year.substring(3, 7)+"-06-30",    
+        },()=>{          
+          var inputGetData = {
+            center_ID  : this.state.center_ID,
+            month      : this.state.month,
+            year       : this.state.year,
+            startRange : this.state.startRange,
+            limitRange : this.state.limitRange,
+            startDate  : this.state.startDate,
+            endDate    : this.state.endDate,
+          }
+          // console.log("inputGetData",inputGetData)
+          this.getData(inputGetData);
+        })
+      }else if(this.state.month==="Q2 (July to September)"){
+        this.setState({
+          "startDate" : this.state.year.substring(3, 7)+"-07-01",
+          "endDate"   : this.state.year.substring(3, 7)+"-09-30",    
+        },()=>{          
+          var inputGetData = {
+            center_ID  : this.state.center_ID,
+            month      : this.state.month,
+            year       : this.state.year,
+            startRange : this.state.startRange,
+            limitRange : this.state.limitRange,
+            startDate  : this.state.startDate,
+            endDate    : this.state.endDate,
+          }
+          // console.log("inputGetData",inputGetData)
+          this.getData(inputGetData);
+        })
+      }else if(this.state.month==="Q3 (October to December)"){
+        this.setState({
+          "startDate" : this.state.year.substring(3, 7)+"-10-01",
+          "endDate"   : this.state.year.substring(3, 7)+"-12-31",
+        },()=>{          
+          var inputGetData = {
+            center_ID  : this.state.center_ID,
+            month      : this.state.month,
+            year       : this.state.year,
+            startRange : this.state.startRange,
+            limitRange : this.state.limitRange,
+            startDate  : this.state.startDate,
+            endDate    : this.state.endDate,
+          }
+          // console.log("inputGetData",inputGetData)
+          this.getData(inputGetData);
+        })
+      }else if(this.state.month==="Q4 (January to March)"){
+        this.setState({
+          "startDate" : this.state.year.substring(10, 15)+"-01-01",
+          "endDate"   : this.state.year.substring(10, 15)+"-03-31",
+        },()=>{          
+          var inputGetData = {
+            center_ID  : this.state.center_ID,
+            month      : this.state.month,
+            year       : this.state.year,
+            startRange : this.state.startRange,
+            limitRange : this.state.limitRange,
+            startDate  : this.state.startDate,
+            endDate    : this.state.endDate,
+          }
+          // console.log("inputGetData",inputGetData)
+          this.getData(inputGetData);
+        })
       }
-      // console.log("inputGetData",inputGetData)
-      this.getData(inputGetData);
     });
     if (this.validateForm()) {
       let errors = {};

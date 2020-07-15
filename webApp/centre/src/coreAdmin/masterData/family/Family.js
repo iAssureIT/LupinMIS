@@ -495,7 +495,7 @@ class Family extends Component{
           "shown"                   : false,
         },()=>{
           this.getAvailableCenter(this.state.center_ID);
-          console.log('editdata',this.state);
+          // console.log('editdata',this.state);
         });
         let fields = this.state.fields;
         let errors = {};
@@ -809,7 +809,6 @@ class Family extends Component{
               "village"   : a.village     ? a.village : '-'
           }
         })
-
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
         return{
             "familyID"        : a.familyID        ? a.familyID    : '-',
@@ -824,7 +823,6 @@ class Family extends Component{
             "block" : a.block ? a.block : '-', 
             "village"   : a.village     ? a.village : '-',
             "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
-            
         }
         })
         this.setState({
@@ -1300,8 +1298,6 @@ class Family extends Component{
         </div>
       </div>
     );
-
   }
-
 }
 export default Family

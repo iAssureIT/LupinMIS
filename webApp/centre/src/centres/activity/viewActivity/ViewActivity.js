@@ -127,7 +127,7 @@ class ViewActivity extends Component{
   }
 
   getData(startRange, limitRange, center_ID, year){ 
-    console.log(startRange, limitRange, center_ID, year);
+    // console.log(startRange, limitRange, center_ID, year);
     var data = {
       limitRange : limitRange,
       startRange : startRange,

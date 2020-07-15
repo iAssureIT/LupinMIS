@@ -919,7 +919,7 @@ class Activity extends Component{
       this.setState({
         year       :financialYear
       },()=>{
-        if(this.state.year){
+        if(this.state.year && center_ID){
           var startDate = this.state.year.substring(3, 7)+"-04-01";
           var endDate = this.state.year.substring(10, 15)+"-03-31";    
           //localhost:3054/api/activityReport/list/5e034ce62d2479a2ed5707ed/2019-04-01/2019-04-31
@@ -1060,11 +1060,11 @@ class Activity extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    // this.getToggleValue();
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     this.getLength(this.state.center_ID);
     this.getAvailableProjectName();
     this.getAvailableCenter(this.state.center_ID);
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+    // this.getToggleValue();
     // console.log("center_ID =",this.state.center_ID);
     });
   }
