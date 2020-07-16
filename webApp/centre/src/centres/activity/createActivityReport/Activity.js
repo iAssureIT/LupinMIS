@@ -1590,7 +1590,7 @@ class Activity extends Component{
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
                         Activity Reporting                                     
                      </div>
-                    <hr className="hr-head container-flui7d row"/>
+                    <hr className="hr-head container-fluid row"/>
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                       <h4 className="col-lg-5 col-md-6 col-xs-12 col-sm-12 pageSubHeader NOpadding">Activity Details</h4>
                       <ul className="nav tabNav nav-pills col-lg-7 col-md-6 col-sm-12 col-xs-12 NOpadding">
