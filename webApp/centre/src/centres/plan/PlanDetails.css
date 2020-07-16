@@ -5,7 +5,10 @@
 	text-align: left !important;
 }
 
-#PlanDetails .col1, #PlanDetails .col3, #PlanDetails .col4 {
+#PlanDetails .col1{
+	width: 100px;
+}
+#PlanDetails .col3, #PlanDetails .col4 {
 	width: 80px;
 }
 #PlanDetails .col5, #PlanDetails .col6, #PlanDetails .col7, #PlanDetails .col21{

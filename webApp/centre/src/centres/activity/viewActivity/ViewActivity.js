@@ -86,6 +86,7 @@ class ViewActivity extends Component{
       "tableObjects"               : {
         deleteMethod               : 'delete',
         apiLink                    : '/api/activityReport/',
+        downloadApply              : true,
         paginationApply            : false,
         searchApply                : false,
         editUrl                    : '/activity/'
@@ -269,7 +270,6 @@ class ViewActivity extends Component{
                      </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-                 
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div className="col-lg-4 col-md-4 col-lg-offset-4 col-md-offset-4 col-sm-12 col-xs-12">
                       <label className="formLable">Year</label><span className="asterix"></span>
@@ -288,8 +288,7 @@ class ViewActivity extends Component{
                       </div>
                     </div> 
                   </div> 
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <IAssureTable 
                       tableName = "Activity Report"
                       id = "activityReport"

@@ -36,7 +36,7 @@ class BulkUpload extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      this.props.getData(this.props.propsdata ? this.props.propsdata : (this.state.startRange, this.state.limitRange, this.state.center_ID));
+      this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
     });
   }
           
@@ -269,7 +269,7 @@ class BulkUpload extends Component{
                 $('.fullpageloader').hide();
                 $('.filedetailsDiv').show();
                 this.props.getFileDetails(this.state.fileName) 
-                this.props.getData(this.props.propsdata ? this.props.propsdata : (this.state.startRange, this.state.limitRange, this.state.center_ID));
+                this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
               }
               this.setState({percentage:percentage},()=>{})
               chunkData = [];

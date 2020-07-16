@@ -957,11 +957,12 @@ class centerDetail extends Component{
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                              <hr />
                           </div>
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div className="col-lg-8 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
                             <h5 className="">Villages Covered</h5>                                     
                             <table className="table iAssureITtable-bordered table-striped table-hover">
                               <thead className="tempTableHeader">
                                 <tr>
+                                  <th>Sr No.</th>
                                   <th>District</th>
                                   <th>Block</th>
                                   <th>Villages</th>
@@ -973,6 +974,7 @@ class centerDetail extends Component{
                                 this.state.selectedVillages.map((data, index)=>{
                                   return(
                                     <tr key={index}>
+                                      <td className="textAlignCenter">{index+1}</td>
                                       <td>{data.district.split('|')[0]}</td>
                                       <td>{data.block}</td>
                                       <td>{data.village}</td>
