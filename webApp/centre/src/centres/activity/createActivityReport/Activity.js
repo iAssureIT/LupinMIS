@@ -143,7 +143,7 @@ class Activity extends Component{
         remark                     : "Remark",
       },
       failedtableHeading           :{
-        projectCategoryType        : "Program Type",
+        programCategory            : "Program Type",
         projectName                : "Project Name",
         date                       : "Date",
         place                      : "Place",
@@ -187,7 +187,7 @@ class Activity extends Component{
         remark                     : "Remark",
       },
       bTypeActivityfailedtableHeading           :{
-        projectCategoryType        : "Program Type",
+        programCategory            : "Program Type",
         projectName                : "Project Name",
         date                       : "Date",
         place                      : "Place",
@@ -1403,7 +1403,7 @@ class Activity extends Component{
 
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
-            "projectCategoryType" : a.projectCategoryType ? a.projectCategoryType    : '-',
+            "programCategory"     : a.programCategory ? a.programCategory    : '-',
             "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
             "date"                : a.date                ? a.date : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
@@ -1439,6 +1439,7 @@ class Activity extends Component{
     axios
     .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
+      console.log('response',response);
       $('.fullpageloader').hide();  
       if(response&&response.data) {
         this.setState({
@@ -1473,7 +1474,7 @@ class Activity extends Component{
 
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
-            "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
+            "programCategory"     : a.programCategory        ? a.programCategory    : '-',
             "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
             "date"                : a.date     ? a.date : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
@@ -1505,7 +1506,7 @@ class Activity extends Component{
           
     }) 
   }  
-  getBenefiaciaryFileDetails(fileName){   
+  /*getBenefiaciaryFileDetails(fileName){   
     axios
     .get(this.state.beneficiaryFileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
@@ -1575,7 +1576,7 @@ class Activity extends Component{
           
     }) 
   }
-
+*/
   render() {
     // console.log('this.state.bActivityActive',this.state.bActivityActive);
     return (
