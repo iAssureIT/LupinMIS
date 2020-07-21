@@ -83,6 +83,33 @@ class ViewActivity extends Component{
         remark                     : "Remark",
         viewactions                : 'Action',
       },
+      "downloadtableHeading"      : {
+        projectCategoryType        : "Program Type",
+        projectName                : "Project Name",
+        date                       : "Intervention Date",
+        district                   : "District",
+        block                      : "Block",
+        village                    : "Village",
+        location                   : "Location",
+        sectorName                 : "Sector",
+        activityName               : "Activity",
+        typeofactivity             : "Type of activity",
+        subactivityName            : "Sub-Activity",
+        unit                       : "Unit",
+        unitCost                   : "Unit Cost",
+        quantity                   : "Quantity",
+        totalcost                  : "Total Cost",
+        numofBeneficiaries         : "Beneficiary",
+        LHWRF                      : "LHWRF",
+        NABARD                     : "NABARD",
+        bankLoan                   : "Bank",
+        govtscheme                 : "Government",
+        directCC                   : "DirectCC",
+        indirectCC                 : "IndirectCC",
+        other                      : "Other",
+        // total                      : "Total",
+        remark                     : "Remark",
+      },
       "tableObjects"               : {
         deleteMethod               : 'delete',
         apiLink                    : '/api/activityReport/',
@@ -133,7 +160,7 @@ class ViewActivity extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
-    $(".fullpageloader").show();
+    // $(".fullpageloader").show();
     if(year){
       var startDate = this.state.year.substring(3, 7)+"-04-01";
       var endDate = this.state.year.substring(10, 15)+"-03-31";    
@@ -141,7 +168,7 @@ class ViewActivity extends Component{
       // axios.post('/api/activityReport/list/'+center_ID, data)
       .then((response)=>{
         console.log(startDate,endDate);
-      $(".fullpageloader").hide();
+      // $(".fullpageloader").hide();
         console.log("response",response);
         var tableData = response.data.map((a, i)=>{
           return {
@@ -169,8 +196,39 @@ class ViewActivity extends Component{
             remark                     : a.remark,
           }
         })
+        var downloadData = response.data.map((a, i)=>{
+          return {
+            _id                        : a._id,
+            projectCategoryType        : a.projectCategoryType,
+            projectName                : a.projectName==='all'?'-':a.projectName,
+            date                       : moment(a.date).format('DD-MM-YYYY'),
+            district                   : a.district,
+            block                      : a.block,
+            village                    : a.village,
+            location                   : a.location,
+            sectorName                 : a.sectorName,
+            activityName               : a.activityName,
+            typeofactivity             : a.typeofactivity,
+            subactivityName            : a.subactivityName,
+            unit                       : a.unit,
+            unitCost                   : this.addCommas(a.unitCost),
+            quantity                   : this.addCommas(a.quantity),
+            totalcost                  : this.addCommas(a.totalcost),
+            // numofBeneficiaries         :( a.numofBeneficiaries !=="0") ||( a.numofBeneficiaries !==0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+            numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+            LHWRF                      : this.addCommas(a.LHWRF),
+            NABARD                     : this.addCommas(a.NABARD),
+            bankLoan                   : this.addCommas(a.bankLoan),
+            govtscheme                 : this.addCommas(a.govtscheme),
+            directCC                   : this.addCommas(a.directCC),
+            indirectCC                 : this.addCommas(a.indirectCC),
+            other                      : this.addCommas(a.other),
+            remark                     : a.remark,
+          }
+        })
         this.setState({
-          tableData : tableData
+          tableData : tableData,
+          downloadData : downloadData
         })
       })
       .catch(function(error){      
@@ -292,6 +350,8 @@ class ViewActivity extends Component{
                     <IAssureTable 
                       tableName = "Activity Report"
                       id = "activityReport"
+                      downloadtableHeading={this.state.downloadtableHeading}
+                      downloadData={this.state.downloadData}
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.dataCount}

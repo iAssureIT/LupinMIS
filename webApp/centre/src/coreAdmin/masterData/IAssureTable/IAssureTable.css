@@ -1,3 +1,6 @@
+.displayTable{
+  display: none;
+}
 .actionDiv{
   width: 60px;
 }

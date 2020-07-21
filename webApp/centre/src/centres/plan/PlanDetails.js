@@ -81,6 +81,29 @@ class PlanDetails extends Component{
         remark              : "Remark",
         actions             : 'Action',
       },
+      "downloadtableHeading"        : {
+        month               : "Month",
+        year                : "Year",
+        projectCategoryType : "Program Type",
+        projectName         : "Project Name",
+        sectorName          : "Sector",
+        activityName        : "Activity",
+        subactivityName     : "Sub-Activity",
+        unit                : "Unit",
+        physicalUnit        : "Phy Unit",
+        unitCost            : "Unit Cost",
+        totalBudget         : "Total Cost",
+        noOfBeneficiaries   : "Beneficiary",
+        noOfFamilies        : "Families",
+        LHWRF               : "LHWRF",
+        NABARD              : "NABARD",
+        bankLoan            : "Bank",
+        govtscheme          : "Government",
+        directCC            : "DirectCC",
+        indirectCC          : "IndirectCC",
+        other               : "Other",
+        remark              : "Remark",
+      },
       "tableObjects"        : {
         deleteMethod        : 'delete',
         apiLink             : '/api/monthlyplans/',
@@ -850,7 +873,8 @@ class PlanDetails extends Component{
           }
         })
         this.setState({
-          tableData : tableData
+          tableData : tableData,
+          downloadData : tableData
         });
       })
       .catch(function(error){
@@ -1782,6 +1806,8 @@ class PlanDetails extends Component{
                          <IAssureTable 
                             tableName = "Plan Details"
                             id = "PlanDetails"
+                            downloadtableHeading={this.state.downloadtableHeading}
+                            downloadData={this.state.downloadData}
                             tableHeading={this.state.tableHeading}
                             twoLevelHeader={this.state.twoLevelHeader} 
                             dataCount={this.state.dataCount}

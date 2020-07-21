@@ -5,6 +5,7 @@ import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
+import IAssureTableTable                 from '../../coreAdmin/masterData/IAssureTable/IAssureTable.js';
 import { Link } from 'react-router-dom';
 
 import './IAssureTable.css';
@@ -19,6 +20,7 @@ class IAssureTable extends Component {
 		this.state = {
 			"dataCount" 				: props && props.dataCount ? props.dataCount : [],
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
+		    "downloadData" 				: props && props.downloadData ? props.downloadData : [],
 		    "tableName" 				: props && props.tableName ? props.tableName : [],
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
 		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
@@ -92,14 +94,17 @@ class IAssureTable extends Component {
 	    },()=>{
 		    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }); 
+	    this.getDwldData();
       // this.palindrome('Moam');
       this.setState({
       	tableHeading	: this.props.tableHeading,
       	tableData 		: this.props.tableData,
+      	downloadData    : this.props.downloadData,
       	tableName 		: this.props.tableName,
       	dataCount 		: this.props.dataCount,
       	id 				: this.props.id,
       });
+
 
       // this.paginationFunction();
 	}
@@ -108,6 +113,7 @@ class IAssureTable extends Component {
 	        this.setState({
 	            id	            : nextProps.id,
 	            tableData	    : nextProps.tableData,
+      			downloadData    : nextProps.downloadData,
 	            tableName	    : nextProps.tableName,
 	            dataCount 		: nextProps.dataCount,
 	            data 	     	: nextProps.data,
@@ -576,6 +582,9 @@ class IAssureTable extends Component {
 	    WindowObject.print();
 	    WindowObject.close();
     }
+    getDwldData(){
+	    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
+    }
 	render() {
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
@@ -593,7 +602,7 @@ class IAssureTable extends Component {
 	       	}
 	       
 	       	{ this.state.tableObjects.downloadApply === true ?
-                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 ?
+                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 && !this.state.downloadData ?
                 <React.Fragment>
           
                     <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
@@ -605,6 +614,39 @@ class IAssureTable extends Component {
                                 sheet="tablexls"
                                 filename={this.state.tableName}
                                 buttonText=""/>
+                    </div>
+                </React.Fragment>
+                    : null
+                
+                : null
+            }   
+            {/*console.log("this.state.downloadData",this.state.downloadData)*/}
+            {/*console.log("this.state.id",this.state.id)*/}
+            { this.state.tableObjects.downloadApply === true ?
+                this.state.downloadData && this.state.id && this.state.tableName && this.state.downloadData.length != 0 ?
+                <React.Fragment>
+          
+                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+                           <ReactHTMLTableToExcel
+                                id="table-to-xls"                           
+                                className="download-table-xls-button fa fa-download tableicons pull-right"
+                                table={this.state.id}
+                                sheet="tablexls"
+                                filename={this.state.tableName}
+                                buttonText=""
+                            />
+                            <IAssureTableTable 
+	                          tableName = {this.state.tableName}
+	                          id = {this.state.id}
+	                          displayTable = "displayTable"
+	                          data={this.props.propsdata}
+	                          getData={this.getDwldData.bind(this)}
+	                          tableHeading={this.props.downloadtableHeading}
+                          	  twoLevelHeader={this.props.twoLevelHeader} 
+	                          tableData={this.state.downloadData}
+	                          tableObjects={this.state.tableObjects}                          
+	                        />
                     </div>
                 </React.Fragment>
                     : null

@@ -5,16 +5,20 @@
 	width: 80px;
 }
 #Family .col2{
-	width: 160px;
+	width: 80px;
 }
 #Family .col6, #Family .col7, #Family .col5{
-	width: 90px;
+	width: 80px;
 }
 #Family .col8, #Family .col9, #Family .col10, #Family .col11, #Family .col12, #Family .col13{
-	width: 90px;
+	width: 70px;
 }
 
-#Family .col14{
+#Family .col14, #Family .col15{
+    width: 70px !important;
+}
+
+#Family .col16{
     width: 60px !important;
 }
 

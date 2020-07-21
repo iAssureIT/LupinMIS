@@ -52,7 +52,10 @@ class Family extends Component{
       },
       "tableHeading"          : {
         familyID              : "Family ID",
-        nameOfFH              : "Name of Family Head",
+        surnameOfFH           : "Surname",
+        firstNameOfFH         : "FirstName",
+        middleNameOfFH        : "MiddleName",
+        // nameOfFH              : "Name of Family Head",
         FHGender              : "Gender",
         FHYearOfBirth         : "Birth Year",
         uidNumber             : "UID Number",
@@ -66,6 +69,24 @@ class Family extends Component{
         village               : "Village",
         actions               : 'Action',
       },            
+      "downloadtableHeading"          : {
+        familyID              : "Family ID",
+        surnameOfFH           : "Surname",
+        firstNameOfFH         : "FirstName",
+        middleNameOfFH        : "MiddleName",
+        // nameOfFH              : "Name of Family Head",
+        FHGender              : "Gender",
+        FHYearOfBirth         : "Birth Year",
+        uidNumber             : "UID Number",
+        contactNumber         : "Contact Number",
+        caste                 : "Caste",
+        landCategory          : "Land holding Category",        
+        incomeCategory        : "Income Category",        
+        specialCategory       : "Special Category",        
+        dist                  : "District",
+        block                 : "Block",
+        village               : "Village",
+      },            
       // "startRange"            : 0,
       // "limitRange"            : 10000,
       "editId"                : this.props.match.params ? this.props.match.params.id : '',    
@@ -74,7 +95,10 @@ class Family extends Component{
       failedRecordsTable      : [],
       goodRecordsHeading :{
         familyID              : "Family ID",
-        nameOfFH              : "Name of Family Head",
+        surnameOfFH           : "Surname",
+        firstNameOfFH         : "FirstName",
+        middleNameOfFH        : "MiddleName",
+        // nameOfFH              : "Name of Family Head",
         uidNumber             : "UID Number",
         contactNumber         : "Contact Number",
         caste                 : "Caste",
@@ -86,18 +110,21 @@ class Family extends Component{
         village               : "Village"
       },
       failedtableHeading :{
-          familyID              : "Family ID",
-          nameOfFH              : "Name of Family Head",
-          uidNumber             : "UID Number",
-          contactNumber         : "Contact Number",
-          caste                 : "Caste",
-          landCategory          : "Land holding Category",        
-          incomeCategory        : "Income Category",        
-          specialCategory       : "Special Category",        
-          dist                  : "District",
-          block                 : "Block",
-          village               : "Village",
-          failedRemark          :  "Failed Data Remark"
+        familyID              : "Family ID",
+        surnameOfFH           : "Surname",
+        firstNameOfFH         : "FirstName",
+        middleNameOfFH        : "MiddleName",
+        // nameOfFH              : "Name of Family Head",
+        uidNumber             : "UID Number",
+        contactNumber         : "Contact Number",
+        caste                 : "Caste",
+        landCategory          : "Land holding Category",        
+        incomeCategory        : "Income Category",        
+        specialCategory       : "Special Category",        
+        dist                  : "District",
+        block                 : "Block",
+        village               : "Village",
+        failedRemark          :  "Failed Data Remark"
       }
     }
     this.uploadedData = this.uploadedData.bind(this);
@@ -128,7 +155,6 @@ class Family extends Component{
       this.getData(inputGetData);
     }
   }
-  
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     if(this.state.editId){      
@@ -244,8 +270,7 @@ class Family extends Component{
         }
       }
     });
-  }
- 
+  } 
   handleChange(event){
     event.preventDefault();
     this.setState({
@@ -275,11 +300,10 @@ class Family extends Component{
       return true;
     } 
   }
-
   SubmitFamily(event){    
-  event.preventDefault();
-  if($('#createFamily').valid()){
-    var familyValues={
+    event.preventDefault();
+    if($('#createFamily').valid()){
+      var familyValues={
       "family_ID"            :this.state.editId, 
       "center_ID"            :this.state.center_ID,
       "center"               :this.state.centerName,
@@ -298,8 +322,8 @@ class Family extends Component{
       "village"              :this.refs.village.value, 
       "FHYearOfBirth"        :this.state.FHYearOfBirth ? (this.state.FHYearOfBirth).year(): "-",
       "FHGender"             :this.refs.FHGender.value ? this.refs.FHGender.value : "-",
-    };
-    axios.post('/api/families',familyValues)
+      };
+      axios.post('/api/families',familyValues)
       .then((response)=>{
           console.log('response', response);
         if(response.data.message==="UID Already Exists"){
@@ -355,7 +379,6 @@ class Family extends Component{
       });
     }    
   }
-
   UpdateFamily(event){
     event.preventDefault();
     if($('#createFamily').valid()){
@@ -557,7 +580,9 @@ class Family extends Component{
           return {
             _id                   : a._id,
             familyID              : a.familyID,
-            nameOfFH              : a.nameOfFH,
+            surnameOfFH           : a.surnameOfFH,
+            firstNameOfFH         : a.firstNameOfFH,
+            middleNameOfFH        : a.middleNameOfFH,
             FHGender              : a.FHGender,
             FHYearOfBirth         : a.FHYearOfBirth,
             uidNumber             : a.uidNumber,
@@ -572,7 +597,11 @@ class Family extends Component{
           }
         })
         this.setState({
-          tableData : tableData
+          tableData : tableData,
+          downloadData : tableData,
+        },()=>{
+          // console.log("tableData",this.state.tableData)
+          // console.log("downloadData",this.state.downloadData)
         })
       })    
       .catch(function(error){      
@@ -797,32 +826,38 @@ class Family extends Component{
            
           return{
               "familyID"        : a.familyID        ? a.familyID    : '-',
-              "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
+              "surnameOfFH"     : a.surnameOfFH,
+              "firstNameOfFH"   : a.firstNameOfFH,
+              "middleNameOfFH"  : a.middleNameOfFH,
+              // "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
               "uidNumber"       : a.uidNumber     ? a.uidNumber : '-',
               "contactNumber"   : a.contactNumber     ? a.contactNumber : '-',
               "caste"           : a.caste     ? a.caste : '-',
-              "landCategory"   : a.landCategory     ? a.landCategory : '-',
-              "incomeCategory"      : a.incomeCategory     ? a.incomeCategory : '-',
-              "specialCategory"   : a.specialCategory     ? a.specialCategory : '-',
-              "dist" : a.dist ? a.dist : '-',
-              "block" : a.block ? a.block : '-', 
-              "village"   : a.village     ? a.village : '-'
+              "landCategory"    : a.landCategory     ? a.landCategory : '-',
+              "incomeCategory"  : a.incomeCategory     ? a.incomeCategory : '-',
+              "specialCategory" : a.specialCategory     ? a.specialCategory : '-',
+              "dist"            : a.dist ? a.dist : '-',
+              "block"           : a.block ? a.block : '-', 
+              "village"         : a.village     ? a.village : '-'
           }
         })
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
         return{
-            "familyID"        : a.familyID        ? a.familyID    : '-',
-            "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
-            "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
-            "contactNumber"         : a.contactNumber     ? a.contactNumber : '-',
-            "caste"   : a.caste     ? a.caste : '-',
-            "landCategory"   : a.landCategory     ? a.landCategory : '-',
-            "incomeCategory"      : a.incomeCategory     ? a.incomeCategory : '-',
+            "familyID"          : a.familyID        ? a.familyID    : '-',
+            "surnameOfFH"       : a.surnameOfFH,
+            "firstNameOfFH"     : a.firstNameOfFH,
+            "middleNameOfFH"    : a.middleNameOfFH,
+            // "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
+            "uidNumber"         : a.uidNumber     ? a.uidNumber : '-',
+            "contactNumber"     : a.contactNumber     ? a.contactNumber : '-',
+            "caste"             : a.caste     ? a.caste : '-',
+            "landCategory"      : a.landCategory     ? a.landCategory : '-',
+            "incomeCategory"    : a.incomeCategory     ? a.incomeCategory : '-',
             "specialCategory"   : a.specialCategory     ? a.specialCategory : '-',
-            "dist" : a.dist ? a.dist : '-',
-            "block" : a.block ? a.block : '-', 
-            "village"   : a.village     ? a.village : '-',
-            "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
+            "dist"              : a.dist ? a.dist : '-',
+            "block"             : a.block ? a.block : '-', 
+            "village"           : a.village     ? a.village : '-',
+            "failedRemark"      : a.failedRemark     ? a.failedRemark : '-'
         }
         })
         this.setState({
@@ -852,7 +887,10 @@ class Family extends Component{
               return {
                 _id                   : a._id,
                 familyID              : a.familyID,
-                nameOfFH              : a.surnameOfFH+" "+a.firstNameOfFH+" "+a.middleNameOfFH,
+                surnameOfFH           : a.surnameOfFH,
+                firstNameOfFH         : a.firstNameOfFH,
+                middleNameOfFH        : a.middleNameOfFH,
+                // nameOfFH              : a.surnameOfFH+" "+a.firstNameOfFH+" "+a.middleNameOfFH,
                 FHGender              : a.FHGender,
                 FHYearOfBirth         : a.FHYearOfBirth,
                 uidNumber             : a.uidNumber,
@@ -1256,6 +1294,8 @@ class Family extends Component{
                         <IAssureTable 
                           tableName = "Family"
                           id = "Family"
+                          downloadtableHeading={this.state.downloadtableHeading}
+                          downloadData={this.state.downloadData}
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}

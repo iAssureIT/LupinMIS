@@ -588,7 +588,7 @@ class IAssureTable extends Component {
     }
 	render() {
         return (
-	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
+	       	<div id="tableComponent" className={this.props.displayTable ? this.props.displayTable : " "+ "col-lg-12 col-sm-12 col-md-12 col-xs-12"}>	
 	       	{
 	       		this.state.tableObjects.searchApply === true ? 
 		       		<div className="col-lg-4 col-md-4  col-xs-12 col-sm-12 marginTop8 NOpadding pull-left">
@@ -652,7 +652,7 @@ class IAssureTable extends Component {
 
 
 	            	{/* ===  Display Table === */}
-	                <div className="table-responsive" id="section-to-screen">
+	                <div className="table-responsive" id="section-to-screen" >
 						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
 	                        <thead className="tempTableHeader fixedHeader">	     
 		                        <tr className="tempTableHeader">

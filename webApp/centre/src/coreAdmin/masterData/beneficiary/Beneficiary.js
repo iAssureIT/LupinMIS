@@ -40,7 +40,10 @@ class Beneficiary extends Component{
       "tableHeading"        : {
         beneficiaryID       : "Beneficiary ID",
         familyID            : "Family ID",
-        nameofbeneficiaries : "Name of Beneficiary",
+        // nameofbeneficiaries : "Name of Beneficiary",
+        surnameOfBeneficiary      : "Surname",
+        firstNameOfBeneficiary    : "First Name",
+        middleNameOfBeneficiary   : "Middle Name",
         uidNumber           : "UID Number",
         relation            : "Relation with Family Head",
         genderOfbeneficiary : "Gender",
@@ -49,6 +52,21 @@ class Beneficiary extends Component{
         block               : "Block",
         village             : "Village",
         actions             : 'Action',
+      },
+      "downloadtableHeading"        : {
+        beneficiaryID       : "Beneficiary ID",
+        familyID            : "Family ID",
+        surnameOfBeneficiary      : "Surname",
+        firstNameOfBeneficiary    : "First Name",
+        middleNameOfBeneficiary   : "Middle Name",
+        // nameofbeneficiaries : "Name of Beneficiary",
+        uidNumber           : "UID Number",
+        relation            : "Relation with Family Head",
+        genderOfbeneficiary : "Gender",
+        birthYearOfbeneficiary : "Birth Year",
+        dist                : "District",
+        block               : "Block",
+        village             : "Village",
       },
       "tableObjects"        : {
         apiLink             : '/api/beneficiaries/',
@@ -66,14 +84,20 @@ class Beneficiary extends Component{
       goodRecordsHeading :{
         beneficiaryID       : "Beneficiary ID",
         familyID            : "Family ID",
-        nameofbeneficiaries : "Name of Beneficiary",
+        surnameOfBeneficiary      : "Surname",
+        firstNameOfBeneficiary    : "First Name",
+        middleNameOfBeneficiary   : "Middle Name",
+        // nameofbeneficiaries : "Name of Beneficiary",
         uidNumber           : "UID Number",
         relation            : "Relation with Family Head"
       },
       failedtableHeading :{
         beneficiaryID       : "Beneficiary ID",
         familyID            : "Family ID",
-        nameofbeneficiaries : "Name of Beneficiary",
+        surnameOfBeneficiary      : "Surname",
+        firstNameOfBeneficiary    : "First Name",
+        middleNameOfBeneficiary   : "Middle Name",
+        // nameofbeneficiaries : "Name of Beneficiary",
         uidNumber           : "UID Number",
         relation            : "Relation with Family Head",
         failedRemark        : "Failed Data Remark"
@@ -412,45 +436,6 @@ class Beneficiary extends Component{
     });*/
   }
 
-  /*getData(startRange, limitRange, center_ID){
-    var data = {
-      limitRange : limitRange,
-      startRange : startRange,
-    }
-    // console.log(center_ID);
-    // var centerID = this.state.center_ID;
-    $(".fullpageloader").show();
-    if (center_ID){
-      axios.post('/api/beneficiaries/list/'+center_ID,data)
-        // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
-      // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
-      .then((response)=>{
-        $(".fullpageloader").hide();
-        console.log('response', response);
-        var tableData = response.data.map((a, i)=>{
-          return {
-            _id                       : a._id,
-            beneficiaryID             : a.beneficiaryID,
-            familyID                  : a.familyID,
-            nameofbeneficiaries       : a.nameofbeneficiaries,
-            uidNumber                 : a.uidNumber,
-            relation                  : a.relation,
-            genderOfbeneficiary       : a.genderOfbeneficiary,   
-            birthYearOfbeneficiary    : a.birthYearOfbeneficiary,   
-          }
-        })
-        this.setState({
-          tableData : tableData
-        },()=>{
-          // console.log("tableData",this.state.tableData)
-        })
-      })
-      .catch(function(error){
-        console.log("error = ",error);
-      });
-    }
-  }
-*/
   getData(inputGetData){
     this.setState({
       propsdata : inputGetData
@@ -466,7 +451,10 @@ class Beneficiary extends Component{
             _id                       : a._id,
             beneficiaryID             : a.beneficiaryID,
             familyID                  : a.familyID,
-            nameofbeneficiaries       : a.nameofbeneficiaries,
+            // nameofbeneficiaries       : a.nameofbeneficiaries,
+            surnameOfBeneficiary      : a.surnameOfBeneficiary,
+            firstNameOfBeneficiary    : a.firstNameOfBeneficiary,
+            middleNameOfBeneficiary   : a.middleNameOfBeneficiary,
             uidNumber                 : a.uidNumber,
             relation                  : a.relation,
             genderOfbeneficiary       : a.genderOfbeneficiary,   
@@ -478,7 +466,7 @@ class Beneficiary extends Component{
         })
         this.setState({
           tableData : tableData,
-          prevtableData : tableData
+          downloadData : tableData
         })
       })
       .catch(function(error){
@@ -515,21 +503,27 @@ class Beneficiary extends Component{
         });
         var tableData = response.data.goodrecords.map((a, i)=>{
           return{
-              "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
-              "familyID"       : a.familyID        ? a.familyID    : '-',
-              "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
-              "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
-              "relation"       : a.relation     ? a.relation : '-',
+              "beneficiaryID"             : a.beneficiaryID        ? a.beneficiaryID    : '-',
+              "familyID"                  : a.familyID        ? a.familyID    : '-',
+              "surnameOfBeneficiary"      : a.surnameOfBeneficiary,
+              "firstNameOfBeneficiary"    : a.firstNameOfBeneficiary,
+              "middleNameOfBeneficiary"   : a.middleNameOfBeneficiary,
+              // "nameofbeneficiaries"       : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+              "uidNumber"                 : a.uidNumber     ? a.uidNumber : '-',
+              "relation"                  : a.relation     ? a.relation : '-',
           }
         })
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
         return{
-            "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
-            "familyID"       : a.familyID        ? a.familyID    : '-',
-            "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
-            "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
-            "relation"       : a.relation     ? a.relation : '-',
-            "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
+            "beneficiaryID"             : a.beneficiaryID        ? a.beneficiaryID    : '-',
+            "familyID"                  : a.familyID        ? a.familyID    : '-',
+            "surnameOfBeneficiary"      : a.surnameOfBeneficiary,
+            "firstNameOfBeneficiary"    : a.firstNameOfBeneficiary,
+            "middleNameOfBeneficiary"   : a.middleNameOfBeneficiary,
+            // "nameofbeneficiaries"       : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+            "uidNumber"                 : a.uidNumber     ? a.uidNumber : '-',
+            "relation"                  : a.relation     ? a.relation : '-',
+            "failedRemark"              : a.failedRemark     ? a.failedRemark : '-'
         }
         })
         this.setState({
@@ -560,7 +554,10 @@ class Beneficiary extends Component{
                 _id                       : a._id,
                 beneficiaryID             : a.beneficiaryID,
                 familyID                  : a.familyID,
-                nameofbeneficiaries       : a.surnameOfBeneficiary+" "+a.firstNameOfBeneficiary+" " +a.middleNameOfBeneficiary,
+                surnameOfBeneficiary      : a.surnameOfBeneficiary,
+                firstNameOfBeneficiary    : a.firstNameOfBeneficiary,
+                middleNameOfBeneficiary   : a.middleNameOfBeneficiary,
+                // nameofbeneficiaries       : a.surnameOfBeneficiary+" "+a.firstNameOfBeneficiary+" " +a.middleNameOfBeneficiary,
                 uidNumber                 : a.uidNumber,
                 relation                  : a.relation,
                 genderOfbeneficiary       : a.genderOfbeneficiary,   
@@ -980,9 +977,11 @@ class Beneficiary extends Component{
                           tableName = "Beneficiary"
                           id = "Beneficiary"
                           tableHeading={this.state.tableHeading}
+                          downloadtableHeading={this.state.downloadtableHeading}
+                          tableData={this.state.tableData}
+                          downloadData={this.state.downloadData}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}
-                          tableData={this.state.tableData}
                           data={this.state.propsdata}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
