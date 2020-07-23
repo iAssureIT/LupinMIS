@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import $ from "jquery";
 import 'font-awesome/css/font-awesome.min.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
+import "./userManagement.css";
 
 import axios from 'axios';
 
@@ -35,7 +36,9 @@ componentDidMount() {
 		emailId:emailId
 	})
 	console.log("emailId==>>>",emailId,"Uid",Uid);
-
+	// $.validator.addMethod("regxold", function(value, element, regexpr) {         
+ //      return regexpr.test(value);
+ //    }, "Password should be at least 6 characters long!");
     $("#resetPassword").validate({
       rules: {
         oldpassword: {
@@ -200,8 +203,9 @@ render(){
 											<div className="divLoginInWrap">
 												<form id="resetPassword" >
 													<div className="form-group loginFormGroup pdleftclr veribtm col-lg-12 col-md-12 col-sm-12 col-xs-12">
-														<div className="input-group">
-															<input type="password" className="form-control loginInputs inputTextPass" ref="oldpassword" name="oldpassword" value={this.state.oldpassword} onChange={this.handleChange} placeholder="Old Password" aria-label="oldpassword" aria-describedby="basic-addon1" title="Password should be at least 6 characters long!" pattern=".{6,}" required/>
+														<div className="input-group" id="oldpasswordErr">
+															<input type="password" className="form-control loginInputs inputTextPass" ref="oldpassword" name="oldpassword" value={this.state.oldpassword} onChange={this.handleChange} placeholder="Old Password" aria-label="oldpassword" aria-describedby="basic-addon1" />
+															{/*title="Password should be at least 6 characters long!" pattern=".{6,}" required*/}
 															<span className="input-group-addon addons glyphi-custommm padBoth" id="basic-addon1">
 																<i className="fa fa-eye Pass showPwd" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
 																<i className="fa fa-eye-slash Pass hidePwd" aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
@@ -209,8 +213,8 @@ render(){
 														</div>
 													</div>
 													<div className="form-group loginFormGroup pdleftclr veribtm col-lg-12 col-md-12 col-sm-12 col-xs-12">
-														<div className="input-group">
-															<input type="password" className="form-control loginInputs inputTextPass" ref="newpassword" name="newpassword" value={this.state.newpassword} onChange={this.handleChange} placeholder="New Password" aria-label="Password" aria-describedby="basic-addon1" title="Password should be at least 6 characters long!" pattern=".{6,}" required/>
+														<div className="input-group" id="newpasswordErr">
+															<input type="password" className="form-control loginInputs inputTextPass" ref="newpassword" name="newpassword" value={this.state.newpassword} onChange={this.handleChange} placeholder="New Password" aria-label="Password" aria-describedby="basic-addon1" />
 															<span className="input-group-addon addons glyphi-custommm padBoth" id="basic-addon1">
 																<i className="fa fa-eye Pass showPwd" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
 																<i className="fa fa-eye-slash Pass hidePwd" aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
@@ -218,16 +222,16 @@ render(){
 														</div>
 													</div>
 													<div className="form-group loginFormGroup pdleftclr veribtm col-lg-12 col-md-12 col-sm-12 col-xs-12">
-														<div className="input-group">
-															<input type="password" className="form-control loginInputs inputTextPass" ref="confirmPassword" name="confirmPassword" value={this.state.confirmPassword} onChange={this.handleChange} placeholder="Confirm Password" aria-label="confirmPassword" aria-describedby="basic-addon1" title="Password should be at least 6 characters long!" pattern=".{6,}" required/>
+														<div className="input-group" id="confirmPasswordErr">
+															<input type="password" className="form-control loginInputs inputTextPass" ref="confirmPassword" name="confirmPassword" value={this.state.confirmPassword} onChange={this.handleChange} placeholder="Confirm Password" aria-label="confirmPassword" aria-describedby="basic-addon1" />
 															<span className="input-group-addon addons glyphi-custommm padBoth" id="basic-addon1">
-																<i className="fa fa-eye Pass showPwd" aria-hidden="true" onClick={this.showSignPassC.bind(this)}></i>
-																<i className="fa fa-eye-slash Pass hidePwd" aria-hidden="true" onClick={this.hideSignPassC.bind(this)}></i>
+																<i className="fa fa-eye Pass showPwd" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
+																<i className="fa fa-eye-slash Pass hidePwd" aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
 															</span>
 														</div>
 													</div>
 													<div className="submitButtonWrapper pdleftclr col-lg-12 col-md-12 col-sm-12 col-xs-12">
-														<button type="submit" onClick={this.changepassword.bind(this)} className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submit mt">Reset Password</button>
+														<button type="submit" onClick={this.changepassword.bind(this)} className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 submit">Reset Password</button>
 													</div>
 												</form>
 											</div>

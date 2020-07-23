@@ -1015,8 +1015,8 @@ class Activity extends Component{
               tableData : tableData,
               downloadData : downloadData
             },()=>{
-              console.log("this.state.tableData",this.state.tableData)
-              console.log("this.state.downloadData",this.state.downloadData)
+              // console.log("this.state.tableData",this.state.tableData)
+              // console.log("this.state.downloadData",this.state.downloadData)
             })
           })
           .catch(function(error){      

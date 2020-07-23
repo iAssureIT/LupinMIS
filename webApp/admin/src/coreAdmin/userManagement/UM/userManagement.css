@@ -4,7 +4,7 @@
 }
 .resetForm{
   border-radius: 10px;
-  height: 250px;
+  height: 270px;
   position: absolute;
   box-shadow: 0px 0px 0px;
   border: 1px solid #ccc;
@@ -13,16 +13,62 @@
   float: right;
   background-color: #fff !important;
 }
+.profilelogos {
+    background-size: 232px 128px;
+    background-repeat: no-repeat;
+    background: #ebebeb;
+    border: 1px dashed #999;
+    height: 10em;
+    padding: 0;
+}
+.form-margin {
+    margin-top: 15px;
+}
+.profileimg{
+    height: 100%;
+    width:  100%;
+    background-repeat: no-repeat;
+    background-size: "100% 100%";
+}
+#LogoImageUp {
+    position: absolute;
+    top: 1px;
+    height: 100%;
+}
+#hide input[type=file] {
+    display: block;
+    background: 0 0;
+    opacity: 0;
+    cursor: pointer;
+}
 
+#hide input[type=file]+label {
+    display: inline-block;
+    margin: 20px;
+    padding: 4px 32px;
+    background-color: var(--white-color);
+    border: solid 1px #666f77;
+    border-radius: 6px;
+    color: #666f77
+}
 
+#hide input[type=file]:active+label {
+    background-image: none;
+    background-color: #2d6c7a;
+    color: var(--white-color)
+}
+
+.loginFormGroup{
+  height: 50px;
+}
 .userBox-body{
   padding-top: 20px!important;
   padding-bottom: 0px;
 }
- .adminModal-body {
-      margin-top: 0px !important;
-      background: #fff !important;
-  }
+.adminModal-body {
+    margin-top: 0px !important;
+    background: #fff !important;
+}
 .UMmodalContent{
     margin-top: 10%;
 }
@@ -37,6 +83,7 @@
 .mrgtop6{
   margin-top: 6px;
 }
+
 .centernote{
   text-align: center;
   height: 100px;
