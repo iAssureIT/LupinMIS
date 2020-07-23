@@ -29,7 +29,11 @@ componentDidMount(){
             <div className="wrapper">
               <nav id="sidebar1">       
                 <ul className="list-unstyled components">
-                 
+                  <li className="active">
+                    <div className="rightsideHeading ">
+                      Core Admin Modules
+                    </div>
+                  </li>
                   <li className="sidebarMenuText">
                     <a href={"/profile/"+localStorage.getItem('user_ID')}>
                        <i className="fa fa-user"></i> 
@@ -45,11 +49,7 @@ componentDidMount(){
                   {
                   this.state.role !== "viewer" ? 
                     <React.Fragment>
-                      <li className="active">
-                        <div className="rightsideHeading ">
-                               Core Admin Modules
-                        </div>
-                      </li>
+                      
                       <li className="sidebarMenuText">
                         <a href="/companysetting" >
                           <i className="fa fa-building" />

@@ -109,10 +109,10 @@ class EditUserProfile extends Component {
 			.then((res) => {
 				console.log("res",res)
 				this.setState({
-					firstName: res.data.profile.firstname,
-					lastName: res.data.profile.lastname,
+					firstName: res.data.profile.firstName,
+					lastName: res.data.profile.lastName,
 					username: res.data.profile.emailId,
-                    mobNumber: res.data.profile.mobile,
+                    mobNumber: res.data.profile.mobileNumber,
                     profileImage : res.data.image
 				})
 			})
@@ -207,14 +207,13 @@ class EditUserProfile extends Component {
 									<div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 ">
 										My Profile
 									</div>
-									<div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 ">
-									{/* <button onClick={this.handleSubmit.bind(this)} className="col-lg-4 col-sm-4 col-xs-2 col-md-2 btn resetBtn resetBtncss pull-right">Reset Password</button> */}
+									{/*<div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 ">
 										<div className="pull-right" data-toggle="modal" aria-labelledby="myModals" data-target="#myModals" aria-hidden="true">
 											<Link to="/reset-password" aria-expanded="false">
 												<p className="btn btnhvr btn-Profile ">Reset Password</p>
 											</Link>
 										</div>
-									</div>
+									</div>*/}
 								</div>
 								<hr className="hr-head container-fluid row" />
 								<div className="box-body">
