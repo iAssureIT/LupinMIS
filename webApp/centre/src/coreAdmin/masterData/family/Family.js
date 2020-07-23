@@ -454,19 +454,35 @@ class Family extends Component{
     axios({
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
-        }).then((response)=> {
+        })
+    .then((response)=> {
         function removeDuplicates(data, param, district, block){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
           })
         }
         var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        availablevillageInCenter.sort(dynamicSort("village"));
         this.setState({
           listofVillages   : availablevillageInCenter,
         })
-      }).catch(function (error) {
-        console.log("error = ",error);
-      });
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });
   }
   getAvailableBlocks(){
     axios({
@@ -479,6 +495,21 @@ class Family extends Component{
           })
         }
         var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        availableblockInCenter.sort(dynamicSort("block"));
         this.setState({
           listofBlocks     : availableblockInCenter,
         })
@@ -609,6 +640,13 @@ class Family extends Component{
       }); 
     }
   }
+  camelCase(str){
+    return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  }
   getAvailableCenter(center_ID){
     axios({
       method: 'get',
@@ -621,6 +659,21 @@ class Family extends Component{
             })
           }
           var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+            }
+            return function (a,b) {
+              if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+              }else{
+                return a[property].localeCompare(b[property]);
+              }        
+            }
+          }
+          availableDistInCenter.sort(dynamicSort("district"));
           this.setState({
             listofDistrict  : availableDistInCenter,
           },()=>{
@@ -629,13 +682,6 @@ class Family extends Component{
       }).catch(function (error) {
         console.log("error"+error);
       });
-  }
-  camelCase(str){
-    return str
-    .toLowerCase()
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
   }
   districtChange(event){    
     event.preventDefault();
@@ -660,6 +706,21 @@ class Family extends Component{
             })
           }
           var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function (a,b) {
+              if(sortOrder == -1){
+                  return b[property].localeCompare(a[property]);
+              }else{
+                  return a[property].localeCompare(b[property]);
+              }        
+            }
+          }
+          availableblockInCenter.sort(dynamicSort("block"));
           this.setState({
             listofBlocks     : availableblockInCenter,
             block : '-- Select --',
@@ -687,8 +748,23 @@ class Family extends Component{
           })
         }
         var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        availablevillageInCenter.sort(dynamicSort("village"));
         this.setState({
-          listofVillages   : availablevillageInCenter,
+          listofVillages   : availablevillageInCenter.sort(),
           village : "-- Select --"
         })
       }).catch(function (error) {
@@ -741,11 +817,27 @@ class Family extends Component{
             })
           }
           var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.districtFilter);
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function (a,b) {
+              if(sortOrder == -1){
+                  return b[property].localeCompare(a[property]);
+              }else{
+                  return a[property].localeCompare(b[property]);
+              }        
+            }
+          }
+          availableblockInCenter.sort(dynamicSort("block"));
+          console.log("availableblockInCenter",availableblockInCenter);
           this.setState({
             listofBlocks     : availableblockInCenter,
             block : '-- Select --',
           },()=>{
-            // console.log("this.state.listofBlocks",this.state.listofBlocks);
+            console.log("this.state.listofBlocks",this.state.listofBlocks);
           })
         }).catch(function (error) {
           console.log("error = ",error);
@@ -781,9 +873,27 @@ class Family extends Component{
           })
         }
         var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.districtFilter,this.state.blockFilter);
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        availablevillageInCenter.sort(dynamicSort("village"));
+        // console.log("availablevillageInCenter",availablevillageInCenter);
         this.setState({
           listofVillages   : availablevillageInCenter,
           village : "-- Select --"
+        },()=>{
+          // console.log("listofVillages",this.state.listofVillages)
         })
       }).catch(function (error) {
         console.log("error = ",error);

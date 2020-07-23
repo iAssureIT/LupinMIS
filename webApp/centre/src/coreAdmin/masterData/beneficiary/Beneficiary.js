@@ -106,7 +106,6 @@ class Beneficiary extends Component{
     this.uploadedData = this.uploadedData.bind(this);
     this.getFileDetails = this.getFileDetails.bind(this);
   }
-
   handleChange(event){
     event.preventDefault();
     if(event.currentTarget.name==='familyID'){
@@ -139,7 +138,6 @@ class Beneficiary extends Component{
       "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
     });
   } 
-
   SubmitBeneficiary(event){
     event.preventDefault();
     var id2 = this.state.uidNumber;
@@ -257,7 +255,6 @@ class Beneficiary extends Component{
       });
     }
   }
-
   componentWillReceiveProps(nextProps){
     var editId = nextProps.match.params.id;
     if(nextProps.match.params.id){
@@ -277,7 +274,6 @@ class Beneficiary extends Component{
       this.getLength();
     }  
   }
-
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     if(this.state.editId){      
@@ -367,7 +363,6 @@ class Beneficiary extends Component{
           }
         });
   }
-
   edit(id){
     if(id && id != undefined){
       axios({
@@ -420,7 +415,6 @@ class Beneficiary extends Component{
       });     
     }    
   }
-  
   getLength(center_ID){
     /*  axios.get('/api/beneficiaries/count/'+center_ID)
     .then((response)=>{
@@ -435,7 +429,6 @@ class Beneficiary extends Component{
       
     });*/
   }
-
   getData(inputGetData){
     this.setState({
       propsdata : inputGetData
@@ -474,7 +467,6 @@ class Beneficiary extends Component{
       }); 
     }      
   }
-
   getAvailableFamilyId(center_ID){
     if(center_ID){
       axios({
@@ -578,7 +570,7 @@ class Beneficiary extends Component{
     }
   }
   getUID(event) {
-  /*  if(this.state.firstNameOfBeneficiary === this.state.firstNameOfBeneficiaryCheck )
+    /*  if(this.state.firstNameOfBeneficiary === this.state.firstNameOfBeneficiaryCheck )
     {
        
       var uidNumber = this.state.uidNumberCheck;
@@ -602,7 +594,6 @@ class Beneficiary extends Component{
 
     }*/
   }
-
   toglehidden(){   
     this.setState({
      shown: !this.state.shown
@@ -615,7 +606,6 @@ class Beneficiary extends Component{
     },()=>{
     });
   };
-
   handleFilters(event){
     event.preventDefault();
     this.setState({
@@ -644,6 +634,21 @@ class Beneficiary extends Component{
               })
           }
           var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+            }
+            return function (a,b) {
+              if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+              }else{
+                return a[property].localeCompare(b[property]);
+              }        
+            }
+          }
+          availableDistInCenter.sort(dynamicSort("district"));
           this.setState({
             listofDistrict  : availableDistInCenter,
           },()=>{
@@ -692,6 +697,21 @@ class Beneficiary extends Component{
             })
           }
           var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.districtFilter);
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function (a,b) {
+              if(sortOrder == -1){
+                  return b[property].localeCompare(a[property]);
+              }else{
+                  return a[property].localeCompare(b[property]);
+              }        
+            }
+          }
+          availableblockInCenter.sort(dynamicSort("block"));
           this.setState({
             listofBlocks     : availableblockInCenter,
             block : '-- Select --',
@@ -728,6 +748,21 @@ class Beneficiary extends Component{
           })
         }
         var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.districtFilter,this.state.blockFilter);
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        availablevillageInCenter.sort(dynamicSort("village"));
         this.setState({
           listofVillages   : availablevillageInCenter,
           village : "-- Select --"

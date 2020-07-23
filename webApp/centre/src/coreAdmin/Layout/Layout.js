@@ -73,6 +73,8 @@ import report17                                   from "../../centres/LupinRepor
 import report18                                   from "../../centres/LupinReports/FamilyCoverageReport/FamilyCoverageReport.js";
 import report19                                   from "../../centres/LupinReports/Activities_in_beneficiary_Report/Activities_in_beneficiary_Report.js";
 
+import ActivityWiseReport                         from "../../centres/LupinReports/ActivityWiseReport/ActivityWiseReport.js";
+import SectorwiseReport                           from "../../centres/LupinReports/SectorwiseReport/SectorwiseReport.js";
 import centerDetail                               from '../../coreAdmin/masterData/centerDetail/centerDetail.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -208,6 +210,8 @@ class Layout extends Component{
                               <Route path="/sector-wise-quaterly-plan-summary-report"                     exact strict component={ report17 } />
                               <Route path="/family-coverage-report"                                       exact strict component={ report18 } />
                               <Route path="/family-tracking-system"                                       exact strict component={ report19 } />
+                              <Route path="/activity-wise-report"                                         exact strict component={ ActivityWiseReport } />
+                              <Route path="/sector-wise-report"                                         exact strict component={ SectorwiseReport } />
                             </Switch>        
                       </div>
                     </div>

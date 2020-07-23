@@ -1,0 +1,50 @@
+/*#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(2), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+6){
+	background: var(--color1);
+}
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(3), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+9){
+	background: var(--color2);
+}
+ #ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(4), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+19){
+	background: var(--color1);
+}
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(5), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+29){
+	background: var(--color2);
+}*/
+
+#ActivityWiseReport .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#ActivityWiseReport .col2{
+	width: 100px !important;
+}
+#ActivityWiseReport .col3{
+	width: 200px !important;
+}
+#ActivityWiseReport .col4{
+	width: 60px !important;
+}
+#ActivityWiseReport .col5, #ActivityWiseReport .col16{
+	width: 72px !important;
+}
+#ActivityWiseReport .col13, #ActivityWiseReport .col14, #ActivityWiseReport .col15{
+	width: 70px !important;
+} 
+#ActivityWiseReport .col6, #ActivityWiseReport .col7, #ActivityWiseReport .col8, #ActivityWiseReport .col9, #ActivityWiseReport .col10, #ActivityWiseReport .col12, #ActivityWiseReport .col11 {
+	width: 52px !important;
+}
+#ActivityWiseReport .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#ActivityWiseReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+
+

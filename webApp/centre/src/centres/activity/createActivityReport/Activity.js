@@ -84,7 +84,7 @@ class Activity extends Component{
         date                       : "Intervention Date",
         place                      : "Intervention Place",
         sectorName                 : "Sector",
-        activityName               : "Activity",
+        activity                   : "Activity",
         subactivityName            : "Sub-Activity",
         unit                       : "Unit",
         unitCost                   : "Unit Cost",
@@ -1014,6 +1014,9 @@ class Activity extends Component{
             this.setState({
               tableData : tableData,
               downloadData : downloadData
+            },()=>{
+              console.log("this.state.tableData",this.state.tableData)
+              console.log("this.state.downloadData",this.state.downloadData)
             })
           })
           .catch(function(error){      
@@ -1265,25 +1268,36 @@ class Activity extends Component{
         method: 'get',
         url: '/api/centers/'+center_ID,
         }).then((response)=> {
-        // console.log('availableDistInCenter ==========',response);
-        function removeDuplicates(data, param){
-          return data.filter(function(item, pos, array){
-            return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
-          })
-        }
-        var availableDistInCenter = removeDuplicates(response.data[0].villagesCovered, "district");
-        // var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block");
-        // var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village");
-        // console.log('availableblockInCenter',availableblockInCenter)
-        this.setState({
-          // listofVillages   : availablevillageInCenter,
-          // listofBlocks     : availableblockInCenter,
-          listofDistrict   : availableDistInCenter,
-          address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-        })
-      }).catch(function (error) {
-        console.log("error = ",error);
-      });
+          if(response.data){
+            function removeDuplicates(data, param){
+              return data.filter(function(item, pos, array){
+                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+              })
+            }
+            var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+            function dynamicSort(property) {
+              var sortOrder = 1;
+              if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+              }
+              return function (a,b) {
+                if(sortOrder == -1){
+                  return b[property].localeCompare(a[property]);
+                }else{
+                  return a[property].localeCompare(b[property]);
+                }        
+              }
+            }
+            availableDistInCenter.sort(dynamicSort("district"));
+            this.setState({
+              listofDistrict  : availableDistInCenter,
+            },()=>{
+            })
+          }
+        }).catch(function (error) {
+          console.log("error"+error);
+        });
     }
   }
   camelCase(str){
@@ -1314,6 +1328,21 @@ class Activity extends Component{
           })
         }
         var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        availableblockInCenter.sort(dynamicSort("block"));
         this.setState({
           listofBlocks     : availableblockInCenter,
         })
@@ -1321,7 +1350,6 @@ class Activity extends Component{
         console.log("error = ",error);
       });
     });
-    this.handleChange(event);
   }
   selectBlock(event){
     event.preventDefault();
@@ -1339,6 +1367,21 @@ class Activity extends Component{
           })
         }
         var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        availablevillageInCenter.sort(dynamicSort("village"));
         this.setState({
           listofVillages   : availablevillageInCenter,
         })
@@ -1348,7 +1391,6 @@ class Activity extends Component{
       // console.log("block",block);
       // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
     });
-    this.handleChange(event);
   }
   selectVillage(event){
     event.preventDefault();
@@ -1356,7 +1398,6 @@ class Activity extends Component{
     this.setState({
       village : village
     });
-    this.handleChange(event);
   }
   getAvailableProjectName(){
     axios({
