@@ -1,9 +1,12 @@
 
 #SubActivity .col1, #SubActivity .col3, #SubActivity .col2 {
-  width: 200px;
+  width: 210px;
 }
 #SubActivity .col5, #SubActivity .col4{
   width: 100px;
+}
+#SubActivity .col6{
+  width: 60px;
 }
 
 #SubActivity .scrollContent {

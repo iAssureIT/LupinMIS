@@ -1,6 +1,6 @@
-/*.actionDiv{
+.actionDiv{
   width: 60px;
-}*/
+}
 .umDynamicHeader .coloredIndex{
   background-color: #f00;
 }
@@ -127,7 +127,7 @@
   width: 1000px;
 }*/
 .fixedTable .colSr{
-  width: 50px !important;
+  width: 30px !important;
 }
 
 
@@ -157,6 +157,6 @@
   background: #666; 
 }
 
-..scrollContent::-webkit-scrollbar-track {
+.scrollContent::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 }

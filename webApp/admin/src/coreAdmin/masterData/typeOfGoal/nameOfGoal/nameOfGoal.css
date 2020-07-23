@@ -5,6 +5,9 @@
 #nameOfGoal .col2 {
   width: 318px;
 }
+#nameOfGoal .col3 {
+  width: 60px;
+}
 
 
 #nameOfGoal .scrollContent {
@@ -24,7 +27,7 @@
   width: 318px;
 }
 #viewernameOfGoal .col2 {
-  width: 370px;
+  width: 390px;
 }
 
 

@@ -260,7 +260,7 @@ class EditUserProfile extends Component {
 														</div>
 													</div>
 												<div className="form-margin col-lg-12 col-sm-12 col-xs-12 col-md-12 pull-right">
-													<button onClick={this.handleSubmit.bind(this)} className="col-lg-2 col-sm-2 col-xs-2 col-md-2 btn resetBtn pull-right">Update</button>
+													<button onClick={this.handleSubmit.bind(this)} className="col-lg-2 col-sm-2 col-xs-2 col-md-2 btn submit pull-right">Update</button>
 												</div>
 											</div>
 										</form>

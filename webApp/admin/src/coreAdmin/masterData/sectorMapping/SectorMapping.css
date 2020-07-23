@@ -16,6 +16,12 @@
   width: 220px;
   white-space: pre-wrap;
 }
+#SectorMapping .col5 {
+  width: 60px;
+}
+#ViewerSectorMapping .col5 {
+  width: 60px;
+}
 
 
 #SectorMapping .scrollContent {
@@ -41,11 +47,11 @@
 }
 #ViewerSectorMapping .col3
 {
-  width: 220px;
+  width: 235px;
   white-space: pre-wrap;
 }
 #ViewerSectorMapping .col4 {
-  width: 220px;
+  width: 230px;
   white-space: pre-wrap;
 }
 

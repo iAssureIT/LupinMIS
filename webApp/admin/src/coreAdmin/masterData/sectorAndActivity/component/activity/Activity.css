@@ -2,13 +2,21 @@
   width: 318px;
 }
 
+#Activity .col3 {
+  width: 60px;
+}
+
 #ViewerActivity .col1
 {
   width: 350px;
 }
 #ViewerActivity .col2 
 {
-  width: 505px;
+  width: 370px;
+}
+
+#ViewerActivity .col3 {
+  width: 60px;
 }
 
 

@@ -117,7 +117,7 @@ logout(){
                           {/*         <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText mailtext"> {this.state.emailId ? this.state.emailId : ""} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i className="fa fa-angle-down"></i> </span>  */}
                         <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText "> 
                           <span className="col-lg-10 ">
-                            <label className="mailtext formLable" ><b>{this.state.emailId ? this.state.emailId : ""}</b></label>
+                            <label className="mailtext formLable"  title={this.state.emailId ? this.state.emailId : ""}><b>{this.state.emailId ? this.state.emailId : ""}</b></label>
                           </span>  
                           <span className="col-lg-2">
                             <i className="fa fa-angle-down"></i> 
@@ -135,11 +135,11 @@ logout(){
                                 {this.state.fullName ? this.state.fullName : ""}
                              {/*   Super Admin*/}
                              </h5>
-                              <h6 className="fontB fs12 dropmailtext">{/*superAdmin@gmail.com*/} {this.state.emailId ? this.state.emailId : ""}</h6>
+                              <h6 className="fontB fs12 dropmailtext" title={this.state.emailId ? this.state.emailId : ""}>{/*superAdmin@gmail.com*/} {this.state.emailId ? this.state.emailId : ""}</h6>
                             </div>
                           </div>
-                          <hr className="borderline marTop"/>
                           <div className="marTop">
+                          <hr className="borderline marTop"/>
                             {/*<span className="pull-left">
                               <a  className=" profileTitle btnpadd " href="/#">
                                <button type="button" className="profilebtn btn">Profile</button></a>
