@@ -70,9 +70,9 @@ class EditUserProfile extends Component {
 		$.validator.addMethod("regxEmail", function (value, element, regexpr) {
 			return regexpr.test(value);
 		}, "Please enter a valid email address.");
-		$.validator.addMethod("regxMobile", function (value, element, regexpr) {
-			return regexpr.test(value);
-		}, "Please enter a valid mobile number.");
+		// $.validator.addMethod("regxMobile", function (value, element, regexpr) {
+		// 	return regexpr.test(value);
+		// }, "Please enter a valid mobile number.");
 		$.validator.addMethod("regxName", function (value, element, regexpr) {
 			return regexpr.test(value);
 		}, "It should only contain alphabets.");
@@ -251,7 +251,7 @@ class EditUserProfile extends Component {
 														<div className="form-margin col-lg-6 col-md-6 col-xs-6 col-sm-6">
 															<label className="col-lg-12 col-sm-12 col-xs-12 col-md-12 NOpadding formLable">Username/Email <label className="requiredsign">*</label></label>
 															<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12 NOpadding" id="usernameErr">
-																<input type="text" value={this.state.username} onChange={this.handleChange} className="form-control" ref="username" name="username" required />
+																<input type="text" disabled value={this.state.username} onChange={this.handleChange} className="form-control" ref="username" name="username" required />
 															</div>
 														</div>
 														<div className="form-margin col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box">
