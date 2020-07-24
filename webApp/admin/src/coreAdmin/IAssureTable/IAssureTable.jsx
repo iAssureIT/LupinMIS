@@ -756,7 +756,7 @@ class IAssureTable extends Component {
 													}
 													{this.state.tableHeading && this.state.tableHeading.actions && this.state.role !== "viewer"? 
 														<td className="textAlignCenter">
-															<span className="actionDiv">
+															<span className="actionsDiv">
 																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
 																{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id}></i>}
 															</span>
