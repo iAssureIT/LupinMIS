@@ -1,3 +1,6 @@
+.zeroMarginTop{
+    margin-top: 0px !important;
+}
 .graphBox{
     height: 355px;
 }

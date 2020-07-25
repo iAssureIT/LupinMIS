@@ -315,7 +315,7 @@ export default class Dashboard extends Component{
             <section className="content">
               <div className="dashContent">
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
-                  <h3>Dashboard</h3>
+                  <h3 className="zeroMarginTop">Dashboard</h3>
                 </div>
                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
                   <div className="row">
