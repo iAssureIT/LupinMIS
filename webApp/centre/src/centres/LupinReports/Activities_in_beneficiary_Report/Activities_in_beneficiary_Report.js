@@ -767,380 +767,380 @@ class Activities_in_beneficiary_Report extends Component{
             <section className="content">
               <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                 <div className="row">
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                          Family Tracking System
-                        </div>
+                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
+                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                      Beneficiary Coverage Report
                     </div>
-                    <hr className="hr-head"/>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                        <label className="formLable">Sector</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                          <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
-                            <option  className="hidden" >--Select Sector--</option>
-                            <option value="all" >All</option>
-                            {
-                              this.state.availableSectors && this.state.availableSectors.length >0 ?
-                              this.state.availableSectors.map((data, index)=>{
-                                return(
-                                  <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                );
-                              })
-                              :
-                              null
-                            }
-                          </select>
-                        </div>
+                  </div>
+                  <hr className="hr-head"/>
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
+                      <label className="formLable">Sector</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                        <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                          <option  className="hidden" >--Select Sector--</option>
+                          <option value="all" >All</option>
+                          {
+                            this.state.availableSectors && this.state.availableSectors.length >0 ?
+                            this.state.availableSectors.map((data, index)=>{
+                              return(
+                                <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                              );
+                            })
+                            :
+                            null
+                          }
+                        </select>
                       </div>
-                      <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
-                        <label className="formLable">Activity<span className="asterix">*</span></label>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
-                          <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                            <option disabled="disabled" selected={true}>-- Select --</option>
-                            <option value="all" >All</option>
+                    </div>
+                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                      <label className="formLable">Activity<span className="asterix">*</span></label>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                        <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
+                          <option disabled="disabled" selected={true}>-- Select --</option>
+                          <option value="all" >All</option>
+                          {
+                            this.state.availableActivity && this.state.availableActivity.length >0 ?
+                            this.state.availableActivity.map((data, index)=>{
+                              if(data.activityName ){
+                                return(
+                                  <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                );
+                              }
+                            })
+                            :
+                            null
+                          }
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                      <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
+                        <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
+                          <option disabled="disabled" selected={true}>-- Select --</option>
+                          <option value="all" >All</option>
                             {
-                              this.state.availableActivity && this.state.availableActivity.length >0 ?
-                              this.state.availableActivity.map((data, index)=>{
-                                if(data.activityName ){
+                              this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                              this.state.availableSubActivity.map((data, index)=>{
+                                if(data.subActivityName ){
                                   return(
-                                    <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                    <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
                                   );
                                 }
                               })
                               :
                               null
                             }
+                            
+                        </select>
+                      </div>
+                    </div>  
+                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Beneficiary</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                          <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="withUID" >With UID</option>
+                            <option value="withoutUID" >Without UID</option>
+                            
                           </select>
                         </div>
+                    </div> 
+                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                      <label className="formLable">District</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                        <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
+                          <option  className="hidden" >-- Select --</option>
+                          <option value="all" >All</option>
+                              
+                            {
+                            this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                            this.state.availableDistInCenter.map((data, index)=>{
+                              // console.log("data",data)
+                              return(
+                                /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                <option key={index} value={(data.district+'|'+data._id)}>{data.district.split('|')[0]}</option>
+
+                              );
+                            })
+                            :
+                            null
+                          }                               
+                        </select>
                       </div>
-                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
-                        <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
-                          <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                            <option disabled="disabled" selected={true}>-- Select --</option>
-                            <option value="all" >All</option>
+                    </div>
+                    <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box">
+                      <label className="formLable">Block</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                        <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                          <option  className="hidden" >-- Select --</option>
+                          <option value="all" >All</option>
+                          {
+                            this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                            this.state.listofBlocks.map((data, index)=>{
+                              return(
+                                <option key={index} value={data.block}>{data.block}</option>
+                              );
+                            })
+                            :
+                            null
+                          }                              
+                        </select>
+                      </div>
+                      {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
+                    </div>
+                    <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box">
+                      <label className="formLable">Village</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                        <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
+                          <option  className="hidden" >-- Select --</option>
+                          <option value="all" >All</option>
+                          {
+                            this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                            this.state.listofVillages.map((data, index)=>{
+                              return(
+                                <option key={index} value={data.village}>{data.village}</option>
+                              );
+                            })
+                            :
+                            null
+                          } 
+                        </select>
+                      </div>
+                      {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
+                    </div>
+                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                      <label className="formLable">Project Category</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
+                        <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
+                          <option  className="hidden" >--Select--</option>
+                          <option value="all" >All</option>
+                          <option value="LHWRF Grant" >LHWRF Grant</option>
+                          <option value="Project Fund">Project Fund</option>
+                          
+                        </select>
+                      </div>
+                    </div>
+                    {
+                        this.state.projectCategoryType === "Project Fund" ?
+
+                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                          <label className="formLable">Project Name</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
+                              <option  className="hidden" >--Select--</option>
+                               <option value="all" >All</option>
                               {
-                                this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
-                                this.state.availableSubActivity.map((data, index)=>{
-                                  if(data.subActivityName ){
-                                    return(
-                                      <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
-                                    );
-                                  }
+                                this.state.availableProjects && this.state.availableProjects.length >0 ?
+                                this.state.availableProjects.map((data, index)=>{
+                                  return(
+                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
+                                  );
                                 })
                                 :
                                 null
                               }
-                              
-                          </select>
-                        </div>
-                      </div>  
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Beneficiary</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                            <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                              <option  className="hidden" >--Select--</option>
-                              <option value="all" >All</option>
-                              <option value="withUID" >With UID</option>
-                              <option value="withoutUID" >Without UID</option>
-                              
                             </select>
                           </div>
-                      </div> 
-                      <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
-                        <label className="formLable">District</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                          <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                            <option  className="hidden" >-- Select --</option>
-                            <option value="all" >All</option>
-                                
-                              {
-                              this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                              this.state.availableDistInCenter.map((data, index)=>{
-                                // console.log("data",data)
-                                return(
-                                  /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                  <option key={index} value={(data.district+'|'+data._id)}>{data.district.split('|')[0]}</option>
-
-                                );
-                              })
-                              :
-                              null
-                            }                               
-                          </select>
                         </div>
+                    : 
+                    ""
+                    } 
+                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                      <label className="formLable">From</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                          <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                       </div>
-                      <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box">
-                        <label className="formLable">Block</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                          <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                            <option  className="hidden" >-- Select --</option>
-                            <option value="all" >All</option>
-                            {
-                              this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                              this.state.listofBlocks.map((data, index)=>{
-                                return(
-                                  <option key={index} value={data.block}>{data.block}</option>
-                                );
-                              })
-                              :
-                              null
-                            }                              
-                          </select>
-                        </div>
-                        {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
+                    </div>
+                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                      <label className="formLable">To</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                          <input onChange={this.handleToChange}  onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                       </div>
-                      <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box">
-                        <label className="formLable">Village</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                          <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
-                            <option  className="hidden" >-- Select --</option>
-                            <option value="all" >All</option>
-                            {
-                              this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                              this.state.listofVillages.map((data, index)=>{
-                                return(
-                                  <option key={index} value={data.village}>{data.village}</option>
-                                );
-                              })
-                              :
-                              null
-                            } 
-                          </select>
-                        </div>
-                        {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
+                    </div>
+                  </div>  
+                  <div className="marginTop11">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        { 
+                          this.state.tableData && this.state.tableData.length != 0 ?
+                            <React.Fragment>
+                              <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                                <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+                                  <ReactHTMLTableToExcel
+                                          id="table-to-xls"                           
+                                          className="download-table-xls-button fa fa-download tableicons pull-right"
+                                          table="FamilyCoverageReport"
+                                          sheet="tablexls"
+                                          filename="FamilyCoverageReport"
+                                          buttonText=""/>
+                              </div>
+                            </React.Fragment>
+                          : null
+                        }   
                       </div>
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                        <label className="formLable">Project Category</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                          <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                            <option  className="hidden" >--Select--</option>
-                            <option value="all" >All</option>
-                            <option value="LHWRF Grant" >LHWRF Grant</option>
-                            <option value="Project Fund">Project Fund</option>
-                            
-                          </select>
-                        </div>
-                      </div>
-                      {
-                          this.state.projectCategoryType === "Project Fund" ?
-
-                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">Project Name</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                                <option  className="hidden" >--Select--</option>
-                                 <option value="all" >All</option>
-                                {
-                                  this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                  this.state.availableProjects.map((data, index)=>{
-                                    return(
-                                      <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                    );
+                      <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div className="table-responsive" id="section-to-screen">
+                          <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="Activities_in_beneficiary_Report">
+                            <thead className="tempTableHeader fixedHeader">
+                              <tr className="tempTableHeader"></tr>
+                              <tr className="">
+                                <th className="umDynamicHeader srpadd text-center">
+                                  <div className="colSr">Sr.No.</div>
+                                </th>
+                                <th id="name_beneficiary" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col1">Name of Beneficiary</div>
+                                  <span onClick={this.sort.bind(this)} id="name_beneficiary" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="beneficiaryID" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col2">Beneficiary ID</div>
+                                  <span onClick={this.sort.bind(this)} id="beneficiaryID" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="familyID" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col2">Family ID</div>
+                                  <span onClick={this.sort.bind(this)} id="familyID" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="projectCategoryType" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col3">Project Category</div>
+                                  <span onClick={this.sort.bind(this)} id="projectCategoryType" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="projectName" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col4">Project Name</div>
+                                  <span onClick={this.sort.bind(this)} id="projectName" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="name" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col5">Sector</div>
+                                  <span id="name" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col6">Activity</div>
+                                  <span id="activityName" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="subactivityName" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col7">Subactivity</div>
+                                  <span id="subactivityName" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="unit" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col8">Unit</div>
+                                  <span onClick={this.sort.bind(this)} id="unit" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col9">Unit Cost</div>
+                                  <span onClick={this.sort.bind(this)} id="UnitCost" className="fa fa-sort tableSort"></span>
+                                </th>
+                               <th id="quantity" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col10">Quantity</div>
+                                  <span onClick={this.sort.bind(this)} id="quantity" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="total" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col11">Total</div>
+                                  <span onClick={this.sort.bind(this)} id="total" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="LHWRF" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col12">LHWRF</div>
+                                  <span onClick={this.sort.bind(this)} id="LHWRF" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="NABARD" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col13">NABARD</div>
+                                  <span onClick={this.sort.bind(this)} id="NABARD" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="Bank_Loan" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col14">Bank Loan</div>
+                                  <span onClick={this.sort.bind(this)} id="Bank_Loan" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="Govt" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col15">Govt</div>
+                                  <span onClick={this.sort.bind(this)} id="Govt" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="DirectCC" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col16">DirectCC</div>
+                                  <span onClick={this.sort.bind(this)} id="DirectCC" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="IndirectCC" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col17">IndirectCC</div>
+                                  <span onClick={this.sort.bind(this)} id="IndirectCC" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="Other" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col18">Other</div>
+                                  <span onClick={this.sort.bind(this)} id="Other" className="fa fa-sort tableSort"></span>
+                                </th>
+                                {/*<th id="village" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col19">Village</div>
+                                  <span onClick={this.sort.bind(this)} id="village" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="block" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col20">Block</div>
+                                  <span onClick={this.sort.bind(this)} id="block" className="fa fa-sort tableSort"></span>
+                                </th>
+                                <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col21">District</div>
+                                  <span onClick={this.sort.bind(this)} id="district" className="fa fa-sort tableSort"></span>
+                                </th>*/}
+                              </tr>
+                            </thead>
+                            <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
+                              { this.state.tableData && this.state.tableData.length > 0?
+                                this.state.tableData.map((value, i)=> {
+                                          // console.log("value",value,"i", i)
+                                  // console.log("value.sectorData",value.sectorData)
+                                  var sectorLength=value.sectorData.length
+                                    return(                                    
+                                      <tr className="tablerow"  key={i}>
+                                        <td className="textAlignCenter"><div className="colSr">{i+1}</div>
+                                        </td>
+                                        <td className=""><div className=" col1">{value._id.name_beneficiary}</div>
+                                        </td>
+                                        <td className=""><div className=" col2">{value._id.beneficiaryID}</div>
+                                        </td>
+                                        <td className=""><div className=" col2">{value._id.familyID}</div>
+                                        </td>
+                                        { 
+                                          sectorLength !== 0 && value.sectorData ?
+                                            Object.entries(value.sectorData).map(([key, value1], index)=> {
+                                            // console.log("value1===================",value1[0])
+                                            // console.log("value1", value1,"index", index)
+                                              return(
+                                                <tr className="tablerow" key={index}>
+                                                  <td className=""><div className="col3">{value1.projectCategoryType}</div></td>
+                                                  <td className=""><div className="col4">{value1.projectName === "all" ? "-" : value1.projectName}</div></td>
+                                                  <td className=""><div className="col5">{value1.sectorName}</div></td>
+                                                  <td className=""><div className="col6">{value1.activityName}</div></td>
+                                                  <td className=""><div className="col7">{value1.subactivityName}</div></td>
+                                                  <td className=""><div className="col8">{value1.unit}</div></td>
+                                                  <td className="textAlignRight"><div className="col9">{value1.UnitCost}</div></td>
+                                                  <td className="textAlignRight"><div className="col10">{value1.quantity}</div></td>
+                                                  <td className="textAlignRight"><div className="col11">{value1.total}</div></td>
+                                                  <td className="textAlignRight"><div className="col12">{value1.LHWRF}</div></td>
+                                                  <td className="textAlignRight"><div className="col13">{value1.NABARD}</div></td>
+                                                  <td className="textAlignRight"><div className="col14">{value1.Bank_Loan}</div></td>
+                                                  <td className="textAlignRight"><div className="col15">{value1.Govt}</div></td>
+                                                  <td className="textAlignRight"><div className="col16">{value1.DirectCC}</div></td>
+                                                  <td className="textAlignRight"><div className="col17">{value1.IndirectCC}</div></td>
+                                                  <td className="textAlignRight"><div className="col18">{value1.Other}</div></td>
+                                                  {/*<td className=""><div className="col19">{value1.village}</div></td>
+                                                  <td className=""><div className="col20">{value1.block}</div></td>
+                                                  <td className=""><div className="col21">{value1.district}</div></td>*/}
+                                                </tr>
+                                              )
+                                            })
+                                          : null
+                                        }
+                                      </tr>
+                                    )
                                   })
-                                  :
-                                  null
-                                }
-                              </select>
-                            </div>
-                          </div>
-                      : 
-                      ""
-                      } 
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                        <label className="formLable">From</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                        </div>
-                      </div>
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                        <label className="formLable">To</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <input onChange={this.handleToChange}  onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                        </div>
-                      </div>
-                    </div>  
-                    <div className="marginTop11">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          { 
-                            this.state.tableData && this.state.tableData.length != 0 ?
-                              <React.Fragment>
-                                <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
-                                  <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
-                                    <ReactHTMLTableToExcel
-                                            id="table-to-xls"                           
-                                            className="download-table-xls-button fa fa-download tableicons pull-right"
-                                            table="FamilyCoverageReport"
-                                            sheet="tablexls"
-                                            filename="FamilyCoverageReport"
-                                            buttonText=""/>
-                                </div>
-                              </React.Fragment>
-                            : null
-                          }   
-                        </div>
-                        <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div className="table-responsive" id="section-to-screen">
-                            <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="Activities_in_beneficiary_Report">
-                              <thead className="tempTableHeader fixedHeader">
-                                <tr className="tempTableHeader"></tr>
-                                <tr className="">
-                                  <th className="umDynamicHeader srpadd text-center">
-                                    <div className="colSr">Sr.No.</div>
-                                  </th>
-                                  <th id="name_beneficiary" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col1">Name of Beneficiary</div>
-                                    <span onClick={this.sort.bind(this)} id="name_beneficiary" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="beneficiaryID" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col2">Beneficiary ID</div>
-                                    <span onClick={this.sort.bind(this)} id="beneficiaryID" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="familyID" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col2">Family ID</div>
-                                    <span onClick={this.sort.bind(this)} id="familyID" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="projectCategoryType" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col3">Project Category</div>
-                                    <span onClick={this.sort.bind(this)} id="projectCategoryType" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="projectName" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col4">Project Name</div>
-                                    <span onClick={this.sort.bind(this)} id="projectName" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="name" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col5">Sector</div>
-                                    <span id="name" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col6">Activity</div>
-                                    <span id="activityName" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="subactivityName" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col7">Subactivity</div>
-                                    <span id="subactivityName" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="unit" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col8">Unit</div>
-                                    <span onClick={this.sort.bind(this)} id="unit" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col9">Unit Cost</div>
-                                    <span onClick={this.sort.bind(this)} id="UnitCost" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                 <th id="quantity" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col10">Quantity</div>
-                                    <span onClick={this.sort.bind(this)} id="quantity" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="total" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col11">Total</div>
-                                    <span onClick={this.sort.bind(this)} id="total" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="LHWRF" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col12">LHWRF</div>
-                                    <span onClick={this.sort.bind(this)} id="LHWRF" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="NABARD" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col13">NABARD</div>
-                                    <span onClick={this.sort.bind(this)} id="NABARD" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="Bank_Loan" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col14">Bank Loan</div>
-                                    <span onClick={this.sort.bind(this)} id="Bank_Loan" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="Govt" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col15">Govt</div>
-                                    <span onClick={this.sort.bind(this)} id="Govt" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="DirectCC" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col16">DirectCC</div>
-                                    <span onClick={this.sort.bind(this)} id="DirectCC" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="IndirectCC" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col17">IndirectCC</div>
-                                    <span onClick={this.sort.bind(this)} id="IndirectCC" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="Other" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col18">Other</div>
-                                    <span onClick={this.sort.bind(this)} id="Other" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  {/*<th id="village" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col19">Village</div>
-                                    <span onClick={this.sort.bind(this)} id="village" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="block" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col20">Block</div>
-                                    <span onClick={this.sort.bind(this)} id="block" className="fa fa-sort tableSort"></span>
-                                  </th>
-                                  <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col21">District</div>
-                                    <span onClick={this.sort.bind(this)} id="district" className="fa fa-sort tableSort"></span>
-                                  </th>*/}
-                                </tr>
-                              </thead>
-                              <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
-                                { this.state.tableData && this.state.tableData.length > 0?
-                                  this.state.tableData.map((value, i)=> {
-                                            // console.log("value",value,"i", i)
-                                    // console.log("value.sectorData",value.sectorData)
-                                    var sectorLength=value.sectorData.length
-                                      return(                                    
-                                        <tr className="tablerow"  key={i}>
-                                          <td className="textAlignCenter"><div className="colSr">{i+1}</div>
-                                          </td>
-                                          <td className=""><div className=" col1">{value._id.name_beneficiary}</div>
-                                          </td>
-                                          <td className=""><div className=" col2">{value._id.beneficiaryID}</div>
-                                          </td>
-                                          <td className=""><div className=" col2">{value._id.familyID}</div>
-                                          </td>
-                                          { 
-                                            sectorLength !== 0 && value.sectorData ?
-                                              Object.entries(value.sectorData).map(([key, value1], index)=> {
-                                              // console.log("value1===================",value1[0])
-                                              // console.log("value1", value1,"index", index)
-                                                return(
-                                                  <tr className="tablerow" key={index}>
-                                                    <td className=""><div className="col3">{value1.projectCategoryType}</div></td>
-                                                    <td className=""><div className="col4">{value1.projectName === "all" ? "-" : value1.projectName}</div></td>
-                                                    <td className=""><div className="col5">{value1.sectorName}</div></td>
-                                                    <td className=""><div className="col6">{value1.activityName}</div></td>
-                                                    <td className=""><div className="col7">{value1.subactivityName}</div></td>
-                                                    <td className=""><div className="col8">{value1.unit}</div></td>
-                                                    <td className="textAlignRight"><div className="col9">{value1.UnitCost}</div></td>
-                                                    <td className="textAlignRight"><div className="col10">{value1.quantity}</div></td>
-                                                    <td className="textAlignRight"><div className="col11">{value1.total}</div></td>
-                                                    <td className="textAlignRight"><div className="col12">{value1.LHWRF}</div></td>
-                                                    <td className="textAlignRight"><div className="col13">{value1.NABARD}</div></td>
-                                                    <td className="textAlignRight"><div className="col14">{value1.Bank_Loan}</div></td>
-                                                    <td className="textAlignRight"><div className="col15">{value1.Govt}</div></td>
-                                                    <td className="textAlignRight"><div className="col16">{value1.DirectCC}</div></td>
-                                                    <td className="textAlignRight"><div className="col17">{value1.IndirectCC}</div></td>
-                                                    <td className="textAlignRight"><div className="col18">{value1.Other}</div></td>
-                                                    {/*<td className=""><div className="col19">{value1.village}</div></td>
-                                                    <td className=""><div className="col20">{value1.block}</div></td>
-                                                    <td className=""><div className="col21">{value1.district}</div></td>*/}
-                                                  </tr>
-                                                )
-                                              })
-                                            : null
-                                          }
-                                        </tr>
-                                      )
-                                    })
-                                  :
-                                  <tr className="trAdmin"><td colSpan= "21" className="noTempData textAlignCenter">No Record Found!</td></tr>                   
-                                } 
-                              </tbody>
-                            </table>
-                          </div>
+                                :
+                                <tr className="trAdmin"><td colSpan= "21" className="noTempData textAlignCenter">No Record Found!</td></tr>                   
+                              } 
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     </div>
-                  </div>   
+                  </div>
                 </div>   
+              </div>   
             </section>
           </div>
         </div>

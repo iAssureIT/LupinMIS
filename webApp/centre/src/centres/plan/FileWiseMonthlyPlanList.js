@@ -30,8 +30,8 @@ class FileWiseMonthlyPlanList extends Component{
   }
   getData(startRange, limitRange){
       var data = {
-        startRange : startRange,
-        limitRange : limitRange,
+        startRange : this.state.startRange,
+        limitRange : this.state.limitRange,
         center_ID  : localStorage.getItem('center_ID')
       }
       axios.post('/api/monthlyPlans/get/files', data)
@@ -44,7 +44,7 @@ class FileWiseMonthlyPlanList extends Component{
             _id: a._id != null ? a._id : "-", 
           }
         })
-        // console.log('tableData', tableData)
+        console.log('tableData', tableData)
         this.setState({
           tableData : tableData
         })

@@ -136,11 +136,12 @@ class IAssureTable extends Component {
 	  	var tableObjects =  this.props.tableObjects;
 	  	var deleteMethod =  this.props.deleteMethod;
 		let id = (e.target.id).replace(".", "/");
+	    	console.log("id ",e.target.id )
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
-	    	// console.log("response ",response )
+	    	console.log("response ",response )
 	    	console.log("line 139  this.props.data ",this.props.data )
 	    	this.props.getData(this.props.data ? this.props.data :( this.state.startRange, this.state.limitRange, this.state.center_ID));
 	        this.props.history.push(tableObjects.editUrl);

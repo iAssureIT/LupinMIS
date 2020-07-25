@@ -142,7 +142,7 @@ class IAssureTable extends Component {
 		let id = e.target.id;
 		// let id = (e.target.id).replace(".", "/");
     	console.log("tableObjects.apiLink+id ",tableObjects.apiLink+id )
-	    	// console.log("id ",id )
+	    	console.log("id ",id )
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
@@ -787,7 +787,6 @@ class IAssureTable extends Component {
 																{this.props.tableObjects.editUrl ?
 																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>:null}&nbsp; &nbsp; 
 															{/*	{this.props.editId ? <i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i> : null }&nbsp; &nbsp; */}
-																{/*console.log('value._id',value._id)*/}
 																{this.props.editId && this.props.editId === value._id
 																	? 
 																		null 
@@ -796,10 +795,11 @@ class IAssureTable extends Component {
 																		? 
 																		null
 																		:
-																		<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "") }></i>
+																		<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete"  data-target={"#showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "") }></i>
 																}
 															</span>
 															<div className="modal fade" id={"showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "")} role="dialog">
+																{/*console.log('value._id',value._id,this.props.editId)*/}
 		                                                        <div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                                          <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
 		                                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
