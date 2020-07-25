@@ -33,36 +33,36 @@ export default class Header extends Component{
       // console.log("fullName =",this.state.fullName);
     });   
   }
-    
-openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
-}
+      
+  openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+  }
 
-closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-}
+  closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+  }
 
-toggleLeftNav(event){
-  event.preventDefault()
-  $('#sidebar').toggleClass('active')
-  $('#headerid').toggleClass('headereffect');
-  $('#dashbordid').toggleClass('dashboardeffect')
-}
+  toggleLeftNav(event){
+    event.preventDefault()
+    $('#sidebar').toggleClass('active')
+    $('#headerid').toggleClass('headereffect');
+    $('#dashbordid').toggleClass('dashboardeffect')
+  }
 
-toggleNav(event){
-  event.preventDefault()
-  var currentWidth =  document.getElementById("mySidenav").style.width;
-  // console.log("currentWidth",currentWidth);
-  if(currentWidth == "230px")
-  {
-   document.getElementById("mySidenav").style.width = "0"; 
- }else{
-    document.getElementById("mySidenav").style.width = "230px";
- }
+  toggleNav(event){
+    event.preventDefault()
+    var currentWidth =  document.getElementById("mySidenav").style.width;
+    // console.log("currentWidth",currentWidth);
+    if(currentWidth == "230px")
+    {
+     document.getElementById("mySidenav").style.width = "0"; 
+   }else{
+      document.getElementById("mySidenav").style.width = "230px";
+   }
 
-}
+  }
 
-logout(){
+  logout(){
     var token = localStorage.removeItem("token");
       if(token!==null){
       console.log("Header Token = ",token);

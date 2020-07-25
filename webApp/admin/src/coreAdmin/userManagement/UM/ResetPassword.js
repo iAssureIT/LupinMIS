@@ -29,16 +29,15 @@ handleChange=(event)=>{
 }
 
 componentDidMount() {
-	var Uid = localStorage.getItem("user_ID");
-	var emailId = localStorage.getItem("emailId");
+    const Token     = localStorage.getItem("token");
+    const emailId   = localStorage.getItem("emailId");
+    const center_ID = localStorage.getItem("center_ID");
 	this.setState({
-		user_ID:Uid,
 		emailId:emailId
 	})
-	console.log("emailId==>>>",emailId,"Uid",Uid);
 	// $.validator.addMethod("regxold", function(value, element, regexpr) {         
- //      return regexpr.test(value);
- //    }, "Password should be at least 6 characters long!");
+	 //      return regexpr.test(value);
+	 //    }, "Password should be at least 6 characters long!");
     $("#resetPassword").validate({
       rules: {
         oldpassword: {
@@ -133,28 +132,46 @@ changepassword(event) {
 							axios.patch('/api/users/patch/one/resetpwd/'+user_id,body)
 							.then((response)=>{
 								console.log("In response==>>>",response);
-								swal("Your Password has been changed");
+								swal(" ", "Your Password has been changed");
 								this.setState({
 									oldpassword:"",
 									newpassword:"",
 									confirmPassword:"",
 								})
+
+							    var token = localStorage.removeItem("token");
+								if(token!==null){
+								console.log("Header Token = ",token);
+								this.setState({
+									loggedIn : false
+								},()=>{
+									localStorage.removeItem("emailId")
+									localStorage.removeItem("center_ID")
+									localStorage.removeItem("centerName")
+									localStorage.removeItem("fullName")
+									localStorage.removeItem('role')
+								})
+									console.log("token",token);
+									// browserHistory.push("/login"); 
+							        this.props.history.push("/login");
+  					                window.location.reload();
+							    }
 							})
 							.catch((error)=>{
 							console.log('error',error)
 							})
 						}else{
-							swal("Invalid Password","Please Enter valid New password and confirm password","warning");
+							swal("Invalid Password","Please Enter valid New password and confirm password");
 						}
 					}else{
-						swal("Invalid Password","Please Enter valid Old password","warning");
+						swal("Invalid Password","Please Enter valid Old password");
 					}
 				}
 			})
 			.catch(error => {
 				if (error.response.status == 401) {
 					console.log("ERROR in Responce");
-					swal("Invalid Password","Please Enter correct password","warning");
+					swal("Invalid Password","Please Enter correct password");
 					this.setState({invalidpassword:true})
 				}
 		})
