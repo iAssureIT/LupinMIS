@@ -129,10 +129,25 @@ class ActivitywiseAnnualPlanReport extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-        this.setState({
-          availableSectors : response.data,
-          // sector           : response.data[0].sector+'|'+response.data[0]._id
-        },()=>{
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      var availableSectors = response.data;
+      // console.log("availableSectors",availableSectors);
+      availableSectors.sort(dynamicSort("sector"));
+      this.setState({
+        availableSectors : availableSectors
       })
     }).catch(function (error) {
       console.log("error = ",error);
@@ -171,10 +186,26 @@ class ActivitywiseAnnualPlanReport extends Component{
       axios({
         method: 'get',
         url: '/api/sectors/'+sector_ID,
-      }).then((response)=> {
-        if(response&&response.data[0]){
+      }).then((response)=> { 
+        if(response){
+          var availableActivity = response.data[0].activity;
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+            }
+            return function (a,b) {
+              if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+              }else{
+                return a[property].localeCompare(b[property]);
+              }        
+            }
+          }
+          availableActivity.sort(dynamicSort("activityName"));
           this.setState({
-            availableActivity : response.data[0].activity
+              availableActivity : availableActivity
           })
         }
       }).catch(function (error) {
@@ -207,8 +238,23 @@ class ActivitywiseAnnualPlanReport extends Component{
       var availableSubActivity = _.flatten(response.data.map((a, i)=>{
         return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
       }))
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availableSubActivity.sort(dynamicSort("subActivityName"));
       this.setState({
-        availableSubActivity : availableSubActivity
+      availableSubActivity : availableSubActivity
       });
     }).catch(function (error) {
       console.log("error = ",error);
@@ -259,8 +305,24 @@ class ActivitywiseAnnualPlanReport extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
+      var availableProjects = response.data
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availableProjects.sort(dynamicSort("projectName")); 
       this.setState({
-        availableProjects : response.data
+      availableProjects : availableProjects
       })
     }).catch(function (error) {
       console.log('error', error);

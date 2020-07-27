@@ -139,10 +139,12 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 	  	var deleteMethod =  this.props.deleteMethod;
-		let id = e.target.id;
+		let id           = e.target.id;
+		var dataid       = e.target.getAttribute('data-id');
 		// let id = (e.target.id).replace(".", "/");
     	console.log("tableObjects.apiLink+id ",tableObjects.apiLink+id )
-	    	console.log("id ",id )
+    	console.log("id ",id )
+    	console.log("dataid ",dataid )
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
@@ -817,7 +819,7 @@ class IAssureTable extends Component {
 		                                                                <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
 		                                                              </div>
 		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		                                                                <button onClick={this.delete.bind(this)} id={(value._id)} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
+		                                                                <button onClick={this.delete.bind(this)} id={(value._id)} data-id={i} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
 		                                                              </div>
 		                                                            </div>
 		                                                          </div>

@@ -71,17 +71,32 @@ class SectorList extends Component{
     .then((response)=>{
     $(".fullpageloader").hide();
       console.log('response',response);
-       var tableData = response.data.map((a, i)=>{
-          return {
-            _id               : a._id,
-            sector            : a.sector,
-            sectorShortName   : a.sectorShortName,
-            activityName      : a.activityName,
-            subActivityName   : a.subActivityName,
-            unit              : a.unit,
-            familyUpgradation : a.familyUpgradation,
-          }
-        })
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      var tableData = response.data.map((a, i)=>{
+        return {
+          _id               : a._id,
+          sector            : a.sector,
+          sectorShortName   : a.sectorShortName,
+          activityName      : a.activityName,
+          subActivityName   : a.subActivityName,
+          unit              : a.unit,
+          familyUpgradation : a.familyUpgradation,
+        }
+      })
+      tableData.sort(dynamicSort("sector"));
       this.setState({
         tableData : tableData
       });
@@ -89,9 +104,7 @@ class SectorList extends Component{
     .catch(function(error){
       console.log("error = ",error);
     });
-  }
-
-  
+  }  
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getData(this.state.startRange, this.state.limitRange);

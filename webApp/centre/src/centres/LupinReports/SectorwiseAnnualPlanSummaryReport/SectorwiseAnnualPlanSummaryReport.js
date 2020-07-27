@@ -111,8 +111,6 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
     this.getAvailableSectors();
     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
   }
-
-   
   handleChange(event){
     event.preventDefault();
     this.setState({
@@ -127,19 +125,18 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-        
-        this.setState({
-          availableSectors : response.data,
-          sector           : response.data[0].sector+'|'+response.data[0]._id
-        },()=>{
-        var sector_ID = this.state.sector.split('|')[1]
-        this.setState({
-          sector_ID        : sector_ID
-        },()=>{
-        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-        })
-        // console.log('sector', this.state.sector);
+      this.setState({
+        availableSectors : response.data,
+        sector           : response.data[0].sector+'|'+response.data[0]._id
+      },()=>{
+      var sector_ID = this.state.sector.split('|')[1]
+      this.setState({
+        sector_ID        : sector_ID
+      },()=>{
+      this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
       })
+      // console.log('sector', this.state.sector);
+    })
     }).catch(function (error) {  
       // console.log("error = ",error);
       if(error.message === "Request failed with status code 401"){
@@ -196,8 +193,24 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
       url: '/api/projectMappings/list',
     }).then((response)=> {
       // console.log('responseP', response);
+      var availableProjects = response.data
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availableProjects.sort(dynamicSort("projectName")); 
       this.setState({
-        availableProjects : response.data
+        availableProjects : availableProjects
       })
     }).catch(function (error) {
       console.log('error', error);

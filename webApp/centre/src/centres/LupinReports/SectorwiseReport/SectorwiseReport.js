@@ -148,10 +148,25 @@ class SectorwiseReport extends Component{
           method: 'get',
           url: '/api/projectMappings/list',
         }).then((response)=> {
-          // console.log('responseP', response);
-          this.setState({
-            availableProjects : response.data
-          })
+            var availableProjects = response.data
+            function dynamicSort(property) {
+                var sortOrder = 1;
+                if(property[0] === "-") {
+                    sortOrder = -1;
+                    property = property.substr(1);
+                }
+                return function (a,b) {
+                    if(sortOrder == -1){
+                        return b[property].localeCompare(a[property]);
+                    }else{
+                        return a[property].localeCompare(b[property]);
+                    }        
+                }
+            }
+            availableProjects.sort(dynamicSort("projectName")); 
+            this.setState({
+                availableProjects : availableProjects
+            })
         }).catch(function (error) {
           console.log('error', error);
           if(error.message === "Request failed with status code 401"){

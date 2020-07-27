@@ -56,7 +56,7 @@ class FileWiseMonthlyPlanList extends Component{
     getCount(){
       axios.get('/api/monthlyPlans/get/files/count/'+localStorage.getItem('center_ID'))
       .then((response)=>{
-        console.log(response.data)
+        // console.log(response.data)
         this.setState({
           dataCount : response.data
         })

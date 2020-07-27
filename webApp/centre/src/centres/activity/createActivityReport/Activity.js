@@ -352,6 +352,21 @@ class Activity extends Component{
                   };
                 }
               });
+              function dynamicSort(property) {
+                var sortOrder = 1;
+                if(property[0] === "-") {
+                  sortOrder = -1;
+                  property = property.substr(1);
+                }
+                return function (a,b) {
+                  if(sortOrder == -1){
+                    return b[property].localeCompare(a[property]);
+                  }else{
+                    return a[property].localeCompare(b[property]);
+                  }        
+                }
+              }
+              array.sort(dynamicSort("sector"));
               this.setState({
                 availableSectors : array,
                 subActivityDetails : "",
@@ -1026,7 +1041,6 @@ class Activity extends Component{
       })
     })
   }
-
   componentDidMount() {
     $.validator.addMethod("regxDate", function(value, element, regexpr) { 
       return value!=='';
@@ -1127,7 +1141,6 @@ class Activity extends Component{
     // console.log("center_ID =",this.state.center_ID);
     });
   }
-
   componentWillReceiveProps(nextProps){
     // console.log('nextProps',nextProps)
     if(nextProps){
@@ -1183,11 +1196,26 @@ class Activity extends Component{
       method: 'get',
       url: '/api/sectors/list',
     }).then((response)=> {
-      if(response&&response.data){
-        this.setState({
-          availableSectors : response.data
-        })
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
       }
+      var availableSectors = response.data;
+      // console.log("availableSectors",availableSectors);
+      availableSectors.sort(dynamicSort("sector"));
+      this.setState({
+        availableSectors : availableSectors
+      })
     }).catch(function (error) {
       // console.log('error', error);
     });
@@ -1211,10 +1239,26 @@ class Activity extends Component{
       axios({
         method: 'get',
         url: '/api/sectors/'+sector_ID,
-      }).then((response)=> {
+      }).then((response)=> {     
+        var availableActivity = response.data[0].activity;
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+              return b[property].localeCompare(a[property]);
+            }else{
+              return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        availableActivity.sort(dynamicSort("activityName"));
         if(response&&response.data[0]){
           this.setState({
-            availableActivity : response.data[0].activity
+            availableActivity : availableActivity,
           })
         }
       }).catch(function (error) {
@@ -1244,6 +1288,21 @@ class Activity extends Component{
       var availableSubActivity = _.flatten(response.data.map((a, i)=>{
         return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
       }))
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availableSubActivity.sort(dynamicSort("subActivityName"));
       this.setState({
         availableSubActivity : availableSubActivity
       });
@@ -1404,9 +1463,25 @@ class Activity extends Component{
       method: 'get',
       url: '/api/projectMappings/list',
     }).then((response)=> {
-      // console.log('responseP', response); 
+      // console.log('responseP', response);
+      var availableProjects = response.data
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availableProjects.sort(dynamicSort("projectName")); 
       this.setState({
-        availableProjects : response.data
+        availableProjects : availableProjects
       })
     }).catch(function (error) {
       console.log('error', error);

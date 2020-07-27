@@ -197,8 +197,24 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
       url: '/api/projectMappings/list',
     }).then((response)=> {
       // console.log('responseP', response);
+      var availableProjects = response.data
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availableProjects.sort(dynamicSort("projectName")); 
       this.setState({
-        availableProjects : response.data
+        availableProjects : availableProjects
       })
     }).catch(function (error) {
       console.log('error', error);
@@ -382,7 +398,7 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
                   <hr className="hr-head"/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
 
-                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12">
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                         <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
@@ -395,7 +411,7 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
 
                       </div>
                     </div>
-                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12">
                       <label className="formLable">Year</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
@@ -411,7 +427,7 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
                         </select>
                       </div>
                     </div> 
-                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
                       <label className="formLable">Project Category</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                         <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
@@ -425,7 +441,7 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
                     </div>
                     {
                       this.state.projectCategoryType === "Project Fund" ?
-                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                      <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
                         <label className="formLable">Project Name</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
                           <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
