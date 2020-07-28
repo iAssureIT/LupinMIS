@@ -19,27 +19,41 @@
 }
 #VillagewisefamilyReport .col2{
 	white-space: pre-wrap!important;
-	width: 100px !important;
+	width: 90px !important;
 }
 #VillagewisefamilyReport .col3{
 	white-space: pre-wrap!important;
-	width: 200px !important;
+	width: 100px !important;
 }
-#VillagewisefamilyReport .col4, #VillagewisefamilyReport .col7{
+#VillagewisefamilyReport .col4{
 	white-space: pre-wrap!important;
 	width: 90px !important;
 }
-#VillagewisefamilyReport .col9
-{
+#VillagewisefamilyReport .col9, #VillagewisefamilyReport .col7, #VillagewisefamilyReport .col8{
 	white-space: pre-wrap!important;
-	width: 62px !important;
+	width: 100px !important;
 } 
 
 #VillagewisefamilyReport .col5{
 	white-space: pre-wrap!important;
-	width: 150px !important;
+	width: 90px !important;
 }
-#VillagewisefamilyReport .col8, #VillagewisefamilyReport .col6{
+ #VillagewisefamilyReport .col6{
 	white-space: pre-wrap!important;
 	width: 82px !important;
+}
+
+#VillagewisefamilyReport .col10,#VillagewisefamilyReport .col11, #VillagewisefamilyReport .col12{
+	white-space: pre-wrap!important;
+	width: 70px !important;
+}
+
+#VillagewisefamilyReport .col13, #VillagewisefamilyReport .col14, #VillagewisefamilyReport .col15{
+	white-space: pre-wrap!important;
+	width: 70px !important;
+}
+
+#VillagewisefamilyReport .col16, #VillagewisefamilyReport .col17, #VillagewisefamilyReport .col18, #VillagewisefamilyReport .col19{
+	white-space: pre-wrap!important;
+	width: 70px !important;
 }

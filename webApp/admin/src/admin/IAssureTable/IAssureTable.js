@@ -130,8 +130,8 @@ class IAssureTable extends Component {
         this.setState({
             id	            : nextProps.id,
             tableData	    : nextProps.tableData,
+      		downloadData    : this.props.downloadData,
             tableName	    : nextProps.tableName,
-  			downloadData    : nextProps.downloadData,
             dataCount 		: nextProps.dataCount,
         },()=>{
         	this.paginationFunction();
@@ -586,13 +586,10 @@ class IAssureTable extends Component {
 	    WindowObject.print();
 	    WindowObject.close();
     }
-    getDwldData(){
-	    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
-    }
 	render() {
 		// console.log("role :", this.state.role);
         return (
-	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
+	       	<div id="tableComponent" className={this.props.displayTable ? this.props.displayTable : " "+ "col-lg-12 col-sm-12 col-md-12 col-xs-12"}>	
 	       	{
 	       		this.state.tableObjects.searchApply === true ? 
 		       		<div className="col-lg-4 col-md-4  col-xs-12 col-sm-12 marginTop8 NOpadding pull-left">

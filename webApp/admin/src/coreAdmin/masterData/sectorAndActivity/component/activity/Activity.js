@@ -13,7 +13,6 @@ class Activity extends Component{
   
   constructor(props){
     super(props);
-   
     this.state = {
       fields                : {},
       errors                : {},
@@ -32,6 +31,7 @@ class Activity extends Component{
       "tableObjects"        : {
         deleteMethod        : 'patch',
         apiLink             : '/api/sectors/activity/delete/',
+        // downloadApply       : true,
         paginationApply     : false,
         searchApply         : false,
         editUrl             : '/sector-and-activity/'

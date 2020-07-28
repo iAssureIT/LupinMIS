@@ -52,6 +52,7 @@ class SectorList extends Component{
       "tableObjects"              : {
         deleteMethod        : 'patch',
         apiLink             : '/api/sectors/subactivity/delete/',
+        downloadApply       : true,
         paginationApply     : false,
         searchApply         : false,
         editUrl             : '/sector-and-activity/'

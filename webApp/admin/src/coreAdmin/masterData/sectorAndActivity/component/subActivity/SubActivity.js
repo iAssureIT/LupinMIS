@@ -34,9 +34,17 @@ class SubActivity extends Component{
         familyUpgradation   : "Family Upgradation",
         actions             : 'Action',
       },
+      "downloadtableHeading"        : {
+        sector              : "Sector",
+        activityName        : "Activity",
+        subActivityName     : "Sub-Activity",
+        unit                : "Unit",
+        familyUpgradation   : "Family Upgradation",
+      },
       "tableObjects"        : {
         deleteMethod        : 'patch',
         apiLink             : '/api/sectors/subactivity/delete/',
+        downloadApply       : true,
         paginationApply     : false,
         searchApply         : false,
         editUrl             : '/sector-and-activity/'
@@ -236,16 +244,33 @@ class SubActivity extends Component{
       method: 'get',
       url: '/api/sectors/'+sector_id,
     }).then((response)=> {
-
+      var availableActivity = response.data[0].activity;
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availableActivity.sort(dynamicSort("activityName"));
+      if(response&&response.data[0]){
         this.setState({
-          availableActivity : response.data[0].activity
-        },()=>{})
+          availableActivity : availableActivity,
+        })
+      }
     }).catch(function (error) {
-        console.log("error = ",error);
-      });
+      console.log("error = ",error);
+    });
   }
 
-edit(id){
+  edit(id){
     $('label.error').html('')
     var activity_id = this.props.match.params.activityId;
     var subactivity_id = this.props.match.params.subactivityId;
@@ -308,15 +333,14 @@ edit(id){
     .catch(function(error){
       console.log("error = ",error);
     });
-  }
-    
+  }  
   getData(startRange, limitRange){
-      var data = {
+    var data = {
       startRange : startRange,
       limitRange : limitRange
     }
 
-  $(".fullpageloader").show();
+    $(".fullpageloader").show();
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{
       $(".fullpageloader").hide();
@@ -331,7 +355,8 @@ edit(id){
           }
         })
       this.setState({
-        tableData : tableData
+        tableData    : tableData,
+        downloadData : tableData
       });
     })
     .catch(function(error){
@@ -500,6 +525,8 @@ edit(id){
                 <IAssureTable 
                   tableName = "SubActivity"
                   id = "SubActivity"
+                  downloadtableHeading={this.state.downloadtableHeading}
+                  downloadData={this.state.downloadData}
                   tableHeading={this.state.tableHeading}
                   twoLevelHeader={this.state.twoLevelHeader} 
                   dataCount={this.state.dataCount}

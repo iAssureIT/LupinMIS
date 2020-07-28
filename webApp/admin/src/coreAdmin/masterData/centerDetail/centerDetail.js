@@ -68,6 +68,14 @@ class centerDetail extends Component{
         numberofVillage           : "No of Villages",
         actions                   : 'Action',
       },
+      "downloadtableHeading"                : {
+        type                      : "Center Type",
+        centerName                : "Center Name",
+        places                    : "Address",
+        centerInchargeDetail      : "Center Incharge Details",
+        misCoordinatorDetail      : "MIS Coordinator Details",
+        numberofVillage           : "No of Villages",
+      },
       "tableObjects"              : {
         deleteMethod              : 'delete',
         apiLink                   : '/api/centers/',
@@ -473,7 +481,8 @@ class centerDetail extends Component{
           }
         })
         this.setState({
-          tableData : tableData
+          tableData : tableData,
+          downloadData : tableData,
         })
       }
     })
@@ -1001,6 +1010,8 @@ class centerDetail extends Component{
                         <IAssureTable 
                           tableName = "Center Details"
                           id = "CenterDetail"
+                          downloadtableHeading={this.state.downloadtableHeading}
+                          downloadData={this.state.downloadData}
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}

@@ -27,6 +27,7 @@ class Sector extends Component{
         deleteMethod        : 'delete',
         apiLink             : '/api/sectors/delete/',
         editUrl             : '/sector-and-activity/',
+        // downloadApply       : true,
         paginationApply     : false,
         searchApply         : false,
       },

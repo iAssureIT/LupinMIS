@@ -5,7 +5,7 @@ import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
-import IAssureTableTable                 from '../../coreAdmin/masterData/IAssureTable/IAssureTable.js';
+import IAssureTableTable            from '../../coreAdmin/masterData/IAssureTable/IAssureTable.js';
 import { Link } from 'react-router-dom';
 
 import './IAssureTable.css';
@@ -143,7 +143,7 @@ class IAssureTable extends Component {
 	    }).then((response)=> {
 	    	console.log("response ",response )
 	    	console.log("line 139  this.props.data ",this.props.data )
-	    	this.props.getData(this.props.data ? this.props.data :( this.state.startRange, this.state.limitRange, this.state.center_ID));
+	    	this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        this.props.history.push(tableObjects.editUrl);
 	        swal({
 	        	text : response.data.message,
