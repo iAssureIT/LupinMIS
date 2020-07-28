@@ -136,29 +136,42 @@ export default class Dashboard extends Component{
       // console.log("response ==>",response.data[0]);
 
       function removeDuplicates(data, param){
-          return data.filter(function(item, pos, array){
-            return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
-          })
+        return data.filter(function(item, pos, array){
+          return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+        })
+      }
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
         }
-      var availableblocksInCenter = removeDuplicates(response.data[0].blocksCovered, "district");
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      var availablevillagesInCenter = (response.data[0].villagesCovered);
+      var availableblocksInCenter = (response.data[0].blocksCovered);
+      var availabledistrictsInCenter = removeDuplicates(response.data[0].blocksCovered, "district");
+      availabledistrictsInCenter.sort(dynamicSort("district"));
+      availableblocksInCenter.sort(dynamicSort("block"));
+      availablevillagesInCenter.sort(dynamicSort("village"));
        
       if (response.data && response.data[0]) {
         this.setState({
           availableCenters         : response.data[0],
-          villagesCoveredInCenter  : response.data[0].villagesCovered.map((o,i)=>{return o.village}),
-          villagesCovered          : response.data[0].villagesCovered.length,
-          blocksCovered            : response.data[0].blocksCovered.slice(0, 8).map((o,i)=>{return o.block}),
-          allblocks                : response.data[0].blocksCovered.map((o,i)=>{return o.block}),
-          districtCovered          : availableblocksInCenter.slice(0, 8).map((d,i)=>{return (d.district).split('|')[0]}),  
-          alldistrict              : availableblocksInCenter.map((d,i)=>{return (d.district).split('|')[0]}),
+          villagesCoveredInCenter  : availablevillagesInCenter.map((o,i)=>{return o.village}),
+          villagesCovered          : availablevillagesInCenter.length,
+          blocksCovered            : availableblocksInCenter.slice(0, 8).map((o,i)=>{return o.block}),
+          allblocks                : availableblocksInCenter.map((o,i)=>{return o.block}),
+          districtCovered          : availabledistrictsInCenter.slice(0, 8).map((d,i)=>{return (d.district).split('|')[0]}),  
+          alldistrict              : availabledistrictsInCenter.map((d,i)=>{return (d.district).split('|')[0]}),
         },()=>{
-          // console.log("villagesCoveredInCenter",this.state.villagesCoveredInCenter);
-          // console.log('center', this.state.center);
-          // var center_ID = this.state.center.split('|')[1];
-          // this.setState({
-          //   center_ID        : center_ID   
-          // },()=>{
-          // })
+          console.log("this.state",this.state);
         })
       }
     }).catch(function (error) {
@@ -478,7 +491,7 @@ export default class Dashboard extends Component{
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11 mb15">
-                       {/* <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                      {/* <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <label className="formLable">Center</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                                 <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >

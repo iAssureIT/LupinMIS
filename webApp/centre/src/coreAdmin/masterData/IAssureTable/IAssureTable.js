@@ -140,8 +140,8 @@ class IAssureTable extends Component {
 	  	var tableObjects =  this.props.tableObjects;
 	  	var deleteMethod =  this.props.deleteMethod;
 		let id           = e.target.id;
+		// let id = (e.target.id).replace(" ", "-");
 		var dataid       = e.target.getAttribute('data-id');
-		// let id = (e.target.id).replace(".", "/");
     	console.log("tableObjects.apiLink+id ",tableObjects.apiLink+id )
     	console.log("id ",id )
     	console.log("dataid ",dataid )
@@ -788,7 +788,6 @@ class IAssureTable extends Component {
 																null}
 																{this.props.tableObjects.editUrl ?
 																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>:null}&nbsp; &nbsp; 
-															{/*	{this.props.editId ? <i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i> : null }&nbsp; &nbsp; */}
 																{this.props.editId && this.props.editId === value._id
 																	? 
 																		null 
@@ -797,29 +796,28 @@ class IAssureTable extends Component {
 																		? 
 																		null
 																		:
-																		<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete"  data-target={"#showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "") }></i>
+																		<div>
+																		<i className="fa fa-trash redFont" id={value._id+'-Delete'} data-toggle="modal" title="Delete"  data-target={"#showDeleteModal-"+i}></i>
+																		</div>
 																}
 															</span>
-															<div className="modal fade" id={"showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "")} role="dialog">
-																{/*console.log('value._id',value._id,this.props.editId)*/}
+															<div className="modal fade" id={"showDeleteModal-"+i} role="dialog">
 		                                                        <div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                                          <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
 		                                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                                            <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
-		                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "")}>&times;</button>
+		                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-"+i}>&times;</button>
 		                                                            </div>
-		                                                           
 		                                                            </div>
 		                                                            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                                              <h4 className="blackLightFont textAlignCenter examDeleteFont col-lg-12 col-md-12 col-sm-12 col-xs-12">Are you sure you want to delete?</h4>
 		                                                            </div>
-		                                                            
 		                                                            <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		                                                                <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
 		                                                              </div>
 		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		                                                                <button onClick={this.delete.bind(this)} id={(value._id)} data-id={i} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
+		                                                                <button onClick={this.delete.bind(this)} id={value._id} data-id={i} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
 		                                                              </div>
 		                                                            </div>
 		                                                          </div>
