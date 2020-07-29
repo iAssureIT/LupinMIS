@@ -1,7 +1,7 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-
+import moment                 from "moment";
 import IAssureTable         from "../IAssureTable/IAssureTable.js";
 import "./Beneficiary.css";
 
@@ -12,6 +12,7 @@ class FilewiseBeneficiaryList extends Component{
     this.state = {
        tableHeading:{
             "fileName"     : "File Name",
+            "uploadTime"   : "Uploaded At",
             "count"        : "Beneficiaries Count",
             "actions"      : "Action"
           },
@@ -41,9 +42,10 @@ class FilewiseBeneficiaryList extends Component{
         // console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
-            fileName: a.fileName != null ? a.fileName : "-", 
-            count: a.count != NaN ? "<p>"+a.count+"</p>" : "a", 
-            _id: a._id != null ? a._id : "-", 
+            fileName    : a.fileName != null ? a.fileName : "-", 
+            uploadTime  : a.uploadTime != null ? moment(a.uploadTime).format('MMMM Do YYYY, h:mm:ss a') : "-", 
+            count       : a.count != NaN ? "<p>"+a.count+"</p>" : "a", 
+            _id         : a.fileName+ "/" + a.uploadTime, 
           }
         })
         console.log('tableData', tableData)

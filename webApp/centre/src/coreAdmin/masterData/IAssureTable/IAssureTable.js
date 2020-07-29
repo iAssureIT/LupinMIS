@@ -131,7 +131,6 @@ class IAssureTable extends Component {
 	// 	$("html,body").scrollTop(0);
 	// 	var tableObjects =  this.props.tableObjects;
 	// 	var id = event.target.id;
-		
 	// 	this.props.history.push(tableObjects.editUrl+id);
 	// }
 
@@ -141,18 +140,14 @@ class IAssureTable extends Component {
 	  	var deleteMethod =  this.props.deleteMethod;
 		let id           = e.target.id;
 		// let id = (e.target.id).replace(" ", "-");
-		var dataid       = e.target.getAttribute('data-id');
     	console.log("tableObjects.apiLink+id ",tableObjects.apiLink+id )
     	console.log("id ",id )
-    	console.log("dataid ",dataid )
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
 	    	console.log("response ",response )
 	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-	    	// this.props.isDeleted()
-	    	// console.log("deleteresponse ",response )
 	        this.props.history.push(tableObjects.editUrl);
 	        swal({
 	        	text : response.data.message,
@@ -787,7 +782,10 @@ class IAssureTable extends Component {
 																	: 
 																null}
 																{this.props.tableObjects.editUrl ?
-																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>:null}&nbsp; &nbsp; 
+																	<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>
+																	:
+																	null
+																} 
 																{this.props.editId && this.props.editId === value._id
 																	? 
 																		null 

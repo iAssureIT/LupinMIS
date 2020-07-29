@@ -1,6 +1,7 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
+import moment                 from "moment";
 import IAssureTable           from "../../coreAdmin/masterData/IAssureTable/IAssureTable.js";
 import "./PlanDetails.css";
 
@@ -11,6 +12,9 @@ class FileWiseMonthlyPlanList extends Component{
     this.state = {
        tableHeading:{
             "fileName"     : "File Name",
+            "month"        : "Month",
+            "year"         : "Year",
+            "uploadTime"   : "Uploaded At",
             "count" 	     : "Quaterly Plans Count",
             "actions"      : "Action"
           },
@@ -36,15 +40,18 @@ class FileWiseMonthlyPlanList extends Component{
       }
       axios.post('/api/monthlyPlans/get/files', data)
       .then((response)=>{
-        console.log(response.data);
+        // console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
-            fileName: a.fileName != null ? a.fileName : "-", 
-            count: a.count != NaN ? "<p>"+a.count+"</p>" : "a", 
-            _id: a._id != null ? a._id : "-", 
+            fileName      : a.fileName != null ? a.fileName : "-", 
+            month         : a.month != null ? a.month : "-", 
+            year          : a.year != null ? a.year : "-", 
+            uploadTime    : a.uploadTime != null ? moment(a.uploadTime).format('MMMM Do YYYY, h:mm:ss a') : "-", 
+            count         : a.count != NaN ? "<p>"+a.count+"</p>" : 0, 
+            _id           : a.fileName + "/" + a.month + "/" + a.year + "/" + a.uploadTime, 
           }
         })
-        console.log('tableData', tableData)
+        // console.log('tableData', tableData)
         this.setState({
           tableData : tableData
         })
