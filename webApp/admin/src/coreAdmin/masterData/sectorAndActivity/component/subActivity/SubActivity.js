@@ -339,7 +339,6 @@ class SubActivity extends Component{
       startRange : startRange,
       limitRange : limitRange
     }
-
     $(".fullpageloader").show();
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{

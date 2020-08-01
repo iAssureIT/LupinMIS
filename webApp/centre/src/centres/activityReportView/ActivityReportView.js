@@ -333,14 +333,14 @@ class ActivityReportView extends Component{
                               <table id="table-to-xls" className="table customTable table-bordered table-hover table-responsive table-striped valign">
                                 <thead>
                                   <tr> 
-                                    <th className="text-center"> Sr No. </th> 
-                                    <th className="text-center"> Family ID</th> 
-                                    <th className="text-center"> Name of Beneficieries </th>
-                                    <th className="text-center"> Beneficiery ID </th>
-                                    <th className="text-center"> Relation </th>
-                                    <th className="text-center"> District </th>
-                                    <th className="text-center"> Block </th>
-                                    <th className="text-center"> Village </th>
+                                    <th className="textAlignLeft"> Sr No. </th> 
+                                    <th className="textAlignLeft"> Family ID</th> 
+                                    <th className="textAlignLeft"> Name of Beneficieries </th>
+                                    <th className="textAlignLeft"> Beneficiery ID </th>
+                                    <th className="textAlignLeft"> Relation </th>
+                                    <th className="textAlignLeft"> District </th>
+                                    <th className="textAlignLeft"> Block </th>
+                                    <th className="textAlignLeft"> Village </th>
                                   </tr>
                                 </thead>
                                 <tbody>

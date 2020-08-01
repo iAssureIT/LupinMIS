@@ -1,7 +1,7 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-import IAssureTable           from "../../../coreAdmin/masterData/IAssureTable/IAssureTable.js";
+import IAssureTable           from "../../../centres/IAssureTableFilewise/IAssureTable.js";
 
 class FilewiseBeneficiaryActivityList extends Component{
   

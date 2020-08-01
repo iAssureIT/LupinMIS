@@ -2,7 +2,7 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import moment                 from "moment";
-import IAssureTable           from "../../coreAdmin/masterData/IAssureTable/IAssureTable.js";
+import IAssureTable           from "../../centres/IAssureTableFilewise/IAssureTable.js";
 import "./PlanDetails.css";
 
 class FileWiseMonthlyPlanList extends Component{
@@ -12,10 +12,10 @@ class FileWiseMonthlyPlanList extends Component{
     this.state = {
        tableHeading:{
             "fileName"     : "File Name",
-            "month"        : "Month",
+            "month"        : "Quarter",
             "year"         : "Year",
             "uploadTime"   : "Uploaded At",
-            "count" 	     : "Quaterly Plans Count",
+            "count" 	     : "Quarterly Plans Count",
             "actions"      : "Action"
           },
           "tableObjects"              : {
@@ -82,7 +82,7 @@ class FileWiseMonthlyPlanList extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                      Filewise Quaterly Plan Details
+                      Filewise Quarterly Plan Details
                     </div>
                   </div>
                   <hr className="hr-head"/>

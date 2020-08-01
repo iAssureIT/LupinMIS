@@ -113,7 +113,7 @@ class ProjectMapping extends Component{
   }
   Submit(event){
     event.preventDefault();
-    if($('#sectorMapping').valid()){
+    if($('#projectMapping').valid()){
       console.log("sectorData",this.state.sectorData)
       if (this.state.sectorData.length===0){      
         swal({
@@ -166,7 +166,7 @@ class ProjectMapping extends Component{
   }
   Update(event){
     event.preventDefault();
-    if($('#sectorMapping').valid()){
+    if($('#projectMapping').valid()){
       console.log(this.state.projectType)
       if(this.state.projectType>1){
         var listofTypesArray = this.state.projectType.map((data, index)=>{

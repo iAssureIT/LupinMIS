@@ -13,6 +13,7 @@
 }
 .prewrapText{
   white-space: pre-wrap !important;
+  height: 30px;
 }
 .wrapWord{
    /*word-wrap: break-word;*/

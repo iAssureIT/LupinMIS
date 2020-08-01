@@ -5,7 +5,7 @@ import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
-import IAssureTableTable            from '../../coreAdmin/masterData/IAssureTable/IAssureTable.js';
+import IAssureTableTable            from "../../centres/IAssureTableFilewise/IAssureTable.js";
 import { Link } from 'react-router-dom';
 
 import './IAssureTable.css';

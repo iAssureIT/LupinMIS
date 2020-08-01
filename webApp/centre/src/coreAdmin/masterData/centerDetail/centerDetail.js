@@ -425,7 +425,25 @@ class centerDetail extends Component{
             "blocksCovered"            : "--Select Block--",
             "villagesCovered"          : editData.villagesCovered,
             'stateCode'                : editData.address.stateCode
-          },()=>{
+          },()=>{ 
+            console.log("selectedVillages",this.state.selectedVillages)
+            function dynamicSort(property) {
+              var sortOrder = 1;
+              if(property[0] === "-") {
+                  sortOrder = -1;
+                  property = property.substr(1);
+              }
+              return function (a,b) {
+                if(sortOrder == -1){
+                    return b[property].localeCompare(a[property]);
+                }else{
+                    return a[property].localeCompare(b[property]);
+                }        
+              }
+            }
+            var selectedVillages = this.state.selectedVillages
+            selectedVillages.sort(dynamicSort("block"));
+            // selectedVillages.sort(dynamicSort("village"));
             this.getDistrict(editData.address.stateCode);
             this.getBlock(editData.address.stateCode, editData.address.district);
             if(editData.villagesCovered&&editData.villagesCovered.length>0){
@@ -434,9 +452,13 @@ class centerDetail extends Component{
                 var array = returnData.map((data,index) => {
                   return {'cityName' : data};
                 });
+                array.sort(dynamicSort("cityName"));
                 this.setState({
-                  listofVillages : array,
-                  editlistofVillages : array
+                  listofVillages     : array,
+                  editlistofVillages : array,
+                  // selectedVillages   : selectedVillages
+                },()=>{
+                  // console.log("this.state.editlistofVillages",this.state.editlistofVillages)
                 })
               }
             }
@@ -487,8 +509,6 @@ class centerDetail extends Component{
       console.log("error = ",error);
     });*/
   }
-  componentWillMount(){
-  }
   getTypeOfCenter(){
     axios({
       method: 'get',
@@ -521,9 +541,25 @@ class centerDetail extends Component{
       method: 'get',
       url: 'http://locations2.iassureit.com/api/states/get/list/IN',
     }).then((response)=> {
+      var listofStates = response.data;
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+              return b[property].localeCompare(a[property]);
+          }else{
+              return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      listofStates.sort(dynamicSort("stateName"));
       if(response&&response.data){
         this.setState({
-          listofStates : response.data
+          listofStates : listofStates
         })
       }
     }).catch(function (error) {
@@ -556,8 +592,24 @@ class centerDetail extends Component{
       url: 'http://locations2.iassureit.com/api/districts/get/list/IN/'+stateCode,
     }).then((response)=> {
         if(response&&response.data){
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function (a,b) {
+              if(sortOrder == -1){
+                  return b[property].localeCompare(a[property]);
+              }else{
+                  return a[property].localeCompare(b[property]);
+              }        
+            }
+          }
+          var listofDistrict = response.data;
+          listofDistrict.sort(dynamicSort("districtName"));
           this.setState({
-            listofDistrict : response.data,
+            listofDistrict : listofDistrict,
           })
         }
     }).catch(function (error) {
@@ -587,8 +639,24 @@ class centerDetail extends Component{
     }).then((response)=> {
       // console.log('response',response);
       if(response&&response.data){
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        var listofBlocks = response.data;
+        listofBlocks.sort(dynamicSort("blockName"));
         this.setState({
-          listofBlocks : response.data
+          listofBlocks : listofBlocks
         })
       }
     }).catch(function (error) {
@@ -626,6 +694,20 @@ class centerDetail extends Component{
     }).then((response)=> {
         console.log('response ==========', response.data);
         if(response&&response.data[0]){
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function (a,b) {
+              if(sortOrder == -1){
+                  return b[property].localeCompare(a[property]);
+              }else{
+                  return a[property].localeCompare(b[property]);
+              }        
+            }
+          }
           if(this.state.editlistofVillages.length!==0){
             var listofVillages = response.data
             this.state.editlistofVillages.map((data,index) => {
@@ -634,12 +716,15 @@ class centerDetail extends Component{
                 listofVillages.push({'cityName' : data.cityName});
               }
             });
+            listofVillages.sort(dynamicSort("cityName"));
             this.setState({
               listofVillages : listofVillages
             })
           }else{
+          var listofVillages = response.data;
+          listofVillages.sort(dynamicSort("cityName"));
             this.setState({
-              listofVillages : response.data
+              listofVillages : listofVillages
             })
           }
         }
@@ -656,12 +741,30 @@ class centerDetail extends Component{
     this.setState({
       [id] : value
     },()=>{
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+              return b[property].localeCompare(a[property]);
+          }else{
+              return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
       if(this.state[id] === true){
         selectedVillages.push({
           district  : this.refs.districtCovered.value,
           block     : this.state.blocksCovered,
           village   : id
         });
+
+        // selectedVillages.sort(dynamicSort("district"));
+        // selectedVillages.sort(dynamicSort("block"));
+        selectedVillages.sort(dynamicSort("village"));
         this.setState({
           selectedVillages : selectedVillages,
         });
@@ -671,9 +774,15 @@ class centerDetail extends Component{
         if(this.refs.districtCovered.value==='--Select District--'&&this.state.blocksCovered==='--Select Block--'){
           listofVillages.splice(listofVillages.findIndex(v => v.cityName === cityName), 1);
         }
+        // selectedVillages.sort(dynamicSort("district"));
+        // selectedVillages.sort(dynamicSort("block"));
+        selectedVillages.sort(dynamicSort("village"));
+        listofVillages.sort(dynamicSort("village"));
         this.setState({
           selectedVillages : selectedVillages,
           listofVillages : listofVillages
+        },()=>{
+          console.log("selectedVillages",this.state.selectedVillages)
         });
       }
     });      

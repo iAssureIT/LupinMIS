@@ -1,26 +1,26 @@
-#ProjectMapping .col1, #ProjectMapping .col2
-{
-  width: 120px;
+.sectorDiv{
+  height: 45px;
 }
-#ProjectMapping .col5, #ProjectMapping .col6 {
-  width: 300px;
+.activityDiv{
+  height: 30px;
 }
-#ProjectMapping .col3
+.subActivityDiv{
+  height: 30px;
+}
+
+#ProjectMapping .col1
 {
-  width: 220px;
+  width: 100px;
 }
 #ProjectMapping .col4 {
-  width: 220px;
+  width: 250px;
 }
-#ProjectMapping .col7{
+#ProjectMapping .col3, #ProjectMapping .col2{
+  width: 250px;
+}
+#ProjectMapping .col5{
   width: 60px;
 }
-/*
-#ProjectMapping .col7 {
-  width: 64px;
-}
-*/
-
 #ProjectMapping .scrollContent {
   display: block;
   height: 400px;

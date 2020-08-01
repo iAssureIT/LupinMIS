@@ -2,7 +2,7 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import moment                 from "moment";
 import axios                  from 'axios';
-import IAssureTable           from "../../../coreAdmin/masterData/IAssureTable/IAssureTable.js";
+import IAssureTable           from "../../../centres/IAssureTableFilewise/IAssureTable.js";
 import "./FilewiseActivityList.css";
 
 class FilewiseActivityList extends Component{

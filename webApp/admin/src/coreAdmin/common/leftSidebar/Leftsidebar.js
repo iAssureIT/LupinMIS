@@ -267,9 +267,9 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
-                      <Link to="/project-definition" title="Project Specification">
+                      <Link to="/project-definition" title="Project Creation">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Project Specification</span>
+                        <span className="sidebarMenuSubText">Project Creation</span>
                       </Link>
                     </li>
                   </ul>

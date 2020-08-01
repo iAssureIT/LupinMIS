@@ -97,12 +97,12 @@ export default class Leftsidebar extends Component{
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i> 
                   </Link>
                   <ul className="collapse list-unstyled activeClass" id="annualplanreport">
-                    <li className="sidebarMenuText">
+                    {/*<li className="sidebarMenuText">
                       <Link to="/annual-plan-details" title="Annual Plan">
                         <i className="fa fa-circle-o" />
                         View Annual Plan
                       </Link>
-                    </li>  
+                    </li>  */}
                     <li>
                       <Link to="/sector-wise-quaterly-plan-summary-report" title="Sector Quaterly Plan">
                         <i className="fa fa-circle-o" />
@@ -201,7 +201,7 @@ export default class Leftsidebar extends Component{
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
                   <Link to="#report" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Reporting System">
                     <i className="fa fa-files-o" />
-                    Reporting System
+                    Reports
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
 

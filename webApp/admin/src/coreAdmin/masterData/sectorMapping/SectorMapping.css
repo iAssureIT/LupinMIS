@@ -1,5 +1,8 @@
-#SectorMapping .col1
-{
+.mapWrapText{
+  white-space: pre-wrap !important;
+  height: 15px;
+}
+#SectorMapping .col1{
   width: 150px;
   white-space: pre-wrap;
 }
@@ -7,8 +10,7 @@
   width: 200px;
   white-space: pre-wrap;
 }
-#SectorMapping .col3
-{
+#SectorMapping .col3{
   width: 220px;
   white-space: pre-wrap;
 }
