@@ -211,21 +211,22 @@ i, span {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 }
 #sidebar ul li a {
-    padding: 10px 15px 10px 15px ;
-    font-size: 1em;
-    display: block;
+  padding: 10px 15px 10px 15px ;
+  font-size: 1em;
+  display: block;
+  color: #fff;
 }
 #sidebar ul li a:hover,#sidebar ul li.sidebarMenuText.active a {
-    color: #555;
-    background: #fff;
+  color: #555;
+  background: #fff;
 }
 #sidebar ul li a i {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #fff;
-    background: #222;
+  color: #fff;
+  background: #222;
 }
 
 

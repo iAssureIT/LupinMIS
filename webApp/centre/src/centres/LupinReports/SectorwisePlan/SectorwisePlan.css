@@ -1,0 +1,55 @@
+/*#SectorwisePlan tr .colorTable:nth-child(2), #SectorwisePlan tr .srpadd:nth-child(n+5){
+	background: var(--color1);
+}
+#SectorwisePlan tr .colorTable:nth-child(3), #SectorwisePlan tr .srpadd:nth-child(n+9){
+	background: var(--color2);
+}
+*/
+
+#SectorwisePlan .col1{
+	width: 100px !important;
+	white-space: pre-wrap!important;
+}
+#SectorwisePlan .col2{
+	width: 100px !important;
+}
+#SectorwisePlan .col3{
+	white-space: pre-wrap!important;
+	width: 150px !important;
+}
+#SectorwisePlan .col4, #SectorwisePlan .col7{
+	width: 54px !important;
+}
+ #SectorwisePlan .col16, #SectorwisePlan .col17, #SectorwisePlan .col12
+ {
+	width: 62px !important;
+} 
+#SectorwisePlan .col10{
+	width: 82px !important;
+}
+
+#SectorwisePlan .col6{
+	width: 62px !important;
+}
+#SectorwisePlan .col9, #SectorwisePlan .col5, #SectorwisePlan .col15{
+	width: 72px !important;
+}
+#SectorwisePlan .col11 {
+	width: 52px !important;
+}
+#SectorwisePlan .col13, #SectorwisePlan .col8, #SectorwisePlan .col14{
+	width: 52px !important;
+}
+#SectorwisePlan .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#SectorwisePlan .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

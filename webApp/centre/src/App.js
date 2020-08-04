@@ -1,9 +1,9 @@
 import React    from 'react';
 import axios    from 'axios';
-import Layout   from './coreAdmin/Layout/Layout.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './coreAdmin/css/root.css'
 import './App.css';
+import Layout   from './coreAdmin/Layout/Layout.js';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL; 
 // axios.defaults.baseURL  = "http://localhost:3054"

@@ -69,9 +69,10 @@ import report13                                   from "../../centres/LupinRepor
 import report14                                   from "../../centres/LupinReports/ActivitywisePeriodicPlanReport/ActivitywisePeriodicPlanReport.js";
 import report15                                   from "../../centres/LupinReports/SectorwisePeriodicPlanSummaryReport/SectorwisePeriodicPlanSummaryReport.js";
 import report16                                   from "../../centres/LupinReports/SectorwiseAnnualPlanSummaryReport/SectorwiseAnnualPlanSummaryReport.js";
-import report17                                   from "../../centres/LupinReports/SectorwiseQuaterlyPlanSummaryReport/SectorwiseQuaterlyPlanSummaryReport.js";
+import report17                                   from "../../centres/LupinReports/SectorwisePlan/SectorwisePlan.js";
 import report18                                   from "../../centres/LupinReports/FamilyCoverageReport/FamilyCoverageReport.js";
 import report19                                   from "../../centres/LupinReports/Activities_in_beneficiary_Report/Activities_in_beneficiary_Report.js";
+import report20                                   from "../../centres/LupinReports/ActivitywisePlan/ActivitywisePlan.js";
 
 import ActivityWiseReport                         from "../../centres/LupinReports/ActivityWiseReport/ActivityWiseReport.js";
 import SectorwiseReport                           from "../../centres/LupinReports/SectorwiseReport/SectorwiseReport.js";
@@ -207,11 +208,12 @@ class Layout extends Component{
                               <Route path="/activity-wise-periodic-plan-report"                           exact strict component={ report14 } />
                               <Route path="/sector-wise-periodic-plan-summary-report"                     exact strict component={ report15 } />
                               <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
-                              <Route path="/sector-wise-quaterly-plan-summary-report"                     exact strict component={ report17 } />
+                              <Route path="/sector-wise-plan"                                             exact strict component={ report17 } />
                               <Route path="/family-coverage-report"                                       exact strict component={ report18 } />
                               <Route path="/family-tracking-system"                                       exact strict component={ report19 } />
                               <Route path="/activity-wise-report"                                         exact strict component={ ActivityWiseReport } />
-                              <Route path="/sector-wise-report"                                         exact strict component={ SectorwiseReport } />
+                              <Route path="/sector-wise-report"                                           exact strict component={ SectorwiseReport } />
+                              <Route path="/activity-wise-plan"                                           exact strict component={ report20 } />
                             </Switch>        
                       </div>
                     </div>

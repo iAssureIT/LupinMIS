@@ -9,14 +9,17 @@
 #SectorMapping .col2 {
   width: 200px;
   white-space: pre-wrap;
+  text-align: left !important;
 }
 #SectorMapping .col3{
   width: 220px;
   white-space: pre-wrap;
+  text-align: left !important;
 }
 #SectorMapping .col4 {
   width: 220px;
   white-space: pre-wrap;
+  text-align: left !important;
 }
 #SectorMapping .col5 {
   width: 60px;
@@ -45,19 +48,20 @@
 }
 #ViewerSectorMapping .col2 {
   width: 200px;
+  text-align: left !important;
   white-space: pre-wrap;
 }
 #ViewerSectorMapping .col3
 {
   width: 235px;
+  text-align: left !important;
   white-space: pre-wrap;
 }
 #ViewerSectorMapping .col4 {
   width: 230px;
+  text-align: left !important;
   white-space: pre-wrap;
 }
-
-
 #ViewerSectorMapping .scrollContent {
   display: block;
   height: 400px;

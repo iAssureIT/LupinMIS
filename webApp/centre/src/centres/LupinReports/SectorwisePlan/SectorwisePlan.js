@@ -6,10 +6,10 @@ import moment               from 'moment';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
 
-import "./SectorwiseQuaterlyPlanSummaryReport.css";
+import "./SectorwisePlan.css";
 import "../../Reports/Reports.css";
 
-class SectorwiseQuaterlyPlanSummaryReport extends Component{
+class SectorwisePlan extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -23,8 +23,8 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
         "projectCategoryType": "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
-        "month"              : "Q1 (April to June)",
-        "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
+        "month"              : "All",
+        "months"              :["All","Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
         // 'year'               : "FY 2019 - 2020",
         // "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
         "startDate"         : "",
@@ -32,42 +32,39 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
         "twoLevelHeader"    : {
             apply           : true,
             firstHeaderData : [
-                {
-                    heading : 'Sector Details',
-                    mergedColoums : 4,
-                    hide : false
-                },
+                // {
+                //     heading : 'Sector Details',
+                //     mergedColoums : 4,
+                //     hide : false
+                // },
                 {
                     heading : 'Annual Plan',
-                    mergedColoums : 4,
+                    mergedColoums : 7,
                     hide : false
                 },
                 {
                     heading : "Source of Financial Plan 'Lakh'",
-                    mergedColoums : 10,
+                    mergedColoums : 7,
                     hide : true
-                },/*
-                {
-                    heading : "",
-                    mergedColoums : 1
-                },*/
+                },
+
             ]
         },
         "tableHeading"      : {
-            "annualPlan_projectCategoryType"    : 'Project Category',
-            "annualPlan_projectName"            : 'Project Name',
-            "name"                              : 'Sector',
-            "annualPlan_Reach"                  : 'Reach', 
-            "annualPlan_FamilyUpgradation"      : "Families Upgradation",
-            "proportionToTotal"                        : 'Proportion to Total %', 
-            "annualPlan_TotalBudget_L"          : "Total Budget 'Lakh'", 
-            "annualPlan_LHWRF_L"                : 'LHWRF',
-            "annualPlan_NABARD_L"               : 'NABARD',
-            "annualPlan_Bank_Loan_L"            : 'Bank',
-            "annualPlan_Govt_L"                 : 'Government',
-            "annualPlan_DirectCC_L"             : 'DirectCC',
-            "annualPlan_IndirectCC_L"           : 'IndirectCC',
-            "annualPlan_Other_L"                : 'Others',
+            projectCategoryType            : "Project Category",
+            projectName                    : "Project Name",
+            sectorName                     : "Sector",
+            Reach                          : "Reach",
+            FamilyUpgradation              : "Family Upgradation",
+            // proportionToTotal              : 'Proportion to Total %', 
+            TotalBudget                    : "Total Budget",
+            LHWRF                          : "LHWRF",
+            NABARD                         : "NABARD",
+            Bank_Loan                      : "Bank Loan",
+            Govt                           : "Government",
+            DirectCC                       : "DirectCC",
+            IndirectCC                     : "IndirectCC",
+            Other                          : "Others",
         },
         "tableObjects"        : {
             paginationApply     : false,
@@ -78,7 +75,6 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
     window.scrollTo(0, 0); 
     this.getAvailableSectors = this.getAvailableSectors.bind(this);
   }
-
   componentDidMount(){
     this.year();
     const center_ID = localStorage.getItem("center_ID");
@@ -112,13 +108,13 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
     this.getAvailableSectors();
     this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.month);
   }
-
-   
   handleChange(event){
     event.preventDefault();
+    var getheader = {...this.state.twoLevelHeader};
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
+      getheader.firstHeaderData[0].heading = this.state.month==="All" ? "Annual Plan " : this.state.month + " Plan";
       this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.month);
       // console.log('name', this.state)
     });
@@ -265,57 +261,85 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
     }
   }
   getData(year, center_ID, projectCategoryType, projectName, beneficiaryType, month){        
-    // console.log(year, center_ID, projectCategoryType, projectName, beneficiaryType, month);
+    console.log(year, center_ID, projectCategoryType, projectName, beneficiaryType, month);
     if(year){
       if(month){
-        if(month="Q1 (April to June)"){
+        // console.log("startDate",startDate);
+        // console.log("endDate",endDate);
+        if(year && center_ID && projectCategoryType  && beneficiaryType){ 
           var startDate = year.substring(3, 7)+"-04-01";
-          var endDate   = year.substring(3, 7)+"-06-30";    
-        }else if(month="Q2 (July to September)"){
-          var startDate = year.substring(3, 7)+"-07-01";
-          var endDate   = year.substring(3, 7)+"-09-30";    
-        }else if(month="Q3 (October to December)"){
-          var startDate = year.substring(3, 7)+"-10-01";
-          var endDate   = year.substring(3, 7)+"-12-31";
-        }else if(month="Q4 (January to March)"){
-          var startDate = year.substring(10, 15)+"-01-01";
-          var endDate   = year.substring(10, 15)+"-03-31";
-        }
-        if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
+          var endDate = year.substring(10, 15)+"-03-31";    
           $(".fullpageloader").show();
-          axios.get('/api/reports/sector_quarterly_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
-            .then((response)=>{
-              console.log("resp",response);
-              $(".fullpageloader").hide();
-              var value = response.data.filter((a)=>{return a.name == "Total"})[0];
-              var tableData = response.data.map((a, i)=>{
-                return {
-                      _id                                      : a._id,     
-                      annualPlan_projectCategoryType           : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
-                      annualPlan_projectName                   : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
-                      name                                     : a.name,
-                      annualPlan_Reach                         :(this.addCommas(a.annualPlan_Reach)), 
-                      annualPlan_FamilyUpgradation             :(this.addCommas(a.annualPlan_FamilyUpgradation)), 
-                      // annualPlan_Reach                         : (a.annualPlan_Reach=== " ") ? " " : parseInt(this.addCommas(a.annualPlan_Reach)), 
-                      // annualPlan_FamilyUpgradation             : (a.annualPlan_FamilyUpgradation === " ") ? " "  : parseInt(this.addCommas(a.annualPlan_FamilyUpgradation)), 
-                      proportionToTotal                        : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
-                      annualPlan_TotalBudget_L                 : (a.annualPlan_TotalBudget_L),
-                      annualPlan_LHWRF_L                       : (a.annualPlan_LHWRF_L),
-                      annualPlan_NABARD_L                      : (a.annualPlan_NABARD_L),
-                      annualPlan_Bank_Loan_L                   : (a.annualPlan_Bank_Loan_L),
-                      annualPlan_Govt_L                        : (a.annualPlan_Govt_L),
-                      annualPlan_DirectCC_L                    : (a.annualPlan_DirectCC_L),
-                      annualPlan_IndirectCC_L                  : (a.annualPlan_IndirectCC_L),
-                      annualPlan_Other_L                       : (a.annualPlan_Other_L),
-                  } 
-              })  
-              this.setState({
-                tableData : tableData
+          // axios.get('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+          // axios.get('/api/reports/sector_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+          if (month==="All"){
+            axios.get('/api/reports/sector_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+              .then((response)=>{
+                console.log("resp",response);
+                $(".fullpageloader").hide();
+                var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                var tableData = response.data.map((a, i)=>{
+                  return {
+                        _id                           : a._id,     
+                        projectCategoryType           : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
+                        projectName                   : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
+                        sectorName                    : a.name,
+                        Reach                         :(this.addCommas(a.annualPlan_Reach)), 
+                        FamilyUpgradation             :(this.addCommas(a.annualPlan_FamilyUpgradation)), 
+                        // proportionToTotal                        : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
+                        TotalBudget                   : (a.annualPlan_TotalBudget_L),
+                        LHWRF                         : (a.annualPlan_LHWRF_L),
+                        NABARD                        : (a.annualPlan_NABARD_L),
+                        Bank_Loan                     : (a.annualPlan_Bank_Loan_L),
+                        Govt                          : (a.annualPlan_Govt_L),
+                        DirectCC                      : (a.annualPlan_DirectCC_L),
+                        IndirectCC                    : (a.annualPlan_IndirectCC_L),
+                        Other                         : (a.annualPlan_Other_L),
+                    } 
+                })  
+                this.setState({
+                  tableData : tableData
+                })
               })
-            })
-            .catch(function(error){  
-              console.log("error = ",error);
-            });
+              .catch(function(error){  
+                console.log("error = ",error);
+              });
+
+          }else{
+            axios.get('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+              .then((response)=>{
+                console.log("resp",response);
+                $(".fullpageloader").hide();
+                var value = response.data.filter((a)=>{return a.sectorName == "Total"})[0];
+                var tableData = response.data.map((a, i)=>{
+                  // console.log(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%",(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%")
+                  return {
+                        _id                            : a._id,     
+                        projectCategoryType            : a.projectCategoryType,
+                        projectName                    : a.projectName === "all" ? "-" : a.projectName,
+                        sectorName                     : a.sectorName,
+                        Reach                          : this.addCommas(a.Reach),
+                        FamilyUpgradation              : this.addCommas(a.FamilyUpgradation),
+                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") == "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
+                        TotalBudget                    : (a.TotalBudget),
+                        LHWRF                          : (a.LHWRF),
+                        NABARD                         : (a.NABARD),
+                        Bank_Loan                      : (a.Bank_Loan),
+                        Govt                           : (a.Govt),
+                        DirectCC                       : (a.DirectCC),
+                        IndirectCC                     : (a.IndirectCC),
+                        Other                          : (a.Other),
+                    } 
+                })  
+                this.setState({
+                  tableData :tableData
+                })
+              })
+              .catch(function(error){  
+                console.log("error = ",error);
+              });
+          }
+
         }
       }
     }
@@ -329,7 +353,6 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
   }
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
-
     this.setState({
       'currentTabView': currentComp,
     })
@@ -392,12 +415,11 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                        Sector Quarterly Plan Report            
+                        Sector Plan            
                     </div>
                   </div>
                   <hr className="hr-head"/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
-
                     <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12">
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
@@ -466,8 +488,8 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
                   <div className="marginTop11">
                     <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <IAssureTable 
-                          tableName = "Sectorwise Quarterly Plan Summary Report"
-                          id = "SectorwiseQuaterlyPlanSummaryReport"
+                          tableName = "Sectorwise Plan"
+                          id = "SectorwisePlan"
                           completeDataCount={this.state.tableDatas.length}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           editId={this.state.editSubId} 
@@ -488,4 +510,4 @@ class SectorwiseQuaterlyPlanSummaryReport extends Component{
     );
   }
 }
-export default SectorwiseQuaterlyPlanSummaryReport
+export default SectorwisePlan
