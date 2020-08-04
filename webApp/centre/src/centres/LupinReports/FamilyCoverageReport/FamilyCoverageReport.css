@@ -11,26 +11,25 @@
 }
 #FamilyCoverageReport .col3{
 	white-space: pre-wrap!important;
-	width: 100px !important;
+	width: 80px !important;
 }
 #FamilyCoverageReport .col4{
 	white-space: pre-wrap!important;
-	width: 90px !important;
+	width: 80px !important;
 }
-#FamilyCoverageReport .col9
-{
+#FamilyCoverageReport .col9{
 	white-space: pre-wrap!important;
-	width: 62px !important;
+	width: 120px !important;
 } 
 #FamilyCoverageReport .col5, #FamilyCoverageReport .col6, #FamilyCoverageReport .col7{
 	white-space: pre-wrap!important;
-	width: 100px !important;
+	width: 80px !important;
 }
-#FamilyCoverageReport .col8{
+#FamilyCoverageReport .col10, #FamilyCoverageReport .col8{
 	white-space: pre-wrap!important;
-	width: 72px !important;
+	width: 120px !important;
 }
-#FamilyCoverageReport .col12, #FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
+#FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
 	white-space: pre-wrap!important;
 	width: 72px !important;
 }
@@ -38,11 +37,15 @@
 	white-space: pre-wrap!important;
 	width: 70px !important;
 } 
-#FamilyCoverageReport .col10, #FamilyCoverageReport .col11, #FamilyCoverageReport .col13{	
+#FamilyCoverageReport .col12, #FamilyCoverageReport .col11, #FamilyCoverageReport .col13{	
 	white-space: pre-wrap!important;
 	width: 62px !important;
 } 
 #FamilyCoverageReport .col15, #FamilyCoverageReport .col16, #FamilyCoverageReport .col17, #FamilyCoverageReport .col18, #FamilyCoverageReport .col19{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
 	white-space: pre-wrap!important;
 	width: 62px !important;
 } 

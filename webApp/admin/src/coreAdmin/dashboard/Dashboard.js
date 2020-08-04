@@ -344,7 +344,7 @@ export default class Dashboard extends Component{
                         <div className="info-box-content">
                           <span className="info-box-text pull-left">Centers</span>
                           {this.state.countAllCenter > 0 ?
-                          <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Centers")}>View All..</a></span>
+                          <span className="pull-right"><a href="#"  className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Centers")}>View All..</a></span>
                           : 
                           ""}
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
@@ -362,7 +362,7 @@ export default class Dashboard extends Component{
                         <div className="info-box-content">
                           <span className="info-box-text pull-left">Districts</span>
                           {this.state.countDistrict > 0 ?
-                          <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Districts")}>View All..</a></span>
+                          <span className="pull-right"><a href="#" className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Districts")}>View All..</a></span>
                           : 
                           ""}
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
@@ -380,7 +380,7 @@ export default class Dashboard extends Component{
                         <div className="info-box-content">
                           <span className="info-box-text pull-left">Blocks</span>
                           {this.state.countBlocks > 0 ?
-                          <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Blocks")}>View All..</a></span>
+                          <span className="pull-right"><a href="#" className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Blocks")}>View All..</a></span>
                           : 
                           ""}
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
@@ -398,7 +398,7 @@ export default class Dashboard extends Component{
                         <div className="info-box-content">
                           <span className="info-box-text pull-left">Villages</span>
                           {this.state.villagesCovered > 0 ?
-                          <span className="pull-right"><a href="#" data-toggle="modal" onClick={()=> this.dataShow("Villages")}>View All..</a></span>
+                          <span className="pull-right"><a href="#" className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Villages")}>View All..</a></span>
                           : 
                           ""}
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">

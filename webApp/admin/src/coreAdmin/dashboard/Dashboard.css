@@ -1,3 +1,9 @@
+.whiteColor{
+    color: #fff;
+}
+.whiteColor:hover{
+    color: #fff;
+}
 .zeroMarginTop{
     margin-top: 0px !important;
 }

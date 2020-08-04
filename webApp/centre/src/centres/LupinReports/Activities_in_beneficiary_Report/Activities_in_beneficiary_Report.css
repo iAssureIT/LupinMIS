@@ -11,6 +11,50 @@
 }
 #Activities_in_beneficiary_Report .col3{
 	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#Activities_in_beneficiary_Report .col4{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#Activities_in_beneficiary_Report .col9{
+	white-space: pre-wrap!important;
+	width: 120px !important;
+} 
+#Activities_in_beneficiary_Report .col5, #Activities_in_beneficiary_Report .col6, #Activities_in_beneficiary_Report .col7{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#Activities_in_beneficiary_Report .col10, #Activities_in_beneficiary_Report .col8{
+	white-space: pre-wrap!important;
+	width: 120px !important;
+}
+#Activities_in_beneficiary_Report .col20, #Activities_in_beneficiary_Report .col21{
+	white-space: pre-wrap!important;
+	width: 72px !important;
+}
+#Activities_in_beneficiary_Report .col14{
+	white-space: pre-wrap!important;
+	width: 70px !important;
+} 
+#Activities_in_beneficiary_Report .col12, #Activities_in_beneficiary_Report .col11, #Activities_in_beneficiary_Report .col13{	
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#Activities_in_beneficiary_Report .col15, #Activities_in_beneficiary_Report .col16, #Activities_in_beneficiary_Report .col17, #Activities_in_beneficiary_Report .col18, #Activities_in_beneficiary_Report .col19{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#Activities_in_beneficiary_Report .col20, #Activities_in_beneficiary_Report .col21{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+
+
+
+/*
+#Activities_in_beneficiary_Report .col3{
+	white-space: pre-wrap!important;
 	width: 100px !important;
 }
 #Activities_in_beneficiary_Report .col4{
@@ -44,7 +88,7 @@
 #Activities_in_beneficiary_Report .col15, #Activities_in_beneficiary_Report .col16, #Activities_in_beneficiary_Report .col17, #Activities_in_beneficiary_Report .col18, #Activities_in_beneficiary_Report .col19{
 	white-space: pre-wrap!important;
 	width: 62px !important;
-} 
+} */
 #Activities_in_beneficiary_Report .scrollContent {
   display: block;
   height: 450px;

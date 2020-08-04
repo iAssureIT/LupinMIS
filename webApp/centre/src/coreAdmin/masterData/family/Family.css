@@ -9,17 +9,21 @@
 }
 #Family .col6, #Family .col7, #Family .col5{
 	width: 80px;
+	white-space: pre-wrap !important;
 }
 #Family .col8, #Family .col9, #Family .col10, #Family .col11, #Family .col12, #Family .col13{
 	width: 70px;
+	white-space: pre-wrap !important;
 }
 
 #Family .col14, #Family .col15{
     width: 70px !important;
+	white-space: pre-wrap !important;
 }
 
 #Family .col16{
     width: 60px !important;
+	white-space: pre-wrap !important;
 }
 
 #Family .scrollContent {

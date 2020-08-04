@@ -810,7 +810,6 @@ class IAssureTable extends Component {
 		                                                            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                                              <h4 className="blackLightFont textAlignCenter examDeleteFont col-lg-12 col-md-12 col-sm-12 col-xs-12">{value.fileName ? "Are you sure you want to delete file '"+value.fileName + "' ?" : "Are you sure you want to delete?"}</h4>
 		                                                            </div>
-		                                                            {console.log("value",value)}
 		                                                            <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		                                                                <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
