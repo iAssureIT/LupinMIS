@@ -50,6 +50,7 @@ import HighlightView                              from "../../centres/highLight/
 /*import Monthwise                                       from "../../centres/plan/Monthwise.js";*/
 import CenterList                                 from "../../centres/centerList/centerList.js";
 import SectorList                                 from "../../centres/sectorList/SectorList.js";
+import ProjectList                                from "../../centres/ProjectList/ProjectList.js";
 
 // import report                                     from "../../centres/LupinReports/Report.js";
 // import report1                                    from "../../centres/LupinReports/ActivitywiseAnnualCompletionReport.js";
@@ -184,6 +185,7 @@ class Layout extends Component{
                               <Route path="/activityReportView/:id"              exact strict component={ ActivityReportView } />
                               <Route path="/centerList"                          exact strict component={ CenterList } />
                               <Route path="/sectorList"                          exact strict component={ SectorList } />
+                              <Route path="/projectList"                          exact strict component={ ProjectList } />
                               <Route path="/caseStudy"                           exact strict component={ CaseStudy } />
                               <Route path="/caseStudy/"                          exact strict component={ CaseStudy } />
                               <Route path="/caseStudy/:id"                       exact strict component={ CaseStudy } />
@@ -210,7 +212,7 @@ class Layout extends Component{
                               <Route path="/sector-wise-annual-plan-summary-report"                       exact strict component={ report16 } />
                               <Route path="/sector-wise-plan"                                             exact strict component={ report17 } />
                               <Route path="/family-coverage-report"                                       exact strict component={ report18 } />
-                              <Route path="/family-tracking-system"                                       exact strict component={ report19 } />
+                              <Route path="/beneficiary-coverage-report"                                  exact strict component={ report19 } />
                               <Route path="/activity-wise-report"                                         exact strict component={ ActivityWiseReport } />
                               <Route path="/sector-wise-report"                                           exact strict component={ SectorwiseReport } />
                               <Route path="/activity-wise-plan"                                           exact strict component={ report20 } />

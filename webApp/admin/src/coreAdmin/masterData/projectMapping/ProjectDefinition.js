@@ -645,7 +645,7 @@ class ProjectMapping extends Component{
                     "subActivity_ID":blocktwo._id,
                     "subActivityName": blocktwo.subActivityName,
                   })  
-                blocktwo.checked = "Y"
+                blocktwo.checked = "N"
                   // console.log('blocktwo',blocktwo)
                 return blocktwo;
               })
@@ -659,7 +659,7 @@ class ProjectMapping extends Component{
                 "subActivityName": "-",
               })   
             }
-            blockone.checked = "Y";
+            blockone.checked = "N";
             return blockone;
           })
         }else{
@@ -673,7 +673,7 @@ class ProjectMapping extends Component{
           // })   
         }
         block.blockLength = totalLength;
-        block.checked = "Y";
+        block.checked = "N";
         return block;
       })
       var sortArray = availableSectorData.sort(function(a,b){

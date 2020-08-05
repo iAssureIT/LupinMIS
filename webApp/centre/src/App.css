@@ -1,3 +1,6 @@
+.zeroMB{
+  margin-bottom: 0px!important
+}
 .Width100{
   white-space: pre-wrap !important;
   width: 100px;

@@ -293,7 +293,7 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>                 
                     <li>
-                      <Link to="/family-tracking-system">
+                      <Link to="/beneficiary-coverage-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Beneficiary Coverage System</span>
                       </Link>
@@ -356,6 +356,12 @@ export default class Leftsidebar extends Component{
                   <Link to="/sectorList" title="Sector List">
                     <i className="fa fa-clipboard" />
                     Sector List
+                  </Link>
+                </li>
+               <li className="sidebarMenuText" >
+                  <Link to="/projectList" title="Project List">
+                    <i className="fa fa-clipboard" />
+                    Project List
                   </Link>
                 </li>
                 <li className="sidebarMenuText" >

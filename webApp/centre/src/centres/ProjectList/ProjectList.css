@@ -1,0 +1,367 @@
+.sectorDiv{
+  height: 45px;
+}
+.activityDiv{
+  height: 30px;
+}
+.subActivityDiv{
+  height: 30px;
+}
+
+#ProjectMapping .col1
+{
+  width: 100px;
+}
+#ProjectMapping .col4 {
+  width: 250px;
+}
+#ProjectMapping .col3, #ProjectMapping .col2{
+  width: 250px;
+}
+#ProjectMapping .col5{
+  width: 60px;
+}
+#ProjectMapping .scrollContent {
+  display: block;
+  height: 400px;
+  overflow: auto;
+  width: 100%;
+}
+
+#ProjectMapping .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+.aweCheckbox {
+  padding-left: 20px;
+}
+.aweCheckbox label {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  padding: 0 20px 0 10px;
+  cursor: pointer;
+}
+.aweCheckbox label::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  left: 0;
+  margin-left: -20px;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background-color: #fff;
+  -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+  transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+.aweCheckbox label::after {
+  display: inline-block;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 0;
+  top: 0;
+  margin-left: -20px;
+  padding-left: 3px;
+  padding-top: 1px;
+  font-size: 11px;
+  color: #555555;
+}
+.aweCheckbox input[type="checkbox"] {
+  opacity: 0;
+  z-index: 1;
+}
+.aweCheckbox input[type="checkbox"]:focus + label::before {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.aweCheckbox input[type="checkbox"]:checked + label::after {
+  font-family: "FontAwesome";
+  content: "\f00c";
+}
+.aweCheckbox input[type="checkbox"]:indeterminate + label::after {
+  display: block;
+  content: "";
+  width: 10px;
+  height: 3px;
+  background-color: #555555;
+  border-radius: 2px;
+  margin-left: -16.5px;
+  margin-top: 7px;
+}
+.aweCheckbox input[type="checkbox"]:disabled + label {
+  opacity: 0.65;
+}
+.aweCheckbox input[type="checkbox"]:disabled + label::before {
+  background-color: #eeeeee;
+  cursor: not-allowed;
+}
+.aweCheckbox.aweCheckbox-circle label::before {
+  border-radius: 50%;
+}
+.aweCheckbox.aweCheckbox-inline {
+  margin-top: 0;
+}
+.aweCheckbox-danger input[type="checkbox"]:checked + label::before {
+  background-color: #d9534f;
+  border-color: #d9534f;
+}
+.aweCheckbox-danger input[type="checkbox"]:checked + label::after {
+  color: #fff;
+}
+.aweCheckbox-danger input[type="checkbox"]:indeterminate + label::before {
+  background-color: #d9534f;
+  border-color: #d9534f;
+}
+.aweCheckbox-danger input[type="checkbox"]:indeterminate + label::after {
+  background-color: #fff;
+}
+input[type="checkbox"].styled:checked + label:after {
+  font-family: 'FontAwesome';
+  content: "\f00c";
+}
+input[type="checkbox"] .styled:checked + label::before {
+  color: #fff;
+}
+input[type="checkbox"] .styled:checked + label::after {
+  color: #fff;
+}
+/**************/
+
+.actListItem{
+	font-family:'Montserrat',sans-serif !important;
+	padding-left:6px;
+  padding-top: 3px;
+  overflow-wrap: break-word;
+	font-size:13px !important;
+}
+.subActivitylistItem{
+	font-family:'Montserrat',sans-serif !important;
+	padding-left:6px;
+ 	padding-top: 3px;
+	font-size:11px !important;
+	color: #444;
+  overflow-wrap: break-word;
+}
+
+
+/*checkbox*/
+.subContainer{
+  position: relative;
+  align-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  user-select: none;
+  text-align: center;
+  left:3px;
+}
+/* Hide the browser's default checkbox */
+.subContainer input {
+  position: relative;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+  height: 16px;
+  width: 16px;
+  right: 15px; 
+}
+/* Create a custom checkbox */
+.subCheck {
+  position: absolute;
+  top: 2px;
+  left: 0px;
+  vertical-align: center !important;
+  align-content: center;
+  height: 15px;
+  width: 15px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  border: 2px solid #ddd;
+  z-index: 0;
+}
+/* On mouse-over, add a grey background color */
+.subContainer:hover input ~ .subCheck{
+  background-color: #eee;
+}
+/* When the checkbox is checked, add a blue background */
+.subContainer input:checked ~ .subCheck {
+  background-color: #2196F3;
+  border:2px solid #2196F3;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.subCheck:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+/* Show the checkmark when checked */
+.subContainer input:checked ~ .subCheck:after {
+  display: block;
+}
+/* Style the checkmark/indicator */
+.subContainer .subCheck:after {
+	left: 3px;
+    top: 0px;
+    width: 6px;
+    height: 9px;
+    align-content: center;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+#subactivityDiv{
+	padding-left: 12px;
+}
+/*checkbox*/
+.sectorContainer{
+  position: relative;
+  align-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  user-select: none;
+  text-align: center;
+  left:3px;
+  top: 10px;
+}
+/* Hide the browser's default checkbox */
+.sectorContainer input {
+  position: relative;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+  height: 18px;
+  width: 18px;
+  right: 12px; 
+}
+/* Create a custom checkbox */
+.sectorCheck {
+  position: absolute;
+  top: 2px;
+  left: 0px;
+  vertical-align: center !important;
+  align-content: center;
+  height: 17px;
+  width: 17px;
+  background-color: #ffffff;
+  border-radius: 3px;
+  border: 2px solid #ddd;
+  z-index: 0;
+}
+/* On mouse-over, add a grey background color */
+.sectorContainer:hover input ~ .sectorCheck{
+  background-color: #eee;
+}
+/* When the checkbox is checked, add a blue background */
+.sectorContainer input:checked ~ .sectorCheck {
+  background-color: #2196F3;
+  border:2px solid #2196F3;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.sectorCheck:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+/* Show the checkmark when checked */
+.sectorContainer input:checked ~ .sectorCheck:after {
+  display: block;
+}
+/* Style the checkmark/indicator */
+.sectorContainer .sectorCheck:after {
+  left: 4px;
+  top: 0px;
+  width: 6px;
+  height: 10px;
+  align-content: center;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+.css-1r4vtzz {
+    width: 460px !important;
+    padding: 3px 3px 3px 3px !important;
+    background-color: #FFF;
+    border-radius: 2px;
+    border-width: 0;
+    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.08);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px !important;
+    line-height: 1.36;
+ 
+    align-items: baseline;
+    background: #FFF;
+    box-sizing: border-box;
+    height: 30px;
+    border-color: hsl(0,0%,80%);
+    color: #515151;
+    cursor: pointer;
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    margin: 0;
+    max-width: 100%;
+ 
+    flex-wrap: nowrap;
+    outline: currentcolor none medium !important;
+    text-align: left;
+  
+    text-decoration: none;
+    transition: background 0.1s ease-out 0s,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38) 0s;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+}
+.css-48ayfv {
+    width: 460px !important;
+    height: 30px !important;
+    padding: 3px 3px 3px 3px !important;
+    background-color: #FFF;
+    border-radius: 2px;
+    border-width: 0;
+    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.08);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px !important;
+    line-height: 1.36;
+    -webkit-align-items: baseline;
+    -webkit-box-align: baseline;
+    -ms-flex-align: baseline;
+    align-items: baseline;
+    box-sizing: border-box;
+    border-color: hsl(0,0%,80%);
+    color: #515151;
+    cursor: pointer;
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    margin: 0;
+    max-width: 100%;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    outline: currentcolor none medium !important;
+    text-align: left;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    -webkit-transition: background 0.1s ease-out 0s,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38) 0s;
+    transition: background 0.1s ease-out 0s,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38) 0s;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+}.css-1jllj6i-control{
+  display: none !important;
+}
+.css-1pcexqc-container{
+ border:1px solid #aaa;
+ margin-top: -8px !important;
+ width: 460px;
+} 

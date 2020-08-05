@@ -124,7 +124,7 @@ class SectorList extends Component{
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
                             Sector List                                     
                          </div>
-                        <hr className="hr-head container-fluid row"/>
+                        <hr className="hr-head container-fluid row zeroMB"/>
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 

@@ -972,9 +972,9 @@ class Activities_in_beneficiary_Report extends Component{
                                   <ReactHTMLTableToExcel
                                           id="table-to-xls"                           
                                           className="download-table-xls-button fa fa-download tableicons pull-right"
-                                          table="FamilyCoverageReport"
+                                          table="BeneficiaryCoverageReport"
                                           sheet="tablexls"
-                                          filename="FamilyCoverageReport"
+                                          filename="BeneficiaryCoverageReport"
                                           buttonText=""/>
                               </div>
                             </React.Fragment>
