@@ -380,9 +380,9 @@ class ActivitywisePlan extends Component{
         console.log(month); 
         if (month==="All"){            
           if(sector_ID==="all"){
-            var url = '/api/reports/activity_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID
+            var url = '/api/reports/activity_annual_plans/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID
           }else{
-            var url = '/api/reports/activity_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID
+            var url = '/api/reports/activity_annual_plans/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+sector_ID+'/'+activity_ID+'/'+subActivity_ID
           }
           $(".fullpageloader").show();
           axios.get(url)
@@ -391,28 +391,28 @@ class ActivitywisePlan extends Component{
               $(".fullpageloader").hide();
               var tableData = response.data.map((a, i)=>{
                 return {
-                    _id                            : a._id,  
-                    projectCategoryType            : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
-                    projectName                    : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,  
-                    sectorName                     : a.sectorName,
-                    activityName                   : a.activityName,
-                    subactivityName                : a.subactivityName,                     
-                    // name                                      : a.name,
-                    unit                           : a.unit,
-                    Reach                          : this.addCommas(a.annualPlan_Reach),
-                    FamilyUpgradation              : this.addCommas(a.annualPlan_FamilyUpgradation), 
-                    unitCost                       : a.annualPlan_UnitCost_L,
-                    physicalUnit                   : this.addCommas(a.annualPlan_PhysicalUnit), 
-                    TotalBudget                    : a.annualPlan_TotalBudget_L,
-                    LHWRF                          : a.annualPlan_LHWRF_L,
-                    NABARD                         : a.annualPlan_NABARD_L,
-                    Bank_Loan                      : a.annualPlan_Bank_Loan_L,
-                    Govt                           : a.annualPlan_Govt_L,
-                    DirectCC                       : a.annualPlan_DirectCC_L,
-                    IndirectCC                     : a.annualPlan_IndirectCC_L,
-                    Other                          : a.annualPlan_Other_L,
-                    remark                         : a.annualPlan_Remark,
-                  }
+                        _id                            : a._id,     
+                        projectCategoryType            : a.projectCategoryType,
+                        projectName                    : a.projectName === "all" ? "-" : a.projectName,
+                        sectorName                     : a.sectorName,
+                        activityName                   : a.activityName,
+                        subactivityName                : a.subactivityName,
+                        unit                           : a.unit,
+                        Reach                          : this.addCommas(a.Reach),
+                        FamilyUpgradation              : this.addCommas(a.FamilyUpgradation),
+                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") == "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
+                        unitCost                       : (a.unitCost),
+                        physicalUnit                   : (a.physicalUnit),
+                        TotalBudget                    : (a.TotalBudget),
+                        LHWRF                          : (a.LHWRF),
+                        NABARD                         : (a.NABARD),
+                        Bank_Loan                      : (a.Bank_Loan),
+                        Govt                           : (a.Govt),
+                        DirectCC                       : (a.DirectCC),
+                        IndirectCC                     : (a.IndirectCC),
+                        Other                          : (a.Other),
+                        remark                         : (a.remark),
+                    }
               })
               this.setState({
                 tableData : tableData
@@ -423,9 +423,9 @@ class ActivitywisePlan extends Component{
           });
         }else{
           if(sector_ID==="all"){
-            var url = ('/api/reports/activity_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/all'+'/'+activity_ID+'/'+subActivity_ID)
+            var url = ('/api/reports/activity_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID)
           }else{
-            var url = ('/api/reports/activity_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID)
+            var url = ('/api/reports/activity_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+sector_ID+'/'+activity_ID+'/'+subActivity_ID)
           }
           axios.get(url)
             .then((response)=>{

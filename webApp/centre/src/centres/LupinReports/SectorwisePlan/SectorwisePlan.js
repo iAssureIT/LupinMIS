@@ -270,31 +270,29 @@ class SectorwisePlan extends Component{
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
           $(".fullpageloader").show();
-          // axios.get('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
-          // axios.get('/api/reports/sector_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
           if (month==="All"){
-            axios.get('/api/reports/sector_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+            axios.get('/api/reports/sector_annualPlan/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName)
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
                 var value = response.data.filter((a)=>{return a.name == "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   return {
-                        _id                           : a._id,     
-                        projectCategoryType           : a.annualPlan_projectCategoryType ? a.annualPlan_projectCategoryType : "-",
-                        projectName                   : a.annualPlan_projectName === "all" ? "-" :a.annualPlan_projectName,               
-                        sectorName                    : a.name,
-                        Reach                         :(this.addCommas(a.annualPlan_Reach)), 
-                        FamilyUpgradation             :(this.addCommas(a.annualPlan_FamilyUpgradation)), 
-                        // proportionToTotal                        : (((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%") ==="NaN%") ? " " : ((((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2)) + "%" ),
-                        TotalBudget                   : (a.annualPlan_TotalBudget_L),
-                        LHWRF                         : (a.annualPlan_LHWRF_L),
-                        NABARD                        : (a.annualPlan_NABARD_L),
-                        Bank_Loan                     : (a.annualPlan_Bank_Loan_L),
-                        Govt                          : (a.annualPlan_Govt_L),
-                        DirectCC                      : (a.annualPlan_DirectCC_L),
-                        IndirectCC                    : (a.annualPlan_IndirectCC_L),
-                        Other                         : (a.annualPlan_Other_L),
+                        _id                            : a._id,     
+                        projectCategoryType            : a.projectCategoryType,
+                        projectName                    : a.projectName === "all" ? "-" : a.projectName,
+                        sectorName                     : a.sectorName,
+                        Reach                          : this.addCommas(a.Reach),
+                        FamilyUpgradation              : this.addCommas(a.FamilyUpgradation),
+                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") == "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
+                        TotalBudget                    : (a.TotalBudget),
+                        LHWRF                          : (a.LHWRF),
+                        NABARD                         : (a.NABARD),
+                        Bank_Loan                      : (a.Bank_Loan),
+                        Govt                           : (a.Govt),
+                        DirectCC                       : (a.DirectCC),
+                        IndirectCC                     : (a.IndirectCC),
+                        Other                          : (a.Other),
                     } 
                 })  
                 this.setState({
@@ -306,7 +304,7 @@ class SectorwisePlan extends Component{
               });
 
           }else{
-            axios.get('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
+            axios.get('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName)
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();

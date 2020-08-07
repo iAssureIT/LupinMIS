@@ -1,4 +1,8 @@
-#filewiseActivityList .col1 {
+#filewiseActivityList .col3{
+	text-align: center !important;
+	width: 85px;
+}
+#filewiseActivityList .col2, #filewiseActivityList .col1 {
 	text-align: left !important;
 }
 #filewiseBeneficiaryActivityList .col1 {

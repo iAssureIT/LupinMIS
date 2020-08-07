@@ -746,7 +746,7 @@ class IAssureTable extends Component {
 																});
 																if(found.length > 0){
 																	if(key !== 'id'){
-																		return(<td className={textAlign} key={i}><div className={textAlign+" col"+i } dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
+																		return(<td className={textAlign} key={i}><div className={textAlign+" col"+(i+1) } dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
 																	}
 																}
 

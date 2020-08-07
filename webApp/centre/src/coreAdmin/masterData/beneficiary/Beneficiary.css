@@ -21,7 +21,11 @@
 #Beneficiary .col13{
     width: 60px !important;
 }
-#FilewiseBeneficiaryList .col1{
+
+#FilewiseBeneficiaryList .col3{
+	text-align: center !important;
+}
+#FilewiseBeneficiaryList .col2, #FilewiseBeneficiaryList .col1 {
 	text-align: left !important;
 }
 
