@@ -250,7 +250,7 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Sector wise Report</span>
                       </Link>
                     </li>
-                    <li>
+                    {/*<li>
                       <Link to="/activity-wise-periodic-physical-variance-report" title="Activity Physical Variance">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activity Physical Variance</span>
@@ -262,6 +262,7 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Geographical Report</span>
                       </Link>
                     </li>
+                  */}
                     <li>
                       <Link to="/category-wise-report">
                         <i className="fa fa-circle-o" />

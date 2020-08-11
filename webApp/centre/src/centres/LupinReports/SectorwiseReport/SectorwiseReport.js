@@ -33,33 +33,34 @@ class SectorwiseReport extends Component{
                 },
                 {
                     heading : 'Achievement (Family No)',
+                    // heading : 'Achievement',
                     mergedColoums : 2,
                     hide : false
                 },
                 {
                     heading : "Financial Achievement (Lakh)",
-                    mergedColoums : 11,
+                    mergedColoums : 8,
                     hide : false
                 },
             ]
         },
         "tableHeading"      : {
-            "projectCategoryType"                : 'Project Category',
-            "projectName"                        : 'Project Name',
-            "name"                               : 'Sector',
-            "achievement_Reach"                  : 'Reach',
-            "achievement_FamilyUpgradation"      : 'Upgradation',
-            "achievement_UnitCost_L"             : 'Unit Cost', 
-            "achievement_PhysicalUnit"           : 'Phy Units', 
-            "achievement_TotalBudget_L"          : "Financial Total 'Lakh'",
-            "achievement_LHWRF_L"                : 'LHWRF',
-            "achievement_NABARD_L"               : 'NABARD',
-            "achievement_Bank_Loan_L"            : 'Bank Loan',
-            "achievement_DirectCC_L"             : 'DirectCC',
-            "achievement_IndirectCC_L"           : 'IndirectCC',
-            "achievement_Govt_L"                 : 'Government',
-            "achievement_Other_L"                : 'Others',
-        },
+            "projectCategoryType"           : 'Project Category',
+            "projectName"                   : 'Project Name',
+            "sectorName"                    : "Sector",
+            "reach"                         : 'Reach',
+            "familyUpgradation"             : 'Upgradation',
+            // "unitCost"                      : 'Unit Cost', 
+            // "quantity"                      : 'Phy Units', 
+            "total"                         : "Financial Total 'Lakh'",
+            "LHWRF"                         : 'LHWRF',
+            "NABARD"                        : 'NABARD',
+            "bankLoan"                      : 'Bank Loan',
+            "directCC"                      : 'DirectCC',
+            "indirectCC"                    : 'IndirectCC',
+            "govtscheme"                    : 'Government',
+            "other"                         : 'Others'
+        },  
         "tableObjects"        : {
           paginationApply     : false,
           searchApply         : false,
@@ -227,28 +228,29 @@ class SectorwiseReport extends Component{
     getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){        
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
             $(".fullpageloader").show();
-            axios.get('/api/reports/sector_annual_achievement_reports/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+            axios.get('/api/reports/sectorwise_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
                 var tableData = response.data.map((a, i)=>{
                     return {
-                        _id                                       : a._id,           
-                        projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                        projectName                               : a.projectName === 0 ? "-" :a.projectName,                 
-                        name                                      : a.name,
-                        achievement_Reach                         : a.achievement_Reach,
-                        achievement_FamilyUpgradation             : a.achievement_FamilyUpgradation,
-                        achievement_UnitCost_L                    : (a.achievement_UnitCost_L),
-                        achievement_PhysicalUnit                  : this.addCommas(a.achievement_PhysicalUnit),
-                        achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
-                        achievement_LHWRF_L                       : a.achievement_LHWRF_L,
-                        achievement_NABARD_L                      : a.achievement_NABARD_L,
-                        achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,
-                        achievement_DirectCC_L                    : a.achievement_DirectCC_L,
-                        achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
-                        achievement_Govt_L                        : a.achievement_Govt_L,
-                        achievement_Other_L                       : a.achievement_Other_L,
+
+                        _id                         : a._id,           
+                        projectCategoryType         : a.projectCategoryType ? a.projectCategoryType : "-",
+                        projectName                 : a.projectName === "all" ? "-" :a.projectName,        
+                        sectorName                  : a.sectorName,
+                        reach                       : a.reach,
+                        familyUpgradation           : a.familyUpgradation,
+                        // unitCost                    : (a.unitCost),
+                        // quantity                    : this.addCommas(a.quantity),
+                        total                       : a.total,
+                        LHWRF                       : a.LHWRF,
+                        NABARD                      : a.NABARD,
+                        bankLoan                    : a.bankLoan,
+                        directCC                    : a.directCC,
+                        indirectCC                  : a.indirectCC,
+                        govtscheme                  : a.govtscheme,
+                        other                       : a.other,
                     }
                 })  
                 this.setState({

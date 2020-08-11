@@ -24,7 +24,7 @@ class UpgradedBeneficiaryReport extends Component{
         "beneficiaryType"    : "all",
         "projectName"        : "all",
         "upgraded"           : "all",
-       "twoLevelHeader"    : {
+        "twoLevelHeader"    : {
             apply           : false,
             firstHeaderData : [
                 {
@@ -243,9 +243,9 @@ class UpgradedBeneficiaryReport extends Component{
     if(center_ID){
       if(startDate && endDate && selectedDistrict && projectCategoryType  && beneficiaryType && upgraded){
         if(selectedDistrict==="all"){
-          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+upgraded
+          var url = '/api/reports/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+upgraded
         }else{
-          var url = '/api/report/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+upgraded
+          var url = '/api/reports/upgraded/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+upgraded
         }
         $(".fullpageloader").show();
         axios.get(url)

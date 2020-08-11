@@ -40,11 +40,12 @@ class ActivityWiseReport extends Component{
                 firstHeaderData : [
                     {
                         heading : 'Activity Details',
-                        mergedColoums : 4,
+                        mergedColoums : 7,
                         hide : false
                     },
                     {
                         heading : 'Achievement (Family No)',
+                        // heading : 'Achievement',
                         mergedColoums : 2,
                         hide : false
                     },
@@ -57,25 +58,24 @@ class ActivityWiseReport extends Component{
             },
 
             "tableHeading"      : {
-                "projectCategoryType"                       : 'Project Category',
-                "projectName"                               : 'Project Name',
-                "sectorName"                                : "Sector",
-                "activityName"                              : "Activity",
-                "subactivityName"                           : "Subactivity",
-                // "name"                                      : 'Activity & Sub-Activity',
-                "achievement_Reach"                         : 'Reach',
-                "achievement_FamilyUpgradation"             : 'Upgradation',
-                "unit"                                      : 'Unit',
-                "achievement_UnitCost_L"                    : 'Unit Cost', 
-                "achievement_PhysicalUnit"                  : 'Phy Units', 
-                "achievement_TotalBudget_L"                 : "Financial Total 'Lakh'",
-                "achievement_LHWRF_L"                       : 'LHWRF',
-                "achievement_NABARD_L"                      : 'NABARD',
-                "achievement_Bank_Loan_L"                   : 'Bank Loan',
-                "achievement_DirectCC_L"                    : 'DirectCC',
-                "achievement_IndirectCC_L"                  : 'IndirectCC',
-                "achievement_Govt_L"                        : 'Government',
-                "achievement_Other_L"                       : 'Others'
+                "projectCategoryType"           : 'Project Category',
+                "projectName"                   : 'Project Name',
+                "sectorName"                    : "Sector",
+                "activityName"                  : "Activity",
+                "subactivityName"               : "Subactivity",
+                "unit"                          : 'Unit',
+                "reach"                         : 'Reach',
+                "familyUpgradation"             : 'Upgradation',
+                "unitCost"                      : 'Unit Cost', 
+                "quantity"                      : 'Phy Units', 
+                "total"                         : "Financial Total 'Lakh'",
+                "LHWRF"                         : 'LHWRF',
+                "NABARD"                        : 'NABARD',
+                "bankLoan"                      : 'Bank Loan',
+                "directCC"                      : 'DirectCC',
+                "indirectCC"                    : 'IndirectCC',
+                "govtscheme"                    : 'Government',
+                "other"                         : 'Others'
             },
             "tableObjects"        : {
                 paginationApply     : false,
@@ -242,28 +242,28 @@ class ActivityWiseReport extends Component{
             method: 'get',
             url: '/api/sectors/'+sector_ID,
         }).then((response)=> {
-        var availableSubActivity = _.flatten(response.data.map((a, i)=>{
-            return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
-        }))
-        function dynamicSort(property) {
-            var sortOrder = 1;
-            if(property[0] === "-") {
-                sortOrder = -1;
-                property = property.substr(1);
+            var availableSubActivity = _.flatten(response.data.map((a, i)=>{
+                return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
+            }))
+            function dynamicSort(property) {
+                var sortOrder = 1;
+                if(property[0] === "-") {
+                    sortOrder = -1;
+                    property = property.substr(1);
+                }
+                return function (a,b) {
+                    if(sortOrder == -1){
+                        return b[property].localeCompare(a[property]);
+                    }else{
+                        return a[property].localeCompare(b[property]);
+                    }        
+                }
             }
-            return function (a,b) {
-                if(sortOrder == -1){
-                    return b[property].localeCompare(a[property]);
-                }else{
-                    return a[property].localeCompare(b[property]);
-                }        
-            }
-        }
-        availableSubActivity.sort(dynamicSort("subActivityName"));
-        this.setState({
-            availableSubActivity : availableSubActivity
-        });
-    }).catch(function (error) {
+            availableSubActivity.sort(dynamicSort("subActivityName"));
+            this.setState({
+                availableSubActivity : availableSubActivity
+            });
+        }).catch(function (error) {
           console.log("error = ",error);
         });    
     }
@@ -386,91 +386,54 @@ class ActivityWiseReport extends Component{
             }
         }
     }
-    getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID){        
+    getData(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID){   
+        // console.log(startDate, endDate, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID)     
         if(startDate && endDate && center_ID && sector_ID && projectCategoryType  && beneficiaryType){ 
             if(sector_ID==="all"){
-                $(".fullpageloader").show();
-                axios.get('/api/reports/activity_annual_achievement_reports/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
-                .then((response)=>{
-                    $(".fullpageloader").hide();
-                    console.log("resp",response);
-                    var tableData = response.data.map((a, i)=>{
-                    return {
-                        _id                                       : a._id,           
-                        projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                        projectName                               : a.projectName === 0 ? "-" :a.projectName,        
-                        sectorName                                : a.sectorName,
-                        activityName                              : a.activityName,
-                        subactivityName                           : a.subactivityName,
-                        // name                                      : a.name,
-                        achievement_Reach                         : a.achievement_Reach,
-                        achievement_FamilyUpgradation             : a.achievement_FamilyUpgradation,
-                        unit                                      : a.unit,
-                        achievement_UnitCost_L                    : (a.achievement_UnitCost_L),
-                        achievement_PhysicalUnit                  : this.addCommas(a.achievement_PhysicalUnit),
-                        achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
-                        achievement_LHWRF_L                       : a.achievement_LHWRF_L,
-                        achievement_NABARD_L                      : a.achievement_NABARD_L,
-                        achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,
-                        achievement_DirectCC_L                    : a.achievement_DirectCC_L,
-                        achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
-                        achievement_Govt_L                        : a.achievement_Govt_L,
-                        achievement_Other_L                       : a.achievement_Other_L,
-                    }
-                })
-                  this.setState({
-                    tableData : tableData
-                  },()=>{
-                  })
-                })
-                .catch(function(error){  
-                    console.log("error = ",error.message);
-                    if(error.message === "Request failed with status code 500"){
-                        $(".fullpageloader").hide();
-                    }
-                });
+                var url = ('/api/reports/activitywise_report/'+startDate+'/'+endDate+'/'+center_ID+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
             }else{
-                $(".fullpageloader").show();
-                axios.get('/api/reports/activity_annual_achievement_reports/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
-                .then((response)=>{
-                    $(".fullpageloader").hide();
-                    console.log("resp",response);
-                    var tableData = response.data.map((a, i)=>{
-                    return {
-                        _id                                       : a._id,           
-                        projectCategoryType                       : a.projectCategoryType ? a.projectCategoryType : "-",
-                        projectName                               : a.projectName === 0 ? "-" :a.projectName,            
-                        sectorName                                : a.sectorName,
-                        activityName                              : a.activityName,
-                        subactivityName                           : a.subactivityName,         
-                        // name                                      : a.name,
-                        achievement_Reach                         : a.achievement_Reach,
-                        achievement_FamilyUpgradation             : a.achievement_FamilyUpgradation,
-                        unit                                      : a.unit,
-                        achievement_UnitCost_L                    : (a.achievement_UnitCost_L),
-                        achievement_PhysicalUnit                  : this.addCommas(a.achievement_PhysicalUnit),
-                        achievement_TotalBudget_L                 : a.achievement_TotalBudget_L,
-                        achievement_LHWRF_L                       : a.achievement_LHWRF_L,
-                        achievement_NABARD_L                      : a.achievement_NABARD_L,
-                        achievement_Bank_Loan_L                   : a.achievement_Bank_Loan_L,
-                        achievement_DirectCC_L                    : a.achievement_DirectCC_L,
-                        achievement_IndirectCC_L                  : a.achievement_IndirectCC_L,
-                        achievement_Govt_L                        : a.achievement_Govt_L,
-                        achievement_Other_L                       : a.achievement_Other_L,
-                    }
-                })
-                  this.setState({
-                    tableData : tableData
-                  },()=>{
-                  })
-                })
-                .catch(function(error){  
-                    console.log("error = ",error.message);
-                    if(error.message === "Request failed with status code 500"){
-                        $(".fullpageloader").hide();
-                    }
-                });
+                var url = ('/api/reports/activitywise_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+activity_ID+'/'+subActivity_ID)
             }
+
+            $(".fullpageloader").show();
+            axios.get(url)
+            .then((response)=>{
+                $(".fullpageloader").hide();
+                console.log("resp",response.data);
+                var tableData = response.data.map((a, i)=>{
+                    return {
+                        _id                         : a._id,           
+                        projectCategoryType         : a.projectCategoryType ? a.projectCategoryType : "-",
+                        projectName                 : a.projectName === "all" ? "-" :a.projectName,        
+                        sectorName                  : a.sectorName,
+                        activityName                : a.activityName,
+                        subactivityName             : a.subactivityName,
+                        unit                        : a.unit,
+                        reach                       : a.reach,
+                        familyUpgradation           : a.familyUpgradation,
+                        unitCost                    : (a.unitCost),
+                        quantity                    : this.addCommas(a.quantity),
+                        total                       : a.total,
+                        LHWRF                       : a.LHWRF,
+                        NABARD                      : a.NABARD,
+                        bankLoan                    : a.bankLoan,
+                        directCC                    : a.directCC,
+                        indirectCC                  : a.indirectCC,
+                        govtscheme                  : a.govtscheme,
+                        other                       : a.other,
+                    }
+                })
+                this.setState({
+                    tableData : tableData
+                },()=>{
+                })
+            })
+            .catch(function(error){  
+                console.log("error = ",error.message);
+                if(error.message === "Request failed with status code 500"){
+                    $(".fullpageloader").hide();
+                }
+            });
         }
     }
     handleFromChange(event){
@@ -580,8 +543,7 @@ class ActivityWiseReport extends Component{
                                     </div>
                                     <hr className="hr-head"/>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                        
-                                        <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                                        <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                                             <label className="formLable">Sector</label><span className="asterix"></span>
                                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                               <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
@@ -600,7 +562,7 @@ class ActivityWiseReport extends Component{
                                               </select>
                                             </div>
                                         </div>
-                                        <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                                        <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                                             <label className="formLable">Activity<span className="asterix">*</span></label>
                                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                                                 <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >

@@ -16,34 +16,38 @@
 	white-space: pre-wrap!important;
 }
 #ActivityWiseReport .col2{
+	text-align: left !important;
 	white-space: pre-wrap!important;
 	width: 100px !important;
 }
 #ActivityWiseReport .col3{
+	text-align: left !important;
 	white-space: pre-wrap!important;
 	width: 150px !important;
 }
 #ActivityWiseReport .col4{
+	text-align: left !important;
 	white-space: pre-wrap!important;
 	width: 150px !important;
 }
-#ActivityWiseReport .col6,#ActivityWiseReport .col7, #ActivityWiseReport .col16{
+#ActivityWiseReport .col6,#ActivityWiseReport .col8, #ActivityWiseReport .col16{
 	white-space: pre-wrap!important;
 	width: 72px !important;
 }
 #ActivityWiseReport .col13, #ActivityWiseReport .col14, #ActivityWiseReport .col15{
 	white-space: pre-wrap!important;
-	width: 70px !important;
-} 
-#ActivityWiseReport .col17, #ActivityWiseReport .col18{
-	white-space: pre-wrap!important;
 	width: 72px !important;
 } 
+#ActivityWiseReport .col17{
+	white-space: pre-wrap!important;
+	width: 75px !important;
+} 
 #ActivityWiseReport .col5{
+	text-align: left !important;
 	white-space: pre-wrap!important;
 	width: 150px !important;
 }
-#ActivityWiseReport .col8, #ActivityWiseReport .col9, #ActivityWiseReport .col10, #ActivityWiseReport .col12, #ActivityWiseReport .col11 {
+#ActivityWiseReport .col7, #ActivityWiseReport .col9, #ActivityWiseReport .col10, #ActivityWiseReport .col12, #ActivityWiseReport .col11, #ActivityWiseReport .col18 {
 	width: 52px !important;
 }
 #ActivityWiseReport .scrollContent {

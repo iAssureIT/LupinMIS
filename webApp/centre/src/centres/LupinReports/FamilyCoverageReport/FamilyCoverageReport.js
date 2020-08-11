@@ -1038,6 +1038,10 @@ class FamilyCoverageReport extends Component{
                                     <div className="wrapWord col11">Unit</div>
                                     <span onClick={this.sort.bind(this)}  id="unit" className="fa fa-sort tableSort"></span>
                                   </th>
+                                  <th id="date" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col11">Date</div>
+                                    <span onClick={this.sort.bind(this)}  id="date" className="fa fa-sort tableSort"></span>
+                                  </th>
                                   <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col12">Unit Cost</div>
                                     <span onClick={this.sort.bind(this)}  id="UnitCost" className="fa fa-sort tableSort"></span>
@@ -1122,6 +1126,7 @@ class FamilyCoverageReport extends Component{
                                                     <td className=""><div className="col9">{value1.activityName}</div></td>
                                                     <td className=""><div className="col10">{value1.subactivityName}</div></td>
                                                     <td className=""><div className="col11">{value1.unit}</div></td>
+                                                    <td className=""><div className="col11">{value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
                                                     <td className="textAlignRight"><div className="col12">{value1.UnitCost}</div></td>
                                                     <td className="textAlignRight"><div className="col13">{value1.quantity}</div></td>
                                                     <td className="textAlignRight"><div className="col14">{value1.total}</div></td>

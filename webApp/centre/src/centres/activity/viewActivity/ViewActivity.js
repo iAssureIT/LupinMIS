@@ -1,6 +1,7 @@
 import React, { Component }   from 'react';
 import swal                   from 'sweetalert';
 import axios                  from 'axios';
+import _                      from 'underscore';
 import $                      from 'jquery';
 import moment                 from "moment";
 import 'bootstrap/js/tab.js';
@@ -15,19 +16,13 @@ class ViewActivity extends Component{
   constructor(props){
     super(props);
     this.state = {
-      "center_id"         : "",
-      "centerName"        : "",
-      "dist"              : "",
-      "block"             : "",
-      "dateofIntervention": "",
-      "village"           : "",
-      "date"              : "",
-      "sector"            : "",
-      "typeofactivity"    : "",
-      "nameofactivity"    : "",
-      "activity"          : "",
-      "subactivity"       : "",
-      "unit"              : "",
+      "sector"            : "all",
+      "sector_ID"         : "all",
+      "activity_ID"       : "all",
+      "activity"          : "all",
+      "subactivity"       : "all",
+      "subactivity_ID"    : "all",
+      "typeofactivity"    : "all",
       "unitCost"          : 0,
       "quantity"          : 0,
       "totalcost"         : 0,
@@ -154,17 +149,17 @@ class ViewActivity extends Component{
     }
   }
 
-  getData(startRange, limitRange, center_ID, year){ 
-    // console.log(startRange, limitRange, center_ID, year);
+  getData(startRange, limitRange, center_ID, year, sector_ID, activity_ID, subactivity_ID, typeofactivity){ 
+    console.log(startRange, limitRange, center_ID, year, sector_ID, activity_ID, subactivity_ID, typeofactivity);
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    // $(".fullpageloader").show();
+    // $(".fullpageloader").show();subactivity
     if(year){
       var startDate = this.state.year.substring(3, 7)+"-04-01";
       var endDate = this.state.year.substring(10, 15)+"-03-31";    
-      axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
+      axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/'+sector_ID+'/'+activity_ID+'/'+subactivity_ID+'/'+typeofactivity)
       // axios.post('/api/activityReport/list/'+center_ID, data)
       .then((response)=>{
         console.log(startDate,endDate);
@@ -246,7 +241,8 @@ class ViewActivity extends Component{
       dateofIntervention :momentString,
     })
     this.year();
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
+    this.getAvailableSectors();
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -255,9 +251,161 @@ class ViewActivity extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
     });
   }
+
+  getAvailableSectors(){
+    axios({
+      method: 'get',
+      url: '/api/sectors/list',
+    }).then((response)=> {
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      var availableSectors = response.data;
+      // console.log("availableSectors",availableSectors);
+      availableSectors.sort(dynamicSort("sector"));
+      this.setState({
+        availableSectors : availableSectors
+      })
+    }).catch(function (error) {
+      console.log("error = ",error);
+      if(error.message === "Request failed with status code 401"){
+        swal({
+            title : "abc",
+            text  : "Session is Expired. Kindly Sign In again."
+        });
+      }
+    });
+  }
+  selectSector(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name]:event.target.value
+    });
+    if(event.target.value==="all"){
+      var sector_id = event.target.value;
+    }else{
+      var sector_id = event.target.value.split('|')[1];
+    }
+    this.setState({
+      sector_ID : sector_id, 
+      activity_ID    : "all",
+      subactivity_ID : "all",
+      activity       : "all",
+      subactivity    : "all",
+    },()=>{
+      this.getAvailableActivity(this.state.sector_ID);
+      this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
+    })
+  } 
+  getAvailableActivity(sector_ID){
+    if(sector_ID){
+      axios({
+        method: 'get',
+        url: '/api/sectors/'+sector_ID,
+      }).then((response)=> { 
+        if(response){
+          var availableActivity = response.data[0].activity;
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+            }
+            return function (a,b) {
+              if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+              }else{
+                return a[property].localeCompare(b[property]);
+              }        
+            }
+          }
+          availableActivity.sort(dynamicSort("activityName"));
+          this.setState({
+              availableActivity : availableActivity
+          })
+        }
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+    }
+  }
+  selectActivity(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    if(event.target.value==="all"){
+      var activity_ID = event.target.value;
+    }else{
+      var activity_ID = event.target.value.split('|')[1];
+    }
+    this.setState({
+      activity_ID : activity_ID,
+      subactivity_ID : "all",
+    },()=>{
+      this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
+    })
+  }
+  getAvailableSubActivity(sector_ID, activity_ID){
+    axios({
+      method: 'get',
+      url: '/api/sectors/'+sector_ID,
+    }).then((response)=> {
+      var availableSubActivity = _.flatten(response.data.map((a, i)=>{
+        return a.activity.map((b, j)=>{return b._id ===  activity_ID ? b.subActivity : [] });
+      }))
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+          }else{
+            return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availableSubActivity.sort(dynamicSort("subActivityName"));
+      this.setState({
+      availableSubActivity : availableSubActivity
+      });
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });    
+  }
+
+  selectSubActivity(event){
+    event.preventDefault();
+    this.setState({[event.target.name]:event.target.value});
+    if(event.target.value==="all"){
+      var subactivity_ID = event.target.value;
+    }else{
+      var subactivity_ID = event.target.value.split('|')[1];
+    }
+    this.setState({
+      subactivity_ID : subactivity_ID,
+    },()=>{
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
+    })
+  }
+
   year() {
     let financeYear;
     let today = moment();
@@ -282,7 +430,7 @@ class ViewActivity extends Component{
         secondYear :secondYear,
         year       :financialYear
       },()=>{
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -309,7 +457,7 @@ class ViewActivity extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
       console.log('name', this.state.year)
     });
   }
@@ -324,12 +472,12 @@ class ViewActivity extends Component{
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                        Activity Reporting                                     
+                        View Activity                                     
                      </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="col-lg-4 col-md-4 col-lg-offset-4 col-md-offset-4 col-sm-12 col-xs-12">
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                       <label className="formLable">Year</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
@@ -344,7 +492,81 @@ class ViewActivity extends Component{
                          }
                         </select>
                       </div>
-                    </div> 
+                    </div>                         
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                      <label className="formLable">Sector</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                        <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)}>
+                          <option  className="hidden" >--Select Sector--</option>
+                          <option value="all" >All</option>
+                          {
+                          this.state.availableSectors && this.state.availableSectors.length >0 ?
+                          this.state.availableSectors.map((data, index)=>{
+                            return(
+                              <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                            );
+                          })
+                          :
+                          null
+                        }
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                      <label className="formLable">Activity<span className="asterix">*</span></label>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                        <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
+                          <option disabled="disabled" selected="true">-- Select --</option>
+                          <option value="all" >All</option>
+                          {
+                            this.state.availableActivity && this.state.availableActivity.length >0 ?
+                            this.state.availableActivity.map((data, index)=>{
+                              if(data.activityName ){
+                                  return(
+                                      <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                  );
+                              }
+                            })
+                            :
+                            null
+                          }
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                      <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
+                        <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
+                          <option disabled="disabled" selected="true">-- Select --</option>
+                          <option value="all" >All</option>
+                          {
+                            this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                            this.state.availableSubActivity.map((data, index)=>{
+                              if(data.subActivityName ){
+                                return(
+                                  <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                );
+                              }
+                            })
+                            :
+                            null
+                            }
+                        </select>
+                      </div>
+                    </div>
+                    <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                        <label className="formLable">Activity Type<span className="asterix">*</span></label>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
+                          <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
+                            <option disabled="disabled" selected={true}>-- Select --</option>
+                          {/*  <option data-id="commonlevel">Common Level Activity</option>*/}
+                            <option value="all">All</option>
+                            <option data-id="familylevel">Family Level Activity</option>
+                            <option data-id="BtypeActivity">Type B Activity</option>
+                          </select>
+                        </div>
+                        <div className="errorMsg">{this.state.errors.typeofactivity}</div>
+                      </div>  
                   </div> 
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <IAssureTable 
