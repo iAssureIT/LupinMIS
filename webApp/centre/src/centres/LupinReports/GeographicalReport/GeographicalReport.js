@@ -297,27 +297,6 @@ class GeographicalReport extends Component{
       })
     });
   }
-  /*getBlock(stateCode, selectedDistrict){
-    axios({
-      method: 'get',
-      // url: 'http://locations2.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
-      url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
-        this.setState({
-          listofBlocks : response.data
-        },()=>{
-        // console.log('listofBlocks', this.state.listofBlocks);
-        })
-    }).catch(function (error) {  // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
-      });
-  }*/
   selectBlock(event){
     event.preventDefault();
     var block = event.target.value;
@@ -346,28 +325,6 @@ class GeographicalReport extends Component{
       });
     });
   }
- /* getVillages(stateCode, selectedDistrict, block){
-    // console.log(stateCode, selectedDistrict, block);
-    axios({
-      method: 'get',
-      // url: 'http://locations2.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
-      url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
-    }).then((response)=> {
-        // console.log('response ==========', response.data);
-        this.setState({
-          listofVillages : response.data
-        },()=>{
-        // console.log('listofVillages', this.state.listofVillages);
-        })
-    }).catch(function (error) {  // console.log("error = ",error);
-        if(error.message === "Request failed with status code 401"){
-          swal({
-              title : "abc",
-              text  : "Session is Expired. Kindly Sign In again."
-          });
-        }
-      });
-  }*/
   selectVillage(event){
     event.preventDefault();
     var village = event.target.value;

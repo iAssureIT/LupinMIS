@@ -10,11 +10,11 @@
 .umDynamicHeader .coloredIndex{
   background-color: #f00;
 }
-
+/*
 .wrapText{
   white-space: pre-wrap !important;
   width: 200px;
-}
+}*/
 .wrapWord{
    word-wrap: break-word;
 }

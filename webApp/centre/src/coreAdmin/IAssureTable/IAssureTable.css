@@ -8,10 +8,10 @@
   background-color: #f00;
 }
 
-.wrapText{
+/*.wrapText{
   white-space: pre-wrap !important;
   width: 200px;
-}
+}*/
 .wrapWord{
    word-wrap: break-word;
 }

@@ -74,6 +74,7 @@ import report17                                   from "../../centres/LupinRepor
 import report18                                   from "../../centres/LupinReports/FamilyCoverageReport/FamilyCoverageReport.js";
 import report19                                   from "../../centres/LupinReports/Activities_in_beneficiary_Report/Activities_in_beneficiary_Report.js";
 import report20                                   from "../../centres/LupinReports/ActivitywisePlan/ActivitywisePlan.js";
+import report21                                   from "../../centres/LupinReports/UpgradedFamilyReport/UpgradedFamilyReport.js";
 
 import ActivityWiseReport                         from "../../centres/LupinReports/ActivityWiseReport/ActivityWiseReport.js";
 import SectorwiseReport                           from "../../centres/LupinReports/SectorwiseReport/SectorwiseReport.js";
@@ -216,6 +217,7 @@ class Layout extends Component{
                               <Route path="/activity-wise-report"                                         exact strict component={ ActivityWiseReport } />
                               <Route path="/sector-wise-report"                                           exact strict component={ SectorwiseReport } />
                               <Route path="/activity-wise-plan"                                           exact strict component={ report20 } />
+                              <Route path="/upgraded-family-report"                                       exact strict component={ report21 } />
                             </Switch>        
                       </div>
                     </div>

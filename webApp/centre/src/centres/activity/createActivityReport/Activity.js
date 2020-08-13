@@ -242,7 +242,7 @@ class Activity extends Component{
         date                       : "Date",
         beneficiaryID              : "Beneficiary ID",
         familyID                   : "Family ID",
-        nameofbeneficiaries        : "Beneficiary Name",
+        nameofbeneficiary          : "Beneficiary Name",
         relation                   : "Relation",
         place                      : "Place" 
       },
@@ -458,7 +458,7 @@ class Activity extends Component{
     this.setState({
       selectedBeneficiaries : selectedBeneficiaries
     },()=>{
-      // console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
+      console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
     })
   }
 
@@ -831,7 +831,7 @@ class Activity extends Component{
                   beneficiaryID             : a.beneficiaryID,
                   family_ID                 : a.family_ID,
                   familyID                  : a.familyID,
-                  nameofbeneficiaries       : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
+                  nameofbeneficiary         : response.data[0].surnameOfBeneficiary+' '+response.data[0].firstNameOfBeneficiary+' '+response.data[0].middleNameOfBeneficiary,
                   relation                  : a.relation,
                   dist                      : a.dist,
                   block                     : a.block,
@@ -889,6 +889,7 @@ class Activity extends Component{
             "sectorId"   : editData.sector_ID,
             "activityId" : editData.activity_ID,
           }, ()=>{
+            console.log("this.state.selectedBeneficiaries",this.state.selectedBeneficiaries);
             this.getAvailableCenter(this.state.center_ID);
             this.getAvailableActivity(this.state.sectorId);
             this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
@@ -942,7 +943,7 @@ class Activity extends Component{
     }
   }
   getData(startRange, limitRange, center_ID){ 
-    console.log(startRange, limitRange, center_ID);
+    // console.log(startRange, limitRange, center_ID);
     $(".fullpageloader").show();
       let financeYear;
     let today = moment();
@@ -969,7 +970,7 @@ class Activity extends Component{
           // axios.post('/api/activityReport/list/'+center_ID, data)
           .then((response)=>{
           $(".fullpageloader").hide();
-            console.log("response",response);
+            // console.log("response",response);
             var tableData = response.data.map((a, i)=>{
               return {
                 _id                        : a._id,
@@ -1699,7 +1700,7 @@ class Activity extends Component{
             "noOfBeneficiaries" : a.noOfBeneficiaries            ? a.noOfBeneficiaries : '-',  
             "beneficiaryID"     : a.listofBeneficiaries.beneficiaryID ? a.listofBeneficiaries.beneficiaryID      : '-',
             "familyID"          : a.listofBeneficiaries.familyID      ? a.listofBeneficiaries.familyID      : '-',
-            "nameofbeneficiaries" : a.listofBeneficiaries.nameofbeneficiaries ? a.listofBeneficiaries.nameofbeneficiaries : '-',
+            "nameofbeneficiary  " : a.listofBeneficiaries.nameofbeneficiary   ? a.listofBeneficiaries.nameofbeneficiary   : '-',
             "relation"          : a.listofBeneficiaries.relation ? a.listofBeneficiaries.relation : '-', 
             "place"             : a.listofBeneficiaries.dist + ", " + a.listofBeneficiaries.block + ", " + a.listofBeneficiaries.village,
           }

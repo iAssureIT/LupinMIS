@@ -15,7 +15,6 @@ class Family extends Component{
   
   constructor(props){
     super(props);
-   
     this.state = {
       "familyID"             :"",
       "nameOfFamilyHead"     :"",
@@ -439,12 +438,12 @@ class Family extends Component{
               "date"                 :"",
               // "FHGender"             :"-- Select --",
             });
+            this.props.history.push('/family');
           }
         })
         .catch(function(error){
           console.log("error"+error);
         });
-      this.props.history.push('/family');
       this.setState({
         "editId"               : "",
       });
@@ -518,51 +517,76 @@ class Family extends Component{
       });
   }
   edit(id){
-    axios({
-      method: 'get',
-      url: '/api/families/'+id,
-    }).then((response)=> {
-      console.log('editData',response);
-      var editData = response.data[0];
-      // console.log('editData',editData.center_ID);
-      this.getAvailableCenter(editData.center_ID);
-      this.getAvailableVillages();
-      this.getAvailableBlocks();
-      if(editData){
-        this.setState({
-          "familyID"              : editData.familyID,
-          "surnameOfFH"           : editData.surnameOfFH,
-          "firstNameOfFH"         : editData.firstNameOfFH,
-          "middleNameOfFH"        : editData.middleNameOfFH,
-          "FHGender"              : editData.FHGender, 
-          "date"                  : editData.FHYearOfBirth, 
-          "contact"               : editData.contactNumber,
-          "uID"                   : editData.uidNumber,
-          "caste"                 : editData.caste,
-          "category"              : editData.familyCategory, 
-          "incomeCategory"        : editData.incomeCategory,
-          "landCategory"          : editData.landCategory,
-          "specialCategory"       : editData.specialCategory,
-          "district"              : editData.dist, 
-          "block"                 : editData.block, 
-          "village"               : editData.village, 
-          "shown"                   : false,
-        },()=>{
-          this.getAvailableCenter(this.state.center_ID);
-          // console.log('editdata',this.state);
-        });
-        let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
-        this.setState({
-          errors: errors
-        });
-        return formIsValid;
-      }
-    })
-    .catch(function(error){ 
-      console.log("error"+error);
-    });
+    if(id && id != undefined){
+      axios({
+        method: 'get',
+        url: '/api/families/'+id,
+      }).then((response)=> {
+        console.log('editData',response);
+        var editData = response.data[0];
+        // console.log('editData',editData.center_ID);
+        this.getAvailableCenter(editData.center_ID);
+        this.getAvailableVillages();
+        this.getAvailableBlocks();
+        if(editData){
+          this.setState({
+            "familyID"              : editData.familyID,
+            "surnameOfFH"           : editData.surnameOfFH,
+            "firstNameOfFH"         : editData.firstNameOfFH,
+            "middleNameOfFH"        : editData.middleNameOfFH,
+            "FHGender"              : editData.FHGender, 
+            "date"                  : editData.FHYearOfBirth, 
+            "contact"               : editData.contactNumber,
+            "uID"                   : editData.uidNumber,
+            "caste"                 : editData.caste,
+            "category"              : editData.familyCategory, 
+            "incomeCategory"        : editData.incomeCategory,
+            "landCategory"          : editData.landCategory,
+            "specialCategory"       : editData.specialCategory,
+            "district"              : editData.dist, 
+            "block"                 : editData.block, 
+            "village"               : editData.village, 
+            "shown"                   : false,
+          },()=>{
+            this.getAvailableCenter(this.state.center_ID);
+            // console.log('editdata',this.state);
+          });
+          let fields = this.state.fields;
+          let errors = {};
+          let formIsValid = true;
+          this.setState({
+            errors: errors
+          });
+          return formIsValid;
+        }else{
+          this.setState({
+            "shown"               : true,
+            "familyID"             :"",
+            "caste"                :"",
+            "district"             :"-- Select --",
+            "block"                :"-- Select --",
+            "village"              :"-- Select --",
+            "uID"                  :"",
+            "LHWRFCentre"          :"",
+            "state"                :"",
+            "contact"              :"",        
+            "surnameOfFH"          :"",
+            "firstNameOfFH"        :"",
+            "middleNameOfFH"       :"",
+            "incomeCategory"       :"",
+            "landCategory"         :"",
+            "FHGender"             :"",
+            "specialCategory"      :"",
+            "date"                 :"",
+            "FHYearOfBirth"        :"",
+            // "FHGender"             :"-- Select --",
+          });
+        }    
+      })
+      .catch(function(error){ 
+        console.log("error"+error);
+      });
+    }
   }
   toglehidden(){   
     this.setState({

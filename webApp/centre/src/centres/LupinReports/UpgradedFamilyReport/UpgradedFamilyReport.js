@@ -3,13 +3,15 @@ import $                    from 'jquery';
 import swal                 from 'sweetalert';
 import axios                from 'axios';
 import _                    from 'underscore';
+import jQuery               from 'jquery';
 import moment               from 'moment';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
 
-import "./VillagewisefamilyReport.css"
+import "./UpgradedFamilyReport.css"
 import "../../Reports/Reports.css";
-class VillagewisefamilyReport extends Component{
+class UpgradedFamilyReport extends Component{
 	constructor(props){
     super(props);
     this.state = {
@@ -48,28 +50,30 @@ class VillagewisefamilyReport extends Component{
                
             ]
         },
-        "tableHeading"      : {
+        "tableHeading"      : {         
             "name_family"         : 'Family Head Name',     
             "familyID"            : 'Family ID',
-            // "district"            : 'District',
-            "block"               : 'Block',
-            "village"             : 'Village',
             "projectCategoryType" : 'Project Category',
             "projectName"         : 'Project Name',
-            // "name"                : 'Activity',
-            "sectorName"          : 'Sector',
-            "activityName"        : 'Activity',
-            "subactivityName"     : 'Subactivity',
-            "unit"                : "Unit",
-            "quantity"            : "Quantity",
-            "total"               : "Total",
-            "LHWRF"               : "LHWRF",
-            "NABARD"              : "NABARD",
-            "Bank_Loan"            : "Bank_Loan",
-            "DirectCC"            : "DirectCC",
-            "IndirectCC"          : "IndirectCC",
-            "Govt"                : "Govt",
-            "Other"               : "Other",
+            "name"                : 'Activity',
+            // "sectorName"          : 'Sector',
+            // "activityName"        : 'Activity',
+            // "subactivityName"     : 'Subactivity',
+            "unit"                : "Unit",    
+            "UnitCost"            : "Unit Cost",    
+            "quantity"            : "Quantity",    
+            "total"               : "Total",    
+            "LHWRF"               : "LHWRF",    
+            "NABARD"              : "NABARD",     
+            "Bank_Loan"           : "Bank_Loan",        
+            "Govt"                : "Govt",   
+            "DirectCC"            : "DirectCC",       
+            "IndirectCC"          : "IndirectCC",         
+            "Other"               : "Other",    
+            "village"             : 'Village',
+            "block"               : 'Block',
+            "district"            : 'District',
+                
         },
         "tableObjects"        : {
           paginationApply     : false,
@@ -83,6 +87,7 @@ class VillagewisefamilyReport extends Component{
       this.handleToChange      = this.handleToChange.bind(this);
       this.currentFromDate     = this.currentFromDate.bind(this);
       this.currentToDate       = this.currentToDate.bind(this);
+      this.printTable = this.printTable.bind(this);
       this.getAvailableSectors = this.getAvailableSectors.bind(this);
   }
   componentDidMount(){
@@ -197,7 +202,7 @@ class VillagewisefamilyReport extends Component{
     },()=>{
         this.getAvailableActivity(this.state.sector_ID);
         this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+        console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
         this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
     })
   }
@@ -437,56 +442,33 @@ class VillagewisefamilyReport extends Component{
   }
       
   getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID, activity_ID, subActivity_ID){        
-    if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
-      if(sector_ID==="all"){
-        var url = ('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
-      }else{
-        var url = ('/api/report/village/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
-      }
-      $(".fullpageloader").show();
-      axios.get(url)
-      .then((response)=>{
-        $(".fullpageloader").hide();
-        console.log("resp",response);
-        var tableData = response.data.map((a, i)=>{
-          return {
-            _id                    : a._id,  
-            name_family            : a.name_family,
-            familyID               : a.familyID,
-            // district               : a.district,             
-            block                  : a.block,
-            village                : a.village,
-            projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
-            projectName            : a.projectName ==="all"|| 0 ? "-" :a.projectName,                       
-            // name                   : a.name,
-            sectorName             : a.sectorName,
-            activityName           : a.activityName,
-            subactivityName        : a.subactivityName,
-            unit                   : a.unit,
-            quantity               : a.quantity,
-            total                  : a.total,
-            LHWRF                  : a.LHWRF,
-            NABARD                 : a.NABARD,
-            Bank_Loan              : a.Bank_Loan,
-            DirectCC               : a.DirectCC,
-            IndirectCC             : a.IndirectCC,
-            Govt                   : a.Govt,
-            Other                  : a.Other,
-          }
-        })
-        this.setState({
-          tableData : tableData
-        },()=>{
-          console.log("resp",this.state.tableData)
-        })
-      })
-      .catch(function(error){  
-        console.log("error = ",error.message);
-        if(error.message === "Request failed with status code 500"){
-            $(".fullpageloader").hide();
-        }
-      });
-    }
+    console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
+      // var endDate = "2021-06-17"
+      // if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
+      //   if(sector_ID==="all"){
+      //     var url = ('/api/report/upgrade_family_report/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
+      //   }else{
+      //     var url = ('/api/report/upgrade_family_report/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
+      //   }
+      //   $(".fullpageloader").show();
+      //   axios.get(url)
+      //   .then((response)=>{
+      //     $(".fullpageloader").hide();
+      //     console.log("resp",response);
+          
+      //     this.setState({
+      //       tableData : response.data
+      //     },()=>{
+      //       // console.log("resp",this.state.tableData)
+      //     })
+      //   })
+      //   .catch(function(error){  
+      //     console.log("error = ",error.message);
+      //     if(error.message === "Request failed with status code 500"){
+      //         $(".fullpageloader").hide();
+      //     }
+      //   });
+      // }
   }
   handleFromChange(event){
     event.preventDefault();
@@ -574,23 +556,197 @@ class VillagewisefamilyReport extends Component{
     })
   }
   onBlurEventFrom(){
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        // console.log("startDate",startDate,endDate)
-        if ((Date.parse(endDate) < Date.parse(startDate))) {
-            swal("Start date","From date should be less than To date");
-            this.refs.startDate.value="";
-        }
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    // console.log("startDate",startDate,endDate)
+    if ((Date.parse(endDate) < Date.parse(startDate))) {
+        swal("Start date","From date should be less than To date");
+        this.refs.startDate.value="";
     }
-    onBlurEventTo(){
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        // console.log("startDate",startDate,endDate)
-          if ((Date.parse(startDate) > Date.parse(endDate))) {
-            swal("End date","To date should be greater than From date");
-            this.refs.endDate.value="";
-        }
+  }
+  onBlurEventTo(){
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    // console.log("startDate",startDate,endDate)
+      if ((Date.parse(startDate) > Date.parse(endDate))) {
+        swal("End date","To date should be greater than From date");
+        this.refs.endDate.value="";
     }
+  }
+
+  sortNumber(key, tableData){
+    var nameA = '';
+    var nameB = '';
+    var reA = /[^a-zA-Z]/g;
+    var reN = /[^0-9]/g;
+    var aN = 0;
+    var bN = 0;
+    var sortedData = tableData.sort((a, b)=> {
+      Object.entries(a).map( 
+        ([key1, value1], i)=> {
+          if(key === key1){
+            nameA = value1.replace(reA, "");        
+          }
+        }
+      );
+      Object.entries(b).map( 
+        ([key2, value2], i)=> {
+          if(key === key2){
+            nameB = value2.replace(reA, "");
+          }
+        }
+      );
+      if(this.state.sort === true){
+        this.setState({
+          sort    : false
+        })
+        if (nameA === nameB) {
+          Object.entries(a).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                aN = parseInt(value1.replace(reN, ""), 10);       
+              }
+            }
+          );
+          Object.entries(b).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                bN = parseInt(value1.replace(reN, ""), 10);         
+              }
+            }
+          );
+          if (aN < bN) {
+            return -1;
+          }
+          if (aN > bN) {
+            return 1;
+          }
+          return 0;
+        } else {
+
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        }
+      }else if(this.state.sort === false){
+        this.setState({
+          sort    : true
+        })
+        if (nameA === nameB) {
+          Object.entries(a).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                aN = parseInt(value1.replace(reN, ""), 10);     
+              }
+            }
+          );
+          Object.entries(b).map( 
+            ([key1, value1], i)=> {
+              if(key === key1){
+                bN = parseInt(value1.replace(reN, ""), 10);         
+              }
+            }
+          );
+          if (aN > bN) {
+            return -1;
+          }
+          if (aN < bN) {
+            return 1;
+          }
+          return 0;
+        } else {
+          if (nameA > nameB) {
+            return -1;
+          }
+          if (nameA < nameB) {
+            return 1;
+          }
+          return 0;
+        }
+      }       
+    });
+    this.setState({
+      tableData : sortedData,
+    });
+  }
+  sortString(key, tableData){
+    var nameA = '';
+    var nameB = '';
+    var sortedData = tableData.sort((a, b)=> {
+      Object.entries(a).map( 
+        ([key1, value1], i)=> {
+          if(key === key1){
+            if(jQuery.type( value1 ) === 'string'){
+              nameA = value1.toUpperCase();
+            }else{
+              nameA = value1;
+            }           
+          }
+        }
+      );
+      Object.entries(b).map( 
+        ([key2, value2], i)=> {
+          if(key === key2){
+            if(jQuery.type( value2 ) === 'string'){
+              nameB = value2.toUpperCase();
+            }else{
+              nameB = value2;
+            } 
+          }
+        }
+      );
+      if(this.state.sort === true){ 
+        this.setState({
+          sort    : false
+        })    
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      }else if(this.state.sort === false){
+        this.setState({
+          sort    : true
+        })  
+        if (nameA > nameB) {
+          return -1;
+        }
+        if (nameA < nameB) {
+          return 1;
+        }
+        return 0;
+      }
+    });
+    this.setState({
+      tableData : sortedData,
+    });
+  }
+  sort(event){
+    event.preventDefault();
+    var key = event.target.getAttribute('id');
+    var tableData = this.state.tableData;
+    console.log('tableData',key,tableData);
+    if(key === 'number'){
+      this.sortNumber(key, tableData);
+    }else{
+      this.sortString(key, tableData);
+    }
+  }
+  printTable(event){
+    var DocumentContainer = document.getElementById('section-to-screen');
+    var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
+    WindowObject.document.write(DocumentContainer.innerHTML);
+    WindowObject.document.close();
+    WindowObject.focus();
+    WindowObject.print();
+    WindowObject.close();
+  }
   render(){
     return( 
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -602,7 +758,7 @@ class VillagewisefamilyReport extends Component{
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
-                          Upgraded Family Report
+                          Family Coverage Report
                         </div>
                     </div>
                     <hr className="hr-head"/>
@@ -795,20 +951,194 @@ class VillagewisefamilyReport extends Component{
                       </div>
                     </div>  
                     <div className="marginTop11">
-                      <div className="">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          { 
+                            this.state.tableData && this.state.tableData.length != 0 ?
+                              <React.Fragment>
+                                <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+                                  <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+                                    <ReactHTMLTableToExcel
+                                            id="table-to-xls"                           
+                                            className="download-table-xls-button fa fa-download tableicons pull-right"
+                                            table="UpgradedFamilyReport"
+                                            sheet="tablexls"
+                                            filename="UpgradedFamilyReport"
+                                            buttonText=""/>
+                                </div>
+                              </React.Fragment>
+                            : null
+                          }   
+                        </div>
                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <IAssureTable 
-                            tableName = "Villagewise Family Report"
-                            id = "VillagewisefamilyReport"
-                            completeDataCount={this.state.tableDatas.length}
-                            twoLevelHeader={this.state.twoLevelHeader} 
-                            editId={this.state.editSubId} 
-                            getData={this.getData.bind(this)} 
-                            tableHeading={this.state.tableHeading} 
-                            tableData={this.state.tableData} 
-                            tableObjects={this.state.tableObjects}
-                            getSearchText={this.getSearchText.bind(this)}
-                          />
+                          <div className="table-responsive" id="section-to-screen">
+                            <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="UpgradedFamilyReport">
+                              <thead className="tempTableHeader fixedHeader">
+                                <tr className="tempTableHeader"></tr>
+                                <tr className="">
+                                  <th className="umDynamicHeader srpadd text-center">
+                                    <div className="colSr">Sr.No.</div>
+                                  </th>
+                                  <th id="name_family" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col1">Family Head Name</div>
+                                    <span onClick={this.sort.bind(this)}  id="name_family" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="familyID" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col2">Family ID</div>
+                                    <span onClick={this.sort.bind(this)}  id="familyID" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col3">District</div>
+                                    <span onClick={this.sort.bind(this)}  id="district" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="block" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col4">Block</div>
+                                    <span onClick={this.sort.bind(this)}  id="block" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="village" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col5">Village</div>
+                                    <span onClick={this.sort.bind(this)}  id="village" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="projectCategoryType" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col6">Project Category</div>
+                                    <span onClick={this.sort.bind(this)}  id="projectCategoryType" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="projectName" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col7">Project Name</div>
+                                    <span onClick={this.sort.bind(this)}  id="projectName" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="name" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col8">Sector</div>
+                                    <span onClick={this.sort.bind(this)}  id="name" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="activityName" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col9">Activity</div>
+                                    <span onClick={this.sort.bind(this)}  id="activityName" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="subactivityName" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col10">Subactivity</div>
+                                    <span onClick={this.sort.bind(this)}  id="subactivityName" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="unit" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col11">Unit</div>
+                                    <span onClick={this.sort.bind(this)}  id="unit" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="date" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col11">Date</div>
+                                    <span onClick={this.sort.bind(this)}  id="date" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col12">Unit Cost</div>
+                                    <span onClick={this.sort.bind(this)}  id="UnitCost" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                 <th id="quantity" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col13">Quantity</div>
+                                    <span onClick={this.sort.bind(this)}  id="quantity" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="total" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col14">Total</div>
+                                    <span onClick={this.sort.bind(this)}  id="total" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="LHWRF" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col15">LHWRF</div>
+                                    <span onClick={this.sort.bind(this)}  id="LHWRF" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="NABARD" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col16">NABARD</div>
+                                    <span onClick={this.sort.bind(this)}  id="NABARD" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="Bank_Loan" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col17">Bank Loan</div>
+                                    <span onClick={this.sort.bind(this)}  id="Bank_Loan" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="Govt" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col18">Govt</div>
+                                    <span onClick={this.sort.bind(this)}  id="Govt" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="DirectCC" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col19">DirectCC</div>
+                                    <span onClick={this.sort.bind(this)}  id="DirectCC" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="IndirectCC" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col20">IndirectCC</div>
+                                    <span onClick={this.sort.bind(this)}  id="IndirectCC" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="Other" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col21">Other</div>
+                                    <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  {/*<th id="village" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col19">Village</div>
+                                    <span id="village" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="block" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col20">Block</div>
+                                    <span id="block" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col21">District</div>
+                                    <span id="district" className="fa fa-sort tableSort"></span>
+                                  </th>*/}
+                                </tr>
+                              </thead>
+                              <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
+                                { this.state.tableData && this.state.tableData.length > 0?
+                                  this.state.tableData.map((value, i)=> {
+                                            // console.log("value",value,"i", i)
+                                    // console.log("value.sectorData",value.sectorData)
+                                    var sectorLength=value.sectorData.length
+                                      return(                                    
+                                        <tr className="tablerow"  key={i}>
+                                          <td className="textAlignCenter"><div className="colSr">{i+1}</div>
+                                          </td>
+                                          <td className=""><div className=" col1">{value._id.name_family}</div>
+                                          </td>
+                                          <td className=""><div className=" col2">{value._id.familyID}</div>
+                                          </td>
+                                          { 
+                                            sectorLength !== 0 && value.sectorData ?
+                                              Object.entries(value.sectorData).map(([key, value1], index)=> {
+                                              // console.log("value1===================",value1[0])
+                                              // console.log("value1", value1,"index", index)
+                                                return(
+                                                  <tr className="tablerow" key={index}>
+                                                    <td className=""><div className="col3">{value1.district}</div></td>
+                                                    <td className=""><div className="col4">{value1.block}</div></td>
+                                                    <td className=""><div className="col5">{value1.village}</div></td>
+                                                    <td className=""><div className="col6">{value1.projectCategoryType ? value1.projectCategoryType : "-"}</div></td>
+                                                    <td className=""><div className="col7">{value1.projectName === "all" ? "-" : value1.projectName}</div></td>
+                                                    <td className=""><div className="col8">{value1.sectorName}</div></td>
+                                                    <td className=""><div className="col9">{value1.activityName}</div></td>
+                                                    <td className=""><div className="col10">{value1.subactivityName}</div></td>
+                                                    <td className=""><div className="col11">{value1.unit}</div></td>
+                                                    <td className=""><div className="col11">{value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
+                                                    <td className="textAlignRight"><div className="col12">{value1.UnitCost}</div></td>
+                                                    <td className="textAlignRight"><div className="col13">{value1.quantity}</div></td>
+                                                    <td className="textAlignRight"><div className="col14">{value1.total}</div></td>
+                                                    <td className="textAlignRight"><div className="col15">{value1.LHWRF}</div></td>
+                                                    <td className="textAlignRight"><div className="col16">{value1.NABARD}</div></td>
+                                                    <td className="textAlignRight"><div className="col17">{value1.Bank_Loan}</div></td>
+                                                    <td className="textAlignRight"><div className="col18">{value1.Govt}</div></td>
+                                                    <td className="textAlignRight"><div className="col19">{value1.DirectCC}</div></td>
+                                                    <td className="textAlignRight"><div className="col20">{value1.IndirectCC}</div></td>
+                                                    <td className="textAlignRight"><div className="col21">{value1.Other}</div></td>
+                                                    {/*<td className=""><div className="col19">{value1.village}</div></td>
+                                                    <td className=""><div className="col20">{value1.block}</div></td>
+                                                    <td className=""><div className="col21">{value1.district}</div></td>*/}
+                                                  </tr>
+                                                )
+                                              })
+                                            : null
+                                          }
+                                        </tr>
+                                      )
+                                    })
+                                  :
+                                  <tr className="trAdmin"><td colSpan= "21" className="noTempData textAlignCenter">No Record Found!</td></tr>                   
+                                } 
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -822,4 +1152,4 @@ class VillagewisefamilyReport extends Component{
     );
   }
 }
-export default VillagewisefamilyReport
+export default UpgradedFamilyReport

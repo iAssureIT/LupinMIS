@@ -262,17 +262,17 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Geographical Report</span>
                       </Link>
                     </li>
+                    <li>
+                      <Link to="/upgraded-beneficiary-report" title="Beneficiary Report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Beneficiary Report</span>
+                      </Link>
+                    </li>
                   */}
                     <li>
                       <Link to="/category-wise-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Category Report</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/upgraded-beneficiary-report" title="Beneficiary Report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Beneficiary Report</span>
                       </Link>
                     </li>
                     <li>
@@ -282,7 +282,7 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>      
                     <li>
-                      <Link to="/villagewise-family-report">
+                      <Link to="/upgraded-family-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Upgraded Family Report</span>
                       </Link>

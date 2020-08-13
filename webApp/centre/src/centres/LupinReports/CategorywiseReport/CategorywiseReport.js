@@ -18,38 +18,15 @@ class CategorywiseReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
-        "district"          : "all",
         "selectedDistrict"  : "all",
-        "projectCategoryType": "all",
-        "beneficiaryType"    : "all",
-        "projectName"        : "all",
-        "incomeCategory"    : "all",
-        "specialCategory"   : "all",
-        "landCategory"      : "all",
-        "twoLevelHeader"    : {
-            apply           : false,
-            firstHeaderData : [
-                {
-                    heading : 'Family Details',
-                    mergedColoums :4,
-                    hide : false
-                }, 
-                {
-                    heading : 'No of Families',
-                    mergedColoums : 2,
-                    hide : false
-                },        
-            ]
-        },
+        "district"          : "all",
+        "block"             : "all",
+        "village"           : "all",
         "tableHeading"      : {
-          "projectCategoryType"  : 'Project Category',
-          "projectName"          : 'Project Name',
-          "district"             : 'District',
-          "incomeCategory"    : 'Income Category',
-          "landCategory"      : 'Land Holding Category',
-          "specialCategory"   : 'Special Category',
-          "Reach"             : 'Families Reached',
-          "FamilyUpgradation" : 'Families Upgraded',        
+          "srNo"              : "Sr.No.",
+          "categoryName"      : 'Family Category',
+          "reachCount"        : 'No of Reached Families',
+          "upgraded"          : 'No of Upgraded Families'
         },
         "tableObjects"        : {
           paginationApply     : false,
@@ -73,32 +50,28 @@ class CategorywiseReport extends Component{
       tableData : this.state.tableData,
     },()=>{
       this.getAvailableCenterData(this.state.center_ID);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.currentFromDate();
-    this.getAvailableProjects();
     this.currentToDate();
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }
- 
   componentWillReceiveProps(nextProps){
-    this.getAvailableProjects();
     this.currentFromDate();
     this.currentToDate();
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
   }
   handleChange(event){
     event.preventDefault();
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
     });
   }
-
   getAvailableCenterData(center_ID){
     axios({
       method: 'get',
@@ -112,31 +85,22 @@ class CategorywiseReport extends Component{
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
         this.setState({
           availableDistInCenter  : availableDistInCenter,
-          // availableDistInCenter  : response.data[0].districtsCovered,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
-          // districtsCovered : response.data[0].districtsCovered
         },()=>{
-        var stateCode =this.state.address.split('|')[0];
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
+          var stateCode =this.state.address.split('|')[0];
          this.setState({
-          stateCode  : stateCode,
-
-        },()=>{
-        // this.getDistrict(this.state.stateCode, this.state.districtsCovered);
-        });
-        })
+            stateCode  : stateCode,
+          });
+      })
     }).catch(function (error) {
-      console.log("error"+error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      } 
+      console.log("districtError",+error);
     });
   } 
   districtChange(event){    
     event.preventDefault();
     var district = event.target.value;
+    // console.log('district', district);
     this.setState({
       district: district
     },()=>{
@@ -146,13 +110,71 @@ class CategorywiseReport extends Component{
         var selectedDistrict = this.state.district.split('|')[0];
       }
       this.setState({
-        selectedDistrict :selectedDistrict
-      },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
+        selectedDistrict :selectedDistrict,
+        block : "all",
+        village : "all",
+      },()=>{        
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
+      // console.log('selectedDistrict',this.state.selectedDistrict);
+      // this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        // console.log('availableblockInCenter ==========',response);
+        function removeDuplicates(data, param, district){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
+          })
+        }
+        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.selectedDistrict);
+        this.setState({
+          listofBlocks     : availableblockInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
       })
     });
   }
-
+  selectBlock(event){
+    event.preventDefault();
+    var block = event.target.value;
+    this.setState({
+      block : block,
+      village : "all",
+    },()=>{
+      // console.log("block",block);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
+      // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district, block){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
+          })
+        }
+        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.selectedDistrict,this.state.block);
+        this.setState({
+          listofVillages   : availablevillageInCenter,
+        })
+      }).catch(function (error) {
+        console.log("error = ",error);
+      });
+    });
+  }
+  selectVillage(event){
+    event.preventDefault();
+    var village = event.target.value;
+    this.setState({
+      village : village
+    },()=>{
+      console.log("village",village);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
+    });  
+  }  
   camelCase(str){
     return str
     .toLowerCase()
@@ -161,59 +183,6 @@ class CategorywiseReport extends Component{
     .join(' ');
   }
 
-  selectprojectCategoryType(event){
-    event.preventDefault();
-    // console.log(event.target.value)
-    var projectCategoryType = event.target.value;
-    this.setState({
-        projectCategoryType : projectCategoryType,
-    },()=>{
-        if(this.state.projectCategoryType === "LHWRF Grant"){
-            this.setState({
-              projectName : "all",
-            },()=>{
-              this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
-            })          
-        }else if (this.state.projectCategoryType=== "all"){
-            this.setState({
-              projectName : "all",
-            },()=>{
-              this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
-            })    
-        }else  if(this.state.projectCategoryType=== "Project Fund"){
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
-        }
-    },()=>{
-    })
-  }
-  getAvailableProjects(){
-    axios({
-      method: 'get',
-      url: '/api/projectMappings/list',
-    }).then((response)=> {
-      this.setState({
-        availableProjects : response.data
-      })
-    }).catch(function (error) {
-      console.log('error', error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
-    });
-  }
-  selectprojectName(event){
-    event.preventDefault();
-    var projectName = event.target.value;
-    this.setState({
-          projectName : projectName,
-        },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
-    })
-  }
-  
   addCommas(x) {
     if(x===0){
       return parseInt(x)
@@ -242,30 +211,21 @@ class CategorywiseReport extends Component{
       }
     }
   }
-  getData(startDate, endDate, center_ID, selectedDistrict, projectCategoryType, projectName, beneficiaryType, incomeCategory, landCategory, specialCategory){        
+  getData(startDate, endDate, center_ID, selectedDistrict, block, village){        
     if(center_ID){
-      if( startDate && endDate && center_ID && selectedDistrict && projectCategoryType  && beneficiaryType){
+      if( startDate && endDate && center_ID && selectedDistrict && block  && village){
         $(".fullpageloader").show();
-        // console.log('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType);
-        axios.get('/api/reports/category_reports/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+incomeCategory+'/'+landCategory+'/'+specialCategory)
-        // axios.get('/api/report/category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
+        axios.get('/api/report/report_category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village)
         .then((response)=>{
           $(".fullpageloader").hide();
-
           console.log("resp",response);
             var tableData = response.data.map((a, i)=>{
             return {
-              _id                    : a._id,
-              projectCategoryType    : a.projectCategoryType ? a.projectCategoryType : "-",
-              projectName            : a.projectName === "all"|| 0? "-" :a.projectName,                  
-              district               : a.district === "all" ? "-" :a.district,                
-              incomeCategory         : a.incomeCategory,
-              landCategory           : a.landCategory,
-              specialCategory        : a.specialCategory,
-              Reach                  : (a.Reach),
-              FamilyUpgradation      : (a.FamilyUpgradation),
-              // Reach                  : this.addCommas(a.Reach),
-              // FamilyUpgradation      : this.addCommas(a.FamilyUpgradation),
+              _id             : a._id,
+              srNo            : a.srNo,
+              categoryName    : a.categoryName,
+              reachCount      : a.reachCount,
+              upgraded        : a.upgraded,
             }
           })
           this.setState({
@@ -295,7 +255,7 @@ class CategorywiseReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
     });
   }
   handleToChange(event){
@@ -311,10 +271,9 @@ class CategorywiseReport extends Component{
      [name] : event.target.value,
      endDate : endDate
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.incomeCategory, this.state.landCategory, this.state.specialCategory);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
     });
   }
-
   currentFromDate(){
     if(this.state.startDate){
           var today = this.state.startDate;
@@ -331,7 +290,6 @@ class CategorywiseReport extends Component{
     });
     return today;
   }
-
   currentToDate(){
     if(this.state.endDate){
         var today = this.state.endDate;
@@ -389,145 +347,95 @@ class CategorywiseReport extends Component{
                     </div>
                     <hr className="hr-head"/>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
-                          <label className="formLable">District</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                            <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
-                                {
-                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                this.state.availableDistInCenter.map((data, index)=>{
-                                  // console.log("data",data)
-                                  return(
-                                    /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                    <option key={index} value={(data.district+'|'+data._id)}>{this.camelCase(data.district.split('|')[0])}</option>
+                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                        <label className="formLable">District</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                          <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
+                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                              {
+                              this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                              this.state.availableDistInCenter.map((data, index)=>{
+                                // console.log("data",data)
+                                return(
+                                  /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                  <option key={index} value={(data.district+'|'+data._id)}>{data.district.split('|')[0]}</option>
 
-                                  );
-                                })
-                                :
-                                null
-                              }                               
-                            </select>
-                          </div>
+                                );
+                              })
+                              :
+                              null
+                            }                               
+                          </select>
                         </div>
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">Beneficiary</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                              <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                                <option  className="hidden" >--Select--</option>
-                                <option value="all" >All</option>
-                                <option value="withUID" >With UID</option>
-                                <option value="withoutUID" >Without UID</option>
-                                
-                              </select>
-                            </div>
-                        </div> 
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">From</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleFromChange.bind(this)}   onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                            </div>
+                      </div>
+                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Block</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                          <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                            {
+                              this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                              this.state.listofBlocks.map((data, index)=>{
+                                return(
+                                  <option key={index} value={data.block}>{data.block}</option>
+                                );
+                              })
+                              :
+                              null
+                            }                              
+                          </select>
                         </div>
-                        <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                            <label className="formLable">To</label><span className="asterix"></span>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <input onChange={this.handleToChange.bind(this)} onBlur={this.onBlurEventTo.bind(this)}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                            </div>
-                        </div> 
-                    </div>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Project Category</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
-                            <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
-                              <option  className="hidden" >--Select--</option>
-                              <option value="all" >All</option>
-                              <option value="LHWRF Grant" >LHWRF Grant</option>
-                              <option value="Project Fund">Project Fund</option>
-                              
-                            </select>
+                        {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
+                      </div>
+                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Village</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                          <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)}  >
+                            <option  className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                            {
+                              this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                              this.state.listofVillages.map((data, index)=>{
+                                return(
+                                  <option key={index} value={data.village}>{data.village}</option>
+                                );
+                              })
+                              :
+                              null
+                            } 
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
+                          <label className="formLable">From</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                              <input onChange={this.handleFromChange.bind(this)}   onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                           </div>
                       </div>
-                      {
-                        this.state.projectCategoryType === "Project Fund" ?
-                        <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Project Name</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                            <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
-                              <option  className="hidden" >--Select--</option>
-                               <option value="all" >All</option>
-                              {
-                                this.state.availableProjects && this.state.availableProjects.length >0 ?
-                                this.state.availableProjects.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.projectName}>{data.projectName}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                            </select>
+                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
+                          <label className="formLable">To</label><span className="asterix"></span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                              <input onChange={this.handleToChange.bind(this)} onBlur={this.onBlurEventTo.bind(this)}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                           </div>
-                        </div>
-                      : 
-                      ""
-                      } 
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                        <label className="formLable">Land holding Category</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
-                          <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
-                            <option selected='true' value="" disabled="disabled" >-- Select --</option>
-                            <option value="all" >All</option>
-                            <option>Big Farmer</option>
-                            <option>Landless</option>
-                            <option>Marginal Farmer</option>
-                            <option>Small Farmer</option>
-                          </select>
-                        </div>
-                      </div>                          
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                        <label className="formLable">Income Category </label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
-                          <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
-                            <option selected='true' value="" disabled="disabled" >-- Select --</option>
-                            <option value="all" >All</option>
-                            <option>APL</option>
-                            <option>BPL</option>
-                          </select>
-                        </div>
-                      </div>                        
-                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                        <label className="formLable">Special Category</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
-                          <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
-                            <option selected='true' value="" disabled="disabled" >-- Select --</option>
-                            <option value="all" >All</option>
-                            <option>Normal</option>
-                            <option>Differently Abled</option>
-                            <option>Veerangana</option>
-                            <option>Widow Headed</option>
-                          </select>
-                        </div>
-                      </div>                          
-                    </div>  
-                    <div className="marginTop11">
-                        <div className="">
-                            <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <IAssureTable  
-                                    tableName = "Categorywise Report"
-                                    id = "CategorywiseReport"
-                                    completeDataCount={this.state.tableDatas.length}
-                                    twoLevelHeader={this.state.twoLevelHeader} 
-                                    editId={this.state.editSubId} 
-                                    getData={this.getData.bind(this)} 
-                                    tableHeading={this.state.tableHeading} 
-                                    tableData={this.state.tableData} 
-                                    tableObjects={this.state.tableObjects}
-                                    getSearchText={this.getSearchText.bind(this)}/>
-                            </div>
-                      
-                        </div>
+                      </div> 
+                    </div>
+                    <div className="">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <IAssureTable  
+                              divClass = "col-lg-8 col-lg-offset-2"
+                              tableName = "Categorywise Report"
+                              id = "CategorywiseReport"
+                              completeDataCount={this.state.tableDatas.length}
+                              twoLevelHeader={this.state.twoLevelHeader} 
+                              editId={this.state.editSubId} 
+                              getData={this.getData.bind(this)} 
+                              tableHeading={this.state.tableHeading} 
+                              tableData={this.state.tableData} 
+                              tableObjects={this.state.tableObjects}
+                              getSearchText={this.getSearchText.bind(this)}/>
+                      </div>
                     </div>
                 </div>    
               </div>

@@ -1,0 +1,70 @@
+.fixedTable .colSr{
+	width: 30px !important;
+}
+#UpgradedFamilyReport .col1{
+	width: 150px !important;
+	white-space: pre-wrap!important;
+}
+#UpgradedFamilyReport .col2{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#UpgradedFamilyReport .col3{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#UpgradedFamilyReport .col4{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#UpgradedFamilyReport .col9{
+	white-space: pre-wrap!important;
+	width: 120px !important;
+} 
+#UpgradedFamilyReport .col5, #UpgradedFamilyReport .col6, #UpgradedFamilyReport .col7{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#UpgradedFamilyReport .col10, #UpgradedFamilyReport .col8{
+	white-space: pre-wrap!important;
+	width: 120px !important;
+}
+#UpgradedFamilyReport .col20, #UpgradedFamilyReport .col21{
+	white-space: pre-wrap!important;
+	width: 72px !important;
+}
+#UpgradedFamilyReport .col14{
+	white-space: pre-wrap!important;
+	width: 70px !important;
+} 
+#UpgradedFamilyReport .col12, #UpgradedFamilyReport .col11, #UpgradedFamilyReport .col13{	
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#UpgradedFamilyReport .col15, #UpgradedFamilyReport .col16, #UpgradedFamilyReport .col17, #UpgradedFamilyReport .col18, #UpgradedFamilyReport .col19{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#UpgradedFamilyReport .col20, #UpgradedFamilyReport .col21{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#UpgradedFamilyReport .scrollContent {
+  display: block;
+  height: 450px;
+  overflow: auto;
+  width: 100%;
+}
+
+#UpgradedFamilyReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+.tablerow > td {
+    border: 1px solid #2f9c3f !important;
+	padding: 8px;
+	line-height: 1.42857143;
+	vertical-align: top
+}

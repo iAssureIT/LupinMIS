@@ -589,72 +589,74 @@ class IAssureTable extends Component {
 	render() {
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
-	       	{
-	       		this.state.tableObjects.searchApply === true ? 
-		       		<div className="col-lg-4 col-md-4  col-xs-12 col-sm-12 marginTop8 NOpadding pull-left">
-		        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding formLable">Search</label>
-		        		<div className="input-group inputBox-main">
-					        <input type="text" onChange={this.tableSearch.bind(this)} className="NOpadding-right form-control inputBox" ref="tableSearch" id="tableSearch" name="tableSearch"/>
-					    	<span className="input_status input-group-addon "><i className="fa fa-search"></i></span>
-					    </div>
-		        	</div>	
-	        	:
-	        	null
-	       	}
-	       
-	       	{ this.state.tableObjects.downloadApply === true ?
-                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 && !this.state.downloadData ?
-                <React.Fragment>
-          
-                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
-                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
-                           <ReactHTMLTableToExcel
-                                id="table-to-xls"                           
-                                className="download-table-xls-button fa fa-download tableicons pull-right"
-                                table={this.state.id}
-                                sheet="tablexls"
-                                filename={this.state.tableName}
-                                buttonText=""/>
-                    </div>
-                </React.Fragment>
-                    : null
-                
-                : null
-            }   
-            {/*console.log("this.state.downloadData",this.state.downloadData)*/}
-            {/*console.log("this.state.id",this.state.id)*/}
-            { this.state.tableObjects.downloadApply === true ?
-                this.state.downloadData && this.state.id && this.state.tableName && this.state.downloadData.length != 0 ?
-                <React.Fragment>
-          
-                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
-                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
-                           <ReactHTMLTableToExcel
-                                id="table-to-xls"                           
-                                className="download-table-xls-button fa fa-download tableicons pull-right"
-                                table={this.state.id}
-                                sheet="tablexls"
-                                filename={this.state.tableName}
-                                buttonText=""
-                            />
-                            <IAssureTableTable 
-	                          tableName = {this.state.tableName}
-	                          id = {this.state.id}
-	                          displayTable = "displayTable"
-	                          data={this.props.propsdata}
-	                          getData={this.getDwldData.bind(this)}
-	                          tableHeading={this.props.downloadtableHeading}
-                          	  twoLevelHeader={this.props.twoLevelHeader} 
-	                          tableData={this.state.downloadData}
-	                          tableObjects={this.state.tableObjects}                          
-	                        />
-                    </div>
-                </React.Fragment>
-                    : null
-                
-                : null
-            }   
-	                
+	       		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+			       	{
+			       		this.state.tableObjects.searchApply === true ? 
+				       		<div className="col-lg-4 col-md-4  col-xs-12 col-sm-12 marginTop8 NOpadding pull-left">
+				        		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding formLable">Search</label>
+				        		<div className="input-group inputBox-main">
+							        <input type="text" onChange={this.tableSearch.bind(this)} className="NOpadding-right form-control inputBox" ref="tableSearch" id="tableSearch" name="tableSearch"/>
+							    	<span className="input_status input-group-addon "><i className="fa fa-search"></i></span>
+							    </div>
+				        	</div>	
+			        	:
+			        	null
+			       	}
+			       
+			       	{ this.state.tableObjects.downloadApply === true ?
+		                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 && !this.state.downloadData ?
+		                <React.Fragment>
+		          
+		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+		                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+		                           <ReactHTMLTableToExcel
+		                                id="table-to-xls"                           
+		                                className="download-table-xls-button fa fa-download tableicons pull-right"
+		                                table={this.state.id}
+		                                sheet="tablexls"
+		                                filename={this.state.tableName}
+		                                buttonText=""/>
+		                    </div>
+		                </React.Fragment>
+		                    : null
+		                
+		                : null
+		            }   
+		            {/*console.log("this.state.downloadData",this.state.downloadData)*/}
+		            {/*console.log("this.state.id",this.state.id)*/}
+		            { this.state.tableObjects.downloadApply === true ?
+		                this.state.downloadData && this.state.id && this.state.tableName && this.state.downloadData.length != 0 ?
+		                <React.Fragment>
+		          
+		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+		                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+		                           <ReactHTMLTableToExcel
+		                                id="table-to-xls"                           
+		                                className="download-table-xls-button fa fa-download tableicons pull-right"
+		                                table={this.state.id}
+		                                sheet="tablexls"
+		                                filename={this.state.tableName}
+		                                buttonText=""
+		                            />
+		                            <IAssureTableTable 
+			                          tableName = {this.state.tableName}
+			                          id = {this.state.id}
+			                          displayTable = "displayTable"
+			                          data={this.props.propsdata}
+			                          getData={this.getDwldData.bind(this)}
+			                          tableHeading={this.props.downloadtableHeading}
+		                          	  twoLevelHeader={this.props.twoLevelHeader} 
+			                          tableData={this.state.downloadData}
+			                          tableObjects={this.state.tableObjects}                          
+			                        />
+		                    </div>
+		                </React.Fragment>
+		                    : null
+		                
+		                : null
+		            }   
+				</div>
+		                
 	       	{
 	       		this.state.tableObjects.paginationApply === true ?
 		       		<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding pull-right">
@@ -678,7 +680,7 @@ class IAssureTable extends Component {
 		    
 		  
            
-	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding">
+	            <div className={this.props.divClass ? this.props.divClass+" col-sm-12 col-md-12 col-xs-12 NOpadding" : "col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding"}>
 	            	{/*==============================================================================
 	            			We will have two tables... One to display on screen and one to print.							
 					   ============================================================================== */}
@@ -700,9 +702,13 @@ class IAssureTable extends Component {
 									}
 	                            </tr>
 	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd text-center">
-									<div className="colSr">Sr.No.</div>
-	                            </th>
+									{
+										!this.props.divClass ?
+	                            			<th className="umDynamicHeader srpadd text-center">
+												<div className="colSr">Sr.No.</div>
+	                            			</th>
+	    								:null
+	    							}
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
@@ -736,15 +742,19 @@ class IAssureTable extends Component {
 
 													{/*console.log('Object.entries(value)', (Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-"))*/}
 													{
-														((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
-														?
-															<td className="textAlignCenter">
-																<div className="colSr">{this.state.startRange+1+i}</div>
-															</td>
-														:
-															<td className="textAlignCenter">
-																<div className="colSr"></div>
-															</td>
+														!this.props.divClass ?
+														// {
+															((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
+															?
+																<td className="textAlignCenter">
+																	<div className="colSr">{this.state.startRange+1+i}</div>
+																</td>
+															:
+																<td className="textAlignCenter">
+																	<div className="colSr"></div>
+																</td>
+														// }
+														: null
 													}
 													{
 														Object.entries(value).map( 
