@@ -439,7 +439,18 @@ class Family extends Component{
               // "FHGender"             :"-- Select --",
             });
             this.props.history.push('/family');
+          }          
+          var inputGetData = {
+            "center_ID"       : this.state.center_ID,
+            "caste"           : this.state.casteFilter,
+            "district"        : this.state.districtFilter,
+            "blocks"          : this.state.blockFilter,
+            "village"         : this.state.villageFilter, 
+            "specialCategory" : this.state.specialCategoryFilter,
+            "landCategory"    : this.state.landCategoryFilter,
+            "incomeCategory"  : this.state.incomeCategoryFilter,
           }
+          this.getData(inputGetData);
         })
         .catch(function(error){
           console.log("error"+error);
