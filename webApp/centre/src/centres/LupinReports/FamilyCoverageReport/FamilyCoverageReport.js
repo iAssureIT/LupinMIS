@@ -32,6 +32,7 @@ class FamilyCoverageReport extends Component{
         "village"           : "all",
         "projectCategoryType": "all",
         "beneficiaryType"    : "all",
+        "isUpgraded"         : "all",
         "projectName"        : "all",
         "twoLevelHeader"    : {
             apply           : false,
@@ -60,7 +61,7 @@ class FamilyCoverageReport extends Component{
             // "activityName"        : 'Activity',
             // "subactivityName"     : 'Subactivity',
             "unit"                : "Unit",    
-            "UnitCost"            : "Unit Cost",    
+            "unitCost"            : "Unit Cost",    
             "quantity"            : "Quantity",    
             "total"               : "Total",    
             "LHWRF"               : "LHWRF",    
@@ -99,7 +100,7 @@ class FamilyCoverageReport extends Component{
     },()=>{
     this.getAvailableCenterData(this.state.center_ID);
     // console.log("center_ID =",this.state.center_ID);
-    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableProjects();
@@ -112,7 +113,7 @@ class FamilyCoverageReport extends Component{
       tableData : this.state.tableData,
     },()=>{
     // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
@@ -123,7 +124,7 @@ class FamilyCoverageReport extends Component{
     this.getAvailableSectors();
     this.currentFromDate();
     this.currentToDate();
-    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
   handleChange(event){
@@ -131,7 +132,7 @@ class FamilyCoverageReport extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
       // console.log('name', this.state)
     });
   }
@@ -151,7 +152,7 @@ class FamilyCoverageReport extends Component{
           availableDistInCenter  : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
         },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+          this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
           var stateCode =this.state.address.split('|')[0];
          this.setState({
             stateCode  : stateCode,
@@ -161,7 +162,6 @@ class FamilyCoverageReport extends Component{
       console.log("districtError",+error);
     });
   } 
-
   getAvailableSectors(){
       axios({
         method: 'get',
@@ -203,7 +203,7 @@ class FamilyCoverageReport extends Component{
         this.getAvailableActivity(this.state.sector_ID);
         this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
         console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     })
   }
   getAvailableActivity(sector_ID){
@@ -236,7 +236,7 @@ class FamilyCoverageReport extends Component{
       subactivity    : "all",
     },()=>{
       this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     })
   }
   getAvailableSubActivity(sector_ID, activity_ID){
@@ -265,7 +265,7 @@ class FamilyCoverageReport extends Component{
     this.setState({
       subActivity_ID : subActivity_ID,
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     })
   }
   districtChange(event){    
@@ -285,7 +285,7 @@ class FamilyCoverageReport extends Component{
         block : "all",
         village : "all",
       },()=>{        
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
       // console.log('selectedDistrict',this.state.selectedDistrict);
       // this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       axios({
@@ -331,7 +331,7 @@ class FamilyCoverageReport extends Component{
       village : "all",
     },()=>{
       // console.log("block",block);
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
       // this.getVillages(this.state.stateCode, this.state.selectedDistrict, this.state.block);
       axios({
         method: 'get',
@@ -374,7 +374,7 @@ class FamilyCoverageReport extends Component{
     this.setState({
       village : village
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
       // console.log("village",village);
     });  
   }  
@@ -397,16 +397,16 @@ class FamilyCoverageReport extends Component{
             this.setState({
               projectName : "all",
             },()=>{
-              this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+              this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
             })          
         }else if (this.state.projectCategoryType=== "all"){
             this.setState({
               projectName : "all",
             },()=>{
-              this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+              this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
             })    
         }else  if(this.state.projectCategoryType=== "Project Fund"){
-          this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+          this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
         }
     },()=>{
     })
@@ -436,53 +436,38 @@ class FamilyCoverageReport extends Component{
     this.setState({
           projectName : projectName,
         },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
         // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
     })
   }
       
-  getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID, activity_ID, subActivity_ID){        
+  getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID, activity_ID, subActivity_ID, isUpgraded){        
     console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
-      // var endDate = "2021-06-17"
+      var endDate = "2021-06-17"
       if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
         if(sector_ID==="all"){
-          $(".fullpageloader").show();
-
-          axios.get('/api/report/family_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
-          .then((response)=>{
-            $(".fullpageloader").hide();
-            console.log("resp",response);
-            
-            this.setState({
-              tableData : response.data
-            },()=>{
-              // console.log("resp",this.state.tableData)
-            })
-          })
-          .catch(function(error){  
-            console.log("error = ",error.message);
-            if(error.message === "Request failed with status code 500"){
-                $(".fullpageloader").hide();
-            }
-          });
+          var url = ('/api/report/upgrade_family_report/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
         }else{
-          axios.get('/api/report/family_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
-          .then((response)=>{
-            console.log("resp",response);
-   
-            this.setState({
-              tableData : response.data
-            },()=>{
-              // console.log("resp",this.state.tableData)
-            })
-          })
-          .catch(function(error){  
-            console.log("error = ",error.message);
-            if(error.message === "Request failed with status code 500"){
-                $(".fullpageloader").hide();
-            }
-          });
+          var url = ('/api/report/upgrade_family_report/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
         }
+        $(".fullpageloader").show();
+        axios.get(url)
+        .then((response)=>{
+          $(".fullpageloader").hide();
+          console.log("resp",response);
+          
+          this.setState({
+            tableData : response.data
+          },()=>{
+            // console.log("resp",this.state.tableData)
+          })
+        })
+        .catch(function(error){  
+          console.log("error = ",error.message);
+          if(error.message === "Request failed with status code 500"){
+              $(".fullpageloader").hide();
+          }
+        });
       }
   }
   handleFromChange(event){
@@ -498,7 +483,7 @@ class FamilyCoverageReport extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     // console.log("dateUpdate",this.state.startDate);
     });
   }
@@ -517,7 +502,7 @@ class FamilyCoverageReport extends Component{
        endDate : endDate
     },()=>{
       // console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID);
+      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     });
   }
 
@@ -841,24 +826,23 @@ class FamilyCoverageReport extends Component{
                         </div>
                       </div>  
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Beneficiary</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
-                            <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
-                              <option  className="hidden" >--Select--</option>
-                              <option value="all" >All</option>
-                              <option value="withUID" >With UID</option>
-                              <option value="withoutUID" >Without UID</option>
-                              
-                            </select>
-                          </div>
+                        <label className="formLable">Beneficiary</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
+                          <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all" >All</option>
+                            <option value="withUID" >With UID</option>
+                            <option value="withoutUID" >Without UID</option>
+                            
+                          </select>
+                        </div>
                       </div> 
                       <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
                         <label className="formLable">District</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                           <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
                             <option  className="hidden" >-- Select --</option>
-                            <option value="all" >All</option>
-                                
+                            <option value="all" >All</option>                                
                               {
                               this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
                               this.state.availableDistInCenter.map((data, index)=>{
@@ -916,6 +900,17 @@ class FamilyCoverageReport extends Component{
                         {/*<div className="errorMsg">{this.state.errors.village}</div>*/}
                       </div>
                       <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">Upgraded</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="isUpgraded" >
+                          <select className="custom-select form-control inputBox" ref="isUpgraded" name="isUpgraded" value={this.state.isUpgraded} onChange={this.handleChange.bind(this)}>
+                            <option  className="hidden" >--Select--</option>
+                            <option value="all">All</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
+                        </div>
+                      </div> 
+                      <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">Project Category</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                           <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
@@ -923,13 +918,11 @@ class FamilyCoverageReport extends Component{
                             <option value="all" >All</option>
                             <option value="LHWRF Grant" >LHWRF Grant</option>
                             <option value="Project Fund">Project Fund</option>
-                            
                           </select>
                         </div>
                       </div>
                       {
-                          this.state.projectCategoryType === "Project Fund" ?
-
+                        this.state.projectCategoryType === "Project Fund" ?
                           <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box">
                             <label className="formLable">Project Name</label><span className="asterix"></span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
@@ -1042,9 +1035,13 @@ class FamilyCoverageReport extends Component{
                                     <div className="wrapWord col11">Date</div>
                                     <span onClick={this.sort.bind(this)}  id="date" className="fa fa-sort tableSort"></span>
                                   </th>
-                                  <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <th id="isUpgraded" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col11">Upgraded</div>
+                                    <span onClick={this.sort.bind(this)}  id="isUpgraded" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="unitCost" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col12">Unit Cost</div>
-                                    <span onClick={this.sort.bind(this)}  id="UnitCost" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="unitCost" className="fa fa-sort tableSort"></span>
                                   </th>
                                  <th id="quantity" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col13">Quantity</div>
@@ -1114,7 +1111,7 @@ class FamilyCoverageReport extends Component{
                                             sectorLength !== 0 && value.sectorData ?
                                               Object.entries(value.sectorData).map(([key, value1], index)=> {
                                               // console.log("value1===================",value1[0])
-                                              // console.log("value1", value1,"index", index)
+                                              console.log("value1.isUpgraded",value1.isUpgraded)
                                                 return(
                                                   <tr className="tablerow" key={index}>
                                                     <td className=""><div className="col3">{value1.district}</div></td>
@@ -1127,7 +1124,8 @@ class FamilyCoverageReport extends Component{
                                                     <td className=""><div className="col10">{value1.subactivityName}</div></td>
                                                     <td className=""><div className="col11">{value1.unit}</div></td>
                                                     <td className=""><div className="col11">{value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
-                                                    <td className="textAlignRight"><div className="col12">{value1.UnitCost}</div></td>
+                                                    <td className="textAlignRight"><div className="col12">{value1.isUpgraded}</div></td>
+                                                    <td className="textAlignRight"><div className="col12">{value1.unitCost}</div></td>
                                                     <td className="textAlignRight"><div className="col13">{value1.quantity}</div></td>
                                                     <td className="textAlignRight"><div className="col14">{value1.total}</div></td>
                                                     <td className="textAlignRight"><div className="col15">{value1.LHWRF}</div></td>

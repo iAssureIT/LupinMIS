@@ -12,7 +12,7 @@
 }*/
 
 #ActivityWiseReport .col1{
-	width: 100px !important;
+	width: 110px !important;
 	white-space: pre-wrap!important;
 }
 #ActivityWiseReport .col2{
@@ -32,11 +32,11 @@
 }
 #ActivityWiseReport .col6,#ActivityWiseReport .col8, #ActivityWiseReport .col16{
 	white-space: pre-wrap!important;
-	width: 72px !important;
+	width: 75px !important;
 }
-#ActivityWiseReport .col13, #ActivityWiseReport .col14, #ActivityWiseReport .col15{
+#ActivityWiseReport .col11, #ActivityWiseReport .col13, #ActivityWiseReport .col14, #ActivityWiseReport .col15{
 	white-space: pre-wrap!important;
-	width: 72px !important;
+	width: 75px !important;
 } 
 #ActivityWiseReport .col17{
 	white-space: pre-wrap!important;
@@ -45,10 +45,13 @@
 #ActivityWiseReport .col5{
 	text-align: left !important;
 	white-space: pre-wrap!important;
-	width: 150px !important;
+	width: 160px !important;
 }
-#ActivityWiseReport .col7, #ActivityWiseReport .col9, #ActivityWiseReport .col10, #ActivityWiseReport .col12, #ActivityWiseReport .col11, #ActivityWiseReport .col18 {
-	width: 52px !important;
+#ActivityWiseReport .col7, #ActivityWiseReport .col9, #ActivityWiseReport .col10, #ActivityWiseReport .col12{
+	width: 70px !important;
+}
+#ActivityWiseReport .col18 {
+	width: 63px !important;
 }
 #ActivityWiseReport .scrollContent {
   display: block;

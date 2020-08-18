@@ -1,0 +1,110 @@
+.fixedTable .colSr{
+	width: 30px !important;
+}
+#BeneficiaryCoverageReport .col1{
+	width: 150px !important;
+	white-space: pre-wrap!important;
+}
+#BeneficiaryCoverageReport .col2{
+	white-space: pre-wrap!important;
+	width: 90px !important;
+}
+#BeneficiaryCoverageReport .col3{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#BeneficiaryCoverageReport .col4{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#BeneficiaryCoverageReport .col9{
+	white-space: pre-wrap!important;
+	width: 120px !important;
+} 
+#BeneficiaryCoverageReport .col5, #BeneficiaryCoverageReport .col6, #BeneficiaryCoverageReport .col7{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#BeneficiaryCoverageReport .col10, #BeneficiaryCoverageReport .col8{
+	white-space: pre-wrap!important;
+	width: 120px !important;
+}
+#BeneficiaryCoverageReport .col20, #BeneficiaryCoverageReport .col21{
+	white-space: pre-wrap!important;
+	width: 72px !important;
+}
+#BeneficiaryCoverageReport .col14{
+	white-space: pre-wrap!important;
+	width: 70px !important;
+} 
+#BeneficiaryCoverageReport .col12, #BeneficiaryCoverageReport .col11, #BeneficiaryCoverageReport .col13{	
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#BeneficiaryCoverageReport .col15, #BeneficiaryCoverageReport .col16, #BeneficiaryCoverageReport .col17, #BeneficiaryCoverageReport .col18, #BeneficiaryCoverageReport .col19{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#BeneficiaryCoverageReport .col20, #BeneficiaryCoverageReport .col21{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+
+
+
+/*
+#BeneficiaryCoverageReport .col3{
+	white-space: pre-wrap!important;
+	width: 100px !important;
+}
+#BeneficiaryCoverageReport .col4{
+	white-space: pre-wrap!important;
+	width: 90px !important;
+}
+#BeneficiaryCoverageReport .col9{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#BeneficiaryCoverageReport .col5, #BeneficiaryCoverageReport .col6, #BeneficiaryCoverageReport .col7{
+	white-space: pre-wrap!important;
+	width: 100px !important;
+}
+#BeneficiaryCoverageReport .col8{
+	white-space: pre-wrap!important;
+	width: 72px !important;
+}
+#BeneficiaryCoverageReport .col12, #BeneficiaryCoverageReport .col20, #BeneficiaryCoverageReport .col21{
+	white-space: pre-wrap!important;
+	width: 72px !important;
+}
+#BeneficiaryCoverageReport .col14{
+	white-space: pre-wrap!important;
+	width: 70px !important;
+} 
+#BeneficiaryCoverageReport .col10, #BeneficiaryCoverageReport .col11, #BeneficiaryCoverageReport .col13{	
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#BeneficiaryCoverageReport .col15, #BeneficiaryCoverageReport .col16, #BeneficiaryCoverageReport .col17, #BeneficiaryCoverageReport .col18, #BeneficiaryCoverageReport .col19{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} */
+#BeneficiaryCoverageReport .scrollContent {
+  display: block;
+  height: 450px;
+  overflow: auto;
+  width: 100%;
+}
+
+#BeneficiaryCoverageReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+.tablerow > td {
+    border: 1px solid #2f9c3f !important;
+	padding: 8px;
+	line-height: 1.42857143;
+	vertical-align: top
+}

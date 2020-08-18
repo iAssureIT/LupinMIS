@@ -62,38 +62,6 @@
   width: 100%
 }
 
-
-/*#FamilyCoverageReport .col1{
-	width: 100px !important;
-	white-space: pre-wrap!important;
-}
-#FamilyCoverageReport .col2{
-	white-space: pre-wrap!important;
-	width: 100px !important;
-}
-#FamilyCoverageReport .col3{
-	white-space: pre-wrap!important;
-	width: 200px !important;
-}
-#FamilyCoverageReport .col4, #FamilyCoverageReport .col7{
-	white-space: pre-wrap!important;
-	width: 90px !important;
-}
-#FamilyCoverageReport .col9
-{
-	white-space: pre-wrap!important;
-	width: 62px !important;
-} 
-
-#FamilyCoverageReport .col5{
-	white-space: pre-wrap!important;
-	width: 150px !important;
-}
-#FamilyCoverageReport .col8, #FamilyCoverageReport .col6{
-	white-space: pre-wrap!important;
-	width: 82px !important;
-}*/
-
 .tablerow > td {
     border: 1px solid #2f9c3f !important;
 	padding: 8px;

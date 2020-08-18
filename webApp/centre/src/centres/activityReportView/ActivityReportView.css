@@ -1,3 +1,14 @@
+#ListofBeneficieries .col1, #ListofBeneficieries .col3{
+	width: 80px;
+	text-align: left !important;
+}
+#ListofBeneficieries .col22, #ListofBeneficieries .col23{
+	width: 80px;
+	text-align: left !important;
+}
+#ListofBeneficieries div {
+	white-space: pre-wrap;
+}
 .headingBox {
     padding-top: 10px;
     padding-bottom: 6px;

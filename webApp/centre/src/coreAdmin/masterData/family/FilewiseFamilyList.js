@@ -56,7 +56,7 @@ class FilewiseFamilyList extends Component{
         //console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
-            fileName    : a.fileName != null ? a.fileName : "-", 
+            fileName    : a.fileName != null ? a.fileName : "Manual", 
             uploadTime  : a.uploadTime != null ? moment(a.uploadTime).format('MMMM Do YYYY, h:mm:ss a') : "-", 
             count       : a.count != NaN ? "<p>"+a.count+"</p>" : "a", 
             _id         : a.fileName+ "/" + a.uploadTime, 

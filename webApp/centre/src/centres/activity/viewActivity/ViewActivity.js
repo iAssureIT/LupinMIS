@@ -111,7 +111,7 @@ class ViewActivity extends Component{
         downloadApply              : true,
         paginationApply            : false,
         searchApply                : false,
-        editUrl                    : '/activity/'
+        // editUrl                    : '/activity/'
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,

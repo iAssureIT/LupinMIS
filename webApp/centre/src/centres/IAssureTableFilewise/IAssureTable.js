@@ -699,7 +699,7 @@ class IAssureTable extends Component {
 												<tr key={i} className="tablerow">
 
 													{/*console.log('Object.entries(value)', (Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-"))*/}
-													{
+													{/*
 														((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
 														?
 															<td className="textAlignCenter">
@@ -709,7 +709,10 @@ class IAssureTable extends Component {
 															<td className="textAlignCenter">
 																<div className="colSr"></div>
 															</td>
-													}
+													*/}
+													<td className="textAlignCenter">
+														<div className="colSr">{this.state.startRange+1+i}</div>
+													</td>
 													{
 														Object.entries(value).map( 
 															([key, value1], i)=> {

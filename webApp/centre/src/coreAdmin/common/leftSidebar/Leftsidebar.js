@@ -145,9 +145,15 @@ export default class Leftsidebar extends Component{
                   </Link>
                   <ul className="collapse  list-unstyled activeClass" id="Activity">
                     <li>
-                      <Link to="/activity" title="Submit Activity">
+                      <Link to="/a-type-activity-form" title="Family Level Activity">
                         <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Submit Activity</span>
+                        <span className="sidebarMenuSubText">Family Level Activity</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/b-type-activity-form" title="Type B Activity">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Type B Activity</span>
                       </Link>
                     </li>
                     <li>
@@ -276,18 +282,6 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                     <li>
-                      <Link to="/goal-sector-report" title="Goal Report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Goal Report</span>
-                      </Link>
-                    </li>      
-                    <li>
-                      <Link to="/upgraded-family-report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Upgraded Family Report</span>
-                      </Link>
-                    </li>         
-                    <li>
                       <Link to="/family-coverage-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Family Coverage Report</span>
@@ -297,6 +291,12 @@ export default class Leftsidebar extends Component{
                       <Link to="/beneficiary-coverage-report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Beneficiary Coverage System</span>
+                      </Link>
+                    </li>      
+                    <li>
+                      <Link to="/goal-sector-report" title="Goal Report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Goal Report</span>
                       </Link>
                     </li>              
                     {/*<li>

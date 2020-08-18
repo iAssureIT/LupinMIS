@@ -43,7 +43,7 @@ class FileWiseMonthlyPlanList extends Component{
         // console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
-            fileName      : a.fileName != null ? a.fileName : "-", 
+            fileName      : a.fileName != null ? a.fileName : "Manual", 
             month         : a.month != null ? a.month : "-", 
             year          : a.year != null ? a.year : "-", 
             uploadTime    : a.uploadTime != null ? moment(a.uploadTime).format('MMMM Do YYYY, h:mm:ss a') : "-", 

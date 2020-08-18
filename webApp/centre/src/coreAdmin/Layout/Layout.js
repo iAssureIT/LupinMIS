@@ -29,7 +29,8 @@ import FilewiseFamilyList                         from '../../coreAdmin/masterDa
 import Beneficiary                                from '../../coreAdmin/masterData/beneficiary/Beneficiary.js';
 import FilewiseBeneficiaryList                    from "../../coreAdmin/masterData/beneficiary/FilewiseBeneficiaryList.js";
 
-import Activity                                   from "../../centres/activity/createActivityReport/Activity.js";
+import ATypeActivity                                   from "../../centres/activity/createActivityReport/ATypeActivityForm.js";
+import BTypeActivity                                   from "../../centres/activity/createActivityReport/BTypeActivityForm.js";
 import FilewiseActivityList                       from "../../centres/activity/filewiselist/FilewiseActivityList.js";
 
 import FilewiseBeneficiaryActivityList            from "../../centres/activity/filewiselist/FilewiseBeneficiaryActivityList.js";
@@ -72,9 +73,9 @@ import report15                                   from "../../centres/LupinRepor
 import report16                                   from "../../centres/LupinReports/SectorwiseAnnualPlanSummaryReport/SectorwiseAnnualPlanSummaryReport.js";
 import report17                                   from "../../centres/LupinReports/SectorwisePlan/SectorwisePlan.js";
 import report18                                   from "../../centres/LupinReports/FamilyCoverageReport/FamilyCoverageReport.js";
-import report19                                   from "../../centres/LupinReports/Activities_in_beneficiary_Report/Activities_in_beneficiary_Report.js";
+import report19                                   from "../../centres/LupinReports/BeneficiaryCoverageReport/BeneficiaryCoverageReport.js";
 import report20                                   from "../../centres/LupinReports/ActivitywisePlan/ActivitywisePlan.js";
-import report21                                   from "../../centres/LupinReports/UpgradedFamilyReport/UpgradedFamilyReport.js";
+// import report21                                   from "../../centres/LupinReports/FamilyCoverageReport1/FamilyCoverageReport.js";
 
 import ActivityWiseReport                         from "../../centres/LupinReports/ActivityWiseReport/ActivityWiseReport.js";
 import SectorwiseReport                           from "../../centres/LupinReports/SectorwiseReport/SectorwiseReport.js";
@@ -174,9 +175,12 @@ class Layout extends Component{
                               <Route path="/filewise-monthly-plan-list"          exact strict component={ FileWiseMonthlyPlanList } />
                               <Route path="/Filewise-activity-list"              exact strict component={ FilewiseActivityList } />
                               <Route path="/Filewise-beneficiary-activity-list"  exact strict component={ FilewiseBeneficiaryActivityList } />
-                              <Route path="/activity"                            exact strict component={ Activity } />
-                              <Route path="/activity/"                           exact strict component={ Activity } />
-                              <Route path="/activity/:id"                        exact strict component={ Activity } />
+                              <Route path="/a-type-activity-form"                exact strict component={ ATypeActivity } />
+                              <Route path="/a-type-activity-form/"               exact strict component={ ATypeActivity } />
+                              <Route path="/a-type-activity-form/:id"            exact strict component={ ATypeActivity } />
+                              <Route path="/b-type-activity-form"                exact strict component={ BTypeActivity } />
+                              <Route path="/b-type-activity-form/"               exact strict component={ BTypeActivity } />
+                              <Route path="/b-type-activity-form/:id"            exact strict component={ BTypeActivity } />
 
                               <Route path="/center-details"                      exact strict component={ centerDetail } />
                               <Route path="/center-details/"                     exact strict component={ centerDetail } />
@@ -217,7 +221,7 @@ class Layout extends Component{
                               <Route path="/activity-wise-report"                                         exact strict component={ ActivityWiseReport } />
                               <Route path="/sector-wise-report"                                           exact strict component={ SectorwiseReport } />
                               <Route path="/activity-wise-plan"                                           exact strict component={ report20 } />
-                              <Route path="/upgraded-family-report"                                       exact strict component={ report21 } />
+                              {/*<Route path="/upgraded-family-report"                                       exact strict component={ report21 } />*/}
                             </Switch>        
                       </div>
                     </div>

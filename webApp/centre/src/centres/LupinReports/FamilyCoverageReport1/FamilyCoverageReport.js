@@ -9,9 +9,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
 
-import "./UpgradedFamilyReport.css"
+import "./FamilyCoverageReport.css"
 import "../../Reports/Reports.css";
-class UpgradedFamilyReport extends Component{
+class FamilyCoverageReport extends Component{
 	constructor(props){
     super(props);
     this.state = {
@@ -60,7 +60,7 @@ class UpgradedFamilyReport extends Component{
             // "activityName"        : 'Activity',
             // "subactivityName"     : 'Subactivity',
             "unit"                : "Unit",    
-            "UnitCost"            : "Unit Cost",    
+            "unitCost"            : "Unit Cost",    
             "quantity"            : "Quantity",    
             "total"               : "Total",    
             "LHWRF"               : "LHWRF",    
@@ -444,31 +444,46 @@ class UpgradedFamilyReport extends Component{
   getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID, activity_ID, subActivity_ID){        
     console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
       // var endDate = "2021-06-17"
-      // if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
-      //   if(sector_ID==="all"){
-      //     var url = ('/api/report/upgrade_family_report/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
-      //   }else{
-      //     var url = ('/api/report/upgrade_family_report/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
-      //   }
-      //   $(".fullpageloader").show();
-      //   axios.get(url)
-      //   .then((response)=>{
-      //     $(".fullpageloader").hide();
-      //     console.log("resp",response);
-          
-      //     this.setState({
-      //       tableData : response.data
-      //     },()=>{
-      //       // console.log("resp",this.state.tableData)
-      //     })
-      //   })
-      //   .catch(function(error){  
-      //     console.log("error = ",error.message);
-      //     if(error.message === "Request failed with status code 500"){
-      //         $(".fullpageloader").hide();
-      //     }
-      //   });
-      // }
+      if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
+        if(sector_ID==="all"){
+          $(".fullpageloader").show();
+
+          axios.get('/api/report/family_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
+          .then((response)=>{
+            $(".fullpageloader").hide();
+            console.log("resp",response);
+            
+            this.setState({
+              tableData : response.data
+            },()=>{
+              // console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){  
+            console.log("error = ",error.message);
+            if(error.message === "Request failed with status code 500"){
+                $(".fullpageloader").hide();
+            }
+          });
+        }else{
+          axios.get('/api/report/family_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID)
+          .then((response)=>{
+            console.log("resp",response);
+   
+            this.setState({
+              tableData : response.data
+            },()=>{
+              // console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){  
+            console.log("error = ",error.message);
+            if(error.message === "Request failed with status code 500"){
+                $(".fullpageloader").hide();
+            }
+          });
+        }
+      }
   }
   handleFromChange(event){
     event.preventDefault();
@@ -671,6 +686,8 @@ class UpgradedFamilyReport extends Component{
     });
     this.setState({
       tableData : sortedData,
+    },()=>{
+      // console.log("this.state.tableData",this.state.tableData)
     });
   }
   sortString(key, tableData){
@@ -725,13 +742,15 @@ class UpgradedFamilyReport extends Component{
     });
     this.setState({
       tableData : sortedData,
+    },()=>{
+      // console.log("this.state.tableData",this.state.tableData)
     });
   }
   sort(event){
     event.preventDefault();
     var key = event.target.getAttribute('id');
     var tableData = this.state.tableData;
-    console.log('tableData',key,tableData);
+    // console.log('tableData',key,tableData);
     if(key === 'number'){
       this.sortNumber(key, tableData);
     }else{
@@ -961,9 +980,9 @@ class UpgradedFamilyReport extends Component{
                                     <ReactHTMLTableToExcel
                                             id="table-to-xls"                           
                                             className="download-table-xls-button fa fa-download tableicons pull-right"
-                                            table="UpgradedFamilyReport"
+                                            table="FamilyCoverageReport"
                                             sheet="tablexls"
-                                            filename="UpgradedFamilyReport"
+                                            filename="FamilyCoverageReport"
                                             buttonText=""/>
                                 </div>
                               </React.Fragment>
@@ -972,7 +991,7 @@ class UpgradedFamilyReport extends Component{
                         </div>
                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <div className="table-responsive" id="section-to-screen">
-                            <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="UpgradedFamilyReport">
+                            <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="FamilyCoverageReport1">
                               <thead className="tempTableHeader fixedHeader">
                                 <tr className="tempTableHeader"></tr>
                                 <tr className="">
@@ -1027,9 +1046,9 @@ class UpgradedFamilyReport extends Component{
                                     <div className="wrapWord col11">Date</div>
                                     <span onClick={this.sort.bind(this)}  id="date" className="fa fa-sort tableSort"></span>
                                   </th>
-                                  <th id="UnitCost" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <th id="unitCost" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col12">Unit Cost</div>
-                                    <span onClick={this.sort.bind(this)}  id="UnitCost" className="fa fa-sort tableSort"></span>
+                                    <span onClick={this.sort.bind(this)}  id="unitCost" className="fa fa-sort tableSort"></span>
                                   </th>
                                  <th id="quantity" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col13">Quantity</div>
@@ -1112,7 +1131,7 @@ class UpgradedFamilyReport extends Component{
                                                     <td className=""><div className="col10">{value1.subactivityName}</div></td>
                                                     <td className=""><div className="col11">{value1.unit}</div></td>
                                                     <td className=""><div className="col11">{value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
-                                                    <td className="textAlignRight"><div className="col12">{value1.UnitCost}</div></td>
+                                                    <td className="textAlignRight"><div className="col12">{value1.unitCost}</div></td>
                                                     <td className="textAlignRight"><div className="col13">{value1.quantity}</div></td>
                                                     <td className="textAlignRight"><div className="col14">{value1.total}</div></td>
                                                     <td className="textAlignRight"><div className="col15">{value1.LHWRF}</div></td>
@@ -1152,4 +1171,4 @@ class UpgradedFamilyReport extends Component{
     );
   }
 }
-export default UpgradedFamilyReport
+export default FamilyCoverageReport

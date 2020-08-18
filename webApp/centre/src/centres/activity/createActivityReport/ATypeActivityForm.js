@@ -31,9 +31,9 @@ class Activity extends Component{
       "subactivity"       : "-- Select --",
       "unit"              : "Number",
       "unitCost"          : 0,
-      "quantity"          : 0,
-      "noOfBeneficiaries"      : 0,
-      "totalcost"         : 0,
+      "qtyPerBen"         : 0,
+      "noOfBeneficiaries" : 0,
+      "totalCostPerBen"   : 0,
       "NABARD"            : 0,
       "LHWRF"             : 0,
       "bankLoan"          : 0,
@@ -48,12 +48,13 @@ class Activity extends Component{
       "type"                : true,      
       "shown"               : true,      
       "bActivityActive"     : "active",      
-      "listofDistrict"    :[],
-      "listofBlocks"      :[],
-      "listofVillages"    :[],
-      fields              : {},
-      errors              : {},
-      "twoLevelHeader"   : {
+      "typeofactivity"      : "Family Level Activity",
+      "listofDistrict"      :[],
+      "listofBlocks"        :[],
+      "listofVillages"      :[],
+      fields                : {},
+      errors                : {},
+      "twoLevelHeader"      : {
         apply             : true,
         firstHeaderData   : [
                             {
@@ -88,8 +89,8 @@ class Activity extends Component{
         subactivityName            : "Sub-Activity",
         unit                       : "Unit",
         unitCost                   : "Unit Cost",
-        quantity                   : "Quantity",
-        totalcost                  : "Total Cost",
+        qtyPerBen                  : "Quantity",
+        totalCostPerBen            : "Total Cost",
         numofBeneficiaries         : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
@@ -116,8 +117,8 @@ class Activity extends Component{
         subactivityName            : "Sub-Activity",
         unit                       : "Unit",
         unitCost                   : "Unit Cost",
-        quantity                   : "Quantity",
-        totalcost                  : "Total Cost",
+        qtyPerBen                  : "Quantity",
+        totalCostPerBen            : "Total Cost",
         numofBeneficiaries         : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
@@ -135,7 +136,7 @@ class Activity extends Component{
         paginationApply            : false,
         downloadApply              : true,
         searchApply                : false,
-        editUrl                    : '/activity'
+        editUrl                    : '/a-type-activity-form'
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
@@ -157,8 +158,8 @@ class Activity extends Component{
         subactivityName            : "Sub-Activity",
         unit                       : "Unit",
         unitCost                   : "Unit Cost",
-        quantity                   : "Quantity",
-        totalcost                  : "Total Cost",
+        qtyPerBen                  : "Quantity",
+        totalCostPerBen            : "Total Cost",
         numofBeneficiaries         : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
@@ -179,7 +180,7 @@ class Activity extends Component{
         subactivityName            : "Sub-Activity",
         unit                       : "Unit",
         unitCost                   : "Unit Cost",
-        quantity                   : "Quantity",
+        qtyPerBen                  : "Quantity",
         numofBeneficiaries         : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
@@ -201,8 +202,8 @@ class Activity extends Component{
         subactivityName            : "Sub-Activity",
         unit                       : "Unit",
         unitCost                   : "Unit Cost",
-        quantity                   : "Quantity",
-        totalcost                  : "Total Cost",
+        qtyPerBen                  : "Quantity",
+        totalCostPerBen            : "Total Cost",
         numofBeneficiaries         : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
@@ -223,7 +224,7 @@ class Activity extends Component{
         subactivityName            : "Sub-Activity",
         unit                       : "Unit",
         unitCost                   : "Unit Cost",
-        quantity                   : "Quantity",
+        qtyPerBen                  : "Quantity",
         numofBeneficiaries         : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
@@ -280,12 +281,11 @@ class Activity extends Component{
     this.getTypeBFileDetails = this.getTypeBFileDetails.bind(this);
     this.getTypeAFileDetails = this.getTypeAFileDetails.bind(this);
   }
- 
   remainTotal(event){
     event.preventDefault(); 
     // console.log("event.target.name",event.target.name);
     // console.log("subTotal",subTotal);
-    var totalBudget = parseFloat(this.state.totalcost);
+    var totalBudget = parseFloat(this.state.totalCostPerBen);
     var subTotal    = parseFloat(this.state.LHWRF) + parseFloat(this.state.NABARD) + parseFloat(this.state.bankLoan) + parseFloat(this.state.govtscheme) + parseFloat(this.state.directCC) + parseFloat(this.state.indirectCC) + parseFloat(this.state.other);
     var arr = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
     var findIndex = arr.findIndex((obj)=>{return obj  === event.target.name});
@@ -320,7 +320,6 @@ class Activity extends Component{
     }
     this.setState({"total": subTotal });
   }
-
   handleChange(event){
     event.preventDefault();
       if(event.currentTarget.name==='typeofactivity'){
@@ -396,10 +395,10 @@ class Activity extends Component{
     this.setState({
        [name]: target.value,
     },()=>{
-      if (this.state.unitCost > 0 & this.state.quantity > 0) {
+      if (this.state.unitCost > 0 & this.state.qtyPerBen > 0) {
         // console.log("this.state.unitCost = ",this.state.unitCost);
-        var totalcost = (parseFloat(this.state.unitCost) * parseFloat(this.state.quantity)).toFixed(2);
-        // console.log("totalcost = ",totalcost);
+        var totalCostPerBen = (parseFloat(this.state.unitCost) * parseFloat(this.state.qtyPerBen)).toFixed(2);
+        // console.log("totalCostPerBen = ",totalCostPerBen);
         this.state.LHWRF = 0;
         this.state.NABARD = 0;
         this.state.bankLoan = 0;
@@ -407,12 +406,11 @@ class Activity extends Component{
         this.state.directCC = 0;
         this.state.indirectCC = 0;
         this.state.other = 0;
+        
         this.setState({
-        });   
-        this.setState({
-          "total"     : totalcost,
-          "totalcost" : totalcost,
-          "LHWRF"     : totalcost,
+          "total"           : totalCostPerBen,
+          "totalCostPerBen" : totalCostPerBen,
+          "LHWRF"           : totalCostPerBen,
           "NABARD"    : 0,
           "bankLoan"  : 0,
           "govtscheme": 0,
@@ -422,9 +420,9 @@ class Activity extends Component{
         });
       }else{
         this.setState({
-          "total"     : "",
-          "totalcost" : "",
-          "LHWRF"     : "",
+          "total"           : "",
+          "totalCostPerBen" : "",
+          "LHWRF"           : "",
         });        
       }
     });
@@ -461,14 +459,34 @@ class Activity extends Component{
       console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
     })
   }
-
   SubmitActivity(event){
     event.preventDefault();
     // console.log("date = ", this.refs.dateofIntervention.value);
     var dateObj = new Date();
     var momentObj = moment(dateObj);
     var momentString = momentObj.format('YYYY-MM-DD');
-    if ($("#Academic_details").valid()){
+    var beneficiariesData = this.state.selectedBeneficiaries
+    var sourceofFund = {
+      LHWRF      : this.refs.LHWRF.value,
+      NABARD     : this.refs.NABARD.value,
+      bankLoan   : this.refs.bankLoan.value,
+      govtscheme : this.refs.govtscheme.value,
+      directCC   : this.refs.directCC.value,
+      indirectCC : this.refs.indirectCC.value,
+      other      : this.refs.other.value,
+      total      : this.state.total,
+    }
+    beneficiariesData = this.state.selectedBeneficiaries.map(element=>{
+      element.qtyPerBen               = this.refs.qtyPerBen.value;
+      element.unitCost                = this.refs.unitCost.value;
+      element.totalCostPerBen         = this.state.totalCostPerBen;
+      element.sourceofFund            = sourceofFund;
+      return element;
+    })
+    console.log("sourceofFund",sourceofFund)
+    console.log("beneficiariesData",beneficiariesData)
+    var noOfBeneficiaries = this.state.selectedBeneficiaries.length;
+    if ($("#AtypeActivity").valid()){
       // console.log("date",this.state.dateofIntervention);
       var activityValues= {
         "center_ID"         : this.state.center_ID,
@@ -482,40 +500,38 @@ class Activity extends Component{
         "dateofIntervention": this.refs.dateofIntervention.value,
         "sector_ID"         : this.refs.sector.value.split('|')[1],
         "sectorName"        : this.refs.sector.value.split('|')[0],
-        "typeofactivity"    : this.refs.typeofactivity.value,
+        "typeofactivity"    : "Family Level Activity",
         "activity_ID"       : this.refs.activity.value.split('|')[1],
         "activityName"      : this.refs.activity.value.split('|')[0],
         "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
         "subactivityName"   : this.refs.subactivity.value.split('|')[0],
         "unit"              : document.getElementById('unit').innerHTML,
         "unitCost"          : this.refs.unitCost.value,
-        "noOfBeneficiaries" : this.refs.typeofactivity.value==="Type B Activity" ? this.refs.noOfBeneficiaries.value : 0,
-        "quantity"          : this.refs.quantity.value,
-        "totalcost"         : this.state.totalcost,
-        "LHWRF"             : this.refs.LHWRF.value,
-        "NABARD"            : this.refs.NABARD.value,
-        "bankLoan"          : this.refs.bankLoan.value,
-        "govtscheme"        : this.refs.govtscheme.value,
-        "directCC"          : this.refs.directCC.value,
-        "indirectCC"        : this.refs.indirectCC.value,
-        "other"             : this.refs.other.value,
-        "total"             : this.state.total,
+        "noOfBeneficiaries" : noOfBeneficiaries,
+        "quantity"          : this.refs.qtyPerBen.value * noOfBeneficiaries,
+        "totalCost"         : this.state.totalCostPerBen * noOfBeneficiaries,
+        "LHWRF"             : this.refs.LHWRF.value * noOfBeneficiaries,
+        "NABARD"            : this.refs.NABARD.value * noOfBeneficiaries,
+        "bankLoan"          : this.refs.bankLoan.value * noOfBeneficiaries,
+        "govtscheme"        : this.refs.govtscheme.value * noOfBeneficiaries,
+        "directCC"          : this.refs.directCC.value * noOfBeneficiaries,
+        "indirectCC"        : this.refs.indirectCC.value * noOfBeneficiaries,
+        "other"             : this.refs.other.value * noOfBeneficiaries,
+        "total"             : this.state.total * noOfBeneficiaries,
         "remark"            : this.refs.remark.value,
-        "listofBeneficiaries" : this.state.selectedBeneficiaries,
+        "listofBeneficiaries" : beneficiariesData,
         "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
         "projectCategoryType" : this.state.projectCategoryType,
         "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
       };
-      
       // console.log("activityValues", activityValues);
-      if (parseFloat(this.state.total) === parseFloat(this.state.totalcost)) {
-
+      if (parseFloat(this.state.total) === parseFloat(this.state.totalCostPerBen)) {
         axios.post('/api/activityReport',activityValues)
         .then((response)=>{
           console.log("response", response);
           this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
             this.setState({
-              selectedValues : this.state.selectedBeneficiaries 
+              selectedValues : beneficiariesData 
             })    
             swal({
               title : response.data.message,
@@ -532,41 +548,41 @@ class Activity extends Component{
           }
         });
         this.setState({
-          "projectName"        : "-- Select --",
-          "projectCategoryType" : "LHWRF Grant",
-          "type"                : true,
-          "district"          : "-- Select --",
-          "block"             : "-- Select --",
-          "village"           : "-- Select --",
-          "dateofIntervention": momentString,
-          "sector"            : "-- Select --",
-          "typeofactivity"    : "-- Select --",
-          "nameofactivity"    : "",
-          "activity"          : "-- Select --",
-          "subactivity"       : "-- Select --",
-          "location"          : "",
-          "unit"              : "",
-          "unitCost"          : "0",
-          "quantity"          : "0",
+          "projectName"            : "-- Select --",
+          "projectCategoryType"    : "LHWRF Grant",
+          "type"                   : true,
+          "district"               : "-- Select --",
+          "block"                  : "-- Select --",
+          "village"                : "-- Select --",
+          "dateofIntervention"     : momentString,
+          "sector"                 : "-- Select --",
+          "typeofactivity"         : "-- Select --",
+          "nameofactivity"         : "",
+          "activity"               : "-- Select --",
+          "subactivity"            : "-- Select --",
+          "location"               : "",
+          "unit"                   : "",
+          "unitCost"               : "0",
+          "qtyPerBen"              : "0",
           "noOfBeneficiaries"      : "0",
-          "totalcost"         : "0",
-          "LHWRF"             : "0",
-          "NABARD"            : "0",
-          "bankLoan"          : "0",
-          "govtscheme"        : "0",
-          "directCC"          : "0",
-          "indirectCC"        : "0",
-          "other"             : "0",
-          "total"             : "0",
-          "remark"            : "",
-          "selectedBeneficiaries" :[],
+          "totalCostPerBen"        : "0",
+          "LHWRF"                  : "0",
+          "NABARD"                 : "0",
+          "bankLoan"               : "0",
+          "govtscheme"             : "0",
+          "directCC"               : "0",
+          "indirectCC"             : "0",
+          "other"                  : "0",
+          "total"                  : "0",
+          "remark"                 : "",
+          "selectedBeneficiaries"  :[],
           "selectedValues"         : [],    
-          "listofBeneficiaries": [],      
-          "subActivityDetails" : '',
+          "listofBeneficiaries"    : [],      
+          "subActivityDetails"     : '',
+          "sendBeneficiary"        : [],
           // "availableSectors"   : [],
           // "availableActivity"  : [],
           // "availableSubActivity": [],
-          "sendBeneficiary"     : [],
         });
       }else{
         swal("abc",'Total Costs are not equal! Please check.');
@@ -580,43 +596,66 @@ class Activity extends Component{
     var dateObj = new Date();
     var momentObj = moment(dateObj);
     var momentString = momentObj.format('YYYY-MM-DD');
-    if ($("#Academic_details").valid()){
+    var beneficiariesData = this.state.selectedBeneficiaries
+    var sourceofFund = {
+      LHWRF      : this.refs.LHWRF.value,
+      NABARD     : this.refs.NABARD.value,
+      bankLoan   : this.refs.bankLoan.value,
+      govtscheme : this.refs.govtscheme.value,
+      directCC   : this.refs.directCC.value,
+      indirectCC : this.refs.indirectCC.value,
+      other      : this.refs.other.value,
+      total      : this.state.total,
+    }
+    beneficiariesData = this.state.selectedBeneficiaries.map(element=>{
+      console.log("element",element)
+      element.qtyPerBen               = this.refs.qtyPerBen.value;
+      element.unitCost                = this.refs.unitCost.value;
+      element.totalCostPerBen         = this.state.totalCostPerBen;
+      element.sourceofFund            = sourceofFund;
+      return element;
+    })
+    console.log("sourceofFund",sourceofFund)
+    console.log("beneficiariesData",beneficiariesData)
+    var noOfBeneficiaries = this.state.selectedBeneficiaries.length;
+    if ($("#AtypeActivity").valid()){
       var activityValues= {
-        "activityReport_ID" : this.state.editId,
-        "categoryType"      : this.state.projectCategoryType,
-        "center_ID"         : this.state.center_ID,
-        "centerName"        : this.state.centerName,
-        "date"              : this.refs.dateofIntervention.value,
-        "stateCode"         : this.state.stateCode,
-        "district"          : this.refs.district.value,
-        "block"             : this.refs.block.value,
-        "village"           : this.refs.village.value,
-        "location"          : this.refs.location.value,
-        "sector_ID"         : this.refs.sector.value.split('|')[1],
-        "sectorName"        : this.refs.sector.value.split('|')[0],
-        "typeofactivity"    : this.refs.typeofactivity.value,
-        "activity_ID"       : this.refs.activity.value.split('|')[1],
-        "activityName"      : this.refs.activity.value.split('|')[0],
-        "subactivity_ID"    : this.refs.subactivity.value.split('|')[1],
-        "subactivityName"   : this.refs.subactivity.value.split('|')[0],
-        "unit"              : document.getElementById('unit').innerHTML,
-        "unitCost"          : this.refs.unitCost.value,
-        "noOfBeneficiaries" : this.refs.typeofactivity.value==="Type B Activity" ? this.refs.noOfBeneficiaries.value : 0,
-        "quantity"          : this.refs.quantity.value,
-        "totalcost"         : this.state.totalcost,
-        "LHWRF"             : this.refs.LHWRF.value,
-        "NABARD"            : this.refs.NABARD.value,
-        "bankLoan"          : this.refs.bankLoan.value,
-        "govtscheme"        : this.refs.govtscheme.value,
-        "directCC"          : this.refs.directCC.value,
-        "indirectCC"        : this.refs.indirectCC.value,
-        "other"             : this.refs.other.value,
-        "total"             : this.state.total,
-        "remark"            : this.refs.remark.value,
-        "listofBeneficiaries" : this.state.selectedBeneficiaries,
-        "projectName"         : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
-        "projectCategoryType" : this.state.projectCategoryType,
-        "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
+        "activityReport_ID"     : this.state.editId,
+        "categoryType"          : this.state.projectCategoryType,
+        "center_ID"             : this.state.center_ID,
+        "centerName"            : this.state.centerName,
+        "date"                  : this.refs.dateofIntervention.value,
+        "stateCode"             : this.state.stateCode,
+        "district"              : this.refs.district.value,
+        "block"                 : this.refs.block.value,
+        "village"               : this.refs.village.value,
+        "location"              : this.refs.location.value,
+        "sector_ID"             : this.refs.sector.value.split('|')[1],
+        "sectorName"            : this.refs.sector.value.split('|')[0],
+        "typeofactivity"        : "Family Level Activity",
+        // "typeofactivity"        : this.refs.typeofactivity.value,
+        "activity_ID"           : this.refs.activity.value.split('|')[1],
+        "activityName"          : this.refs.activity.value.split('|')[0],
+        "subactivity_ID"        : this.refs.subactivity.value.split('|')[1],
+        "subactivityName"       : this.refs.subactivity.value.split('|')[0],
+        "unit"                  : document.getElementById('unit').innerHTML,
+        "unitCost"           : this.refs.unitCost.value,
+        "noOfBeneficiaries"     : noOfBeneficiaries,
+        "quantity"              : this.refs.qtyPerBen.value * noOfBeneficiaries,
+        "totalCost"             : this.state.totalCostPerBen * noOfBeneficiaries,
+        "LHWRF"                 : this.refs.LHWRF.value * noOfBeneficiaries,
+        "NABARD"                : this.refs.NABARD.value * noOfBeneficiaries,
+        "bankLoan"              : this.refs.bankLoan.value * noOfBeneficiaries,
+        "govtscheme"            : this.refs.govtscheme.value * noOfBeneficiaries,
+        "directCC"              : this.refs.directCC.value * noOfBeneficiaries,
+        "indirectCC"            : this.refs.indirectCC.value * noOfBeneficiaries,
+        "other"                 : this.refs.other.value * noOfBeneficiaries,
+        "total"                 : this.state.total * noOfBeneficiaries,
+        "remark"                : this.refs.remark.value,
+        "listofBeneficiaries"   : beneficiariesData,
+        "projectName"           : this.state.projectCategoryType==='LHWRF Grant'?'all':this.state.projectName,
+        "projectCategoryType"   : this.state.projectCategoryType,
+        "type"                  : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
       };
       // console.log('activityValues',activityValues)
       axios.patch('/api/activityReport',activityValues)
@@ -632,44 +671,44 @@ class Activity extends Component{
         // console.log("error = ",error);
       });
       this.setState({
-        "projectName"        : "-- Select --",
-        "projectCategoryType" : "LHWRF Grant",
-        "type"                : true,
-        "district"          : "-- Select --",
-        "block"             : "-- Select --",
-        "village"           : "-- Select --",
-        "dateofIntervention": momentString,
-        "sector"            : "-- Select --",
-        "typeofactivity"    : "-- Select --",
-        "nameofactivity"    : "",
-        "activity"          : "-- Select --",
-        "subactivity"       : "-- Select --",
-        "unit"              : "",
-        "location"          : "",
-        "unitCost"          : "0",
-        "noOfBeneficiaries" : "0",
-        "quantity"          : "0",
-        "totalcost"         : "0",
-        "LHWRF"             : "0",
-        "NABARD"            : "0",
-        "bankLoan"          : "0",
-        "govtscheme"        : "0",
-        "directCC"          : "0",
-        "indirectCC"        : "0",
-        "other"             : "0",
-        "total"             : "0",
-        "remark"            : "",
+        "projectName"           : "-- Select --",
+        "projectCategoryType"   : "LHWRF Grant",
+        "type"                  : true,
+        "district"              : "-- Select --",
+        "block"                 : "-- Select --",
+        "village"               : "-- Select --",
+        "dateofIntervention"    : momentString,
+        "sector"                : "-- Select --",
+        "typeofactivity"        : "-- Select --",
+        "nameofactivity"        : "",
+        "activity"              : "-- Select --",
+        "subactivity"           : "-- Select --",
+        "unit"                  : "",
+        "location"              : "",
+        "unitCost"              : "0",
+        "noOfBeneficiaries"     : "0",
+        "qtyPerBen"             : "0",
+        "totalCostPerBen"       : "0",
+        "LHWRF"                 : "0",
+        "NABARD"                : "0",
+        "bankLoan"              : "0",
+        "govtscheme"            : "0",
+        "directCC"              : "0",
+        "indirectCC"            : "0",
+        "other"                 : "0",
+        "total"                 : "0",
+        "remark"                : "",
         "selectedBeneficiaries" :[],
-        "selectedValues"         : [],    
-        "listofBeneficiaries": [],      
-        "subActivityDetails" : '',
+        "selectedValues"        : [],    
+        "listofBeneficiaries"   : [],      
+        "subActivityDetails"    : '',
+        "sendBeneficiary"       : [],      
+        "editId"                : "",
         // "availableSectors"   : [],
         // "availableActivity"  : [],
         // "availableSubActivity": [],
-        "sendBeneficiary"     : [],      
-        "editId"              : "",
       });
-      this.props.history.push('/activity');
+      this.props.history.push('/a-type-activity-form');
     }else{
       $("html,body").scrollTop(0)
     }
@@ -724,9 +763,9 @@ class Activity extends Component{
         formIsValid = false;
         errors["unitCost"] = "This field is required.";
       }          
-      if (!fields["quantity"]) {
+      if (!fields["qtyPerBen"]) {
         formIsValid = false;
-        errors["quantity"] = "This field is required.";
+        errors["qtyPerBen"] = "This field is required.";
       }          
       if (!fields["bankLoan"]) {
         formIsValid = false;
@@ -761,7 +800,6 @@ class Activity extends Component{
       });
       return formIsValid;
   }
-
   toglehidden(){
    this.setState({
      shown: !this.state.shown
@@ -822,6 +860,7 @@ class Activity extends Component{
           var bentableData = []
           if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
             editData.listofBeneficiaries.map((a, i)=>{
+              console.log("a",a)
               axios.get('/api/beneficiaries/'+a.beneficiary_ID)
               .then((response)=>{
                 // console.log('response',response)
@@ -836,7 +875,17 @@ class Activity extends Component{
                   dist                      : a.dist,
                   block                     : a.block,
                   village                   : a.village,
+                  caste                     : a.caste,
+                  incomeCategory            : a.incomeCategory,
+                  landCategory              : a.landCategory,
+                  specialCategory           : a.specialCategory,
+                  genderOfbeneficiary       : a.genderOfbeneficiary,
+                  birthYearOfbeneficiary    : a.birthYearOfbeneficiary,
                   isUpgraded                : a.isUpgraded,
+                  qtyPerBen                 : a.qtyPerBen,
+                  totalCostPerBen           : a.totalCostPerBen,
+                  unitCost                  : a.unitCost,
+                  sourceofFund              : a.sourceofFund,
                 })
                 if(editData.listofBeneficiaries.length===(i+1)){
                   this.setState({
@@ -866,21 +915,19 @@ class Activity extends Component{
             "activity"          : editData.activityName+'|'+editData.activity_ID,
             "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
             "subActivityDetails": editData.unit,
-            "unitCost"          : editData.unitCost,
-            "quantity"          : editData.quantity,
-            "totalcost"         : editData.totalcost,
-            "LHWRF"             : editData.sourceofFund.LHWRF,
-            "NABARD"            : editData.sourceofFund.NABARD,
-            "bankLoan"          : editData.sourceofFund.bankLoan,
-            "govtscheme"        : editData.sourceofFund.govtscheme,
-            "directCC"          : editData.sourceofFund.directCC,
-            "indirectCC"        : editData.sourceofFund.indirectCC,
-            "other"             : editData.sourceofFund.other,
-            "total"             : editData.sourceofFund.total,
-            "noOfBeneficiaries" : editData.noOfBeneficiaries ? editData.noOfBeneficiaries : "",
+            "unitCost"          : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].unitCost                : 0,
+            "qtyPerBen"         : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].qtyPerBen               : 0,
+            "totalCostPerBen"   : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].totalCostPerBen         : 0,
+            "LHWRF"             : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.LHWRF      : 0,
+            "NABARD"            : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.NABARD     : 0,
+            "bankLoan"          : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.bankLoan   : 0,
+            "govtscheme"        : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.govtscheme : 0,
+            "directCC"          : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.directCC   : 0,
+            "indirectCC"        : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.indirectCC : 0,
+            "other"             : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.other      : 0,
+            "total"             : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.total      : 0,
+            "noOfBeneficiaries" : editData.noOfBeneficiaries ? editData.noOfBeneficiaries : 0,
             "remark"            : editData.remark,
-            // "listofBeneficiaries"   : this.state.bentableData,
-            // "selectedBeneficiaries" : this.state.bentableData,
             "listofBeneficiaries"   : editData.listofBeneficiaries,
             "selectedBeneficiaries" : editData.listofBeneficiaries,
             "projectCategoryType"   : editData.projectCategoryType,
@@ -944,7 +991,7 @@ class Activity extends Component{
   }
   getData(startRange, limitRange, center_ID){ 
     // console.log(startRange, limitRange, center_ID);
-    $(".fullpageloader").show();
+    // $(".fullpageloader").show();
       let financeYear;
     let today = moment();
     if(today.month() >= 3){
@@ -969,9 +1016,12 @@ class Activity extends Component{
           axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
           // axios.post('/api/activityReport/list/'+center_ID, data)
           .then((response)=>{
-          $(".fullpageloader").hide();
-            // console.log("response",response);
-            var tableData = response.data.map((a, i)=>{
+          // $(".fullpageloader").hide();
+            console.log("response",response);
+            var tableData = response.data.filter((data,i)=>{
+              return data.typeofactivity === "Family Level Activity";
+            });   
+            var tableData = tableData.map((a, i)=>{
               return {
                 _id                        : a._id,
                 projectCategoryType        : a.projectCategoryType,
@@ -982,18 +1032,17 @@ class Activity extends Component{
                 activity                   : a.activity,
                 subactivityName            : a.subactivityName,
                 unit                       : a.unit,
-                unitCost                   : this.addCommas(a.unitCost),
-                quantity                   : this.addCommas(a.quantity),
-                totalcost                  : this.addCommas(a.totalcost),
-                // numofBeneficiaries         :( a.numofBeneficiaries !=="0") ||( a.numofBeneficiaries !==0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+                unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+                qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+                totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
                 numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-                LHWRF                      : this.addCommas(a.LHWRF),
-                NABARD                     : this.addCommas(a.NABARD),
-                bankLoan                   : this.addCommas(a.bankLoan),
-                govtscheme                 : this.addCommas(a.govtscheme),
-                directCC                   : this.addCommas(a.directCC),
-                indirectCC                 : this.addCommas(a.indirectCC),
-                other                      : this.addCommas(a.other),
+                LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+                NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+                bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+                govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+                directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+                indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+                other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
                 remark                     : a.remark,
               }
             })
@@ -1012,18 +1061,17 @@ class Activity extends Component{
                 typeofactivity             : a.typeofactivity,
                 subactivityName            : a.subactivityName,
                 unit                       : a.unit,
-                unitCost                   : this.addCommas(a.unitCost),
-                quantity                   : this.addCommas(a.quantity),
-                totalcost                  : this.addCommas(a.totalcost),
-                // numofBeneficiaries         :( a.numofBeneficiaries !=="0") ||( a.numofBeneficiaries !==0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+                unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+                qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+                totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
                 numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-                LHWRF                      : this.addCommas(a.LHWRF),
-                NABARD                     : this.addCommas(a.NABARD),
-                bankLoan                   : this.addCommas(a.bankLoan),
-                govtscheme                 : this.addCommas(a.govtscheme),
-                directCC                   : this.addCommas(a.directCC),
-                indirectCC                 : this.addCommas(a.indirectCC),
-                other                      : this.addCommas(a.other),
+                LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+                NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+                bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+                govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+                directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+                indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+                other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
                 remark                     : a.remark,
               }
             })
@@ -1046,7 +1094,7 @@ class Activity extends Component{
     $.validator.addMethod("regxDate", function(value, element, regexpr) { 
       return value!=='';
     }, "This field is required.");
-    $("#Academic_details").validate({
+    $("#AtypeActivity").validate({
       rules: {
         dateofIntervention:{
           required: true,
@@ -1076,7 +1124,7 @@ class Activity extends Component{
         unitCost: {
           required: true,
         },
-        quantity: {
+        qtyPerBen: {
           required: true,
         },
       },
@@ -1108,8 +1156,8 @@ class Activity extends Component{
         if (element.attr("name") === "unitCost"){
           error.insertAfter("#unitCost");
         }
-        if (element.attr("name") === "quantity"){
-          error.insertAfter("#quantity");
+        if (element.attr("name") === "qtyPerBen"){
+          error.insertAfter("#qtyPerBen");
         }
       }
     });
@@ -1173,8 +1221,8 @@ class Activity extends Component{
       "location"          : '',
       "subActivityDetails": '',
       "unitCost"          : 0,
-      "quantity"          : 0,
-      "totalcost"         : 0,
+      "qtyPerBen"          : 0,
+      "totalCostPerBen"         : 0,
       "LHWRF"             : 0,
       "NABARD"            : 0,
       "bankLoan"          : 0,
@@ -1560,8 +1608,8 @@ class Activity extends Component{
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
             "unit"                : a.unit     ? a.unit : '-',
             "unitCost"            : a.unitCost     ? a.unitCost : '-',
-            "quantity"            : a.quantity     ? a.quantity : '-',
-            "totalcost"           : a.totalcost     ? a.totalcost : '-',
+            "qtyPerBen"            : a.qtyPerBen     ? a.qtyPerBen : '-',
+            "totalCostPerBen"           : a.totalCostPerBen     ? a.totalCostPerBen : '-',
             "numofBeneficiaries"  : numofBeneficiaries,
             "LHWRF"               : a.sourceofFund.LHWRF        ? a.sourceofFund.LHWRF : '-',
             "NABARD"              : a.sourceofFund.NABARD       ? a.sourceofFund.NABARD : '-',
@@ -1585,7 +1633,7 @@ class Activity extends Component{
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
             "unit"                : a.unit                ? a.unit : '-',
             "unitCost"            : a.unitCost            ? a.unitCost : '-',
-            "quantity"            : a.quantity            ? a.quantity : '-',
+            "qtyPerBen"            : a.qtyPerBen            ? a.qtyPerBen : '-',
             "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
             "LHWRF"               : a.LHWRF        ? a.LHWRF : '-',
             "NABARD"              : a.NABARD       ? a.NABARD : '-',
@@ -1631,8 +1679,8 @@ class Activity extends Component{
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
             "unit"                : a.unit     ? a.unit : '-',
             "unitCost"            : a.unitCost     ? a.unitCost : '-',
-            "quantity"            : a.quantity     ? a.quantity : '-',
-            "totalcost"           : a.totalcost     ? a.totalcost : '-',
+            "qtyPerBen"            : a.qtyPerBen     ? a.qtyPerBen : '-',
+            "totalCostPerBen"           : a.totalCostPerBen     ? a.totalCostPerBen : '-',
             "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
             "LHWRF"               : a.sourceofFund.LHWRF        ? a.sourceofFund.LHWRF : '-',
             "NABARD"              : a.sourceofFund.NABARD       ? a.sourceofFund.NABARD : '-',
@@ -1656,7 +1704,7 @@ class Activity extends Component{
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
             "unit"                : a.unit     ? a.unit : '-',
             "unitCost"            : a.unitCost     ? a.unitCost : '-',
-            "quantity"            : a.quantity     ? a.quantity : '-',
+            "qtyPerBen"            : a.qtyPerBen     ? a.qtyPerBen : '-',
             "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
             "LHWRF"               : a.LHWRF        ? a.LHWRF : '-',
             "NABARD"              : a.NABARD       ? a.NABARD : '-',
@@ -1765,31 +1813,30 @@ class Activity extends Component{
                         Activity Reporting                                     
                      </div>
                     <hr className="hr-head container-fluid row"/>
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                      <h4 className="col-lg-5 col-md-6 col-xs-12 col-sm-12 pageSubHeader NOpadding">Activity Details</h4>
+                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
+                      <h4 className="col-lg-5 col-md-6 col-xs-12 col-sm-12 pageSubHeader">Family Level Activity</h4>
                       <ul className="nav tabNav nav-pills col-lg-7 col-md-6 col-sm-12 col-xs-12 NOpadding">
-                        <li className="active col-lg-3 col-md-3 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
+                        <li className="active col-lg-3 col-lg-offset-4 col-md-3 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
                         <li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeA" ><a data-toggle="pill"  href="#bulkactivityTypeA">Family Level Bulk Upload</a></li>
-                        <li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeB" ><a data-toggle="pill"  href="#bulkactivityTypeB">Type B Bulk Upload</a></li>
+                        {/*<li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeB" ><a data-toggle="pill"  href="#bulkactivityTypeB">Type B Bulk Upload</a></li>*/}
                       </ul>
                     </div>
                   </div>
                   <div className="tab-content">
                     <div id="manualactivity"  className="tab-pane fade in active ">
-                    <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="Academic_details">
+                    <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="AtypeActivity">
 
-                      <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                      {/*<div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                         <label className="formLable">Activity Type<span className="asterix">*</span></label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                           <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
                             <option disabled="disabled" selected={true}>-- Select --</option>
-                          {/*  <option data-id="commonlevel">Common Level Activity</option>*/}
                             <option data-id="familylevel">Family Level Activity</option>
                             <option data-id="BtypeActivity">Type B Activity</option>
                           </select>
                         </div>
                         <div className="errorMsg">{this.state.errors.typeofactivity}</div>
-                      </div>
+                      </div>*/}
                       <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                         <label className="formLable">Date of Intervention</label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
@@ -2016,18 +2063,18 @@ class Activity extends Component{
                             <div className="errorMsg">{this.state.errors.unitCost}</div>
                           </div>
                           <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                            <label className="formLable">Quantity</label>
-                            <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
-                              <input type="number" className="form-control inputBox" name="quantity" placeholder="" ref="quantity"  value={this.state.quantity}  onChange={this.handleTotalChange.bind(this)}/>
+                            <label className="formLable">Quantity Per Beneficiary</label>
+                            <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="qtyPerBen" >
+                              <input type="number" className="form-control inputBox" name="qtyPerBen" placeholder="" ref="qtyPerBen"  value={this.state.qtyPerBen}  onChange={this.handleTotalChange.bind(this)}/>
                             </div>
-                            <div className="errorMsg">{this.state.errors.quantity}</div>
+                            <div className="errorMsg">{this.state.errors.qtyPerBen}</div>
                           </div>
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <div className=" " id="PassoutYear" >
-                              <label className="formLable">Total Cost of Activity :</label>                            
-                              <input type="number" className="form-control inputBox inputBox-main" name="totalcost " placeholder="" ref="totalcost"  value={(parseFloat(this.state.totalcost)).toFixed(2)} disabled />
+                            <div className=" " >
+                              <label className="formLable">Total Cost Per Beneficiary</label>                            
+                              <input type="number" className="form-control inputBox inputBox-main" name="totalCostPerBen " placeholder="" ref="totalCostPerBen"  value={(parseFloat(this.state.totalCostPerBen)).toFixed(2)} disabled />
                             </div>
-                            <div className="errorMsg">{this.state.errors.totalcost}</div>
+                            <div className="errorMsg">{this.state.errors.totalCostPerBen}</div>
                           </div>
                           {
                             this.state.bActivityActive==="inactive" ?

@@ -63,8 +63,11 @@ class IAssureTable extends Component {
         	// console.log('update',this.state.selectedBeneficiaries);
         	if(this.state.selectedBeneficiaries&&this.state.selectedBeneficiaries.length>0){
         		this.state.selectedBeneficiaries.map((value, i)=>{
-        			let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village
-        			let upgradeid = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'
+
+        			let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary
+        			let upgradeid = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary+'|upgrade'
+        			// let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village
+        			// let upgradeid = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'
         			this.setState({
 	        			[id] : true,
 	        			[upgradeid] : value.isUpgraded==='Yes'?true:false
@@ -73,8 +76,10 @@ class IAssureTable extends Component {
         	}else{
         		if(this.state.tableData&&this.state.tableData.length>0){
 	        		this.state.tableData.map((value, i)=>{
-	        			let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village
-	        			let upgradeid = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'
+	        			// let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village
+	        			// let upgradeid = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'
+        				let id = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary
+        				let upgradeid = value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary+'|upgrade'
 	        			this.setState({
 		        			[id] : false,
 		        			[upgradeid] : false
@@ -512,7 +517,7 @@ class IAssureTable extends Component {
     	var value = event.target.checked;
 	    var id    = event.target.id;
 	    var operation = false
-	    // console.log('value',value,id)
+	    console.log('value',value,id)
 	    if(id.split('|')[10]){
 			let newId = id.replace('|upgrade','')
 			operation = true
@@ -531,23 +536,23 @@ class IAssureTable extends Component {
 				var index = selectedBeneficiaries.findIndex(v => v.beneficiary_ID === id.split('|')[1])
 				if(index<0){
 				    selectedBeneficiaries.push({
-			    		_id     		    : id.split('|')[0],
-			    		beneficiary_ID      : id.split('|')[1],
-						beneficiaryID       : id.split('|')[2],
-			    		family_ID           : id.split('|')[3],
-						familyID            : id.split('|')[4],
-						nameofbeneficiary : id.split('|')[5],
-						relation            : id.split('|')[6],
-						dist          	    : id.split('|')[7],
-						block               : id.split('|')[8],
-						village             : id.split('|')[9],
-						isUpgraded 			: id.split('|')[10]&&value?'Yes':id.split('|')[10]&&!value?'No':this.state[id+"|upgrade"]?'Yes':'No',
-			            caste                 : id.split('|')[11],
-			            incomeCategory        : id.split('|')[12],
-			            landCategory          : id.split('|')[13],
-			            specialCategory       : id.split('|')[14],
-			            genderOfbeneficiary   : id.split('|')[15],
-			            birthYearOfbeneficiary: id.split('|')[16],
+			    		_id     		      : id.split('|')[0],
+			    		beneficiary_ID        : id.split('|')[1],
+						beneficiaryID         : id.split('|')[2],
+			    		family_ID             : id.split('|')[3],
+						familyID              : id.split('|')[4],
+						nameofbeneficiary     : id.split('|')[5],
+						relation              : id.split('|')[6],
+						dist          	      : id.split('|')[7],
+						block                 : id.split('|')[8],
+						village               : id.split('|')[9],
+			            caste                 : id.split('|')[10],
+			            incomeCategory        : id.split('|')[11],
+			            landCategory          : id.split('|')[12],
+			            specialCategory       : id.split('|')[13],
+			            genderOfbeneficiary   : id.split('|')[14],
+			            birthYearOfbeneficiary: id.split('|')[15],
+						isUpgraded 		      : id.split('|')[16]&&value?'Yes':id.split('|')[16]&&!value?'No':this.state[id+"|upgrade"]?'Yes':'No',
 			    	});
 			    	this.setState({
 			          selectedBeneficiaries : selectedBeneficiaries
@@ -662,7 +667,7 @@ class IAssureTable extends Component {
 													{
 														this.state.showUpgradation === 'Yes'?
 														<td className="textAlignCenter checkboxContainer">
-															<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary]?true:false} id={value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|upgrade'+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary} onChange={this.selectBeneficiary.bind(this)}/>
+															<input type="checkbox" checked={this.state[value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary+'|upgrade']?true:false} id={value._id+'|'+value.beneficiary_ID+'|'+value.beneficiaryID+'|'+value.family_ID+'|'+value.familyID+'|'+value.nameofbeneficiary+'|'+value.relation+'|'+value.dist+'|'+value.block+'|'+value.village+'|'+value.caste+'|'+value.incomeCategory+'|'+value.landCategory+'|'+value.specialCategory+'|'+value.genderOfbeneficiary+'|'+value.birthYearOfbeneficiary+'|upgrade'} onChange={this.selectBeneficiary.bind(this)}/>
 															<span className="checkboxMark"></span>
 														</td>
 														:

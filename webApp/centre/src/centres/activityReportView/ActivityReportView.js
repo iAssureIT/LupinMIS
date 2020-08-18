@@ -3,6 +3,7 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 import moment                 from "moment";
 import BenificiaryName        from './BenificiaryName.js';
+import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader                 from "../../common/Loader.js";
 
 import 'react-table/react-table.css';
@@ -12,11 +13,42 @@ class ActivityReportView extends Component{
   
   constructor(props){
     super(props); 
-   
     this.state = {
       "activity" : {},
-      "activty_ID" : this.props.match.params.id 
-     
+      "activty_ID" : this.props.match.params.id,
+      "tableHeading"      : {
+        beneficiaryID         : "Beneficiery ID",
+        nameofbeneficiary     : "Name of Beneficieries",
+        familyID              : "Family ID",
+        relation              : "Relation",
+        dist                  : "District",
+        block                 : "Block",
+        village               : "Village",
+        caste                 : "Caste",
+        incomeCategory        : "Income Category",
+        landCategory          : "Land Category",
+        specialCategory       : "Special Category",
+        genderOfbeneficiary   : "Gender",
+        birthYearOfbeneficiary: "Birth Year",
+        isUpgraded            : "Upgraded",
+        unitCost              : "Unit Cost",
+        qtyPerBen             : "Quantity Per Beneficiery",
+        totalCostPerBen       : "Total Cost Per Beneficiery",
+        LHWRF                 : "LHWRF",
+        NABARD                : "NABARD",
+        bankLoan              : "Bank Loan",
+        govtscheme            : "Govt",
+        directCC              : "Direct CC",
+        indirectCC            : "Indirect CC",
+        other                 : "Other",
+      },
+      "tableObjects"               : {
+        deleteMethod               : 'delete',
+        apiLink                    : '/api/activityReport/',
+        paginationApply            : false,
+        downloadApply              : true,
+        searchApply                : false,
+      },
     }
   }
  
@@ -41,7 +73,51 @@ class ActivityReportView extends Component{
     }).catch((error)=> {
       console.log("error = ",error);
     });
+  }
 
+  getData(){ 
+    axios({
+      method: 'get',
+      url: '/api/activityReport/'+this.state.activty_ID,
+    }).then((response)=> {
+      var tableData = response.data[0].listofBeneficiaries.map((a, i)=>{
+        // console.log("a",a)
+        return {
+            _id                       : a._id,
+            beneficiaryID             : a.beneficiaryID,
+            nameofbeneficiary         : a.nameofbeneficiary,
+            familyID                  : a.familyID,
+            relation                  : a.relation,
+            dist                      : a.dist,
+            block                     : a.block,
+            village                   : a.village,
+            caste                     : a.caste,
+            incomeCategory            : a.incomeCategory,
+            landCategory              : a.landCategory,
+            specialCategory           : a.specialCategory,
+            genderOfbeneficiary       : a.genderOfbeneficiary,
+            birthYearOfbeneficiary    : a.birthYearOfbeneficiary,
+            isUpgraded                : a.isUpgraded,
+            unitCost                  : a.unitCost,
+            qtyPerBen                 : a.qtyPerBen,
+            totalCostPerBen           : a.totalCostPerBen,
+            LHWRF                     : a.sourceofFund.LHWRF,              
+            NABARD                    : a.sourceofFund.NABARD,              
+            bankLoan                  : a.sourceofFund.bankLoan,              
+            govtscheme                : a.sourceofFund.govtscheme,              
+            directCC                  : a.sourceofFund.directCC,              
+            indirectCC                : a.sourceofFund.indirectCC,              
+            other                     : a.sourceofFund.other,            
+          }
+      })
+      this.setState({
+        tableData : tableData,
+      },()=>{
+      })
+    })
+    .catch(function(error){      
+      console.log("error = ",error); 
+    });
   }
 
   componentWillUnmount(){
@@ -60,9 +136,6 @@ class ActivityReportView extends Component{
       // $('#editPen').hide();
       // $('#statusDiv').hide();
       // $('#btnDiv').hide();
-      
-
-
       $('#sidebar').toggleClass('active');
       $('#headerid').toggleClass('headereffect');
       $('#dashbordid').toggleClass('dashboardeffect')
@@ -230,7 +303,8 @@ class ActivityReportView extends Component{
                                   <div><b>Unit Cost</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <div>{this.state.activity && this.state.activity.unitCost ? this.state.activity.unitCost : "-"}</div>
+                                   <div>
+                                   {this.state.activity && this.state.activity.unitCost ? this.state.activity.unitCost : "-"}</div>
                                 </div>
                               </div>
                               <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">
@@ -246,7 +320,7 @@ class ActivityReportView extends Component{
                                   <div><b>Total Cost</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <div>{this.state.activity && this.state.activity.totalcost ? this.state.activity.totalcost : "-"}</div>
+                                   <div>{this.state.activity && this.state.activity.totalCost ? this.state.activity.totalCost : "-"}</div>
                                 </div>
                               </div>
                             </div>
@@ -329,43 +403,85 @@ class ActivityReportView extends Component{
                             <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
                               <h5>List of Beneficieries</h5>
                             </div>
-                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
-                              <table id="table-to-xls" className="table customTable table-bordered table-hover table-responsive table-striped valign">
-                                <thead>
-                                  <tr> 
-                                    <th className="textAlignLeft"> Sr No. </th> 
-                                    <th className="textAlignLeft"> Family ID</th> 
-                                    <th className="textAlignLeft"> Name of Beneficieries </th>
-                                    <th className="textAlignLeft"> Beneficiery ID </th>
-                                    <th className="textAlignLeft"> Relation </th>
-                                    <th className="textAlignLeft"> District </th>
-                                    <th className="textAlignLeft"> Block </th>
-                                    <th className="textAlignLeft"> Village </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {this.state.activity.listofBeneficiaries && this.state.activity.listofBeneficiaries.length > 0?
-                                    this.state.activity.listofBeneficiaries.map((beneficiery,index)=>{
-                                      return(
-                                          <tr key={index}>
-                                            <td className="textAlignCenter">{index+1}</td>
-                                            <td>{beneficiery.familyID}</td>
-                                            <td>{beneficiery.nameofbeneficiary}</td>
-                                            <td>{beneficiery.beneficiaryID}</td>
-                                            <td>{beneficiery.relation}</td>
-                                            <td>{beneficiery.dist}</td>
-                                            <td>{beneficiery.block}</td>
-                                            <td>{beneficiery.village}</td>
-                                          </tr>
-                                        )
-                                    })  
-                                    :
-                                    null
-                                  }
-                                 
-                                </tbody>
-                              </table>
-                            </div>
+                              <IAssureTable 
+                                tableName = "List of Beneficieries"
+                                id = "ListofBeneficieries"
+                                tableHeading={this.state.tableHeading}
+                                tableData={this.state.tableData}
+                                getData={this.getData.bind(this)}
+                                tableObjects={this.state.tableObjects} 
+                              /> 
+                           { /*<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 actDetails">
+                                                         <table id="table-to-xls" className="table customTable table-bordered table-hover table-responsive table-striped valign">
+                                                           <thead>
+                                                             <tr> 
+                                                               <th className="textAlignLeft"> Sr No. </th> 
+                                                               <th className="textAlignLeft"> Family ID</th> 
+                                                               <th className="textAlignLeft"> Name of Beneficieries </th>
+                                                               <th className="textAlignLeft"> Beneficiery ID </th>
+                                                               <th className="textAlignLeft"> Relation </th>
+                                                               <th className="textAlignLeft"> District </th>
+                                                               <th className="textAlignLeft"> Block </th>
+                                                               <th className="textAlignLeft"> Village </th>
+                                                               <th className="textAlignLeft"> Caste </th>
+                                                               <th className="textAlignLeft"> Income Category </th>
+                                                               <th className="textAlignLeft"> Land Category </th>
+                                                               <th className="textAlignLeft"> Special Category </th>
+                                                               <th className="textAlignLeft"> Gender </th>
+                                                               <th className="textAlignLeft"> Birth Year</th>
+                                                               <th className="textAlignLeft"> Upgraded </th>
+                                                               <th className="textAlignLeft"> Unit Cost </th>
+                                                               <th className="textAlignLeft"> Quantity Per Beneficiery </th>
+                                                               <th className="textAlignLeft"> Total Cost Per Beneficiery </th>
+                                                               <th className="textAlignLeft"> LHWRF </th>
+                                                               <th className="textAlignLeft"> NABARD </th>
+                                                               <th className="textAlignLeft"> Bank Loan </th>
+                                                               <th className="textAlignLeft"> Govt </th>
+                                                               <th className="textAlignLeft"> Direct CC </th>
+                                                               <th className="textAlignLeft"> Indirect CC </th>
+                                                               <th className="textAlignLeft"> Other </th>
+                                                             </tr>
+                                                           </thead>
+                                                           <tbody>
+                                                             {this.state.activity.listofBeneficiaries && this.state.activity.listofBeneficiaries.length > 0?
+                                                               this.state.activity.listofBeneficiaries.map((beneficiery,index)=>{
+                                                                 return(
+                                                                     <tr key={index}>
+                                                                       <td className="textAlignCenter">{index+1}</td>
+                                                                       <td>{beneficiery.familyID}</td>
+                                                                       <td>{beneficiery.nameofbeneficiary}</td>
+                                                                       <td>{beneficiery.beneficiaryID}</td>
+                                                                       <td>{beneficiery.relation}</td>
+                                                                       <td>{beneficiery.dist}</td>
+                                                                       <td>{beneficiery.block}</td>
+                                                                       <td>{beneficiery.village}</td>
+                                                                       <td>{beneficiery.caste}</td>                     
+                                                                       <td>{beneficiery.incomeCategory}</td>            
+                                                                       <td>{beneficiery.landCategory}</td>              
+                                                                       <td>{beneficiery.specialCategory}</td>           
+                                                                       <td>{beneficiery.genderOfbeneficiary}</td>       
+                                                                       <td>{beneficiery.birthYearOfbeneficiary}</td>    
+                                                                       <td>{beneficiery.isUpgraded}</td>                
+                                                                       <td>{beneficiery.unitCost}</td>                  
+                                                                       <td>{beneficiery.qtyPerBen}</td>                 
+                                                                       <td>{beneficiery.totalCostPerBen}</td>           
+                                                                       <td>{beneficiery.sourceofFund.LHWRF}</td>              
+                                                                       <td>{beneficiery.sourceofFund.NABARD}</td>              
+                                                                       <td>{beneficiery.sourceofFund.bankLoan}</td>              
+                                                                       <td>{beneficiery.sourceofFund.govtscheme}</td>              
+                                                                       <td>{beneficiery.sourceofFund.directCC}</td>              
+                                                                       <td>{beneficiery.sourceofFund.indirectCC}</td>              
+                                                                       <td>{beneficiery.sourceofFund.other}</td>              
+                                                                     </tr>
+                                                                   )
+                                                               })  
+                                                               :
+                                                               null
+                                                             }
+                                                            
+                                                           </tbody>
+                                                         </table>
+                                                       </div>*/}
                           </div>
                           :null
                         }

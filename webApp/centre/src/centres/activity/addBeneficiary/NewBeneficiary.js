@@ -49,7 +49,7 @@ class NewBeneficiary extends Component{
         apiLink             : '/api/activityReport/',
         paginationApply     : false,
         searchApply         : true,
-        editUrl             : '/activity'
+        editUrl             : '/a-type-activity-form'
       },
      
       // selectedBeneficiaries : [],
@@ -113,7 +113,7 @@ class NewBeneficiary extends Component{
             beneficiaryID             : a.beneficiaryID,
             family_ID                 : a.family_ID,
             familyID                  : a.familyID,
-            nameofbeneficiary       : a.nameofbeneficiary,
+            nameofbeneficiary         : a.nameofbeneficiary,
             relation                  : a.relation,
             dist                      : a.dist,
             block                     : a.block,
