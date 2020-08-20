@@ -707,7 +707,7 @@ class ActivityWiseReport extends Component{
                                               <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                                              </div>
                                         </div>  
-                                        <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                                        {/*<div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                                             <label className="formLable">Beneficiary</label><span className="asterix"></span>
                                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                                               <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -718,7 +718,7 @@ class ActivityWiseReport extends Component{
                                                 
                                               </select>
                                             </div>
-                                        </div> 
+                                        </div> */}
                                     </div>  
                                     <div className="marginTop11">
                                         <div className="">

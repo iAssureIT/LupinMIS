@@ -12,8 +12,6 @@ axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 // axios.defaults.baseURL  = "http://localhost:3054"
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 console.log("process.env.REACT_APP_BASE_URL = ", axios.defaults.baseURL);
-
-
 function App() {
   return (
     <div>

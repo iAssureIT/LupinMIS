@@ -1036,8 +1036,12 @@ class FamilyCoverageReport extends Component{
                                     <span onClick={this.sort.bind(this)}  id="date" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="isUpgraded" className="umDynamicHeader srpadd textAlignLeft ">
-                                    <div className="wrapWord col11">Upgraded</div>
+                                    <div className="wrapWord col12">Upgraded</div>
                                     <span onClick={this.sort.bind(this)}  id="isUpgraded" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="uidNumber" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord uidNumber">UID Number</div>
+                                    <span onClick={this.sort.bind(this)}  id="uidNumber" className="fa fa-sort tableSort"></span>
                                   </th>
                                   <th id="unitCost" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col12">Unit Cost</div>
@@ -1125,6 +1129,7 @@ class FamilyCoverageReport extends Component{
                                                     <td className=""><div className="col11">{value1.unit}</div></td>
                                                     <td className=""><div className="col11">{value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
                                                     <td className="textAlignRight"><div className="col12">{value1.isUpgraded}</div></td>
+                                                    <td className="textAlignRight"><div className="uidNumber">{value1.uidNumber}</div></td>
                                                     <td className="textAlignRight"><div className="col12">{value1.unitCost}</div></td>
                                                     <td className="textAlignRight"><div className="col13">{value1.quantity}</div></td>
                                                     <td className="textAlignRight"><div className="col14">{value1.total}</div></td>

@@ -385,7 +385,7 @@ class SectorwiseReport extends Component{
                                 <hr className="hr-head"/>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 valid_box">
                                     
-                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                    {/* <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
                                         <label className="formLable">Beneficiary</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                                           <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -396,8 +396,8 @@ class SectorwiseReport extends Component{
                                             
                                           </select>
                                         </div>
-                                    </div> 
-                                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                    </div> */}
+                                     <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
                                         <label className="formLable">Project Category</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                                             <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
@@ -411,7 +411,7 @@ class SectorwiseReport extends Component{
                                     {
                                         this.state.projectCategoryType === "Project Fund" ?
 
-                                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                        <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
                                           <label className="formLable">Project Name</label><span className="asterix"></span>
                                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
                                             <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.selectprojectName.bind(this)}>
@@ -432,16 +432,13 @@ class SectorwiseReport extends Component{
                                     : 
                                     ""
                                     } 
-                                </div>
-                                   
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                    <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                             <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                                         </div>
                                     </div>
-                                    <div className=" col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
                                         <label className="formLable">To</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                             <input onChange={this.handleToChange} onBlur={this.onBlurEventTo}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
