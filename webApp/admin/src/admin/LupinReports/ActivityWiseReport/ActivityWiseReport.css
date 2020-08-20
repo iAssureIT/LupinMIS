@@ -1,0 +1,70 @@
+/*#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(2), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+6){
+	background: var(--color1);
+}
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(3), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+9){
+	background: var(--color2);
+}
+ #ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(4), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+19){
+	background: var(--color1);
+}
+#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(5), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+29){
+	background: var(--color2);
+}*/
+
+#ActivityWiseReport .col1{
+	width: 110px !important;
+	white-space: pre-wrap!important;
+}
+#ActivityWiseReport .col2{
+	text-align: left !important;
+	white-space: pre-wrap!important;
+	width: 100px !important;
+}
+#ActivityWiseReport .col3{
+	text-align: left !important;
+	white-space: pre-wrap!important;
+	width: 150px !important;
+}
+#ActivityWiseReport .col4{
+	text-align: left !important;
+	white-space: pre-wrap!important;
+	width: 150px !important;
+}
+#ActivityWiseReport .col6,#ActivityWiseReport .col8, #ActivityWiseReport .col16{
+	white-space: pre-wrap!important;
+	width: 75px !important;
+}
+#ActivityWiseReport .col11, #ActivityWiseReport .col13, #ActivityWiseReport .col14, #ActivityWiseReport .col15{
+	white-space: pre-wrap!important;
+	width: 75px !important;
+} 
+#ActivityWiseReport .col17{
+	white-space: pre-wrap!important;
+	width: 75px !important;
+} 
+#ActivityWiseReport .col5{
+	text-align: left !important;
+	white-space: pre-wrap!important;
+	width: 160px !important;
+}
+#ActivityWiseReport .col7, #ActivityWiseReport .col9, #ActivityWiseReport .col10, #ActivityWiseReport .col12{
+	width: 70px !important;
+}
+#ActivityWiseReport .col18 {
+	width: 63px !important;
+}
+#ActivityWiseReport .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#ActivityWiseReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+
+

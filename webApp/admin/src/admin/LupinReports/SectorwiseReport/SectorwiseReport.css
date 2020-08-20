@@ -1,0 +1,42 @@
+#SectorwiseReport .col1{
+	width: 110px !important;
+	white-space: pre-wrap!important;
+}
+#SectorwiseReport .col2{
+	width: 90px !important;
+}
+#SectorwiseReport .col3{
+	white-space: pre-wrap!important;
+	width: 150px !important;
+}
+#SectorwiseReport .col4, #SectorwiseReport .col7{
+	width: 60px !important;
+}
+#SectorwiseReport .col11, #SectorwiseReport .col9, #SectorwiseReport .col5, #SectorwiseReport .col8{
+	width: 75px !important;
+}
+#SectorwiseReport .col15, #SectorwiseReport .col14{
+	width: 82px !important;
+}
+#SectorwiseReport .col16{
+	width: 62px !important;
+} 
+ #SectorwiseReport .col6, #SectorwiseReport .col12, #SectorwiseReport .col10{
+	width: 80px !important;
+}
+#SectorwiseReport .col13{
+	width: 62px !important;
+}
+#SectorwiseReport .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#SectorwiseReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

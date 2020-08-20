@@ -6,17 +6,14 @@
   width: 318px;
 }
 #nameOfGoal .col3 {
-  width: 60px;
+  width: 70px;
 }
-
-
 #nameOfGoal .scrollContent {
   display: block;
   height: 300px;
   overflow: auto;
   width: 100%;
 }
-
 #nameOfGoal .fixedHeader{
   display: table;
   overflow: auto;
@@ -29,8 +26,6 @@
 #viewernameOfGoal .col2 {
   width: 390px;
 }
-
-
 #viewernameOfGoal .scrollContent {
   display: block;
   height: 400px;

@@ -606,7 +606,6 @@ class IAssureTable extends Component {
 			       	{ this.state.tableObjects.downloadApply === true ?
 		                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 && !this.state.downloadData ?
 		                <React.Fragment>
-		          
 		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
 		                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
 		                           <ReactHTMLTableToExcel

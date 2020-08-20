@@ -16,7 +16,7 @@ class GoalSectorReport extends Component{
         'reportData'        : {},
         'tableData'         : [],
         "startRange"        : 0,
-        "projectCategoryType": "LHWRF Grant",
+        "projectCategoryType": "all",
         "goalName"           : "all",
         "selectedDistrict"   : "all",
         "district"           : "all",
@@ -33,7 +33,7 @@ class GoalSectorReport extends Component{
                 }, 
                 {
                     heading : 'Details of Activity',
-                    mergedColoums : 9
+                    mergedColoums : 10
                 },
                 {
                     heading : 'Financial Sharing "Rs. in Lakh"',
@@ -42,25 +42,26 @@ class GoalSectorReport extends Component{
             ]
         },
         "tableHeading"      : {       
-            "goalType"              : "Framework",
-            "goal"                  : 'Goal / Objective',
-            "projectCategoryType"   : "Project Category",
-            "projectName"           : "Project Name",
-            "sectorName"            : 'Sector',
-            "activityName"          : 'Activity',
-            "subactivityName"       : 'Subactivity',
-            "unit"                  : 'Unit',
-            "Beneficiaries"         : 'Beneficiaries',
-            "Quantity"              : 'Quantity',
-            "Amount"                : 'Total "Lakh"',
-            "LHWRF"                 : 'LHWRF',
-            "NABARD"                : 'NABARD',
-            "Govt"                  : 'Govt',
-            "Bank"                  : 'Bank Loan',
-            "DirectCC"              : "DirectCC",
-            "IndirectCC"            : "IndirectCC",
-            // "Community"             : 'Community',
-            "Other"                 : 'Other',
+          "goalType"                      : "Framework",
+          "goal"                          : 'Goal / Objective',
+          "projectCategoryType"           : 'Project Category',
+          "projectName"                   : 'Project Name',
+          "sectorName"                    : "Sector",
+          "activityName"                  : "Activity",
+          "subactivityName"               : "Subactivity",
+          "unit"                          : 'Unit',
+          "reach"                         : 'Reach',
+          "familyUpgradation"             : 'Upgradation',
+          "unitCost"                      : 'Unit Cost', 
+          "quantity"                      : 'Phy Units', 
+          "total"                         : "Financial Total 'Lakh'",
+          "LHWRF"                         : 'LHWRF',
+          "NABARD"                        : 'NABARD',
+          "bankLoan"                      : 'Bank Loan',
+          "directCC"                      : 'DirectCC',
+          "indirectCC"                    : 'IndirectCC',
+          "govtscheme"                    : 'Government',
+          "other"                         : 'Others'
         },
         "tableObjects"        : {
           paginationApply     : false,
@@ -91,7 +92,8 @@ class GoalSectorReport extends Component{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
     });
     this.getTypeOfGoal();
-    this.getNameOfGoal();
+    // console.log('this.state.goalType=========',this.state.goalType);
+    this.getNameOfGoal(this.state.goalType);
     this.getAvailableProjects();
     this.currentFromDate();
     this.currentToDate();
@@ -104,7 +106,7 @@ class GoalSectorReport extends Component{
     this.currentFromDate();
     this.currentToDate();
     this.getTypeOfGoal();
-    this.getNameOfGoal();
+    this.getNameOfGoal(this.state.goalType);
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
   }
 
@@ -161,39 +163,78 @@ class GoalSectorReport extends Component{
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
       // console.log('name', this.state)
     });
-  }   
+  } 
+  addCommas(x) {
+      if(x===0){
+          return parseInt(x)
+      }else{
+          x=x.toString();
+          if(x.includes('%')){
+              return x;
+          }else if(x.includes('-')){
+              var lastN = x.split('-')[1];
+              var lastThree = lastN.substring(lastN.length-3);
+              var otherNumbers = lastN.substring(0,lastN.length-3);
+              if(otherNumbers != '')
+                  lastThree = ',' + lastThree;
+              var res = "-" + otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+              // console.log("x",x,"lastN",lastN,"res",res)
+              return(res);
+          }else{
+              if(x.includes('.')){
+                  var pointN = x.split('.')[1];
+                  var lastN = x.split('.')[0];
+                  var lastThree = lastN.substring(lastN.length-3);
+                  var otherNumbers = lastN.substring(0,lastN.length-3);
+                  if(otherNumbers != '')
+                      lastThree = ',' + lastThree;
+                  var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+                  return(res);
+              }else{
+                  var lastThree = x.substring(x.length-3);
+                  var otherNumbers = x.substring(0,x.length-3);
+                  if(otherNumbers != '')
+                      lastThree = ',' + lastThree;
+                  var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+                  return(res);
+              }
+          }
+      }
+  }  
   getData(startDate, endDate,center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName, selectedDistrict){
     if(center_ID && beneficiaryType && goalType && goalName){
       // $(".fullpageloader").show();
-      console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName,selectedDistrict);
+      // console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName,selectedDistrict);
+      // axios.get('/api/reports/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
       axios.get('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
       .then((response)=>{
         // $(".fullpageloader").hide();
         console.log("resp",response);
         var tableData = response.data.map((a, i)=>{
           return {
-              _id                   : a._id,            
-              goalType              : a.goalType,
-              goal                  : a.goal,
-              projectCategoryType   : a.projectCategoryType,
-              projectName           : a.projectName,
-              sectorName            : a.sectorName,
-              activityName          : a.activityName,
-              subactivityName       : a.subactivityName,
-              unit                  : a.unit,
-              Beneficiaries         : a.Beneficiaries,
-              Quantity              : a.Quantity,
-              Amount                : a.Amount,
-              LHWRF                 : a.LHWRF,
-              NABARD                : a.NABARD,
-              Govt                  : a.Govt,
-              Bank                  : a.Bank,
-              DirectCC              : a.DirectCC,
-              IndirectCC            : a.IndirectCC,
-              // Community             : a.Community,
-              Other                 : a.Other,
+            _id                         : a._id,           
+            goalType                    : a.goalType,
+            goal                        : a.goal,
+            projectCategoryType         : a.projectCategoryType ? a.projectCategoryType : "-",
+            projectName                 : a.projectName === "all" ? "-" :a.projectName,        
+            sectorName                  : a.sectorName,
+            activityName                : a.activityName,
+            subactivityName             : a.subactivityName,
+            unit                        : a.unit,
+            reach                       : a.reach,
+            familyUpgradation           : a.familyUpgradation,
+            unitCost                    : (a.unitCost),
+            quantity                    : this.addCommas(a.quantity),
+            total                       : a.total,
+            LHWRF                       : a.LHWRF,
+            NABARD                      : a.NABARD,
+            bankLoan                    : a.bankLoan,
+            directCC                    : a.directCC,
+            indirectCC                  : a.indirectCC,
+            govtscheme                  : a.govtscheme,
+            other                       : a.other,
           }
-      })  
+        })  
         this.setState({
           tableData : tableData
         },()=>{
@@ -378,6 +419,7 @@ class GoalSectorReport extends Component{
     },()=>{
       // console.log("goalType",this.state.goalType)
       getheader.firstHeaderData[0].heading = this.state.selectedTypeofGoal+" Goal ";
+      this.getNameOfGoal(this.state.goalType)
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
     })
     }).catch(function (error) {
@@ -401,6 +443,7 @@ class GoalSectorReport extends Component{
     });
   }
   getNameOfGoal(goalType){
+  // console.log('goalType',goalType);
     if(goalType){
       axios({
         method: 'get',
@@ -524,7 +567,7 @@ class GoalSectorReport extends Component{
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                         <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
                           <option  className="hidden" >--Select--</option>
-                          {/*<option value="all" >All</option>*/}
+                          <option value="all" >All</option>
                           <option value="LHWRF Grant" >LHWRF Grant</option>
                           <option value="Project Fund">Project Fund</option>
                         </select>

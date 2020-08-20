@@ -220,7 +220,7 @@ export default class Leftsidebar extends Component{
                   </Link>
 
                   <ul className="collapse list-unstyled activeClass" id="report">
-                    {/*<li>
+                  {/*<li>
                       <Link to="/sector-wise-annual-completion-summary-report" title="Sector Annual Report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector Annual Report</span>
@@ -244,18 +244,6 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Activity Financial Variance</span>
                       </Link>
                     </li>*/}
-                    <li>
-                      <Link to="/activity-wise-report" title="Activity wise Report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Activity wise Report</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/sector-wise-report" title="Sector wise Report">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector wise Report</span>
-                      </Link>
-                    </li>
                     {/*<li>
                       <Link to="/activity-wise-periodic-physical-variance-report" title="Activity Physical Variance">
                         <i className="fa fa-circle-o" />
@@ -275,6 +263,18 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>
                   */}
+                    <li>
+                      <Link to="/activity-wise-report" title="Activity wise Report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Activity wise Report</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/sector-wise-report" title="Sector wise Report">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Sector wise Report</span>
+                      </Link>
+                    </li>
                     <li>
                       <Link to="/category-wise-report">
                         <i className="fa fa-circle-o" />

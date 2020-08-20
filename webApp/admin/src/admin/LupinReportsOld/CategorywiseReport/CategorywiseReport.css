@@ -1,0 +1,38 @@
+/*#CategorywiseReport .col1{
+	width: 150px !important;
+	white-space: pre-wrap!important;
+}
+#CategorywiseReport .col2{
+	white-space: pre-wrap!important;
+	width: 100px !important;
+}
+#CategorywiseReport .col3{
+	white-space: pre-wrap!important;
+	width: 100px !important;
+}
+#CategorywiseReport .col4, #CategorywiseReport .col7{
+	white-space: pre-wrap!important;
+	width: 84px !important;
+}
+#CategorywiseReport .col9
+{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+
+#CategorywiseReport .col8, #CategorywiseReport .col6, #CategorywiseReport .col5{
+	white-space: pre-wrap!important;
+	width: 100px !important;
+}
+#CategorywiseReport .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#CategorywiseReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}*/

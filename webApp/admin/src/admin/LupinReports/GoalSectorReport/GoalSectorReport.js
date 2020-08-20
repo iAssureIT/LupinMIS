@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import $                    from 'jquery';
 import swal                 from 'sweetalert';
 import axios                from 'axios';
-import moment               from 'moment';
 import Loader               from "../../../common/Loader.js";
+import moment               from 'moment';
 import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
-import "../../Reports/Reports.css";
 import "./GoalSectorReport.css"
+import "../../Reports/Reports.css";
 class GoalSectorReport extends Component{
   constructor(props){
     super(props);
@@ -14,16 +14,17 @@ class GoalSectorReport extends Component{
         'currentTabView'    : "Monthly",
         'tableDatas'        : [],
         'reportData'        : {},
-        "center_ID"         : "all",
         'tableData'         : [],
         "startRange"        : 0,
+        "limitRange"        : 10000,
         "center"            : "all",
         "center_ID"         : "all",
-        "projectCategoryType": "LHWRF Grant",
+        "projectCategoryType": "all",
         "goalName"           : "all",
+        "selectedDistrict"   : "all",
+        "district"           : "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
-        "limitRange"        : 10000,
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
@@ -33,31 +34,36 @@ class GoalSectorReport extends Component{
                     mergedColoums : 3
                 }, 
                 {
-                    heading : 'Details of Activity contributing ADP',
-                    mergedColoums : 7
+                    heading : 'Details of Activity',
+                    mergedColoums : 10
                 },
                 {
-                    heading : 'Financial Sharing "Lakh"',
+                    heading : 'Financial Sharing "Rs. in Lakh"',
                     mergedColoums : 9
                 },
             ]
         },
-        "tableHeading"      : { 
-            "goalType"              : "Framework",
-            "goal"                  : 'Goal / Objective',
-            "projectCategoryType"   : "Project Category",
-            "projectName"           : "Project Name",
-            "activityName"    : 'Activity',
-            "unit"            : 'Unit',
-            "Quantity"        : 'Quantity',
-            "Amount"          : "Amount 'Lakh'",
-            "Beneficiaries"   : 'Beneficiaries',
-            "LHWRF"           : 'LHWRF',
-            "NABARD"          : 'NABARD',
-            "Govt"            : 'Govt',
-            "Bank"            : 'Bank Loan',
-            "Community"       : 'Community',
-            "Other"           : 'Other',
+        "tableHeading"      : {       
+          "goalType"                      : "Framework",
+          "goal"                          : 'Goal / Objective',
+          "projectCategoryType"           : 'Project Category',
+          "projectName"                   : 'Project Name',
+          "sectorName"                    : "Sector",
+          "activityName"                  : "Activity",
+          "subactivityName"               : "Subactivity",
+          "unit"                          : 'Unit',
+          "reach"                         : 'Reach',
+          "familyUpgradation"             : 'Upgradation',
+          "unitCost"                      : 'Unit Cost', 
+          "quantity"                      : 'Phy Units', 
+          "total"                         : "Financial Total 'Lakh'",
+          "LHWRF"                         : 'LHWRF',
+          "NABARD"                        : 'NABARD',
+          "bankLoan"                      : 'Bank Loan',
+          "directCC"                      : 'DirectCC',
+          "indirectCC"                    : 'IndirectCC',
+          "govtscheme"                    : 'Government',
+          "other"                         : 'Others'
         },
         "tableObjects"        : {
           paginationApply     : false,
@@ -77,117 +83,204 @@ class GoalSectorReport extends Component{
     this.setState({
       tableData : this.state.tableData,
     },()=>{
-    // console.log("center_ID =",this.state.center_ID);
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
     });
-    this.getAvailableCenters();       
     this.getTypeOfGoal();
-    this.getNameOfGoal();
+    this.getNameOfGoal(this.state.goalType);
+    this.getAvailableProjects();
     this.currentFromDate();
     this.currentToDate();
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }   
   componentWillReceiveProps(nextProps){
-    this.getAvailableCenters();       
+    this.getAvailableProjects();
     this.currentFromDate();
     this.currentToDate();
     this.getTypeOfGoal();
-    this.getNameOfGoal();
-    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+    this.getNameOfGoal(this.state.goalType);
+    this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
   }
+
   getAvailableCenters(){
-      axios({
-        method: 'get',
-        url: '/api/centers/list',
-      }).then((response)=> {
-        this.setState({
-          availableCenters : response.data,
-          // center           : response.data[0].centerName+'|'+response.data[0]._id
-        },()=>{
-        })
-      }).catch(function (error) { 
-          console.log("error = ",error);
-       
-      });
+    axios({
+      method: 'get',
+      url: '/api/centers/list',
+    }).then((response)=> {
+      // console.log('response',response);
+      this.setState({
+        availableCenters : response.data,
+        // center           : response.data[0].centerName+'|'+response.data[0]._id
+      },()=>{
+      })
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });
   } 
   selectCenter(event){
-      var selectedCenter = event.target.value;
-      this.setState({
-        [event.target.name] : event.target.value,
-        selectedCenter : selectedCenter,
-      },()=>{
-        if(this.state.selectedCenter==="all"){
-          var center = this.state.selectedCenter;
-        }else{
-          var center = this.state.selectedCenter.split('|')[1];
-        }
-        this.setState({
-          center_ID :center,            
-        },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType);
-          // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        })
-      });
-    } 
-
-    handleChange(event){
-        event.preventDefault();
-        this.setState({
-          [event.target.name] : event.target.value
-        },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
-        });
-    }
-   
-    getData(startDate, endDate, center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName){
-      // console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType);
-      if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
-        if(center_ID==="all"){
-          var url = '/api/report/goal/'+startDate+'/'+endDate+'/all/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName
-        }else{
-          var url = '/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName
-        }
-        $(".fullpageloader").show();
-        axios.get(url)
-        .then((response)=>{
-        $(".fullpageloader").hide();
-          console.log("resp",response);
-          var tableData = response.data.map((a, i)=>{
-            return {
-                _id                   : a._id,            
-                goalType              : a.goalType,
-                goal                  : a.goal,
-                projectCategoryType   : a.projectCategoryType,
-                projectName           : a.projectName,
-                activityName    : a.activityName,
-                unit            : a.unit,
-                Quantity        : a.Quantity,
-                Amount          : a.Amount,
-                Beneficiaries   : a.Beneficiaries,
-                LHWRF           : a.LHWRF,
-                NABARD          : a.NABARD,
-                Govt            : a.Govt,
-                Bank            : a.Bank,
-                Community       : a.Community,
-                Other           : a.Other,
-            }
-        })  
-          this.setState({
-            tableData : tableData
-          },()=>{
-          })
-        })
-        .catch(function(error){  
-          console.log("error = ",error.message);
-          if(error.message === "Request failed with status code 500"){
-              $(".fullpageloader").hide();
-          }
-        });
+    var selectedCenter = event.target.value;
+    this.setState({
+      [event.target.name] : event.target.value,
+      selectedCenter : selectedCenter,
+    },()=>{
+      if(this.state.selectedCenter==="all"){
+        var center = this.state.selectedCenter;
+      }else{
+        var center = this.state.selectedCenter.split('|')[1];
       }
+      // console.log('center', center);
+      this.setState({
+        center_ID :center,            
+      },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
+        this.getAvailableCenterData(this.state.center_ID);
+      })
+    });
+  } 
+  getAvailableCenterData(center_ID){
+    axios({
+      method: 'get',
+      url: '/api/centers/'+center_ID,
+      }).then((response)=> {
+        function removeDuplicates(data, param){
+            return data.filter(function(item, pos, array){
+                return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+            })
+        }
+        var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
+        this.setState({
+          availableDistInCenter  : availableDistInCenter,
+          address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
+        },()=>{
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
+          var stateCode =this.state.address.split('|')[0];
+         this.setState({
+            stateCode  : stateCode,
+          });
+      })
+    }).catch(function (error) {
+      console.log("districtError",+error);
+    });
+  } 
+
+  districtChange(event){    
+    event.preventDefault();
+    var district = event.target.value;
+    // console.log('district', district);
+    this.setState({
+      district: district
+    },()=>{
+      if(this.state.district==="all"){
+        var selectedDistrict = this.state.district;
+      }else{
+        var selectedDistrict = this.state.district.split('|')[0];
+      }
+      this.setState({
+        selectedDistrict :selectedDistrict,
+      },()=>{        
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
+      })
+    });
+  }
+  handleChange(event){
+    event.preventDefault();
+    this.setState({
+      [event.target.name] : event.target.value
+    },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
+      // console.log('name', this.state)
+    });
+  } 
+  addCommas(x) {
+      if(x===0){
+          return parseInt(x)
+      }else{
+          x=x.toString();
+          if(x.includes('%')){
+              return x;
+          }else if(x.includes('-')){
+              var lastN = x.split('-')[1];
+              var lastThree = lastN.substring(lastN.length-3);
+              var otherNumbers = lastN.substring(0,lastN.length-3);
+              if(otherNumbers != '')
+                  lastThree = ',' + lastThree;
+              var res = "-" + otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+              // console.log("x",x,"lastN",lastN,"res",res)
+              return(res);
+          }else{
+              if(x.includes('.')){
+                  var pointN = x.split('.')[1];
+                  var lastN = x.split('.')[0];
+                  var lastThree = lastN.substring(lastN.length-3);
+                  var otherNumbers = lastN.substring(0,lastN.length-3);
+                  if(otherNumbers != '')
+                      lastThree = ',' + lastThree;
+                  var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
+                  return(res);
+              }else{
+                  var lastThree = x.substring(x.length-3);
+                  var otherNumbers = x.substring(0,x.length-3);
+                  if(otherNumbers != '')
+                      lastThree = ',' + lastThree;
+                  var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+                  return(res);
+              }
+          }
+      }
+  }  
+  getData(startDate, endDate,center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName, selectedDistrict){
+    if(center_ID && beneficiaryType && goalType && goalName){
+      // $(".fullpageloader").show();
+      // console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName,selectedDistrict);
+      if(center_ID==="all"){
+        var url=('/api/report/goal/'+startDate+'/'+endDate+'/'+"all"+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
+      }else{
+        var url=('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
+      }  
+      axios.get(url)
+      .then((response)=>{
+        // $(".fullpageloader").hide();
+        console.log("resp",response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                         : a._id,           
+            goalType                    : a.goalType,
+            goal                        : a.goal,
+            projectCategoryType         : a.projectCategoryType ? a.projectCategoryType : "-",
+            projectName                 : a.projectName === "all" ? "-" :a.projectName,        
+            sectorName                  : a.sectorName,
+            activityName                : a.activityName,
+            subactivityName             : a.subactivityName,
+            unit                        : a.unit,
+            reach                       : a.reach,
+            familyUpgradation           : a.familyUpgradation,
+            unitCost                    : (a.unitCost),
+            quantity                    : this.addCommas(a.quantity),
+            total                       : a.total,
+            LHWRF                       : a.LHWRF,
+            NABARD                      : a.NABARD,
+            bankLoan                    : a.bankLoan,
+            directCC                    : a.directCC,
+            indirectCC                  : a.indirectCC,
+            govtscheme                  : a.govtscheme,
+            other                       : a.other,
+          }
+        })  
+        this.setState({
+          tableData : tableData
+        },()=>{
+          // console.log("resp",this.state.tableData)
+        })
+      })
+      .catch(function(error){  
+        console.log("error = ",error.message);
+        if(error.message === "Request failed with status code 500"){
+            $(".fullpageloader").hide();
+        }
+      });
     }
- 
+  }
   selectprojectCategoryType(event){
     event.preventDefault();
     // console.log(event.target.value)
@@ -199,16 +292,16 @@ class GoalSectorReport extends Component{
         this.setState({
           projectName : "all",
         },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
         })          
       }else if (this.state.projectCategoryType=== "all"){
         this.setState({
           projectName : "all",
         },()=>{
-          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+          this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
         })    
       }else  if(this.state.projectCategoryType=== "Project Fund"){
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
       }
     })
   }
@@ -223,12 +316,6 @@ class GoalSectorReport extends Component{
       })
     }).catch(function (error) {
       console.log('error', error);
-      if(error.message === "Request failed with status code 401"){
-        swal({
-            title : "abc",
-            text  : "Session is Expired. Kindly Sign In again."
-        });
-      }   
     });
   }
   selectprojectName(event){
@@ -238,83 +325,93 @@ class GoalSectorReport extends Component{
       projectName : projectName,
     },()=>{
     // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);      
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);      
     })
   }
 
-    handleFromChange(event){
-      event.preventDefault();
-      const target = event.target;
-      const name = target.name;
-      var startDate = document.getElementById("startDate").value;
-      var endDate = document.getElementById("endDate").value;
-      var dateVal = event.target.value;
-      var dateUpdate = new Date(dateVal);
-      var startDate = moment(dateUpdate).format('YYYY-MM-DD');
-      this.setState({
-         [name] : event.target.value,
-         startDate:startDate
-      },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
-      });
-    }
-    handleToChange(event){
-      event.preventDefault();
-      const target = event.target;
-      const name = target.name;
-
-      var startDate = document.getElementById("startDate").value;
-      var endDate = document.getElementById("endDate").value;
-      
-      var dateVal = event.target.value;
-      var dateUpdate = new Date(dateVal);
-      var endDate = moment(dateUpdate).format('YYYY-MM-DD');
-      this.setState({
+  handleFromChange(event){
+    event.preventDefault();
+    const target = event.target;
+    const name = target.name;
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    // console.log(Date.parse(startDate));
+    
+    var dateVal = event.target.value;
+    var dateUpdate = new Date(dateVal);
+    var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+    this.setState({
        [name] : event.target.value,
-       endDate : endDate
+       startDate:startDate
+    },()=>{
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
+    // console.log("dateUpdate",this.state.startDate);
+    });
+  }
+  handleToChange(event){
+    event.preventDefault();
+    const target = event.target;
+    const name = target.name;
+
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    
+    var dateVal = event.target.value;
+    var dateUpdate = new Date(dateVal);
+    var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+    this.setState({
+     [name] : event.target.value,
+     endDate : endDate
+    },()=>{
+    // console.log("dateUpdate",this.state.endDate);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
+    });
+  }
+
+  currentFromDate(){
+     /* if(localStorage.getItem('newFromDate')){
+          var today = localStorage.getItem('newFromDate');
+          console.log("localStoragetoday",today);
+      }*/
+      if(this.state.startDate){
+          var today = this.state.startDate;
+          // console.log("localStoragetoday",today);
+      }else {
+           var today = (new Date());
+          var nextDate = today.getDate() - 30;
+          today.setDate(nextDate);
+          // var newDate = today.toLocaleString();
+          var today =  moment(today).format('YYYY-MM-DD');
+          // console.log("today",today);
+      }
+      // console.log("nowfrom",today)
+      this.setState({
+         startDate :today
       },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
       });
-    }
-
-    currentFromDate(){
-        if(this.state.startDate){
-            var today = this.state.startDate;
-            // console.log("localStoragetoday",today);
-        }else {
-             var today = (new Date());
-            var nextDate = today.getDate() - 30;
-            today.setDate(nextDate);
-            // var newDate = today.toLocaleString();
-            var today =  moment(today).format('YYYY-MM-DD');
-        }
-        this.setState({
-           startDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleFromChange()
-    }
-
-    currentToDate(){
-        if(this.state.endDate){
-            var today = this.state.endDate;
-            // console.log("newToDate",today);
-        }else {
-            var today =  moment(new Date()).format('YYYY-MM-DD');
-        }
-        this.setState({
-           endDate :today
-        },()=>{
-        });
-        return today;
-        // this.handleToChange();
-    }
-    getSearchText(searchText, startRange, limitRange){
-        this.setState({
-            tableData : []
-        });
-    }
+      return today;
+      // this.handleFromChange()
+  }
+  currentToDate(){
+      if(this.state.endDate){
+          var today = this.state.endDate;
+          // console.log("newToDate",today);
+      }else {
+          var today =  moment(new Date()).format('YYYY-MM-DD');
+      }
+      this.setState({
+         endDate :today
+      },()=>{
+      });
+      return today;
+      // this.handleToChange();
+  }
+  getSearchText(searchText, startRange, limitRange){
+      // console.log(searchText, startRange, limitRange);
+      this.setState({
+          tableData : []
+      });
+  }
   changeReportComponent(event){
     var currentComp = $(event.currentTarget).attr('id');
 
@@ -325,6 +422,7 @@ class GoalSectorReport extends Component{
   onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
+    // console.log("startDate",startDate,endDate)
     if ((Date.parse(endDate) < Date.parse(startDate))) {
         swal("Start date","From date should be less than To date");
         this.refs.startDate.value="";
@@ -333,6 +431,7 @@ class GoalSectorReport extends Component{
   onBlurEventTo(){
       var startDate = document.getElementById("startDate").value;
       var endDate = document.getElementById("endDate").value;
+      // console.log("startDate",startDat++++++e,endDate)
         if ((Date.parse(startDate) > Date.parse(endDate))) {
           swal("End date","To date should be greater than From date");
           this.refs.endDate.value="";
@@ -350,8 +449,10 @@ class GoalSectorReport extends Component{
       goalType    : response.data[0]._id,
       selectedTypeofGoal    : response.data[0].typeofGoal
     },()=>{
+      // console.log("goalType",this.state.goalType)
       getheader.firstHeaderData[0].heading = this.state.selectedTypeofGoal+" Goal ";
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+      this.getNameOfGoal(this.state.goalType)
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
     })
     }).catch(function (error) {
       // console.log("error = ",error);
@@ -369,11 +470,12 @@ class GoalSectorReport extends Component{
       twoLevelHeader : getheader
     },()=>{
       getheader.firstHeaderData[0].heading = this.state.selectedTypeofGoal+" Goal ";
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName);
+      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
       this.getNameOfGoal(this.state.goalType)
     });
   }
   getNameOfGoal(goalType){
+  // console.log('goalType',goalType);
     if(goalType){
       axios({
         method: 'get',
@@ -406,30 +508,52 @@ class GoalSectorReport extends Component{
                   </div>
                   <hr className="hr-head"/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
-                    <div className=" col-lg-3  col-md-4 col-sm-12 col-xs-12">
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                       <label className="formLable">Center</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                          <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                              <option className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
-                              {
-                                this.state.availableCenters && this.state.availableCenters.length >0 ?
-                                this.state.availableCenters.map((data, index)=>{
-                                  return(
-                                    <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }
-                          </select>
+                        <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                          <option className="hidden" >-- Select --</option>
+                          <option value="all" >All</option>
+                          {
+                            this.state.availableCenters && this.state.availableCenters.length >0 ?
+                            this.state.availableCenters.map((data, index)=>{
+                              return(
+                                <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                              );
+                            })
+                            :
+                            null
+                          }
+                        </select>
+                      </div>
+                    </div>
+                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box ">
+                      <label className="formLable">District</label><span className="asterix"></span>
+                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                        <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
+                          <option  className="hidden" >-- Select --</option>
+                          <option value="all" >All</option>                                
+                            {
+                            this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
+                            this.state.availableDistInCenter.map((data, index)=>{
+                              // console.log("data",data)
+                              return(
+                                /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
+                                <option key={index} value={(data.district+'|'+data._id)}>{data.district.split('|')[0]}</option>
+
+                              );
+                            })
+                            :
+                            null
+                          }                               
+                        </select>
                       </div>
                     </div>
                     <div className=" col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box">
                       <label className="formLable">Framework</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
                         <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
-                          <option value="" className="hidden" >-- Select --</option>
+                          <option selected={true} disabled="disabled">-- Select --</option>
                           {
                             this.state.listofTypes ?
                             this.state.listofTypes.map((data, index)=>{
@@ -447,7 +571,7 @@ class GoalSectorReport extends Component{
                       <label className="formLable">Goal / Objective</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalName" >
                         <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
-                          <option value="" className="hidden" >-- Select --</option>
+                          <option selected={true} disabled="disabled">-- Select --</option>
                           <option value="all" >All</option>
                           {
                             this.state.listofGoalNames ?
@@ -461,14 +585,27 @@ class GoalSectorReport extends Component{
                           }
                         </select>
                       </div>
-                    </div> 
-
+                    </div>  
+                  </div>  
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">
+                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">From</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                          <input onChange={this.handleFromChange}   onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                        </div>
+                    </div>
+                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                        <label className="formLable">To</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                          <input onChange={this.handleToChange}  onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                        </div>
+                    </div>                     
                     <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                       <label className="formLable">Project Category</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectCategoryType" >
                         <select className="custom-select form-control inputBox" ref="projectCategoryType" name="projectCategoryType" value={this.state.projectCategoryType} onChange={this.selectprojectCategoryType.bind(this)}>
                           <option  className="hidden" >--Select--</option>
-                          {/*<option value="all" >All</option>*/}
+                          <option value="all" >All</option>
                           <option value="LHWRF Grant" >LHWRF Grant</option>
                           <option value="Project Fund">Project Fund</option>
                         </select>
@@ -496,8 +633,8 @@ class GoalSectorReport extends Component{
                       </div>
                     : 
                     ""
-                    }  
-                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
+                    } 
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                       <label className="formLable">Beneficiary</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="beneficiaryType" >
                         <select className="custom-select form-control inputBox" ref="beneficiaryType" name="beneficiaryType" value={this.state.beneficiaryType} onChange={this.handleChange.bind(this)}>
@@ -505,27 +642,14 @@ class GoalSectorReport extends Component{
                           <option value="all" >All</option>
                           <option value="withUID" >With UID</option>
                           <option value="withoutUID" >Without UID</option>
-                          
                         </select>
                       </div>
-                    </div> 
-                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
-                        <label className="formLable">From</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <input onChange={this.handleFromChange}   onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
-                        </div>
-                    </div>
-                    <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 ">
-                        <label className="formLable">To</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                            <input onChange={this.handleToChange}  onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
-                        </div>
                     </div>  
                   </div>  
                   <div className="marginTop11">
                     <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <IAssureTable  
-                          tableName = "Goal Sector Report"
+                          tableName = "ADP Report"
                           id = "GoalSectorReport"
                           completeDataCount={this.state.tableDatas.length}
                           twoLevelHeader={this.state.twoLevelHeader} 

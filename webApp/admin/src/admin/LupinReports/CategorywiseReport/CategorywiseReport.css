@@ -1,29 +1,24 @@
-#CategorywiseReport .col1{
-	width: 150px !important;
+/*#CategorywiseReport .col1{
+	width: 40px !important;
 	white-space: pre-wrap!important;
+	text-align: center !important;
+}
+tr #srNo{
+	width: 40px !important;
+	text-align: left !important;
+	white-space: nowrap!important;
 }
 #CategorywiseReport .col2{
+	width: 200px !important;
 	white-space: pre-wrap!important;
-	width: 100px !important;
 }
 #CategorywiseReport .col3{
 	white-space: pre-wrap!important;
-	width: 100px !important;
+	width: 165px !important;
 }
-#CategorywiseReport .col4, #CategorywiseReport .col7{
+#CategorywiseReport .col4{
 	white-space: pre-wrap!important;
-	width: 84px !important;
-}
-#CategorywiseReport .col9
-{
-	white-space: pre-wrap!important;
-	width: 62px !important;
-} 
-
-#CategorywiseReport .col8, #CategorywiseReport .col6, #CategorywiseReport .col5{
-	white-space: pre-wrap!important;
-	width: 100px !important;
-
+	width: 165px !important;
 }
 #CategorywiseReport .scrollContent {
   display: block;
@@ -31,9 +26,17 @@
   overflow: auto;
   width: 100%;
 }
-
 #CategorywiseReport .fixedHeader{
   display: table;
   overflow: auto;
   width: 100%
+}*/
+
+#CategorywiseReport .col1{
+	white-space: pre-wrap!important;
+	text-align: center !important;
+}
+tr #srNo{
+	text-align: left !important;
+	white-space: nowrap!important;
 }

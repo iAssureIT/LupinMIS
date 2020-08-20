@@ -1,39 +1,47 @@
 #GoalSectorReport .col1{
 	width: 80px !important;
+	text-align: left !important;
 	white-space: pre-wrap!important;
 }
-
 #GoalSectorReport .col2{
     width: 150px !important;
+	text-align: left !important;
     white-space: pre-wrap;
 }
 #GoalSectorReport .col3{
 	width: 100px !important;
-}
-#GoalSectorReport .col5{
 	white-space: pre-wrap!important;
-	width: 200px !important;
-}	
+	text-align: left !important;
+}
+#GoalSectorReport .col5, #GoalSectorReport .col6, #GoalSectorReport .col7{
+	white-space: pre-wrap!important;
+	width: 170px !important;
+	text-align: left !important;
+}
 #GoalSectorReport .col4{
+	white-space: pre-wrap!important;
 	width: 100px !important;
 }
-#GoalSectorReport .col9, #GoalSectorReport .col7
-{
-	width: 82px !important;
+#GoalSectorReport .col11, #GoalSectorReport .col14 {
+	width: 62px !important;
 } 
-#GoalSectorReport .col13, #GoalSectorReport .col15
-{
+#GoalSectorReport .col13, #GoalSectorReport .col15{
 	width: 72px !important;
 } 
-
-#GoalSectorReport .col11, #GoalSectorReport .col6, #GoalSectorReport .col14 {
-	width: 72px !important;
+#GoalSectorReport .col9, #GoalSectorReport .col10{
+	width: 75px !important;
 }
-#GoalSectorReport .col10, #GoalSectorReport .col12{
+#GoalSectorReport .col12{
 	width: 52px !important;
+}
+#GoalSectorReport .col17, #GoalSectorReport .col16, #GoalSectorReport .col19{
+	width: 72px !important;
 }
 #GoalSectorReport .col8{
 	width: 52px !important;
+}
+#GoalSectorReport .col18 ,#GoalSectorReport .col20{
+	width: 65px !important;
 }
 #GoalSectorReport .scrollContent {
   display: block;

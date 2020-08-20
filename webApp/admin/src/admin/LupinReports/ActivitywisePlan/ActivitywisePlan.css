@@ -1,0 +1,52 @@
+#ActivitywisePlan .col1{
+	width: 80px !important;
+	white-space: pre-wrap!important;
+}
+#ActivitywisePlan .col2{
+	width: 100px !important;
+}
+#ActivitywisePlan .col3, #ActivitywisePlan .col19{
+	white-space: pre-wrap!important;
+	width: 180px !important;
+}
+#ActivitywisePlan .col4, #ActivitywisePlan .col5{
+	white-space: pre-wrap!important;
+	width: 180px !important;
+}
+#ActivitywisePlan .col7{
+	width: 52px !important;
+}
+#ActivitywisePlan .col9, #ActivitywisePlan .col18{
+	width: 52px !important;
+} 
+#ActivitywisePlan .col13{
+	width: 62px !important;
+} 
+#ActivitywisePlan .col15, #ActivitywisePlan .col17{
+	width: 72px !important;
+} 
+#ActivitywisePlan .col11, #ActivitywisePlan .col6{
+	width: 62px !important;
+}
+#ActivitywisePlan .col10, #ActivitywisePlan .col16 {
+	width: 52px !important;
+}
+#ActivitywisePlan .col14, #ActivitywisePlan .col12{
+	width: 62px !important;
+}
+#ActivitywisePlan .col8{
+	width: 72px !important;
+}
+#ActivitywisePlan .scrollContent {
+  display: block;
+  height: 350px;
+  overflow: auto;
+  width: 100%;
+}
+
+#ActivitywisePlan .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+

@@ -1,0 +1,70 @@
+.fixedTable .colSr{
+	width: 30px !important;
+}
+#FamilyCoverageReport .col1{
+	width: 150px !important;
+	white-space: pre-wrap!important;
+}
+#FamilyCoverageReport .col2{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#FamilyCoverageReport .col3{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#FamilyCoverageReport .col4{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#FamilyCoverageReport .col9{
+	white-space: pre-wrap!important;
+	width: 120px !important;
+} 
+#FamilyCoverageReport .col5, #FamilyCoverageReport .col6, #FamilyCoverageReport .col7{
+	white-space: pre-wrap!important;
+	width: 80px !important;
+}
+#FamilyCoverageReport .col10, #FamilyCoverageReport .col8{
+	white-space: pre-wrap!important;
+	width: 120px !important;
+}
+#FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
+	white-space: pre-wrap!important;
+	width: 72px !important;
+}
+#FamilyCoverageReport .col14{
+	white-space: pre-wrap!important;
+	width: 70px !important;
+} 
+#FamilyCoverageReport .col12, #FamilyCoverageReport .col11, #FamilyCoverageReport .col13{	
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#FamilyCoverageReport .col15, #FamilyCoverageReport .col16, #FamilyCoverageReport .col17, #FamilyCoverageReport .col18, #FamilyCoverageReport .col19{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
+	white-space: pre-wrap!important;
+	width: 62px !important;
+} 
+#FamilyCoverageReport .scrollContent {
+  display: block;
+  height: 450px;
+  overflow: auto;
+  width: 100%;
+}
+
+#FamilyCoverageReport .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+
+.tablerow > td {
+    border: 1px solid #2f9c3f !important;
+	padding: 8px;
+	line-height: 1.42857143;
+	vertical-align: top
+}
