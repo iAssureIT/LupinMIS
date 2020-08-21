@@ -11,12 +11,41 @@ import MonthwiseExpenditure      from './chart1/MonthwiseExpenditure.js'
 import BarChart                  from './chart1/BarChart.js';
 import PieChart                  from './chart1/PieChart.js';
 import CenterWisePieChart        from './chart1/CenterWisePieChart.js';
-import Loader                    from "../../common/Loader.js";
+import Loader                       from "../../common/Loader.js";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './Dashboard.css';
+ 
 
+const data = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  datasets: [
+    {
+      label: 'My First dataset',
+      backgroundColor: 'rgba(255,99,132,0.2)',
+      borderColor: 'rgba(255,99,132,1)',
+      borderWidth: 1,
+      hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+      hoverBorderColor: 'rgba(255,99,132,1)',
+      data: [65, 59, 80, 81, 56, 55, 40]
+    }
+  ]
+};
+
+  
+const options = {
+    scales: {
+      xAxes: [{
+        stacked: true,
+      }],
+      yAxes: [{
+        stacked: true,
+          }],
+    },
+    responsive: true,
+    maintainAspectRatio: false     
+};
 export default class Dashboard extends Component{
   constructor(props) {
    super(props);
@@ -56,6 +85,7 @@ export default class Dashboard extends Component{
       "achievement_Total_L"           : 0,
     }
   }
+   
  
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -210,6 +240,12 @@ export default class Dashboard extends Component{
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+     // var letters = 'BCDEF'.split('');
+     //  var color = '#';
+     //  for (var i = 0; i < 6; i++ ) {
+     //      color += letters[Math.floor(Math.random() * letters.length)];
+     //  }
+     //  return color;
   }
   getRandomColor_sector(){
       var letters = '01234ABCDEF56789';
@@ -218,6 +254,12 @@ export default class Dashboard extends Component{
         color += letters[Math.floor(Math.random() * 16)];
       }
       return color;
+      //  var letters = 'BCDEF'.split('');
+      // var color = '#';
+      // for (var i = 0; i < 6; i++ ) {
+      //     color += letters[Math.floor(Math.random() * letters.length)];
+      // }
+      // return color;
     }
   dataShow(id){
     if(id === "Districts"){
@@ -495,8 +537,7 @@ export default class Dashboard extends Component{
                               <h4 className="modal-title">{this.state.dataHeading}</h4>
                             </div>
                             <div className="modal-body">
-                              {
-                                this.state.dataShow && this.state.dataShow.length > 0 ?
+                              {this.state.dataShow && this.state.dataShow.length > 0 ?
                                 this.state.dataShow.map((data,index)=>{
                                    return(
                                       <span className="listfontInmodal" key={index}>
@@ -504,9 +545,9 @@ export default class Dashboard extends Component{
                                       </span>
                                     )
                                 }) 
+
                               :
-                              null 
-                            }
+                              null }
                             </div>
                             <div className="modal-footer">
                             </div>

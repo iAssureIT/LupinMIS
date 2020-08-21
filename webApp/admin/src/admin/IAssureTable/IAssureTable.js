@@ -676,9 +676,6 @@ class IAssureTable extends Component {
 				:
 				null        
 	       	}
-	       
-					
-           
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
 	                <div className="table-responsive"  id="section-to-print">
 						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>

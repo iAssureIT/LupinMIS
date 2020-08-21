@@ -234,9 +234,9 @@ class GoalSectorReport extends Component{
       // $(".fullpageloader").show();
       // console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName,selectedDistrict);
       if(center_ID==="all"){
-        var url=('/api/report/goal/'+startDate+'/'+endDate+'/'+"all"+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
+        var url=('/api/reports/goal/'+startDate+'/'+endDate+'/'+"all"+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
       }else{
-        var url=('/api/report/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
+        var url=('/api/reports/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
       }  
       axios.get(url)
       .then((response)=>{
