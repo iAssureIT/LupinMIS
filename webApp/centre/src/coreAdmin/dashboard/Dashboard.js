@@ -15,35 +15,6 @@ import PieChart                  from './chart1/PieChart.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './Dashboard.css';
- 
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: 'rgba(255,99,132,0.2)',
-      borderColor: 'rgba(255,99,132,1)',
-      borderWidth: 1,
-      hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-      hoverBorderColor: 'rgba(255,99,132,1)',
-      data: [65, 59, 80, 81, 56, 55, 40]
-    }
-  ]
-};
-
-  
-const options = {
-    scales: {
-      xAxes: [{
-        stacked: true,
-      }],
-      yAxes: [{
-        stacked: true,
-          }],
-    },
-    responsive: true,
-    maintainAspectRatio: false     
-};
 export default class Dashboard extends Component{
   constructor(props){
    super(props);
@@ -60,7 +31,6 @@ export default class Dashboard extends Component{
       "monthlyAchievementReach"             : [],
       "achievementFamilyUpgradation" : [],
       "annualPlanTotalBudget"        : [],
-      'year'                : "FY 2019 - 2020",
       // 'months'              : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       // 'PlannedBeneficiaries': ['2000', '3500', '2000', '2100', '3000', '2300', '2500', '3100', '1800', '1600', '3000', '2000'],
       // 'ActualBeneficiaries' : ['1800', '3000', '1900', '2100', '2900', '2200', '2450', '3000', '1800', '1500', '2900', '2000'],
@@ -78,18 +48,18 @@ export default class Dashboard extends Component{
           "typeOfCenter" :"Websites Program",
           "count"       : 0,
        }], 
-      "centerCounts" :[],
-      "centerCount" : 0,
+      "centerCounts"             :[],
+      "centerCount"              : 0,
       "annualPlan_TotalBudget_L" : 0,
-      "achievement_Total_L"       : 0,
+      "achievement_Total_L"      : 0,
       "villagesCovered"          : 0,
-      "blocksCovered"            :["Nagbhir","Bhadravati","Mozri"],
+      "blocksCovered"            : ["Nagbhir","Bhadravati","Mozri"],
       "districtCovered"          : ["Chandrapur","Amaravati","Gondia"],
       "allblocks"                : [],
       "alldistrict"              : [],
       "dataShow"                 : [],
-      "center_ID"    : localStorage.getItem("center_ID"),
-      "centerName"   : localStorage.getItem("centerName"),
+      "center_ID"                : localStorage.getItem("center_ID"),
+      "centerName"               : localStorage.getItem("centerName"),
       "dataHeading"              : '',
     }
   }
@@ -412,7 +382,6 @@ export default class Dashboard extends Component{
       $('#dataShow').css({"display": "none"});
       $('#dataShow').removeClass('in');  
   }
- 
   year() {
     let financeYear;
     let today = moment();

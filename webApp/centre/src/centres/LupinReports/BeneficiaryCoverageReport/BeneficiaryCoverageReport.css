@@ -1,3 +1,6 @@
+.boldDiv{
+	font-weight: 700;	
+}
 .fixedTable .colSr{
 	width: 30px !important;
 }

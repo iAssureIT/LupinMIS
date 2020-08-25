@@ -25,8 +25,8 @@ class CategorywiseReport extends Component{
         "tableHeading"      : {
           "srNo"              : "Sr.No.",
           "categoryName"      : 'Family Category',
-          "reachCount"        : 'No of Reached Families',
-          "upgraded"          : 'No of Upgraded Families'
+          "reachCount"        : 'Reached Beneficiaries',
+          "upgraded"          : 'Upgraded Families'
         },
         "tableObjects"        : {
           paginationApply     : false,

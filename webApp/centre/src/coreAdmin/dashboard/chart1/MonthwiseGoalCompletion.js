@@ -103,7 +103,7 @@ export default class MonthwiseGoalCompletion extends Component{
     this.getData(this.props.year,this.props.center_ID);
   }
   getMonthwiseData(year,center_ID){
-    // console.log('year', year, 'center_ID', center_ID);
+    console.log('year', year, 'center_ID', center_ID);
     var monthlydata = {...this.state.data};
     var startYear = year.substring(3, 7);
     var endYear = year.substring(10, 15);

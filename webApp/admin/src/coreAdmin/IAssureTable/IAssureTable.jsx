@@ -680,8 +680,6 @@ class IAssureTable extends Component {
 				:
 				null        
 	       	}
-	       
-					
            
 	            <div className={this.props.divClass ? this.props.divClass+" col-sm-12 col-md-12 col-xs-12 NOpadding" : "col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding"}>
 	                <div className="table-responsive"  id="section-to-print">

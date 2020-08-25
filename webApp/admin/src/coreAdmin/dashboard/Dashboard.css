@@ -1,3 +1,26 @@
+#PlanVsAchievement_Physical .col1{
+    width: 100px !important;
+    white-space: pre-wrap;
+}
+#PlanVsAchievement_Physical .col2, #PlanVsAchievement_Physical .col3{
+    width: 70px;
+}
+#PlanVsAchievement_Physical .col4, #PlanVsAchievement_Physical .col5{
+    width: 70px;
+}
+#PlanVsAchievement_Financial .col1{
+    width: 60px !important;
+    white-space: pre-wrap;
+}
+#PlanVsAchievement_Financial .col2, #PlanVsAchievement_Financial .col3{
+    width: 70px;
+}
+.subdashHeader {
+    font-family: 'Montserrat',sans-serif;
+    font-size: 15px;
+    color: #333;
+    font-weight: bold;
+}
 .whiteColor{
     color: #fff;
 }
