@@ -6,12 +6,7 @@ import moment                    from 'moment';
 import html2canvas               from 'html2canvas';
 import Chart                     from 'chart.js';
 import ReactHTMLTableToExcel     from 'react-html-table-to-excel';
-import StatusComponent           from './StatusComponent/StatusComponent.js'
-import MonthwiseGoalCompletion   from './chart1/MonthwiseGoalCompletion.js'
-import MonthwiseExpenditure      from './chart1/MonthwiseExpenditure.js'
-import BarChart                  from './chart1/BarChart.js';
-import PieChart                  from './chart1/PieChart.js';
-import CenterWisePieChart        from './chart1/CenterWisePieChart.js';
+import StatusComponent           from './StatusComponent/StatusComponent.js';
 import Loader                    from "../../common/Loader.js";
 import IAssureTable              from "../IAssureTable/IAssureTable.jsx";
 

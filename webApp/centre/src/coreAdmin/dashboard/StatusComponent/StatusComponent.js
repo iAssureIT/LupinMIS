@@ -29,16 +29,14 @@ export default class StatusComponent extends Component{
 
     
   render(){
-    // console.log(thi s.props.stats);
     return(
-        <main className="col-lg-3">
-{/*      <div className="emptyclass"></div>
-*/}         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mainicon NOpadding" >
-            <div className="row">
-              <div className="col-lg-4 ccon1" style={{backgroundColor:this.props.stats.color}} >
-                <div className="row"><i className={"fa fa-"+this.props.stats.icon}></i></div>
-              </div>
-              <div className="col-lg-7 statusBox">
+      <main className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mainicon NOpadding" >
+          <div className="">
+            <div className="col-lg-4 ccon1" style={{backgroundColor:this.props.stats.color}} >
+              <div className="row"><i className={"fa fa-"+this.props.stats.icon}></i></div>
+            </div>
+            <div className="col-lg-7 statusBox">
               {
                 this.props.stats.multipleValues ?  
                 <React.Fragment>
@@ -52,7 +50,6 @@ export default class StatusComponent extends Component{
                     : null
                   }
                 </React.Fragment>
-              
               :
                 <div>
                   <div className="dashboardHeading"><strong>{this.props.stats.heading1}</strong></div>
@@ -61,10 +58,10 @@ export default class StatusComponent extends Component{
                   <div className="per">{this.props.stats.value2}</div>
                 </div>
               }
-              </div>
             </div>
           </div>
-        </main>   
-        );
+        </div>
+      </main>  
+    );
   }
 }
