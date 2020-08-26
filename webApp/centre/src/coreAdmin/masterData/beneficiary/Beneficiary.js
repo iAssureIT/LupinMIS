@@ -20,6 +20,7 @@ class Beneficiary extends Component{
     super(props);  
     this.state = {
       // "relation"            :"-- Select --",
+      "tableData"                      :[],
       "selector"                      :{},
       "Check"                         :false,
       "districtFilter"                :"all",
