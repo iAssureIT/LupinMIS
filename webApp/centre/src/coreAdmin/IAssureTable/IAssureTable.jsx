@@ -686,7 +686,7 @@ class IAssureTable extends Component {
 
 
 	            	{/* ===  Display Table === */}
-	                <div className="table-responsive" id="section-to-screen">
+	                <div className={!this.props.divClass ? "table-responsive" : ""} id="section-to-screen">
 						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
 	                        <thead className="tempTableHeader fixedHeader">	     
 		                        <tr className="tempTableHeader">

@@ -38,7 +38,7 @@ class SectorwiseReport extends Component{
                     hide : false
                 },
                 {
-                    heading : "Financial Achievement (Lakh)",
+                    heading : 'Financial Achievement "Rs. in Lakh"',
                     mergedColoums : 8,
                     hide : false
                 },

@@ -46,7 +46,7 @@ class ActivitywisePlan extends Component{
                         hide : false
                     },
                     {
-                        heading : "Source of Financial Plan 'Lakh'",
+                        heading : "Source of Financial Plan 'Rs. in Lakh'",
                         mergedColoums : 7,
                         hide : true
                     },

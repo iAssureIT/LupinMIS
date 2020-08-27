@@ -1103,6 +1103,8 @@ class BeneficiaryCoverageReport extends Component{
                                   <div className="wrapWord col21">Other</div>
                                   <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
                                 </th>
+                                <th id="" className="umDynamicHeader srpadd textAlignLeft ">
+                                </th>
                               </tr>
                             </thead>
                             <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >

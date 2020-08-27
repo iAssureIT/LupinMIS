@@ -52,7 +52,7 @@ class ActivityWiseReport extends Component{
                         hide : false
                     },
                     {
-                        heading : "Financial Achievement (Lakh)",
+                        heading : 'Financial Achievement "Rs. in Lakh"',
                         mergedColoums : 11,
                         hide : false
                     },

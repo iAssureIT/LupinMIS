@@ -1083,6 +1083,8 @@ class FamilyCoverageReport extends Component{
                                     <div className="wrapWord col21">Other</div>
                                     <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
                                   </th>
+                                  <th id="" className="umDynamicHeader srpadd textAlignLeft ">
+                                  </th>
                                   {/*<th id="village" className="umDynamicHeader srpadd textAlignLeft ">
                                     <div className="wrapWord col19">Village</div>
                                     <span id="village" className="fa fa-sort tableSort"></span>
