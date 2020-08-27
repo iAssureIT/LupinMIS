@@ -171,7 +171,6 @@ export default class Dashboard extends Component{
       console.log("error = ",error);
     });
   }
-
   selectCenter(event){
     var selectedCenter = event.target.value;
     this.setState({
@@ -224,7 +223,7 @@ export default class Dashboard extends Component{
     if(startDate && endDate){
         axios.get('/api/report/center/'+startDate+'/'+endDate+'/all/all/all/all/all')
         .then((response)=>{
-          console.log('centerwiseData',response)
+          // console.log('centerwiseData',response)
           /*******************************Dashboard Status Data***************************/
           if(response.data){
             var centerwiseData = response.data;
@@ -418,7 +417,7 @@ export default class Dashboard extends Component{
         $(".fullpageloader").show();
         axios.get('/api/reports/center_wise_Achievements/'+startDate+'/'+endDate)
         .then((response)=>{
-          console.log('response',response);
+          console.log('center_wise_Achievements',response);
           $(".fullpageloader").hide();
           var tableData = response.data.map((a, i)=>{
             return {
@@ -452,6 +451,7 @@ export default class Dashboard extends Component{
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <Loader type="fullpageloader" />
         <div className="row">
           <div className="formWrapper"> 
             <section className="content">
