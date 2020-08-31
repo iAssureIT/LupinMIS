@@ -42,6 +42,10 @@
 .dashboardHeading1{
     font-size: 12px;
 }
+.dashboardHeading2{
+    padding-top: 7px;
+    font-size: 13px;
+}
 .statusBox{
     padding-top: 5px;
     padding-right: 0;

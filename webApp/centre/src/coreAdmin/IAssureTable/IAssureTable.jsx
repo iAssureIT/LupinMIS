@@ -743,7 +743,7 @@ class IAssureTable extends Component {
 													{
 														!this.props.divClass ?
 														// {
-															((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
+															((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %"))
 															?
 																<td className="textAlignCenter">
 																	<div className="colSr">{this.state.startRange+1+i}</div>

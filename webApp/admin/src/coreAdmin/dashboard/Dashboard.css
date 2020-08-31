@@ -12,8 +12,11 @@
     width: 60px !important;
     white-space: pre-wrap;
 }
-#PlanVsAchievement_Financial .col2, #PlanVsAchievement_Financial .col3{
-    width: 70px;
+#PlanVsAchievement_Financial .col2{
+    width: 105px;
+}
+#PlanVsAchievement_Financial .col3{
+    width: 78px;
 }
 .subdashHeader {
     font-family: 'Montserrat',sans-serif;
@@ -187,9 +190,12 @@
 .per1{
     font-size: 12px;
 }
-
 .dashboardHeading1{
     font-size: 12px;
+}
+.dashboardHeading2{
+    padding-top: 7px;
+    font-size: 13px;
 }
 .statusBox{
     padding-top: 5px;

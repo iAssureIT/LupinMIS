@@ -686,7 +686,7 @@ class centerDetail extends Component{
     });
   }
   getVillages(countryID, stateID, districtID, blockID){
-    console.log('http://locations2.iassureit.com/api/cities/get/citieslist/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID);
+    // console.log('http://locations2.iassureit.com/api/cities/get/citieslist/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID);
     axios({
       method: 'get',
       // url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,

@@ -520,7 +520,6 @@ class ActivityWiseReport extends Component{
                 this.refs.endDate.value="";
             }
     }
-
     currentFromDate(){
         if(this.state.startDate){
             var today = this.state.startDate;
@@ -537,7 +536,6 @@ class ActivityWiseReport extends Component{
         });
         return today;
     }
-
     currentToDate(){
         if(this.state.endDate){
             var today = this.state.endDate;

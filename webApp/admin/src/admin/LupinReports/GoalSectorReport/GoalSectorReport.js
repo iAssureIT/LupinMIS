@@ -45,7 +45,7 @@ class GoalSectorReport extends Component{
         },
         "tableHeading"      : {       
           "goalType"                      : "Framework",
-          "goal"                          : 'Goal / Objective',
+          "goalName"                      : 'Goal / Objective',
           "projectCategoryType"           : 'Project Category',
           "projectName"                   : 'Project Name',
           "sectorName"                    : "Sector",
@@ -246,7 +246,7 @@ class GoalSectorReport extends Component{
           return {
             _id                         : a._id,           
             goalType                    : a.goalType,
-            goal                        : a.goal,
+            goalName                    : a.goalName,
             projectCategoryType         : a.projectCategoryType ? a.projectCategoryType : "-",
             projectName                 : a.projectName === "all" ? "-" :a.projectName,        
             sectorName                  : a.sectorName,

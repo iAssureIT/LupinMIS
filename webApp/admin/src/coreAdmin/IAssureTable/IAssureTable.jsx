@@ -590,7 +590,6 @@ class IAssureTable extends Component {
 	    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
     }
 	render() {
-		// console.log("role :", this.state.role);
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -715,7 +714,6 @@ class IAssureTable extends Component {
 																	<div className={"wrapWord col"+(i+1)}>{value}</div>
 																</th>
 															);	
-															
 														}
 													}else{
 														return(
@@ -742,7 +740,7 @@ class IAssureTable extends Component {
 													{/*console.log('Object.entries(value)', (Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-"))*/}
 													{
 														!this.props.divClass ?
-															((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
+															((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %"))
 															?
 																<td className="textAlignCenter">
 																	<div className="colSr">{this.state.startRange+1+i}</div>
@@ -756,6 +754,7 @@ class IAssureTable extends Component {
 													{
 														Object.entries(value).map( 
 															([key, value1], i)=> {
+																// console.log("key",key,"value1", value1);
 																if($.type(value1) === 'string'){
 																	var numbers = /^[0-9]+$/;
 																	if(value1.includes(',')){
