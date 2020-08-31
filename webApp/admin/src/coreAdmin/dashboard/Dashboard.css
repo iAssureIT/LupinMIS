@@ -1,3 +1,10 @@
+.border_Box_Filter {
+    box-shadow: 0px 2px 8px #888888cf;
+    padding: 0px 15px 15px 15px;
+    margin-bottom: 20px;
+    background: #fff;
+    border-radius: 4px;
+}
 #PlanVsAchievement_Physical .col1{
     width: 100px !important;
     white-space: pre-wrap;
@@ -22,6 +29,7 @@
     font-family: 'Montserrat',sans-serif;
     font-size: 15px;
     color: #333;
+    margin-top: 15px;
     font-weight: bold;
 }
 .whiteColor{

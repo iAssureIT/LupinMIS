@@ -70,7 +70,7 @@
   width: 100%
 }
 
-.tablerow > td {
+.tableRow > td {
     border: 1px solid #2f9c3f !important;
 	padding: 8px;
 	line-height: 1.42857143;

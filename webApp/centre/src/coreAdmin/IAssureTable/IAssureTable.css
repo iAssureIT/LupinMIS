@@ -1,5 +1,21 @@
 .scrollContent{
-  background: #fff;
+  /*background: #fff;*/
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+.table-striped>tbody>tr:nth-of-type(2n) {
+    background-color: #fff;
+}
+.table-hover>tbody>tr:hover {
+    background-color: #f5f5f5;
+}
+.iAssureITtable-bordered>tbody>tr>td, .iAssureITtable-bordered>tbody>tr>th, .iAssureITtable-bordered>tfoot>tr>td, .iAssureITtable-bordered>tfoot>tr>th, .iAssureITtable-bordered>thead>tr>td, .iAssureITtable-bordered>thead>tr>th{
+  border: 1px solid hsla(0,0%,100%,.4);
+}
+.iAssureITtable-bordered > thead > tr > th, .iAssureITtable-bordered > tbody > tr > th, .iAssureITtable-bordered > tfoot > tr > th, .iAssureITtable-bordered > thead > tr > td, .iAssureITtable-bordered > tbody > tr > td, .iAssureITtable-bordered > tfoot > tr > td {
+  /*border: 1px solid #fff6;*/
+  /*border: 1px solid #2f9c3f;*/
 }
 .actionDiv{
   width: 55px;
@@ -30,11 +46,6 @@
   border: 1px solid #979797 !important;
   border-radius: 3px !important;
   height: 32px !important;
-}
-
-.iAssureITtable-bordered > thead > tr > th, .iAssureITtable-bordered > tbody > tr > th, .iAssureITtable-bordered > tfoot > tr > th, .iAssureITtable-bordered > thead > tr > td, .iAssureITtable-bordered > tbody > tr > td, .iAssureITtable-bordered > tfoot > tr > td {
-    /*border: 1px solid #fff6;*/
-    border: 1px solid #2f9c3f !important;
 }
 .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #fff;

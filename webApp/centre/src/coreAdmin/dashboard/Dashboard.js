@@ -33,7 +33,12 @@ export default class Dashboard extends Component{
       "tableBlockData"               : [],
       "tablevillageData"             : [],
       "tableCentersHeading"          : [],
-      "tableCenterData"              : [],
+      "tableCenterData"              : [],          
+      "cum_Plan_total"                   : 0,
+      "cum_Achievement_total"            : 0,
+      "cum_Achievement_reach"            : 0,
+      "cum_Achievement_familyUpgradation": 0,
+      "cum_Achievement_upgradedBenCount" : 0,
       "center_ID"                    : "all",
       "center"                       : "all",
       "annualPlanTotalBudget"        : [],
@@ -61,19 +66,40 @@ export default class Dashboard extends Component{
       "achievement_Total_L"           : 0,
       "tableObjects"       : {
         paginationApply    : false,
+        // downloadApply      : true,
         searchApply        : false,
       },
       "tableFinancialHeading"       : {
         source            : "Source",
-        plan              : "Plan  (Rs in Lakhs)",
-        achievement       : "Achievement  (Rs in Lakhs)",
+        plan              : "Plan (Rs in Lakhs)",
+        achievement       : "Achievement (Rs in Lakhs)",
+      },
+      "twoLevelHeader_physical"    : {
+        apply           : true,
+        firstHeaderData : [
+          {
+            heading : 'Sector Details',
+            mergedColoums : 2,
+            hide : false
+          },
+          {
+            heading : 'Plan',
+            mergedColoums : 2,
+            hide : false
+          },
+          {
+            heading : "Achievement",
+            mergedColoums : 2,
+            hide : false
+          },
+        ]
       },
       "tablePhysicalHeading"       : {
         sector                  : "Sector",   
-        plan_reach              : "Plan Reach  (Beneficiary)",       
-        plan_upgradation        : "Plan Upgradation (Family)",             
-        achievement_reach       : "Achievement Reach  (Beneficiary)",              
-        achievement_upgradation : "Achievement Upgradation (Family)",       
+        plan_reach              : "Reach  (Beneficiary)",       
+        plan_upgradation        : "Upgradation (Family)",             
+        achievement_reach       : "Reach  (Beneficiary)",              
+        achievement_upgradation : "Upgradation (Family)",       
       },
       "tableDistrictHeading"       : {
         centerName    :"CenterName",              
@@ -129,6 +155,7 @@ export default class Dashboard extends Component{
   }
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    this.year();
     this.currentFromDate();
     this.currentToDate();
     this.getAvailableCentersData();
@@ -136,22 +163,25 @@ export default class Dashboard extends Component{
     this.getAvailableCenters();
     this.getcenter();
     this.getCountOfSubactivities();
+    this.cumulative_Plan_Data(this.state.year);
     this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
     this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+    this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
     this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-    this.getCenterwiseData(this.state.startDate, this.state.endDate);
   }
   componentWillReceiveProps(nextProps){
+    this.year();
     this.currentFromDate();
     this.currentToDate();
     this.getAvailableCentersData();
     this.getCentersData();
     this.getAvailableCenters();
+    this.cumulative_Plan_Data(this.state.year);
     this.getCountOfSubactivities();
+    this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
     this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
     this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
     this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-    this.getCenterwiseData(this.state.startDate, this.state.endDate);
   }
   getcenter(){
     axios({
@@ -298,6 +328,27 @@ export default class Dashboard extends Component{
       });
     }
   }
+  cumulative_Plan_Data(year){
+    if(year){
+      var startDate = year.substring(3, 7)+"-04-01";
+      var endDate = year.substring(10, 15)+"-03-31";
+      $(".fullpageloader").show();
+      axios.get('/api/reports/plan_vs_Achivement_Financial/'+startDate+'/'+endDate+'/all')
+      .then((response)=>{
+        // console.log('cumulative_Plan_Data',response);
+        // console.log('cumulative_Plan_Data',response.data[7].plan);
+        $(".fullpageloader").hide();
+        this.setState({
+          cum_Plan_total : response.data[7].plan
+        },()=>{
+          console.log('cum_Plan_total',this.state.cum_Plan_total);
+        })
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+    }
+  }
   getPhysicalData(startDate, endDate, center_ID){
     if(startDate && endDate && center_ID){
       $(".fullpageloader").show();
@@ -318,6 +369,28 @@ export default class Dashboard extends Component{
         })
         this.setState({
           tablePhysicalData : tableData
+        })
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+    }
+  }
+  cumulative_Achievement_Data(year, center_ID){
+    if(year && center_ID){
+      var startDate = year.substring(3, 7)+"-04-01";
+      var endDate = year.substring(10, 15)+"-03-31";
+      $(".fullpageloader").show();
+      axios.get('/api/reports/cumulative_Data/'+startDate+'/'+endDate+'/all')
+      .then((response)=>{
+        // console.log('cumulative_Data',response);
+        $(".fullpageloader").hide();
+        this.setState({              
+          "cum_Achievement_total"                  : response.data[0].total,
+          "cum_Achievement_reach"                  : response.data[0].reach,
+          "cum_Achievement_familyUpgradation"      : response.data[0].familyUpgradation,
+          "cum_Achievement_upgradedBenCount"       : response.data[0].upgradedBenCount,
+        },()=>{
         })
       })
       .catch(function(error){
@@ -376,7 +449,6 @@ export default class Dashboard extends Component{
       this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-      this.getCenterwiseData(this.state.startDate, this.state.endDate);
     // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
     });
   }
@@ -396,7 +468,6 @@ export default class Dashboard extends Component{
       this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-      this.getCenterwiseData(this.state.startDate, this.state.endDate);
     });
   }
   onBlurEventFrom(){
@@ -431,7 +502,6 @@ export default class Dashboard extends Component{
       this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-      this.getCenterwiseData(this.state.startDate, this.state.endDate);
     });
     return today;
   }
@@ -447,39 +517,8 @@ export default class Dashboard extends Component{
       this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-      this.getCenterwiseData(this.state.startDate, this.state.endDate);
     });
     return today;
-  }
-  getCenterwiseData(startDate, endDate){
-    if(startDate && endDate){
-      axios.get('/api/report/center/'+startDate+'/'+endDate+'/all/all/all/all/all')
-      .then((response)=>{
-        // console.log('centerwiseData===',response)
-        /*******************************Dashboard Status Data***************************/
-        if(response.data){
-          var centerwiseData = response.data;
-          var totalindex = (centerwiseData.length)-2;
-          var totalData = response.data[totalindex];
-          var achievement_Reach       = totalData.achievement_Reach;
-          var annualPlan_Reach        = totalData.annualPlan_Reach;
-          var annualPlan_TotalBudget  = totalData.annualPlan_TotalBudget;
-          var achievement_TotalBudget = totalData.achievement_TotalBudget;
-          var annualPlan_TotalBudget_L = totalData.annualPlan_TotalBudget_L;
-          var achievement_Total_L      = totalData.achievement_TotalBudget_L;
-          this.setState({
-            achievement_Reach        : achievement_Reach,
-            annualPlan_Reach         : annualPlan_Reach,
-            annualPlan_TotalBudget   : annualPlan_TotalBudget,
-            achievement_TotalBudget  : achievement_TotalBudget,
-            annualPlan_TotalBudget_L : annualPlan_TotalBudget_L,
-            achievement_Total_L      : achievement_Total_L
-          })
-          }
-      }).catch(function (error) {
-        console.log('error', error);
-      });
-    }
   }
   dataShow(id){
     console.log('id',id);
@@ -583,6 +622,52 @@ export default class Dashboard extends Component{
       $('#locationShow').addClass('in');  
     })
   }
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      // console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        year       :financialYear
+      },()=>{
+        this.cumulative_Plan_Data(this.state.year);
+        this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              // console.log('years',this.state.years);
+              // console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
+  }
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -612,91 +697,17 @@ export default class Dashboard extends Component{
                     <StatusComponent 
                       stats={{
                         color:"#4CA75A", 
-                        icon:"user",heading1:"Outreach",value1:this.state.annualPlan_Reach ? this.state.annualPlan_Reach : 0, heading2:"Upgraded Beneficiary",value2:this.state.achievement_Reach ? this.state.achievement_Reach : 0,multipleValues : false}} 
+                        icon:"user",heading1:"Reach",value1:this.state.cum_Achievement_reach ? this.state.cum_Achievement_reach : 0, heading2:"Upgraded Beneficiaries",value2:this.state.cum_Achievement_upgradedBenCount ? this.state.cum_Achievement_upgradedBenCount : 0,multipleValues : false}} 
                     />
                     <StatusComponent 
                       stats={{
                         color:"#F39C2F", 
-                        icon:"rupee",heading1:"Budget",value1:this.state.annualPlan_TotalBudget_L ? "Rs. "+this.state.annualPlan_TotalBudget_L+" L" : "Rs. 0 L", heading2:"Expenditure",value2:this.state.achievement_Total_L ? "Rs. "+this.state.achievement_Total_L : "Rs. 0 L",multipleValues : false}} 
+                        icon:"rupee",heading1:"Budget",
+                        value1:this.state.cum_Plan_total        ? "Rs. "+this.state.cum_Plan_total +" L" : "Rs. 0 L", heading2:"Expenditure",
+                        value2:this.state.cum_Achievement_total ? "Rs. "+this.state.cum_Achievement_total +" L" : "Rs. 0 L",multipleValues : false}} 
                     />
                 </div>
                 </div>
-               {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                  <div className="row">
-                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                      <div className="info-box bg-skyblue">
-                        <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
-                        <div className="info-box-content">
-                          <span className="info-box-text pull-left">Centers</span>
-                          {this.state.countAllCenter > 0 ?
-                          <span className="pull-right"><a href=""  className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Centers")}>View All..</a></span>
-                          : 
-                          ""}
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
-                            <span className="info-box-number">{this.state.countAllCenter}</span>
-                            <div className="progress">
-                              <div className="progress-bar" style={{"width": this.state.countAllCenter+"%"}}></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                      <div className="info-box bg-red">
-                        <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
-                        <div className="info-box-content">
-                          <span className="info-box-text pull-left">Districts</span>
-                          {this.state.countDistrict > 0 ?
-                          <span className="pull-right"><a href="" className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Districts")}>View All..</a></span>
-                          : 
-                          ""}
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
-                            <span className="info-box-number">{this.state.countDistrict}</span>
-                            <div className="progress">
-                              <div className="progress-bar" style={{"width": this.state.countDistrict+"%"}}></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                      <div className="info-box bg-green">
-                        <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
-                        <div className="info-box-content">
-                          <span className="info-box-text pull-left">Blocks</span>
-                          {this.state.countBlocks > 0 ?
-                          <span className="pull-right"><a href="" className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Blocks")}>View All..</a></span>
-                          : 
-                          ""}
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
-                            <span className="info-box-number">{this.state.countBlocks}</span>
-                            <div className="progress">
-                              <div className="progress-bar" style={{"width": this.state.countBlocks+"%"}}></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                      <div className="info-box bg-yellow">
-                        <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
-                        <div className="info-box-content">
-                          <span className="info-box-text pull-left">Villages</span>
-                          {this.state.villagesCovered > 0 ?
-                          <span className="pull-right"><a href="" className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Villages")}>View All..</a></span>
-                          : 
-                          ""}
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
-                            <span className="info-box-number">{this.state.villagesCovered}</span>
-                            <div className="progress">
-                              <div className="progress-bar" style={{"width": this.state.villagesCovered+"%"}}></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div> 
-                  </div>
-                </div>*/}
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                   <div className="row">
                     <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
@@ -860,19 +871,7 @@ export default class Dashboard extends Component{
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                   <div className="row">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Center wise Achievements</div>
-                      <IAssureTable 
-                        tableName = "Center wise Achievements"
-                        id = "center_wise_Achievements" 
-                        tableHeading={this.state.tableCenterHeading}
-                        twoLevelHeader={this.state.twoLevelHeader_Center} 
-                        tableData={this.state.centerAchievementData}
-                        getData={this.getCenterwiseAchievement_Data.bind(this)}
-                        tableObjects={this.state.tableObjects}
-                      />
-                    </div>
-                    <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box">
+                   {/* <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box">
                       <label className="formLable">Center</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
                         <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
@@ -890,37 +889,80 @@ export default class Dashboard extends Component{
                           }
                         </select>
                       </div>
-                    </div> 
-                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
+                    </div> */}
+                    <div className="col-lg-offset-3 col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">From</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                         </div>
                     </div>
-                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
+                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">To</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                           <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                         </div>
                     </div>   
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter">
+                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Center wise Achievements</div>
+                        <IAssureTable 
+                          tableName = "Center wise Achievements"
+                          id = "center_wise_Achievements" 
+                          tableHeading={this.state.tableCenterHeading}
+                          twoLevelHeader={this.state.twoLevelHeader_Center} 
+                          tableData={this.state.centerAchievementData}
+                          getData={this.getCenterwiseAchievement_Data.bind(this)}
+                          tableObjects={this.state.tableObjects}
+                        />
+                      </div>
+                    </div>
                   </div> 
-                  <div className="">
-                    <div className="col-lg-7 col-md-6 col-sm-12 col-xs-12">
-                      <div className="row">
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Plan Vs Achievement Physical</div>
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                    <div className="row">
+                      <div className="col-lg-4 col-lg-offset-4 col-md-4 col-sm-6 col-xs-12 valid_box">
+                        <label className="formLable">Center</label><span className="asterix"></span>
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
+                          <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
+                            <option className="hidden" >-- Select --</option>
+                            <option value="all" >All</option>
+                            {
+                              this.state.availableCenters && this.state.availableCenters.length >0 ?
+                              this.state.availableCenters.map((data, index)=>{
+                                return(
+                                  <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
+                                );
+                              })
+                              :
+                              null
+                            }
+                          </select>
+                        </div>
+                      </div> 
+                    </div> 
+                  </div> 
+
+
+
+
+                  <div className="row">
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                    <div className="col-lg-7 col-md-6 col-sm-12 col-xs-12 ">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter">
+                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Plan Vs Achievement (Physical)</div>
                         <IAssureTable 
                           tableName = "PlanVsAchievement_Physical"
                           id = "PlanVsAchievement_Physical" 
+                          twoLevelHeader={this.state.twoLevelHeader_physical} 
                           tableHeading={this.state.tablePhysicalHeading}
                           tableData={this.state.tablePhysicalData}
                           getData={this.getPhysicalData.bind(this)}
                           tableObjects={this.state.tableObjects}
                         />
-                      </div>
+                      </div> 
                     </div> 
                     <div className="col-lg-5 col-md-6 col-sm-12 col-xs-12">
-                      <div className="row">
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Plan Vs Achievement Financial</div>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter">
+                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Plan Vs Achievement (Financial)</div>
                         <IAssureTable 
                           tableName = "PlanVsAchievement_Financial"
                           id = "PlanVsAchievement_Financial" 
@@ -929,6 +971,7 @@ export default class Dashboard extends Component{
                           getData={this.getFinancialData.bind(this)}
                           tableObjects={this.state.tableObjects}
                         />
+                      </div>
                       </div>
                     </div>
                   </div>

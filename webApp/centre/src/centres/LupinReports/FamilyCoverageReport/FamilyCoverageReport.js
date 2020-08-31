@@ -1106,7 +1106,7 @@ class FamilyCoverageReport extends Component{
                                     // console.log("value.sectorData",value.sectorData)
                                     var sectorLength=value.sectorData.length
                                       return(                                    
-                                        <tr className="tablerow"  key={i}>
+                                        <tr className="tableRow"  key={i}>
                                           <td className="textAlignCenter"><div className="colSr">{i+1}</div>
                                           </td>
                                           <td className=""><div className=" col1">{value._id.name_family}</div>
@@ -1120,7 +1120,7 @@ class FamilyCoverageReport extends Component{
                                               console.log("value1.isUpgraded",value1.isUpgraded)
                                                 return(
 
-                                                  <tr className="tablerow" key={index}>
+                                                  <tr className="tableRow" key={index}>
                                                     <td className=""><div className={value1.unit === "Total" ? "boldDiv col3"  : "col3"}> {value1.district}</div></td>
                                                     <td className=""><div className={value1.unit === "Total" ? "boldDiv col4"  : "col4"}> {value1.block}</div></td>
                                                     <td className=""><div className={value1.unit === "Total" ? "boldDiv col5"  : "col5"}> {value1.village}</div></td>
