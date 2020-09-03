@@ -377,6 +377,12 @@ export default class Leftsidebar extends Component{
                     Center List
                   </Link>
                 </li>
+                <li className="sidebarMenuText" >
+                  <Link to="/listofvillages" title="List of Villages">
+                    <i className="fa fa-th" />
+                    List of Villages
+                  </Link>
+                </li>
 
               </ul>
             </nav>

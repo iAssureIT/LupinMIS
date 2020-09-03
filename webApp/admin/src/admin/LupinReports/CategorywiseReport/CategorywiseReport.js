@@ -483,6 +483,7 @@ class CategorywiseReport extends Component{
                     <div className="">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <IAssureTable  
+                              noSRNumber = {true}  
                               divClass = "col-lg-8 col-lg-offset-2"
                               tableName = "Categorywise Report"
                               id = "CategorywiseReport"

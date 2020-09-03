@@ -249,6 +249,12 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Project Creation</span>
                       </Link>
                     </li>
+                    <li>
+                      <Link to="/listofvillages" title="List of Villages">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">List of Villages</span>
+                      </Link>
+                    </li>
                   </ul>
                 </li> 
                 <li className="sidebarMenuText">

@@ -698,7 +698,7 @@ class IAssureTable extends Component {
 	                            </tr>
 	                            <tr className="">
 									{
-										!this.props.divClass ?
+										!this.props.noSRNumber ?
 	                            			<th className="umDynamicHeader srpadd text-center">
 												<div className="colSr">Sr.No.</div>
 	                            			</th>
@@ -735,11 +735,11 @@ class IAssureTable extends Component {
 	                           		this.state.tableData.map( 
 										(value, i)=> {
 											return(
-												<tr key={i} className="">
+												<tr key={i} className={"trow"+(i+1)}>
 
 													{/*console.log('Object.entries(value)', (Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-"))*/}
 													{
-														!this.props.divClass ?
+														!this.props.noSRNumber ?
 															((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %"))
 															?
 																<td className="textAlignCenter">

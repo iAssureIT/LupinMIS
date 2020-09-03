@@ -697,7 +697,7 @@ class centerDetail extends Component{
       // url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
       url: 'http://locations2.iassureit.com/api/cities/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
     }).then((response)=> {
-        console.log('response ==========', response.data);
+        console.log('response ==========', response);
         if(response&&response.data[0]){
           function dynamicSort(property) {
             var sortOrder = 1;

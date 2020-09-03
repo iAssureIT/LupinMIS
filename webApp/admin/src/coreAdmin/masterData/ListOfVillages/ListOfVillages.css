@@ -1,0 +1,16 @@
+#ListofVillages .col1, #ListofVillages .col2, #ListofVillages .col3, #ListofVillages .col4{
+	width: 145px !important;
+	white-space: pre-wrap;
+}
+
+#ListofVillages .scrollContent {
+  display: block;
+  height: 400px;
+  overflow: auto;
+  width: 100%;
+}
+#ListofVillages .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}

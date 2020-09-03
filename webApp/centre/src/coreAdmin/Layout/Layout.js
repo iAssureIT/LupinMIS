@@ -42,6 +42,7 @@ import FileWiseMonthlyPlanList                    from "../../centres/plan/FileW
 import AnnualPlanDetails                                       from "../../centres/plan/AnnualPlanDetails.js";
 import FileWisePlanList                           from "../../centres/plan/FileWisePlanList.js";
 
+import ListOfVillages                             from '../../coreAdmin/masterData/ListOfVillages/ListOfVillages.js';
 import CaseStudy                                  from "../../centres/addFile/CaseStudy.js";
 import CaseStudyView                              from "../../centres/addFile/CaseStudyView.js";
 import AddFilePrivate                             from "../../centres/addFile/AddFilePrivate.js";
@@ -180,6 +181,8 @@ class Layout extends Component{
                               <Route path="/b-type-activity-form/"                            exact strict component={ BTypeActivity } />
                               <Route path="/b-type-activity-form/:id"                         exact strict component={ BTypeActivity } />
 
+                              <Route path="/listofvillages"                                   exact strict component={ ListOfVillages } />
+                              
                               <Route path="/center-details"                                   exact strict component={ centerDetail } />
                               <Route path="/center-details/"                                  exact strict component={ centerDetail } />
                               <Route path="/center-details/:id"                               exact strict component={ centerDetail } />

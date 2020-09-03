@@ -1,3 +1,26 @@
+/*#center_wise_Achievements .trow19, #center_wise_Achievements .trow20{
+    font-weight: 700;
+}
+#PlanVsAchievement_Financial .trow8{
+    font-weight: 700;
+}
+#PlanVsAchievement_Physical .trow14{
+    font-weight: 700;
+}*/
+/*#center_wise_Achievements .tempTableHeader{
+    background: #fff !important;
+    color: #333;
+}*/
+/*#center_wise_Achievements .tempTableHeader th{
+    background: #fff !important;
+    color: #333;
+    border: 1px solid #999;
+}*/
+.tablearrow{
+    padding-right: 10px;
+    color: #fff;
+    font-size: 15px;
+}
 .border_Box_Filter {
     box-shadow: 0px 2px 8px #888888cf;
     padding: 0px 15px 15px 15px;

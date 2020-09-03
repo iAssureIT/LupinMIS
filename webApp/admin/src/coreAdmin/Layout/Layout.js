@@ -46,6 +46,7 @@ import SectorAndActivity                          from '../../coreAdmin/masterDa
 
 import SectorAndActivityRedirect                  from '../../coreAdmin/masterData/sectorAndActivity/SandA.js';
 
+import ListOfVillages                             from '../../coreAdmin/masterData/ListOfVillages/ListOfVillages.js';
 import Unit                                       from '../../coreAdmin/masterData/sectorAndActivity/component/unit/Unit.js';
 import BulkUpload                                 from '../../coreAdmin/masterData/sectorAndActivity/component/BulkUpload/BulkUpload.js';
 import centerDetail                               from '../../coreAdmin/masterData/centerDetail/centerDetail.js';
@@ -163,6 +164,8 @@ class Layout extends Component{
                          {/* <Route path="/type-goal"                                                              exact strict component={ Type_Goal } />
                           <Route path="/type-goal/"                                                              exact strict component={ Type_Goal } />
                           <Route path="/type-goal/:typeofGoalId"                                                exact strict component={ Type_Goal } />*/}
+
+                          <Route path="/listofvillages"                                                              exact strict component={ ListOfVillages } />
 
                           <Route path="/type-goal"                                                              exact strict component={ TypeOfGoalContainer } />
                           <Route path="/type-goal/"                                                             exact strict component={ TypeOfGoalContainer } />

@@ -60,8 +60,6 @@ export default class Dashboard extends Component{
       "countBlocks"                   : 0,
       "villagesCovered"               : 0,
       "centerCount"                   : 0,
-      // 'year'                          : "FY 2019 - 2020",
-      // "years"                         :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
       "annualPlan_TotalBudget_L"      : 0,
       "achievement_Total_L"           : 0,
       "tableObjects"       : {
@@ -71,8 +69,8 @@ export default class Dashboard extends Component{
       },
       "tableFinancialHeading"       : {
         source            : "Source",
-        plan              : "Plan (Rs in Lakhs)",
-        achievement       : "Achievement (Rs in Lakhs)",
+        plan              : "Plan  (Rs in Lakhs)",
+        achievement       : "Achievement  (Rs in Lakhs)",
       },
       "twoLevelHeader_physical"    : {
         apply           : true,
@@ -542,7 +540,7 @@ export default class Dashboard extends Component{
   getCentersData(){
     axios({
       method: 'get',
-      url: '/api/reportDashboard/list_count_center_district_blocks_villages_list',
+      url: '/api/reportDashboard/list_count_center_district_blocks_villages_list/all/all/all',
     }).then((response)=> {
       // console.log("response ==>",response.data);
       function removeDuplicates(data, param){
@@ -719,7 +717,7 @@ export default class Dashboard extends Component{
                           <span className="pull-right"><a href=""  className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Centers")}>View All..</a></span>
                           : 
                           ""}
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt1                                                                                                                           0">
                             <span className="info-box-number">{this.state.countAllCenter}</span>
                             <div className="progress">
                               <div className="progress-bar" style={{"width": this.state.countAllCenter+"%"}}></div>
@@ -735,10 +733,13 @@ export default class Dashboard extends Component{
                           <span className="info-box-text pull-left">Districts</span>
                           {
                             this.state.tableDistrictData.length > 0 ?
-                              <span className="pull-right"><a href="" className="whiteColor" data-toggle="modal" onClick={()=> this.locationShow("Districts")}>View All..</a></span>
+                              <a className="viewLink" title="View List" target="_blank"  href={"/listofvillages"}>
+                                <i className="fa  fa-arrow-circle-right tablearrow pull-right"></i>
+                              </a>
                             : 
                             ""
                           }
+                          {/*<span className="pull-right"><a href="" className="whiteColor" data-toggle="modal" onClick={()=> this.locationShow("Districts")}>View All..</a></span>*/}
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                             <span className="info-box-number">{this.state.tableDistrictData.length}</span>
                             <div className="progress">
@@ -755,10 +756,13 @@ export default class Dashboard extends Component{
                           <span className="info-box-text pull-left">Blocks</span>
                           {
                             this.state.tableBlockData.length > 0 ?
-                              <span className="pull-right"><a href="" className="whiteColor" data-toggle="modal" onClick={()=> this.locationShow("Blocks")}>View All..</a></span>
+                              <a className="viewLink" title="View List" target="_blank"  href={"/listofvillages"}>
+                                <i className="fa  fa-arrow-circle-right tablearrow pull-right"></i>
+                              </a>
                             : 
                             ""
                           }
+                          {/*<span className="pull-right"><a href="" className="whiteColor" data-toggle="modal" onClick={()=> this.locationShow("Blocks")}>View All..</a></span>*/}
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                             <span className="info-box-number">{this.state.tableBlockData.length}</span>
                             <div className="progress">
@@ -773,11 +777,15 @@ export default class Dashboard extends Component{
                         <span className="info-box-icon"><i className="fa fa-map-marker"></i></span>
                         <div className="info-box-content">
                           <span className="info-box-text pull-left">Villages</span>
-                          {this.state.tablevillageData.length > 0 ?
-                            <span className="pull-right"><a href="" className="whiteColor" data-toggle="modal" onClick={()=> this.locationShow("Villages")}>View All..</a></span>
+                          {
+                            this.state.tablevillageData.length > 0 ?
+                              <a className="viewLink" title="View List" target="_blank"  href={"/listofvillages"}>
+                                <i className="fa  fa-arrow-circle-right tablearrow pull-right"></i>
+                              </a>
                             : 
                             ""
                           }
+                          {/*<span className="pull-right"><a href="" className="whiteColor" data-toggle="modal" onClick={()=> this.locationShow("Villages")}>View All..</a></span>*/}
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                             <span className="info-box-number">{this.state.tablevillageData.length}</span>
                             <div className="progress">
@@ -871,25 +879,6 @@ export default class Dashboard extends Component{
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                   <div className="row">
-                   {/* <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 valid_box">
-                      <label className="formLable">Center</label><span className="asterix"></span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                        <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                          <option className="hidden" >-- Select --</option>
-                          <option value="all" >All</option>
-                          {
-                            this.state.availableCenters && this.state.availableCenters.length >0 ?
-                            this.state.availableCenters.map((data, index)=>{
-                              return(
-                                <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                              );
-                            })
-                            :
-                            null
-                          }
-                        </select>
-                      </div>
-                    </div> */}
                     <div className="col-lg-offset-3 col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">From</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
@@ -940,16 +929,14 @@ export default class Dashboard extends Component{
                       </div> 
                     </div> 
                   </div> 
-
-
-
-
                   <div className="row">
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                     <div className="col-lg-7 col-md-6 col-sm-12 col-xs-12 ">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Plan Vs Achievement (Physical)</div>
                         <IAssureTable 
+                          // noSRNumber = {false}  
+                          // divClass = "col-lg-12"
                           tableName = "PlanVsAchievement_Physical"
                           id = "PlanVsAchievement_Physical" 
                           twoLevelHeader={this.state.twoLevelHeader_physical} 
@@ -964,6 +951,8 @@ export default class Dashboard extends Component{
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Plan Vs Achievement (Financial)</div>
                         <IAssureTable 
+                          // noSRNumber = {false}  
+                          // divClass = "col-lg-12"
                           tableName = "PlanVsAchievement_Financial"
                           id = "PlanVsAchievement_Financial" 
                           tableHeading={this.state.tableFinancialHeading}
