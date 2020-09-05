@@ -1,0 +1,49 @@
+.bulkEmployeeVerif ul li{text-align: left;list-style: disc;}
+.bulkEmployeeImg{height: 100px;}
+.bulkEmployeeImg img{height: 115px;margin-bottom: 1px;}
+.bulkEmployeeImg a{font-size: 13px;color: #00b8ff!important}
+.bulkEmployeeContent{/*margin-bottom: 50px;*/margin-top: 4px;background-color: #f6f6f7;padding-top: 20px;padding-bottom: 15px;}
+.bulkEmployeeFile p span, .bulkEmployeeFile p span:hover, .bulkEmployeeFile p span:focus,
+.bulkEmployeeFile p span:active{background-color: #00b8ff;color: #fff;padding: 10px 50px;margin-left: 10px;cursor: pointer;border-radius: 0px;}
+.bulkuploadFileouter{margin-top: 2%;box-shadow: 0px 0px 6px #999;padding: 1%;}
+.h4HeadMarg{margin-right: 20px;}
+.aHeadMarg{margin-right: 10px;}
+.NOpadding{padding:0;}
+.marginAll{margin: 2%;}
+
+
+
+
+.nav-tabs>li.active>.successTab, .nav-tabs>li.active>.successTab:focus, .nav-tabs>li.active>.successTab:hover{
+    color: #fff;
+    cursor: default;
+    background-color: #4ebb67;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    font-weight: bold;
+}
+.nav-tabs>li.active>.failTab, .nav-tabs>li.active>.failTab:focus, .nav-tabs>li.active>.failTab:hover{
+    color: #fff;
+    cursor: default;
+    background-color: #e65959;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    font-weight: bold;
+}
+.nav>li>.successTab, .nav>li>.failTab {
+    position: relative;
+    display: block;
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 900;
+}
+.badDwldButton{
+    background: #e65959;
+    height: 35px;
+    color: #fff;
+    font-weight: 600 !important;
+    font-family:'Montserrat',sans-serif;
+    font-size: 12px !important;
+    border-radius: 3px;
+    border: none;
+}

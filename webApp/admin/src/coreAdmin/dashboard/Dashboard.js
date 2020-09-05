@@ -339,7 +339,7 @@ export default class Dashboard extends Component{
         this.setState({
           cum_Plan_total : response.data[7].plan
         },()=>{
-          console.log('cum_Plan_total',this.state.cum_Plan_total);
+          // console.log('cum_Plan_total',this.state.cum_Plan_total);
         })
       })
       .catch(function(error){
@@ -519,7 +519,7 @@ export default class Dashboard extends Component{
     return today;
   }
   dataShow(id){
-    console.log('id',id);
+    // console.log('id',id);
     if(id === "Districts"){
       var getData = this.state.districtsCovered
     }else if(id === "Blocks"){
@@ -542,10 +542,10 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/reportDashboard/list_count_center_district_blocks_villages_list/all/all/all',
     }).then((response)=> {
-      console.log("response ==>",response);
+      // console.log("response ==>",response);
       function removeDuplicates(data, param){
         return data.filter(function(item, pos, array){
-            return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+          return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
         })
       }
       function dynamicSort(property) {

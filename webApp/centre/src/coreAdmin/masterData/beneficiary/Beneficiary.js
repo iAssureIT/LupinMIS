@@ -49,9 +49,9 @@ class Beneficiary extends Component{
         relation            : "Relation with Family Head",
         genderOfbeneficiary : "Gender",
         birthYearOfbeneficiary : "Birth Year",
-        dist                : "District",
-        block               : "Block",
-        village             : "Village",
+        // dist                : "District",
+        // block               : "Block",
+        // village             : "Village",
         actions             : 'Action',
       },
       "downloadtableHeading"        : {

@@ -546,6 +546,7 @@ class centerDetail extends Component{
       method: 'get',
       url: 'http://locations2.iassureit.com/api/states/get/list/IN',
     }).then((response)=> {
+      console.log('response',response);
       var listofStates = response.data;
       function dynamicSort(property) {
         var sortOrder = 1;
@@ -596,6 +597,7 @@ class centerDetail extends Component{
       method: 'get',
       url: 'http://locations2.iassureit.com/api/districts/get/list/IN/'+stateCode,
     }).then((response)=> {
+        console.log('getDistrictresponse',response);
         if(response&&response.data){
           function dynamicSort(property) {
             var sortOrder = 1;
@@ -642,7 +644,7 @@ class centerDetail extends Component{
       method: 'get',
       url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-      // console.log('response',response);
+        console.log('response',response);
       if(response&&response.data){
         function dynamicSort(property) {
           var sortOrder = 1;

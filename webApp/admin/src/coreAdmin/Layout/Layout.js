@@ -92,6 +92,12 @@ import BeneficiaryCoverageReport                  from "../../admin/LupinReports
 import CategorywiseReport                         from "../../admin/LupinReports/CategorywiseReport/CategorywiseReport.js";
 import GoalSectorReport                           from "../../admin/LupinReports/GoalSectorReport/GoalSectorReport.js";
 
+
+import VillageBulkUpload                          from '../../coreAdmin/masterData/LocationMaster/VillageBulkUpload.js';
+import BlockBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/BlockBulkUpload.js';
+import DistrictBulkUpload                         from '../../coreAdmin/masterData/LocationMaster/DistrictBulkUpload.js';
+import StateBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/StateBulkUpload.js';
+
 class Layout extends Component{
   
   constructor(props) {
@@ -215,7 +221,12 @@ class Layout extends Component{
                           <Route path="/highlight/"                                                              exact strict component={ Highlight } />
                           <Route path="/highlight/:id"                                                           exact strict component={ Highlight } />                      
                           <Route path="/highlightview/:id"                                                       exact strict component={ HighlightView } />                      
-                          
+
+                          <Route path="/statebulkupload"                                                         exact strict component={ StateBulkUpload } />
+                          <Route path="/districtbulkupload"                                                      exact strict component={ DistrictBulkUpload } />
+                          <Route path="/blockbulkupload"                                                         exact strict component={ BlockBulkUpload } />
+                          <Route path="/villagebulkupload"                                                       exact strict component={ VillageBulkUpload } />
+
                           <Route path="/activitywise-annual-completion-report"                                   exact strict component={ report1 } />
                           <Route path="/sector-wise-annual-completion-summary-report"                            exact strict component={ report2 } />
                           <Route path="/activity-wise-periodic-variance-report"                                  exact strict component={ report3 } />

@@ -39,9 +39,13 @@ import FilewiseBeneficiaryActivityList            from "../../centres/activity/f
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import Plan                                       from "../../centres/plan/PlanDetails.js";
 import FileWiseMonthlyPlanList                    from "../../centres/plan/FileWiseMonthlyPlanList.js";
-import AnnualPlanDetails                                       from "../../centres/plan/AnnualPlanDetails.js";
+import AnnualPlanDetails                          from "../../centres/plan/AnnualPlanDetails.js";
 import FileWisePlanList                           from "../../centres/plan/FileWisePlanList.js";
 
+import VillageBulkUpload                          from '../../coreAdmin/masterData/LocationMaster/VillageBulkUpload.js';
+import BlockBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/BlockBulkUpload.js';
+import DistrictBulkUpload                         from '../../coreAdmin/masterData/LocationMaster/DistrictBulkUpload.js';
+import StateBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/StateBulkUpload.js';
 import ListOfVillages                             from '../../coreAdmin/masterData/ListOfVillages/ListOfVillages.js';
 import CaseStudy                                  from "../../centres/addFile/CaseStudy.js";
 import CaseStudyView                              from "../../centres/addFile/CaseStudyView.js";
@@ -182,7 +186,13 @@ class Layout extends Component{
                               <Route path="/b-type-activity-form/:id"                         exact strict component={ BTypeActivity } />
 
                               <Route path="/listofvillages"                                   exact strict component={ ListOfVillages } />
+                           
+                              <Route path="/statebulkupload"                                  exact strict component={ StateBulkUpload } />
+                              <Route path="/districtbulkupload"                               exact strict component={ DistrictBulkUpload } />
+                              <Route path="/blockbulkupload"                                  exact strict component={ BlockBulkUpload } />
+                              <Route path="/villagebulkupload"                                exact strict component={ VillageBulkUpload } />
                               
+
                               <Route path="/center-details"                                   exact strict component={ centerDetail } />
                               <Route path="/center-details/"                                  exact strict component={ centerDetail } />
                               <Route path="/center-details/:id"                               exact strict component={ centerDetail } />

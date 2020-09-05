@@ -95,12 +95,11 @@ export default class Leftsidebar extends Component{
                 </li> 
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
                   <Link to="#report" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Reports">
-                    <i className="fa fa-book" />
+                    <i className="fa fa-files-o" />
                     Reports
                     <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
                   </Link>
                   <ul className="collapse list-unstyled activeClass" id="report">
-                    
                     <li>
                       <Link to="/activity-wise-report" title="Activity wise Report">
                         <i className="fa fa-circle-o" />
@@ -136,8 +135,124 @@ export default class Leftsidebar extends Component{
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Goal Report</span>
                       </Link>
-                    </li>       
-              {/*   <li>
+                    </li>                   
+                  </ul>
+                </li> 
+                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
+                  <Link to="#MasterData" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Master Data">
+                    <i className="fa fa-database" />
+                    Master Data
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
+                  </Link>
+                  <ul className="collapse   list-unstyled activeClass" id="MasterData">
+                    <li>
+                      <Link to="/type-center" title="Center Type">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Center Type</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/center-details" title="Center Details">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Center Details</span>
+                      </Link>
+                    </li> 
+
+                    <li>
+                      <Link to="/sector-and-activity" title="Sector & Activity">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Sector & Activity</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/type-goal" title="Goal Type">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Goal Type</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/sector-mapping" title="Sector Mapping">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Framework Mapping</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/project-definition" title="Project Creation">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Project Creation</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/listofvillages" title="List of Villages">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">List of Villages</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </li> 
+                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
+                  <Link to="#LocationMaster" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Location Master">
+                    <i className="fa fa-map-marker" />
+                    Location Master
+                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
+                  </Link>
+                  <ul className="collapse   list-unstyled activeClass" id="LocationMaster">
+                    <li>
+                      <Link to="/statebulkupload" title="State Bulk Upload">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">State Bulk Upload</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/districtbulkupload" title="District Bulk Upload">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">District Bulk Upload</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/blockbulkupload" title="Block Bulk Upload">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Block Bulk Upload</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/villagebulkupload" title="Village Bulk Upload">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Village Bulk Upload</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </li> 
+                <li className="sidebarMenuText">
+                  <Link to="/caseStudy" >
+                    <i className="fa fa-list" />
+                    Case Studies
+                  </Link>
+                </li>
+                <li className="sidebarMenuText">
+                  <Link to="/highlight" >
+                    <i className="fa fa-hand-o-right " />
+                    Highlights
+                  </Link>
+                </li>
+             {/*   <li className="sidebarMenuText">
+                  <Link to="/dashboard" >
+                    <i className="fa fa-map-marker" />
+                    Training Center
+                  </Link>
+                </li>*/}
+              </ul>
+            </nav>
+          </div>
+        </aside>
+      </div>
+    );
+  }
+}
+
+
+
+ {/*   <li>
                       <Link to="/sector-wise-annual-completion-summary-report" title="Sector Annual Report">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Sector Annual Report</span>
@@ -203,83 +318,3 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Center Ranking Report</span>
                       </Link>
                     </li>*/}
-                  </ul>
-                </li> 
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#MasterData" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Master Data">
-                    <i className="fa fa-database" />
-                    Master Data
-                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
-                  </Link>
-                  <ul className="collapse   list-unstyled activeClass" id="MasterData">
-                    <li>
-                      <Link to="/type-center" title="Center Type">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Center Type</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/center-details" title="Center Details">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Center Details</span>
-                      </Link>
-                    </li> 
-
-                    <li>
-                      <Link to="/sector-and-activity" title="Sector & Activity">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector & Activity</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/type-goal" title="Goal Type">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Goal Type</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/sector-mapping" title="Sector Mapping">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Framework Mapping</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/project-definition" title="Project Creation">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Project Creation</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/listofvillages" title="List of Villages">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">List of Villages</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li> 
-                <li className="sidebarMenuText">
-                    <Link to="/caseStudy" >
-                      <i className="fa fa-list" />
-                      Case Studies
-                    </Link>
-                  </li>
-                  <li className="sidebarMenuText">
-                    <Link to="/highlight" >
-                      <i className="fa fa-hand-o-right " />
-                      Highlights
-                    </Link>
-                  </li>
-             {/*   <li className="sidebarMenuText">
-                  <Link to="/dashboard" >
-                    <i className="fa fa-map-marker" />
-                    Training Center
-                  </Link>
-                </li>*/}
-              </ul>
-            </nav>
-          </div>
-        </aside>
-      </div>
-    );
-  }
-}
