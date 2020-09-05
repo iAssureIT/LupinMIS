@@ -337,9 +337,9 @@ export default class Dashboard extends Component{
         // console.log('cumulative_Plan_Data',response.data[7].plan);
         $(".fullpageloader").hide();
         this.setState({
-          cum_Plan_total : response.data[7].plan
+          cum_Plan_total : response.data[7].planTotal
         },()=>{
-          console.log('cum_Plan_total',this.state.cum_Plan_total);
+          // console.log('cum_Plan_total',this.state.cum_Plan_total);
         })
       })
       .catch(function(error){
@@ -519,7 +519,7 @@ export default class Dashboard extends Component{
     return today;
   }
   dataShow(id){
-    console.log('id',id);
+    // console.log('id',id);
     if(id === "Districts"){
       var getData = this.state.districtsCovered
     }else if(id === "Blocks"){
