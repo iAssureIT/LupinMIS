@@ -69,8 +69,8 @@ export default class Dashboard extends Component{
       },
       "tableFinancialHeading"       : {
         source            : "Source",
-        plan              : "Plan  (Rs in Lakhs)",
-        achievement       : "Achievement  (Rs in Lakhs)",
+        plan              : "Plan (Rs in Lakhs)",
+        achievement       : "Achievement (Rs in Lakhs)",
       },
       "twoLevelHeader_physical"    : {
         apply           : true,
@@ -94,9 +94,9 @@ export default class Dashboard extends Component{
       },
       "tablePhysicalHeading"       : {
         sector                  : "Sector",   
-        plan_reach              : "Reach  (Beneficiary)",       
+        plan_reach              : "Reach (Beneficiary)",       
         plan_upgradation        : "Upgradation (Family)",             
-        achievement_reach       : "Reach  (Beneficiary)",              
+        achievement_reach       : "Reach (Beneficiary)",              
         achievement_upgradation : "Upgradation (Family)",       
       },
       "tableDistrictHeading"       : {
@@ -339,7 +339,7 @@ export default class Dashboard extends Component{
         this.setState({
           cum_Plan_total : response.data[7].plan
         },()=>{
-          // console.log('cum_Plan_total',this.state.cum_Plan_total);
+          console.log('cum_Plan_total',this.state.cum_Plan_total);
         })
       })
       .catch(function(error){
@@ -519,7 +519,7 @@ export default class Dashboard extends Component{
     return today;
   }
   dataShow(id){
-    // console.log('id',id);
+    console.log('id',id);
     if(id === "Districts"){
       var getData = this.state.districtsCovered
     }else if(id === "Blocks"){
@@ -542,10 +542,10 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/reportDashboard/list_count_center_district_blocks_villages_list/all/all/all',
     }).then((response)=> {
-      // console.log("response ==>",response);
+      // console.log("response ==>",response.data);
       function removeDuplicates(data, param){
         return data.filter(function(item, pos, array){
-          return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+            return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
         })
       }
       function dynamicSort(property) {
@@ -892,7 +892,7 @@ export default class Dashboard extends Component{
                         </div>
                     </div>   
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter dashBoxBlueColor">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Center wise Achievements</div>
                         <IAssureTable 
                           tableName = "Center wise Achievements"
@@ -932,7 +932,7 @@ export default class Dashboard extends Component{
                   <div className="row">
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                     <div className="col-lg-7 col-md-6 col-sm-12 col-xs-12 ">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter dashBoxyellowC">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Plan Vs Achievement (Physical)</div>
                         <IAssureTable 
                           // noSRNumber = {false}  
@@ -948,7 +948,7 @@ export default class Dashboard extends Component{
                       </div> 
                     </div> 
                     <div className="col-lg-5 col-md-6 col-sm-12 col-xs-12">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding border_Box_Filter dashBoxRedColor">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Plan Vs Achievement (Financial)</div>
                         <IAssureTable 
                           // noSRNumber = {false}  

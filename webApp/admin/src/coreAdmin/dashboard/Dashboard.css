@@ -11,11 +11,31 @@
     background: #fff !important;
     color: #333;
 }*/
-/*#center_wise_Achievements .tempTableHeader th{
+#center_wise_Achievements tr, #PlanVsAchievement_Physical tr, #PlanVsAchievement_Financial tr{
     background: #fff !important;
-    color: #333;
-    border: 1px solid #999;
-}*/
+    color: #444;
+}
+#center_wise_Achievements td, #center_wise_Achievements th{
+    border: 1px solid #f0f0f0;
+    background: #fff !important;
+}
+#PlanVsAchievement_Physical td, #PlanVsAchievement_Physical th{
+    border: 1px solid #f0f0f0;
+    background: #fff !important;
+}
+#PlanVsAchievement_Financial td, #PlanVsAchievement_Financial th{
+    border: 1px solid #f0f0f0;
+    background: #fff !important;
+}
+.dashBoxBlueColor{
+    border-top: 4px solid #2e54a1;
+}
+.dashBoxRedColor{
+    border-top: 4px solid #dd4b39;
+}
+.dashBoxyellowC{
+    border-top: 4px solid #f39c12;
+}
 .tablearrow{
     padding-right: 10px;
     color: #fff;
@@ -28,16 +48,15 @@
     background: #fff;
     border-radius: 4px;
 }
-
 #PlanVsAchievement_Physical .col1{
     width: 100px !important;
     white-space: pre-wrap;
 }
 #PlanVsAchievement_Physical .col2, #PlanVsAchievement_Physical .col3{
-    width: 70px;
+    width: 75px;
 }
 #PlanVsAchievement_Physical .col4, #PlanVsAchievement_Physical .col5{
-    width: 70px;
+    width: 75px;
 }
 #PlanVsAchievement_Financial .col1{
     width: 60px !important;
@@ -58,7 +77,6 @@
 }
 .whiteColor{
     color: #fff;
-    font-size: 10px;
 }
 .whiteColor:hover{
     color: #fff;
