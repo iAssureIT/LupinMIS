@@ -743,7 +743,8 @@ class IAssureTable extends Component {
 													{
 														!this.props.noSRNumber ?
 														// {
-															((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %"))
+															// ((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %") && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')) )
+															(!(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')) && !(Object.entries(value)[1][1].includes('-')))
 															?
 																<td className="textAlignCenter">
 																	<div className="colSr">{this.state.startRange+1+i}</div>
