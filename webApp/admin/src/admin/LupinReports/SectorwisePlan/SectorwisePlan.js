@@ -120,10 +120,11 @@ class SectorwisePlan extends Component{
       [event.target.name] : event.target.value,
       selectedCenter : selectedCenter,
     },()=>{
+      var center;
       if(this.state.selectedCenter==="all"){
-        var center = this.state.selectedCenter;
+        center = this.state.selectedCenter;
       }else{
-        var center = this.state.selectedCenter.split('|')[1];
+        center = this.state.selectedCenter.split('|')[1];
       }
       this.setState({
         center_ID :center,            
@@ -225,7 +226,7 @@ class SectorwisePlan extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -250,10 +251,10 @@ class SectorwisePlan extends Component{
     event.preventDefault();
     var projectName = event.target.value;
     this.setState({
-          projectName : projectName,
-        },()=>{
-        // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
-        this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.month);
+      projectName : projectName,
+    },()=>{
+      // console.log('startDate', this.state.startDate, 'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+      this.getData(this.state.year, this.state.center_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.month);
     })
   }
   addCommas(x) {
@@ -262,21 +263,21 @@ class SectorwisePlan extends Component{
     }else{
       x=x.toString();
       if(x.includes('%')){
-          return x;
+        return x;
       }else{
         if(x.includes('.')){
           var pointN = x.split('.')[1];
           var lastN = x.split('.')[0];
           var lastThree = lastN.substring(lastN.length-3);
           var otherNumbers = lastN.substring(0,lastN.length-3);
-          if(otherNumbers != '')
+          if(otherNumbers !== '')
               lastThree = ',' + lastThree;
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
           return(res);
         }else{
           var lastThree = x.substring(x.length-3);
           var otherNumbers = x.substring(0,x.length-3);
-          if(otherNumbers != '')
+          if(otherNumbers !== '')
               lastThree = ',' + lastThree;
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
           return(res);
@@ -286,6 +287,7 @@ class SectorwisePlan extends Component{
   }
   getData(year, center_ID, projectCategoryType, projectName, beneficiaryType, month){        
     console.log(year, center_ID, projectCategoryType, projectName, beneficiaryType, month);
+    var url;
     if(year){
       if(month){
         // console.log("startDate",startDate);
@@ -296,15 +298,15 @@ class SectorwisePlan extends Component{
           $(".fullpageloader").show();
           if (month==="All"){
             if(center_ID==="all"){              
-              var url = ('/api/reports/sector_annualPlan/'+year+'/'+"all"+'/'+projectCategoryType+'/'+projectName)
+              url = ('/api/reports/sector_annualPlan/'+year+'/'+"all"+'/'+projectCategoryType+'/'+projectName)
             }else{
-              var url = ('/api/reports/sector_annualPlan/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName)
+              url = ('/api/reports/sector_annualPlan/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName)
             }
             axios.get(url)
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
-                var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                var value = response.data.filter((a)=>{return a.name === "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   return {
                     _id                            : a._id,     
@@ -313,7 +315,7 @@ class SectorwisePlan extends Component{
                     sectorName                     : a.sectorName,
                     Reach                          : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.Reach)+"</b>" : this.addCommas(a.Reach),
                     FamilyUpgradation              : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.FamilyUpgradation)+"</b>" : this.addCommas(a.FamilyUpgradation),
-                    // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") == "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
+                    // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
                     TotalBudget                    : (a.TotalBudget),
                     LHWRF                          : (a.LHWRF),
                     NABARD                         : (a.NABARD),
@@ -334,15 +336,15 @@ class SectorwisePlan extends Component{
 
           }else{
             if(center_ID==="all"){              
-              var url = ('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+"all"+'/'+projectCategoryType+'/'+projectName)
+              url = ('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+"all"+'/'+projectCategoryType+'/'+projectName)
             }else{
-              var url = ('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName)
+              url = ('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName)
             }
             axios.get(url)
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
-                var value = response.data.filter((a)=>{return a.sectorName == "Total"})[0];
+                var value = response.data.filter((a)=>{return a.sectorName === "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   // console.log(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%",(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%")
                   return {
@@ -352,7 +354,7 @@ class SectorwisePlan extends Component{
                     sectorName                     : a.sectorName,
                     Reach                          : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.Reach)+"</b>" : this.addCommas(a.Reach),
                     FamilyUpgradation              : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.FamilyUpgradation)+"</b>" : this.addCommas(a.FamilyUpgradation),
-                    // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") == "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
+                    // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
                     TotalBudget                    : (a.TotalBudget),
                     LHWRF                          : (a.LHWRF),
                     NABARD                         : (a.NABARD),

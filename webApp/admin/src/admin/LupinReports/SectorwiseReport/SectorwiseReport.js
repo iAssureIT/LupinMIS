@@ -181,7 +181,7 @@ class SectorwiseReport extends Component{
                     property = property.substr(1);
                 }
                 return function (a,b) {
-                    if(sortOrder == -1){
+                    if(sortOrder === -1){
                         return b[property].localeCompare(a[property]);
                     }else{
                         return a[property].localeCompare(b[property]);
@@ -223,7 +223,7 @@ class SectorwiseReport extends Component{
                 var lastN = x.split('-')[1];
                 var lastThree = lastN.substring(lastN.length-3);
                 var otherNumbers = lastN.substring(0,lastN.length-3);
-                if(otherNumbers != '')
+                if(otherNumbers !== '')
                     lastThree = ',' + lastThree;
                 var res = "-" + otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
                 // console.log("x",x,"lastN",lastN,"res",res)
@@ -234,14 +234,14 @@ class SectorwiseReport extends Component{
                     var lastN = x.split('.')[0];
                     var lastThree = lastN.substring(lastN.length-3);
                     var otherNumbers = lastN.substring(0,lastN.length-3);
-                    if(otherNumbers != '')
+                    if(otherNumbers !== '')
                         lastThree = ',' + lastThree;
                     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
                     return(res);
                 }else{
                     var lastThree = x.substring(x.length-3);
                     var otherNumbers = x.substring(0,x.length-3);
-                    if(otherNumbers != '')
+                    if(otherNumbers !== '')
                         lastThree = ',' + lastThree;
                     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
                     return(res);
@@ -355,10 +355,10 @@ class SectorwiseReport extends Component{
             var today = this.state.startDate;
             // console.log("localStoragetoday",today);
         }else {
-            var today = (new Date());
+            today = (new Date());
             var nextDate = today.getDate() - 30;
             today.setDate(nextDate);
-            var today =  moment(today).format('YYYY-MM-DD');
+            today =  moment(today).format('YYYY-MM-DD');
             // console.log("today",today);
         }
         // console.log("nowfrom",today)
@@ -372,9 +372,8 @@ class SectorwiseReport extends Component{
     currentToDate(){
         if(this.state.endDate){
             var today = this.state.endDate;
-            // console.log("newToDate",today);
         }else {
-            var today =  moment(new Date()).format('YYYY-MM-DD');
+            today =  moment(new Date()).format('YYYY-MM-DD');
         }
         this.setState({
            endDate :today

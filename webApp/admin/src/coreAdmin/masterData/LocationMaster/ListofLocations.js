@@ -119,18 +119,25 @@ class SectorList extends Component{
   }
   selectState(event){
     event.preventDefault();
-    var selectedState = event.target.value;
-    // console.log('selectedState',selectedState);
-    var state     = selectedState.split('|')[0];
-    var stateCode = selectedState.split('|')[1];
-    var stateID   = selectedState.split('|')[2];
+    if(event.target.value==="all"){
+      var selectedState = event.target.value;
+      var stateID       = event.target.value;
+    }else{
+      var selectedState = event.target.value;
+      var state     = selectedState.split('|')[0];
+      var stateCode = selectedState.split('|')[1];
+      var stateID   = selectedState.split('|')[2];
+    }
     this.setState({
-      stateCode :stateCode,
-      stateID   :stateID,
-      state     :selectedState,
-      district  : 'all',
-      block     : 'all',
-      village   : 'all',
+      stateCode  :stateCode,
+      stateID    :stateID,
+      state      :selectedState,
+      district   : 'all',
+      block      : 'all',
+      village    : 'all',
+      districtID : 'all',
+      blockID    : 'all',
+      villageID  : 'all',
     },()=>{
       this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
       this.getDistrict(this.state.stateCode);
@@ -141,24 +148,25 @@ class SectorList extends Component{
       method: 'get',
       url: '/api/districts/get/list/IN/'+stateCode,
     }).then((response)=> {
-      // console.log('getDistrictresponse',response);
       if(response&&response.data){
         function dynamicSort(property) {
           var sortOrder = 1;
           if(property[0] === "-") {
-              sortOrder = -1;
-              property = property.substr(1);
+            sortOrder = -1;
+            property = property.substr(1);
           }
           return function (a,b) {
             if(sortOrder == -1){
-                return b[property].localeCompare(a[property]);
+              return b[property].localeCompare(a[property]);
             }else{
-                return a[property].localeCompare(b[property]);
+              return a[property].localeCompare(b[property]);
             }        
           }
         }
         var listofDistrict = response.data;
-        listofDistrict.sort(dynamicSort("districtName"));
+        if(listofDistrict.length>0){
+          listofDistrict.sort(dynamicSort("districtName"));
+        }
         this.setState({
           listofDistrict : listofDistrict,
         })
@@ -169,23 +177,27 @@ class SectorList extends Component{
   }
   districtChange(event){    
     event.preventDefault();
-    var district = event.target.value;
+      var district = event.target.value;
+    if(event.target.value==="all"){
+      var selectedDistrict = event.target.value;
+      var districtID       = event.target.value;
+    }else{
+      var selectedDistrict = district.split('|')[0];
+      var districtID       = district.split('|')[1];
+    }
     this.setState({
-      district  : district,
-      block     : 'all',
-      village   : 'all',   
+      district         : district,
+      block            : 'all',
+      village          : 'all',   
+      blockID          : 'all',
+      villageID        : 'all',
+      selectedDistrict :selectedDistrict,
+      districtID       :districtID,
     },()=>{
-      var selectedDistrict = this.state.district.split('|')[0];
-      var districtID       = this.state.district.split('|')[1];
-      this.setState({
-        selectedDistrict :selectedDistrict,
-        districtID       :districtID,
-      },()=>{
-        this.getBlock(this.state.stateCode, this.state.selectedDistrict);
-        this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
-      })
+      this.getBlock(this.state.stateCode, this.state.selectedDistrict);
+      this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
     });
-  }
+  }     
   getBlock(stateCode, selectedDistrict){
     axios({
       method: 'get',
@@ -208,7 +220,9 @@ class SectorList extends Component{
           }
         }
         var listofBlocks = response.data;
-        listofBlocks.sort(dynamicSort("blockName"));
+        if(listofBlocks.length>0){
+          listofBlocks.sort(dynamicSort("blockName"));
+        }
         this.setState({
           listofBlocks : listofBlocks
         })
@@ -221,11 +235,20 @@ class SectorList extends Component{
     event.preventDefault();
     /*this.camelCase(data.blockName)+'|'+data.countryID+'|'+data.stateID+'|'+data.districtID+'|'+data._id*/
     var blocksCoveredValue = event.target.value;
-    var blocksCovered = blocksCoveredValue.split('|')[0];
-    var countryID = blocksCoveredValue.split('|')[1];
-    var stateID = blocksCoveredValue.split('|')[2];
-    var districtID = blocksCoveredValue.split('|')[3];
-    var blockID = blocksCoveredValue.split('|')[4];
+    
+    if(event.target.value==="all"){
+      var blocksCovered     = event.target.value;
+      var blockID           = event.target.value;
+      var countryID         = this.state.countryID;
+      var stateID           = this.state.stateID;
+      var districtID        = this.state.districtID;
+    }else{
+      var blocksCovered = blocksCoveredValue.split('|')[0];
+      var countryID     = blocksCoveredValue.split('|')[1];
+      var stateID       = blocksCoveredValue.split('|')[2];
+      var districtID    = blocksCoveredValue.split('|')[3];
+      var blockID       = blocksCoveredValue.split('|')[4];
+    }
     // console.log('blocksCovered',blocksCoveredValue);
     this.setState({
       block              : blocksCoveredValue,
@@ -235,50 +258,12 @@ class SectorList extends Component{
       districtID         : districtID,
       blockID            : blockID,
       village            : 'all',   
+      villageID          : 'all',
     },()=>{
+      // console.log(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID)
       this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
     });
   }
-  // getVillages(countryID, stateID, districtID, blockID){
-  //   axios({
-  //     method: 'get',
-  //     url: '/api/villages/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
-  //   }).then((response)=> {
-  //       console.log('response ==========', response);
-  //       if(response&&response.data[0]){
-  //         function dynamicSort(property) {
-  //           var sortOrder = 1;
-  //           if(property[0] === "-") {
-  //               sortOrder = -1;
-  //               property = property.substr(1);
-  //           }
-  //           return function (a,b) {
-  //             if(sortOrder == -1){
-  //                 return b[property].localeCompare(a[property]);
-  //             }else{
-  //                 return a[property].localeCompare(b[property]);
-  //             }        
-  //           }
-  //         }
-  //         var listofVillages = response.data;
-  //         listofVillages.sort(dynamicSort("cityName"));
-  //         this.setState({
-  //           listofVillages : listofVillages
-  //         })
-  //       }
-  //   }).catch(function (error) {
-  //     console.log('error', error);
-  //   });
-  // }
-  // selectVillage(event){
-  //   var village = event.target.value;
-  //   console.log('village',village);
-  //   this.setState({
-  //     village : village,
-  //   },()=>{
-  //     this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
-  //   });
-  // }
 
   camelCase(str){
     return str
@@ -304,12 +289,12 @@ class SectorList extends Component{
                          </div>
                         <hr className="hr-head container-fluid row zeroMB"/>
                       </div>
-                      <div className="col-lg-12 col-sm-12 col-xs-12  boxHeight">
+                      <div className="col-lg-12 col-sm-12 col-xs-12 valid_box">
                         <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  ">
                           <label className="formLable">State</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
                             <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
-                              <option disabled="disabled" selected="true" value="--Select State--">--Select State--</option> 
+                              <option disabled="disabled" selected={true} value="--Select State--">--Select State--</option> 
                               <option value="all" >All</option>
                               {
                                 this.state.listofStates ?
@@ -328,7 +313,7 @@ class SectorList extends Component{
                           <label className="formLable">District</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                             <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onChange={this.districtChange.bind(this)} >
-                              <option disabled="disabled" selected="true" value="--Select District--" >--Select District--</option>
+                              <option disabled="disabled" selected={true} value="--Select District--" >--Select District--</option>
                               <option value="all" >All</option>
                               {
                                 this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
@@ -347,7 +332,7 @@ class SectorList extends Component{
                           <label className="formLable">Block</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
                             <select className="custom-select form-control inputBox"  value={this.state.block}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
-                              <option disabled="disabled" selected="true" value="--Select Block--" >--Select Block--</option>
+                              <option disabled="disabled" selected={true} value="--Select Block--" >--Select Block--</option>
                               <option value="all" >All</option>
                               {
                                 this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
