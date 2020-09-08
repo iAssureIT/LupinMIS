@@ -40,13 +40,13 @@ class SectorList extends Component{
   }
 
   getData(countryID, stateID, districtID, blockID){
-    console.log(countryID, stateID, districtID, blockID);
+    // console.log(countryID, stateID, districtID, blockID);
     if(countryID && stateID && districtID && blockID){
       $(".fullpageloader").show();
       axios.get('/api/villages/get/villagelist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID)
       .then((response)=>{
         $(".fullpageloader").hide();
-        console.log('response',response);
+        // console.log('response',response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id               : a._id,
@@ -80,7 +80,7 @@ class SectorList extends Component{
         countryID : response.data[0]._id, 
       },()=>{
         this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
-        console.log('countryID',this.state.countryID);
+        // console.log('countryID',this.state.countryID);
       })
     })
     .catch((error)=> {     
@@ -91,7 +91,7 @@ class SectorList extends Component{
       method: 'get',
       url: '/api/states/get/list/IN',
     }).then((response)=> {
-      console.log('response',response);
+      // console.log('response',response);
       var listofStates = response.data;
       function dynamicSort(property) {
         var sortOrder = 1;
@@ -120,7 +120,7 @@ class SectorList extends Component{
   selectState(event){
     event.preventDefault();
     var selectedState = event.target.value;
-    console.log('selectedState',selectedState);
+    // console.log('selectedState',selectedState);
     var state     = selectedState.split('|')[0];
     var stateCode = selectedState.split('|')[1];
     var stateID   = selectedState.split('|')[2];
@@ -141,7 +141,7 @@ class SectorList extends Component{
       method: 'get',
       url: '/api/districts/get/list/IN/'+stateCode,
     }).then((response)=> {
-      console.log('getDistrictresponse',response);
+      // console.log('getDistrictresponse',response);
       if(response&&response.data){
         function dynamicSort(property) {
           var sortOrder = 1;
@@ -191,7 +191,7 @@ class SectorList extends Component{
       method: 'get',
       url: '/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-        console.log('response',response);
+        // console.log('response',response);
       if(response&&response.data){
         function dynamicSort(property) {
           var sortOrder = 1;
@@ -226,7 +226,7 @@ class SectorList extends Component{
     var stateID = blocksCoveredValue.split('|')[2];
     var districtID = blocksCoveredValue.split('|')[3];
     var blockID = blocksCoveredValue.split('|')[4];
-    console.log('blocksCovered',blocksCoveredValue);
+    // console.log('blocksCovered',blocksCoveredValue);
     this.setState({
       block              : blocksCoveredValue,
       blocksCovered      : blocksCovered,
@@ -288,8 +288,8 @@ class SectorList extends Component{
     .join(' ');
   }
    render() {
-    console.log(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
-    console.log(this.state.countryID, this.state.state, this.state.district, this.state.block, this.state.village);
+    // console.log(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
+    // console.log(this.state.countryID, this.state.state, this.state.district, this.state.block, this.state.village);
     return (
       <div className="container-fluid">
         <Loader type="fullpageloader" />
