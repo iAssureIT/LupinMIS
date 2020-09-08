@@ -80,15 +80,15 @@ export default class Leftsidebar extends Component{
                   </Link>
                   <ul className="collapse list-unstyled activeClass" id="annualplanreport">
                     <li>
-                      <Link to="/sector-wise-plan" title="Sector Plan">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector Plan</span>
-                      </Link>
-                    </li>
-                    <li>
                       <Link to="/activity-wise-plan" title="Activity Plan">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activity Plan</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/sector-wise-plan" title="Sector Plan">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Sector Plan</span>
                       </Link>
                     </li>
                   </ul>
@@ -186,39 +186,6 @@ export default class Leftsidebar extends Component{
                       <Link to="/listofvillages" title="List of Villages">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">List of Villages</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li> 
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#LocationMaster" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Location Master">
-                    <i className="fa fa-map-marker" />
-                    Location Master
-                    <i className="leftarrow fa fa-sort-down rotate pull-right"></i>
-                  </Link>
-                  <ul className="collapse   list-unstyled activeClass" id="LocationMaster">
-                    <li>
-                      <Link to="/statebulkupload" title="State Bulk Upload">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">State Bulk Upload</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/districtbulkupload" title="District Bulk Upload">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">District Bulk Upload</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/blockbulkupload" title="Block Bulk Upload">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Block Bulk Upload</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/villagebulkupload" title="Village Bulk Upload">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Village Bulk Upload</span>
                       </Link>
                     </li>
                   </ul>

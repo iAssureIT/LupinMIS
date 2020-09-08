@@ -104,15 +104,15 @@ export default class Leftsidebar extends Component{
                       </Link>
                     </li>  */}
                     <li>
-                      <Link to="/sector-wise-plan" title="Sector Plan">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Sector Plan</span>
-                      </Link>
-                    </li>
-                    <li>
                       <Link to="/activity-wise-plan" title="Activity Plan">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Activity Plan</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/sector-wise-plan" title="Sector Plan">
+                        <i className="fa fa-circle-o" />
+                        <span className="sidebarMenuSubText">Sector Plan</span>
                       </Link>
                     </li>
                     {/*

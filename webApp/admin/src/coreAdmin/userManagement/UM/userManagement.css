@@ -4034,9 +4034,7 @@ right: 15px;
   box-shadow: none;
   border-color: #ccc;
 }
-.tempTableHeader{
-  color: #fff;
-}
+
 .iAssureITtable-bordered > thead > tr > th, .iAssureITtable-bordered > tbody > tr > th, .iAssureITtable-bordered > tfoot > tr > th, .iAssureITtable-bordered > thead > tr > td, .iAssureITtable-bordered > tbody > tr > td, .iAssureITtable-bordered > tfoot > tr > td {
     /*border: 1px solid #7f7f7f1f;*/
 }

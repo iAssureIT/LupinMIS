@@ -97,6 +97,7 @@ import VillageBulkUpload                          from '../../coreAdmin/masterDa
 import BlockBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/BlockBulkUpload.js';
 import DistrictBulkUpload                         from '../../coreAdmin/masterData/LocationMaster/DistrictBulkUpload.js';
 import StateBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/StateBulkUpload.js';
+import ListofLocations                            from '../../coreAdmin/masterData/LocationMaster/ListofLocations.js';
 
 class Layout extends Component{
   
@@ -226,6 +227,7 @@ class Layout extends Component{
                           <Route path="/districtbulkupload"                                                      exact strict component={ DistrictBulkUpload } />
                           <Route path="/blockbulkupload"                                                         exact strict component={ BlockBulkUpload } />
                           <Route path="/villagebulkupload"                                                       exact strict component={ VillageBulkUpload } />
+                          <Route path="/listoflocations"                                                         exact strict component={ ListofLocations } />
 
                           <Route path="/activitywise-annual-completion-report"                                   exact strict component={ report1 } />
                           <Route path="/sector-wise-annual-completion-summary-report"                            exact strict component={ report2 } />

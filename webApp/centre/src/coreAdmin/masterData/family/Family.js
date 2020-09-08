@@ -337,6 +337,7 @@ class Family extends Component{
           this.setState({
             "shown"               : true,
             "familyID"             :"",
+            "dist"                 :"",
             "caste"                :"",
             "district"             :"-- Select --",
             "block"                :"-- Select --",
@@ -420,6 +421,7 @@ class Family extends Component{
               "shown"               : true,
               "familyID"             :"",
               "uID"                  :"",
+              "dist"                 :"",
               "caste"                :"",
               "district"             :"-- Select --",
               "block"                :"-- Select --",

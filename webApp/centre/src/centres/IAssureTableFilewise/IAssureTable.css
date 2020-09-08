@@ -43,9 +43,6 @@
   /*border: 1px solid #4ca75a;*/
   margin-top: 2%;
 }
-.tempTableHeader{
-  background: #4ca75a !important;
-}
 .paginationAdminWrap{
   text-align: center !important;
   width: 100%;
@@ -89,10 +86,6 @@
   text-align: left !important;
   white-space: nowrap;
 }*/
-.tempTableHeader{
-  color: #fff;
-}
-
 .noWrapText{
   white-space: nowrap;
 }
@@ -147,7 +140,7 @@
 /* Track */
 .scrollContent::-webkit-scrollbar-track {
   background: #fff; 
-    border: 1px solid #4ca75a;
+    /*border: 1px solid #4ca75a;*/
 
 }
  

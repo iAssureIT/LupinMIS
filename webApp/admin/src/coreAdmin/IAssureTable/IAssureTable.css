@@ -59,10 +59,6 @@
 .iAssureITtable-bordered{
   /*border: 1px solid #4ca75a;*/
 }
-.tempTableHeader{
-  color: #fff;
-  background: #4ca75a !important;
-}
 .paginationAdminWrap{
   text-align: center !important;
   width: 100%;
@@ -158,7 +154,7 @@
 /* Track */
 .scrollContent::-webkit-scrollbar-track {
   background: #fff; 
-  border: 1px solid #4ca75a;
+  /*border: 1px solid #4ca75a;*/
 }
 /* Handle */
 .scrollContent::-webkit-scrollbar-thumb {

@@ -1,9 +1,7 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-import moment                 from 'moment';
-import swal                   from 'sweetalert';
-import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
+// import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import Loader                 from "../../../common/Loader.js";
 import BulkUpload             from "../../../admin/bulkupload/BulkUpload.js";
 

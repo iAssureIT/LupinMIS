@@ -1624,7 +1624,7 @@ input[type="radio"]:checked:before {
   font-weight: bold;
   border: 1px solid #ccc;
 }
-.UMGreyy a, a:hover, a:focus {
+.UMGreyy a, .UMGreyy a:hover, .UMGreyy a:focus {
     color: #333 ;
     text-decoration: none;
 

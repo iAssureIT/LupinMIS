@@ -1,12 +1,8 @@
 import React,{Component}         from 'react';
 import axios                     from 'axios';
 import $                         from "jquery";
-import { render }                from 'react-dom';
 import moment                    from 'moment';
 import swal                      from 'sweetalert';
-import html2canvas               from 'html2canvas';
-import Chart                     from 'chart.js';
-import ReactHTMLTableToExcel     from 'react-html-table-to-excel';
 import StatusComponent           from './StatusComponent/StatusComponent.js';
 import Loader                    from "../../common/Loader.js";
 import IAssureTable              from "../IAssureTable/IAssureTable.jsx";
@@ -58,7 +54,6 @@ export default class Dashboard extends Component{
       "countAllCenter"                : 0,
       "countDistrict"                 : 0,
       "countBlocks"                   : 0,
-      "villagesCovered"               : 0,
       "centerCount"                   : 0,
       "annualPlan_TotalBudget_L"      : 0,
       "achievement_Total_L"           : 0,
@@ -229,10 +224,11 @@ export default class Dashboard extends Component{
       [event.target.name] : event.target.value,
       selectedCenter : selectedCenter,
     },()=>{
+      var center;
       if(this.state.selectedCenter==="all"){
-        var center = this.state.selectedCenter;
+        center = this.state.selectedCenter;
       }else{
-        var center = this.state.selectedCenter.split('|')[1];
+        center = this.state.selectedCenter.split('|')[1];
       }
       this.setState({
         center_ID :center,            
@@ -417,7 +413,6 @@ export default class Dashboard extends Component{
             govtscheme        : a.govtscheme,
             indirectCC        : a.indirectCC,
             other             : a.other,
-            total             : a.total,
           }
         })
         this.setState({
@@ -485,17 +480,18 @@ export default class Dashboard extends Component{
     }
   }
   currentFromDate(){
+    var today;
     if(this.state.startDate){
-      var today = this.state.startDate;
+      today = this.state.startDate;
     }else {
-      var today = (new Date());
+      today = (new Date());
       var nextDate = today.getDate() - 30;
       today.setDate(nextDate);
       // var newDate = today.toLocaleString();
-      var today =  moment(today).format('YYYY-MM-DD');
+      today =  moment(today).format('YYYY-MM-DD');
     }
     this.setState({
-       startDate :today
+      startDate :today
     },()=>{
       this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);

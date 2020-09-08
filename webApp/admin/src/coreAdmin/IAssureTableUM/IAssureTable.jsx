@@ -888,8 +888,8 @@ class IAssureTableUM extends Component {
 	                	<div className="scrolltbl">
 	                	{/*table-wrapper-scroll-y my-custom-scrollbar*/}
 						<table className="table iAssureITtable-bordered table-striped table-hover  ">
-	                        <thead className="tempTableHeader">	     
-		                        <tr className="">
+	                        <thead className="">	     
+		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
@@ -900,19 +900,19 @@ class IAssureTableUM extends Component {
 		                            	null									
 									}
 	                            </tr>
-	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd textAlignLeft">
-	                      {/*      <input type="checkbox" className="allSelector col-lg-1 col-md-1 col-sm-3 col-xs-1 umchksett" name="allSelector" />
+	                            <tr className="tempTableHeader1">
+		                            <th className="umDynamicHeader srpadd textAlignLeft">
+	                      			{/*      <input type="checkbox" className="allSelector col-lg-1 col-md-1 col-sm-3 col-xs-1 umchksett" name="allSelector" />
 	                           
-// -------------------------------------------------*/}
-								<div className="uMDetailContainer">
-									<input type="checkbox" className="allSelector col-lg-1 col-md-1 col-sm-3 col-xs-1 umchksett" name="allSelector" onChange={this.checkAll.bind(this)}/> 
-	                                <span className="uMDetailCheck"></span>
-                              	</div>
+									// -------------------------------------------------*/}
+									<div className="uMDetailContainer">
+										<input type="checkbox" className="allSelector col-lg-1 col-md-1 col-sm-3 col-xs-1 umchksett" name="allSelector" onChange={this.checkAll.bind(this)}/> 
+		                                <span className="uMDetailCheck"></span>
+	                              	</div>
 
 
-	                            </th>
-	                            {/*<th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>*/}
+		                            </th>
+		                            {/*<th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>*/}
 
 
 		                            { this.state.tableHeading ?

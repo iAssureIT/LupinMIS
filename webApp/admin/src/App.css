@@ -1,3 +1,11 @@
+.tempTableHeader{
+  color: #333;
+  background: #aaafac !important;
+}
+.tempTableHeader1{
+  color: #333;
+  background: #c2c6c3 !important;
+}
 .outerForm {
     box-shadow: 0px 2px 8px #888888cf;
     padding: 25px 15px 15px 15px;

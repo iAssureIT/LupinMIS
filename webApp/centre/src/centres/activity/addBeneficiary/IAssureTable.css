@@ -8,9 +8,6 @@
 .iAssureITtable-bordered{
   /*border: 1px solid #4ca75a;*/
 }
-.tempTableHeader{
-  background: #4ca75a !important;
-}
 .paginationAdminWrap{
   text-align: center !important;
   width: 100%;
@@ -47,10 +44,6 @@
 .textAlignCenter{
   text-align: center !important;
 }
-.tempTableHeader{
-  color: #fff;
-}
-
 .adminModal-dialog{
   position: relative;
   transform: translate(0,0);

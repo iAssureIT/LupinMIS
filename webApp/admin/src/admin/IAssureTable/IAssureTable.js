@@ -679,7 +679,7 @@ class IAssureTable extends Component {
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">			            	        
 	                <div className="table-responsive"  id="section-to-print">
 						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
-	                        <thead className="tempTableHeader fixedHeader">	     
+	                        <thead className="fixedHeader">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
@@ -692,10 +692,10 @@ class IAssureTable extends Component {
 		                            	null									
 									}
 	                            </tr>
-	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd text-center">
-									<div className="colSr">Sr.No.</div>
-	                            </th>
+	                            <tr className="tempTableHeader1">
+		                            <th className="umDynamicHeader srpadd text-center">
+										<div className="colSr">Sr.No.</div>
+		                            </th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {
@@ -732,7 +732,8 @@ class IAssureTable extends Component {
 
 													{/*console.log('Object.entries(value)', (Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-"))*/}
 													{
-														((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
+														((Object.entries(value)[1][1]) && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')) && !(Object.entries(value)[1][1].includes('-')))
+														// ((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-"))
 														?
 															<td className="textAlignCenter">
 																<div className="colSr">{this.state.startRange+1+i}</div>

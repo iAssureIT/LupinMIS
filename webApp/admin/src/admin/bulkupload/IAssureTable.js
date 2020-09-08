@@ -417,8 +417,8 @@ class IAssureTable extends Component {
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop17">			            	        
 	                <div className="table-responsive">
 						<table className="table iAssureITtable-bordered table-striped table-hover">
-	                        <thead className="tempTableHeader">	     
-		                        <tr className="">
+	                        <thead className="">	     
+		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
@@ -429,8 +429,8 @@ class IAssureTable extends Component {
 		                            	null									
 									}
 	                            </tr>
-	                            <tr className="">
-	                            <th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
+	                            <tr className="tempTableHeader1">
+	                            	<th className="umDynamicHeader srpadd textAlignLeft">Sr.No.</th>
 		                            { this.state.tableHeading ?
 										Object.entries(this.state.tableHeading).map( 
 											([key, value], i)=> {

@@ -39,12 +39,12 @@ class SectorwisePlan extends Component{
                 // },
                 {
                     heading : 'Annual Plan',
-                    mergedColoums : 7,
+                    mergedColoums : 6,
                     hide : false
                 },
                 {
                     heading : "Source of Financial Plan 'Rs. in Lakh'",
-                    mergedColoums : 7,
+                    mergedColoums : 8,
                     hide : true
                 },
 
@@ -261,7 +261,7 @@ class SectorwisePlan extends Component{
     }
   }
   getData(year, center_ID, projectCategoryType, projectName, beneficiaryType, month){        
-    console.log(year, center_ID, projectCategoryType, projectName, beneficiaryType, month);
+    // console.log(year, center_ID, projectCategoryType, projectName, beneficiaryType, month);
     if(year){
       if(month){
         // console.log("startDate",startDate);

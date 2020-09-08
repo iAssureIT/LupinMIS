@@ -42,12 +42,12 @@ class ActivitywisePlan extends Component{
                      },
                     {
                         heading : 'Annual Plan',
-                        mergedColoums : 5,
+                        mergedColoums : 4,
                         hide : false
                     },
                     {
                         heading : "Source of Financial Plan 'Rs. in Lakh'",
-                        mergedColoums : 7,
+                        mergedColoums : 8,
                         hide : true
                     },
                     {
@@ -377,7 +377,7 @@ class ActivitywisePlan extends Component{
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";   
-        console.log(month); 
+        // console.log(month); 
         if (month==="All"){            
           if(sector_ID==="all"){
             var url = '/api/reports/activity_annual_plans/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID

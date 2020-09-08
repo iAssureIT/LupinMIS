@@ -1,16 +1,3 @@
-/*#center_wise_Achievements .trow19, #center_wise_Achievements .trow20{
-    font-weight: 700;
-}
-#PlanVsAchievement_Financial .trow8{
-    font-weight: 700;
-}
-#PlanVsAchievement_Physical .trow14{
-    font-weight: 700;
-}*/
-/*#center_wise_Achievements .tempTableHeader{
-    background: #fff !important;
-    color: #333;
-}*/
 #center_wise_Achievements tr, #PlanVsAchievement_Physical tr, #PlanVsAchievement_Financial tr{
     background: #fff !important;
     color: #444;

@@ -688,7 +688,7 @@ class IAssureTable extends Component {
 	            	{/* ===  Display Table === */}
 	                <div className={!this.props.divClass ? "table-responsive" : ""} id="section-to-screen">
 						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
-	                        <thead className="tempTableHeader fixedHeader">	     
+	                        <thead className="fixedHeader">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
@@ -700,7 +700,7 @@ class IAssureTable extends Component {
 		                            	null									
 									}
 	                            </tr>
-	                            <tr className="">
+	                            <tr className="tempTableHeader1">
 									{
 										!this.props.noSRNumber ?
 	                            			<th className="umDynamicHeader srpadd text-center">
@@ -744,7 +744,8 @@ class IAssureTable extends Component {
 														!this.props.noSRNumber ?
 														// {
 															// ((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %") && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')) )
-															(!(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')) && !(Object.entries(value)[1][1].includes('-')))
+															// ((Object.entries(value)[1][1]) && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')) && !(Object.entries(value)[1][1].includes('-')))
+															((Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %") && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')))
 															?
 																<td className="textAlignCenter">
 																	<div className="colSr">{this.state.startRange+1+i}</div>

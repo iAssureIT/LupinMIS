@@ -67,21 +67,20 @@
   padding-top: 0px;
 }
 
-.sidenav a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  /*font-size: 18px;*/
-  color: #333;
-  display: block;
-  transition: 0.3s;
-}
-
 .sidenav a:hover {
   color: #f1f1f1;
   background-color: #303F9F;
   border-left: 3px solid #fff;
 }
 
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #fff;
+  display: block;
+  transition: 0.3s;
+}
 #mySidenav .closebtn:hover {
   background-color: #fff;
   border:0px;
@@ -376,19 +375,6 @@ padding: 5px 5px !important;
   overflow-x: hidden;
   transition: 0.5s;
  /* padding-top: 60px;*/
-}
-
-.sidenav a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 18px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
-}
-
-.sidenav a:hover {
-  color: #f1f1f1;
 }
 
 .sidenav .closebtn {

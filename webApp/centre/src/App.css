@@ -1,3 +1,11 @@
+.tempTableHeader{
+  color: #333;
+  background: #aaafac !important;
+}
+.tempTableHeader1{
+  color: #333;
+  background: #c2c6c3 !important;
+}
 .zeroMB{
   margin-bottom: 0px!important
 }

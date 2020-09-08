@@ -52,6 +52,10 @@ class ViewActivity extends Component{
                               heading : '',
                               mergedColoums : 1
                             },
+                            {
+                              heading : '',
+                              mergedColoums : 1
+                            },
                             ]
       },
       "tableHeading"      : {
@@ -149,7 +153,7 @@ class ViewActivity extends Component{
   }
 
   getData(startRange, limitRange, center_ID, year, sector_ID, activity_ID, subactivity_ID, typeofactivity){ 
-    console.log(startRange, limitRange, center_ID, year, sector_ID, activity_ID, subactivity_ID, typeofactivity);
+    // console.log(startRange, limitRange, center_ID, year, sector_ID, activity_ID, subactivity_ID, typeofactivity);
     var data = {
       limitRange : limitRange,
       startRange : startRange,
@@ -161,7 +165,7 @@ class ViewActivity extends Component{
       axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/'+sector_ID+'/'+activity_ID+'/'+subactivity_ID+'/'+typeofactivity)
       // axios.post('/api/activityReport/list/'+center_ID, data)
       .then((response)=>{
-        console.log(startDate,endDate);
+        // console.log(startDate,endDate);
       // $(".fullpageloader").hide();
         console.log("response",response);
         var tableData = response.data.map((a, i)=>{
@@ -475,7 +479,7 @@ class ViewActivity extends Component{
       [event.target.name] : event.target.value
     },()=>{
       this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
-      console.log('name', this.state.year)
+      // console.log('name', this.state.year)
     });
   }
   render() {
