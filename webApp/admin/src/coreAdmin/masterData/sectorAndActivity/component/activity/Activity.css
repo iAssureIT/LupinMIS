@@ -1,5 +1,6 @@
 #Activity .col1, #Activity .col2 {
   width: 318px;
+  text-align: left !important;
 }
 
 #Activity .col3 {

@@ -8,15 +8,17 @@
   height: 30px;
 }
 
-#ProjectMapping .col1
-{
-  width: 100px;
+#ProjectMapping .col1{
+  width: 130px;
+  text-align: left !important;
 }
 #ProjectMapping .col4 {
   width: 250px;
+  text-align: left !important;
 }
 #ProjectMapping .col3, #ProjectMapping .col2{
   width: 250px;
+  text-align: left !important;
 }
 #ProjectMapping .col5{
   width: 70px;
@@ -27,7 +29,6 @@
   overflow: auto;
   width: 100%;
 }
-
 #ProjectMapping .fixedHeader{
   display: table;
   overflow: auto;

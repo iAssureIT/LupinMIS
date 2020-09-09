@@ -1,5 +1,7 @@
+#typeOfCenter .col1{
+	text-align: left !important;
+}
 .notbtn{
-
 	border:1px solid #f4f4f4;
 	height: 36px;
 	border-radius: 3px;

@@ -1,3 +1,9 @@
+#Sector .col1{
+  text-align: left !important;
+}
+#Sector .col2{
+  text-align: left !important;
+}
 /*
 #Sector .col1{
   width: 730px;

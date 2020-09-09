@@ -1,8 +1,10 @@
 
 #SubActivity .col1, #SubActivity .col3, #SubActivity .col2 {
   width: 210px;
+  text-align: left !important;
 }
 #SubActivity .col5, #SubActivity .col4{
+  text-align: left !important;
   width: 100px;
 }
 #SubActivity .col6{

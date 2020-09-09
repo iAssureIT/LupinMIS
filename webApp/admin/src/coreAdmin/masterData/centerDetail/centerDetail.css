@@ -1,12 +1,15 @@
 
 #CenterDetail .col3, #CenterDetail .col4, #CenterDetail .col5 {
+  text-align: left !important;
   width: 220px;
 }
 #CenterDetail .col1, #CenterDetail .col2{
   width: 100px;
+  text-align: left !important;
   white-space: pre-wrap;
 }
 #CenterDetail .col6{
+  text-align: left !important;
   width: 80px;
 }
 #CenterDetail .col7{

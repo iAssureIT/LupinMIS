@@ -622,7 +622,8 @@ class ProjectMapping extends Component{
           text  : response.data.message
         });
       }
-      var sectorData = this.state.sectorData;
+      // var sectorData = this.state.sectorData;
+      var sectorData = [];
       var availableSectors = this.state.availableSectors;
       // console.log("availableSectors.data",availableSectors);
       var availableSectorData = availableSectors.map((block, i)=>{
@@ -682,7 +683,7 @@ class ProjectMapping extends Component{
       // console.log('sortArray',sortArray)
       this.setState({
         availableSectors : sortArray,
-        sectorData       : sectorData,
+        // sectorData       : sectorData,
       },()=>{
         // console.log('this.state.availableSectors',this.state.availableSectors)
         // console.log('this.state.sectorData',this.state.sectorData)

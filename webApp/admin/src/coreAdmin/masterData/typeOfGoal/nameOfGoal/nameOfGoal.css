@@ -1,8 +1,10 @@
 #nameOfGoal .col1
 {
+  text-align: left !important;
   width: 318px;
 }
 #nameOfGoal .col2 {
+  text-align: left !important;
   width: 318px;
 }
 #nameOfGoal .col3 {

@@ -4,6 +4,7 @@
 }
 #SectorMapping .col1{
   width: 150px;
+  text-align: left !important;
   white-space: pre-wrap;
 }
 #SectorMapping .col2 {
