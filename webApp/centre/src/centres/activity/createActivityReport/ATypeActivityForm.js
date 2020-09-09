@@ -290,7 +290,7 @@ class Activity extends Component{
     var arr = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
     var findIndex = arr.findIndex((obj)=>{return obj  === event.target.name});
     // console.log("findIndex",findIndex);
-    if (findIndex !== -1) {
+    if (findIndex !== -1) {/*
       if (parseFloat(subTotal) < parseFloat(totalBudget)) {
         var getstate = arr[findIndex + 1];
         if (getstate) {
@@ -317,7 +317,7 @@ class Activity extends Component{
           }
         }
       }
-    }
+    */}
     this.setState({"total": subTotal });
   }
   handleChange(event){
@@ -399,24 +399,24 @@ class Activity extends Component{
         // console.log("this.state.unitCost = ",this.state.unitCost);
         var totalCostPerBen = (parseFloat(this.state.unitCost) * parseFloat(this.state.qtyPerBen)).toFixed(2);
         // console.log("totalCostPerBen = ",totalCostPerBen);
-        this.state.LHWRF = 0;
-        this.state.NABARD = 0;
-        this.state.bankLoan = 0;
-        this.state.govtscheme = 0;
-        this.state.directCC = 0;
-        this.state.indirectCC = 0;
-        this.state.other = 0;
+        // this.state.LHWRF = 0;
+        // this.state.NABARD = 0;
+        // this.state.bankLoan = 0;
+        // this.state.govtscheme = 0;
+        // this.state.directCC = 0;
+        // this.state.indirectCC = 0;
+        // this.state.other = 0;
         
         this.setState({
           "total"           : totalCostPerBen,
           "totalCostPerBen" : totalCostPerBen,
           "LHWRF"           : totalCostPerBen,
-          "NABARD"    : 0,
-          "bankLoan"  : 0,
-          "govtscheme": 0,
-          "directCC"  : 0,
-          "indirectCC" : 0,
-          "other"     : 0,
+          // "NABARD"          : 0,
+          // "bankLoan"        : 0,
+          // "govtscheme"      : 0,
+          // "directCC"        : 0,
+          // "indirectCC"      : 0,
+          // "other"           : 0,
         });
       }else{
         this.setState({
@@ -526,64 +526,68 @@ class Activity extends Component{
       };
       // console.log("activityValues", activityValues);
       if (parseFloat(this.state.total) === parseFloat(this.state.totalCostPerBen)) {
-        axios.post('/api/activityReport',activityValues)
-        .then((response)=>{
-          console.log("response", response);
-          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-            this.setState({
-              selectedValues : beneficiariesData 
-            })    
-            swal({
-              title : response.data.message,
-              text  : response.data.message,
-            });   
-          })
-        .catch(function(error){       
-          // console.log('error',error);
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
-          }
-        });
-        this.setState({
-          "projectName"            : "-- Select --",
-          "projectCategoryType"    : "LHWRF Grant",
-          "type"                   : true,
-          "district"               : "-- Select --",
-          "block"                  : "-- Select --",
-          "village"                : "-- Select --",
-          "dateofIntervention"     : momentString,
-          "sector"                 : "-- Select --",
-          "typeofactivity"         : "-- Select --",
-          "nameofactivity"         : "",
-          "activity"               : "-- Select --",
-          "subactivity"            : "-- Select --",
-          "location"               : "",
-          "unit"                   : "",
-          "unitCost"               : "0",
-          "qtyPerBen"              : "0",
-          "noOfBeneficiaries"      : "0",
-          "totalCostPerBen"        : "0",
-          "LHWRF"                  : "0",
-          "NABARD"                 : "0",
-          "bankLoan"               : "0",
-          "govtscheme"             : "0",
-          "directCC"               : "0",
-          "indirectCC"             : "0",
-          "other"                  : "0",
-          "total"                  : "0",
-          "remark"                 : "",
-          "selectedBeneficiaries"  :[],
-          "selectedValues"         : [],    
-          "listofBeneficiaries"    : [],      
-          "subActivityDetails"     : '',
-          "sendBeneficiary"        : [],
-          // "availableSectors"   : [],
-          // "availableActivity"  : [],
-          // "availableSubActivity": [],
-        });
+        if(beneficiariesData.length>0)  {
+          axios.post('/api/activityReport',activityValues)
+          .then((response)=>{
+            console.log("response", response);
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+              this.setState({
+                selectedValues : beneficiariesData 
+              })    
+              swal({
+                title : response.data.message,
+                text  : response.data.message,
+              });   
+            })
+          .catch(function(error){       
+            // console.log('error',error);
+            if(error.message === "Request failed with status code 401"){
+              swal({
+                  title : "abc",
+                  text  : "Session is Expired. Kindly Sign In again."
+              });
+            }
+          });
+          this.setState({
+            "projectName"            : "-- Select --",
+            "projectCategoryType"    : "LHWRF Grant",
+            "type"                   : true,
+            "district"               : "-- Select --",
+            "block"                  : "-- Select --",
+            "village"                : "-- Select --",
+            "dateofIntervention"     : momentString,
+            "sector"                 : "-- Select --",
+            "typeofactivity"         : "-- Select --",
+            "nameofactivity"         : "",
+            "activity"               : "-- Select --",
+            "subactivity"            : "-- Select --",
+            "location"               : "",
+            "unit"                   : "",
+            "unitCost"               : "0",
+            "qtyPerBen"              : "0",
+            "noOfBeneficiaries"      : "0",
+            "totalCostPerBen"        : "0",
+            "LHWRF"                  : "0",
+            "NABARD"                 : "0",
+            "bankLoan"               : "0",
+            "govtscheme"             : "0",
+            "directCC"               : "0",
+            "indirectCC"             : "0",
+            "other"                  : "0",
+            "total"                  : "0",
+            "remark"                 : "",
+            "selectedBeneficiaries"  :[],
+            "selectedValues"         : [],    
+            "listofBeneficiaries"    : [],      
+            "subActivityDetails"     : '',
+            "sendBeneficiary"        : [],
+            // "availableSectors"   : [],
+            // "availableActivity"  : [],
+            // "availableSubActivity": [],
+          });              
+        }else{
+          swal("abc",'Please select atleast single Beneficiary.');
+        }
       }else{
         swal("abc",'Total Costs are not equal! Please check.');
       }
@@ -657,58 +661,66 @@ class Activity extends Component{
         "projectCategoryType"   : this.state.projectCategoryType,
         "type"                  : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
       };
-      // console.log('activityValues',activityValues)
-      axios.patch('/api/activityReport',activityValues)
-      .then((response)=>{
-        // console.log("update",response);
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
-        swal({
-          title : response.data.message,
-          text  : response.data.message,
-        });
-      })
-      .catch(function(error){ 
-        // console.log("error = ",error);
-      });
-      this.setState({
-        "projectName"           : "-- Select --",
-        "projectCategoryType"   : "LHWRF Grant",
-        "type"                  : true,
-        "district"              : "-- Select --",
-        "block"                 : "-- Select --",
-        "village"               : "-- Select --",
-        "dateofIntervention"    : momentString,
-        "sector"                : "-- Select --",
-        "typeofactivity"        : "-- Select --",
-        "nameofactivity"        : "",
-        "activity"              : "-- Select --",
-        "subactivity"           : "-- Select --",
-        "unit"                  : "",
-        "location"              : "",
-        "unitCost"              : "0",
-        "noOfBeneficiaries"     : "0",
-        "qtyPerBen"             : "0",
-        "totalCostPerBen"       : "0",
-        "LHWRF"                 : "0",
-        "NABARD"                : "0",
-        "bankLoan"              : "0",
-        "govtscheme"            : "0",
-        "directCC"              : "0",
-        "indirectCC"            : "0",
-        "other"                 : "0",
-        "total"                 : "0",
-        "remark"                : "",
-        "selectedBeneficiaries" :[],
-        "selectedValues"        : [],    
-        "listofBeneficiaries"   : [],      
-        "subActivityDetails"    : '',
-        "sendBeneficiary"       : [],      
-        "editId"                : "",
-        // "availableSectors"   : [],
-        // "availableActivity"  : [],
-        // "availableSubActivity": [],
-      });
-      this.props.history.push('/a-type-activity-form');
+      if (parseFloat(this.state.total) === parseFloat(this.state.totalCostPerBen)) {
+        if(beneficiariesData.length>0)  {
+          // console.log('activityValues',activityValues)
+          axios.patch('/api/activityReport',activityValues)
+          .then((response)=>{
+            // console.log("update",response);
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
+            swal({
+              title : response.data.message,
+              text  : response.data.message,
+            });
+          })
+          .catch(function(error){ 
+            // console.log("error = ",error);
+          });
+          this.setState({
+            "projectName"           : "-- Select --",
+            "projectCategoryType"   : "LHWRF Grant",
+            "type"                  : true,
+            "district"              : "-- Select --",
+            "block"                 : "-- Select --",
+            "village"               : "-- Select --",
+            "dateofIntervention"    : momentString,
+            "sector"                : "-- Select --",
+            "typeofactivity"        : "-- Select --",
+            "nameofactivity"        : "",
+            "activity"              : "-- Select --",
+            "subactivity"           : "-- Select --",
+            "unit"                  : "",
+            "location"              : "",
+            "unitCost"              : "0",
+            "noOfBeneficiaries"     : "0",
+            "qtyPerBen"             : "0",
+            "totalCostPerBen"       : "0",
+            "LHWRF"                 : "0",
+            "NABARD"                : "0",
+            "bankLoan"              : "0",
+            "govtscheme"            : "0",
+            "directCC"              : "0",
+            "indirectCC"            : "0",
+            "other"                 : "0",
+            "total"                 : "0",
+            "remark"                : "",
+            "selectedBeneficiaries" :[],
+            "selectedValues"        : [],    
+            "listofBeneficiaries"   : [],      
+            "subActivityDetails"    : '',
+            "sendBeneficiary"       : [],      
+            "editId"                : "",
+            // "availableSectors"   : [],
+            // "availableActivity"  : [],
+            // "availableSubActivity": [],
+          });
+          this.props.history.push('/a-type-activity-form');
+        }else{
+          swal("abc",'Please select atleast single Beneficiary.');
+        }
+      }else{
+        swal("abc",'Total Costs are not equal! Please check.');
+      }
     }else{
       $("html,body").scrollTop(0)
     }
@@ -991,7 +1003,7 @@ class Activity extends Component{
   }
   getData(startRange, limitRange, center_ID){ 
     // console.log(startRange, limitRange, center_ID);
-    // $(".fullpageloader").show();
+    $(".fullpageloader").show();
       let financeYear;
     let today = moment();
     if(today.month() >= 3){
@@ -1016,7 +1028,7 @@ class Activity extends Component{
           axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
           // axios.post('/api/activityReport/list/'+center_ID, data)
           .then((response)=>{
-          // $(".fullpageloader").hide();
+          $(".fullpageloader").hide();
             console.log("response",response);
             var tableData = response.data.filter((data,i)=>{
               return data.typeofactivity === "Family Level Activity";
@@ -1825,7 +1837,6 @@ class Activity extends Component{
                   <div className="tab-content">
                     <div id="manualactivity"  className="tab-pane fade in active ">
                     <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="AtypeActivity">
-
                       {/*<div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                         <label className="formLable">Activity Type<span className="asterix">*</span></label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
@@ -1844,7 +1855,6 @@ class Activity extends Component{
                         </div>
                         <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
                       </div>
-
                       <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
                         <div className="" id="projectCategoryType" >
                           <label className=" formLable">Program Type<span className="asterix">*</span></label>
@@ -1892,8 +1902,7 @@ class Activity extends Component{
                         </div>
                         : ""
                       } 
-                      <br/>
-                      
+                      <br/>                      
                       <div className="row">
                         <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
                           <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">

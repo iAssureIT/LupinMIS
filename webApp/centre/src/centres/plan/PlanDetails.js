@@ -213,21 +213,21 @@ class PlanDetails extends Component{
       // console.log("total",total);
       this.state.availableSubActivity[parseFloat(index)].totalBudget = (total).toFixed(2);
       this.state.availableSubActivity[parseFloat(index)].LHWRF = (total).toFixed(2);
-      this.state.availableSubActivity[parseFloat(index)].NABARD = 0;
-      this.state.availableSubActivity[parseFloat(index)].bankLoan = 0;
-      this.state.availableSubActivity[parseFloat(index)].directCC = 0;
-      this.state.availableSubActivity[parseFloat(index)].govtscheme = 0;
-      this.state.availableSubActivity[parseFloat(index)].indirectCC = 0;
-      this.state.availableSubActivity[parseFloat(index)].other = 0;
+      // this.state.availableSubActivity[parseFloat(index)].NABARD = 0;
+      // this.state.availableSubActivity[parseFloat(index)].bankLoan = 0;
+      // this.state.availableSubActivity[parseFloat(index)].directCC = 0;
+      // this.state.availableSubActivity[parseFloat(index)].govtscheme = 0;
+      // this.state.availableSubActivity[parseFloat(index)].indirectCC = 0;
+      // this.state.availableSubActivity[parseFloat(index)].other = 0;
       this.setState({ 
         ["totalBudget-"+index] : (total).toFixed(2),
         ["LHWRF-"+index] : (total).toFixed(2),
-        ["NABARD-"+index] : 0,
-        ["bankLoan-"+index] : 0,
-        ["directCC-"+index] : 0,
-        ["govtscheme-"+index] : 0,
-        ["indirectCC-"+index] : 0,
-        ["other-"+index] : 0,
+        // ["NABARD-"+index] : 0,
+        // ["bankLoan-"+index] : 0,
+        // ["directCC-"+index] : 0,
+        // ["govtscheme-"+index] : 0,
+        // ["indirectCC-"+index] : 0,
+        // ["other-"+index] : 0,
       },()=>{
         console.log('this.state.',this.state);
       })
@@ -241,7 +241,7 @@ class PlanDetails extends Component{
     var arr            = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
     var findIndex      = arr.findIndex((obj)=>{return obj  === name});
 
-    if (findIndex !== -1) {
+    if (findIndex !== -1) {/*
       if (parseFloat(subTotal) < parseFloat(totalBudget)) {
         var getstate = arr[findIndex + 1];
         if (getstate) {
@@ -276,7 +276,7 @@ class PlanDetails extends Component{
           }
         }
       }
-    }
+    */}
   }
   
   subActivityDetails(event){
@@ -580,46 +580,52 @@ class PlanDetails extends Component{
             "remark"              : subActivityDetails[i].remark,
           };
           // console.log('planValues',planValues)
-          axios.patch(this.state.apiCall+'/update', planValues)
-          .then((response)=>{
-            // console.log('response',response)
-            swal({
-              title : response.data.message,
-              text  : response.data.message
-            });
-            this.year();
-            this.setState({
-              "subActivityDetails"  :[],
-              "availableActivity"   :[],
-              "month"               : "Q1 (April to June)",
-              "projectName"         : "-- Select --",
-              "projectCategoryType" : "LHWRF Grant",
-              "type"                : true,
-              "sector_id"           : "",
-              "sectorName"          : "-- Select --",
-              "activityName"        : "-- Select --",
-              "editId"              :"",
-              "availableSubActivity":[],
-              "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
-              "shown"               : true,
-              "apiCall"             : '/api/monthlyplans'
-            },()=>{
-              this.props.history.push('/plan-details');
-              var inputGetData = {
-                center_ID  : this.state.center_ID,
-                month      : this.state.month,
-                year       : this.state.year,
-                startRange : this.state.startRange,
-                limitRange : this.state.limitRange,
-                startDate  : this.state.startDate,
-                endDate    : this.state.endDate,
-              }
-              this.getData(inputGetData);
-            });
+          var total = (planValues.LHWRF+planValues.NABARD+planValues.bankLoan+planValues.govtscheme+planValues.directCC+planValues.indirectCC+planValues.other)
+          // console.log("total",total,"planValues.totalBudget",planValues.totalBudget)
+          if(parseFloat(total) === parseFloat(planValues.totalBudget)){
+            axios.patch(this.state.apiCall+'/update', planValues)
+            .then((response)=>{
+              // console.log('response',response)
+              swal({
+                title : response.data.message,
+                text  : response.data.message
+              });
+              this.year();
+              this.setState({
+                "subActivityDetails"  :[],
+                "availableActivity"   :[],
+                "month"               : "Q1 (April to June)",
+                "projectName"         : "-- Select --",
+                "projectCategoryType" : "LHWRF Grant",
+                "type"                : true,
+                "sector_id"           : "",
+                "sectorName"          : "-- Select --",
+                "activityName"        : "-- Select --",
+                "editId"              :"",
+                "availableSubActivity":[],
+                "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
+                "shown"               : true,
+                "apiCall"             : '/api/monthlyplans'
+              },()=>{
+                this.props.history.push('/plan-details');
+                var inputGetData = {
+                  center_ID  : this.state.center_ID,
+                  month      : this.state.month,
+                  year       : this.state.year,
+                  startRange : this.state.startRange,
+                  limitRange : this.state.limitRange,
+                  startDate  : this.state.startDate,
+                  endDate    : this.state.endDate,
+                }
+                this.getData(inputGetData);
+              });
             })
             .catch(function(error){
                 console.log("error"+error);
             }); 
+          }else{
+            swal("abc",'Total Costs are not equal! Please check.');
+          }
         }
       }else{
         swal({

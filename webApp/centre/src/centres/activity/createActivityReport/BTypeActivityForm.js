@@ -291,7 +291,7 @@ class Activity extends Component{
     var arr = ["LHWRF","NABARD","bankLoan","govtscheme","directCC","indirectCC","other"];
     var findIndex = arr.findIndex((obj)=>{return obj  === event.target.name});
     // console.log("findIndex",findIndex);
-    if (findIndex !== -1) {
+    if (findIndex !== -1) {/*
       if (parseFloat(subTotal) < parseFloat(totalBudget)) {
         var getstate = arr[findIndex + 1];
         if (getstate) {
@@ -318,7 +318,7 @@ class Activity extends Component{
           }
         }
       }
-    }
+    */}
     this.setState({"total": subTotal });
   }
 
@@ -400,26 +400,26 @@ class Activity extends Component{
       if (this.state.unitCost > 0 & this.state.quantity > 0) {
         // console.log("this.state.unitCost = ",this.state.unitCost);
         var totalCost = (parseFloat(this.state.unitCost) * parseFloat(this.state.quantity)).toFixed(2);
-        console.log("totalCost = ",totalCost);
-        this.state.LHWRF = 0;
-        this.state.NABARD = 0;
-        this.state.bankLoan = 0;
-        this.state.govtscheme = 0;
-        this.state.directCC = 0;
-        this.state.indirectCC = 0;
-        this.state.other = 0;
+        // console.log("totalCost = ",totalCost);
+        // this.state.LHWRF = 0;
+        // this.state.NABARD = 0;
+        // this.state.bankLoan = 0;
+        // this.state.govtscheme = 0;
+        // this.state.directCC = 0;
+        // this.state.indirectCC = 0;
+        // this.state.other = 0;
         this.setState({
           "total"     : totalCost,
           "totalCost" : totalCost,
           "LHWRF"     : totalCost,
-          "NABARD"    : 0,
-          "bankLoan"  : 0,
-          "govtscheme": 0,
-          "directCC"  : 0,
-          "indirectCC" : 0,
-          "other"     : 0,
+          // "NABARD"    : 0,
+          // "bankLoan"  : 0,
+          // "govtscheme": 0,
+          // "directCC"  : 0,
+          // "indirectCC" : 0,
+          // "other"     : 0,
         },()=>{
-          console.log("totalCost = ",this.state.totalCost);
+          // console.log("totalCost = ",this.state.totalCost);
         });
       }else{
         this.setState({
@@ -507,10 +507,8 @@ class Activity extends Component{
         "projectCategoryType" : this.state.projectCategoryType,
         "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
       };
-      
-      console.log("activityValues", activityValues);
+      // console.log("activityValues", activityValues);
       if (parseFloat(this.state.total) === parseFloat(this.state.totalCost)) {
-
         axios.post('/api/activityReport',activityValues)
         .then((response)=>{
           console.log("response", response);
@@ -620,57 +618,61 @@ class Activity extends Component{
         "type"                : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
       };
       // console.log('activityValues',activityValues)
-      axios.patch('/api/activityReport',activityValues)
-      .then((response)=>{
-        // console.log("update",response);
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
-        swal({
-          title : response.data.message,
-          text  : response.data.message,
+      if (parseFloat(this.state.total) === parseFloat(this.state.totalCost)) {
+        axios.patch('/api/activityReport',activityValues)
+        .then((response)=>{
+          // console.log("update",response);
+          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
+          swal({
+            title : response.data.message,
+            text  : response.data.message,
+          });
+        })
+        .catch(function(error){ 
+          // console.log("error = ",error);
         });
-      })
-      .catch(function(error){ 
-        // console.log("error = ",error);
-      });
-      this.setState({
-        "projectName"        : "-- Select --",
-        "projectCategoryType" : "LHWRF Grant",
-        "type"                : true,
-        "district"          : "-- Select --",
-        "block"             : "-- Select --",
-        "village"           : "-- Select --",
-        "dateofIntervention": momentString,
-        "sector"            : "-- Select --",
-        "typeofactivity"    : "-- Select --",
-        "nameofactivity"    : "",
-        "activity"          : "-- Select --",
-        "subactivity"       : "-- Select --",
-        "unit"              : "",
-        "location"          : "",
-        "unitCost"          : "0",
-        "noOfBeneficiaries" : "0",
-        "quantity"          : "0",
-        "totalCost"         : "0",
-        "LHWRF"             : "0",
-        "NABARD"            : "0",
-        "bankLoan"          : "0",
-        "govtscheme"        : "0",
-        "directCC"          : "0",
-        "indirectCC"        : "0",
-        "other"             : "0",
-        "total"             : "0",
-        "remark"            : "",
-        "selectedBeneficiaries" :[],
-        "selectedValues"         : [],    
-        "listofBeneficiaries": [],      
-        "subActivityDetails" : '',
-        // "availableSectors"   : [],
-        // "availableActivity"  : [],
-        // "availableSubActivity": [],
-        "sendBeneficiary"     : [],      
-        "editId"              : "",
-      });
-      this.props.history.push('/b-type-activity-form');
+        this.setState({
+          "projectName"        : "-- Select --",
+          "projectCategoryType" : "LHWRF Grant",
+          "type"                : true,
+          "district"          : "-- Select --",
+          "block"             : "-- Select --",
+          "village"           : "-- Select --",
+          "dateofIntervention": momentString,
+          "sector"            : "-- Select --",
+          "typeofactivity"    : "-- Select --",
+          "nameofactivity"    : "",
+          "activity"          : "-- Select --",
+          "subactivity"       : "-- Select --",
+          "unit"              : "",
+          "location"          : "",
+          "unitCost"          : "0",
+          "noOfBeneficiaries" : "0",
+          "quantity"          : "0",
+          "totalCost"         : "0",
+          "LHWRF"             : "0",
+          "NABARD"            : "0",
+          "bankLoan"          : "0",
+          "govtscheme"        : "0",
+          "directCC"          : "0",
+          "indirectCC"        : "0",
+          "other"             : "0",
+          "total"             : "0",
+          "remark"            : "",
+          "selectedBeneficiaries" :[],
+          "selectedValues"         : [],    
+          "listofBeneficiaries": [],      
+          "subActivityDetails" : '',
+          // "availableSectors"   : [],
+          // "availableActivity"  : [],
+          // "availableSubActivity": [],
+          "sendBeneficiary"     : [],      
+          "editId"              : "",
+        });
+        this.props.history.push('/b-type-activity-form');
+      }else{
+        swal("abc",'Total Costs are not equal! Please check.');
+      }
     }else{
       $("html,body").scrollTop(0)
     }
