@@ -472,36 +472,6 @@ class PlanDetails extends Component{
                   // })
                 }
                 this.year();
-                this.setState({
-                  "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
-                  "month"               : "Q1 (April to June)",
-                  "projectName"         : "-- Select --",
-                  "projectCategoryType" : "LHWRF Grant",
-                  "type"                : true,
-                  "center"              :"",
-                  "sector_id"           :"",
-                  "sectorName"          :"-- Select --",
-                  "activityName"        :"-- Select --",
-                  // "fields"              :fields,
-                  "editId"              :"",
-                  "subActivityDetails"  :[],
-                  "availableSubActivity":[],
-                  "availableActivity"   :[],
-                  "subActivityDetails[i][name]":"",
-                  "shown"               : true,
-                  "apiCall"             : '/api/monthlyplans'
-                },()=>{
-                  var inputGetData = {
-                    center_ID  : this.state.center_ID,
-                    month      : this.state.month,
-                    year       : this.state.year,
-                    startRange : this.state.startRange,
-                    limitRange : this.state.limitRange,
-                    startDate  : this.state.startDate,
-                    endDate    : this.state.endDate,
-                  }
-                  this.getData(inputGetData);
-                });
               })
               .catch(function(error){
                 console.log("error"+error);
@@ -529,7 +499,37 @@ class PlanDetails extends Component{
         title : "abc",
         text  : "Please fill atleast one SubActivity Details."
       });
-    }         
+    }       
+    this.setState({
+      "months"              :["Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
+      "month"               : "Q1 (April to June)",
+      "projectName"         : "-- Select --",
+      "projectCategoryType" : "LHWRF Grant",
+      "type"                : true,
+      "center"              :"",
+      "sector_id"           :"",
+      "sectorName"          :"-- Select --",
+      "activityName"        :"-- Select --",
+      // "fields"              :fields,
+      "editId"              :"",
+      "subActivityDetails"  :[],
+      "availableSubActivity":[],
+      "availableActivity"   :[],
+      "subActivityDetails[i][name]":"",
+      "shown"               : true,
+      "apiCall"             : '/api/monthlyplans'
+    },()=>{
+      var inputGetData = {
+        center_ID  : this.state.center_ID,
+        month      : this.state.month,
+        year       : this.state.year,
+        startRange : this.state.startRange,
+        limitRange : this.state.limitRange,
+        startDate  : this.state.startDate,
+        endDate    : this.state.endDate,
+      }
+      this.getData(inputGetData);
+    });  
   }
   Update(event){    
     event.preventDefault();
@@ -1260,7 +1260,7 @@ class PlanDetails extends Component{
           }
         }
         newavailableSubActivity.sort(dynamicSort("subActivityName"));
-        console.log("newavailableSubActivity",newavailableSubActivity);
+        // console.log("newavailableSubActivity",newavailableSubActivity);
         this.setState({
           availableSubActivity : newavailableSubActivity
         })
@@ -1315,7 +1315,8 @@ class PlanDetails extends Component{
             "startDate"               : editData.startDate,          
             "endDate"                 : editData.endDate,    
           },()=>{
-            // console.log("edit in func",this.state);
+            this.getAvailableActivity(editData.sector_ID, editData.activityName, editData.activity_ID);
+            console.log("edit in func",this.state.availableSubActivity);
           })      
         }
       }).catch(function (error) {
@@ -1724,7 +1725,7 @@ class PlanDetails extends Component{
                             {this.state.availableSubActivity ? <hr className=""/> :""}
                           </div>
                           {
-                            this.state.availableActivity && this.state.availableSubActivity && this.state.availableSubActivity.length >0?
+                            this.state.availableSubActivity && this.state.availableSubActivity.length >0?
                             this.state.availableSubActivity.map((data, index)=>{
                               // console.log('data',this.state.availableSubActivity);
                               // if(data.subActivityName ){

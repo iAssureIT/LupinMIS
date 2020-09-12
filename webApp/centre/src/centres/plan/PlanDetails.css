@@ -1,8 +1,11 @@
-#FileWiseMonthlyPlanList .col5{
+#FileWiseMonthlyPlanList .col5 p{
 	text-align: center !important;
 }
 
 #FileWisePlanList .col1{
+	text-align: left !important;
+}
+#FileWiseMonthlyPlanList .col1{
 	text-align: left !important;
 }
 
