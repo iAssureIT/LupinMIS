@@ -1019,6 +1019,7 @@ class Activity extends Component{
       var secondYear= this.state.financeYear.split('-')[1]
       var financialYear = "FY "+firstYear+" - "+secondYear;
       this.setState({
+        
         year       :financialYear
       },()=>{
         if(this.state.year && center_ID){
@@ -1026,7 +1027,7 @@ class Activity extends Component{
           var endDate = this.state.year.substring(10, 15)+"-03-31";    
           //localhost:3054/api/activityReport/list/5e034ce62d2479a2ed5707ed/2019-04-01/2019-04-31
           axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
-          // axios.post('/api/activityReport/list/'+center_ID, data)
+          // axios.get('/api/activityReport/list/'+center_ID)
           .then((response)=>{
           $(".fullpageloader").hide();
             console.log("response",response);
