@@ -186,12 +186,12 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/centers/count/typeofcenter',
     }).then((response)=> {
-      console.log('response', response);
+      // console.log('response', response);
       this.setState({
         centerData   : response.data,
         centerCounts : response.data.map((o,i)=>{return o.count})
       },()=>{
-        console.log('centerCounts', this.state.centerCounts);
+        // console.log('centerCounts', this.state.centerCounts);
         this.setState({
           "centerCount" : this.state.centerCounts.reduce((a,b)=>{return a + b})
         })

@@ -29,7 +29,7 @@ export default class StatusComponent extends Component{
 
     
   render(){
-    console.log('this.props.stats.centerData',this.props.stats.centerData);
+    // console.log('this.props.stats.centerData',this.props.stats.centerData);
     return(
       <main className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mainicon NOpadding" >
