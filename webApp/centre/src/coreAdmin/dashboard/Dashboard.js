@@ -384,7 +384,7 @@ export default class Dashboard extends Component{
         // console.log('cumulative_Data',response);
         $(".fullpageloader").hide();
         this.setState({              
-          "cum_Achievement_total"                  : response.data[0].total,
+          "cum_Achievement_total"                  : (response.data[0].total).toFixed(2),
           "cum_Achievement_reach"                  : response.data[0].reach,
           "cum_Achievement_familyUpgradation"      : response.data[0].familyUpgradation,
           "cum_Achievement_upgradedBenCount"       : response.data[0].upgradedBenCount,
@@ -700,9 +700,9 @@ export default class Dashboard extends Component{
                     <StatusComponent 
                       stats={{
                         color:"#F39C2F", 
-                        icon:"rupee",heading1:"Budget",
-                        value1:this.state.cum_Plan_total        ? "Rs. "+this.state.cum_Plan_total +" L" : "Rs. 0 L", heading2:"Expenditure",
-                        value2:this.state.cum_Achievement_total ? "Rs. "+this.state.cum_Achievement_total +" L" : "Rs. 0 L",multipleValues : false}} 
+                        icon:"rupee",
+                        heading1:"Budget", value1:this.state.cum_Plan_total        ? "Rs. "+this.state.cum_Plan_total +" L" : "Rs. 0 L", 
+                        heading2:"Expenditure", value2:this.state.cum_Achievement_total ? "Rs. "+this.state.cum_Achievement_total +" L" : "Rs. 0 L",multipleValues : false}} 
                     />
                 </div>
                 </div>

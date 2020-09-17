@@ -380,7 +380,7 @@ export default class Dashboard extends Component{
         // console.log('cumulative_Data',response);
         $(".fullpageloader").hide();
         this.setState({              
-          "cum_Achievement_total"                  : response.data[0].total,
+          "cum_Achievement_total"                  : (response.data[0].total).toFixed(2),
           "cum_Achievement_reach"                  : response.data[0].reach,
           "cum_Achievement_familyUpgradation"      : response.data[0].familyUpgradation,
           "cum_Achievement_upgradedBenCount"       : response.data[0].upgradedBenCount,
