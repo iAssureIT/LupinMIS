@@ -86,10 +86,11 @@ class GoalSectorReport extends Component{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
     });
     this.getTypeOfGoal();
+    this.year();
     this.getNameOfGoal(this.state.goalType);
     this.getAvailableProjects();
-    this.currentFromDate();
-    this.currentToDate();
+    // this.currentFromDate();
+    // this.currentToDate();
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
@@ -491,6 +492,54 @@ class GoalSectorReport extends Component{
         // console.log("error = ",error);
       });
     }
+  }
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear     = this.state.financeYear.split('-')[0];
+      var secondYear    = this.state.financeYear.split('-')[1];
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      var startDate     = financialYear.substring(3, 7)+"-04-01";
+      var endDate       = financialYear.substring(10, 15)+"-03-31";
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        startDate  :startDate,
+        endDate    :endDate,
+        year       :financialYear
+      },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              // console.log('years',this.state.years);
+              // console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
   }
   render(){
     return(     

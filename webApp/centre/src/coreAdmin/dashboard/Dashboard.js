@@ -154,8 +154,8 @@ export default class Dashboard extends Component{
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.year();
-    this.currentFromDate();
-    this.currentToDate();
+    // this.currentFromDate();
+    // this.currentToDate();
     this.getAvailableCentersData();
     this.getCentersData();
     this.getAvailableCenters();
@@ -634,18 +634,24 @@ export default class Dashboard extends Component{
         financeYear :financeYear
     },()=>{
       // console.log('financeYear',this.state.financeYear);
-      var firstYear= this.state.financeYear.split('-')[0]
-      var secondYear= this.state.financeYear.split('-')[1]
-      // console.log(firstYear,secondYear);
+      var firstYear     = this.state.financeYear.split('-')[0];
+      var secondYear    = this.state.financeYear.split('-')[1];
       var financialYear = "FY "+firstYear+" - "+secondYear;
+      var startDate     = financialYear.substring(3, 7)+"-04-01";
+      var endDate       = financialYear.substring(10, 15)+"-03-31";
       /*"FY 2019 - 2020",*/
       this.setState({
         firstYear  :firstYear,
         secondYear :secondYear,
+        startDate  :startDate,
+        endDate    :endDate,
         year       :financialYear
       },()=>{
         this.cumulative_Plan_Data(this.state.year);
         this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
+        this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -695,7 +701,8 @@ export default class Dashboard extends Component{
                     <StatusComponent 
                       stats={{
                         color:"#4CA75A", 
-                        icon:"user",heading1:"Reach",value1:this.state.cum_Achievement_reach ? this.state.cum_Achievement_reach : 0, heading2:"Upgraded Beneficiaries",value2:this.state.cum_Achievement_upgradedBenCount ? this.state.cum_Achievement_upgradedBenCount : 0,multipleValues : false}} 
+                        icon:"user",heading1:"Reach",value1:this.state.cum_Achievement_reach ? this.state.cum_Achievement_reach : 0, 
+                        heading2:"Upgraded Families",value2:this.state.cum_Achievement_familyUpgradation ? this.state.cum_Achievement_familyUpgradation : 0,multipleValues : false}} 
                     />
                     <StatusComponent 
                       stats={{

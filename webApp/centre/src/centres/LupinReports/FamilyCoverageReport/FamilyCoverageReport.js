@@ -105,8 +105,9 @@ class FamilyCoverageReport extends Component{
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableProjects();
     this.getAvailableSectors();
-    this.currentFromDate();
-    this.currentToDate();
+    this.year();
+    // this.currentFromDate();
+    // this.currentToDate();
     this.setState({
       // "center"  : this.state.center[0],
       // "sector"  : this.state.sector[0],
@@ -443,7 +444,6 @@ class FamilyCoverageReport extends Component{
       
   getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID, activity_ID, subActivity_ID, isUpgraded){        
     console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
-      var endDate = "2021-06-17"
       if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
         if(sector_ID==="all"){
           var url = ('/api/report/upgrade_family_report/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
@@ -746,6 +746,55 @@ class FamilyCoverageReport extends Component{
     WindowObject.focus();
     WindowObject.print();
     WindowObject.close();
+  }
+
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear     = this.state.financeYear.split('-')[0];
+      var secondYear    = this.state.financeYear.split('-')[1];
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      var startDate     = financialYear.substring(3, 7)+"-04-01";
+      var endDate       = financialYear.substring(10, 15)+"-03-31";
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        startDate  :startDate,
+        endDate    :endDate,
+        year       :financialYear
+      },()=>{
+        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              // console.log('years',this.state.years);
+              // console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
   }
   render(){
     return( 
@@ -1117,7 +1166,7 @@ class FamilyCoverageReport extends Component{
                                             sectorLength !== 0 && value.sectorData ?
                                               Object.entries(value.sectorData).map(([key, value1], index)=> {
                                               // console.log("value1===================",value1[0])
-                                              console.log("value1.isUpgraded",value1.isUpgraded)
+                                              // console.log("value1.isUpgraded",value1.isUpgraded)
                                                 return(
 
                                                   <tr className="tableRow" key={index}>
