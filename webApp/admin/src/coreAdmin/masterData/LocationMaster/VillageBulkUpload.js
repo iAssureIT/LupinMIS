@@ -3,6 +3,7 @@ import $                      from 'jquery';
 import axios                  from 'axios';
 // import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import Loader                 from "../../../common/Loader.js";
+import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import BulkUpload             from "../../../admin/bulkupload/BulkUpload.js";
 
 class VillageBulkUpload extends Component{
@@ -10,6 +11,9 @@ class VillageBulkUpload extends Component{
   constructor(props){
     super(props);  
     this.state = {
+      "stateID"                : "all",
+      "districtID"             : "all",
+      "blockID"                : "all",
       "tableData"           :[],
       "shown"               : true,
       fileDetailUrl         : "/api/villages/get/filedetails/",
@@ -27,7 +31,31 @@ class VillageBulkUpload extends Component{
         blockName        : "Block Name",
         villageName      : "Village Name",
         failedRemark     : "Failed Data Remark"
-      }
+      },
+      "tableHeading"                : {
+          stateCode         : "State Code",
+          stateName         : "State Name",
+          districtName      : "District",
+          blockName         : "Block",
+          cityName          : "Village",
+          action           : 'Action',
+      },
+      "downloadtableHeading"                : {
+          stateCode         : "State Code",
+          stateName         : "State Name",
+          districtName      : "District",
+          blockName         : "Block",
+          cityName          : "Village",
+      },
+      "tableObjects"        : {
+        deleteMethod        : 'delete',
+        apiLink             : '/api/villages/',
+        editUrl             : '/villagebulkupload/',
+        downloadApply       : true,
+        paginationApply     : false,
+        searchApply         : false,
+      },
+      "editId"              : props.match.params ? props.match.params.villageID : '',
     }
     this.uploadedData = this.uploadedData.bind(this);
     this.getFileDetails = this.getFileDetails.bind(this);
@@ -45,7 +73,8 @@ class VillageBulkUpload extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    });    
+    });   
+    this.getData(); 
     axios
     .get("/api/countries/get/list")
     .then((response)=> {
@@ -54,6 +83,7 @@ class VillageBulkUpload extends Component{
         countryArray : response.data, 
         countryID : response.data[0]._id, 
       },()=>{
+        this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
         // console.log('countryID',this.state.countryID);
       })
     })
@@ -61,7 +91,33 @@ class VillageBulkUpload extends Component{
     })
   }
 
-  getData(inputGetData){
+  getData(countryID, stateID, districtID, blockID){
+    // console.log(countryID, stateID, districtID, blockID);
+    if(countryID && stateID && districtID && blockID){
+      $(".fullpageloader").show();
+      axios.get('/api/villages/get/villagelist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID)
+      .then((response)=>{
+        $(".fullpageloader").hide();
+        // console.log('response',response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id               : a._id,
+            stateCode         : a.stateCode,
+            stateName         : a.stateName,
+            districtName      : a.districtName,
+            blockName         : a.blockName,
+            cityName          : a.cityName,
+          }
+        })
+        this.setState({
+          tableData : tableData,
+          downloadData : tableData, 
+        });
+      })
+      .catch(function(error){
+        console.log("error = ",error);
+      });
+    }
   }
   getStateName(stateID){
     axios
@@ -125,9 +181,24 @@ class VillageBulkUpload extends Component{
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                  <ul className="nav tabNav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12">
+                    <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualState">List</a></li>
+                    <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkState">Bulk Upload</a></li>
+                  </ul> 
+                  <div className="tab-content mt col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <div id="manualState"  className="tab-pane fade in active ">
+                        <IAssureTable
+                          tableName = "Village"
+                          id = "Village"
+                          downloadtableHeading={this.state.downloadtableHeading}
+                          downloadData={this.state.downloadData}
+                          tableHeading={this.state.tableHeading}
+                          tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          tableObjects={this.state.tableObjects}
+                        />
+                    </div>
+                    <div id="bulkState" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <BulkUpload 
                         url="/api/villages/post/bulkinsert" 
                         data={{"countryID" : this.state.countryID ? this.state.countryID : "" }}
@@ -146,8 +217,7 @@ class VillageBulkUpload extends Component{
                         goodDataCount={this.state.goodDataCount}
                         />
                     </div>
-                  </div>
-                                
+                  </div>                                       
                 </div>
               </div>
             </section>

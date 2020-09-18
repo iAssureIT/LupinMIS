@@ -1,0 +1,34 @@
+.tabNav>li>a {
+  border-radius: 0;
+  color: #444;
+  background: #eee;
+}
+.tabNav>li>a:focus, .tabNav>li>a:hover {
+  text-decoration: none;
+  background-color: #ddd;
+}
+.tabNav > li.active > a, .tabNav > li.active > a:hover, .tabNav > li.active > a:focus {
+    border-top-color: #4ca75a;
+    color: #fff;
+    background-color: #4ca75a !important;
+}
+.tabNav > li.active > a {
+    font-weight: 600;
+}
+.tabNav>li+li {
+    margin-left: 2px;
+}
+.tabNav>li>a {
+    border-radius: 0;
+    color: #444;
+    background: #eee;
+}
+/*
+.nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+<style>
+
+*/

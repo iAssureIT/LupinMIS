@@ -224,9 +224,17 @@ class Layout extends Component{
                           <Route path="/highlightview/:id"                                                       exact strict component={ HighlightView } />                      
 
                           <Route path="/statebulkupload"                                                         exact strict component={ StateBulkUpload } />
+                          <Route path="/statebulkupload/"                                                         exact strict component={ StateBulkUpload } />
+                          <Route path="/statebulkupload/:stateID"                                                exact strict component={ StateBulkUpload } />
                           <Route path="/districtbulkupload"                                                      exact strict component={ DistrictBulkUpload } />
+                          <Route path="/districtbulkupload/"                                                      exact strict component={ DistrictBulkUpload } />
+                          <Route path="/districtbulkupload/:districtID"                                          exact strict component={ DistrictBulkUpload } />
                           <Route path="/blockbulkupload"                                                         exact strict component={ BlockBulkUpload } />
+                          <Route path="/blockbulkupload/"                                                         exact strict component={ BlockBulkUpload } />
+                          <Route path="/blockbulkupload/:blockID"                                                exact strict component={ BlockBulkUpload } />
                           <Route path="/villagebulkupload"                                                       exact strict component={ VillageBulkUpload } />
+                          <Route path="/villagebulkupload/"                                                       exact strict component={ VillageBulkUpload } />
+                          <Route path="/villagebulkupload/:villageID"                                            exact strict component={ VillageBulkUpload } />
                           <Route path="/listoflocations"                                                         exact strict component={ ListofLocations } />
 
                           <Route path="/activitywise-annual-completion-report"                                   exact strict component={ report1 } />

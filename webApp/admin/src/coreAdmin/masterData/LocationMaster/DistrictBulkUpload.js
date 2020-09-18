@@ -4,6 +4,7 @@ import axios                  from 'axios';
 // import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import Loader                 from "../../../common/Loader.js";
 import BulkUpload             from "../../../admin/bulkupload/BulkUpload.js";
+import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 
 class DistrictBulkUpload extends Component{
   
@@ -23,7 +24,27 @@ class DistrictBulkUpload extends Component{
         stateName        : "State Name",
         districtName     : "District Name",
         failedRemark     : "Failed Data Remark"
-      }
+      },
+      "tableHeading"        : {
+        stateCode        : "State Code",
+        stateName        : "State Name",
+        districtName     : "District Name",
+        action           : 'Action',
+      },
+      "downloadtableHeading"        : {
+        stateCode        : "State Code",
+        stateName        : "State Name",
+        districtName     : "District Name",
+      },
+      "tableObjects"        : {
+        deleteMethod        : 'delete',
+        apiLink             : '/api/districts/',
+        editUrl             : '/districtbulkupload/',
+        downloadApply       : true,
+        paginationApply     : false,
+        searchApply         : false,
+      },
+      "editId"              : props.match.params ? props.match.params.districtID : '',
     }
     this.uploadedData = this.uploadedData.bind(this);
     this.getFileDetails = this.getFileDetails.bind(this);
@@ -41,7 +62,8 @@ class DistrictBulkUpload extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    });    
+    });  
+    this.getData();  
     axios
     .get("/api/countries/get/list")
     .then((response)=> {
@@ -57,9 +79,30 @@ class DistrictBulkUpload extends Component{
     })
   }
 
-  getData(inputGetData){
-
+  getData(){
+    $(".fullpageloader").show();
+    axios
+    .get("/api/districts/get/alllist/all/all")
+    .then((response)=> {
+      console.log('response',response);
+      $(".fullpageloader").hide();
+      var tableData = response.data.map((a, i)=>{
+        return {
+          _id          : a._id, 
+          stateCode    : a.stateCode,
+          stateName    : a.stateName,
+          districtName : a.districtName, 
+        }
+      })
+      this.setState({
+        tableData : tableData,
+        downloadData : tableData,  
+      });
+    })
+    .catch((error)=> {     
+    })
   }
+
   getStateName(stateID){
     axios
     .get("/api/states/get/"+stateID)
@@ -118,9 +161,26 @@ class DistrictBulkUpload extends Component{
                     </div>
                     <hr className="hr-head container-fluid row"/>
                   </div>
-
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                  <ul className="nav tabNav nav-pills col-lg-3 col-lg-offset-9 col-md-3 col-md-offset-9 col-sm-12 col-xs-12">
+                    <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualState">List</a></li>
+                    <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulkState">Bulk Upload</a></li>
+                  </ul> 
+                  <div className="tab-content mt col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <div id="manualState"  className="tab-pane fade in active ">
+                        <IAssureTable
+                          noSRNumber = {false}  
+                          divClass = "col-lg-8 col-lg-offset-2"
+                          tableName = "District"
+                          id = "District"
+                          downloadtableHeading={this.state.downloadtableHeading}
+                          downloadData={this.state.downloadData}
+                          tableHeading={this.state.tableHeading}
+                          tableData={this.state.tableData}
+                          getData={this.getData.bind(this)}
+                          tableObjects={this.state.tableObjects}
+                        />
+                    </div>
+                    <div id="bulkState" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <BulkUpload 
                         url="/api/districts/post/bulkinsert" 
                         data={{"countryID" : this.state.countryID ? this.state.countryID : "" }}
@@ -137,10 +197,9 @@ class DistrictBulkUpload extends Component{
                         failedRecordsCount={this.state.failedRecordsCount}
                         goodRecordsTable={this.state.goodRecordsTable}
                         goodDataCount={this.state.goodDataCount}
-                        />
+                      />
                     </div>
-                  </div>
-                                
+                  </div>                                
                 </div>
               </div>
             </section>

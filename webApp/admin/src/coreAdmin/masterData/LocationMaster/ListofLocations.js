@@ -7,7 +7,7 @@ import 'bootstrap/js/tab.js';
 import Loader                 from "../../../common/Loader.js";
 import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
      
-class SectorList extends Component{
+class ListofLocations extends Component{
   
   constructor(props){
     super(props);
@@ -369,4 +369,4 @@ class SectorList extends Component{
         );
       }
 }
-export default SectorList
+export default ListofLocations

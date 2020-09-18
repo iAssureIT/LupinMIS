@@ -187,11 +187,6 @@ class Layout extends Component{
 
                               <Route path="/listofvillages"                                   exact strict component={ ListOfVillages } />
                            
-                              <Route path="/statebulkupload"                                  exact strict component={ StateBulkUpload } />
-                              <Route path="/districtbulkupload"                               exact strict component={ DistrictBulkUpload } />
-                              <Route path="/blockbulkupload"                                  exact strict component={ BlockBulkUpload } />
-                              <Route path="/villagebulkupload"                                exact strict component={ VillageBulkUpload } />
-                              
 
                               <Route path="/center-details"                                   exact strict component={ centerDetail } />
                               <Route path="/center-details/"                                  exact strict component={ centerDetail } />
@@ -233,6 +228,12 @@ class Layout extends Component{
                               <Route path="/beneficiary-coverage-report"                      exact strict component={ BeneficiaryCoverageReport } />
                               <Route path="/category-wise-report"                             exact strict component={ CategorywiseReport } />
                               <Route path="/goal-sector-report"                               exact strict component={ GoalSectorReport } />
+                           
+                              {/*<Route path="/statebulkupload"                                  exact strict component={ StateBulkUpload } />
+                                <Route path="/districtbulkupload"                               exact strict component={ DistrictBulkUpload } />
+                                <Route path="/blockbulkupload"                                  exact strict component={ BlockBulkUpload } />
+                                <Route path="/villagebulkupload"                                exact strict component={ VillageBulkUpload } />*/}
+
                             </Switch>        
                       </div>
                     </div>
