@@ -1228,7 +1228,7 @@ class BeneficiaryCoverageReport extends Component{
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col9"  : "col9"}>{value1.activityName}</div></td>
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col10"  : "col10"}>{value1.subactivityName}</div></td>
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col11"  : "col11"}>{value1.unit}</div></td>
-                                                  <td className=""><div className={value1.unit === "Total" ? "boldDiv col11"  : "col11"}>{value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
+                                                  <td className=""><div className={value1.unit === "Total" ? "boldDiv col11"  : "col11"}>{value1.date !== "-" ? (value1.date): "-"}</div></td>
                                                   <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}>{value1.isUpgraded}</div></td>
                                                   <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv uidNumber"  : "uidNumber"}>{value1.uidNumber}</div></td>
                                                   <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}>{value1.unitCost}</div></td>

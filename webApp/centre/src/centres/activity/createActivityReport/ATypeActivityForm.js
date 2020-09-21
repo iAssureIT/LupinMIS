@@ -483,11 +483,10 @@ class Activity extends Component{
       element.sourceofFund            = sourceofFund;
       return element;
     })
-    console.log("sourceofFund",sourceofFund)
-    console.log("beneficiariesData",beneficiariesData)
+    // console.log("sourceofFund",sourceofFund)
+    // console.log("beneficiariesData",beneficiariesData)
     var noOfBeneficiaries = this.state.selectedBeneficiaries.length;
     if ($("#AtypeActivity").valid()){
-      // console.log("date",this.state.dateofIntervention);
       var activityValues= {
         "center_ID"         : this.state.center_ID,
         "centerName"        : this.state.centerName,
@@ -612,15 +611,15 @@ class Activity extends Component{
       total      : this.state.total,
     }
     beneficiariesData = this.state.selectedBeneficiaries.map(element=>{
-      console.log("element",element)
+      // console.log("element",element)
       element.qtyPerBen               = this.refs.qtyPerBen.value;
       element.unitCost                = this.refs.unitCost.value;
       element.totalCostPerBen         = this.state.totalCostPerBen;
       element.sourceofFund            = sourceofFund;
       return element;
     })
-    console.log("sourceofFund",sourceofFund)
-    console.log("beneficiariesData",beneficiariesData)
+    // console.log("sourceofFund",sourceofFund)
+    // console.log("beneficiariesData",beneficiariesData)
     var noOfBeneficiaries = this.state.selectedBeneficiaries.length;
     if ($("#AtypeActivity").valid()){
       var activityValues= {
@@ -643,7 +642,7 @@ class Activity extends Component{
         "subactivity_ID"        : this.refs.subactivity.value.split('|')[1],
         "subactivityName"       : this.refs.subactivity.value.split('|')[0],
         "unit"                  : document.getElementById('unit').innerHTML,
-        "unitCost"           : this.refs.unitCost.value,
+        "unitCost"              : this.refs.unitCost.value,
         "noOfBeneficiaries"     : noOfBeneficiaries,
         "quantity"              : this.refs.qtyPerBen.value * noOfBeneficiaries,
         "totalCost"             : this.state.totalCostPerBen * noOfBeneficiaries,
@@ -704,7 +703,7 @@ class Activity extends Component{
             "other"                 : "0",
             "total"                 : "0",
             "remark"                : "",
-            "selectedBeneficiaries" :[],
+            "selectedBeneficiaries" : [],
             "selectedValues"        : [],    
             "listofBeneficiaries"   : [],      
             "subActivityDetails"    : '',
@@ -1039,7 +1038,8 @@ class Activity extends Component{
                 _id                        : a._id,
                 projectCategoryType        : a.projectCategoryType,
                 projectName                : a.projectName==='all'?'-':a.projectName,
-                date                       : moment(a.date).format('DD-MM-YYYY'),
+                // date                       : moment(a.date).format('DD-MM-YYYY'),
+                date                       : (a.date),
                 place                      : a.place,
                 sectorName                 : a.sectorName,
                 activity                   : a.activity,
@@ -1064,7 +1064,8 @@ class Activity extends Component{
                 _id                        : a._id,
                 projectCategoryType        : a.projectCategoryType,
                 projectName                : a.projectName==='all'?'-':a.projectName,
-                date                       : moment(a.date).format('DD-MM-YYYY'),
+                // date                       : moment(a.date).format('DD-MM-YYYY'),
+                date                       : (a.date),
                 district                   : a.district,
                 block                      : a.block,
                 village                    : a.village,
