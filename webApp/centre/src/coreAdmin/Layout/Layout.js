@@ -23,6 +23,7 @@ import Leftsidebar                                from '../common/leftSidebar/Le
 import Rightsidebar                               from '../common/rightSidebar/Rightsidebar.js'
 
 import Family                                     from '../../coreAdmin/masterData/family/Family.js';
+import ToTestFamily                                     from '../../coreAdmin/masterData/family/ToTestFamily.js';
 import FilewiseFamilyList                         from '../../coreAdmin/masterData/family/FilewiseFamilyList.js';
 
 import Beneficiary                                from '../../coreAdmin/masterData/beneficiary/Beneficiary.js';
@@ -164,6 +165,7 @@ class Layout extends Component{
                               <Route path="/beneficiary/:id"                                  exact strict component={ Beneficiary } />
                               <Route path="/Filewise-beneficiary-list"                        exact strict component={ FilewiseBeneficiaryList } />
                               
+                              <Route path="/toTestFamily"                                     exact strict component={ ToTestFamily } />
                               <Route path="/family"                                           exact strict component={ Family } />
                               <Route path="/family/"                                          exact strict component={ Family } />
                               <Route path="/family/:id"                                       exact strict component={ Family } />
