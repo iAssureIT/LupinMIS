@@ -48,7 +48,7 @@ class NewBeneficiary extends Component{
       "tableObjects"       : {
         apiLink             : '/api/activityReport/',
         paginationApply     : false,
-        searchApply         : true,
+        // searchApply         : true,
         editUrl             : '/a-type-activity-form'
       },
      

@@ -135,14 +135,13 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 	  	var deleteMethod =  this.props.deleteMethod;
-		let id = (e.target.id).replace(".", "/");
-	    	console.log("id ",e.target.id )
+		let id = e.target.id;
+    	console.log("id ",e.target.id )
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
 	    	console.log("response ",response )
-	    	console.log("line 139  this.props.data ",this.props.data )
 	    	this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        this.props.history.push(tableObjects.editUrl);
 	        swal({
@@ -836,19 +835,15 @@ class IAssureTable extends Component {
 																	? 
 																		null 
 																	:
-																		value._id==="-"
-																		? 
-																		null
-																		:
-																		<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "") }></i>
+																		<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id }></i>
 																}
 															</span>
-															<div className="modal fade" id={"showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "")} role="dialog">
+															<div className="modal fade" id={"showDeleteModal-"+value._id} role="dialog">
 		                                                        <div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                                          <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
 		                                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                                            <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
-		                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-"+(value._id).replace(/[^a-zA-Z]/g, "")}>&times;</button>
+		                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-"+value._id}>&times;</button>
 		                                                            </div>
 		                                                           
 		                                                            </div>
@@ -861,7 +856,7 @@ class IAssureTable extends Component {
 		                                                                <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
 		                                                              </div>
 		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		                                                                <button onClick={this.delete.bind(this)} id={(value._id)} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
+		                                                                <button onClick={this.delete.bind(this)} id={value._id} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
 		                                                              </div>
 		                                                            </div>
 		                                                          </div>

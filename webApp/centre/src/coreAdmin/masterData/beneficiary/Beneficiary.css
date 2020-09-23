@@ -12,14 +12,14 @@
 	width: 90px;
 }
 
-#Beneficiary .col8,#Beneficiary .col9,#Beneficiary .col10{
+#Beneficiary .col8,#Beneficiary .col9{
     width: 90px !important;
 }
 #Beneficiary .col11, #Beneficiary .col12{
     width: 90px !important;
 }
-#Beneficiary .col13{
-    width: 60px !important;
+#Beneficiary .col10, #Beneficiary .col13{
+    width: 61px !important;
 }
 
 #FilewiseBeneficiaryList .col3 p{
