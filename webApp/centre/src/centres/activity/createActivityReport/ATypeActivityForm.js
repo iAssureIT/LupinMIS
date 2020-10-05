@@ -477,6 +477,8 @@ class Activity extends Component{
       total      : this.state.total,
     }
     beneficiariesData = this.state.selectedBeneficiaries.map(element=>{
+      console.log('element',element);
+      element.originalUpgrade         = element.isUpgraded ? element.isUpgraded : "";
       element.qtyPerBen               = this.refs.qtyPerBen.value;
       element.unitCost                = this.refs.unitCost.value;
       element.totalCostPerBen         = this.state.totalCostPerBen;
@@ -610,8 +612,10 @@ class Activity extends Component{
       other      : this.refs.other.value,
       total      : this.state.total,
     }
+    console.log('beneficiariesData=============',beneficiariesData);
     beneficiariesData = this.state.selectedBeneficiaries.map(element=>{
-      // console.log("element",element)
+      console.log("element",element)
+      element.originalUpgrade         = element.originalUpgrade;
       element.qtyPerBen               = this.refs.qtyPerBen.value;
       element.unitCost                = this.refs.unitCost.value;
       element.totalCostPerBen         = this.state.totalCostPerBen;
@@ -865,7 +869,7 @@ class Activity extends Component{
         method: 'get',
         url: '/api/activityReport/'+id,
       }).then((response)=> {
-        console.log("editData",response);
+        console.log("editData===============",response);
         var editData = response.data[0];
         if(editData){
           var bentableData = []
@@ -1615,15 +1619,16 @@ class Activity extends Component{
           return{
             "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
             "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
-            "date"                : a.date     ? a.date : '-',
+            // "date"                : a.date     ? a.date : '-',
+            "date"                : a.date     ? moment(a.date).format('DD-MM-YYYY') : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName     ? a.sectorName : '-',
             "activityName"        : a.activityName     ? a.activityName : '-',
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
             "unit"                : a.unit     ? a.unit : '-',
             "unitCost"            : a.unitCost     ? a.unitCost : '-',
-            "qtyPerBen"            : a.qtyPerBen     ? a.qtyPerBen : '-',
-            "totalCostPerBen"           : a.totalCostPerBen     ? a.totalCostPerBen : '-',
+            "qtyPerBen"           : a.qtyPerBen     ? a.qtyPerBen : '-',
+            "totalCostPerBen"     : a.totalCostPerBen     ? a.totalCostPerBen : '-',
             "numofBeneficiaries"  : numofBeneficiaries,
             "LHWRF"               : a.sourceofFund.LHWRF        ? a.sourceofFund.LHWRF : '-',
             "NABARD"              : a.sourceofFund.NABARD       ? a.sourceofFund.NABARD : '-',
@@ -1640,14 +1645,15 @@ class Activity extends Component{
           return{
             "programCategory"     : a.programCategory ? a.programCategory    : '-',
             "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
-            "date"                : a.date                ? a.date : '-',
+            // "date"                : a.date                ? a.date : '-',
+            "date"                : a.date     ? moment(a.date).format('DD-MM-YYYY') : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName          ? a.sectorName : '-',
             "activityName"        : a.activityName        ? a.activityName : '-',
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
             "unit"                : a.unit                ? a.unit : '-',
             "unitCost"            : a.unitCost            ? a.unitCost : '-',
-            "qtyPerBen"            : a.qtyPerBen            ? a.qtyPerBen : '-',
+            "qtyPerBen"           : a.qtyPerBen            ? a.qtyPerBen : '-',
             "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
             "LHWRF"               : a.LHWRF        ? a.LHWRF : '-',
             "NABARD"              : a.NABARD       ? a.NABARD : '-',

@@ -193,7 +193,7 @@ class ActivityReportView extends Component{
                                   <div><b>Date</b></div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                                   <div>{this.state.activity  ? moment(this.state.activity.createdAt).format('DD-MM-YYYY') : "-"}</div>
+                                   <div>{this.state.activity  ? moment(this.state.activity.date).format('DD-MM-YYYY') : "-"}</div>
                                 </div>
                               </div>
                               <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mt">

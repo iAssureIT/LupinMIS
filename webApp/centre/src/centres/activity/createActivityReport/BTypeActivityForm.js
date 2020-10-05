@@ -1561,7 +1561,8 @@ class Activity extends Component{
           return{
             "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
             "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
-            "date"                : a.date     ? a.date : '-',
+            // "date"                : a.date     ? a.date : '-',
+            "date"                : a.date     ? moment(a.date).format('DD-MM-YYYY') : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName     ? a.sectorName : '-',
             "activityName"        : a.activityName     ? a.activityName : '-',
@@ -1586,7 +1587,8 @@ class Activity extends Component{
           return{
             "programCategory"     : a.programCategory ? a.programCategory    : '-',
             "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
-            "date"                : a.date                ? a.date : '-',
+            // "date"                : a.date                ? a.date : '-',
+            "date"                : a.date     ? moment(a.date).format('DD-MM-YYYY') : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName          ? a.sectorName : '-',
             "activityName"        : a.activityName        ? a.activityName : '-',

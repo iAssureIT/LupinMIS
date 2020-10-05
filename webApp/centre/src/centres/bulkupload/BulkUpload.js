@@ -218,7 +218,7 @@ class BulkUpload extends Component{
   bulkUpload() {
     $('.fullpageloader').show();
     var initialLmt = 0;
-    var factor = 100;
+    var factor = 1000;
     var endLmt = initialLmt+factor;
     var totalrows = this.state.inputFileData.length;
     var chunkData = [];
