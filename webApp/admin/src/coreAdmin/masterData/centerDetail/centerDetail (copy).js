@@ -542,14 +542,10 @@ class centerDetail extends Component{
     this.handleChange(event);
   }
   getState(){
-    // axios({
-    //   method: 'get',
-    //   url: 'http://locations2.iassureit.com/api/states/get/list/IN',
-    // }).then((response)=> {
-
-    axios
-    .get("/api/states/get/list/IN")
-    .then((response)=> {
+    axios({
+      method: 'get',
+      url: 'http://locations2.iassureit.com/api/states/get/list/IN',
+    }).then((response)=> {
       console.log('response',response);
       var listofStates = response.data;
       function dynamicSort(property) {
@@ -596,15 +592,11 @@ class centerDetail extends Component{
     });
     this.handleChange(event);
   }
-  getDistrict(stateID){
-    // axios({
-    //   method: 'get',
-    //   url: 'http://locations2.iassureit.com/api/districts/get/list/IN/'+stateCode,
-    // }).then((response)=> {
-
-      axios
-      .get("/api/districts/get/alllist/all/"+stateID)
-      .then((response)=> {
+  getDistrict(stateCode){
+    axios({
+      method: 'get',
+      url: 'http://locations2.iassureit.com/api/districts/get/list/IN/'+stateCode,
+    }).then((response)=> {
         console.log('getDistrictresponse',response);
         if(response&&response.data){
           function dynamicSort(property) {
@@ -638,25 +630,21 @@ class centerDetail extends Component{
       districtCovered: districtCovered,
       blocksCovered : '--Select Block--',
     },()=>{
-      var selectedDistrict = this.state.districtCovered.split('|')[1];
+      var selectedDistrict = this.state.districtCovered.split('|')[0];
       this.setState({
         selectedDistrict :selectedDistrict,
         listofVillages : this.state.editlistofVillages
       },()=>{
-        console.log('this.state.stateCode, this.state.selectedDistrict',this.state.stateCode, this.state.selectedDistrict);
         this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
   getBlock(stateCode, selectedDistrict){
-    // axios({
-    //   method: 'get',
-    //   url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-    // }).then((response)=> {
-    axios
-    .get("/api/blocks/get/alllist/all/"+stateCode+'/'+selectedDistrict)
-    .then((response)=> {
-      console.log('response',response);
+    axios({
+      method: 'get',
+      url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+    }).then((response)=> {
+        console.log('response',response);
       if(response&&response.data){
         function dynamicSort(property) {
           var sortOrder = 1;
@@ -705,14 +693,12 @@ class centerDetail extends Component{
     });
   }
   getVillages(countryID, stateID, districtID, blockID){
-    // console.log('http://locations2.iassureit.com/api/cities/get/citieslist/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID);
-    // axios({
-    //   method: 'get',
-    //   url: 'http://locations2.iassureit.com/api/cities/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
-    // }).then((response)=> {
-
-      axios.get('/api/villages/get/villagelist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID)
-      .then((response)=>{
+    console.log('http://locations2.iassureit.com/api/cities/get/citieslist/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID);
+    axios({
+      method: 'get',
+      // url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
+      url: 'http://locations2.iassureit.com/api/cities/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
+    }).then((response)=> {
         console.log('response ==========', response);
         if(response&&response.data[0]){
           function dynamicSort(property) {
@@ -909,7 +895,7 @@ class centerDetail extends Component{
                                       this.state.listofStates ?
                                       this.state.listofStates.map((data, index)=>{
                                         return(
-                                          <option key={index} value={this.camelCase(data.stateName)+'|'+data._id}>{this.camelCase(data.stateName)}</option> 
+                                          <option key={index} value={this.camelCase(data.stateName)+'|'+data.stateCode}>{this.camelCase(data.stateName)}</option> 
                                         );
                                       })
                                       :
