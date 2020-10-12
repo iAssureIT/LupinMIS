@@ -12,13 +12,13 @@ class ListofLocations extends Component{
   constructor(props){
     super(props);
     this.state = {
-      "stateID"                : "all",
-      "districtID"             : "all",
-      "blockID"                : "all",
-      "state"                  : "all",
-      "district"               : "all",
-      "block"                  : "all",
-      "village"                : "all",
+      // "stateID"                : "all",
+      // "districtID"             : "all",
+      // "blockID"                : "all",
+      // "state"                  : "all",
+      // "district"               : "all",
+      // "block"                  : "all",
+      // "village"                : "all",
       "twoLevelHeader"           : {
           apply                    : false,
           firstHeaderData          : []
@@ -52,11 +52,16 @@ class ListofLocations extends Component{
             _id               : a._id,
             countryCode       : a.countryCode,
             countryName       : a.countryName,
-            stateCode         : a.stateCode,
-            stateName         : a.stateName,
-            districtName      : a.districtName,
-            blockName         : a.blockName,
-            cityName          : a.cityName,
+            stateCode         : this.camelCase(a.stateCode),
+            stateName         : this.camelCase(a.stateName),
+            districtName      : this.camelCase(a.districtName),
+            blockName         : this.camelCase(a.blockName),
+            cityName          : this.camelCase(a.cityName),
+            // stateCode         : a.stateCode,
+            // stateName         : a.stateName,
+            // districtName      : a.districtName,
+            // blockName         : a.blockName,
+            // cityName          : a.cityName,
           }
         })
         this.setState({
