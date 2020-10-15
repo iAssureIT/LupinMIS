@@ -8,6 +8,13 @@
 #FileWiseMonthlyPlanList .col1{
 	text-align: left !important;
 }
+#FileWiseMonthlyPlanList .col4{
+	text-align: left !important;
+}
+#FileWiseMonthlyPlanList .col3{
+	text-align: left !important;
+	white-space: nowrap;
+}
 
 #PlanDetails .col1{
 	width: 140px;

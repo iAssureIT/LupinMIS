@@ -428,7 +428,7 @@ class centerDetail extends Component{
             "villagesCovered"          : editData.villagesCovered,
             'stateCode'                : editData.address.stateCode
           },()=>{ 
-            console.log("selectedVillages",this.state.selectedVillages)
+            // console.log("selectedVillages",this.state.selectedVillages)
             function dynamicSort(property) {
               var sortOrder = 1;
               if(property[0] === "-") {
@@ -582,6 +582,7 @@ class centerDetail extends Component{
     this.setState({
       state : selectedState,
     },()=>{
+      console.log(this.state.state);
       var stateCode = this.state.state.split('|')[1];
       this.setState({
         stateCode :stateCode,
@@ -601,7 +602,7 @@ class centerDetail extends Component{
     //   method: 'get',
     //   url: 'http://locations2.iassureit.com/api/districts/get/list/IN/'+stateCode,
     // }).then((response)=> {
-
+      console.log("stateID",stateID);
       axios
       .get("/api/districts/get/alllist/all/"+stateID)
       .then((response)=> {
@@ -643,12 +644,13 @@ class centerDetail extends Component{
         selectedDistrict :selectedDistrict,
         listofVillages : this.state.editlistofVillages
       },()=>{
-        console.log('this.state.stateCode, this.state.selectedDistrict',this.state.stateCode, this.state.selectedDistrict);
+        console.log('this.state.stateCode, this.state.selectedDistrict',this.state.stateCode, this.state.selectedDistrict,"this.state.districtCovered",this.state.districtCovered);
         this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
   getBlock(stateCode, selectedDistrict){
+      console.log(stateCode, selectedDistrict);
     // axios({
     //   method: 'get',
     //   url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
@@ -705,7 +707,7 @@ class centerDetail extends Component{
     });
   }
   getVillages(countryID, stateID, districtID, blockID){
-    // console.log('http://locations2.iassureit.com/api/cities/get/citieslist/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID);
+    console.log(countryID, stateID, districtID, blockID);
     // axios({
     //   method: 'get',
     //   url: 'http://locations2.iassureit.com/api/cities/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
