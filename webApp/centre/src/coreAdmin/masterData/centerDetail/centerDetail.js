@@ -7,7 +7,7 @@ import _                      from 'underscore';
 import 'bootstrap/js/tab.js';
 import validate               from 'jquery-validation';
 import Loader                 from "../../../common/Loader.js";
-// import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
+import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import "./centerDetail.css";
  
 var centerDetailArray  = [];
@@ -67,6 +67,14 @@ class centerDetail extends Component{
         misCoordinatorDetail      : "MIS Coordinator Details",
         numberofVillage           : "No of Villages",
         actions                   : 'Action',
+      },
+      "downloadtableHeading"                : {
+        type                      : "Center Type",
+        centerName                : "Center Name",
+        places                    : "Address",
+        centerInchargeDetail      : "Center Incharge Details",
+        misCoordinatorDetail      : "MIS Coordinator Details",
+        numberofVillage           : "No of Villages",
       },
       "tableObjects"              : {
         deleteMethod              : 'delete',
@@ -230,7 +238,7 @@ class centerDetail extends Component{
   
       axios.patch('/api/centers',centerDetail)
       .then((response)=>{
-        console.log('response',response);
+        // console.log('response',response);
         this.getData(this.state.startRange, this.state.limitRange);
         swal({
           title : response.data.message,
@@ -241,27 +249,27 @@ class centerDetail extends Component{
         console.log("error = ",error);
       });
 
-    /*  this.setState({
-        "typeOfCenter"              : "--Select Center--",
-        "nameOfCenter"              : "",
-        "address"                   : "",
-        "state"                     : "--Select State--",
-        "district"                  : "--Select District--",
-        "pincode"                   : "",
-        "centerInchargeName"        : "",
-        "centerInchargeContact"     : "",
-        "centerInchargeEmail"       : "",
-        "MISCoordinatorName"        : "",
-        "MISCoordinatorContact"     : "",
-        "MISCoordinatorEmail"       : "",
-        "districtCovered"           : "--Select District--",
-        "blocksCovered"              : "--Select Block--",
+      this.setState({
+        // "typeOfCenter"              : "--Select Center--",
+        // "nameOfCenter"              : "",
+        // "address"                   : "",
+        // "state"                     : "--Select State--",
+        // "district"                  : "--Select District--",
+        // "pincode"                   : "",
+        // "centerInchargeName"        : "",
+        // "centerInchargeContact"     : "",
+        // "centerInchargeEmail"       : "",
+        // "MISCoordinatorName"        : "",
+        // "MISCoordinatorContact"     : "",
+        // "MISCoordinatorEmail"       : "",
+        // "districtCovered"           : "--Select District--",
+        // "blocksCovered"              : "--Select Block--",
         "selectedVillages"          : [],
         "listofDistrict"            : [],
         "listofBlocks"              : [],
         "listofVillages"            : [],
         "editlistofVillages"        : [],
-      });*/
+      });
       selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
       this.props.history.push('/center-details/'+this.state.center_ID);
       // this.setState({
@@ -365,6 +373,7 @@ class centerDetail extends Component{
       }
     });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+   
     this.getLength();
     this.getState();
     this.getTypeOfCenter();
@@ -378,6 +387,7 @@ class centerDetail extends Component{
         this.edit(this.state.center_ID);
       }
     })
+    this.getData(this.state.startRange, this.state.limitRange);
   }
   componentWillReceiveProps(nextProps){
     if(nextProps){
@@ -482,12 +492,12 @@ class centerDetail extends Component{
       console.log("error = ",error);
     });
   }
-  getData(startRange, limitRange){
-    /*$(".fullpageloader").show();
+  getData(startRange, limitRange){/*
+    $(".fullpageloader").show();
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
     $(".fullpageloader").hide();
-      // console.log('response', response);
+      console.log('response', response);
       if(response&&response.data&&response.data.length>0){
         var tableData = response.data.map((a, i)=>{
         return {
@@ -501,13 +511,16 @@ class centerDetail extends Component{
           }
         })
         this.setState({
-          tableData : tableData
+          tableData : tableData,
+          downloadData : tableData,
         })
       }
     })
     .catch(function(error){
       console.log("error = ",error);
-    });*/
+    });
+  */}
+  componentWillMount(){
   }
   getTypeOfCenter(){
     axios({
@@ -537,10 +550,15 @@ class centerDetail extends Component{
     this.handleChange(event);
   }
   getState(){
-    axios({
-      method: 'get',
-      url: 'http://locations2.iassureit.com/api/states/get/list/IN',
-    }).then((response)=> {
+    // axios({
+    //   method: 'get',
+    //   url: 'http://locations2.iassureit.com/api/states/get/list/IN',
+    // }).then((response)=> {
+
+    axios
+    .get("/api/states/get/list/IN")
+    .then((response)=> {
+      console.log('response',response);
       var listofStates = response.data;
       function dynamicSort(property) {
         var sortOrder = 1;
@@ -586,11 +604,16 @@ class centerDetail extends Component{
     });
     this.handleChange(event);
   }
-  getDistrict(stateCode){
-    axios({
-      method: 'get',
-      url: 'http://locations2.iassureit.com/api/districts/get/list/IN/'+stateCode,
-    }).then((response)=> {
+  getDistrict(stateID){
+    // axios({
+    //   method: 'get',
+    //   url: 'http://locations2.iassureit.com/api/districts/get/list/IN/'+stateCode,
+    // }).then((response)=> {
+
+      axios
+      .get("/api/districts/get/alllist/all/"+stateID)
+      .then((response)=> {
+        console.log('getDistrictresponse',response);
         if(response&&response.data){
           function dynamicSort(property) {
             var sortOrder = 1;
@@ -607,7 +630,6 @@ class centerDetail extends Component{
             }
           }
           var listofDistrict = response.data;
-          console.log('listofDistrict',listofDistrict);
           listofDistrict.sort(dynamicSort("districtName"));
           this.setState({
             listofDistrict : listofDistrict,
@@ -624,21 +646,25 @@ class centerDetail extends Component{
       districtCovered: districtCovered,
       blocksCovered : '--Select Block--',
     },()=>{
-      var selectedDistrict = this.state.districtCovered.split('|')[0];
+      var selectedDistrict = this.state.districtCovered.split('|')[1];
       this.setState({
         selectedDistrict :selectedDistrict,
         listofVillages : this.state.editlistofVillages
       },()=>{
+        console.log('this.state.stateCode, this.state.selectedDistrict',this.state.stateCode, this.state.selectedDistrict);
         this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
   getBlock(stateCode, selectedDistrict){
-    axios({
-      method: 'get',
-      url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
-    }).then((response)=> {
-      // console.log('response',response);
+    // axios({
+    //   method: 'get',
+    //   url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
+    // }).then((response)=> {
+    axios
+    .get("/api/blocks/get/alllist/all/"+stateCode+'/'+selectedDistrict)
+    .then((response)=> {
+      console.log('response',response);
       if(response&&response.data){
         function dynamicSort(property) {
           var sortOrder = 1;
@@ -655,7 +681,6 @@ class centerDetail extends Component{
           }
         }
         var listofBlocks = response.data;
-        console.log('listofBlocks',listofBlocks);
         listofBlocks.sort(dynamicSort("blockName"));
         this.setState({
           listofBlocks : listofBlocks
@@ -689,12 +714,14 @@ class centerDetail extends Component{
   }
   getVillages(countryID, stateID, districtID, blockID){
     // console.log('http://locations2.iassureit.com/api/cities/get/citieslist/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID);
-    axios({
-      method: 'get',
-      // url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
-      url: 'http://locations2.iassureit.com/api/cities/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
-    }).then((response)=> {
-        console.log('response ==========', response.data);
+    // axios({
+    //   method: 'get',
+    //   url: 'http://locations2.iassureit.com/api/cities/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
+    // }).then((response)=> {
+
+      axios.get('/api/villages/get/villagelist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID)
+      .then((response)=>{
+        console.log('response ==========', response);
         if(response&&response.data[0]){
           function dynamicSort(property) {
             var sortOrder = 1;
@@ -779,7 +806,7 @@ class centerDetail extends Component{
         // selectedVillages.sort(dynamicSort("district"));
         // selectedVillages.sort(dynamicSort("block"));
         selectedVillages.sort(dynamicSort("village"));
-        listofVillages.sort(dynamicSort("village"));
+        // listofVillages.sort(dynamicSort("village"));
         this.setState({
           selectedVillages : selectedVillages,
           listofVillages : listofVillages
@@ -890,7 +917,7 @@ class centerDetail extends Component{
                                       this.state.listofStates ?
                                       this.state.listofStates.map((data, index)=>{
                                         return(
-                                          <option key={index} value={this.camelCase(data.stateName)+'|'+data.stateCode}>{this.camelCase(data.stateName)}</option> 
+                                          <option key={index} value={this.camelCase(data.stateName)+'|'+data._id}>{this.camelCase(data.stateName)}</option> 
                                         );
                                       })
                                       :
@@ -1114,10 +1141,13 @@ class centerDetail extends Component{
                              <hr className="hr-head"/>
                           </div>
                        : null*/}
-{/*                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                         
+                    {/*  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
                           tableName = "Center Details"
                           id = "CenterDetail"
+                          downloadtableHeading={this.state.downloadtableHeading}
+                          downloadData={this.state.downloadData}
                           tableHeading={this.state.tableHeading}
                           twoLevelHeader={this.state.twoLevelHeader} 
                           dataCount={this.state.dataCount}
@@ -1126,7 +1156,8 @@ class centerDetail extends Component{
                           tableObjects={this.state.tableObjects}
                           getSearchText={this.getSearchText.bind(this)}
                         />
-                      </div>*/}
+                      </div>
+                      */}
                     </div>
                   </div>
                 </section>
