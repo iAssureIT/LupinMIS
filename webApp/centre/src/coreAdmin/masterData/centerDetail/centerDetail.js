@@ -607,6 +607,7 @@ class centerDetail extends Component{
             }
           }
           var listofDistrict = response.data;
+          console.log('listofDistrict',listofDistrict);
           listofDistrict.sort(dynamicSort("districtName"));
           this.setState({
             listofDistrict : listofDistrict,
@@ -654,6 +655,7 @@ class centerDetail extends Component{
           }
         }
         var listofBlocks = response.data;
+        console.log('listofBlocks',listofBlocks);
         listofBlocks.sort(dynamicSort("blockName"));
         this.setState({
           listofBlocks : listofBlocks

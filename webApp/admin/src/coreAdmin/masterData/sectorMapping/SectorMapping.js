@@ -332,7 +332,7 @@ class SectorMapping extends Component{
   
   getData(startRange, limitRange){
     $(".fullpageloader").show();
-    console.log('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange);
+    // console.log('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange);
     axios.get('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange)
     .then((response)=>{
       $(".fullpageloader").hide();

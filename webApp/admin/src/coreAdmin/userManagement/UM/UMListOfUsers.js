@@ -33,7 +33,7 @@ class UMListOfUsers extends Component {
                 actions        	: 'Action',
             },
             "startRange"        : 0,
-            "limitRange"        : 10000000000, 
+            "limitRange"        : 1000000000000, 
             blockActive			: "all",
             "listofRoles"	    : "",
 

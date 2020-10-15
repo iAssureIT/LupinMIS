@@ -52,7 +52,7 @@ class ListofLocations extends Component{
             _id               : a._id,
             countryCode       : a.countryCode,
             countryName       : a.countryName,
-            stateCode         : this.camelCase(a.stateCode),
+            stateCode         : (a.stateCode),
             stateName         : this.camelCase(a.stateName),
             districtName      : this.camelCase(a.districtName),
             blockName         : this.camelCase(a.blockName),

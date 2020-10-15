@@ -64,14 +64,10 @@ class typeOfGoal extends Component{
       })
       .catch(function(error){
         console.log("error = ",error);
+      });     
+      this.setState({
+        "typeofGoal"     : "",
       });
-
-       
-        
-        this.setState({
-          "typeofGoal"     : "",
-        });
-     
     } 
   }
 
@@ -108,7 +104,7 @@ class typeOfGoal extends Component{
  
 
   componentWillReceiveProps(nextProps){
-  // console.log('componentWillReceiveProps');
+    // console.log('componentWillReceiveProps');
     var editId = nextProps.match.params.typeofGoalId;
     if(nextProps.match.params.typeofGoalId){
       this.setState({
@@ -125,7 +121,7 @@ class typeOfGoal extends Component{
   
   componentDidMount(){
   axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-  // console.log('componentDidMount', this.state.tableData);
+    // console.log('componentDidMount', this.state.tableData);
     var editId = this.props.match.params.typeofGoalId;
     if(editId){      
       this.edit(editId);
@@ -172,7 +168,7 @@ class typeOfGoal extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
-    console.log('data', data);
+    // console.log('data', data);
       $(".fullpageloader").show();
 
      axios.get('/api/typeofgoals/list',data)
@@ -201,7 +197,7 @@ class typeOfGoal extends Component{
     // });
   }
   componentWillMount(){
-    console.log('componentWillMount');
+    // console.log('componentWillMount');
     this.getLength();
   }
   getSearchText(searchText, startRange, limitRange){

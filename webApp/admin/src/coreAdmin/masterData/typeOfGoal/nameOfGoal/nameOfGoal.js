@@ -46,8 +46,6 @@ class nameOfGoal extends Component{
  
   handleChange(event){
     event.preventDefault();
-  
-
     this.setState({
      "goalName"     : this.refs.goalName.value,  
     });
@@ -56,7 +54,7 @@ class nameOfGoal extends Component{
   handleChangeSelect(event){
     event.preventDefault();
     var goalID = event.target.value.split('|');
-    console.log("goalID",goalID[1]);
+    // console.log("goalID",goalID[1]);
 
     this.setState({
      "typeofGoal"   : this.refs.typeofGoal.value,  
@@ -73,7 +71,7 @@ class nameOfGoal extends Component{
       "typeofGoal"       :this.refs.typeofGoal.value.split('|')[0],
       "goalName"         :this.refs.goalName.value,
       };
-      console.log("typeofGoalValues",typeofGoalValues);
+      // console.log("typeofGoalValues",typeofGoalValues);
       axios.patch('/api/typeofgoals/goalName',typeofGoalValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
@@ -133,7 +131,7 @@ class nameOfGoal extends Component{
   componentWillReceiveProps(nextProps){
   // console.log('componentWillReceiveProps');
     var editId = nextProps.match.params.goalNameId;
-    console.log("editId",editId);
+    // console.log("editId",editId);
     if(nextProps.match.params.goalNameId){
       this.setState({
         editId : editId,
@@ -185,24 +183,23 @@ class nameOfGoal extends Component{
   edit(id){
     var goal_id =this.props.match.params.goalNameId;
     if(id){
-    console.log('editId',id);
+      console.log('editId',id);
       axios({
         method: 'get',
         url: '/api/typeofgoals/'+id,
       }).then((response)=> {
-
         var editData = response.data[0];  
-        console.log("editData==",editData,goal_id);  
-/*        console.log("editData==",(editData.goal.filter((a)=>{return a._id == goal_id ? a.goalName : ''}))[0]);  
-        console.log("editData==",editData.typeofGoal+'|'+editData._id);  
-*/        if(editData)
-        { 
+        // console.log("editData==",editData,goal_id);  
+        // console.log("editData==",(editData.goal.filter((a)=>{return a._id == goal_id ? a.goalName : ''}))[0]);  
+        // console.log("editData==",editData.typeofGoal+'|'+editData._id);  
+                  
+        if(editData){ 
          this.setState({
           "typeofGoal"        : editData ? editData.typeofGoal+'|'+editData._id: "",
           "goalName"          : editData.goal.find((a)=>{return a._id == goal_id }).goalName,
           // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
         },()=>{
-          console.log('this.state', this.state.typeofGoal, this.state.goalName )
+          // console.log('this.state', this.state.typeofGoal, this.state.goalName )
         });         
       } 
         
@@ -253,7 +250,7 @@ class nameOfGoal extends Component{
     // });
   }
   componentWillMount(){
-    console.log('componentWillMount');
+    // console.log('componentWillMount');
     this.getLength();
   }
   getSearchText(searchText, startRange, limitRange){
@@ -272,14 +269,13 @@ class nameOfGoal extends Component{
       method: 'get',
       url: '/api/typeofgoals/list',
     }).then((response)=> {
-        console.log("typeofgoals = ",response);
-        
-        this.setState({
-          availableGoalType: response.data
-        })
+      console.log("typeofgoals = ",response);
+      this.setState({
+        availableGoalType: response.data
+      })
     }).catch(function (error) {
-        console.log("error = ",error);
-      });
+      console.log("error = ",error);
+    });
   }
 
   render() {

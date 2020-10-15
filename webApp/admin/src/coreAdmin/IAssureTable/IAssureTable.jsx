@@ -93,7 +93,7 @@ class IAssureTable extends Component {
 	      center_ID    : center_ID,
 	      centerName   : centerName,
 	    },()=>{
-		    this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+		    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }); 
 	      
 		// this.palindrome('Moam');
@@ -123,7 +123,7 @@ class IAssureTable extends Component {
 			    }
 			});
 		}*/
-	    // this.paginationFunction();
+	    this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
 		// console.log('tableData',nextProps.tableData);
@@ -153,8 +153,8 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 		let id = e.target.id;
-	       console.log('deleteMethodresponse', id);
-		console.log("tableObjects",tableObjects.apiLink+id);
+	 //       console.log('deleteMethodresponse', id);
+		// console.log("tableObjects",tableObjects.apiLink+id);
 	        // console.log('tableObjects', tableObjects);
 		axios({
 	        method: tableObjects.deleteMethod ? tableObjects.deleteMethod : 'delete',
@@ -172,7 +172,7 @@ class IAssureTable extends Component {
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
 */
-	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    	this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        swal({
 	        	text : response.data.message,
 	        	title : response.data.message
@@ -387,11 +387,11 @@ class IAssureTable extends Component {
 		});
 	}
 	getStartEndNum(event){	
-		console.log('getStartEndNum');	
+		// console.log('getStartEndNum');	
 		var limitRange = $(event.target).attr('id').split('|')[0];
 		var limitRange2     = parseInt(limitRange);
 		var startRange = parseInt($(event.target).attr('id').split('|')[1]);
-		this.props.getData(startRange, limitRange);
+		this.props.getData(this.props.data ? this.props.data : startRange, limitRange);
 		this.setState({
 			startRange:startRange,
 		});
@@ -410,7 +410,7 @@ class IAssureTable extends Component {
 		},()=>{
 			this.paginationFunction();
 			if(this.state.normalData === true){
-				this.props.getData(startRange, this.state.limitRange);
+				this.props.getData(this.props.data ? this.props.data : startRange, this.state.limitRange);
 			}	
 			if(this.state.searchData === true){
 				this.tableSearch();
@@ -427,7 +427,7 @@ class IAssureTable extends Component {
 				this.props.getSearchText(searchText, this.state.startRange, this.state.limitRange);
 			});	    	
 	    }else{
-			this.props.getData(this.state.startRange, this.state.limitRange);
+			this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange);
 	    }    	 
     }
     showNextPaginationButtons(){
@@ -457,6 +457,7 @@ class IAssureTable extends Component {
 						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
 					);
 				}
+				// console.log('showPreviousPaginationButtons paginationArray',paginationArray);
 				if(pageCount>=1){				
 					this.setState({
 						paginationArray : paginationArray,
@@ -493,6 +494,7 @@ class IAssureTable extends Component {
 						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
 					);
 				}
+				// console.log('showPreviousPaginationButtons paginationArray',paginationArray);
 				if(pageCount>=1){				
 					this.setState({
 						paginationArray : paginationArray,
@@ -529,6 +531,7 @@ class IAssureTable extends Component {
 						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
 					);
 				}
+				// console.log('paginationArray',paginationArray);
 				if(pageCount>=1){				
 					this.setState({
 						paginationArray : paginationArray,
@@ -590,6 +593,9 @@ class IAssureTable extends Component {
 	    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
     }
 	render() {
+		// console.log('paginationArray***',this.state.paginationArray);
+		// console.log('dataLength***',this.state.dataLength);
+		// console.log('dataCount***',this.state.dataCount);
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
 	       		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -824,7 +830,7 @@ class IAssureTable extends Component {
 		                                                                <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
 		                                                              </div>
 		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		                                                                <button onClick={this.delete.bind(this)} id={(value._id)} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
+		                                                                <button onClick={this.delete.bind(this)} id={(value._id).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
 		                                                              </div>
 		                                                            </div>
 		                                                          </div>

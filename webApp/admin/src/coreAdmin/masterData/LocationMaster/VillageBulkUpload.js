@@ -16,6 +16,9 @@ class VillageBulkUpload extends Component{
       // "blockID"                : "all",
       "tableData"           :[],
       "shown"               : true,
+
+      "startRange"        : 0,
+      "limitRange"        : 50, 
       fileDetailUrl         : "/api/villages/get/filedetails/",
       goodRecordsTable      : [],
       failedRecordsTable    : [],
@@ -73,8 +76,7 @@ class VillageBulkUpload extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    });   
-    this.getData(); 
+    });
     this.getState();
     axios
     .get("/api/countries/get/list")
@@ -83,8 +85,17 @@ class VillageBulkUpload extends Component{
       this.setState({ 
         countryArray : response.data, 
         countryID    : response.data[0]._id, 
-      },()=>{
-        this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
+      },()=>{        
+        // var inputGetData = {
+        //   "countryID"      : this.state.countryID,
+        //   "stateID"        : this.state.stateID,
+        //   "districtID"     : this.state.districtID,
+        //   "blockID"        : this.state.blockID,
+        //   "startRange"     : this.state.startRange,
+        //   "limitRange"     : this.state.limitRange,
+        // }   
+        // this.getData(inputGetData); 
+        this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID, this.state.startRange, this.state.limitRange, this.state.startRange, this.state.limitRange);
         // console.log('countryID',this.state.countryID);
       })
     })
@@ -92,18 +103,26 @@ class VillageBulkUpload extends Component{
     })
   }
 
-  getData(countryID, stateID, districtID, blockID){
+  // getData(inputGetData){
+  //   this.setState({
+  //     propsdata : inputGetData
+  //   },()=>{
+   // console.log("propsdata",this.state.propsdata)
+  //   })
+    // if(inputGetData){
+    getData(countryID, stateID, districtID, blockID, startRange, limitRange){
     // console.log(countryID, stateID, districtID, blockID);
     if(countryID && stateID && districtID && blockID){
       $(".fullpageloader").show();
       axios.get('/api/villages/get/villagelist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID)
+      // axios.post('/api/villages/get/villagelist',inputGetData)
       .then((response)=>{
         $(".fullpageloader").hide();
         // console.log('response',response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id               : a._id,
-            stateCode         : this.camelCase(a.stateCode),
+            stateCode         : (a.stateCode),
             stateName         : this.camelCase(a.stateName),
             districtName      : this.camelCase(a.districtName),
             blockName         : this.camelCase(a.blockName),
@@ -111,8 +130,9 @@ class VillageBulkUpload extends Component{
           }
         })
         this.setState({
-          tableData : tableData,
+          tableData    : tableData,
           downloadData : tableData, 
+          dataCount    : tableData.dataLength
         });
       })
       .catch(function(error){
@@ -219,8 +239,17 @@ class VillageBulkUpload extends Component{
       districtID : 'all',
       blockID    : 'all',
       villageID  : 'all',
-    },()=>{
-      this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
+    },()=>{   
+      // var inputGetData = {
+      //   "countryID"      : this.state.countryID,
+      //   "stateID"        : this.state.stateID,
+      //   "districtID"     : this.state.districtID,
+      //   "blockID"        : this.state.blockID,
+      //   "startRange"     : this.state.startRange,
+      //   "limitRange"     : this.state.limitRange,
+      // }   
+      // this.getData(inputGetData); 
+      this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID, this.state.startRange, this.state.limitRange);
       this.getDistrict(this.state.stateCode);
     })
   }
@@ -274,9 +303,18 @@ class VillageBulkUpload extends Component{
       villageID        : 'all',
       selectedDistrict :selectedDistrict,
       districtID       :districtID,
-    },()=>{
+    },()=>{   
+      // var inputGetData = {
+      //   "countryID"      : this.state.countryID,
+      //   "stateID"        : this.state.stateID,
+      //   "districtID"     : this.state.districtID,
+      //   "blockID"        : this.state.blockID,
+      //   "startRange"     : this.state.startRange,
+      //   "limitRange"     : this.state.limitRange,
+      // }   
+      // this.getData(inputGetData); 
       this.getBlock(this.state.stateCode, this.state.selectedDistrict);
-      this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
+      this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID, this.state.startRange, this.state.limitRange);
     });
   }     
   getBlock(stateCode, selectedDistrict){
@@ -340,9 +378,18 @@ class VillageBulkUpload extends Component{
       blockID            : blockID,
       village            : 'all',   
       villageID          : 'all',
-    },()=>{
-      // console.log(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID)
-      this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
+    },()=>{   
+      // var inputGetData = {
+      //   "countryID"      : this.state.countryID,
+      //   "stateID"        : this.state.stateID,
+      //   "districtID"     : this.state.districtID,
+      //   "blockID"        : this.state.blockID,
+      //   "startRange"     : this.state.startRange,
+      //   "limitRange"     : this.state.limitRange,
+      // }   
+      // this.getData(inputGetData); 
+      // console.log(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID, this.state.startRange, this.state.limitRange)
+      this.getData(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID, this.state.startRange, this.state.limitRange);
     });
   }
 
@@ -374,7 +421,7 @@ class VillageBulkUpload extends Component{
                   </ul> 
                   <div className="tab-content mt col-lg-12 col-md-12 col-xs-12 col-sm-12">
 
-                    <div className="col-lg-12 col-sm-12 col-xs-12 valid_box">
+                    <div className="valid_box">
                       <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  ">
                         <label className="formLable">State</label><span className="asterix">*</span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
@@ -440,7 +487,9 @@ class VillageBulkUpload extends Component{
                           downloadtableHeading={this.state.downloadtableHeading}
                           downloadData={this.state.downloadData}
                           tableHeading={this.state.tableHeading}
+                          dataCount={this.state.dataCount}
                           tableData={this.state.tableData}
+                          data={this.state.propsdata}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
                         />
