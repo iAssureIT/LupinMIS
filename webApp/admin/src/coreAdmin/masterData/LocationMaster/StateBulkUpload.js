@@ -174,7 +174,7 @@ class StateBulkUpload extends Component{
                           url="/api/states/post/stateBulkinsert" 
                           data={{"countryID" : this.state.countryID ? this.state.countryID : "" }}
                           uploadedData={this.uploadedData} 
-                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Create-Beneficiaries.xlsx"
+                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Create-State.xlsx"
                           fileDetailUrl={this.state.fileDetailUrl}
                           getData={this.getData.bind(this)}
                           propsdata={this.state.propsdata}

@@ -191,7 +191,7 @@ class BlockBulkUpload extends Component{
                         url="/api/blocks/post/bulkinsert" 
                         data={{"countryID" : this.state.countryID ? this.state.countryID : "" }}
                         uploadedData={this.uploadedData} 
-                        fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Create-Beneficiaries.xlsx"
+                        fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Create-Block.xlsx"
                         fileDetailUrl={this.state.fileDetailUrl}
                         getData={this.getData.bind(this)}
                         propsdata={this.state.propsdata}
