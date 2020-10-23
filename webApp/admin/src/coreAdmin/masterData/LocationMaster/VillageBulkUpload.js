@@ -421,78 +421,78 @@ class VillageBulkUpload extends Component{
                   </ul> 
                   <div className="tab-content mt col-lg-12 col-md-12 col-xs-12 col-sm-12">
 
-                    <div className="valid_box">
-                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  ">
-                        <label className="formLable">State</label><span className="asterix">*</span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
-                          <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
-                            <option disabled="disabled" selected={true} value="--Select State--">--Select State--</option> 
-                            <option value="all" >All</option>
-                            {
-                              this.state.listofStates ?
-                              this.state.listofStates.map((data, index)=>{
-                                return(
-                                  <option key={index} value={this.camelCase(data.stateName)+'|'+data.stateCode+'|'+data._id}>{this.camelCase(data.stateName)}</option> 
-                                );
-                              })
-                              :
-                              null
-                            }
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                        <label className="formLable">District</label>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                          <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onChange={this.districtChange.bind(this)} >
-                            <option disabled="disabled" selected={true} value="--Select District--" >--Select District--</option>
-                            <option value="all" >All</option>
-                            {
-                              this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
-                              this.state.listofDistrict.map((data, index)=>{
-                                return(
-                                  <option key={index} value={this.camelCase(data.districtName)+'|'+data._id}>{this.camelCase(data.districtName)}</option>
-                                );
-                              })
-                              :
-                              null
-                            }
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  ">
-                        <label className="formLable">Block</label>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
-                          <select className="custom-select form-control inputBox"  value={this.state.block}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
-                            <option disabled="disabled" selected={true} value="--Select Block--" >--Select Block--</option>
-                            <option value="all" >All</option>
-                            {
-                              this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                              this.state.listofBlocks.map((data, index)=>{
-                                return(
-                                  <option key={index} value={this.camelCase(data.blockName)+'|'+data.countryID+'|'+data.stateID+'|'+data.districtID+'|'+data._id}>{this.camelCase(data.blockName)}</option>
-                                );
-                              })
-                              :
-                              null
-                            }
-                          </select>
-                        </div>
-                      </div>
-                    </div> 
                     <div id="manualState" className="tab-pane fade in active ">
-                        <IAssureTable
-                          tableName = "Village"
-                          id = "Village"
-                          downloadtableHeading={this.state.downloadtableHeading}
-                          downloadData={this.state.downloadData}
-                          tableHeading={this.state.tableHeading}
-                          dataCount={this.state.dataCount}
-                          tableData={this.state.tableData}
-                          data={this.state.propsdata}
-                          getData={this.getData.bind(this)}
-                          tableObjects={this.state.tableObjects}
-                        />
+                      <div className="valid_box">
+                        <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  ">
+                          <label className="formLable">State</label><span className="asterix">*</span>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
+                            <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
+                              <option disabled="disabled" selected={true} value="--Select State--">--Select State--</option> 
+                              <option value="all" >All</option>
+                              {
+                                this.state.listofStates ?
+                                this.state.listofStates.map((data, index)=>{
+                                  return(
+                                    <option key={index} value={this.camelCase(data.stateName)+'|'+data.stateCode+'|'+data._id}>{this.camelCase(data.stateName)}</option> 
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                          <label className="formLable">District</label>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                            <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onChange={this.districtChange.bind(this)} >
+                              <option disabled="disabled" selected={true} value="--Select District--" >--Select District--</option>
+                              <option value="all" >All</option>
+                              {
+                                this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
+                                this.state.listofDistrict.map((data, index)=>{
+                                  return(
+                                    <option key={index} value={this.camelCase(data.districtName)+'|'+data._id}>{this.camelCase(data.districtName)}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  ">
+                          <label className="formLable">Block</label>
+                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
+                            <select className="custom-select form-control inputBox"  value={this.state.block}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
+                              <option disabled="disabled" selected={true} value="--Select Block--" >--Select Block--</option>
+                              <option value="all" >All</option>
+                              {
+                                this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                this.state.listofBlocks.map((data, index)=>{
+                                  return(
+                                    <option key={index} value={this.camelCase(data.blockName)+'|'+data.countryID+'|'+data.stateID+'|'+data.districtID+'|'+data._id}>{this.camelCase(data.blockName)}</option>
+                                  );
+                                })
+                                :
+                                null
+                              }
+                            </select>
+                          </div>
+                        </div>
+                      </div> 
+                      <IAssureTable
+                        tableName = "Village"
+                        id = "Village"
+                        downloadtableHeading={this.state.downloadtableHeading}
+                        downloadData={this.state.downloadData}
+                        tableHeading={this.state.tableHeading}
+                        dataCount={this.state.dataCount}
+                        tableData={this.state.tableData}
+                        data={this.state.propsdata}
+                        getData={this.getData.bind(this)}
+                        tableObjects={this.state.tableObjects}
+                      />  
                     </div>
                     <div id="bulkState" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <BulkUpload 
