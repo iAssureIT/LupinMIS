@@ -411,7 +411,6 @@ class centerDetail extends Component{
             })
           })
 
-
           this.setState({
             "typeOfCenter"             : editData.type_ID,
             "nameOfCenter"             : editData.centerName,
@@ -467,9 +466,9 @@ class centerDetail extends Component{
                 this.setState({
                   // listofVillages     : array,
                   // editlistofVillages : array,
-                  // selectedVillages   : selectedVillages
+                 /* selectedVillages   : selectedVillages*/
                 },()=>{
-                  console.log("this.state.editlistofVillages",this.state.editlistofVillages)
+                  // console.log("this.state.editlistofVillages",this.state.editlistofVillages)
                 })
               }
             }
