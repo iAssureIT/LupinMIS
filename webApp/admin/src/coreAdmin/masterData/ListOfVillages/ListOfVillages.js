@@ -40,7 +40,7 @@ class ListOfVillages extends Component{
         url: '/api/reportDashboard/list_count_center_district_blocks_villages_list/'+center_ID+'/'+district+'/'+block,
       }).then((response)=> {
       $(".fullpageloader").hide();
-        // console.log("response ==>",response);
+        console.log("response ==>",response);
         function removeDuplicates(data, param){
           return data.filter(function(item, pos, array){
               return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
@@ -62,8 +62,9 @@ class ListOfVillages extends Component{
         }
         var centerdata = response.data.sort(dynamicSort("centerName"));
 
-        var tableDistrictData= removeDuplicates(centerdata, "district");
-        tableDistrictData = tableDistrictData.map((a, i)=>{
+        // var tableDistrictData= removeDuplicates(centerdata, "district");
+        // var tableBlockData= removeDuplicates(centerdata, "block");
+        var tableDistrictData = centerdata.map((a, i)=>{
           return {
             _id           :a._id,
             centerName    :a.centerName,              
@@ -71,8 +72,7 @@ class ListOfVillages extends Component{
             district      :a.district,            
           }
         })
-        var tableBlockData= removeDuplicates(centerdata, "block");
-        tableBlockData = tableBlockData.map((a, i)=>{
+        var tableBlockData = centerdata.map((a, i)=>{
           return {
             _id           :a._id,
             centerName    :a.centerName,              
@@ -81,8 +81,7 @@ class ListOfVillages extends Component{
             block         :a.block,         
           }
         })
-        var tablevillageData= removeDuplicates(centerdata, "village");
-        tablevillageData = tablevillageData.map((a, i)=>{
+        var tablevillageData = centerdata.map((a, i)=>{
           return {
             _id           :a._id,
             centerName    :a.centerName,              
