@@ -201,7 +201,7 @@ class centerDetail extends Component{
         "listofBlocks"              : [],
         "listofVillages"            : [],
       });
-      selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
+      selectedVillages.map((a ,i)=>{this.setState({[a.village+"|"+a.block] : false})});
     }else{
       $('.error:first').focus()
     }
@@ -270,7 +270,7 @@ class centerDetail extends Component{
         "listofVillages"            : [],
         "editlistofVillages"        : [],
       });
-      selectedVillages.map((a ,i)=>{this.setState({[a.village] : false})});
+      selectedVillages.map((a ,i)=>{this.setState({[a.village+"|"+a.block] : false})});
       this.props.history.push('/center-details');
       this.setState({
         "editId"              : "",
@@ -402,13 +402,16 @@ class centerDetail extends Component{
         method: 'get',
         url: '/api/centers/'+id,
       }).then((response)=> {
+        console.log("edit response================",response)
         if(response&&response.data[0]){ 
           var editData = response.data[0];
           editData.villagesCovered.map((data, i)=>{
             this.setState({
-              [data.village] : true
+              [data.village+"|"+data.block] : true
             })
           })
+
+
           this.setState({
             "typeOfCenter"             : editData.type_ID,
             "nameOfCenter"             : editData.centerName,
@@ -422,13 +425,17 @@ class centerDetail extends Component{
             "MISCoordinatorName"       : editData.misCoordinatorName,
             "MISCoordinatorContact"    : editData.misCoordinatorMobile,
             "MISCoordinatorEmail"      : editData.misCoordinatorEmail,
+
             "selectedVillages"         : editData.villagesCovered,
             "districtCovered"          : "--Select District--",
             "blocksCovered"            : "--Select Block--",
+            "blocksCoveredValue"       : "--Select Block--",
+            // "districtsCovered"          : districtsCovered,
+            // "blocksCovered"             : blocksCovered,            
             "villagesCovered"          : editData.villagesCovered,
             'stateCode'                : editData.address.stateCode
           },()=>{ 
-            // console.log("selectedVillages",this.state.selectedVillages)
+            // console.log("selectedVillages==================",this.state)
             function dynamicSort(property) {
               var sortOrder = 1;
               if(property[0] === "-") {
@@ -450,17 +457,19 @@ class centerDetail extends Component{
             this.getBlock(editData.address.stateCode, editData.address.district);
             if(editData.villagesCovered&&editData.villagesCovered.length>0){
               var returnData = [...new Set(editData.villagesCovered.map(a => a.village))]
+              // console.log("selectedVillages",selectedVillages)
+              // console.log("returnData",returnData);
               if(returnData&&returnData.length>0){
                 var array = returnData.map((data,index) => {
                   return {'cityName' : data};
                 });
                 array.sort(dynamicSort("cityName"));
                 this.setState({
-                  listofVillages     : array,
-                  editlistofVillages : array,
+                  // listofVillages     : array,
+                  // editlistofVillages : array,
                   // selectedVillages   : selectedVillages
                 },()=>{
-                  // console.log("this.state.editlistofVillages",this.state.editlistofVillages)
+                  console.log("this.state.editlistofVillages",this.state.editlistofVillages)
                 })
               }
             }
@@ -638,6 +647,7 @@ class centerDetail extends Component{
     this.setState({
       districtCovered: districtCovered,
       blocksCovered : '--Select Block--',
+      blocksCoveredValue : '--Select Block--',
     },()=>{
       var selectedDistrict = this.state.districtCovered.split('|')[1];
       this.setState({
@@ -650,7 +660,7 @@ class centerDetail extends Component{
     });
   }
   getBlock(stateCode, selectedDistrict){
-      console.log(stateCode, selectedDistrict);
+    console.log(stateCode, selectedDistrict);
     // axios({
     //   method: 'get',
     //   url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
@@ -778,11 +788,13 @@ class centerDetail extends Component{
           }        
         }
       }
+      console.log("this.state[id]",this.state[id],id)
       if(this.state[id] === true){
         selectedVillages.push({
           district  : this.refs.districtCovered.value,
-          block     : this.state.blocksCovered,
-          village   : id
+          // block     : this.state.blocksCovered,
+          block     : id.split('|')[1],
+          village   : id.split('|')[0]
         });
 
         // selectedVillages.sort(dynamicSort("district"));
@@ -801,6 +813,7 @@ class centerDetail extends Component{
         // selectedVillages.sort(dynamicSort("block"));
         selectedVillages.sort(dynamicSort("village"));
         // listofVillages.sort(dynamicSort("village"));
+        console.log("selectedVillages",selectedVillages)
         this.setState({
           selectedVillages : selectedVillages,
           listofVillages : listofVillages
@@ -814,6 +827,8 @@ class centerDetail extends Component{
     event.preventDefault();
     var id = event.target.id;
     var selectedVillages = this.state.selectedVillages[id];
+    console.log("selectedVillages=====",selectedVillages)
+    console.log("id===================",id)
   }
   deleteVillage(event){
     event.preventDefault();
@@ -1010,7 +1025,7 @@ class centerDetail extends Component{
                           <div className="row">
                             <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight">
                               <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <label className="formLable">District Covered</label>
+                                <label className="formLable">District Covered</label>{/*this.state.districtCovered*/}
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtCovered" >
                                   <select className="custom-select form-control inputBox"  value={this.state.districtCovered}  ref="districtCovered" name="districtCovered" onChange={this.districtCoveredChange.bind(this)} >
                                     <option disabled="disabled" selected="true" value="--Select District--" >--Select District--</option>
@@ -1029,7 +1044,7 @@ class centerDetail extends Component{
                                 <div className="errorMsg">{this.state.errors.districtCovered}</div>
                               </div>
                               <div className=" col-lg-6 col-md-6 col-sm-12 col-xs-12  ">
-                                <label className="formLable">Block Covered</label>
+                                <label className="formLable">Block Covered</label>{/*this.state.blocksCoveredValue*/}
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
                                   <select className="custom-select form-control inputBox"  value={this.state.blocksCoveredValue}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
                                     <option disabled="disabled" selected="true" value="--Select Block--" >--Select Block--</option>
@@ -1063,7 +1078,7 @@ class centerDetail extends Component{
                                         <div className="col-lg-12 noPadding">  
                                          <div className="actionDiv">
                                             <div className="centerDetailContainer col-lg-1">
-                                              <input type="checkbox" id={data.cityName}  checked={this.state[data.cityName]?true:false} onChange={this.selectVillage.bind(this)}/>
+                                              <input type="checkbox" id={data.cityName+"|"+data.blockName}  checked={this.state[data.cityName+"|"+data.blockName] ? true:false} onChange={this.selectVillage.bind(this)}/>
                                               <span className="centerDetailCheck"></span>
                                             </div>
                                           </div>                            
