@@ -826,6 +826,7 @@ class centerDetail extends Component{
     var value = event.target.checked;
     var id    = event.target.id;
     var cityName = $(event.currentTarget).parent().parent().siblings('label').html();
+    console.log("cityName",cityName)
     this.setState({
       [id] : value
     },()=>{
@@ -859,21 +860,25 @@ class centerDetail extends Component{
           selectedVillages : selectedVillages,
         });
       }else{
-        var index = selectedVillages.findIndex(v => v.village === id);
-        selectedVillages.splice(selectedVillages.findIndex(v => v.village === id), 1);
+        // data.cityName+"|"+data.blockName
+        var index = selectedVillages.findIndex(v =>  (v.village+"|"+v.block) === id);
+        console.log("index",index)
+        selectedVillages.splice(selectedVillages.findIndex(v => (v.village+"|"+v.block) === id), 1);
+        console.log("selectedVillages",selectedVillages)
         if(this.refs.districtCovered.value==='--Select District--'&&this.state.blocksCovered==='--Select Block--'){
-          listofVillages.splice(listofVillages.findIndex(v => v.cityName === cityName), 1);
+          listofVillages.splice(listofVillages.findIndex(v => v.cityName+"|"+v.blockName === cityName), 1);
+          console.log("listofVillages",listofVillages)
         }
         // selectedVillages.sort(dynamicSort("district"));
         // selectedVillages.sort(dynamicSort("block"));
         selectedVillages.sort(dynamicSort("village"));
         // listofVillages.sort(dynamicSort("village"));
-        console.log("selectedVillages",selectedVillages)
+        console.log("selectedVillages******************",selectedVillages)
         this.setState({
           selectedVillages : selectedVillages,
           listofVillages : listofVillages
         },()=>{
-          console.log("selectedVillages",this.state.selectedVillages)
+          // console.log("selectedVillages",this.state.selectedVillages)
         });
       }
     });      

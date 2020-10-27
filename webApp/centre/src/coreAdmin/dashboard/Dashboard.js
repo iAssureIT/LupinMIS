@@ -285,10 +285,10 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/reportDashboard/list_count_center_district_blocks_villages',
     }).then((response)=> {
-      // console.log("response ==>",response.data);
+      console.log("response ==>",response.data);
       if (response.data && response.data[0]) {
         this.setState({
-          CenterNames              : response.data[0].centerName,
+          CenterNames              : response.data[0].centerName.sort(),
           villagesCoveredInCenter  : response.data[0].villagesCovered.map((o,i)=>{return o}),
           countAllCenter           : response.data[0].countCenter,
           countDistrict            : response.data[0].countDistrict,
@@ -564,16 +564,16 @@ export default class Dashboard extends Component{
       }
       var centerdata = response.data.sort(dynamicSort("centerName"));
 
-      var tableDistrictData= removeDuplicates(centerdata, "district");
-      tableDistrictData = tableDistrictData.map((a, i)=>{
+      // var tableDistrictData= removeDuplicates(centerdata, "district");
+      var tableDistrictData = centerdata.map((a, i)=>{
         return {
           _id           :a._id,
           centerName    :a.centerName,              
           district      :a.district.split('|')[0],            
         }
       })
-      var tableBlockData= removeDuplicates(centerdata, "block");
-      tableBlockData = tableBlockData.map((a, i)=>{
+      // var tableBlockData= removeDuplicates(centerdata, "block");
+      var tableBlockData = centerdata.map((a, i)=>{
         return {
           _id           :a._id,
           centerName    :a.centerName,              
@@ -581,8 +581,8 @@ export default class Dashboard extends Component{
           block         :a.block,         
         }
       })
-      var tablevillageData= removeDuplicates(centerdata, "village");
-      tablevillageData = tablevillageData.map((a, i)=>{
+      // var tablevillageData= removeDuplicates(centerdata, "village");
+      var tablevillageData = centerdata.map((a, i)=>{
         return {
           _id           :a._id,
           centerName    :a.centerName,              

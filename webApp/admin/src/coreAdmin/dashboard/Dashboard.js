@@ -284,7 +284,7 @@ export default class Dashboard extends Component{
       // console.log("response ==>",response.data);
       if (response.data && response.data[0]) {
         this.setState({
-          CenterNames              : response.data[0].centerName,
+          CenterNames              : response.data[0].centerName.sort(),
           villagesCoveredInCenter  : response.data[0].villagesCovered.map((o,i)=>{return o}),
           countAllCenter           : response.data[0].countCenter,
           countDistrict            : response.data[0].countDistrict,
