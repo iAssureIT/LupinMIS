@@ -369,7 +369,6 @@ class PlanDetails extends Component{
           break;
         } 
       }
-      if (!nooffamily) {
         for(var i=0; i<subActivityDetails.length; i++){
           var planValues = {
             "year"                : this.state.year,          
@@ -487,12 +486,13 @@ class PlanDetails extends Component{
             swal("abc",'Total Costs are not equal! Please check.');
           }
         }
+     /* if (!nooffamily) {
       }else{
          swal({
             title : "abc",
             text  : "No. of families of "+subactivityname+" is zero. It must not be zero."
           });
-      }
+      }*/
     }else{
       this.validateFormReq();
       swal({
@@ -544,7 +544,6 @@ class PlanDetails extends Component{
           break;
         } 
       }
-      if (!nooffamily) {
         for(var i=0; i<subActivityDetails.length; i++){
           var planValues = {
             "annualPlan_ID"       : this.state.editId,
@@ -627,12 +626,13 @@ class PlanDetails extends Component{
             swal("abc",'Total Costs are not equal! Please check.');
           }
         }
-      }else{
-        swal({
-          title : "abc",
-          text  : "No. of families of "+subactivityname+" is zero. It must not be zero."
-        });
-      }
+      // if (!nooffamily) {
+      // }else{
+      //   swal({
+      //     title : "abc",
+      //     text  : "No. of families of "+subactivityname+" is zero. It must not be zero."
+      //   });
+      // }
     }
   }
   validateFormReq() {
