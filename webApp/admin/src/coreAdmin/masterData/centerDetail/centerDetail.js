@@ -1253,7 +1253,6 @@ class centerDetail extends Component{
                                             <input type="checkbox" 
                                               id      ={this.state.blocksCovered}  
                                               name    ={this.state.blocksCovered}  
-                                              // checked = {false}
                                               checked ={this.state["blockVillages-"+this.state.blocksCovered] ? true:false} 
                                               onChange ={this.selectAllVillage.bind(this)}
                                             />
@@ -1264,8 +1263,9 @@ class centerDetail extends Component{
                                         {
                                           console.log("===================",this.state["blockVillages-"+this.state.blocksCovered])
                                         }  
-                                        <label className="centerDetaillistItem"><b>{"Select All=="+this.state.selectedVillages.length+"="+this.state.blocksCovered+"=="+this.state["blockVillages-"+this.state.blocksCovered]}</b></label>
-                                         {"pppppppppp"+this.state["blockVillages-"+this.state.blocksCovered]}                      
+                                        <label className="centerDetaillistItem"><b> Select All</b></label>
+                                        {/*"Select All=="+this.state.selectedVillages.length+"="+this.state.blocksCovered+"=="+this.state["blockVillages-"+this.state.blocksCovered]*/}
+                                         {/*"pppppppppp"+this.state["blockVillages-"+this.state.blocksCovered]*/}                      
                                     
                                       </div>
                                     </div>  
