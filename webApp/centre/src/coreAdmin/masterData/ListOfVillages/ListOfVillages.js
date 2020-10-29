@@ -61,26 +61,6 @@ class ListOfVillages extends Component{
           }
         }
         var centerdata = response.data.sort(dynamicSort("centerName"));
-
-        // var tableDistrictData= removeDuplicates(centerdata, "district");
-        // var tableBlockData= removeDuplicates(centerdata, "block");
-         var tableDistrictData = centerdata.map((a, i)=>{
-          return {
-            _id           :a._id,
-            centerName    :a.centerName,              
-            // district      :a.district.split('|')[0],            
-            district      :a.district,            
-          }
-        })
-         var tableBlockData = centerdata.map((a, i)=>{
-          return {
-            _id           :a._id,
-            centerName    :a.centerName,              
-            district      :a.district,            
-            // district      :a.district.split('|')[0],            
-            block         :a.block,         
-          }
-        })
          var tablevillageData = centerdata.map((a, i)=>{
           return {
             _id           :a._id,
@@ -92,8 +72,6 @@ class ListOfVillages extends Component{
           }
         })
         this.setState({
-          tableDistrictData : tableDistrictData,
-          tableBlockData    : tableBlockData,
           tablevillageData  : tablevillageData,
         })
       }).catch(function (error) {

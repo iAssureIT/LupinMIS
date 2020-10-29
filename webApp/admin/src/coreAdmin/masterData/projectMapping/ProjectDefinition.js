@@ -68,7 +68,6 @@ class ProjectMapping extends Component{
        [name] : event.target.value,
        startDate:startDate
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
     });
   }
   onBlurEventFrom(){
@@ -102,7 +101,6 @@ class ProjectMapping extends Component{
        endDate : endDate
     },()=>{
       // console.log("dateUpdate",this.state.endDate);
-      this.getData(this.state.startDate, this.state.endDate, this.state.center_ID);
     });
     // localStorage.setItem('newToDate',dateUpdate);
   }

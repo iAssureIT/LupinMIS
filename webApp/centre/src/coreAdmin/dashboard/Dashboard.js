@@ -564,16 +564,16 @@ export default class Dashboard extends Component{
       }
       var centerdata = response.data.sort(dynamicSort("centerName"));
 
-      // var tableDistrictData= removeDuplicates(centerdata, "district");
-      var tableDistrictData = centerdata.map((a, i)=>{
+      var tableDistrictData= removeDuplicates(centerdata, "district");
+      var tableDistrictData = tableDistrictData.map((a, i)=>{
         return {
           _id           :a._id,
           centerName    :a.centerName,              
           district      :a.district.split('|')[0],            
         }
       })
-      // var tableBlockData= removeDuplicates(centerdata, "block");
-      var tableBlockData = centerdata.map((a, i)=>{
+      var tableBlockData= removeDuplicates(centerdata, "block");
+      var tableBlockData = tableBlockData.map((a, i)=>{
         return {
           _id           :a._id,
           centerName    :a.centerName,              

@@ -397,11 +397,13 @@ class centerDetail extends Component{
   
   edit(id){
     if(id){
+    // $(".fullpageloader").show();
       $('label.error').html('')
       axios({
         method: 'get',
         url: '/api/centers/'+id,
       }).then((response)=> {
+        // $(".fullpageloader").hide();
         console.log("edit response================",response)
         if(response&&response.data[0]){ 
           var editData = response.data[0];
@@ -409,7 +411,7 @@ class centerDetail extends Component{
             this.setState({
               [data.village+"|"+data.block] : true
             })
-          })
+          })      
 
           this.setState({
             "typeOfCenter"             : editData.type_ID,
@@ -466,7 +468,7 @@ class centerDetail extends Component{
                 this.setState({
                   // listofVillages     : array,
                   // editlistofVillages : array,
-                 /* selectedVillages   : selectedVillages*/
+                  // selectedVillages   : selectedVillages
                 },()=>{
                   // console.log("this.state.editlistofVillages",this.state.editlistofVillages)
                 })
@@ -558,7 +560,7 @@ class centerDetail extends Component{
     axios
     .get("/api/states/get/list/IN")
     .then((response)=> {
-      console.log('response',response);
+      // console.log('response',response);
       var listofStates = response.data;
       function dynamicSort(property) {
         var sortOrder = 1;
@@ -610,11 +612,11 @@ class centerDetail extends Component{
     //   method: 'get',
     //   url: 'http://locations2.iassureit.com/api/districts/get/list/IN/'+stateCode,
     // }).then((response)=> {
-      console.log("stateID",stateID);
+      // console.log("stateID",stateID);
       axios
       .get("/api/districts/get/alllist/all/"+stateID)
       .then((response)=> {
-        console.log('getDistrictresponse',response);
+        // console.log('getDistrictresponse',response);
         if(response&&response.data){
           function dynamicSort(property) {
             var sortOrder = 1;
@@ -653,13 +655,13 @@ class centerDetail extends Component{
         selectedDistrict :selectedDistrict,
         listofVillages : this.state.editlistofVillages
       },()=>{
-        console.log('this.state.stateCode, this.state.selectedDistrict',this.state.stateCode, this.state.selectedDistrict,"this.state.districtCovered",this.state.districtCovered);
+        // console.log('this.state.stateCode, this.state.selectedDistrict',this.state.stateCode, this.state.selectedDistrict,"this.state.districtCovered",this.state.districtCovered);
         this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
   }
   getBlock(stateCode, selectedDistrict){
-    console.log(stateCode, selectedDistrict);
+    // console.log(stateCode, selectedDistrict);
     // axios({
     //   method: 'get',
     //   url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
@@ -667,7 +669,7 @@ class centerDetail extends Component{
     axios
     .get("/api/blocks/get/alllist/all/"+stateCode+'/'+selectedDistrict)
     .then((response)=> {
-      console.log('response',response);
+      // console.log('response',response);
       if(response&&response.data){
         function dynamicSort(property) {
           var sortOrder = 1;
@@ -695,143 +697,62 @@ class centerDetail extends Component{
   }
   selectBlock(event){
     event.preventDefault();
-    /*this.camelCase(data.blockName)+'|'+data.countryID+'|'+data.stateID+'|'+data.districtID+'|'+data._id*/
     var blocksCoveredValue = event.target.value;
-    var blocksCovered = blocksCoveredValue.split('|')[0];
-    var countryID = blocksCoveredValue.split('|')[1];
-    var stateID = blocksCoveredValue.split('|')[2];
-    var districtID = blocksCoveredValue.split('|')[3];
-    var blockID = blocksCoveredValue.split('|')[4];
-    console.log('blocksCovered',blocksCoveredValue);
+    var blocksCovered      = blocksCoveredValue.split('|')[0];
+    var countryID          = blocksCoveredValue.split('|')[1];
+    var stateID            = blocksCoveredValue.split('|')[2];
+    var districtID         = blocksCoveredValue.split('|')[3];
+    var blockID            = blocksCoveredValue.split('|')[4];
+
+    var allCityCount =this.state.listofVillages.length;
+    var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
+    console.log(result);
+    var allSelectedCheckbox =result.length; 
+    console.log("===================",allCityCount,allSelectedCheckbox)
+    if(document.getElementById(this.state.blocksCovered) !== null){
+      if(allCityCount===allSelectedCheckbox){
+        document.getElementById(this.state.blocksCovered).checked=true;
+        this.setState({
+          ["blockVillages-"+this.state.blocksCovered] : true
+        })
+      }else{
+        document.getElementById(this.state.blocksCovered).checked=false;
+      }
+    }
     this.setState({
       blocksCoveredValue : blocksCoveredValue,
       blocksCovered : blocksCovered,
       countryID : countryID,
       stateID : stateID,
       districtID : districtID,
-      blockID : blockID
+      blockID : blockID,
     },()=>{
-
-      this.getVillages(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID);
-    });
-  }
-  getVillages(countryID, stateID, districtID, blockID){
-    console.log(countryID, stateID, districtID, blockID);
-    // axios({
-    //   method: 'get',
-    //   url: 'http://locations2.iassureit.com/api/cities/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
-    // }).then((response)=> {
-
-      axios.get('/api/villages/get/villagelist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID)
-      .then((response)=>{
-        console.log('response ==========', response);
-        if(response&&response.data[0]){
-          function dynamicSort(property) {
-            var sortOrder = 1;
-            if(property[0] === "-") {
-                sortOrder = -1;
-                property = property.substr(1);
-            }
-            return function (a,b) {
-              if(sortOrder == -1){
-                  return b[property].localeCompare(a[property]);
-              }else{
-                  return a[property].localeCompare(b[property]);
-              }        
-            }
-          }
-          if(this.state.editlistofVillages.length!==0){
-            var listofVillages = response.data
-            this.state.editlistofVillages.map((data,index) => {
-              var index = listofVillages.findIndex(v => v.cityName === data.cityName);
-              if(index<0){
-                listofVillages.push({'cityName' : data.cityName});
-              }
-            });
-            listofVillages.sort(dynamicSort("cityName"));
-            this.setState({
-              listofVillages : listofVillages
-            })
-          }else{
-          var listofVillages = response.data;
-          listofVillages.sort(dynamicSort("cityName"));
-            this.setState({
-              listofVillages : listofVillages
-            })
-          }
-        }
-    }).catch(function (error) {
-      console.log('error', error);
-    });
-  }
-  selectVillage(event){
-    var selectedVillages = this.state.selectedVillages;
-    var listofVillages = this.state.listofVillages;
-    var value = event.target.checked;
-    var id    = event.target.id;
-    var cityName = $(event.currentTarget).parent().parent().siblings('label').html();
-    this.setState({
-      [id] : value
-    },()=>{
-      function dynamicSort(property) {
-        var sortOrder = 1;
-        if(property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-        return function (a,b) {
-          if(sortOrder == -1){
-              return b[property].localeCompare(a[property]);
-          }else{
-              return a[property].localeCompare(b[property]);
-          }        
+      this.getVillages(this.state.countryID, this.state.stateID, this.state.districtID, this.state.blockID, this.state.blocksCovered);
+      
+      var allCityCount =this.state.listofVillages.length;
+      var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
+      console.log(result);
+      var allSelectedCheckbox =result.length; 
+      console.log("===================",allCityCount,allSelectedCheckbox)
+      if(document.getElementById(this.state.blocksCovered) !== null){
+        if(allCityCount===allSelectedCheckbox){
+          document.getElementById(this.state.blocksCovered).checked=true;
+          this.setState({
+            ["blockVillages-"+this.state.blocksCovered] : true
+          })
+        }else{
+          document.getElementById(this.state.blocksCovered).checked=false;
         }
       }
-      console.log("this.state[id]",this.state[id],id)
-      if(this.state[id] === true){
-        selectedVillages.push({
-          district  : this.refs.districtCovered.value,
-          // block     : this.state.blocksCovered,
-          block     : id.split('|')[1],
-          village   : id.split('|')[0]
-        });
-
-        // selectedVillages.sort(dynamicSort("district"));
-        // selectedVillages.sort(dynamicSort("block"));
-        selectedVillages.sort(dynamicSort("village"));
-        this.setState({
-          selectedVillages : selectedVillages,
-        });
-      }else{
-        // data.cityName+"|"+data.blockName
-        var index = selectedVillages.findIndex(v =>  (v.village+"|"+v.block) === id);
-        console.log("index",index)
-        selectedVillages.splice(selectedVillages.findIndex(v => (v.village+"|"+v.block) === id), 1);
-        console.log("selectedVillages",selectedVillages)
-        if(this.refs.districtCovered.value==='--Select District--'&&this.state.blocksCovered==='--Select Block--'){
-          listofVillages.splice(listofVillages.findIndex(v => v.cityName+"|"+v.blockName === cityName), 1);
-          console.log("listofVillages",listofVillages)
-        }
-        // selectedVillages.sort(dynamicSort("district"));
-        // selectedVillages.sort(dynamicSort("block"));
-        selectedVillages.sort(dynamicSort("village"));
-        // listofVillages.sort(dynamicSort("village"));
-        console.log("selectedVillages******************",selectedVillages)
-        this.setState({
-          selectedVillages : selectedVillages,
-          listofVillages : listofVillages
-        },()=>{
-          // console.log("selectedVillages",this.state.selectedVillages)
-        });
-      }
-    });      
+    });
   }
+
   editVillage(event){
     event.preventDefault();
     var id = event.target.id;
     var selectedVillages = this.state.selectedVillages[id];
-    console.log("selectedVillages=====",selectedVillages)
-    console.log("id===================",id)
+    // console.log("selectedVillages=====",selectedVillages)
+    // console.log("id===================",id)
   }
   deleteVillage(event){
     event.preventDefault();
@@ -858,6 +779,257 @@ class centerDetail extends Component{
     this.setState({
       tabtype : data,
     })
+  }
+  getVillages(countryID, stateID, districtID, blockID, blocksCovered){
+    axios.get('/api/villages/get/villagelist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID)
+    .then((response)=>{
+      console.log('response ==========', response);
+      if(response&&response.data[0]){
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        if(this.state.editlistofVillages.length!==0){
+          var listofVillages = response.data
+          this.state.editlistofVillages.map((data,index) => {
+            var index = listofVillages.findIndex(v => v.cityName === data.cityName);
+            if(index<0){
+              listofVillages.push({'cityName' : data.cityName});
+            }
+          });
+          listofVillages.sort(dynamicSort("cityName"));
+          this.setState({
+            listofVillages : listofVillages
+          },()=>{
+            var allCityCount =this.state.listofVillages.length;
+            var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
+            console.log(result);
+            var allSelectedCheckbox =result.length; 
+            console.log("===================",allCityCount,allSelectedCheckbox)
+            if(document.getElementById(this.state.blocksCovered) !== null){
+              if(allCityCount===allSelectedCheckbox){
+                document.getElementById(this.state.blocksCovered).checked=true;
+                this.setState({
+                  ["blockVillages-"+this.state.blocksCovered] : true
+                })
+              }else{
+                document.getElementById(this.state.blocksCovered).checked=false;
+              }
+            }
+
+          })
+        }else{
+        var listofVillages = response.data;
+        listofVillages.sort(dynamicSort("cityName"));
+          this.setState({
+            listofVillages : listofVillages
+          },()=>{
+            var allCityCount =this.state.listofVillages.length;
+
+            var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
+            console.log("listofVillages",this.state.listofVillages);
+            console.log("result",result);
+            var allSelectedCheckbox =result.length; 
+            console.log("===================",allCityCount,allSelectedCheckbox)
+            if(document.getElementById(this.state.blocksCovered) !== null){
+              if(allCityCount===allSelectedCheckbox){
+                document.getElementById(this.state.blocksCovered).checked=true;
+                this.setState({
+                  ["blockVillages-"+this.state.blocksCovered] : true
+                })
+              }else{
+                document.getElementById(this.state.blocksCovered).checked=false;
+                this.setState({
+                  ["blockVillages-"+this.state.blocksCovered] : false
+                })
+              }
+            }
+            })
+        }
+      }
+    }).catch(function (error) {
+      console.log('error', error);
+    });
+  }
+  selectVillage(event){
+    var selectedVillages = this.state.selectedVillages;
+    var listofVillages = this.state.listofVillages;
+    var value = event.target.checked;
+    var id    = event.target.id;
+    // console.log("event.target",event.target)
+    var blockName = this.state.blocksCoveredValue.split('|')[0];
+    var cityName = $(event.currentTarget).parent().parent().siblings('label').html();
+    console.log("cityName",cityName)
+    this.setState({
+      [id] : value
+    },()=>{
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder == -1){
+              return b[property].localeCompare(a[property]);
+          }else{
+              return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      // console.log("this.state[id]",this.state[id],id)
+      if(value){
+        document.getElementById(blockName).checked=false;
+        selectedVillages.push({
+          district  : this.refs.districtCovered.value,
+          block     : id.split('|')[1],
+          village   : id.split('|')[0]
+        });
+        selectedVillages.sort(dynamicSort("block"));
+        this.setState({
+          selectedVillages : selectedVillages,
+        },()=>{
+          var allCityCount =this.state.listofVillages.length;
+          var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
+          // console.log(result);
+          var allSelectedCheckbox =result.length; 
+          console.log("===================",allCityCount,allSelectedCheckbox)
+          if(document.getElementById(this.state.blocksCovered) !== null){
+            if(allCityCount===allSelectedCheckbox){
+              document.getElementById(this.state.blocksCovered).checked=true;
+              this.setState({
+                ["blockVillages-"+this.state.blocksCovered] : true
+              })
+            }else{
+              document.getElementById(this.state.blocksCovered).checked=false;
+            }
+          }
+        });
+      }else{
+        // data.cityName+"|"+data.blockName
+        var index = selectedVillages.findIndex(v =>  (v.village+"|"+v.block) === id);
+        // console.log("index",index)
+        // console.log("id",id)
+        selectedVillages.splice(selectedVillages.findIndex(v => (v.village+"|"+v.block) === id), 1);
+        // selectedVillages.splice(selectedVillages.findIndex(v => console.log("V============",v)) );
+        // console.log("selectedVillages",selectedVillages)
+        //   console.log("listofVillages",listofVillages)
+        if(this.refs.districtCovered.value==='--Select District--'&&this.state.blocksCoveredValue==='--Select Block--'){
+          listofVillages.splice(listofVillages.findIndex(v => v.cityName === cityName), 1);
+          // listofVillages.splice(listofVillages.findIndex(v => v.cityName+"|"+v.blockName === cityName), 1);
+          // console.log("listofVillages",listofVillages)
+        }
+        document.getElementById(blockName).checked=false;
+        console.log("document.getElementById(blockName).checked",document.getElementById(blockName).checked,"======",blockName)
+        selectedVillages.sort(dynamicSort("block"));
+        this.setState({
+          selectedVillages : selectedVillages,
+          listofVillages : listofVillages,
+          ["blockVillages-"+blockName] : false
+        },()=>{
+          // console.log("selectedVillages",this.state.selectedVillages)
+          // console.log("listofVillages",this.state.listofVillages)
+        });
+      }
+    });   
+  }
+  selectAllVillage(event){
+    var  selectAllCheckbox = event.target;
+    // console.log("selectAllCheckbox => ", selectAllCheckbox);
+    var selectedVillages = this.state.selectedVillages;
+    var listofVillages = this.state.listofVillages;
+    var cityName = $(event.currentTarget).parent().parent().siblings('label').html();
+    // console.log(" => ", selectAllCheckbox.checked);
+    function dynamicSort(property) {
+      var sortOrder = 1;
+      if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+      }
+      return function (a,b) {
+        if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+        }else{
+            return a[property].localeCompare(b[property]);
+        }        
+      }
+    }
+    var selectAllID = event.target.id;
+    var checkedValue = event.target.checked
+    // console.log("selectAllID",selectAllID,checkedValue)
+    // console.log('["blockVillages-"+selectAllID]==================',this.state["blockVillages-"+selectAllID])
+    this.setState({
+      ["blockVillages-"+selectAllID] :this.state["blockVillages-"+selectAllID] ? false :true
+    },()=>{
+      // console.log('["blockVillages-"+selectAllID]',this.state["blockVillages-"+selectAllID])
+      if(checkedValue){
+        var checkboxes =  document.getElementsByName("city-" + selectAllID);
+        for(var i = 0; i< checkboxes.length; i++) {        
+          // console.log("checkboxes => ", checkboxes);
+          // console.log("cityNameId => ", (i + " " + checkboxes[i].id));
+          var id = checkboxes[i].id;
+          if(checkboxes[i].checked!==true){
+                     
+              // console.log("this.state[id]",this.state[id]+"==========",i)
+              // if(this.state[id] === true){
+                selectedVillages.push({
+                  district  : this.refs.districtCovered.value,
+                  block     : id.split('|')[1],
+                  village   : id.split('|')[0]
+                });
+                // console.log("selectedVillages ===============> ", selectedVillages);
+                selectedVillages.sort(dynamicSort("block"));
+                this.setState({
+                  selectedVillages : selectedVillages, 
+                  [id]             : true,
+                }, ()=>{
+                    // console.log("Selected Cities => ", this.state.selectedVillages.length);
+                })  
+              // }
+          }
+        }
+      }else{
+        var checkboxes =  document.getElementsByName("city-" + selectAllID);
+        // console.log("checkboxes $$$$$$$$=> ", checkboxes);
+        for(var i = 0; i< checkboxes.length; i++) {        
+          // console.log("cityNameId => ", (i + " " + checkboxes[i].id));
+          var id = checkboxes[i].id;
+            // if(this.state[id] === false){
+
+              var index = selectedVillages.findIndex(v =>  (v.village+"|"+v.block) === id);
+              // console.log("index$$$$$$$$$$",index)
+
+              selectedVillages.splice(selectedVillages.findIndex(v => (v.village+"|"+v.block) === id), 1);
+              // console.log("selectedVillages$$$$",selectedVillages)
+              if(this.refs.districtCovered.value==='--Select District--'&&this.state.blocksCovered==='--Select Block--'){
+                listofVillages.splice(listofVillages.findIndex(v => v.cityName+"|"+v.blockName === cityName), 1);
+                // console.log("listofVillages$$$$$$$$",listofVillages)
+              }
+              selectedVillages.sort(dynamicSort("block"));
+              this.setState({
+                selectedVillages : selectedVillages,
+                listofVillages : listofVillages
+              },()=>{
+                // console.log("selectedVillages$$$$$$",this.state.selectedVillages.length)
+              });
+            // }
+          this.setState({
+            [id] : false,
+          },()=>{
+          })
+        }
+      }
+    })    
   }
   render() {
     return (
@@ -1071,31 +1243,65 @@ class centerDetail extends Component{
                             this.state.listofVillages.length > 0 ?
                             <div className="row">
                               <div className=" col-lg-12 col-sm-12 col-xs-12 mt">
-                                <h5 className="col-lg-12 col-sm-12 col-xs-12">Villages Covered</h5>                     
-                              {
-                                this.state.listofVillages?
-                                this.state.listofVillages.map((data, index)=>{
-                                  return(
-                                    <div key={index} className="col-md-3  col-lg-3 col-sm-12 col-xs-12 mt">
-                                      <div className="row"> 
-                                        <div className="col-lg-12 noPadding">  
-                                         <div className="actionDiv">
-                                            <div className="centerDetailContainer col-lg-1">
-                                              <input type="checkbox" id={data.cityName+"|"+data.blockName}  checked={this.state[data.cityName+"|"+data.blockName] ? true:false} onChange={this.selectVillage.bind(this)}/>
-                                              <span className="centerDetailCheck"></span>
-                                            </div>
-                                          </div>                            
-                                          <label className="centerDetaillistItem"> {this.camelCase(data.cityName)}</label>
-                                        </div>
-                                      </div>  
-                                    </div>
-                                  );
-                                })
-                                :
-                                null
-                              }
+                                <h5 className="col-lg-12 col-sm-12 col-xs-12"><b>Villages Covered</b></h5>   
+                                <div className=" col-lg-12 col-sm-12 col-xs-12">
+                                  <div className="col-md-3  col-lg-3 col-sm-12 col-xs-12 mt row">
+                                    <div className="row"> 
+                                      <div className="col-lg-12 noPadding">  
+                                       <div className="actionDiv">                                          
+                                          <div className="centerDetailContainer col-lg-1">
+                                            <input type="checkbox" 
+                                              id      ={this.state.blocksCovered}  
+                                              name    ={this.state.blocksCovered}  
+                                              // checked = {false}
+                                              checked ={this.state["blockVillages-"+this.state.blocksCovered] ? true:false} 
+                                              onChange ={this.selectAllVillage.bind(this)}
+                                            />
+                                          
+                                            <span className="centerDetailCheck"></span>             
+                                          </div>
+                                        </div>      
+                                        {
+                                          console.log("===================",this.state["blockVillages-"+this.state.blocksCovered])
+                                        }  
+                                        <label className="centerDetaillistItem"><b>{"Select All=="+this.state.selectedVillages.length+"="+this.state.blocksCovered+"=="+this.state["blockVillages-"+this.state.blocksCovered]}</b></label>
+                                         {"pppppppppp"+this.state["blockVillages-"+this.state.blocksCovered]}                      
+                                    
+                                      </div>
+                                    </div>  
+                                  </div>
+                                </div>
+                                         
+                                {
+                                  this.state.listofVillages?
+                                  this.state.listofVillages.map((data, index)=>{
+                                    return(
+                                      <div key={index} className="col-md-3  col-lg-3 col-sm-12 col-xs-12 mt">
+                                        <div className="row"> 
+                                          <div className="col-lg-12 noPadding">  
+                                           <div className="actionDiv">
+                                              
+                                              <div className="centerDetailContainer col-lg-1">
+                                                <input type="checkbox" 
+                                                  id      ={data.cityName+"|"+data.blockName}  
+                                                  name    ={"city-"+data.blockName}  
+                                                  checked ={this.state[data.cityName+"|"+data.blockName] ? true:false} 
+                                                  onChange={this.selectVillage.bind(this)}
+                                                />
+                                                <span className="centerDetailCheck"></span>
+                                              </div>
+                                            </div>                            
+                                            <label className="centerDetaillistItem"> {this.camelCase(data.cityName)}</label>
+                                          </div>
+                                        </div>  
+                                      </div>
+                                    );
+                                  })
+                                  :
+                                  null
+                                }
+                              </div>
                             </div>
-                          </div>
                           : 
                           this.state.districtCovered!=='--Select District--'&&this.state.blocksCovered!=='--Select Block--'?
                             <p className="mt col-lg-12 col-md-12 col-sm-12 col-xs-12">
