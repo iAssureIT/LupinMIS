@@ -7,7 +7,7 @@ import Loader                 from "../../../common/Loader.js";
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import "./ListOfVillages.css";
    
-class ListOfVillages extends Component{
+class ListOfDistricts extends Component{
   
   constructor(props){
     super(props);
@@ -17,11 +17,9 @@ class ListOfVillages extends Component{
       "district"          : "all",
       "block"             : "all",
       "selectedDistrict"  : "all",
-      "tablevillageHeading"       : {
+      "tabledistrictHeading"       : {
         centerName    :"CenterName",              
         district      :"District",            
-        block         :"Block",         
-        village       :"Village",             
       },
       "tableObjects"              : {
         deleteMethod              : 'delete',
@@ -37,7 +35,7 @@ class ListOfVillages extends Component{
       $(".fullpageloader").show();
       axios({
         method: 'get',
-        url: '/api/reportDashboard/list_count_center_district_blocks_villages_list/'+center_ID+'/'+district+'/'+block,
+        url: '/api/reportDashboard/list_count_center_district_blocks_villages_list/'+center_ID+'/all/all',
       }).then((response)=> {
       $(".fullpageloader").hide();
         console.log("response ==>",response);
@@ -60,19 +58,19 @@ class ListOfVillages extends Component{
             }        
           }
         }
-        var centerdata = response.data.sort(dynamicSort("centerName"));
-        var tablevillageData = centerdata.map((a, i)=>{
+        var centerdata = response.data.sort(dynamicSort("district"));
+
+        var tableDistrictData= removeDuplicates(centerdata, "district");
+        var tableDistrictData = tableDistrictData.map((a, i)=>{
           return {
             _id           :a._id,
             centerName    :a.centerName,              
-            district      :a.district,            
-            // district      :a.district.split('|')[0],            
-            block         :a.block,         
-            village       :a.village,                         
+            district      :a.district.split('|')[0],            
           }
         })
+
         this.setState({
-          tablevillageData  : tablevillageData,
+          tableDistrictData  : tableDistrictData,
         })
       }).catch(function (error) {
         console.log('error', error);
@@ -229,7 +227,7 @@ class ListOfVillages extends Component{
                   <div className="row">
                       <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
-                          List of Villages in Centers                                     
+                          List of Districts in Centers                                     
                         </div>
                         <hr className="hr-head container-fluid row"/>
                       </div>
@@ -253,57 +251,15 @@ class ListOfVillages extends Component{
                             </select>
                           </div>
                         </div>
-                        <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">District</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                            <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                              <option  className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>                                
-                                {
-                                this.state.availableDistInCenter && this.state.availableDistInCenter.length > 0 ? 
-                                this.state.availableDistInCenter.map((data, index)=>{
-                                  // console.log("data",data)
-                                  return(
-                                    /*<option key={index} value={this.camelCase(data.split('|')[0])}>{this.camelCase(data.split('|')[0])}</option>*/
-                                    <option key={index} value={(data.district+'|'+data._id)}>{data.district.split('|')[0]}</option>
-
-                                  );
-                                })
-                                :
-                                null
-                              }                               
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 valid_box">
-                          <label className="formLable">Block</label><span className="asterix"></span>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                            <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                              <option  className="hidden" >-- Select --</option>
-                              <option value="all" >All</option>
-                              {
-                                this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                this.state.listofBlocks.map((data, index)=>{
-                                  return(
-                                    <option key={index} value={data.block}>{data.block}</option>
-                                  );
-                                })
-                                :
-                                null
-                              }                              
-                            </select>
-                          </div>
-                          {/*<div className="errorMsg">{this.state.errors.block}</div>*/}
-                        </div>
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                         <IAssureTable 
                           noSRNumber = {false}  
                           divClass = "col-lg-8 col-lg-offset-2"
-                          tableName = "List of Villages"
-                          id = "ListofVillages"
-                          tableHeading={this.state.tablevillageHeading}
-                          tableData={this.state.tablevillageData}
+                          tableName = "List of Districts"
+                          id = "ListOfDistricts"
+                          tableHeading={this.state.tabledistrictHeading}
+                          tableData={this.state.tableDistrictData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
                         />
@@ -317,4 +273,4 @@ class ListOfVillages extends Component{
         );
       }
 }
-export default ListOfVillages
+export default ListOfDistricts

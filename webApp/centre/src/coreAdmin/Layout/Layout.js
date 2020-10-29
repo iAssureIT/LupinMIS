@@ -47,7 +47,11 @@ import VillageBulkUpload                          from '../../coreAdmin/masterDa
 import BlockBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/BlockBulkUpload.js';
 import DistrictBulkUpload                         from '../../coreAdmin/masterData/LocationMaster/DistrictBulkUpload.js';
 import StateBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/StateBulkUpload.js';
+
 import ListOfVillages                             from '../../coreAdmin/masterData/ListOfVillages/ListOfVillages.js';
+import ListOfDistricts                            from '../../coreAdmin/masterData/ListOfVillages/ListOfDistricts.js';
+import ListOfBlocks                               from '../../coreAdmin/masterData/ListOfVillages/ListOfBlocks.js';
+
 import CaseStudy                                  from "../../centres/addFile/CaseStudy.js";
 import CaseStudyView                              from "../../centres/addFile/CaseStudyView.js";
 import AddFilePrivate                             from "../../centres/addFile/AddFilePrivate.js";
@@ -188,7 +192,8 @@ class Layout extends Component{
                               <Route path="/b-type-activity-form/:id"                         exact strict component={ BTypeActivity } />
 
                               <Route path="/listofvillages"                                   exact strict component={ ListOfVillages } />
-                           
+                              <Route path="/listofdistricts"                                  exact strict component={ ListOfDistricts } />
+                              <Route path="/listofblocks"                                     exact strict component={ ListOfBlocks } />                           
 
                               <Route path="/center-details"                                   exact strict component={ centerDetail } />
                               <Route path="/center-details/"                                  exact strict component={ centerDetail } />

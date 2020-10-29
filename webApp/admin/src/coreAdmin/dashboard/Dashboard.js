@@ -738,7 +738,7 @@ export default class Dashboard extends Component{
                           <span className="info-box-text pull-left">Districts</span>
                           {
                             this.state.tableDistrictData.length > 0 ?
-                              <a className="viewLink" title="View List" target="_blank"  href={"/listofvillages"}>
+                              <a className="viewLink" title="View List" target="_blank"  href={"/listofdistricts"}>
                                 <i className="fa  fa-arrow-circle-right tablearrow pull-right"></i>
                               </a>
                             : 
@@ -761,7 +761,7 @@ export default class Dashboard extends Component{
                           <span className="info-box-text pull-left">Blocks</span>
                           {
                             this.state.tableBlockData.length > 0 ?
-                              <a className="viewLink" title="View List" target="_blank"  href={"/listofvillages"}>
+                              <a className="viewLink" title="View List" target="_blank"  href={"/listofblocks"}>
                                 <i className="fa  fa-arrow-circle-right tablearrow pull-right"></i>
                               </a>
                             : 

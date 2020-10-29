@@ -2,6 +2,10 @@
 	width: 145px !important;
 	white-space: pre-wrap;
 }
+#ListOfDistricts .col1, #ListOfDistricts .col2{
+	width: 290px !important;
+	white-space: pre-wrap;
+}
 
 #ListofVillages .scrollContent {
   display: block;
