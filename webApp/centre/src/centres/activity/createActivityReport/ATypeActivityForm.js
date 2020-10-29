@@ -1063,7 +1063,7 @@ class Activity extends Component{
                 remark                     : a.remark,
               }
             })
-            var downloadData = response.data.map((a, i)=>{
+            var downloadData = tableData.map((a, i)=>{
               return {
                 _id                        : a._id,
                 projectCategoryType        : a.projectCategoryType,
