@@ -66,7 +66,6 @@ class ListOfVillages extends Component{
             _id           :a._id,
             centerName    :a.centerName,              
             district      :a.district,            
-            // district      :a.district.split('|')[0],            
             block         :a.block,         
             village       :a.village,                         
           }

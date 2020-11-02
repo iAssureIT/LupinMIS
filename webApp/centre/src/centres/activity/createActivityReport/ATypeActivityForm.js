@@ -1034,10 +1034,10 @@ class Activity extends Component{
           .then((response)=>{
           $(".fullpageloader").hide();
             console.log("response",response);
-            var tableData = response.data.filter((data,i)=>{
+            var tableDatas = response.data.filter((data,i)=>{
               return data.typeofactivity === "Family Level Activity";
             });   
-            var tableData = tableData.map((a, i)=>{
+            var tableData = tableDatas.map((a, i)=>{
               return {
                 _id                        : a._id,
                 projectCategoryType        : a.projectCategoryType,
@@ -1063,7 +1063,7 @@ class Activity extends Component{
                 remark                     : a.remark,
               }
             })
-            var downloadData = tableData.map((a, i)=>{
+            var downloadData = tableDatas.map((a, i)=>{
               return {
                 _id                        : a._id,
                 projectCategoryType        : a.projectCategoryType,

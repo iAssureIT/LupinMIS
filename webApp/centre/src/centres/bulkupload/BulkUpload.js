@@ -270,7 +270,11 @@ class BulkUpload extends Component{
                 this.props.getFileDetails(this.state.fileName) 
                 this.props.getData(this.props.propsdata ? this.props.propsdata : this.state.startRange, this.state.limitRange, this.state.center_ID);
               }
-              this.setState({percentage:percentage},()=>{})
+              this.setState({
+                percentage:percentage,
+                submittedFile : this.state.fileName
+
+              },()=>{})
               chunkData = [];
               initialLmt += factor;  
               endLmt = initialLmt+factor; 
@@ -358,7 +362,7 @@ class BulkUpload extends Component{
                     <li ><a className="successTab" data-toggle="tab" href={"#success"+this.props.goodDataCount}>Success</a></li>
                   </ul>
                   <div className="tab-content">
-                  <h5>Filename: <span>{this.state.fileName}</span></h5>
+                  <h5>Filename: <span>{this.state.submittedFile}</span></h5>
                     <div id={"failure"+this.props.failedRecordsCount} className="tab-pane fade in active">
                     <h5>
                     Out of {this.props.fileDetails.totalRecords } {this.props.fileDetails.totalRecords > 1 ? "records" : "record"},  &nbsp;

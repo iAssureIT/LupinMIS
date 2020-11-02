@@ -1,10 +1,14 @@
 #ListofVillages .col1, #ListofVillages .col2, #ListofVillages .col3, #ListofVillages .col4{
-	width: 145px !important;
-	white-space: pre-wrap;
+  width: 145px !important;
+  white-space: pre-wrap;
+}
+#ListOfBlocks .col1, #ListOfBlocks .col2, #ListOfBlocks .col3{
+  width: 200px !important;
+  white-space: pre-wrap;
 }
 #ListOfDistricts .col1, #ListOfDistricts .col2{
-	width: 290px !important;
-	white-space: pre-wrap;
+  width: 290px !important;
+  white-space: pre-wrap;
 }
 
 #ListofVillages .scrollContent {
@@ -14,6 +18,28 @@
   width: 100%;
 }
 #ListofVillages .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+#ListOfDistricts .scrollContent {
+  display: block;
+  height: 400px;
+  overflow: auto;
+  width: 100%;
+}
+#ListOfDistricts .fixedHeader{
+  display: table;
+  overflow: auto;
+  width: 100%
+}
+#ListOfBlocks .scrollContent {
+  display: block;
+  height: 400px;
+  overflow: auto;
+  width: 100%;
+}
+#ListOfBlocks .fixedHeader{
   display: table;
   overflow: auto;
   width: 100%

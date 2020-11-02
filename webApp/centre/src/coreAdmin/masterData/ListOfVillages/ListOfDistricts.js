@@ -58,16 +58,18 @@ class ListOfDistricts extends Component{
             }        
           }
         }
-        var centerdata = response.data.sort(dynamicSort("district"));
+        // var centerdata = response.data.sort(dynamicSort("centerName"));
+        // var centerdata = centerdata.sort(dynamicSort("district"));
 
-        var tableDistrictData= removeDuplicates(centerdata, "district");
-        var tableDistrictData = tableDistrictData.map((a, i)=>{
+        var centerdata = response.data;
+        var tableDistrictData = centerdata.map((a, i)=>{
           return {
             _id           :a._id,
             centerName    :a.centerName,              
-            district      :a.district.split('|')[0],            
+            district      :a.district,            
           }
         })
+        tableDistrictData= [...new Map(tableDistrictData.map(obj => [JSON.stringify(obj), obj])).values()];
 
         this.setState({
           tableDistrictData  : tableDistrictData,

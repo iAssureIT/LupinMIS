@@ -973,11 +973,11 @@ class Activity extends Component{
           // axios.post('/api/activityReport/list/'+center_ID, data)
           .then((response)=>{
             $(".fullpageloader").hide();
-            var tableData = response.data.filter((data,i)=>{
+            var tableDatas = response.data.filter((data,i)=>{
               return data.typeofactivity === "Type B Activity";
             });   
-            console.log("tableData",tableData);
-            var tableData = tableData.map((a, i)=>{
+            // console.log("tableDatas",tableDatas);
+            var tableData = tableDatas.map((a, i)=>{
               return {
                 _id                        : a._id,
                 projectCategoryType        : a.projectCategoryType,
@@ -1004,7 +1004,7 @@ class Activity extends Component{
                 remark                     : a.remark,
               }
             })
-            var downloadData = tableData.map((a, i)=>{
+            var downloadData = tableDatas.map((a, i)=>{
               return {
                 _id                        : a._id,
                 projectCategoryType        : a.projectCategoryType,

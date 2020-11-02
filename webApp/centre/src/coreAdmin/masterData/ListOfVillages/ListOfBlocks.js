@@ -59,16 +59,17 @@ class ListOfBlocks extends Component{
             }        
           }
         }
-        var centerdata = response.data.sort(dynamicSort("centerName"));
-        var tableBlockData= removeDuplicates(centerdata, "block");
-        var tableBlockData = tableBlockData.map((a, i)=>{
+        var centerdata = response.data;
+        // var tableBlockData= removeDuplicates(centerdata, "block");
+        var tableBlockData = centerdata.map((a, i)=>{
           return {
             _id           :a._id,
             centerName    :a.centerName,              
-            district      :a.district.split('|')[0],            
+            district      :a.district,            
             block         :a.block,         
           }
         })
+        tableBlockData= [...new Map(tableBlockData.map(obj => [JSON.stringify(obj), obj])).values()].sort();
         
         this.setState({
           tableBlockData  : tableBlockData,
