@@ -437,9 +437,11 @@ class Beneficiary extends Component{
     // console.log("propsdata",this.state.propsdata)
     })
     if(inputGetData){
+      $(".fullpageloader").show();
       axios.post('/api/beneficiaries/get/beneficiary/list', inputGetData)
       .then((response)=>{
         console.log('response', response);
+        $('.fullpageloader').hide();  
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
@@ -484,17 +486,30 @@ class Beneficiary extends Component{
     }
   }
   getFileDetails(fileName){
+      $(".fullpageloader").show();
       axios
       .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
       .then((response)=> {
-      $('.fullpageloader').hide();  
-      if (response) {
-        this.setState({
-            fileDetails:response.data,
-            failedRecordsCount : response.data.failedRecords.length,
-            goodDataCount : response.data.goodrecords.length
-        });
-        var tableData = response.data.goodrecords.map((a, i)=>{
+        $('.fullpageloader').hide();  
+        if (response) {
+          this.setState({
+              fileDetails:response.data,
+              failedRecordsCount : response.data.failedRecords.length,
+              goodDataCount : response.data.goodrecords.length
+          });
+          var tableData = response.data.goodrecords.map((a, i)=>{
+            return{
+                "beneficiaryID"             : a.beneficiaryID        ? a.beneficiaryID    : '-',
+                "familyID"                  : a.familyID        ? a.familyID    : '-',
+                "surnameOfBeneficiary"      : a.surnameOfBeneficiary,
+                "firstNameOfBeneficiary"    : a.firstNameOfBeneficiary,
+                "middleNameOfBeneficiary"   : a.middleNameOfBeneficiary,
+                // "nameofbeneficiaries"       : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
+                "uidNumber"                 : a.uidNumber     ? a.uidNumber : '-',
+                "relation"                  : a.relation     ? a.relation : '-',
+            }
+          })
+          var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
               "beneficiaryID"             : a.beneficiaryID        ? a.beneficiaryID    : '-',
               "familyID"                  : a.familyID        ? a.familyID    : '-',
@@ -504,26 +519,14 @@ class Beneficiary extends Component{
               // "nameofbeneficiaries"       : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
               "uidNumber"                 : a.uidNumber     ? a.uidNumber : '-',
               "relation"                  : a.relation     ? a.relation : '-',
+              "failedRemark"              : a.failedRemark     ? a.failedRemark : '-'
           }
-        })
-        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
-        return{
-            "beneficiaryID"             : a.beneficiaryID        ? a.beneficiaryID    : '-',
-            "familyID"                  : a.familyID        ? a.familyID    : '-',
-            "surnameOfBeneficiary"      : a.surnameOfBeneficiary,
-            "firstNameOfBeneficiary"    : a.firstNameOfBeneficiary,
-            "middleNameOfBeneficiary"   : a.middleNameOfBeneficiary,
-            // "nameofbeneficiaries"       : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
-            "uidNumber"                 : a.uidNumber     ? a.uidNumber : '-',
-            "relation"                  : a.relation     ? a.relation : '-',
-            "failedRemark"              : a.failedRemark     ? a.failedRemark : '-'
+          })
+          this.setState({
+              goodRecordsTable : tableData,
+              failedRecordsTable : failedRecordsTable
+          })
         }
-        })
-        this.setState({
-            goodRecordsTable : tableData,
-            failedRecordsTable : failedRecordsTable
-        })
-      }
       })
       .catch((error)=> { 
             

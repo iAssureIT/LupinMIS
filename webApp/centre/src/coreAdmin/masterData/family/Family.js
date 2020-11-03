@@ -962,61 +962,62 @@ class Family extends Component{
     });  
   } 
   getFileDetails(fileName){
+      $('.fullpageloader').show();  
       axios
       .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
       .then((response)=> {
         console.log("response===========",response)
-      // $('.fullpageloader').hide();  
-      if (response) {
-        this.setState({
-            fileDetails:response.data,
-            failedRecordsCount : response.data.failedRecords.length,
-            goodDataCount : response.data.goodrecords.length
-        });
+        $('.fullpageloader').hide();  
+        if (response) {
+          this.setState({
+              fileDetails:response.data,
+              failedRecordsCount : response.data.failedRecords.length,
+              goodDataCount : response.data.goodrecords.length
+          });
 
-          var tableData = response.data.goodrecords.map((a, i)=>{
-           
+            var tableData = response.data.goodrecords.map((a, i)=>{
+             
+            return{
+                "familyID"        : a.familyID        ? a.familyID    : '-',
+                "surnameOfFH"     : a.surnameOfFH,
+                "firstNameOfFH"   : a.firstNameOfFH,
+                "middleNameOfFH"  : a.middleNameOfFH,
+                // "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
+                "uidNumber"       : a.uidNumber     ? a.uidNumber : '-',
+                "contactNumber"   : a.contactNumber     ? a.contactNumber : '-',
+                "caste"           : a.caste     ? a.caste : '-',
+                "landCategory"    : a.landCategory     ? a.landCategory : '-',
+                "incomeCategory"  : a.incomeCategory     ? a.incomeCategory : '-',
+                "specialCategory" : a.specialCategory     ? a.specialCategory : '-',
+                "dist"            : a.dist ? a.dist : '-',
+                "block"           : a.block ? a.block : '-', 
+                "village"         : a.village     ? a.village : '-'
+            }
+          })
+          var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
-              "familyID"        : a.familyID        ? a.familyID    : '-',
-              "surnameOfFH"     : a.surnameOfFH,
-              "firstNameOfFH"   : a.firstNameOfFH,
-              "middleNameOfFH"  : a.middleNameOfFH,
+              "familyID"          : a.familyID        ? a.familyID    : '-',
+              "surnameOfFH"       : a.surnameOfFH,
+              "firstNameOfFH"     : a.firstNameOfFH,
+              "middleNameOfFH"    : a.middleNameOfFH,
               // "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
-              "uidNumber"       : a.uidNumber     ? a.uidNumber : '-',
-              "contactNumber"   : a.contactNumber     ? a.contactNumber : '-',
-              "caste"           : a.caste     ? a.caste : '-',
-              "landCategory"    : a.landCategory     ? a.landCategory : '-',
-              "incomeCategory"  : a.incomeCategory     ? a.incomeCategory : '-',
-              "specialCategory" : a.specialCategory     ? a.specialCategory : '-',
-              "dist"            : a.dist ? a.dist : '-',
-              "block"           : a.block ? a.block : '-', 
-              "village"         : a.village     ? a.village : '-'
+              "uidNumber"         : a.uidNumber     ? a.uidNumber : '-',
+              "contactNumber"     : a.contactNumber     ? a.contactNumber : '-',
+              "caste"             : a.caste     ? a.caste : '-',
+              "landCategory"      : a.landCategory     ? a.landCategory : '-',
+              "incomeCategory"    : a.incomeCategory     ? a.incomeCategory : '-',
+              "specialCategory"   : a.specialCategory     ? a.specialCategory : '-',
+              "dist"              : a.dist ? a.dist : '-',
+              "block"             : a.block ? a.block : '-', 
+              "village"           : a.village     ? a.village : '-',
+              "failedRemark"      : a.failedRemark     ? a.failedRemark : '-'
           }
-        })
-        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
-        return{
-            "familyID"          : a.familyID        ? a.familyID    : '-',
-            "surnameOfFH"       : a.surnameOfFH,
-            "firstNameOfFH"     : a.firstNameOfFH,
-            "middleNameOfFH"    : a.middleNameOfFH,
-            // "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
-            "uidNumber"         : a.uidNumber     ? a.uidNumber : '-',
-            "contactNumber"     : a.contactNumber     ? a.contactNumber : '-',
-            "caste"             : a.caste     ? a.caste : '-',
-            "landCategory"      : a.landCategory     ? a.landCategory : '-',
-            "incomeCategory"    : a.incomeCategory     ? a.incomeCategory : '-',
-            "specialCategory"   : a.specialCategory     ? a.specialCategory : '-',
-            "dist"              : a.dist ? a.dist : '-',
-            "block"             : a.block ? a.block : '-', 
-            "village"           : a.village     ? a.village : '-',
-            "failedRemark"      : a.failedRemark     ? a.failedRemark : '-'
+          })
+          this.setState({
+              goodRecordsTable : tableData,
+              failedRecordsTable : failedRecordsTable
+          })
         }
-        })
-        this.setState({
-            goodRecordsTable : tableData,
-            failedRecordsTable : failedRecordsTable
-        })
-      }
       })
       .catch((error)=> { 
         console.log('error', error);
