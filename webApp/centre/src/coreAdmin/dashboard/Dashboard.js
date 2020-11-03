@@ -285,7 +285,7 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/reportDashboard/list_count_center_district_blocks_villages',
     }).then((response)=> {
-      console.log("response ==>",response.data);
+      // console.log("response ==>",response.data);
       if (response.data && response.data[0]) {
         this.setState({
           CenterNames              : response.data[0].centerName.sort(),
@@ -384,11 +384,12 @@ export default class Dashboard extends Component{
         // console.log('cumulative_Data',response);
         $(".fullpageloader").hide();
         this.setState({              
-          "cum_Achievement_total"                  : (response.data[0].total).toFixed(2),
+          "cum_Achievement_total"                  : (response.data[0].total),
           "cum_Achievement_reach"                  : response.data[0].reach,
           "cum_Achievement_familyUpgradation"      : response.data[0].familyUpgradation,
           "cum_Achievement_upgradedBenCount"       : response.data[0].upgradedBenCount,
         },()=>{
+          // console.log("this.state.",this.state)
         })
       })
       .catch(function(error){

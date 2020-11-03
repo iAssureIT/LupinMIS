@@ -187,7 +187,7 @@ class PlanDetails extends Component{
     this.setState({
       [event.target.name]: value,
     },()=>{
-      console.log("name",name);
+      // console.log("name",name);
       if (name === "physicalUnit" || name === "unitCost") {
         this.calculateTotalBudget(index); 
       }
@@ -229,7 +229,7 @@ class PlanDetails extends Component{
         // ["indirectCC-"+index] : 0,
         // ["other-"+index] : 0,
       },()=>{
-        console.log('this.state.',this.state);
+        // console.log('this.state.',this.state);
       })
 
     }

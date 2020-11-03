@@ -181,7 +181,7 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/centers/count/typeofcenter',
     }).then((response)=> {
-      console.log('response', response);
+      // console.log('response', response);
       this.setState({
         centerData   : response.data,
         centerCounts : response.data.map((o,i)=>{return o.count})
@@ -380,11 +380,12 @@ export default class Dashboard extends Component{
         // console.log('cumulative_Data',response);
         $(".fullpageloader").hide();
         this.setState({              
-          "cum_Achievement_total"                  : (response.data[0].total).toFixed(2),
+          "cum_Achievement_total"                  : (response.data[0].total),
           "cum_Achievement_reach"                  : response.data[0].reach,
           "cum_Achievement_familyUpgradation"      : response.data[0].familyUpgradation,
           "cum_Achievement_upgradedBenCount"       : response.data[0].upgradedBenCount,
         },()=>{
+          // console.log("this.state.",this.state)
         })
       })
       .catch(function(error){

@@ -491,7 +491,7 @@ class centerDetail extends Component{
         url: '/api/centers/'+id,
       }).then((response)=> {
         $(".fullpageloader").hide();
-        console.log("edit response================",response)
+        // console.log("edit response================",response)
         if(response&&response.data[0]){ 
           var editData = response.data[0];
           editData.villagesCovered.map((data, i)=>{
@@ -586,7 +586,7 @@ class centerDetail extends Component{
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
     // $(".fullpageloader").hide();
-      console.log('response', response);
+      // console.log('response', response);
       if(response&&response.data&&response.data.length>0){
         var tableData = response.data.map((a, i)=>{
         return {
@@ -647,7 +647,7 @@ class centerDetail extends Component{
     axios
     .get("/api/states/get/list/IN")
     .then((response)=> {
-      console.log('response',response);
+      // console.log('response',response);
       var listofStates = response.data;
       function dynamicSort(property) {
         var sortOrder = 1;
@@ -702,7 +702,7 @@ class centerDetail extends Component{
       axios
       .get("/api/districts/get/alllist/all/"+stateID)
       .then((response)=> {
-        console.log('getDistrictresponse',response);
+        // console.log('getDistrictresponse',response);
         if(response&&response.data){
           function dynamicSort(property) {
             var sortOrder = 1;
@@ -741,7 +741,7 @@ class centerDetail extends Component{
         selectedDistrict :selectedDistrict,
         listofVillages : this.state.editlistofVillages
       },()=>{
-        console.log('this.state.stateCode, this.state.selectedDistrict',this.state.stateCode, this.state.selectedDistrict);
+        // console.log('this.state.stateCode, this.state.selectedDistrict',this.state.stateCode, this.state.selectedDistrict);
         this.getBlock(this.state.stateCode, this.state.selectedDistrict);
       })
     });
@@ -754,7 +754,7 @@ class centerDetail extends Component{
     axios
     .get("/api/blocks/get/alllist/all/"+stateCode+'/'+selectedDistrict)
     .then((response)=> {
-      console.log('response',response);
+      // console.log('response',response);
       if(response&&response.data){
         function dynamicSort(property) {
           var sortOrder = 1;
@@ -911,9 +911,9 @@ class centerDetail extends Component{
 
     var allCityCount =this.state.listofVillages.length;
     var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
-    console.log(result);
     var allSelectedCheckbox =result.length; 
-    console.log("===================",allCityCount,allSelectedCheckbox)
+    // console.log(result);
+    // console.log("===================",allCityCount,allSelectedCheckbox)
     if(document.getElementById(this.state.blocksCovered) !== null){
       if(allCityCount===allSelectedCheckbox){
         document.getElementById(this.state.blocksCovered).checked=true;
@@ -936,9 +936,9 @@ class centerDetail extends Component{
       
       var allCityCount =this.state.listofVillages.length;
       var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
-      console.log(result);
       var allSelectedCheckbox =result.length; 
-      console.log("===================",allCityCount,allSelectedCheckbox)
+      // console.log(result);
+      // console.log("===================",allCityCount,allSelectedCheckbox)
       if(document.getElementById(this.state.blocksCovered) !== null){
         if(allCityCount===allSelectedCheckbox){
           document.getElementById(this.state.blocksCovered).checked=true;
@@ -955,7 +955,7 @@ class centerDetail extends Component{
   getVillages(countryID, stateID, districtID, blockID, blocksCovered){
     axios.get('/api/villages/get/villagelist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID)
     .then((response)=>{
-      console.log('response ==========', response);
+      // console.log('response ==========', response);
       if(response&&response.data[0]){
         function dynamicSort(property) {
           var sortOrder = 1;
@@ -985,9 +985,9 @@ class centerDetail extends Component{
           },()=>{
             var allCityCount =this.state.listofVillages.length;
             var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
-            console.log(result);
             var allSelectedCheckbox =result.length; 
-            console.log("===================",allCityCount,allSelectedCheckbox)
+            // console.log(result);
+            // console.log("===================",allCityCount,allSelectedCheckbox)
             if(document.getElementById(this.state.blocksCovered) !== null){
               if(allCityCount===allSelectedCheckbox){
                 document.getElementById(this.state.blocksCovered).checked=true;
@@ -1009,10 +1009,10 @@ class centerDetail extends Component{
             var allCityCount =this.state.listofVillages.length;
 
             var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
-            console.log("listofVillages",this.state.listofVillages);
-            console.log("result",result);
             var allSelectedCheckbox =result.length; 
-            console.log("===================",allCityCount,allSelectedCheckbox)
+            // console.log("listofVillages",this.state.listofVillages);
+            // console.log("result",result);
+            // console.log("===================",allCityCount,allSelectedCheckbox)
             if(document.getElementById(this.state.blocksCovered) !== null){
               if(allCityCount===allSelectedCheckbox){
                 document.getElementById(this.state.blocksCovered).checked=true;
@@ -1041,7 +1041,7 @@ class centerDetail extends Component{
     // console.log("event.target",event.target)
     var blockName = this.state.blocksCoveredValue.split('|')[0];
     var cityName = $(event.currentTarget).parent().parent().siblings('label').html();
-    console.log("cityName",cityName)
+    // console.log("cityName",cityName)
     this.setState({
       [id] : value
     },()=>{
@@ -1075,7 +1075,7 @@ class centerDetail extends Component{
           var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({blockName,cityName}) => o.block === blockName && o.village === cityName));
           // console.log(result);
           var allSelectedCheckbox =result.length; 
-          console.log("===================",allCityCount,allSelectedCheckbox)
+          // console.log("===================",allCityCount,allSelectedCheckbox)
           if(document.getElementById(this.state.blocksCovered) !== null){
             if(allCityCount===allSelectedCheckbox){
               document.getElementById(this.state.blocksCovered).checked=true;
@@ -1102,7 +1102,7 @@ class centerDetail extends Component{
           // console.log("listofVillages",listofVillages)
         }
         document.getElementById(blockName).checked=false;
-        console.log("document.getElementById(blockName).checked",document.getElementById(blockName).checked,"======",blockName)
+        // console.log("document.getElementById(blockName).checked",document.getElementById(blockName).checked,"======",blockName)
         selectedVillages.sort(dynamicSort("block"));
         this.setState({
           selectedVillages : selectedVillages,
@@ -1464,10 +1464,7 @@ class centerDetail extends Component{
                                           
                                             <span className="centerDetailCheck"></span>             
                                           </div>
-                                        </div>      
-                                        {
-                                          console.log("===================",this.state["blockVillages-"+this.state.blocksCovered])
-                                        }  
+                                        </div> 
                                         <label className="centerDetaillistItem"><b>Select All</b></label>
                                         {/*"Select All=="+this.state.selectedVillages.length+"="+this.state.blocksCovered+"=="+this.state["blockVillages-"+this.state.blocksCovered]*/}
                                          {/*"pppppppppp"+this.state["blockVillages-"+this.state.blocksCovered]*/}                      
