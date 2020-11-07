@@ -31,6 +31,7 @@ class Family extends Component{
       "specialCategoryFilter":"all",
       "landCategoryFilter"   :"all",
       "incomeCategoryFilter" :"all",
+      "searchText"           :"all",
       "contact"              :"",       
       "surnameOfFH"          :"",
       "firstNameOfFH"        :"",
@@ -52,8 +53,8 @@ class Family extends Component{
       "tableHeading"          : {
         familyID              : "Family ID",
         surnameOfFH           : "Surname",
-        firstNameOfFH         : "FirstName",
-        middleNameOfFH        : "MiddleName",
+        firstNameOfFH         : "First Name",
+        middleNameOfFH        : "Middle Name",
         // nameOfFH              : "Name of Family Head",
         FHGender              : "Gender",
         FHYearOfBirth         : "Birth Year",
@@ -149,6 +150,7 @@ class Family extends Component{
         "specialCategory" : this.state.specialCategoryFilter,
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
+        "searchText"      : this.state.searchText,
       }  
       this.getData(inputGetData);
     }
@@ -177,6 +179,7 @@ class Family extends Component{
         "specialCategory" : this.state.specialCategoryFilter,
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
+        "searchText"      : this.state.searchText,
       }
       // console.log("Did", inputGetData);
       this.getData(inputGetData);
@@ -372,6 +375,7 @@ class Family extends Component{
           "specialCategory" : this.state.specialCategoryFilter,
           "landCategory"    : this.state.landCategoryFilter,
           "incomeCategory"  : this.state.incomeCategoryFilter,
+          "searchText"      : this.state.searchText,
         }
         this.getData(inputGetData);
       })
@@ -454,6 +458,7 @@ class Family extends Component{
             "specialCategory" : this.state.specialCategoryFilter,
             "landCategory"    : this.state.landCategoryFilter,
             "incomeCategory"  : this.state.incomeCategoryFilter,
+            "searchText"      : this.state.searchText,
           }
           this.getData(inputGetData);
         })
@@ -619,6 +624,7 @@ class Family extends Component{
       "specialCategory" : this.state.specialCategoryFilter,
       "landCategory"    : this.state.landCategoryFilter,
       "incomeCategory"  : this.state.incomeCategoryFilter,
+      "searchText"      : this.state.searchText,
     }
     this.getData(inputGetData);
   }
@@ -840,6 +846,7 @@ class Family extends Component{
         "specialCategory" : this.state.specialCategoryFilter,
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
+        "searchText"      : this.state.searchText,
       }
       this.getData(inputGetData);
       var selectedDistrict = this.state.district;
@@ -903,6 +910,7 @@ class Family extends Component{
         "specialCategory" : this.state.specialCategoryFilter,
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
+        "searchText"      : this.state.searchText,
       }
       this.getData(inputGetData);
       axios({
@@ -957,6 +965,7 @@ class Family extends Component{
         "specialCategory" : this.state.specialCategoryFilter,
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
+        "searchText"      : this.state.searchText,
       }
       this.getData(inputGetData);
     });  
@@ -1029,46 +1038,63 @@ class Family extends Component{
     var formValues ={
       searchText : searchText,
     }
-    if(searchText) {
-      axios
-      .post('/api/families/searchValue/'+this.state.center_ID,formValues)
-      .then(
-        (res)=>{
-          // console.log('res', res);
-          if(res.data.data&&res.data.data.length>0){
-            var tableData = res.data.data.map((a, i)=>{
-              return {
-                _id                   : a._id,
-                familyID              : a.familyID,
-                surnameOfFH           : a.surnameOfFH,
-                firstNameOfFH         : a.firstNameOfFH,
-                middleNameOfFH        : a.middleNameOfFH,
-                // nameOfFH              : a.surnameOfFH+" "+a.firstNameOfFH+" "+a.middleNameOfFH,
-                FHGender              : a.FHGender,
-                FHYearOfBirth         : a.FHYearOfBirth,
-                uidNumber             : a.uidNumber,
-                contactNumber         : a.contactNumber,
-                caste                 : a.caste,
-                incomeCategory        : a.incomeCategory,
-                landCategory          : a.landCategory,
-                specialCategory       : a.specialCategory,
-                dist                  : a.dist,
-                block                 : a.block,
-                village               : a.village,
-              }
-            })
-          }
-        this.setState({
-          tableData     : tableData,          
-        })
-      }).catch((error)=>{ 
-        console.log('error',error)
-        // swal("No results found","","error");
-        this.setState({
-          tableData     : [],          
-        })
-      });
-    }
+    this.setState({
+        searchText    : searchText        
+    },()=>{
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "caste"           : this.state.casteFilter,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+        "specialCategory" : this.state.specialCategoryFilter,
+        "landCategory"    : this.state.landCategoryFilter,
+        "incomeCategory"  : this.state.incomeCategoryFilter,
+        "searchText"      : this.state.searchText,
+      }
+      this.getData(inputGetData);
+    })
+    // if(searchText) {
+    //   axios
+    //   .post('/api/families/searchValue/'+this.state.center_ID,formValues)
+    //   .then(
+    //     (res)=>{
+    //       // console.log('res', res);
+    //       if(res.data.data&&res.data.data.length>0){
+    //         var tableData = res.data.data.map((a, i)=>{
+    //           return {
+    //             _id                   : a._id,
+    //             familyID              : a.familyID,
+    //             surnameOfFH           : a.surnameOfFH,
+    //             firstNameOfFH         : a.firstNameOfFH,
+    //             middleNameOfFH        : a.middleNameOfFH,
+    //             // nameOfFH              : a.surnameOfFH+" "+a.firstNameOfFH+" "+a.middleNameOfFH,
+    //             FHGender              : a.FHGender,
+    //             FHYearOfBirth         : a.FHYearOfBirth,
+    //             uidNumber             : a.uidNumber,
+    //             contactNumber         : a.contactNumber,
+    //             caste                 : a.caste,
+    //             incomeCategory        : a.incomeCategory,
+    //             landCategory          : a.landCategory,
+    //             specialCategory       : a.specialCategory,
+    //             dist                  : a.dist,
+    //             block                 : a.block,
+    //             village               : a.village,
+    //           }
+    //         })
+    //       }
+    //     this.setState({
+    //       tableData     : tableData,  
+    //       searchText    : searchText        
+    //     })
+    //   }).catch((error)=>{ 
+    //     console.log('error',error)
+    //     // swal("No results found","","error");
+    //     this.setState({
+    //       tableData     : [],          
+    //     })
+    //   });
+    // }
   }
   handleYear(date){
     // console.log("date",date);
@@ -1098,6 +1124,7 @@ class Family extends Component{
         "specialCategory" : this.state.specialCategoryFilter,
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
+        "searchText"      : this.state.searchText,
       }
       this.getData(inputGetData);
     });

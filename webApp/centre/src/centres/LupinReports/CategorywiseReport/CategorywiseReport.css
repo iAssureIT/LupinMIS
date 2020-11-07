@@ -32,7 +32,7 @@ tr #srNo{
   width: 100%
 }*/
 
-#CategorywiseReport .col1{
+.categorywiseReport .col1{
 	white-space: pre-wrap!important;
 	text-align: center !important;
 }

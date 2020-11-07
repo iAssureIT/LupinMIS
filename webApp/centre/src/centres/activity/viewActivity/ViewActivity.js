@@ -595,6 +595,7 @@ class ViewActivity extends Component{
                     <IAssureTable 
                       tableName = "Activity Report"
                       id = "activityReport"
+                      tableClass = "activityReport"
                       downloadtableHeading={this.state.downloadtableHeading}
                       downloadData={this.state.downloadData}
                       tableHeading={this.state.tableHeading}

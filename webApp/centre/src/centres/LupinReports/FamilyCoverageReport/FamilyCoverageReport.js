@@ -1028,7 +1028,7 @@ class FamilyCoverageReport extends Component{
                           }   
                         </div>
                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div className="table-responsive" id="section-to-screen">
+                          <div className="table-responsive mt" id="section-to-screen">
                             <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="FamilyCoverageReport">
                               <thead className="tempTableHeader fixedHeader">
                                 <tr className="tempTableHeader"></tr>

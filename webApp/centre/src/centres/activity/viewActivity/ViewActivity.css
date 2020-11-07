@@ -1,4 +1,4 @@
-#activityReport .col1{
+/*#activityReport .col1{
   width: 100px !important;
   white-space: pre-wrap!important;
 }
@@ -48,8 +48,12 @@
   display: table;
   overflow: auto;
   width: 100%
-}
+}*/
 
+.activityReport .col20{
+  white-space: pre-wrap!important;
+  text-align: left !important;
+}
 .mr30{
 	margin-right: 30px;
 }

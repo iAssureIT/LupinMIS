@@ -26,6 +26,7 @@ class Beneficiary extends Component{
       "districtFilter"                :"all",
       "blockFilter"                   :"all",
       "villageFilter"                 :"all",
+      "searchText"                    :"all",
       "familyID"                      :"",  
       "beneficiaryID"                 :"",
       "uidNumberCheck"                :"",
@@ -49,9 +50,9 @@ class Beneficiary extends Component{
         relation            : "Relation with Family Head",
         genderOfbeneficiary : "Gender",
         birthYearOfbeneficiary : "Birth Year",
-        // dist                : "District",
-        // block               : "Block",
-        // village             : "Village",
+        dist                : "District",
+        block               : "Block",
+        village             : "Village",
         actions             : 'Action',
       },
       "downloadtableHeading"        : {
@@ -177,6 +178,7 @@ class Beneficiary extends Component{
           "district"        : this.state.districtFilter,
           "blocks"          : this.state.blockFilter,
           "village"         : this.state.villageFilter, 
+          "searchText"      : this.state.searchText, 
         }
         this.getData(inputGetData);   
         swal({
@@ -195,6 +197,7 @@ class Beneficiary extends Component{
       "district"        : this.state.districtFilter,
       "blocks"          : this.state.blockFilter,
       "village"         : this.state.villageFilter, 
+      "searchText"      : this.state.searchText, 
     }
     this.getData(inputGetData);
   }
@@ -225,6 +228,7 @@ class Beneficiary extends Component{
             "district"        : this.state.districtFilter,
             "blocks"          : this.state.blockFilter,
             "village"         : this.state.villageFilter, 
+            "searchText"      : this.state.searchText, 
           }
           this.getData(inputGetData);
           swal({
@@ -269,6 +273,7 @@ class Beneficiary extends Component{
       "district"        : this.state.districtFilter,
       "blocks"          : this.state.blockFilter,
       "village"         : this.state.villageFilter, 
+      "searchText"      : this.state.searchText, 
     }
     this.getData(inputGetData);
     if(nextProps){
@@ -298,6 +303,7 @@ class Beneficiary extends Component{
       "district"        : this.state.districtFilter,
       "blocks"          : this.state.blockFilter,
       "village"         : this.state.villageFilter, 
+      "searchText"      : this.state.searchText, 
     }
     this.getData(inputGetData);
     this.getAvailableFamilyId(this.state.center_ID);
@@ -538,40 +544,53 @@ class Beneficiary extends Component{
     var formValues ={
       searchText : searchText,
     }
-    if(searchText) {
-      axios
-      .post('/api/beneficiaries/searchValue/'+this.state.center_ID, formValues)
-      .then(
-        (res)=>{
-          // console.log('res', res);
-          if(res.data.data&&res.data.data.length>0){
-            var tableData = res.data.data.map((a, i)=>{
-              return {
-                _id                       : a._id,
-                beneficiaryID             : a.beneficiaryID,
-                familyID                  : a.familyID,
-                surnameOfBeneficiary      : a.surnameOfBeneficiary,
-                firstNameOfBeneficiary    : a.firstNameOfBeneficiary,
-                middleNameOfBeneficiary   : a.middleNameOfBeneficiary,
-                // nameofbeneficiaries       : a.surnameOfBeneficiary+" "+a.firstNameOfBeneficiary+" " +a.middleNameOfBeneficiary,
-                uidNumber                 : a.uidNumber,
-                relation                  : a.relation,
-                genderOfbeneficiary       : a.genderOfbeneficiary,   
-                birthYearOfbeneficiary    : a.birthYearOfbeneficiary,
-              }
-            })
-          }
-        this.setState({
-          tableData     : tableData,          
-        })
-      }).catch((error)=>{ 
-        console.log('error',error)
-        // swal("No results found","","error");
-        this.setState({
-          tableData     : [],          
-        })
-      });
-    }
+
+    this.setState({
+        searchText    : searchText        
+    },()=>{      
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+        "searchText"      : this.state.searchText, 
+      }
+      this.getData(inputGetData);
+    })
+    // if(searchText) {
+    //   axios
+    //   .post('/api/beneficiaries/searchValue/'+this.state.center_ID, formValues)
+    //   .then(
+    //     (res)=>{
+    //       // console.log('res', res);
+    //       if(res.data.data&&res.data.data.length>0){
+    //         var tableData = res.data.data.map((a, i)=>{
+    //           return {
+    //             _id                       : a._id,
+    //             beneficiaryID             : a.beneficiaryID,
+    //             familyID                  : a.familyID,
+    //             surnameOfBeneficiary      : a.surnameOfBeneficiary,
+    //             firstNameOfBeneficiary    : a.firstNameOfBeneficiary,
+    //             middleNameOfBeneficiary   : a.middleNameOfBeneficiary,
+    //             // nameofbeneficiaries       : a.surnameOfBeneficiary+" "+a.firstNameOfBeneficiary+" " +a.middleNameOfBeneficiary,
+    //             uidNumber                 : a.uidNumber,
+    //             relation                  : a.relation,
+    //             genderOfbeneficiary       : a.genderOfbeneficiary,   
+    //             birthYearOfbeneficiary    : a.birthYearOfbeneficiary,
+    //           }
+    //         })
+    //       }
+    //     this.setState({
+    //       tableData     : tableData,          
+    //     })
+    //   }).catch((error)=>{ 
+    //     console.log('error',error)
+    //     // swal("No results found","","error");
+    //     this.setState({
+    //       tableData     : [],          
+    //     })
+    //   });
+    // }
   }
   getUID(event) {
     /*  if(this.state.firstNameOfBeneficiary === this.state.firstNameOfBeneficiaryCheck )
@@ -622,6 +641,7 @@ class Beneficiary extends Component{
         "district"        : this.state.districtFilter,
         "blocks"          : this.state.blockFilter,
         "village"         : this.state.villageFilter, 
+        "searchText"      : this.state.searchText, 
       }
       this.getData(inputGetData);
     });
@@ -682,6 +702,7 @@ class Beneficiary extends Component{
         "district"        : this.state.districtFilter,
         "blocks"          : this.state.blockFilter,
         "village"         : this.state.villageFilter, 
+        "searchText"      : this.state.searchText, 
       }
       this.getData(inputGetData);
       var selectedDistrict = this.state.district;
@@ -740,6 +761,7 @@ class Beneficiary extends Component{
         "district"        : this.state.districtFilter,
         "blocks"          : this.state.blockFilter,
         "village"         : this.state.villageFilter, 
+        "searchText"      : this.state.searchText, 
       }
       this.getData(inputGetData);
       axios({
@@ -787,6 +809,7 @@ class Beneficiary extends Component{
         "district"        : this.state.districtFilter,
         "blocks"          : this.state.blockFilter,
         "village"         : this.state.villageFilter, 
+        "searchText"      : this.state.searchText, 
       }
       this.getData(inputGetData);
     });  

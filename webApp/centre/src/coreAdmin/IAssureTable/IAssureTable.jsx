@@ -685,14 +685,19 @@ class IAssureTable extends Component {
 
 
 	            	{/* ===  Display Table === */}
-	                <div className={!this.props.divClass ? "table-responsive" : ""} id="section-to-screen">
+					{/*
+	                <div className={!this.props.divClass ? "table-responsive" : ""}  id="section-to-print">
 						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
-	                        <thead className="fixedHeader">	     
+	                <div className={!this.props.divClass ? "table-responsive commonHeaderFixTable" : "commonHeaderFixTable"} id="section-to-screen">
+					*/}
+	                <div className="table-responsive commonHeaderFixTable" id="section-to-screen">
+						<table className={"table iAssureITtable-bordered table-striped table-hover fixedTable "+ this.props.tableClass} id="commonTable">
+	                        <thead className="">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
-												<th key={index} colSpan={data.mergedColoums} className={"umDynamicHeader srpadd colorTable textAlignCenter " + (data.hide ? "printhide" :"")}>{data.heading}</th>			
+												<th scope="col" key={index} colSpan={data.mergedColoums}  className={"umDynamicHeader srpadd colorTable textAlignCenter " + (data.hide ? "printhide" :"")}>{data.heading}</th>			
 		                            		);		                           		
 		                            	})	
 		                            	:
@@ -702,7 +707,7 @@ class IAssureTable extends Component {
 	                            <tr className="tempTableHeader1">
 									{
 										!this.props.noSRNumber ?
-	                            			<th className="umDynamicHeader srpadd text-center">
+	                            			<th scope="col"  className="umDynamicHeader srpadd text-center">
 												<div className="colSr">Sr.No.</div>
 	                            			</th>
 	    								:null
@@ -712,13 +717,13 @@ class IAssureTable extends Component {
 											([key, value], i)=> {
 													if(key === 'actions'){
 														return(
-															<th key={i} id={key} className={"umDynamicHeader srpadd  textAlignLeft printhide colorRow-"+this.state.tableObjects.component}>
+															<th scope="col"  key={i} id={key} className={"umDynamicHeader srpadd  textAlignLeft printhide colorRow-"+this.state.tableObjects.component}>
 																<div className={"wrapWord col"+(i+1)}>{value}</div>
 															</th>
 														);	
 													}else{
 														return(
-															<th key={i} id={key}  className={"umDynamicHeader srpadd textAlignLeft "+(this.state.printhideArray[i] ? this.state.printhideArray[i].printhide : "" )}>
+															<th scope="col"  key={i} id={key}  className={"umDynamicHeader srpadd textAlignLeft "+(this.state.printhideArray[i] ? this.state.printhideArray[i].printhide : "" )}>
 																<div className={"wrapWord col"+(i+1)}>{value}</div>
 															    <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);	
@@ -727,12 +732,12 @@ class IAssureTable extends Component {
 											}
 										) 
 										:
-										<th className="umDynamicHeader srpadd textAlignLeft"></th>
+										<th scope="col"  className="umDynamicHeader srpadd textAlignLeft"></th>
 									}
 	                            </tr>
 	                        </thead>
 	                        <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""}>
-	                           { this.state.tableData && this.state.tableData.length > 0 ?
+	                            { this.state.tableData && this.state.tableData.length > 0 ?
 	                           		this.state.tableData.map( 
 										(value, i)=> {
 											return(
@@ -873,7 +878,7 @@ class IAssureTable extends Component {
 									:
 									<tr className="trAdmin"><td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+1 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
 								}
-	                    </tbody>
+	                    	</tbody>
 	                    </table>
 	                    {
 	                    	this.state.tableObjects.paginationApply === true ?
