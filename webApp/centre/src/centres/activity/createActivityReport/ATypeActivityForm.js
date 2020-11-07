@@ -168,6 +168,8 @@ class Activity extends Component{
         directCC                   : "DirectCC",
         indirectCC                 : "IndirectCC",
         other                      : "Other",
+        beneficiaryID              : "beneficiaryID",
+        familyID                   : "familyID",
         remark                     : "Remark",
       },
       failedtableHeading           :{
@@ -189,6 +191,8 @@ class Activity extends Component{
         directCC                   : "DirectCC",
         indirectCC                 : "IndirectCC",
         other                      : "Other",
+        beneficiaryID              : "beneficiaryID",
+        familyID                   : "familyID",
         remark                     : "Remark",
         failedRemark               : "Failed Data Remark",
       },
@@ -1637,6 +1641,8 @@ class Activity extends Component{
             "directCC"            : a.sourceofFund.directCC     ? a.sourceofFund.directCC : '-',
             "indirectCC"          : a.sourceofFund.indirectCC   ? a.sourceofFund.indirectCC : '-',
             "other"               : a.sourceofFund.other        ? a.sourceofFund.other : '-',
+            "beneficiaryID"       : a.listofBeneficiaries[0].beneficiaryID? a.listofBeneficiaries[0].beneficiaryID : '-',
+            "familyID"            : a.listofBeneficiaries[0].familyID     ? a.listofBeneficiaries[0].familyID : '-',
             "remark"              : a.remark                    ? a.remark : '-',
           }
         })
@@ -1662,6 +1668,8 @@ class Activity extends Component{
             "directCC"            : a.directCC     ? a.directCC : '-',
             "indirectCC"          : a.indirectCC   ? a.indirectCC : '-',
             "other"               : a.other        ? a.other : '-',
+            "beneficiaryID"       : a.beneficiaryID? a.beneficiaryID : '-',
+            "familyID"            : a.familyID     ? a.familyID : '-',
             "remark"              : a.remark                    ? a.remark : '-',
             "failedRemark"        : a.failedRemark              ? a.failedRemark : '-',
           }
