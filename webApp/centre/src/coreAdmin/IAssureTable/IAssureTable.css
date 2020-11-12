@@ -14,12 +14,12 @@
   top: 0;
   z-index: 4;
 }
-/*.tempTableHeader thead th {
-  background: #367ea8;
-  color: #fff;
-  position: sticky;
+/*.tempTableHeader th {
   top: 0;
-  z-index: 5;
+  height: 34px;
+}
+.tempTableHeader1 th {
+  top: 34px;
 }*/
 .scrollContent{
   /*background: #fff;*/

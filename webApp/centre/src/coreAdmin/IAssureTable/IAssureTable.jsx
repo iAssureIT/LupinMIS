@@ -690,14 +690,14 @@ class IAssureTable extends Component {
 						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
 	                <div className={!this.props.divClass ? "table-responsive commonHeaderFixTable" : "commonHeaderFixTable"} id="section-to-screen">
 					*/}
-	                <div className="table-responsive commonHeaderFixTable" id="section-to-screen">
+	                <div className={"table-responsive commonHeaderFixTable " + this.props.customTableHeight} id="section-to-screen">
 						<table className={"table iAssureITtable-bordered table-striped table-hover fixedTable "+ this.props.tableClass} id="commonTable">
 	                        <thead className="">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
 		                            		return(
-												<th scope="col" key={index} colSpan={data.mergedColoums}  className={"umDynamicHeader srpadd colorTable textAlignCenter " + (data.hide ? "printhide" :"")}>{data.heading}</th>			
+												<th scope="col" key={index} style={{top: 0, height: "34px"}} colSpan={data.mergedColoums}  className={"umDynamicHeader srpadd colorTable textAlignCenter " + (data.hide ? "printhide" :"")}>{data.heading}</th>			
 		                            		);		                           		
 		                            	})	
 		                            	:

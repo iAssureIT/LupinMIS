@@ -698,7 +698,7 @@ class Family extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
       }).then((response)=> {
-        // console.log('response',response);
+        console.log('response',response);
         if(response.data){
           function removeDuplicates(data, param){
             return data.filter(function(item, pos, array){

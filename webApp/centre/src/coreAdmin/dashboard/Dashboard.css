@@ -6,6 +6,9 @@
     border: 1px solid #ded3d3;
     background: #fff !important;
 }
+.center_wise_Achievements{
+    height: unset !important
+}
 #PlanVsAchievement_Physical td, #PlanVsAchievement_Physical th{
     border: 1px solid #ded3d3;
     background: #fff !important;

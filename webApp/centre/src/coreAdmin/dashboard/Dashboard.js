@@ -136,8 +136,8 @@ export default class Dashboard extends Component{
       },
       "tableCenterHeading"       : {
         centerName        : "Center",
-        reach             : "Reach (Beneficiary)",
-        familyUpgradation : "Upgradation (Family)",
+        reach             : "Reach",
+        familyUpgradation : "Upgradation",
         total             : "Total",
         LHWRF             : "LHWRF",
         NABARD            : "NABARD",
@@ -898,12 +898,13 @@ export default class Dashboard extends Component{
                           <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                         </div>
                     </div>   
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding  dashBoxBlueColor">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter  dashBoxBlueColor">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Center wise Achievements</div>
                         <IAssureTable 
                           tableName = "Center wise Achievements"
                           id = "center_wise_Achievements" 
+                          customTableHeight = "center_wise_Achievements"
                           tableHeading={this.state.tableCenterHeading}
                           twoLevelHeader={this.state.twoLevelHeader_Center} 
                           tableData={this.state.centerAchievementData}
