@@ -378,7 +378,7 @@ class Beneficiary extends Component{
     })
     .then((response)=> {
       var editData = response.data[0];
-      console.log('editData',response);
+      // console.log('editData',response);
       if(editData){
         this.setState({
           "shown"                    : false,
@@ -446,7 +446,7 @@ class Beneficiary extends Component{
       $(".fullpageloader").show();
       axios.post('/api/beneficiaries/get/beneficiary/list', inputGetData)
       .then((response)=>{
-        console.log('response', response);
+        // console.log('response', response);
         $('.fullpageloader').hide();  
         var tableData = response.data.map((a, i)=>{
           return {
@@ -607,7 +607,7 @@ class Beneficiary extends Component{
           
     }
 
-    else if(this.refs.firstNameOfBeneficiary.value == ""){
+    else if(this.refs.firstNameOfBeneficiary.value === ""){
       this.setState({
           uidNumber : "",
           relation  : "-- Select --",
@@ -665,7 +665,7 @@ class Beneficiary extends Component{
               property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
               }else{
                 return a[property].localeCompare(b[property]);
@@ -729,7 +729,7 @@ class Beneficiary extends Component{
                 property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
               }else{
                   return a[property].localeCompare(b[property]);
@@ -741,7 +741,7 @@ class Beneficiary extends Component{
             listofBlocks     : availableblockInCenter,
             block : '-- Select --',
           },()=>{
-            console.log("this.state.listofBlocks",this.state.listofBlocks);
+            // console.log("this.state.listofBlocks",this.state.listofBlocks);
           })
         }).catch(function (error) {
           console.log("error = ",error);
@@ -781,7 +781,7 @@ class Beneficiary extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -859,7 +859,6 @@ class Beneficiary extends Component{
                                   <option value="" className="hidden" >-- Select --</option>
                                   {
                                     this.state.availableFamilies && this.state.availableFamilies.length>0 ? this.state.availableFamilies.map((data, index)=>{
-                                    // console.log(data)
                                       return(
                                         <option key={data._id} value={data.familyID+'|'+data._id} data-id={data._id}>{data.familyID}</option>
                                         );

@@ -142,7 +142,7 @@ class ActivitywisePlan extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -202,7 +202,7 @@ class ActivitywisePlan extends Component{
               property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
               }else{
                 return a[property].localeCompare(b[property]);
@@ -251,7 +251,7 @@ class ActivitywisePlan extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -319,7 +319,7 @@ class ActivitywisePlan extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -400,7 +400,7 @@ class ActivitywisePlan extends Component{
                         unit                           : a.unit,
                         Reach                          : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.Reach)+"</b>" : this.addCommas(a.Reach),
                         FamilyUpgradation              : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.FamilyUpgradation)+"</b>" : this.addCommas(a.FamilyUpgradation),
-                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") == "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
+                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
                         unitCost                       : (a.unitCost),
                         physicalUnit                   : (a.physicalUnit),
                         TotalBudget                    : (a.TotalBudget),
@@ -443,7 +443,7 @@ class ActivitywisePlan extends Component{
                         unit                           : a.unit,
                         Reach                          : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.Reach)+"</b>" : this.addCommas(a.Reach),
                         FamilyUpgradation              : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.FamilyUpgradation)+"</b>" : this.addCommas(a.FamilyUpgradation),
-                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") == "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
+                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
                         unitCost                       : (a.unitCost),
                         physicalUnit                   : (a.physicalUnit),
                         TotalBudget                    : (a.TotalBudget),

@@ -201,7 +201,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -270,7 +270,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           .then((response)=>{
             console.log("resp",response);
             $(".fullpageloader").hide();
-            var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+            var value = response.data.filter((a)=>{return a.name === "Total"})[0];
             // console.log('value',value)
             var tableData = response.data.map((a, i)=>{
               // console.log("a.Per_Annual",((a.annualPlan_TotalBudget_L/value.annualPlan_TotalBudget_L)*100).toFixed(2));

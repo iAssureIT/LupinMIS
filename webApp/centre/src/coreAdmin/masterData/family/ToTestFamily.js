@@ -476,7 +476,7 @@ class Family extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -509,7 +509,7 @@ class Family extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -692,7 +692,7 @@ class Family extends Component{
               property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
               }else{
                 return a[property].localeCompare(b[property]);
@@ -740,7 +740,7 @@ class Family extends Component{
                 property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
               }else{
                   return a[property].localeCompare(b[property]);
@@ -782,7 +782,7 @@ class Family extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -851,7 +851,7 @@ class Family extends Component{
                 property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
               }else{
                   return a[property].localeCompare(b[property]);
@@ -907,7 +907,7 @@ class Family extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -950,7 +950,7 @@ class Family extends Component{
       axios
       .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
       .then((response)=> {
-        console.log("response===========",response)
+        console.log("response============",response)
       // $('.fullpageloader').hide();  
       if (response) {
         this.setState({

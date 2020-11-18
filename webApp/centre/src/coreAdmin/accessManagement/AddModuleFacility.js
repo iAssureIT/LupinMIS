@@ -49,11 +49,11 @@ class AddModuleFacility extends Component {
 		// 	if(err){
 		// 		console.log(err);
 		// 	}else{
-		// 		if(res==true){
+		// 		if(res===true){
 		//           this.setState({
 		//              facilityPermission : res,
 		//           });
-		//         }else if(res==false){
+		//         }else if(res===false){
 		//           this.setState({
 		//              facilityPermission : res,
 		//           });
@@ -180,7 +180,7 @@ class AddModuleFacility extends Component {
 
 
 render(){
-		/*if(this.state.facilityPermission != 'waitingforResult' && this.state.facilityPermission == true){
+		/*if(this.state.facilityPermission != 'waitingforResult' && this.state.facilityPermission === true){
 			$('.sidebar').css({display:'block',background: '#222d32'});*/
 		return(
 			<div className = "container-fluid ">
@@ -315,9 +315,9 @@ render(){
 				</div>
 			</div>
 		);
-		/*}else if (this.state.facilityPermission == false ){
+		/*}else if (this.state.facilityPermission === false ){
 			  	return (<div>{FlowRouter.go('/noAccesss')}</div>);
-		  }else if(this.state.facilityPermission == "waitingforResult"){
+		  }else if(this.state.facilityPermission === "waitingforResult"){
 		  	return(<div className="col-lg-12 col-md-12 col-sm-12 waitingResLoadingWrap">
 			   <img className="loaderImageSize1" src="/images/loading1.gif" alt="loading"/>
 			</div>);

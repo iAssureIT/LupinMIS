@@ -64,7 +64,7 @@ class ActivityReportView extends Component{
       url: '/api/activityReport/'+this.state.activty_ID,
     }).then((response)=> {
     $(".fullpageloader").hide();
-      console.log("response",response.data);
+      // console.log("response",response.data);
       if (response.data && response.data[0]) {
         this.setState({
           "activity" :  response.data[0]

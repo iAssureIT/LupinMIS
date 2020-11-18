@@ -159,14 +159,14 @@ export default class BarChart extends Component{
   }
   getData(year, center_ID){
     if(year){
-      // console.log("year========",year);
+      // console.log("year=========",year);
       var sectordata = {...this.state.data};
       var startDate = year.substring(3, 7)+"-04-01";
       var endDate = year.substring(10, 15)+"-03-31";
       if(startDate && endDate){
         axios.get('/api/reportDashboard/sector_familyupgrade_outreach_count/'+center_ID+'/'+startDate+'/'+endDate)
           .then((response)=>{
-          console.log("sector_annual_achievement_report ==>",response);
+          console.log("sector_annual_achievement_report ===>",response);
             var tableData = response.data.map((a, i)=>{
             return {
                 _id                                       : a._id,  

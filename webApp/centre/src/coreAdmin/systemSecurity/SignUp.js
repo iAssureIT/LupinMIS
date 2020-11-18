@@ -156,7 +156,7 @@ class SignUp extends Component {
 		            })
 		        }
 		  //       if(formValid(this.state.formerrors)){
-				// 	console.log('companyName==',this.state.formerrors);
+				// 	console.log('companyName===',this.state.formerrors);
 		  //       }else{
 		  //           document.getElementById("signUpBtn").value = 'Sign Up';
 				// 	swal("Please enter mandatory fields", "");
@@ -209,9 +209,9 @@ class SignUp extends Component {
  	acceptcondition(event){
 	    var conditionaccept = event.target.value;
 	    // console.log("condition",conditionaccept);
-	    if(conditionaccept=="acceptedconditions"){
+	    if(conditionaccept==="acceptedconditions"){
 	        // $(".acceptinput").removeAttr('disabled');
-	        // if(this.state.roletype=="Student"){
+	        // if(this.state.roletype==="Student"){
 	        //     document.getElementById("lastname").removeAttribute("");
 	        // }else{
 	        //     null;
@@ -328,7 +328,7 @@ class SignUp extends Component {
 	      method: 'get',
 	      url: '/api/centers/list',
 	    }).then((response)=> {
-	        // console.log('response ==========', response.data);
+	        // console.log('response ============', response.data);
 	        this.setState({
 	          listofCenters : response.data
 	        },()=>{
@@ -366,7 +366,7 @@ class SignUp extends Component {
 
 
 		const {formerrors} = this.state;
-		// console.log("formerrors====?>>>",formerrors);
+		// console.log("formerrors=====?>>>",formerrors);
       /*console.log("-------------------------------",this.state.loggedIn)*/    
 		return(
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 middlepo middlebord pull-right" id="contentsroll" style={{"height": innerheight}}>

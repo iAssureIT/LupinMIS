@@ -136,11 +136,11 @@ class AnnualPlanDetails extends Component{
     });
     $(".fullpageloader").show();
     if(inputGetData){
-      console.log("inputGetData",inputGetData);
+      // console.log("inputGetData",inputGetData);
       axios.post(this.state.apiCall+'/list', inputGetData)
       .then((response)=>{
         $(".fullpageloader").hide();
-        console.log("response plan Details===>",response);
+        // console.log("response plan Details===>",response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                 : a._id,
@@ -322,8 +322,8 @@ class AnnualPlanDetails extends Component{
     var hidden = {
       display: this.state.shown ? "none" : "block"
     }
-    // console.log('month ======', this.state.month, this.state.year)
-    // console.log('month ======', this.state.startDate, this.state.endDate)
+    // console.log('month =======', this.state.month, this.state.year)
+    // console.log('month =======', this.state.startDate, this.state.endDate)
     return ( 
       <div className="container-fluid">
         <div className="row">

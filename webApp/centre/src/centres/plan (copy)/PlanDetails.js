@@ -266,7 +266,7 @@ class PlanDetails extends Component{
       ["indirectCC-"+id] : 0,
       ["other-"+id] : 0,
     },()=>{
-      // console.log('totalBud==========',this.state.totalBud );
+      // console.log('totalBud============',this.state.totalBud );
       if (parseInt(this.state[`noOfBeneficiaries-${id}`]) < parseInt(this.state[`noOfFamilies-${id}`]) ) {
         swal("No. of Families should not greater than No. of Beneficiaries");
         this.setState({
@@ -651,7 +651,7 @@ class PlanDetails extends Component{
       this.setState({
         // "year" : this.state.years[0]
       },()=>{
-        // console.log('month ======', this.state.month, this.state.year)
+        // console.log('month =======', this.state.month, this.state.year)
         this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
       })
     });
@@ -706,7 +706,7 @@ class PlanDetails extends Component{
       this.setState({
         financialYear            :financialYear
       },()=>{
-        // console.log('this.state.financialYear========',this.state.financialYear);
+        // console.log('this.state.financialYear=========',this.state.financialYear);
         var financialYear = this.state.financialYear;
         var data = {
             center_ID  : center_ID,

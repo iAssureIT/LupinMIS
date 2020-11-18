@@ -30,7 +30,7 @@ class CaseStudyView extends Component{
       method: 'get',
       url: '/api/caseStudies/'+this.state.caseStudy_ID,
     }).then((response)=> {
-      console.log("response",response.data);
+      // console.log("response",response.data);
       if (response.data) {
         this.setState({
           "caseStudy"       :  response.data[0],

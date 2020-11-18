@@ -167,7 +167,7 @@ class ViewActivity extends Component{
       .then((response)=>{
         // console.log(startDate,endDate);
       // $(".fullpageloader").hide();
-        console.log("response",response);
+        // console.log("response",response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                        : a._id,
@@ -192,30 +192,6 @@ class ViewActivity extends Component{
             indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
             other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
             remark                     : a.remark,
-          
-
-            // _id                        : a._id,
-            // projectCategoryType        : a.projectCategoryType,
-            // projectName                : a.projectName==='all'?'-':a.projectName,
-            // date                       : moment(a.date).format('DD-MM-YYYY'),
-            // place                      : a.place,
-            // sectorName                 : a.sectorName,
-            // activity                   : a.activity,
-            // subactivityName            : a.subactivityName,
-            // unit                       : a.unit,
-            // unitCost                   : this.addCommas(a.unitCost),
-            // quantity                   : this.addCommas(a.quantity),
-            // totalcost                  : this.addCommas(a.totalCost),
-            // // numofBeneficiaries         :( a.numofBeneficiaries !=="0") ||( a.numofBeneficiaries !==0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-            // numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-            // LHWRF                      : this.addCommas(a.LHWRF),
-            // NABARD                     : this.addCommas(a.NABARD),
-            // bankLoan                   : this.addCommas(a.bankLoan),
-            // govtscheme                 : this.addCommas(a.govtscheme),
-            // directCC                   : this.addCommas(a.directCC),
-            // indirectCC                 : this.addCommas(a.indirectCC),
-            // other                      : this.addCommas(a.other),
-            // remark                     : a.remark,
           }
         })
         var downloadData = response.data.map((a, i)=>{
@@ -264,7 +240,7 @@ class ViewActivity extends Component{
       dateofIntervention :momentString,
     })
     this.year();
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
     this.getAvailableSectors();
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
@@ -290,7 +266,7 @@ class ViewActivity extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -350,7 +326,7 @@ class ViewActivity extends Component{
               property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
               }else{
                 return a[property].localeCompare(b[property]);
@@ -398,7 +374,7 @@ class ViewActivity extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -413,7 +389,6 @@ class ViewActivity extends Component{
       console.log("error = ",error);
     });    
   }
-
   selectSubActivity(event){
     event.preventDefault();
     this.setState({[event.target.name]:event.target.value});
@@ -428,7 +403,6 @@ class ViewActivity extends Component{
       this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
     })
   }
-
   year() {
     let financeYear;
     let today = moment();
@@ -474,7 +448,6 @@ class ViewActivity extends Component{
       })
     })
   }
-
   handleChange(event){
     event.preventDefault();
     this.setState({

@@ -56,9 +56,9 @@ class ViewTemplates extends Component{
 			method: 'get',
 			url: '/masternotification/list',
 		}).then((response)=> {
-			var emailTemplatesList = response.data.filter((a)=>{ return a.templateType == "Email"});	   	    
-			var notificationTemplatesList = response.data.filter((a)=>{ return a.templateType == "Notification"});	   	    
-			var smsTemplatesList = response.data.filter((a)=>{ return a.templateType == "SMS"});	   	    
+			var emailTemplatesList = response.data.filter((a)=>{ return a.templateType === "Email"});	   	    
+			var notificationTemplatesList = response.data.filter((a)=>{ return a.templateType === "Notification"});	   	    
+			var smsTemplatesList = response.data.filter((a)=>{ return a.templateType === "SMS"});	   	    
 		    this.setState({
 		    	emailTemplatesList 			: emailTemplatesList,
 		    	notificationTemplatesList 	: notificationTemplatesList,
@@ -161,19 +161,19 @@ class ViewTemplates extends Component{
 				
 				axios.post('/masternotification', formValues)
 				.then((response)=> {					
-					if(templateType =='Email'){
+					if(templateType ==='Email'){
 						var emailTemplatesList = this.state.emailTemplatesList;
 						emailTemplatesList.push(response.data.dataBody);
 						this.setState({
 							emailTemplatesList : emailTemplatesList
 						});
-					}else if(templateType =='SMS'){
+					}else if(templateType ==='SMS'){
 						var smsTemplatesList = this.state.smsTemplatesList;
 						smsTemplatesList.push(response.data.dataBody);
 						this.setState({
 							smsTemplatesList : smsTemplatesList
 						});
-					}else if(templateType =='Notification'){
+					}else if(templateType ==='Notification'){
 						var notificationTemplatesList = this.state.notificationTemplatesList;
 						notificationTemplatesList.push(response.data.dataBody);
 						this.setState({

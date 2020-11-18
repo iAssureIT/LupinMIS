@@ -126,7 +126,7 @@ class UpgradedBeneficiaryReport extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        // console.log('availableDistInCenter ==========',availableDistInCenter);
+        // console.log('availableDistInCenter ============',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
           // availableDistInCenter  : response.data[0].districtsCovered,

@@ -326,7 +326,7 @@ class Family extends Component{
       };
       axios.post('/api/families',familyValues)
       .then((response)=>{
-          console.log('response', response);
+          // console.log('response', response);
         if(response.data.message==="UID Already Exists"){
           swal({
             title : response.data.message,
@@ -489,7 +489,7 @@ class Family extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -522,7 +522,7 @@ class Family extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -543,7 +543,7 @@ class Family extends Component{
         method: 'get',
         url: '/api/families/'+id,
       }).then((response)=> {
-        console.log('editData',response);
+        // console.log('editData',response);
         var editData = response.data[0];
         // console.log('editData',editData.center_ID);
         this.getAvailableCenter(editData.center_ID);
@@ -640,7 +640,7 @@ class Family extends Component{
     });
   }
   getData(inputGetData){ 
-    console.log("inputGetData",inputGetData);
+    // console.log("inputGetData",inputGetData);
     this.setState({
       propsdata : inputGetData
     },()=>{
@@ -652,7 +652,7 @@ class Family extends Component{
       axios.post('/api/families/get/family/list',inputGetData)
       .then((response)=>{
         $(".fullpageloader").hide();
-        console.log('response', response);
+        // console.log('response', response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                   : a._id,
@@ -698,7 +698,7 @@ class Family extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
       }).then((response)=> {
-        console.log('response',response);
+        // console.log('response',response);
         if(response.data){
           function removeDuplicates(data, param){
             return data.filter(function(item, pos, array){
@@ -713,7 +713,7 @@ class Family extends Component{
               property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
               }else{
                 return a[property].localeCompare(b[property]);
@@ -761,7 +761,7 @@ class Family extends Component{
                 property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
               }else{
                   return a[property].localeCompare(b[property]);
@@ -803,7 +803,7 @@ class Family extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -873,7 +873,7 @@ class Family extends Component{
                 property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
               }else{
                   return a[property].localeCompare(b[property]);
@@ -930,7 +930,7 @@ class Family extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -975,7 +975,7 @@ class Family extends Component{
       axios
       .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
       .then((response)=> {
-        console.log("response===========",response)
+        // console.log("response============",response)
         $('.fullpageloader').hide();  
         if (response) {
           this.setState({

@@ -79,7 +79,7 @@ class centerList extends Component{
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
     $(".fullpageloader").hide();
-      console.log('response', response.data);
+      // console.log('response', response.data);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                       : a._id,
@@ -98,7 +98,7 @@ class centerList extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);

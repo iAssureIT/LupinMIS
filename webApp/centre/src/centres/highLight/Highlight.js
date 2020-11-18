@@ -140,7 +140,7 @@ class Highlight extends Component{
         };     
         axios.post('/api/highlights', highlightValues)
           .then((response)=>{
-           console.log('response', response);
+           // console.log('response', response);
             this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
             swal({
               title : response.data.message,
@@ -175,10 +175,10 @@ class Highlight extends Component{
         "highlight_Image"  :this.state.imageArray,
         "highlight_File"   :this.state.fileArray,
       };
-      console.log('highlightValues',highlightValues);
+      // console.log('highlightValues',highlightValues);
       axios.patch('/api/highlights/update', highlightValues)
         .then((response)=>{
-           console.log('Uresponse', response);
+           // console.log('Uresponse', response);
           this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
           swal({
             title : response.data.message,
@@ -207,7 +207,7 @@ class Highlight extends Component{
       url: '/api/highlights/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log("editDataresponse",editData.highlight_Image);
+      // console.log("editDataresponse",editData.highlight_Image);
       this.setState({
         "dateofsubmission"  : editData.date,
         "userName"          : editData.userName,
@@ -318,7 +318,7 @@ class Highlight extends Component{
                           fileType   = "File"
                         />
                         {/*
-                          this.state.action == "Submit" ?
+                          this.state.action === "Submit" ?
                             <AddFilePublic
                               getFile    = {this.getFile.bind(this)}
                               configData = {this.state.configData} 

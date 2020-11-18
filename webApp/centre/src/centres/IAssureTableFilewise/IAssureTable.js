@@ -84,7 +84,7 @@ class IAssureTable extends Component {
 	    $("html,body").scrollTop(0); 
 	    const center_ID = localStorage.getItem("center_ID");
 	    const centerName = localStorage.getItem("centerName");
-	    console.log("localStorage =",localStorage.getItem('centerName'));
+	    // console.log("localStorage =",localStorage.getItem('centerName'));
 	    // console.log("localStorage =",localStorage);
 	    this.setState({
 	      center_ID    : center_ID,
@@ -140,13 +140,13 @@ class IAssureTable extends Component {
 	  	var deleteMethod =  this.props.deleteMethod;
 		let id           = e.target.id;
 		// let id = (e.target.id).replace(" ", "-");
-    	console.log("tableObjects.apiLink+id ",tableObjects.apiLink+id )
-    	console.log("id ",id )
+    	// console.log("tableObjects.apiLink+id ",tableObjects.apiLink+id )
+    	// console.log("id ",id )
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
-	    	console.log("response ",response )
+	    	// console.log("response ",response )
 	    	this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        this.props.history.push(tableObjects.editUrl);
 	        swal({
@@ -643,9 +643,9 @@ class IAssureTable extends Component {
 		  
            
 	            <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding">
-	            	{/*==============================================================================
+	            	{/*========================================================================================
 	            			We will have two tables... One to display on screen and one to print.							
-					   ============================================================================== */}
+					   ======================================================================================== */}
 
 
 	            	{/* ===  Display Table === */}

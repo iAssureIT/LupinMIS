@@ -13,7 +13,7 @@ import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 import "./Activity.css";
 
 var add = 0;
-class Activity extends Component{
+class ActivityTypeA extends Component{
   constructor(props){
     super(props);
     this.state = { 
@@ -143,11 +143,8 @@ class Activity extends Component{
       "limitRange"                 : 10000,
       "editId"                     : this.props.match.params ? this.props.match.params.id : '',
       fileDetailUrl                : "/api/activityReport/get/filedetails/",
-      beneficiaryFileDetailUrl     : "/api/activityReport/get/beneficiaryFiledetails/",
       goodRecordsTable             : [],
       failedRecordsTable           : [],
-      beneficiaryGoodRecordsTable  : [],
-      beneficiaryFailedRecordsTable : [],
       goodRecordsHeading           :{
         projectCategoryType        : "Program Type",
         projectName                : "Project Name",
@@ -196,93 +193,9 @@ class Activity extends Component{
         remark                     : "Remark",
         failedRemark               : "Failed Data Remark",
       },
-      bTypeActivitygoodRecordsHeading           :{
-        projectCategoryType        : "Program Type",
-        projectName                : "Project Name",
-        date                       : "Date",
-        place                      : "Place",
-        sectorName                 : "Sector",
-        activityName               : "Activity",
-        subactivityName            : "Sub-Activity",
-        unit                       : "Unit",
-        unitCost                   : "Unit Cost",
-        qtyPerBen                  : "Quantity",
-        totalCostPerBen            : "Total Cost",
-        numofBeneficiaries         : "Beneficiary",
-        LHWRF                      : "LHWRF",
-        NABARD                     : "NABARD",
-        bankLoan                   : "Bank",
-        govtscheme                 : "Government",
-        directCC                   : "DirectCC",
-        indirectCC                 : "IndirectCC",
-        other                      : "Other",
-        remark                     : "Remark",
-      },
-      bTypeActivityfailedtableHeading           :{
-        programCategory            : "Program Type",
-        projectName                : "Project Name",
-        date                       : "Date",
-        place                      : "Place",
-        sectorName                 : "Sector",
-        activityName               : "Activity",
-        subactivityName            : "Sub-Activity",
-        unit                       : "Unit",
-        unitCost                   : "Unit Cost",
-        qtyPerBen                  : "Quantity",
-        numofBeneficiaries         : "Beneficiary",
-        LHWRF                      : "LHWRF",
-        NABARD                     : "NABARD",
-        bankLoan                   : "Bank",
-        govtscheme                 : "Government",
-        directCC                   : "DirectCC",
-        indirectCC                 : "IndirectCC",
-        other                      : "Other",
-        remark                     : "Remark",
-        failedRemark               : "Failed Data Remark",
-      },
-      beneficiaryGoodRecordsHeading           :{
-        sectorName                 : "Sector Name",
-        activityName               : "Activity Name",
-        subactivityName            : "Subactivity Name",
-        date                       : "Date",
-        beneficiaryID              : "Beneficiary ID",
-        familyID                   : "Family ID",
-        nameofbeneficiary          : "Beneficiary Name",
-        relation                   : "Relation",
-        place                      : "Place" 
-      },
-      beneficiaryFailedtableHeading           :{
-        sectorName                 : "Sector Name",
-        activityName               : "Activity Name",
-        subactivityName            : "Subactivity Name",
-        date                       : "Date",
-        familyID                   : "Family ID",
-        surnameOfFH                : "FH Surname",
-        firstNameOfFH              : "FH Firstname",
-        middleNameOfFH             : "FH Middlename",
-        uidNumberOfFH              : "FH UID Number",
-        contactNumber              : "Contact Number",
-        FHGender                   : "FH Gender",
-        FHYearOfBirth              : "FH Birth Year",
-        caste                      : "Caste",
-        landCategory               : "Land holding Category",
-        incomeCategory             : "Income Category",
-        specialCategory            : "Special Category",
-        place                      : "Place",
-        beneficiaryID              : "Beneficiary ID",  
-        surnameOfBeneficiary       : "Beneficiary Surname",
-        firstNameOfBeneficiary     : "Beneficiary Firstname",
-        middleNameOfBeneficiary    : "Beneficiary middlename,",
-        relation                   : "Relation",
-        uidNumber                  : "Beneficiary UID Number",
-        genderOfbeneficiary        : "Beneficiary Gender",
-        birthYearOfbeneficiary     : "Beneficiary Birth Year",  
-        failedRemark               : "Failed Data Remark",            
-      }    
     }
     this.uploadedData = this.uploadedData.bind(this);
     this.handleTotalChange = this.handleTotalChange.bind(this);
-    this.getTypeBFileDetails = this.getTypeBFileDetails.bind(this);
     this.getTypeAFileDetails = this.getTypeAFileDetails.bind(this);
   }
   remainTotal(event){
@@ -362,7 +275,7 @@ class Activity extends Component{
                   property = property.substr(1);
                 }
                 return function (a,b) {
-                  if(sortOrder == -1){
+                  if(sortOrder === -1){
                     return b[property].localeCompare(a[property]);
                   }else{
                     return a[property].localeCompare(b[property]);
@@ -390,7 +303,8 @@ class Activity extends Component{
       this.setState({      
         [event.target.name]: event.target.value
       },()=>{
-    });
+        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+      });
   }
   handleTotalChange(event){
     event.preventDefault();
@@ -402,25 +316,10 @@ class Activity extends Component{
       if (this.state.unitCost > 0 & this.state.qtyPerBen > 0) {
         // console.log("this.state.unitCost = ",this.state.unitCost);
         var totalCostPerBen = (parseFloat(this.state.unitCost) * parseFloat(this.state.qtyPerBen)).toFixed(2);
-        // console.log("totalCostPerBen = ",totalCostPerBen);
-        // this.state.LHWRF = 0;
-        // this.state.NABARD = 0;
-        // this.state.bankLoan = 0;
-        // this.state.govtscheme = 0;
-        // this.state.directCC = 0;
-        // this.state.indirectCC = 0;
-        // this.state.other = 0;
-        
         this.setState({
           "total"           : totalCostPerBen,
           "totalCostPerBen" : totalCostPerBen,
           "LHWRF"           : totalCostPerBen,
-          // "NABARD"          : 0,
-          // "bankLoan"        : 0,
-          // "govtscheme"      : 0,
-          // "directCC"        : 0,
-          // "indirectCC"      : 0,
-          // "other"           : 0,
         });
       }else{
         this.setState({
@@ -460,7 +359,7 @@ class Activity extends Component{
     this.setState({
       selectedBeneficiaries : selectedBeneficiaries
     },()=>{
-      console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
+      // console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
     })
   }
   SubmitActivity(event){
@@ -481,7 +380,6 @@ class Activity extends Component{
       total      : this.state.total,
     }
     beneficiariesData = this.state.selectedBeneficiaries.map(element=>{
-      console.log('element',element);
       element.originalUpgrade         = element.isUpgraded ? element.isUpgraded : "";
       element.qtyPerBen               = this.refs.qtyPerBen.value;
       element.unitCost                = this.refs.unitCost.value;
@@ -534,10 +432,10 @@ class Activity extends Component{
         if(beneficiariesData.length>0)  {
           axios.post('/api/activityReport',activityValues)
           .then((response)=>{
-            console.log("response", response);
-            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
               this.setState({
-                selectedValues : beneficiariesData 
+                "shown"          : true,
+                "selectedValues" : beneficiariesData 
               })    
               swal({
                 title : response.data.message,
@@ -616,9 +514,7 @@ class Activity extends Component{
       other      : this.refs.other.value,
       total      : this.state.total,
     }
-    console.log('beneficiariesData=============',beneficiariesData);
     beneficiariesData = this.state.selectedBeneficiaries.map(element=>{
-      console.log("element",element)
       element.originalUpgrade         = element.originalUpgrade;
       element.qtyPerBen               = this.refs.qtyPerBen.value;
       element.unitCost                = this.refs.unitCost.value;
@@ -674,7 +570,7 @@ class Activity extends Component{
           axios.patch('/api/activityReport',activityValues)
           .then((response)=>{
             // console.log("update",response);
-            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);      
+            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);      
             swal({
               title : response.data.message,
               text  : response.data.message,
@@ -686,6 +582,7 @@ class Activity extends Component{
           this.setState({
             "projectName"           : "-- Select --",
             "projectCategoryType"   : "LHWRF Grant",
+            "shown"                 : true,
             "type"                  : true,
             "district"              : "-- Select --",
             "block"                 : "-- Select --",
@@ -819,11 +716,6 @@ class Activity extends Component{
       });
       return formIsValid;
   }
-  toglehidden(){
-   this.setState({
-     shown: !this.state.shown
-    });
-  }
   getAvailableVillages(center_ID, district, block){
     axios({
         method: 'get',
@@ -849,7 +741,7 @@ class Activity extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
       }).then((response)=> {
-      // console.log('availableblockInCenter ==========',response);
+      // console.log('availableblockInCenter ============',response);
       function removeDuplicates(data, param, district){
         return data.filter(function(item, pos, array){
           return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
@@ -873,13 +765,12 @@ class Activity extends Component{
         method: 'get',
         url: '/api/activityReport/'+id,
       }).then((response)=> {
-        console.log("editData===============",response);
+        // console.log("editData=================",response);
         var editData = response.data[0];
         if(editData){
           var bentableData = []
           if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
             editData.listofBeneficiaries.map((a, i)=>{
-              console.log("a",a)
               axios.get('/api/beneficiaries/'+a.beneficiary_ID)
               .then((response)=>{
                 // console.log('response',response)
@@ -920,42 +811,43 @@ class Activity extends Component{
             })
           }
           this.setState({
-            "editData"          : editData,
-            "dateofIntervention": editData.date,
-            "stateCode"         : editData.stateCode,
-            "district"          : editData.district,
-            "block"             : editData.block,
-            "village"           : editData.village,
-            "location"          : editData.location,
-            "date"              : editData.date,
-            "sector"            : editData.sectorName+'|'+editData.sector_ID,
-            "typeofactivity"    : editData.typeofactivity,
-            "bActivityActive"   : editData.typeofactivity==="Type B Activity" ? "inactive" : "active",
-            "activity"          : editData.activityName+'|'+editData.activity_ID,
-            "subactivity"       : editData.subactivityName+'|'+editData.subactivity_ID,
-            "subActivityDetails": editData.unit,
-            "unitCost"          : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].unitCost                : 0,
-            "qtyPerBen"         : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].qtyPerBen               : 0,
-            "totalCostPerBen"   : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].totalCostPerBen         : 0,
-            "LHWRF"             : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.LHWRF      : 0,
-            "NABARD"            : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.NABARD     : 0,
-            "bankLoan"          : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.bankLoan   : 0,
-            "govtscheme"        : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.govtscheme : 0,
-            "directCC"          : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.directCC   : 0,
-            "indirectCC"        : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.indirectCC : 0,
-            "other"             : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.other      : 0,
-            "total"             : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.total      : 0,
-            "noOfBeneficiaries" : editData.noOfBeneficiaries ? editData.noOfBeneficiaries : 0,
-            "remark"            : editData.remark,
+            "shown"                 : false,
+            "editData"              : editData,
+            "dateofIntervention"    : editData.date,
+            "stateCode"             : editData.stateCode,
+            "district"              : editData.district,
+            "block"                 : editData.block,
+            "village"               : editData.village,
+            "location"              : editData.location,
+            "date"                  : editData.date,
+            "sector"                : editData.sectorName+'|'+editData.sector_ID,
+            "typeofactivity"        : editData.typeofactivity,
+            "bActivityActive"       : editData.typeofactivity==="Type B Activity" ? "inactive" : "active",
+            "activity"              : editData.activityName+'|'+editData.activity_ID,
+            "subactivity"           : editData.subactivityName+'|'+editData.subactivity_ID,
+            "subActivityDetails"    : editData.unit,
+            "unitCost"              : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].unitCost                : 0,
+            "qtyPerBen"             : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].qtyPerBen               : 0,
+            "totalCostPerBen"       : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].totalCostPerBen         : 0,
+            "LHWRF"                 : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.LHWRF      : 0,
+            "NABARD"                : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.NABARD     : 0,
+            "bankLoan"              : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.bankLoan   : 0,
+            "govtscheme"            : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.govtscheme : 0,
+            "directCC"              : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.directCC   : 0,
+            "indirectCC"            : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.indirectCC : 0,
+            "other"                 : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.other      : 0,
+            "total"                 : editData.listofBeneficiaries.length > 0 ? editData.listofBeneficiaries[0].sourceofFund.total      : 0,
+            "noOfBeneficiaries"     : editData.noOfBeneficiaries ? editData.noOfBeneficiaries : 0,
+            "remark"                : editData.remark,
             "listofBeneficiaries"   : editData.listofBeneficiaries,
             "selectedBeneficiaries" : editData.listofBeneficiaries,
             "projectCategoryType"   : editData.projectCategoryType,
             "projectName"           : editData.projectName==='all'?'-- Select --':editData.projectName,
             "type"                  : editData.projectCategoryType==="LHWRF Grant" ? true : false,
-            "sectorId"   : editData.sector_ID,
-            "activityId" : editData.activity_ID,
+            "sectorId"              : editData.sector_ID,
+            "activityId"            : editData.activity_ID,
           }, ()=>{
-            console.log("this.state.selectedBeneficiaries",this.state.selectedBeneficiaries);
+            // console.log("this.state.selectedBeneficiaries",this.state.selectedBeneficiaries);
             this.getAvailableCenter(this.state.center_ID);
             this.getAvailableActivity(this.state.sectorId);
             this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
@@ -971,19 +863,6 @@ class Activity extends Component{
       });
     }
   }
-  getLength(center_ID){
-   /* axios.get('/api/activityReport/count/'+center_ID)
-    .then((response)=>{
-      console.log('response', response.data);
-      this.setState({
-        dataCount : response.data.dataLength
-      },()=>{
-        console.log('dataCount', this.state.dataCount);
-      })
-    })
-    .catch(function(error){
-    });*/
-  }  
   addCommas(x) {
     x=x.toString();
     if(x.includes('%')){
@@ -1008,109 +887,84 @@ class Activity extends Component{
       }
     }
   }
-  getData(startRange, limitRange, center_ID){ 
-    // console.log(startRange, limitRange, center_ID);
-    $(".fullpageloader").show();
-      let financeYear;
-    let today = moment();
-    if(today.month() >= 3){
-      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+  
+  getData(startRange, limitRange, center_ID, year){ 
+    // console.log(startRange, limitRange, center_ID, year);
+    var data = {
+      limitRange : limitRange,
+      startRange : startRange,
     }
-    else{
-      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
-    this.setState({
-        financeYear :financeYear
-    },()=>{
-      var firstYear= this.state.financeYear.split('-')[0]
-      var secondYear= this.state.financeYear.split('-')[1]
-      var financialYear = "FY "+firstYear+" - "+secondYear;
-      this.setState({
-        
-        year       :financialYear
-      },()=>{
-        if(this.state.year && center_ID){
-          var startDate = this.state.year.substring(3, 7)+"-04-01";
-          var endDate = this.state.year.substring(10, 15)+"-03-31";    
-          //localhost:3054/api/activityReport/list/5e034ce62d2479a2ed5707ed/2019-04-01/2019-04-31
-          axios.get('/api/activityReport/list/'+center_ID+'/'+startDate+'/'+endDate)
-          // axios.get('/api/activityReport/list/'+center_ID)
-          .then((response)=>{
-          $(".fullpageloader").hide();
-            console.log("response",response);
-            var tableDatas = response.data.filter((data,i)=>{
-              return data.typeofactivity === "Family Level Activity";
-            });   
-            var tableData = tableDatas.map((a, i)=>{
-              return {
-                _id                        : a._id,
-                projectCategoryType        : a.projectCategoryType,
-                projectName                : a.projectName==='all'?'-':a.projectName,
-                date                       : moment(a.date).format('DD/MM/YYYY'),
-                // date                       : (a.date),
-                place                      : a.place,
-                sectorName                 : a.sectorName,
-                activity                   : a.activity,
-                subactivityName            : a.subactivityName,
-                unit                       : a.unit,
-                unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-                qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-                totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
-                numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-                LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-                NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-                bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-                govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-                directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-                indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-                other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
-                remark                     : a.remark,
-              }
-            })
-            var downloadData = tableDatas.map((a, i)=>{
-              return {
-                _id                        : a._id,
-                projectCategoryType        : a.projectCategoryType,
-                projectName                : a.projectName==='all'?'-':a.projectName,
-                date                       : moment(a.date).format('DD/MM/YYYY'),
-                // date                       : (a.date),
-                district                   : a.district,
-                block                      : a.block,
-                village                    : a.village,
-                location                   : a.location,
-                sectorName                 : a.sectorName,
-                activityName               : a.activityName,
-                typeofactivity             : a.typeofactivity,
-                subactivityName            : a.subactivityName,
-                unit                       : a.unit,
-                unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-                qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-                totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
-                numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-                LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-                NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-                bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-                govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-                directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-                indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-                other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
-                remark                     : a.remark,
-              }
-            })
-            this.setState({
-              tableData : tableData,
-              downloadData : downloadData
-            },()=>{
-              // console.log("this.state.tableData",this.state.tableData)
-              // console.log("this.state.downloadData",this.state.downloadData)
-            })
-          })
-          .catch(function(error){      
-            console.log("error = ",error); 
-          });
-        }
+    // $(".fullpageloader").show();subactivity
+    if(year){
+      var startDate = this.state.year.substring(3, 7)+"-04-01";
+      var endDate = this.state.year.substring(10, 15)+"-03-31";    
+      axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/all/all/all/'+"Family Level Activity")
+      // axios.post('/api/activityReport/list/'+center_ID, data)
+      .then((response)=>{
+        // console.log(startDate,endDate);
+      // $(".fullpageloader").hide();
+        console.log("response",response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id                        : a._id,
+            projectCategoryType        : a.projectCategoryType,
+            projectName                : a.projectName==='all'?'-':a.projectName,
+            date                       : moment(a.date).format('DD-MM-YYYY'),
+            // date                       : a.date,
+            place                      : a.place,
+            sectorName                 : a.sectorName,
+            activity                   : a.activity,
+            subactivityName            : a.subactivityName,
+            unit                       : a.unit,
+            unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+            qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+            totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
+            numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+            LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+            NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+            bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+            govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+            directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+            indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+            other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+            remark                     : a.remark,
+          }
+        })
+        var downloadData = response.data.map((a, i)=>{
+          return {
+            _id                        : a._id,
+            projectCategoryType        : a.projectCategoryType,
+            projectName                : a.projectName==='all'?'-':a.projectName,
+            date                       : moment(a.date).format('DD-MM-YYYY'),
+            // date                       : a.date,
+            place                      : a.place,
+            sectorName                 : a.sectorName,
+            activity                   : a.activity,
+            subactivityName            : a.subactivityName,
+            unit                       : a.unit,
+            unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+            qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+            totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
+            numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+            LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+            NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+            bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+            govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+            directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+            indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+            other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+            remark                     : a.remark,
+          }
+        })
+        this.setState({
+          tableData : tableData,
+          downloadData : downloadData
+        })
       })
-    })
+      .catch(function(error){      
+        console.log("error = ",error); 
+      });
+    }
   }
   componentDidMount() {
     $.validator.addMethod("regxDate", function(value, element, regexpr) { 
@@ -1194,8 +1048,9 @@ class Activity extends Component{
         this.edit(this.state.editId);
       }
     })
-    this.getLength();
     // this.getBlock(this.state.stateCode, this.state.district);
+    this.year();
+    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
@@ -1204,12 +1059,11 @@ class Activity extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-    this.getLength(this.state.center_ID);
-    this.getAvailableProjectName();
-    this.getAvailableCenter(this.state.center_ID);
-    // this.getToggleValue();
-    // console.log("center_ID =",this.state.center_ID);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+      this.getAvailableProjectName();
+      this.getAvailableCenter(this.state.center_ID);
+      // this.getToggleValue();
+      // console.log("center_ID =",this.state.center_ID);
     });
   }
   componentWillReceiveProps(nextProps){
@@ -1223,7 +1077,6 @@ class Activity extends Component{
         "editId" : editId,
       })  
       this.edit(editId);
-      this.getLength();
     }
   }
   deleted(){
@@ -1243,8 +1096,8 @@ class Activity extends Component{
       "location"          : '',
       "subActivityDetails": '',
       "unitCost"          : 0,
-      "qtyPerBen"          : 0,
-      "totalCostPerBen"         : 0,
+      "qtyPerBen"         : 0,
+      "totalCostPerBen"   : 0,
       "LHWRF"             : 0,
       "NABARD"            : 0,
       "bankLoan"          : 0,
@@ -1274,7 +1127,7 @@ class Activity extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -1319,7 +1172,7 @@ class Activity extends Component{
             property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
               return b[property].localeCompare(a[property]);
             }else{
               return a[property].localeCompare(b[property]);
@@ -1327,7 +1180,7 @@ class Activity extends Component{
           }
         }
         availableActivity.sort(dynamicSort("activityName"));
-        if(response&&response.data[0]){
+        if(response && response.data[0]){
           this.setState({
             availableActivity : availableActivity,
           })
@@ -1366,7 +1219,7 @@ class Activity extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -1412,7 +1265,7 @@ class Activity extends Component{
                 property = property.substr(1);
               }
               return function (a,b) {
-                if(sortOrder == -1){
+                if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
                 }else{
                   return a[property].localeCompare(b[property]);
@@ -1451,7 +1304,7 @@ class Activity extends Component{
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
         }).then((response)=> {
-        // console.log('availableblockInCenter ==========',response);
+        // console.log('availableblockInCenter ============',response);
         function removeDuplicates(data, param, district){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
@@ -1465,7 +1318,7 @@ class Activity extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -1504,7 +1357,7 @@ class Activity extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -1543,7 +1396,7 @@ class Activity extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -1576,11 +1429,11 @@ class Activity extends Component{
     else{
       this.setState({
         type: true,
-        projectCategoryType  :"LHWRF Grant",
-        projectName          :"-- Select --",
+        projectCategoryType  : "LHWRF Grant",
+        projectName          : "-- Select --",
         sectorName           : '-- Select --',
-        subactivity      : "-- Select --",
-        activity         : '-- Select --',
+        subactivity          : "-- Select --",
+        activity             : '-- Select --',
         availableSubActivity : [],
         sector_ID            : "",
         activity_ID          : "",
@@ -1618,21 +1471,25 @@ class Activity extends Component{
           failedRecordsCountTypeA : response.data.failedRecords.length,
           goodDataCountTypeA : response.data.goodrecords.length
         });
-        var tableData = response.data.goodrecords.map((a, i)=>{
+
+        var tableDatas = response.data.goodrecords.filter((data,i)=>{
+          return data.typeofactivity === "Family Level Activity";
+        });   
+        var tableData = tableDatas.map((a, i)=>{
           var numofBeneficiaries = a.listofBeneficiaries && a.listofBeneficiaries.length > 0 ? a.listofBeneficiaries.length : 0;
           return{
-            "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
+            "projectCategoryType" : a.projectCategoryType       ? a.projectCategoryType    : '-',
+            "projectName"         : a.projectName==="all"       ? '-' : a.projectName,
             // "date"                : a.date     ? a.date : '-',
-            "date"                : a.date     ? moment(a.date).format('DD/MM/YYYY') : '-',
+            "date"                : a.date                      ? moment(a.date).format('DD/MM/YYYY') : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
-            "sectorName"          : a.sectorName     ? a.sectorName : '-',
-            "activityName"        : a.activityName     ? a.activityName : '-',
-            "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
-            "unit"                : a.unit     ? a.unit : '-',
-            "unitCost"            : a.unitCost     ? a.unitCost : '-',
-            "qtyPerBen"           : a.qtyPerBen     ? a.qtyPerBen : '-',
-            "totalCostPerBen"     : a.totalCostPerBen     ? a.totalCostPerBen : '-',
+            "sectorName"          : a.sectorName                ? a.sectorName : '-',
+            "activityName"        : a.activityName              ? a.activityName : '-',
+            "subactivityName"     : a.subactivityName           ? a.subactivityName : '-',
+            "unit"                : a.unit                      ? a.unit : '-',
+            "unitCost"            : a.unitCost                  ? a.unitCost : '-',
+            "qtyPerBen"           : a.qtyPerBen                 ? a.qtyPerBen : '-',
+            "totalCostPerBen"     : a.totalCostPerBen           ? a.totalCostPerBen : '-',
             "numofBeneficiaries"  : numofBeneficiaries,
             "LHWRF"               : a.sourceofFund.LHWRF        ? a.sourceofFund.LHWRF : '-',
             "NABARD"              : a.sourceofFund.NABARD       ? a.sourceofFund.NABARD : '-',
@@ -1649,27 +1506,27 @@ class Activity extends Component{
 
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
-            "programCategory"     : a.programCategory ? a.programCategory    : '-',
+            "programCategory"     : a.programCategory      ? a.programCategory    : '-',
             "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
             // "date"                : a.date                ? a.date : '-',
-            "date"                : a.date     ? moment(a.date).format('DD/MM/YYYY') : '-',
+            "date"                : a.date                 ? moment(a.date).format('DD/MM/YYYY') : '-',
             "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
             "sectorName"          : a.sectorName          ? a.sectorName : '-',
             "activityName"        : a.activityName        ? a.activityName : '-',
             "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
             "unit"                : a.unit                ? a.unit : '-',
             "unitCost"            : a.unitCost            ? a.unitCost : '-',
-            "qtyPerBen"           : a.qtyPerBen            ? a.qtyPerBen : '-',
+            "qtyPerBen"           : a.qtyPerBen           ? a.qtyPerBen : '-',
             "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
-            "LHWRF"               : a.LHWRF        ? a.LHWRF : '-',
-            "NABARD"              : a.NABARD       ? a.NABARD : '-',
-            "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
-            "govtscheme"          : a.govtscheme   ? a.govtscheme : '-',
-            "directCC"            : a.directCC     ? a.directCC : '-',
-            "indirectCC"          : a.indirectCC   ? a.indirectCC : '-',
-            "other"               : a.other        ? a.other : '-',
-            "beneficiaryID"       : a.beneficiaryID? a.beneficiaryID : '-',
-            "familyID"            : a.familyID     ? a.familyID : '-',
+            "LHWRF"               : a.LHWRF                     ? a.LHWRF : '-',
+            "NABARD"              : a.NABARD                    ? a.NABARD : '-',
+            "bankLoan"            : a.bankLoan                  ? a.bankLoan : '-',
+            "govtscheme"          : a.govtscheme                ? a.govtscheme : '-',
+            "directCC"            : a.directCC                  ? a.directCC : '-',
+            "indirectCC"          : a.indirectCC                ? a.indirectCC : '-',
+            "other"               : a.other                     ? a.other : '-',
+            "beneficiaryID"       : a.beneficiaryID             ? a.beneficiaryID : '-',
+            "familyID"            : a.familyID                  ? a.familyID : '-',
             "remark"              : a.remark                    ? a.remark : '-',
             "failedRemark"        : a.failedRemark              ? a.failedRemark : '-',
           }
@@ -1683,151 +1540,65 @@ class Activity extends Component{
     .catch((error)=> { 
           
     }) 
-  } 
-  getTypeBFileDetails(fileName){
-    axios
-    .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
-    .then((response)=> {
-      console.log('response',response);
-      $('.fullpageloader').hide();  
-      if(response&&response.data) {
-        this.setState({
-          fileDetailsTypeB:response.data,
-          failedRecordsCountTypeB : response.data.failedRecords.length,
-          goodDataCountTypeB : response.data.goodrecords.length
-        });
-        var tableData = response.data.goodrecords.map((a, i)=>{
-          return{
-            "projectCategoryType" : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
-            "date"                : a.date     ? moment(a.date).format('DD/MM/YYYY') : '-',
-            "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
-            "sectorName"          : a.sectorName     ? a.sectorName : '-',
-            "activityName"        : a.activityName     ? a.activityName : '-',
-            "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
-            "unit"                : a.unit     ? a.unit : '-',
-            "unitCost"            : a.unitCost     ? a.unitCost : '-',
-            "qtyPerBen"            : a.qtyPerBen     ? a.qtyPerBen : '-',
-            "totalCostPerBen"           : a.totalCostPerBen     ? a.totalCostPerBen : '-',
-            "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
-            "LHWRF"               : a.sourceofFund.LHWRF        ? a.sourceofFund.LHWRF : '-',
-            "NABARD"              : a.sourceofFund.NABARD       ? a.sourceofFund.NABARD : '-',
-            "bankLoan"            : a.sourceofFund.bankLoan     ? a.sourceofFund.bankLoan : '-',
-            "govtscheme"          : a.sourceofFund.govtscheme   ? a.sourceofFund.govtscheme : '-',
-            "directCC"            : a.sourceofFund.directCC     ? a.sourceofFund.directCC : '-',
-            "indirectCC"          : a.sourceofFund.indirectCC   ? a.sourceofFund.indirectCC : '-',
-            "other"               : a.sourceofFund.other        ? a.sourceofFund.other : '-',
-            "remark"              : a.remark                    ? a.remark : '-',
-          }
-        })
-
-        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
-          return{
-            "programCategory"     : a.programCategory        ? a.programCategory    : '-',
-            "projectName"         : a.projectName==="all"  ? '-' : a.projectName,
-            "date"                : a.date     ? moment(a.date).format('DD/MM/YYYY') : '-',
-            "place"               : a.district + ", " + a.block + ", " + a.village + ", " + a.location,
-            "sectorName"          : a.sectorName     ? a.sectorName : '-',
-            "activityName"        : a.activityName     ? a.activityName : '-',
-            "subactivityName"     : a.subactivityName     ? a.subactivityName : '-',
-            "unit"                : a.unit     ? a.unit : '-',
-            "unitCost"            : a.unitCost     ? a.unitCost : '-',
-            "qtyPerBen"            : a.qtyPerBen     ? a.qtyPerBen : '-',
-            "numofBeneficiaries"  : (a.numofBeneficiaries!=="0" || a.numofBeneficiaries!==0)  ? a.numofBeneficiaries : a.noOfBeneficiaries,
-            "LHWRF"               : a.LHWRF        ? a.LHWRF : '-',
-            "NABARD"              : a.NABARD       ? a.NABARD : '-',
-            "bankLoan"            : a.bankLoan     ? a.bankLoan : '-',
-            "govtscheme"          : a.govtscheme   ? a.govtscheme : '-',
-            "directCC"            : a.directCC     ? a.directCC : '-',
-            "indirectCC"          : a.indirectCC   ? a.indirectCC : '-',
-            "other"               : a.other        ? a.other : '-',
-            "remark"              : a.remark                    ? a.remark : '-',
-            "failedRemark"        : a.failedRemark              ? a.failedRemark : '-',
-          }
-        })
-        this.setState({
-          goodRecordsTableTypeB : tableData,
-          failedRecordsTableTypeB : failedRecordsTable
-        })
-      }
-    })
-    .catch((error)=> { 
-          
-    }) 
+  }   
+  toglehidden(){   
+    this.setState({
+     shown: !this.state.shown
+    });
   }  
-  /*getBenefiaciaryFileDetails(fileName){   
-    axios
-    .get(this.state.beneficiaryFileDetailUrl+this.state.center_ID+"/"+fileName)
-    .then((response)=> {
-      $('.fullpageloader').hide();  
-      if(response&&response.data) {
-        this.setState({
-          fileDetails:response.data,
-          beneficiaryFailedRecordsCount : response.data.failedRecords.length,
-          beneficiaryGoodDataCount : response.data.goodrecords.length
-        });
-       
-        var tableData = response.data.goodrecords.map((a, i)=>{
-          return{
-            "sectorName"        : a.sectorName      ? a.sectorName      : '-',
-            "activityName"      : a.activityName    ? a.activityName   : '-',
-            "subactivityName"   : a.subactivityName ? a.subactivityName : '-',
-            "date"              : a.date            ? a.date : '-',  
-            "noOfBeneficiaries" : a.noOfBeneficiaries            ? a.noOfBeneficiaries : '-',  
-            "beneficiaryID"     : a.listofBeneficiaries.beneficiaryID ? a.listofBeneficiaries.beneficiaryID      : '-',
-            "familyID"          : a.listofBeneficiaries.familyID      ? a.listofBeneficiaries.familyID      : '-',
-            "nameofbeneficiary  " : a.listofBeneficiaries.nameofbeneficiary   ? a.listofBeneficiaries.nameofbeneficiary   : '-',
-            "relation"          : a.listofBeneficiaries.relation ? a.listofBeneficiaries.relation : '-', 
-            "place"             : a.listofBeneficiaries.dist + ", " + a.listofBeneficiaries.block + ", " + a.listofBeneficiaries.village,
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear= this.state.financeYear.split('-')[0]
+      var secondYear= this.state.financeYear.split('-')[1]
+      // console.log(firstYear,secondYear);
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        // year       :financialYear
+      },()=>{
+        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              // console.log('years',this.state.years);
+              // console.log('year',this.state.year);
+              })              
+            }
           }
-        })
-         
-        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
-          return{
-            "sectorName"      : a.sectorName      ? a.sectorName      : '-',
-            "activityName"    : a.activityName    ? a.activityName   : '-',
-            "subactivityName" : a.subactivityName ? a.subactivityName : '-',
-            "date"            : a.date            ? a.date : '-',
-            "familyID"        : a.familyID        ? a.familyID : '-',
-            "surnameOfFH"     : a.surnameOfFH     ? a.surnameOfFH : '-',
-            "firstNameOfFH"   : a.firstNameOfFH   ? a.firstNameOfFH : '-',
-            "middleNameOfFH"  : a.middleNameOfFH  ? a.middleNameOfFH : '-',
-            "uidNumberOfFH"   : a.uidNumberOfFH   ? a.uidNumberOfFH : '-',
-            "contactNumber"   : a.contactNumber   ? a.contactNumber : '-',
-            "FHGender"        : a.FHGender        ? a.FHGender : '-',
-            "FHYearOfBirth"   : a.FHYearOfBirth   ? a.FHYearOfBirth : '-',
-            "caste"           : a.caste           ? a.caste : '-',
-            "landCategory"    : a.landCategory    ? a.landCategory : '-',
-            "incomeCategory"  : a.incomeCategory  ? a.incomeCategory : '-',
-            "specialCategory" : a.specialCategory ? a.specialCategory : '-',
-            "place"           : a.dist + ", " + a.block + ", " + a.village + ", " + a.location,
-            "beneficiaryID"   : a.beneficiaryID     ? a.beneficiaryID : '-',
-            "surnameOfBeneficiary"    : a.surnameOfBeneficiary     ? a.surnameOfBeneficiary : '-',
-            "firstNameOfBeneficiary"  : a.firstNameOfBeneficiary     ? a.firstNameOfBeneficiary : '-',
-            "middleNameOfBeneficiary" : a.middleNameOfBeneficiary     ? a.middleNameOfBeneficiary : '-',
-            "relation"        : a.relation     ? a.relation : '-',
-            "uidNumber"       : a.uidNumber     ? a.uidNumber : '-',
-            "genderOfbeneficiary"     : a.genderOfbeneficiary     ? a.genderOfbeneficiary : '-',
-            "birthYearOfbeneficiary"  : a.birthYearOfbeneficiary     ? a.birthYearOfbeneficiary : '-',
-            "failedRemark"    : a.failedRemark     ? a.failedRemark : '-',
-          }
-        })
-        
-        this.setState({
-          beneficiaryGoodRecordsTable : tableData,
-          beneficiaryFailedRecordsTable : failedRecordsTable
-        },()=>{
-
-        })
-      }
+        }
+      })
     })
-    .catch((error)=> { 
-          
-    }) 
   }
-*/
+ 
   render() {
-    // console.log('this.state.bActivityActive',this.state.bActivityActive);
+    var hidden = {
+      display: this.state.shown ? "none" : "block"
+    }
+    var displayBlock = {
+      display: this.state.shown ? "block" : "none"
+    }
     return (
       <div className="container-fluid">
         <Loader type="fullpageloader" />
@@ -1842,479 +1613,462 @@ class Activity extends Component{
                      </div>
                     <hr className="hr-head container-fluid row"/>
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
-                      <h4 className="col-lg-5 col-md-6 col-xs-12 col-sm-12 pageSubHeader">Family Level Activity</h4>
-                      <ul className="nav tabNav nav-pills col-lg-7 col-md-6 col-sm-12 col-xs-12 NOpadding">
-                        <li className="active col-lg-3 col-lg-offset-4 col-md-3 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
-                        <li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeA" ><a data-toggle="pill"  href="#bulkactivityTypeA">Family Level Bulk Upload</a></li>
-                        {/*<li className="col-lg-4 col-md-4 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeB" ><a data-toggle="pill"  href="#bulkactivityTypeB">Type B Bulk Upload</a></li>*/}
-                      </ul>
+                      <h4 className="col-lg-4 col-md-6 col-xs-12 col-sm-12 pageSubHeader">Family Level Activity</h4>
+                      <div className="col-lg-4 col-lg-offset-4 col-md-6 col-sm-12 col-xs-12">
+                        <ul className="nav tabNav nav-pills">
+                          <li className="active col-lg-5 col-lg-offset-1 col-md-6 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manualactivity">Manual</a></li>
+                          <li className="col-lg-5 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center" data-tab = "bulkactivityTypeA" ><a data-toggle="pill"  href="#bulkactivityTypeA">Bulk Upload</a></li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                   <div className="tab-content">
                     <div id="manualactivity"  className="tab-pane fade in active ">
-                    <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="AtypeActivity">
-                      {/*<div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                        <label className="formLable">Activity Type<span className="asterix">*</span></label>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
-                          <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                            <option disabled="disabled" selected={true}>-- Select --</option>
-                            <option data-id="familylevel">Family Level Activity</option>
-                            <option data-id="BtypeActivity">Type B Activity</option>
-                          </select>
-                        </div>
-                        <div className="errorMsg">{this.state.errors.typeofactivity}</div>
-                      </div>*/}
-                      <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                        <label className="formLable">Date of Intervention</label>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
-                          <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)} required/>
-                        </div>
-                        <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt"> 
+                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
+                          <button type="button" className="btn addBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick={this.toglehidden.bind(this)}>Create</button>
+                        </div> 
                       </div>
-                      <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
-                        <div className="" id="projectCategoryType" >
-                          <label className=" formLable">Program Type<span className="asterix">*</span></label>
-                          {this.state.type===true ?
-
-                           <div className=" switch" onClick={this.handleToggle.bind(this)} >
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
-                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
-                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                              <span className="switch-selection"></span>
+                      <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="AtypeActivity" style={hidden}>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter">
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                              Create Activity Report
                             </div>
-                            :
-                             <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggle.bind(this)} >
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
-                              <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                              <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
-                              <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                              <span className="switch-selection" ></span>
+                            <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                              <label className="formLable">Date of Intervention</label>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
+                                <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)} required/>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
                             </div>
-                          }
-                        </div>
-                      </div>
-                      {
-                        this.state.projectCategoryType ==="Project Fund" ? 
+                            <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
+                              <div className="" id="projectCategoryType" >
+                                <label className=" formLable">Program Type<span className="asterix">*</span></label>
+                                {this.state.type===true ?
 
-                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
-                          <label className="formLable">Project Name</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                              <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.handleChange.bind(this)} >
-                                <option className="hidden" >-- Select --</option>
-                                {
-                                  this.state.availableProjects && this.state.availableProjects.length > 0  ? 
-                                  this.state.availableProjects.map((data, index)=>{
-                                    return(
-                                      <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
-                                    );
-                                  })
+                                 <div className=" switch" onClick={this.handleToggle.bind(this)} >
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
+                                    <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
+                                    <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                                    <span className="switch-selection"></span>
+                                  </div>
                                   :
-                                  null
-                                }  
-                              </select>
+                                   <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggle.bind(this)} >
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
+                                    <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                                    <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                                    <span className="switch-selection" ></span>
+                                  </div>
+                                }
+                              </div>
                             </div>
-                            <div className="errorMsg">{this.state.errors.block}</div>
+                            {
+                              this.state.projectCategoryType ==="Project Fund" ? 
+
+                              <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
+                                <label className="formLable">Project Name</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                    <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.handleChange.bind(this)} >
+                                      <option className="hidden" >-- Select --</option>
+                                      {
+                                        this.state.availableProjects && this.state.availableProjects.length > 0  ? 
+                                        this.state.availableProjects.map((data, index)=>{
+                                          return(
+                                            <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }  
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.block}</div>
+                              </div>
+                              : ""
+                            } 
+                            <br/>                      
+                            <div className="row">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                    <label className="formLable">District<span className="asterix">*</span></label>
+                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                                      <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
+                                        <option disabled="disabled" selected={true}>-- Select --</option>
+                                        {
+                                          this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                                          this.state.listofDistrict.map((data, index)=>{
+                                            // console.log('dta', data);
+                                            return(
+                                              <option key={index} value={data.district.split('|')[0]}>{this.camelCase(data.district.split('|')[0])}</option>
+                                            );
+                                          })
+                                          :
+                                          null
+                                        }
+                                      </select>
+                                    </div>
+                                    <div className="errorMsg">{this.state.errors.district}</div>
+                                </div>
+                                <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                  <label className="formLable">Block<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                                    <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                      {
+                                        this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                        this.state.listofBlocks.map((data, index)=>{
+                                          return(
+                                            <option key={index} value={data.block}>{this.camelCase(data.block)}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }  
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.block}</div>
+                                </div>
+                                <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Village<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                                    <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                      {
+                                        this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                        this.state.listofVillages.map((data, index)=>{
+                                          return(
+                                            <option key={index} value={data.village}>{this.camelCase(data.village)}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      } 
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.village}</div>
+                                </div>
+                                <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Location<span className="asterix"></span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="location" >
+                                    <input type="text"   className="form-control inputBox" name="location" placeholder="" ref="location" value={this.state.location} onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.location}</div>
+                                </div>
+                              </div> 
+                            </div><br/>
+                            <div className="row">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Sector<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                    <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                      {
+                                        this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                        this.state.availableSectors.map((data, index)=>{
+                                          return(
+                                            <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.sector}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                  <label className="formLable">Activity<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                                    <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                      {
+                                        this.state.availableActivity && this.state.availableActivity.length >0 ?
+                                        this.state.availableActivity.map((data, index)=>{
+                                          if(data.activityName ){
+                                            return(
+                                              <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                            );
+                                          }
+                                        })
+                                        :
+                                        null
+                                      }
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.activity}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                  <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
+                                    <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                        {
+                                          this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                                          this.state.availableSubActivity.map((data, index)=>{
+                                            if(data.subActivityName ){
+                                              return(
+                                                <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                              );
+                                            }
+                                          })
+                                          :
+                                          null
+                                        }
+                                        
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.subactivity}</div>
+                                </div> 
+
+                                <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                  <label className="formLable">Unit of Measurement</label>
+                                  <div className=""  >
+                                      <div className="form-control inputBox inputBox-main unitDiasbleBox">
+                                        {this.state.subActivityDetails ? 
+                                            <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
+                                          :
+                                            null
+                                        }
+                                      </div>
+                                  </div>
+                                </div>
+                                {/*<div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                  <label className="formLable">Activity Type<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
+                                    <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                      <option>Common Level Activity</option>
+                                       <option>Family Level Activity</option>
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.typeofactivity}</div>
+                                </div>*/}
+                              </div> 
+                            </div><br/>
+                            <div className="row ">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Unit Cost</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
+                                    <input type="number"   className="form-control inputBox" name="unitCost" placeholder="" ref="unitCost" value={this.state.unitCost}   onChange={this.handleTotalChange.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.unitCost}</div>
+                                </div>
+                                <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                  <label className="formLable">Quantity Per Beneficiary</label>
+                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="qtyPerBen" >
+                                    <input type="number" className="form-control inputBox" name="qtyPerBen" placeholder="" ref="qtyPerBen"  value={this.state.qtyPerBen}  onChange={this.handleTotalChange.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.qtyPerBen}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <div className=" " >
+                                    <label className="formLable">Total Cost Per Beneficiary</label>                            
+                                    <input type="number" className="form-control inputBox inputBox-main" name="totalCostPerBen " placeholder="" ref="totalCostPerBen"  value={(parseFloat(this.state.totalCostPerBen)).toFixed(2)} disabled />
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.totalCostPerBen}</div>
+                                </div>
+                                {
+                                  this.state.bActivityActive==="inactive" ?
+                                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                      <label className="formLable">No.of Beneficiaries</label>
+                                      <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="noOfBeneficiaries" >
+                                        <input type="number" className="form-control inputBox" name="noOfBeneficiaries" placeholder="" ref="noOfBeneficiaries"  value={this.state.noOfBeneficiaries}  onChange={this.handleChange.bind(this)}/>
+                                      </div>
+                                      <div className="errorMsg">{this.state.errors.noOfBeneficiaries}</div>
+                                    </div>
+                                  :null
+                                } 
+                              </div> 
+                            </div>
+                            <div className="col-lg-12 boxHeightother">
+                              <label className="formLable">Remark</label>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
+                                <input type="text"   className="form-control inputBox" name="remark" placeholder="" ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.remark}</div>
+                            </div>
+                            <div className="col-lg-12 ">
+                               <hr className=""/>
+                            </div>
+                            <div className="col-lg-12 ">
+                               <div className="pageSubHeader">Sources of Fund</div>
+                            </div>
+                            <div className="row">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">LHWRF</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
+                                    <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.LHWRF}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">NABARD</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >                              
+                                    <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD" value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.NABARD}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Bank Loan</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
+                                    <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.bankLoan}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Govt. Schemes</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
+                                    <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.govtscheme}</div>
+                                </div>
+                              </div> 
+                            </div><br/>
+                            <div className="row">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Direct Community Contribution</label>
+                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
+                                    <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.directCC}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Indirect Community Contribution</label>
+                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
+                                    <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.indirectCC}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Other</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
+                                    <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.other}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <div className="" id="total" >
+                                    <label className="formLable">Total :</label>                            
+                                     
+                                        <div className="form-control inputBox inputBox-main unitDiasbleBox">
+                                          {this.state.total ? 
+                                              <label className="formLable" id="total">{(parseFloat(this.state.total)).toFixed(2)}</label>
+                                            :
+                                            0
+                                          }
+                                        </div>
+                                    
+                                    {/*<label className="formLable">&nbsp;{this.state.total ?  this.state.total : " 0"}</label>     */}    
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.total}</div>
+                                </div>
+                              </div> 
+                            </div><br/>
+                            
+                            {
+                              this.state.bActivityActive==="active" ? 
+                              <div className="">
+                                <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
+                                   <hr className=""/>
+                                </div>
+                                <div className="tableContainrer">
+                                  <ListOfBeneficiaries 
+                                    getBeneficiaries={this.getBeneficiaries.bind(this)}
+                                    selectedValues={this.state.selectedValues}
+                                    sendBeneficiary={this.state.selectedBeneficiaries}
+                                  />
+                                </div>
+                              </div>
+                              : null
+                            }
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                              <br/>
+                              {
+                                this.state.editId ? 
+                                <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
+                                :
+                                <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
+                              }
+                            </div> 
+                            <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
+                              <hr className=""/>
+                            </div>
+                          </div>
                         </div>
-                        : ""
-                      } 
-                      <br/>                      
-                      <div className="row">
-                        <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                              <label className="formLable">District<span className="asterix">*</span></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                                <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
-                                  <option disabled="disabled" selected={true}>-- Select --</option>
-                                  {
-                                    this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
-                                    this.state.listofDistrict.map((data, index)=>{
-                                      // console.log('dta', data);
-                                      return(
-                                        <option key={index} value={data.district.split('|')[0]}>{this.camelCase(data.district.split('|')[0])}</option>
-                                      );
+                      </form>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt" style={displayBlock}>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter">
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                              Filters for List
+                            </div>  
+                            <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                              <label className="formLable">Year</label><span className="asterix"></span>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
+                                <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                                 <option className="hidden" >-- Select Year --</option>
+                                 {
+                                  this.state.years 
+                                  ?
+                                    this.state.years.map((data, i)=>{
+                                      return <option key={i}>{data}</option>
                                     })
-                                    :
-                                    null
-                                  }
+                                  : null
+                                 }
                                 </select>
                               </div>
-                              <div className="errorMsg">{this.state.errors.district}</div>
-                          </div>
-                          <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Block<span className="asterix">*</span></label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                              <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                <option disabled="disabled" selected={true}>-- Select --</option>
-                                {
-                                  this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                  this.state.listofBlocks.map((data, index)=>{
-                                    return(
-                                      <option key={index} value={data.block}>{this.camelCase(data.block)}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                }  
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.block}</div>
-                          </div>
-                          <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Village<span className="asterix">*</span></label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                              <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                <option disabled="disabled" selected={true}>-- Select --</option>
-                                {
-                                  this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                                  this.state.listofVillages.map((data, index)=>{
-                                    return(
-                                      <option key={index} value={data.village}>{this.camelCase(data.village)}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                } 
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.village}</div>
-                          </div>
-                          <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Location<span className="asterix"></span></label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="location" >
-                              <input type="text"   className="form-control inputBox" name="location" placeholder="" ref="location" value={this.state.location} onChange={this.handleChange.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.location}</div>
-                          </div>
-                        </div> 
-                      </div><br/>
-                      <div className="row">
-                        <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Sector<span className="asterix">*</span></label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                              <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                                <option disabled="disabled" selected={true}>-- Select --</option>
-                                {
-                                  this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                  this.state.availableSectors.map((data, index)=>{
-                                    return(
-                                      <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                    );
-                                  })
-                                  :
-                                  null
-                                }
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.sector}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Activity<span className="asterix">*</span></label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
-                              <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                                <option disabled="disabled" selected={true}>-- Select --</option>
-                                {
-                                  this.state.availableActivity && this.state.availableActivity.length >0 ?
-                                  this.state.availableActivity.map((data, index)=>{
-                                    if(data.activityName ){
-                                      return(
-                                        <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
-                                      );
-                                    }
-                                  })
-                                  :
-                                  null
-                                }
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.activity}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
-                              <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                                <option disabled="disabled" selected={true}>-- Select --</option>
-                                  {
-                                    this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
-                                    this.state.availableSubActivity.map((data, index)=>{
-                                      if(data.subActivityName ){
-                                        return(
-                                          <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
-                                        );
-                                      }
-                                    })
-                                    :
-                                    null
-                                  }
-                                  
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.subactivity}</div>
-                          </div> 
-
-                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                            <label className="formLable">Unit of Measurement</label>
-                            <div className=""  >
-                                <div className="form-control inputBox inputBox-main unitDiasbleBox">
-                                  {this.state.subActivityDetails ? 
-                                      <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
-                                    :
-                                      null
-                                  }
-                                </div>
-                            </div>
-                          </div>
-                          {/*<div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                            <label className="formLable">Activity Type<span className="asterix">*</span></label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
-                              <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                                <option disabled="disabled" selected={true}>-- Select --</option>
-                                <option>Common Level Activity</option>
-                                 <option>Family Level Activity</option>
-                              </select>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.typeofactivity}</div>
-                          </div>*/}
-                        </div> 
-                      </div><br/>
-                      <div className="row ">
-                        <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Unit Cost</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
-                              <input type="number"   className="form-control inputBox" name="unitCost" placeholder="" ref="unitCost" value={this.state.unitCost}   onChange={this.handleTotalChange.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.unitCost}</div>
-                          </div>
-                          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                            <label className="formLable">Quantity Per Beneficiary</label>
-                            <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="qtyPerBen" >
-                              <input type="number" className="form-control inputBox" name="qtyPerBen" placeholder="" ref="qtyPerBen"  value={this.state.qtyPerBen}  onChange={this.handleTotalChange.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.qtyPerBen}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <div className=" " >
-                              <label className="formLable">Total Cost Per Beneficiary</label>                            
-                              <input type="number" className="form-control inputBox inputBox-main" name="totalCostPerBen " placeholder="" ref="totalCostPerBen"  value={(parseFloat(this.state.totalCostPerBen)).toFixed(2)} disabled />
-                            </div>
-                            <div className="errorMsg">{this.state.errors.totalCostPerBen}</div>
-                          </div>
-                          {
-                            this.state.bActivityActive==="inactive" ?
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                <label className="formLable">No.of Beneficiaries</label>
-                                <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="noOfBeneficiaries" >
-                                  <input type="number" className="form-control inputBox" name="noOfBeneficiaries" placeholder="" ref="noOfBeneficiaries"  value={this.state.noOfBeneficiaries}  onChange={this.handleChange.bind(this)}/>
-                                </div>
-                                <div className="errorMsg">{this.state.errors.noOfBeneficiaries}</div>
-                              </div>
-                            :null
-                          } 
-                        </div> 
-                      </div>
-                      <div className="col-lg-12 boxHeightother">
-                        <label className="formLable">Remark</label>
-                        <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
-                          <input type="text"   className="form-control inputBox" name="remark" placeholder="" ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
-                        </div>
-                        <div className="errorMsg">{this.state.errors.remark}</div>
-                      </div>
-                      <div className="col-lg-12 ">
-                         <hr className=""/>
-                      </div>
-                      <div className="col-lg-12 ">
-                         <div className="pageSubHeader">Sources of Fund</div>
-                      </div>
-                      <div className="row">
-                        <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">LHWRF</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                              <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.LHWRF}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">NABARD</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >                              
-                              <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD" value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.NABARD}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Bank Loan</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                              <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.bankLoan}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Govt. Schemes</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                              <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.govtscheme}</div>
-                          </div>
-                        </div> 
-                      </div><br/>
-                      <div className="row">
-                        <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Direct Community Contribution</label>
-                            <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                              <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.directCC}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Indirect Community Contribution</label>
-                            <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                              <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.indirectCC}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <label className="formLable">Other</label>
-                            <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
-                              <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                            </div>
-                            <div className="errorMsg">{this.state.errors.other}</div>
-                          </div>
-                          <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                            <div className="" id="total" >
-                              <label className="formLable">Total :</label>                            
-                               
-                                  <div className="form-control inputBox inputBox-main unitDiasbleBox">
-                                    {this.state.total ? 
-                                        <label className="formLable" id="total">{(parseFloat(this.state.total)).toFixed(2)}</label>
-                                      :
-                                      0
-                                    }
-                                  </div>
-                              
-                              {/*<label className="formLable">&nbsp;{this.state.total ?  this.state.total : " 0"}</label>     */}    
-                            </div>
-                            <div className="errorMsg">{this.state.errors.total}</div>
-                          </div>
-                        </div> 
-                      </div><br/>
-                      
-                      {
-                        this.state.bActivityActive==="active" ? 
-                        <div className="">
-                          <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
-                             <hr className=""/>
-                          </div>
-                          <div className="tableContainrer">
-                            <ListOfBeneficiaries 
-                              getBeneficiaries={this.getBeneficiaries.bind(this)}
-                              selectedValues={this.state.selectedValues}
-                              sendBeneficiary={this.state.selectedBeneficiaries}
-                            />
+                            </div> 
                           </div>
                         </div>
-                        : null
-                      }
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                        <br/>
-                        {
-                          this.state.editId ? 
-                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
-                          :
-                          <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
-                        }
-                      </div> 
-                      <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
-                        <hr className=""/>
-                      </div>
-                    </form>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                    <IAssureTable 
-                      tableName = "Activity Report"
-                      id = "activityReport"
-                      downloadtableHeading={this.state.downloadtableHeading}
-                      downloadData={this.state.downloadData}
-                      tableHeading={this.state.tableHeading}
-                      twoLevelHeader={this.state.twoLevelHeader} 
-                      dataCount={this.state.dataCount}
-                      tableData={this.state.tableData}
-                      getData={this.getData.bind(this)}
-                      tableObjects={this.state.tableObjects} 
-                      isDeleted={this.deleted.bind(this)}
-                      viewTable = {true}
-                      viewLink = "activityReportView"
-                    /> 
-                  </div> 
-                  </div>
-                  <div id="bulkactivityTypeA" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                        <BulkUpload 
-                          url="/api/activityReport/bulk_upload_activities" 
-                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Family Level Activity"}} 
-                          uploadedData={this.uploadedData} 
-                          bulkTableID = "activityTypeA"
-                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-A-Activity-Submission.xlsx"
-                          fileDetailUrl={this.state.fileDetailUrl}
-                          getFileDetails={this.getTypeAFileDetails.bind(this)}
-                          getData={this.getData.bind(this)}
-                          fileDetails={this.state.fileDetailsTypeA}
-                          goodRecordsHeading ={this.state.goodRecordsHeading}
-                          failedtableHeading={this.state.failedtableHeading}
-                          failedRecordsTable ={this.state.failedRecordsTableTypeA}
-                          failedRecordsCount={this.state.failedRecordsCountTypeA}
-                          goodRecordsTable={this.state.goodRecordsTableTypeA}
-                          goodDataCount={this.state.goodDataCountTypeA}
-                        />
+                        <div className="mt">
+                          <IAssureTable 
+                            tableName = "Activity Report"
+                            id = "activityReport"
+                            downloadtableHeading={this.state.downloadtableHeading}
+                            downloadData={this.state.downloadData}
+                            tableHeading={this.state.tableHeading}
+                            twoLevelHeader={this.state.twoLevelHeader} 
+                            dataCount={this.state.dataCount}
+                            tableData={this.state.tableData}
+                            getData={this.getData.bind(this)}
+                            tableObjects={this.state.tableObjects} 
+                            isDeleted={this.deleted.bind(this)}
+                            viewTable = {true}
+                            viewLink = "activityReportView"
+                          /> 
+                        </div> 
                       </div>
                     </div>
-                  </div>
-                  <div id="bulkactivityTypeB" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                        <BulkUpload 
-                          url="/api/activityReport/bulk_upload_type_B_activities" 
-                          data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Type B Activity"}} 
-                          uploadedData={this.uploadedData} 
-                          bulkTableID = "activityTypeB"
-                          fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-B-Activity-Submission.xlsx"
-                          fileDetailUrl={this.state.fileDetailUrl}
-                          getFileDetails={this.getTypeBFileDetails.bind(this)}
-                          getData={this.getData.bind(this)}
-                          fileDetails={this.state.fileDetailsTypeB}
-                          goodRecordsHeading ={this.state.bTypeActivitygoodRecordsHeading}
-                          failedtableHeading={this.state.bTypeActivityfailedtableHeading}
-                          failedRecordsTable ={this.state.failedRecordsTableTypeB}
-                          failedRecordsCount={this.state.failedRecordsCountTypeB}
-                          goodRecordsTable={this.state.goodRecordsTableTypeB}
-                          goodDataCount={this.state.goodDataCountTypeB}
-                        />
+                    <div id="bulkactivityTypeA" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
+                          <BulkUpload 
+                            url="/api/activityReport/bulk_upload_activities" 
+                            data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Family Level Activity"}} 
+                            uploadedData={this.uploadedData} 
+                            bulkTableID = "activityTypeA"
+                            fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-A-Activity-Submission.xlsx"
+                            fileDetailUrl={this.state.fileDetailUrl}
+                            getFileDetails={this.getTypeAFileDetails.bind(this)}
+                            getData={this.getData.bind(this)}
+                            fileDetails={this.state.fileDetailsTypeA}
+                            goodRecordsHeading ={this.state.goodRecordsHeading}
+                            failedtableHeading={this.state.failedtableHeading}
+                            failedRecordsTable ={this.state.failedRecordsTableTypeA}
+                            failedRecordsCount={this.state.failedRecordsCountTypeA}
+                            goodRecordsTable={this.state.goodRecordsTableTypeA}
+                            goodDataCount={this.state.goodDataCountTypeA}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                   {/* <div id="bulkbeneficiary" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
-                      <BulkUpload url="/api/activityReport/bulk_upload_beneficiaries" 
-                      data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID}} 
-                      uploadedData={this.uploadedData} 
-                      fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Beneficiries+In+Activity+Submission.xlsx"
-                      fileDetailUrl={this.state.beneficiaryFileDetailUrl}
-                      getData={this.getData.bind(this)}
-                      getFileDetails={this.getBenefiaciaryFileDetails.bind(this)}
-                      fileDetails={this.state.fileDetails}
-                      goodRecordsHeading ={this.state.beneficiaryGoodRecordsHeading}
-                      failedtableHeading={this.state.beneficiaryFailedtableHeading}
-                      failedRecordsTable ={this.state.beneficiaryFailedRecordsTable}
-                      failedRecordsCount={this.state.beneficiaryFailedRecordsCount}
-                      goodRecordsTable={this.state.beneficiaryGoodRecordsTable}
-                      goodDataCount={this.state.beneficiaryGoodDataCount}
-                      />
-                      </div>
-                      </div>
-                      </div>*/}
                   </div>
                 </div>
               </div>
@@ -2325,4 +2079,4 @@ class Activity extends Component{
     );
   }
 }
-export default Activity;
+export default ActivityTypeA;

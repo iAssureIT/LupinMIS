@@ -144,19 +144,19 @@ class EditNotificationModal extends Component{
 				
 				axios.put('/masternotification', formValues)
 				.then((response)=> {					
-					/*if(templateType =='Email'){
+					/*if(templateType ==='Email'){
 						var emailTemplatesList = this.state.emailTemplatesList;
 						emailTemplatesList.push(response.data.dataBody);
 						this.setState({
 							emailTemplatesList : emailTemplatesList
 						});
-					}else if(templateType =='SMS'){
+					}else if(templateType ==='SMS'){
 						var smsTemplatesList = this.state.smsTemplatesList;
 						smsTemplatesList.push(response.data.dataBody);
 						this.setState({
 							smsTemplatesList : smsTemplatesList
 						});
-					}else if(templateType =='Notification'){
+					}else if(templateType ==='Notification'){
 						var notificationTemplatesList = this.state.notificationTemplatesList;
 						notificationTemplatesList.push(response.data.dataBody);
 						this.setState({
@@ -173,7 +173,7 @@ class EditNotificationModal extends Component{
 					});
 					$('#createNotifyModal').hide();
 					$('.modal-backdrop').remove();*/
-					console.log('response --==',response);
+					console.log('response --===',response);
 				})
 				.catch(function (error) {
 					/*swal({
@@ -183,7 +183,7 @@ class EditNotificationModal extends Component{
 						confirmButtonColor: '#666',
 						confirmButtonText: 'Ok'
 					});*/
-				console.log('error============',error);
+				console.log('error==============',error);
 				})
 				.finally(function () {
 				// always executed
@@ -203,9 +203,9 @@ class EditNotificationModal extends Component{
 	  this.setState({
 	  	[name]: event.target.value,
 	  });
-		// if(this.refs.templateType.value  == 'Notification' || this.refs.templateType.value  == 'SMS' ){
+		// if(this.refs.templateType.value  === 'Notification' || this.refs.templateType.value  === 'SMS' ){
 		// 	$('.subjectRow').css({'display':'none'});
-		// }else if(this.refs.templateType.value  == 'Email'){
+		// }else if(this.refs.templateType.value  === 'Email'){
 		// 	$('.subjectRow').css({'display':'block'});
 		// }
 	}

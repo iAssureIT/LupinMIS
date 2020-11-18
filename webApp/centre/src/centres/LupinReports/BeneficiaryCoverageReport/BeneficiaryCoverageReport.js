@@ -6,7 +6,6 @@ import _                    from 'underscore';
 import moment               from 'moment';
 import jQuery               from 'jquery';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
-import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
 import "./BeneficiaryCoverageReport.css"
 import "../../Reports/Reports.css";
@@ -292,7 +291,7 @@ class BeneficiaryCoverageReport extends Component{
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
         }).then((response)=> {
-        // console.log('availableblockInCenter ==========',response);
+        // console.log('availableblockInCenter ============',response);
         function removeDuplicates(data, param, district){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
@@ -314,7 +313,7 @@ class BeneficiaryCoverageReport extends Component{
       method: 'get',
       url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+        // console.log('response ============', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
@@ -358,7 +357,7 @@ class BeneficiaryCoverageReport extends Component{
       // url: 'http://locations2.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
       url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+        // console.log('response ============', response.data);
         this.setState({
           listofVillages : response.data
         },()=>{
@@ -1176,7 +1175,7 @@ class BeneficiaryCoverageReport extends Component{
                                         { 
                                           sectorLength !== 0 && value.sectorData ?
                                             Object.entries(value.sectorData).map(([key, value1], index)=> {
-                                            // console.log("value1===================",value1[0])
+                                            // console.log("value1=====================",value1[0])
                                             // console.log("value1.uidNumber",value1.uidNumber)
                                               return(                                                
                                                 <tr className="tableRow" key={index}>

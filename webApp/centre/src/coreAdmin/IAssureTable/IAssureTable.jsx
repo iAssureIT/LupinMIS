@@ -679,9 +679,9 @@ class IAssureTable extends Component {
 		  
            
 	            <div className={this.props.divClass ? this.props.divClass+" col-sm-12 col-md-12 col-xs-12 NOpadding" : "col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding"}>
-	            	{/*==============================================================================
+	            	{/*========================================================================================
 	            			We will have two tables... One to display on screen and one to print.							
-					   ============================================================================== */}
+					   ======================================================================================== */}
 
 
 	            	{/* ===  Display Table === */}

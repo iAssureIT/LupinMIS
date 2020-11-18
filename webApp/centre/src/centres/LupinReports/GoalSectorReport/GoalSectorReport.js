@@ -92,7 +92,7 @@ class GoalSectorReport extends Component{
     this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.goalType, this.state.goalName, this.state.beneficiaryType, this.state.projectCategoryType, this.state.projectName, this.state.selectedDistrict);
     });
     this.getTypeOfGoal();
-    // console.log('this.state.goalType=========',this.state.goalType);
+    // console.log('this.state.goalType==========',this.state.goalType);
     this.getNameOfGoal(this.state.goalType);
     this.getAvailableProjects();
     this.year();

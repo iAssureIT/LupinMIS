@@ -30,10 +30,10 @@ class ResetPassword extends Component {
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "resetPassword"){
+        if (element.attr("name") === "resetPassword"){
           error.insertAfter("#resetPasswordErr");
         }
-        if (element.attr("name") == "resetPasswordConfirm"){
+        if (element.attr("name") === "resetPasswordConfirm"){
           error.insertAfter("#resetPasswordConfirmErr");
         }
       }

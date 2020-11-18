@@ -232,7 +232,7 @@ class BulkUpload extends Component{
         }
         //console.log('i',i)
         //console.log('endLmt',endLmt)
-        if (i == endLmt-1 && i != totalrows && chunkData.length>0) {
+        if (i === endLmt-1 && i != totalrows && chunkData.length>0) {
           var formValues = {
             data      : chunkData,
             reqdata   : this.props.data,

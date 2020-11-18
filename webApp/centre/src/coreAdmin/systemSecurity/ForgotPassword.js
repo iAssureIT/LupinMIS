@@ -29,7 +29,7 @@ class ForgotPassword extends Component {
           }
         },
         errorPlacement: function(error, element) {
-          if (element.attr("name") == "enterEmail"){
+          if (element.attr("name") === "enterEmail"){
             error.insertAfter("#enterEmailErr");
           }
         }

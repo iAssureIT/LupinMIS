@@ -236,7 +236,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
   }
   selectprojectCategoryType(event){
     event.preventDefault();
-    console.log(event.target.value)
+    // console.log(event.target.value)
     var projectCategoryType = event.target.value;
     this.setState({
         projectCategoryType : projectCategoryType,
@@ -325,7 +325,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
         .then((response)=>{
             $(".fullpageloader").hide();
 
-            console.log('response', response);
+            // console.log('response', response);
             var tableData = response.data.map((a, i)=>{
             return {
               _id                           : a._id,

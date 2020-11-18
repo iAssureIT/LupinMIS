@@ -103,7 +103,7 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/centers/'+center_ID,
     }).then((response)=> {
-      // console.log("response ==>",response.data[0]);
+      // console.log("response ===>",response.data[0]);
 
       function removeDuplicates(data, param){
         return data.filter(function(item, pos, array){
@@ -117,7 +117,7 @@ export default class Dashboard extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);

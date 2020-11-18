@@ -5,8 +5,8 @@ import './coreAdmin/css/root.css'
 import './App.css';
 import Layout   from './coreAdmin/Layout/Layout.js';
 
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL; 
-// axios.defaults.baseURL  = "http://localhost:3054"
+// axios.defaults.baseURL = process.env.REACT_APP_BASE_URL; 
+axios.defaults.baseURL  = "http://localhost:3054"
 // axios.defaults.baseURL  = "http://api.lupinfoundation.in"
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 console.log("process.env.REACT_APP_BASE_URL = ", axios.defaults.baseURL);

@@ -281,7 +281,7 @@ class GeographicalReport extends Component{
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
         }).then((response)=> {
-        // console.log('availableblockInCenter ==========',response);
+        // console.log('availableblockInCenter ============',response);
         function removeDuplicates(data, param, district){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;

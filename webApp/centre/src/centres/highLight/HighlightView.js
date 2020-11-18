@@ -30,7 +30,7 @@ class HighlightView extends Component{
       method: 'get',
       url: '/api/highlights/'+this.state.highlight_ID,
     }).then((response)=> {
-      console.log("response",response.data);
+      // console.log("response",response.data);
       if (response.data) {
         this.setState({
           "highlight"       :  response.data[0],

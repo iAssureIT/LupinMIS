@@ -345,7 +345,7 @@ class Beneficiary extends Component{
     })
     .then((response)=> {
       var editData = response.data[0];
-      console.log('editData',response);
+      // console.log('editData',response);
       if(editData){
         this.setState({
           "beneficiaryID"            : editData.beneficiaryID,
@@ -358,7 +358,7 @@ class Beneficiary extends Component{
           "date"                     : editData.birthYearOfbeneficiary,          
           "genderOfbeneficiary"      : editData.genderOfbeneficiary,          
         },()=>{
-          console.log('edit===',this.state.birthYearOfbeneficiary);
+          // console.log('edit===',this.state.birthYearOfbeneficiary);
         });      
       }
       let fields = this.state.fields;
@@ -554,7 +554,7 @@ class Beneficiary extends Component{
           
     }
 
-    else if(this.refs.firstNameOfBeneficiary.value == ""){
+    else if(this.refs.firstNameOfBeneficiary.value === ""){
       this.setState({
           uidNumber : "",
           relation  : "-- Select --",
@@ -565,8 +565,7 @@ class Beneficiary extends Component{
     }*/
   }
   handleYear(date){
-      // console.log(' date.year()', date);
-      console.log(' date.year()',moment(date).format('YYYY'));
+    // console.log(' date.year()',moment(date).format('YYYY'));
     this.setState({
       birthYearOfbeneficiary    : moment(date).format('YYYY'),
       date    : date,

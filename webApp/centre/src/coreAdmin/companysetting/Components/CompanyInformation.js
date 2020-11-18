@@ -106,7 +106,7 @@ class CompanyInformation extends Component{
     //   var file=e.currentTarget.files[0];
     //   if(file){
     //     var fileExt=e.currentTarget.files[0].name.split('.').pop();
-    //     if (fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'svg' || fileExt == 'png' ) {
+    //     if (fileExt === 'jpg' || fileExt === 'jpeg' || fileExt === 'svg' || fileExt === 'png' ) {
     //        attachLogoToS3Function(file,self);
     //     }else{
     //     swal({

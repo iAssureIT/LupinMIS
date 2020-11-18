@@ -201,7 +201,7 @@ class SectorwisePlan extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -275,7 +275,7 @@ class SectorwisePlan extends Component{
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
-                var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                var value = response.data.filter((a)=>{return a.name === "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   return {
                         _id                            : a._id,     
@@ -284,7 +284,7 @@ class SectorwisePlan extends Component{
                         sectorName                     : a.sectorName,
                         Reach                          : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.Reach)+"</b>" : this.addCommas(a.Reach),
                         FamilyUpgradation              : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.FamilyUpgradation)+"</b>" : this.addCommas(a.FamilyUpgradation),
-                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") == "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
+                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
                         TotalBudget                    : (a.TotalBudget),
                         LHWRF                          : (a.LHWRF),
                         NABARD                         : (a.NABARD),
@@ -308,7 +308,7 @@ class SectorwisePlan extends Component{
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
-                var value = response.data.filter((a)=>{return a.sectorName == "Total"})[0];
+                var value = response.data.filter((a)=>{return a.sectorName === "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   // console.log(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%",(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%")
                   return {
@@ -318,7 +318,7 @@ class SectorwisePlan extends Component{
                         sectorName                     : a.sectorName,
                         Reach                          : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.Reach)+"</b>" : this.addCommas(a.Reach),
                         FamilyUpgradation              : a.sectorName ==="<b>Total</b>" ? "<b>"+this.addCommas(a.FamilyUpgradation)+"</b>" : this.addCommas(a.FamilyUpgradation),
-                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") == "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
+                        // proportionToTotal              : ((((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%") ? " " : (((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%"),
                         TotalBudget                    : (a.TotalBudget),
                         LHWRF                          : (a.LHWRF),
                         NABARD                         : (a.NABARD),

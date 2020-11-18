@@ -36,7 +36,7 @@ class FileWisePlanList extends Component{
       }
       axios.post('/api/annualPlans/get/files', data)
       .then((response)=>{
-        console.log(response.data);
+        // console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             fileName: a.fileName != null ? a.fileName : "-", 
@@ -44,7 +44,7 @@ class FileWisePlanList extends Component{
             _id: a._id != null ? a._id : "-", 
           }
         })
-        console.log('tableData', tableData)
+        // console.log('tableData', tableData)
         this.setState({
           tableData : tableData
         })
@@ -56,7 +56,7 @@ class FileWisePlanList extends Component{
     getCount(){
       axios.get('/api/annualPlans/get/files/count/'+localStorage.getItem('center_ID'))
       .then((response)=>{
-        console.log(response.data)
+        // console.log(response.data)
         this.setState({
           dataCount : response.data
         })

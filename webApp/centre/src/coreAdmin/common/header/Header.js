@@ -53,7 +53,7 @@ toggleNav(){
   var currentWidth =  document.getElementById("mySidenav").style.width;
   // console.log("currentWidth",currentWidth);
 
-  if(currentWidth == "230px")
+  if(currentWidth === "230px")
   {
    document.getElementById("mySidenav").style.width = "0"; 
  }else{

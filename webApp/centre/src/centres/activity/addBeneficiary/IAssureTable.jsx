@@ -569,7 +569,7 @@ class IAssureTable extends Component {
 			          selectedBeneficiaries : selectedBeneficiaries
 			        },()=>{
 			          	this.props.getBeneficiaries(this.state.selectedBeneficiaries);
-			        	// console.log('this.state.selectedBeneficiaries=====',this.state.selectedBeneficiaries);
+			        	// console.log('this.state.selectedBeneficiaries======',this.state.selectedBeneficiaries);
 			        });
 				}
 			}

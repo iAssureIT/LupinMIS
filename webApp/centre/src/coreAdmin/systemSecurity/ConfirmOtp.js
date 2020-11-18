@@ -23,7 +23,7 @@ import './SignUp.css';
           }
         },
         errorPlacement: function(error, element) {
-          if (element.attr("name") == "emailotp"){
+          if (element.attr("name") === "emailotp"){
             error.insertAfter("#emailotpErr");
           }
         }
@@ -85,7 +85,7 @@ import './SignUp.css';
       //   }
       // }
       // var emailotp = this.refs.emailotp.value;
-      // if(mailotp == emailotp){
+      // if(mailotp === emailotp){
       //   Meteor.call('createUserByAdminSetEmailToTrue',newID,
       //   function(error,result){
       //     if(error){
@@ -224,7 +224,7 @@ import './SignUp.css';
 
 
   render(){
-    // if(location.pathname=='/forgotOTPVarification/'+FlowRouter.getParam("mailId")){
+    // if(location.pathname==='/forgotOTPVarification/'+FlowRouter.getParam("mailId")){
     //    var mobileEmail = 'Email Id';
     //    var resendOtp ='';
     // }else{

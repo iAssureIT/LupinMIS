@@ -34,7 +34,7 @@ class FilewiseFamilyList extends Component{
   getCount(){
       axios.get('/api/families/get/files/count/'+localStorage.getItem('center_ID'))
       .then((response)=>{
-        console.log(response.data)
+        // console.log(response.data)
         this.setState({
           dataCount : response.data
         })
@@ -50,7 +50,7 @@ class FilewiseFamilyList extends Component{
         limitRange : limitRange,
         center_ID  : localStorage.getItem('center_ID')
       }
-      console.log('tableData', data)
+      // console.log('tableData', data)
       axios.post('/api/families/get/files', data)
       .then((response)=>{
         //console.log(response.data);
@@ -62,7 +62,7 @@ class FilewiseFamilyList extends Component{
             _id         : a.fileName+ "/" + a.uploadTime, 
           }
         })
-        console.log('tableData', tableData)
+        // console.log('tableData', tableData)
         this.setState({
           tableData : tableData
         })

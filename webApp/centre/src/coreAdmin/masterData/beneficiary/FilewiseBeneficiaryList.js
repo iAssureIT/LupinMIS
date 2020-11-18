@@ -48,7 +48,7 @@ class FilewiseBeneficiaryList extends Component{
             _id         : a.fileName+ "/" + a.uploadTime, 
           }
         })
-        console.log('tableData', tableData)
+        // console.log('tableData', tableData)
         this.setState({
           tableData : tableData
         })

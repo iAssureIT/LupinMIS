@@ -123,7 +123,6 @@ class Layout extends Component{
     const token = localStorage.getItem("token");
     // console.log("Dashboard Token = ",token);
     if(token!==null){
-    // console.log("*********===***********imin ",token);
       this.setState({
         loggedIn : true
       })

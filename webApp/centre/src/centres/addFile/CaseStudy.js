@@ -125,7 +125,7 @@ class CaseStudy extends Component{
     this.getAvailableSectors();
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    // console.log("fileArray ===============================",localStorage.getItem('fileArray'));
+    // console.log("fileArray ===================================",localStorage.getItem('fileArray'));
     // console.log("localStorage =",localStorage);
     this.setState({
       center_ID       : center_ID,
@@ -315,7 +315,7 @@ class CaseStudy extends Component{
       axios.get('/api/caseStudies/list/'+center_ID)
       .then((response)=>{
         $(".fullpageloader").hide();
-        console.log("response",response);
+        // console.log("response",response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id          : a._id,
@@ -442,7 +442,7 @@ class CaseStudy extends Component{
                           fileType   = "File"
                         />
                         {/*
-                          this.state.action == "Submit" ?
+                          this.state.action === "Submit" ?
                             <AddFilePublic
                               getFile    = {this.getFile.bind(this)}
                               configData = {this.state.configData} 

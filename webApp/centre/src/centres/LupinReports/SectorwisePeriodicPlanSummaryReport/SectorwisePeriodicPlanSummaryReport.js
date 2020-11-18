@@ -275,7 +275,7 @@ class SectorwisePeriodicPlanSummaryReport extends Component{
                  $(".fullpageloader").hide();
 
                 console.log("resp",response);
-                var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                var value = response.data.filter((a)=>{return a.name === "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                 return {
                   _id                                     : a._id,            

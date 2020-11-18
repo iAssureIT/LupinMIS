@@ -36,10 +36,10 @@ class Login extends Component {
         }
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "loginusername"){
+        if (element.attr("name") === "loginusername"){
           error.insertAfter("#loginusernameErr");
         }
-        if (element.attr("name") == "loginpassword"){
+        if (element.attr("name") === "loginpassword"){
           error.insertAfter("#loginpasswordErr");
         }
       }
@@ -74,7 +74,7 @@ class Login extends Component {
               // console.log("blocked user")
           }else{
              this.props.history.push("/dashboard");
-            if(localStorage==null){
+            if(localStorage===null){
               swal("Invalid Email or Password","Please Enter valid email and password");
             }else{
               localStorage.setItem("user_ID",response.data.user_ID);

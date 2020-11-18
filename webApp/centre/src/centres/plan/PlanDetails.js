@@ -301,7 +301,7 @@ class PlanDetails extends Component{
       ["indirectCC-"+id] : 0,
       ["other-"+id] : 0,
     },()=>{
-      // console.log('totalBud==========',this.state.totalBud );
+      // console.log('totalBud============',this.state.totalBud );
       if (parseInt(this.state[`noOfBeneficiaries-${id}`]) < parseInt(this.state[`noOfFamilies-${id}`]) ) {
         swal("No. of Families should not greater than No. of Beneficiaries");
         this.setState({
@@ -725,7 +725,7 @@ class PlanDetails extends Component{
       tableObjects,
     },()=>{
       if(this.state.year){
-        // console.log('month ======', this.state.month, this.state.year)
+        // console.log('month =======', this.state.month, this.state.year)
         var month = this.state.month;
         var year = this.state.year;
         if(month==="Annual Plan"){
@@ -1078,7 +1078,7 @@ class PlanDetails extends Component{
                 property = property.substr(1);
               }
               return function (a,b) {
-                if(sortOrder == -1){
+                if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
                 }else{
                   return a[property].localeCompare(b[property]);
@@ -1116,7 +1116,7 @@ class PlanDetails extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
@@ -1161,7 +1161,7 @@ class PlanDetails extends Component{
             property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
               return b[property].localeCompare(a[property]);
             }else{
               return a[property].localeCompare(b[property]);
@@ -1253,7 +1253,7 @@ class PlanDetails extends Component{
             property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
               return b[property].localeCompare(a[property]);
             }else{
               return a[property].localeCompare(b[property]);
@@ -1354,7 +1354,7 @@ class PlanDetails extends Component{
             "month"                : a.month        ? a.month    : '-',
             "year"                 : a.year        ? a.year    : '-',
             "projectCategoryType"  : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            "projectName"          : a.projectName=="all"  ? '-' : a.projectName,
+            "projectName"          : a.projectName==="all"  ? '-' : a.projectName,
             "sectorName"           : a.sectorName        ? a.sectorName    : '-',
             "activityName"         : a.activityName        ? a.activityName    : '-',
             "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
@@ -1379,7 +1379,7 @@ class PlanDetails extends Component{
             // "month"                : a.month        ? a.month    : '-',
             // "year"                 : a.year        ? a.year    : '-',
             "programCategory"      : a.programCategory        ? a.programCategory    : '-',
-            "projectName"          : a.projectName=="all"  ? '-' : a.projectName,
+            "projectName"          : a.projectName==="all"  ? '-' : a.projectName,
             "sectorName"           : a.sectorName        ? a.sectorName    : '-',
             "activityName"         : a.activityName        ? a.activityName    : '-',
             "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
@@ -1458,7 +1458,7 @@ class PlanDetails extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);
