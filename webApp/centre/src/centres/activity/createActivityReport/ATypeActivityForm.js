@@ -433,61 +433,56 @@ class ActivityTypeA extends Component{
           axios.post('/api/activityReport',activityValues)
           .then((response)=>{
             this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
-              this.setState({
-                "shown"          : true,
-                "selectedValues" : beneficiariesData 
-              })    
-              swal({
-                title : response.data.message,
-                text  : response.data.message,
-              });   
-            })
+            this.setState({
+              "shown"          : true,
+              "selectedValues" : beneficiariesData,
+              "projectName"            : "-- Select --",
+              "projectCategoryType"    : "LHWRF Grant",
+              "type"                   : true,
+              "district"               : "-- Select --",
+              "block"                  : "-- Select --",
+              "village"                : "-- Select --",
+              "dateofIntervention"     : momentString,
+              "sector"                 : "-- Select --",
+              "typeofactivity"         : "-- Select --",
+              "nameofactivity"         : "",
+              "activity"               : "-- Select --",
+              "subactivity"            : "-- Select --",
+              "location"               : "",
+              "unit"                   : "",
+              "unitCost"               : "0",
+              "qtyPerBen"              : "0",
+              "noOfBeneficiaries"      : "0",
+              "totalCostPerBen"        : "0",
+              "LHWRF"                  : "0",
+              "NABARD"                 : "0",
+              "bankLoan"               : "0",
+              "govtscheme"             : "0",
+              "directCC"               : "0",
+              "indirectCC"             : "0",
+              "other"                  : "0",
+              "total"                  : "0",
+              "remark"                 : "",
+              "selectedBeneficiaries"  :[],
+              "selectedValues"         : [],    
+              "listofBeneficiaries"    : [],      
+              "subActivityDetails"     : '',
+              "sendBeneficiary"        : [],
+            })    
+            swal({
+              title : response.data.message,
+              text  : response.data.message,
+            });   
+          })
           .catch(function(error){       
             // console.log('error',error);
             if(error.message === "Request failed with status code 401"){
               swal({
-                  title : "abc",
-                  text  : "Session is Expired. Kindly Sign In again."
+                title : "abc",
+                text  : "Session is Expired. Kindly Sign In again."
               });
             }
           });
-          this.setState({
-            "projectName"            : "-- Select --",
-            "projectCategoryType"    : "LHWRF Grant",
-            "type"                   : true,
-            "district"               : "-- Select --",
-            "block"                  : "-- Select --",
-            "village"                : "-- Select --",
-            "dateofIntervention"     : momentString,
-            "sector"                 : "-- Select --",
-            "typeofactivity"         : "-- Select --",
-            "nameofactivity"         : "",
-            "activity"               : "-- Select --",
-            "subactivity"            : "-- Select --",
-            "location"               : "",
-            "unit"                   : "",
-            "unitCost"               : "0",
-            "qtyPerBen"              : "0",
-            "noOfBeneficiaries"      : "0",
-            "totalCostPerBen"        : "0",
-            "LHWRF"                  : "0",
-            "NABARD"                 : "0",
-            "bankLoan"               : "0",
-            "govtscheme"             : "0",
-            "directCC"               : "0",
-            "indirectCC"             : "0",
-            "other"                  : "0",
-            "total"                  : "0",
-            "remark"                 : "",
-            "selectedBeneficiaries"  :[],
-            "selectedValues"         : [],    
-            "listofBeneficiaries"    : [],      
-            "subActivityDetails"     : '',
-            "sendBeneficiary"        : [],
-            // "availableSectors"   : [],
-            // "availableActivity"  : [],
-            // "availableSubActivity": [],
-          });              
         }else{
           swal("abc",'Please select atleast single Beneficiary.');
         }
@@ -522,8 +517,6 @@ class ActivityTypeA extends Component{
       element.sourceofFund            = sourceofFund;
       return element;
     })
-    // console.log("sourceofFund",sourceofFund)
-    // console.log("beneficiariesData",beneficiariesData)
     var noOfBeneficiaries = this.state.selectedBeneficiaries.length;
     if ($("#AtypeActivity").valid()){
       var activityValues= {
@@ -566,10 +559,8 @@ class ActivityTypeA extends Component{
       };
       if (parseFloat(this.state.total) === parseFloat(this.state.totalCostPerBen)) {
         if(beneficiariesData.length>0)  {
-          // console.log('activityValues',activityValues)
           axios.patch('/api/activityReport',activityValues)
           .then((response)=>{
-            // console.log("update",response);
             this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);      
             swal({
               title : response.data.message,
@@ -614,9 +605,6 @@ class ActivityTypeA extends Component{
             "subActivityDetails"    : '',
             "sendBeneficiary"       : [],      
             "editId"                : "",
-            // "availableSectors"   : [],
-            // "availableActivity"  : [],
-            // "availableSubActivity": [],
           });
           this.props.history.push('/a-type-activity-form');
         }else{
@@ -633,7 +621,6 @@ class ActivityTypeA extends Component{
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
-       
     if(this.state.bActivityActive==="inactive"){
       if (!fields["noOfBeneficiaries"]) {
         $("html,body").scrollTop(0);
@@ -641,125 +628,114 @@ class ActivityTypeA extends Component{
         errors["noOfBeneficiaries"] = "This field is required.";
       }     
     }
-
-      if (!fields["district"]) {
-        $("html,body").scrollTop(0);
-        formIsValid = false;
-        errors["district"] = "This field is required.";
-      }     
-       if (!fields["block"]) {
-        formIsValid = false;
-        errors["block"] = "This field is required.";
-      }     
-      if (!fields["village"]) {
-        formIsValid = false;
-        errors["village"] = "This field is required.";
-      }
-    /*  if (!fields["dateofIntervention"]) {
-        formIsValid = false;
-        errors["dateofIntervention"] = "This field is required.";
-      }*/
-      if (!fields["sector"]) {
-        formIsValid = false;
-        errors["sector"] = "This field is required.";
-      }          
-      if (!fields["typeofactivity"]) {
-        formIsValid = false;
-        errors["typeofactivity"] = "This field is required.";
-      }          
-      if (!fields["activity"]) {
-        formIsValid = false;
-        errors["activity"] = "This field is required.";
-      }          
-      if (!fields["subactivity"]) {
-        formIsValid = false;
-        errors["subactivity"] = "This field is required.";
-      }          
-      if (!fields["unitCost"]) {
-        formIsValid = false;
-        errors["unitCost"] = "This field is required.";
-      }          
-      if (!fields["qtyPerBen"]) {
-        formIsValid = false;
-        errors["qtyPerBen"] = "This field is required.";
-      }          
-      if (!fields["bankLoan"]) {
-        formIsValid = false;
-        errors["bankLoan"] = "This field is required.";
-      }          
-      if (!fields["govtscheme"]) {
-        formIsValid = false;
-        errors["govtscheme"] = "This field is required.";
-      }
-      if (!fields["NABARD"]) {
-        formIsValid = false;
-        errors["NABARD"] = "This field is required.";
-      }          
-      if (!fields["LHWRF"]) {
-        formIsValid = false;
-        errors["LHWRF"] = "This field is required.";
-      }          
-      if (!fields["directCC"]) {
-        formIsValid = false;
-        errors["directCC"] = "This field is required.";
-      }          
-      if (!fields["indirectCC"]) {
-        formIsValid = false;
-        errors["indirectCC"] = "This field is required.";
-      }          
-      if (!fields["other"]) {
-        formIsValid = false;
-        errors["other"] = "This field is required.";
-      }          
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
+    if (!fields["district"]) {
+      $("html,body").scrollTop(0);
+      formIsValid = false;
+      errors["district"] = "This field is required.";
+    }     
+     if (!fields["block"]) {
+      formIsValid = false;
+      errors["block"] = "This field is required.";
+    }     
+    if (!fields["village"]) {
+      formIsValid = false;
+      errors["village"] = "This field is required.";
+    }
+    if (!fields["sector"]) {
+      formIsValid = false;
+      errors["sector"] = "This field is required.";
+    }          
+    if (!fields["typeofactivity"]) {
+      formIsValid = false;
+      errors["typeofactivity"] = "This field is required.";
+    }          
+    if (!fields["activity"]) {
+      formIsValid = false;
+      errors["activity"] = "This field is required.";
+    }          
+    if (!fields["subactivity"]) {
+      formIsValid = false;
+      errors["subactivity"] = "This field is required.";
+    }          
+    if (!fields["unitCost"]) {
+      formIsValid = false;
+      errors["unitCost"] = "This field is required.";
+    }          
+    if (!fields["qtyPerBen"]) {
+      formIsValid = false;
+      errors["qtyPerBen"] = "This field is required.";
+    }          
+    if (!fields["bankLoan"]) {
+      formIsValid = false;
+      errors["bankLoan"] = "This field is required.";
+    }          
+    if (!fields["govtscheme"]) {
+      formIsValid = false;
+      errors["govtscheme"] = "This field is required.";
+    }
+    if (!fields["NABARD"]) {
+      formIsValid = false;
+      errors["NABARD"] = "This field is required.";
+    }          
+    if (!fields["LHWRF"]) {
+      formIsValid = false;
+      errors["LHWRF"] = "This field is required.";
+    }          
+    if (!fields["directCC"]) {
+      formIsValid = false;
+      errors["directCC"] = "This field is required.";
+    }          
+    if (!fields["indirectCC"]) {
+      formIsValid = false;
+      errors["indirectCC"] = "This field is required.";
+    }          
+    if (!fields["other"]) {
+      formIsValid = false;
+      errors["other"] = "This field is required.";
+    }          
+    this.setState({
+      errors: errors
+    });
+    return formIsValid;
   }
   getAvailableVillages(center_ID, district, block){
     axios({
-        method: 'get',
-        url: '/api/centers/'+center_ID,
-        }).then((response)=> {
-        function removeDuplicates(data, param, district, block){
-          return data.filter(function(item, pos, array){
-            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
-          })
-        }
-        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village", district, block);
-        this.setState({
-          listofVillages   : availablevillageInCenter,
-        },()=>{
-          // console.log('listofVillages',this.state.listofVillages);
+      method: 'get',
+      url: '/api/centers/'+center_ID,
+      }).then((response)=> {
+      function removeDuplicates(data, param, district, block){
+        return data.filter(function(item, pos, array){
+          return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
         })
-      }).catch(function (error) {
-        console.log("error = ",error);
-      });
+      }
+      var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village", district, block);
+      this.setState({
+        listofVillages   : availablevillageInCenter,
+      })
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });
   }
   getAvailableBlocks(center_ID, districtB){
     axios({
       method: 'get',
       url: '/api/centers/'+center_ID,
-      }).then((response)=> {
-      // console.log('availableblockInCenter ============',response);
+    })
+    .then((response)=> {
       function removeDuplicates(data, param, district){
         return data.filter(function(item, pos, array){
           return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
         })
       }
-      // console.log('villagesCovered',response.data[0].villagesCovered);
       var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", districtB);
       this.setState({
         listofBlocks     : availableblockInCenter,
-      },()=>{
-        // console.log('listofBlocks',this.state.listofBlocks);
       })
     }).catch(function (error) {
       console.log("error = ",error);
     });
   }
   edit(id){
-    // console.log('this.state.center_ID',this.state.center_ID)
     if(id){
       axios({
         method: 'get',
@@ -889,21 +865,18 @@ class ActivityTypeA extends Component{
   }
   
   getData(startRange, limitRange, center_ID, year){ 
-    // console.log(startRange, limitRange, center_ID, year);
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    // $(".fullpageloader").show();subactivity
+    $(".fullpageloader").show();
     if(year){
       var startDate = this.state.year.substring(3, 7)+"-04-01";
       var endDate = this.state.year.substring(10, 15)+"-03-31";    
       axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/all/all/all/'+"Family Level Activity")
-      // axios.post('/api/activityReport/list/'+center_ID, data)
       .then((response)=>{
-        // console.log(startDate,endDate);
-      // $(".fullpageloader").hide();
-        console.log("response",response);
+        $(".fullpageloader").hide();
+        // console.log("response",response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                        : a._id,
@@ -957,7 +930,7 @@ class ActivityTypeA extends Component{
           }
         })
         this.setState({
-          tableData : tableData,
+          tableData    : tableData,
           downloadData : downloadData
         })
       })
@@ -1037,42 +1010,31 @@ class ActivityTypeA extends Component{
         }
       }
     });
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+    // axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableSectors();
-    var editId = this.props.match.params ? this.props.match.params.id : '';
-    this.setState({
-      editId : editId
-    },()=>{
-      if(this.state.editId){      
-        this.getAvailableActivity(this.state.editSectorId);
-        this.edit(this.state.editId);
-      }
-    })
-    // this.getBlock(this.state.stateCode, this.state.district);
     this.year();
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
-    const center_ID = localStorage.getItem("center_ID");
+    const center_ID  = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
-    // console.log("localStorage =",localStorage);
+    var editId       = this.props.match.params ? this.props.match.params.id : '';
     this.setState({
+      editId       : editId,
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
       this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
       this.getAvailableProjectName();
       this.getAvailableCenter(this.state.center_ID);
-      // this.getToggleValue();
-      // console.log("center_ID =",this.state.center_ID);
+      if(this.state.editId){      
+        this.getAvailableActivity(this.state.editSectorId);
+        this.edit(this.state.editId);
+      }
     });
   }
   componentWillReceiveProps(nextProps){
-    // console.log('nextProps',nextProps)
     if(nextProps){
       var editId = nextProps.match.params.id;
       this.getAvailableSectors();      
       this.getAvailableCenter(this.state.center_ID);      
-      // this.getBlock(this.state.stateCode, this.state.district);
       this.setState({
         "editId" : editId,
       })  
@@ -1084,30 +1046,30 @@ class ActivityTypeA extends Component{
     var momentObj = moment(dateObj);
     var momentString = momentObj.format('YYYY-MM-DD');
     this.setState({
-      "stateCode"         : this.state.stateCode,
-      "district"          : '-- Select --',
-      "block"             : '-- Select --',
-      "village"           : '-- Select --',
-      "date"              : momentString,
-      "sector"            : '-- Select --',
-      "typeofactivity"    : '-- Select --',
-      "activity"          : '-- Select --',
-      "subactivity"       : '-- Select --',
-      "location"          : '',
-      "subActivityDetails": '',
-      "unitCost"          : 0,
-      "qtyPerBen"         : 0,
-      "totalCostPerBen"   : 0,
-      "LHWRF"             : 0,
-      "NABARD"            : 0,
-      "bankLoan"          : 0,
-      "govtscheme"        : 0,
-      "directCC"          : 0,
-      "indirectCC"        : 0,
-      "other"             : 0,
-      "total"             : 0,
-      "remark"            : '',
-      "listofBeneficiaries" : [],
+      "stateCode"             : this.state.stateCode,
+      "district"              : '-- Select --',
+      "block"                 : '-- Select --',
+      "village"               : '-- Select --',
+      "date"                  : momentString,
+      "sector"                : '-- Select --',
+      "typeofactivity"        : '-- Select --',
+      "activity"              : '-- Select --',
+      "subactivity"           : '-- Select --',
+      "location"              : '',
+      "subActivityDetails"    : '',
+      "unitCost"              : 0,
+      "qtyPerBen"             : 0,
+      "totalCostPerBen"       : 0,
+      "LHWRF"                 : 0,
+      "NABARD"                : 0,
+      "bankLoan"              : 0,
+      "govtscheme"            : 0,
+      "directCC"              : 0,
+      "indirectCC"            : 0,
+      "other"                 : 0,
+      "total"                 : 0,
+      "remark"                : '',
+      "listofBeneficiaries"   : [],
       "selectedBeneficiaries" : [],
       "sendBeneficiary"       : [],
       "selectedValues"        : [],
@@ -1119,7 +1081,8 @@ class ActivityTypeA extends Component{
     axios({
       method: 'get',
       url: '/api/sectors/list',
-    }).then((response)=> {
+    })
+    .then((response)=> {
       function dynamicSort(property) {
         var sortOrder = 1;
         if(property[0] === "-") {
@@ -1140,19 +1103,20 @@ class ActivityTypeA extends Component{
       this.setState({
         availableSectors : availableSectors
       })
-    }).catch(function (error) {
+    })
+    .catch(function (error) {
       // console.log('error', error);
     });
   }
   selectSector(event){
     event.preventDefault();
-    this.setState({[event.target.name]:event.target.value});
     var sector_ID = event.target.value.split('|')[1];
     this.setState({
-      sector_ID          : sector_ID,
-      activity           : '-- Select --',
-      subActivityDetails : "",
-      subactivity : "-- Select --",
+      [event.target.name]  :event.target.value,
+      sector_ID            : sector_ID,
+      activity             : '-- Select --',
+      subActivityDetails   : "",
+      subactivity          : "-- Select --",
       availableSubActivity : []
     })
     this.handleChange(event);
@@ -1194,11 +1158,8 @@ class ActivityTypeA extends Component{
     event.preventDefault();
     this.setState({
       [event.target.name]:event.target.value,
-    },()=>{
-      this.setState({
-        subActivityDetails : "-- Select --",
-        subactivity        : "-- Select --"
-      });
+      subActivityDetails : "-- Select --",
+      subactivity        : "-- Select --"
     });
     var activity_ID = event.target.value.split('|')[1];
     this.handleChange(event);
@@ -1245,7 +1206,6 @@ class ActivityTypeA extends Component{
     this.handleChange(event);
   }
   getAvailableCenter(center_ID){
-    // console.log("CID"  ,center_ID);
     if(center_ID){
       axios({
         method: 'get',
@@ -1293,7 +1253,6 @@ class ActivityTypeA extends Component{
   distChange(event){    
     event.preventDefault();
     var district = event.target.value;
-     // console.log('district=', district);
     this.setState({
       district: district,
       block : '-- Select --',
@@ -1343,7 +1302,8 @@ class ActivityTypeA extends Component{
       axios({
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
-        }).then((response)=> {
+        })
+      .then((response)=> {
         function removeDuplicates(data, param, district, block){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
@@ -1368,11 +1328,10 @@ class ActivityTypeA extends Component{
         this.setState({
           listofVillages   : availablevillageInCenter,
         })
-      }).catch(function (error) {
+      })
+      .catch(function (error) {
         console.log("error = ",error);
       });
-      // console.log("block",block);
-      // this.getVillages(this.state.stateCode, this.state.district, this.state.block);
     });
   }
   selectVillage(event){
@@ -1423,10 +1382,8 @@ class ActivityTypeA extends Component{
         availableSubActivity : [],
         sector_ID            : "",
         activity_ID          : "",
-      },()=>{
       })
-    }
-    else{
+    }else{
       this.setState({
         type: true,
         projectCategoryType  : "LHWRF Grant",
@@ -1437,7 +1394,6 @@ class ActivityTypeA extends Component{
         availableSubActivity : [],
         sector_ID            : "",
         activity_ID          : "",
-      },()=>{
       })
     }  
   }
@@ -1445,16 +1401,16 @@ class ActivityTypeA extends Component{
     this.getAvailableSectors()
     this.setState({
       [event.target.name] : event.target.value,
-      sector : '-- Select --',
-      availableActivity: [],
+      sector              : '-- Select --',
+      availableActivity   : [],
       availableSubActivity: [],
-      subActivityDetails : "",
-      subactivity : "-- Select --",
-      activity    : '-- Select --',
+      subActivityDetails  : "",
+      subactivity         : "-- Select --",
+      activity            : '-- Select --',
     },()=>{
       if (this.state.projectCategoryType === "LHWRF Grant") {
         this.setState({
-          projectName:"-- Select --",
+          projectName     :"-- Select --",
         })
       }
     })
@@ -1467,9 +1423,9 @@ class ActivityTypeA extends Component{
       $('.fullpageloader').hide();  
       if(response&&response.data) {
         this.setState({
-          fileDetailsTypeA:response.data,
+          fileDetailsTypeA        : response.data,
           failedRecordsCountTypeA : response.data.failedRecords.length,
-          goodDataCountTypeA : response.data.goodrecords.length
+          goodDataCountTypeA      : response.data.goodrecords.length
         });
 
         var tableDatas = response.data.goodrecords.filter((data,i)=>{
@@ -1503,7 +1459,6 @@ class ActivityTypeA extends Component{
             "remark"              : a.remark                    ? a.remark : '-',
           }
         })
-
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
           return{
             "programCategory"     : a.programCategory      ? a.programCategory    : '-',
@@ -1532,13 +1487,12 @@ class ActivityTypeA extends Component{
           }
         })
         this.setState({
-          goodRecordsTableTypeA : tableData,
+          goodRecordsTableTypeA   : tableData,
           failedRecordsTableTypeA : failedRecordsTable
         })
       }
     })
-    .catch((error)=> { 
-          
+    .catch((error)=> {           
     }) 
   }   
   toglehidden(){   
@@ -1552,8 +1506,7 @@ class ActivityTypeA extends Component{
     // console.log('today',today);
     if(today.month() >= 3){
       financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
-    else{
+    }else{
       financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
     }
     this.setState({
@@ -1581,9 +1534,6 @@ class ActivityTypeA extends Component{
               years.push(financeYear);
               this.setState({
                 years  :years,
-              },()=>{
-              // console.log('years',this.state.years);
-              // console.log('year',this.state.year);
               })              
             }
           }
