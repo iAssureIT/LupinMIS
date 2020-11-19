@@ -1,8 +1,8 @@
 import React,{Component}                         from 'react';
 // import TrackerReact from 'meteor/ultimatejs:tracker-react';
 // import {browserHistory} from 'react-router-dom';
-import { render }                                from 'react-dom';
-import { Redirect }                              from 'react-router-dom';
+// import { render }                                from 'react-dom';
+// import { Redirect }                              from 'react-router-dom';
 import { BrowserRouter as Router, Route,Switch } from 'react-router-dom';
 import $                                         from "jquery";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,7 +20,7 @@ import Dashboard                                  from '../dashboard/Dashboard.j
 import Header                                     from '../common/header/Header.js';
 import Footer                                     from '../common/footer/Footer.js'
 import Leftsidebar                                from '../common/leftSidebar/Leftsidebar.js'
-import Rightsidebar                               from '../common/rightSidebar/Rightsidebar.js'
+// import Rightsidebar                               from '../common/rightSidebar/Rightsidebar.js'
 
 import Family                                     from '../../coreAdmin/masterData/family/Family.js';
 import ToTestFamily                                     from '../../coreAdmin/masterData/family/ToTestFamily.js';
@@ -40,13 +40,8 @@ import FilewiseBeneficiaryActivityList            from "../../centres/activity/f
 // import table                                      from "../../centres/activity/table/NewBeneficiary.js";
 import Plan                                       from "../../centres/plan/PlanDetails.js";
 import FileWiseMonthlyPlanList                    from "../../centres/plan/FileWiseMonthlyPlanList.js";
-import AnnualPlanDetails                          from "../../centres/plan/AnnualPlanDetails.js";
+// import AnnualPlanDetails                          from "../../centres/plan/AnnualPlanDetails.js";
 import FileWisePlanList                           from "../../centres/plan/FileWisePlanList.js";
-
-import VillageBulkUpload                          from '../../coreAdmin/masterData/LocationMaster/VillageBulkUpload.js';
-import BlockBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/BlockBulkUpload.js';
-import DistrictBulkUpload                         from '../../coreAdmin/masterData/LocationMaster/DistrictBulkUpload.js';
-import StateBulkUpload                            from '../../coreAdmin/masterData/LocationMaster/StateBulkUpload.js';
 
 import ListOfVillages                             from '../../coreAdmin/masterData/ListOfVillages/ListOfVillages.js';
 import ListOfDistricts                            from '../../coreAdmin/masterData/ListOfVillages/ListOfDistricts.js';
@@ -62,19 +57,19 @@ import SectorList                                 from "../../centres/sectorList
 import ProjectList                                from "../../centres/ProjectList/ProjectList.js";
 import centerDetail                               from '../../coreAdmin/masterData/centerDetail/centerDetail.js';
 
-import report1                                    from "../../centres/LupinReports/ActivityAnnualreport/ActivityAnnualreport.js";
-import report2                                    from "../../centres/LupinReports/SectorwiseAnnualCompletionSummaryReport/SectorwiseAnnualCompletionSummaryReport.js";
-import report3                                    from "../../centres/LupinReports/ActivityWisePeriodicVarianceReport/ActivityWisePeriodicVarianceReport.js";
-import report4                                    from "../../centres/LupinReports/SectorwisePeriodicVarianceSummaryReport/SectorwisePeriodicVarianceSummaryReport.js";
-import report5                                    from "../../centres/LupinReports/ActivitywisePeriodicPhysicalVarianceReport/ActivitywisePeriodicPhysicalVarianceReport.js";
-import report6                                    from "../../centres/LupinReports/GeographicalReport/GeographicalReport.js";
-import report7                                    from "../../centres/LupinReports/VillagewisefamilyReport/VillagewisefamilyReport.js";
-import report9                                    from "../../centres/LupinReports/UpgradedBeneficiaryReport/UpgradedBeneficiaryReport.js";
-import report10                                   from "../../centres/LupinReports/GoalSectorReport/ProjectReport.js";
-import report13                                   from "../../centres/LupinReports/ActivitywiseAnnualPlanReport/ActivitywiseAnnualPlanReport.js";
-import report14                                   from "../../centres/LupinReports/ActivitywisePeriodicPlanReport/ActivitywisePeriodicPlanReport.js";
-import report15                                   from "../../centres/LupinReports/SectorwisePeriodicPlanSummaryReport/SectorwisePeriodicPlanSummaryReport.js";
-import report16                                   from "../../centres/LupinReports/SectorwiseAnnualPlanSummaryReport/SectorwiseAnnualPlanSummaryReport.js";
+// import report1                                    from "../../centres/LupinReports/ActivityAnnualreport/ActivityAnnualreport.js";
+// import report2                                    from "../../centres/LupinReports/SectorwiseAnnualCompletionSummaryReport/SectorwiseAnnualCompletionSummaryReport.js";
+// import report3                                    from "../../centres/LupinReports/ActivityWisePeriodicVarianceReport/ActivityWisePeriodicVarianceReport.js";
+// import report4                                    from "../../centres/LupinReports/SectorwisePeriodicVarianceSummaryReport/SectorwisePeriodicVarianceSummaryReport.js";
+// import report5                                    from "../../centres/LupinReports/ActivitywisePeriodicPhysicalVarianceReport/ActivitywisePeriodicPhysicalVarianceReport.js";
+// import report6                                    from "../../centres/LupinReports/GeographicalReport/GeographicalReport.js";
+// import report7                                    from "../../centres/LupinReports/VillagewisefamilyReport/VillagewisefamilyReport.js";
+// import report9                                    from "../../centres/LupinReports/UpgradedBeneficiaryReport/UpgradedBeneficiaryReport.js";
+// import report10                                   from "../../centres/LupinReports/GoalSectorReport/ProjectReport.js";
+// import report13                                   from "../../centres/LupinReports/ActivitywiseAnnualPlanReport/ActivitywiseAnnualPlanReport.js";
+// import report14                                   from "../../centres/LupinReports/ActivitywisePeriodicPlanReport/ActivitywisePeriodicPlanReport.js";
+// import report15                                   from "../../centres/LupinReports/SectorwisePeriodicPlanSummaryReport/SectorwisePeriodicPlanSummaryReport.js";
+// import report16                                   from "../../centres/LupinReports/SectorwiseAnnualPlanSummaryReport/SectorwiseAnnualPlanSummaryReport.js";
 
 import ActivitywisePlan                           from "../../centres/LupinReports/ActivitywisePlan/ActivitywisePlan.js";
 import SectorwisePlan                             from "../../centres/LupinReports/SectorwisePlan/SectorwisePlan.js";
@@ -174,8 +169,9 @@ class Layout extends Component{
                               <Route path="/family/:id"                                       exact strict component={ Family } />
                               <Route path="/Filewise-family-list"                             exact strict component={ FilewiseFamilyList } />
                               
-                             {/*Plans Routes*/}
+                             {/*Plans Routes
                               <Route path="/annual-plan-details"                              exact strict component={ AnnualPlanDetails } />
+                             */}
                               <Route path="/plan-details"                                     exact strict component={ Plan } />
                               <Route path="/plan-details/"                                    exact strict component={ Plan } />
                               <Route path="/plan-details/:id"                                 exact strict component={ Plan } />
@@ -212,19 +208,19 @@ class Layout extends Component{
                               <Route path="/highlight/"                                       exact strict component={ Highlight } />
                               <Route path="/highlight/:id"                                    exact strict component={ Highlight } />                      
                               <Route path="/highlightview/:id"                                exact strict component={ HighlightView } />                      
-                              <Route path="/activitywise-annual-completion-report"            exact strict component={ report1 } />
-                              <Route path="/sector-wise-annual-completion-summary-report"     exact strict component={ report2 } />
-                              <Route path="/activity-wise-periodic-variance-report"           exact strict component={ report3 } />
-                              <Route path="/sectorwise-periodic-variance-summary-report"      exact strict component={ report4 } />
-                              <Route path="/activity-wise-periodic-physical-variance-report"  exact strict component={ report5 } />
-                              <Route path="/geographical-report"                              exact strict component={ report6 } />
-                              <Route path="/villagewise-family-report"                        exact strict component={ report7 } />
-                              <Route path="/upgraded-beneficiary-report"                      exact strict component={ report9 } />
-                              <Route path="/Project-report"                                   exact strict component={ report10 } />
-                              <Route path="/activitywise-annual-plan-report"                  exact strict component={ report13 } />
-                              <Route path="/activity-wise-periodic-plan-report"               exact strict component={ report14 } />
-                              <Route path="/sector-wise-periodic-plan-summary-report"         exact strict component={ report15 } />
-                              <Route path="/sector-wise-annual-plan-summary-report"           exact strict component={ report16 } />
+                              {/*   <Route path="/activitywise-annual-completion-report"            exact strict component={ report1 } />
+                                <Route path="/sector-wise-annual-completion-summary-report"     exact strict component={ report2 } />
+                                <Route path="/activity-wise-periodic-variance-report"           exact strict component={ report3 } />
+                                <Route path="/sectorwise-periodic-variance-summary-report"      exact strict component={ report4 } />
+                                <Route path="/activity-wise-periodic-physical-variance-report"  exact strict component={ report5 } />
+                                <Route path="/geographical-report"                              exact strict component={ report6 } />
+                                <Route path="/villagewise-family-report"                        exact strict component={ report7 } />
+                                <Route path="/upgraded-beneficiary-report"                      exact strict component={ report9 } />
+                                <Route path="/Project-report"                                   exact strict component={ report10 } />
+                                <Route path="/activitywise-annual-plan-report"                  exact strict component={ report13 } />
+                                <Route path="/activity-wise-periodic-plan-report"               exact strict component={ report14 } />
+                                <Route path="/sector-wise-periodic-plan-summary-report"         exact strict component={ report15 } />
+                                <Route path="/sector-wise-annual-plan-summary-report"           exact strict component={ report16 } />*/}
 
                               <Route path="/activity-wise-plan"                               exact strict component={ ActivitywisePlan } />
                               <Route path="/sector-wise-plan"                                 exact strict component={ SectorwisePlan } />
@@ -234,12 +230,6 @@ class Layout extends Component{
                               <Route path="/beneficiary-coverage-report"                      exact strict component={ BeneficiaryCoverageReport } />
                               <Route path="/category-wise-report"                             exact strict component={ CategorywiseReport } />
                               <Route path="/goal-sector-report"                               exact strict component={ GoalSectorReport } />
-                           
-                              {/*<Route path="/statebulkupload"                                  exact strict component={ StateBulkUpload } />
-                                <Route path="/districtbulkupload"                               exact strict component={ DistrictBulkUpload } />
-                                <Route path="/blockbulkupload"                                  exact strict component={ BlockBulkUpload } />
-                                <Route path="/villagebulkupload"                                exact strict component={ VillageBulkUpload } />*/}
-
                             </Switch>        
                       </div>
                     </div>

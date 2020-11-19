@@ -404,6 +404,7 @@ class Family extends Component{
             });  
             this.setState({
               "uID"                  :"",
+              "editId"               : "",
             });
           }else{
             swal({
@@ -433,6 +434,7 @@ class Family extends Component{
               "FHGender"             :"",
               "FHYearOfBirth"        :"",
               "date"                 :"",
+              "editId"               : "",
               // "FHGender"             :"-- Select --",
             });
             this.props.history.push('/family');
@@ -452,41 +454,38 @@ class Family extends Component{
         .catch(function(error){
           console.log("error"+error);
         });
-      this.setState({
-        "editId"               : "",
-      });
     }    
   }
   getAvailableVillages(){
     axios({
-        method: 'get',
-        url: '/api/centers/'+this.state.center_ID,
-        })
+      method: 'get',
+      url: '/api/centers/'+this.state.center_ID,
+      })
     .then((response)=> {
-        function removeDuplicates(data, param, district, block){
-          return data.filter(function(item, pos, array){
-            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
-          })
-        }
-        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
-        function dynamicSort(property) {
-          var sortOrder = 1;
-          if(property[0] === "-") {
-              sortOrder = -1;
-              property = property.substr(1);
-          }
-          return function (a,b) {
-            if(sortOrder === -1){
-                return b[property].localeCompare(a[property]);
-            }else{
-                return a[property].localeCompare(b[property]);
-            }        
-          }
-        }
-        availablevillageInCenter.sort(dynamicSort("village"));
-        this.setState({
-          listofVillages   : availablevillageInCenter,
+      function removeDuplicates(data, param, district, block){
+        return data.filter(function(item, pos, array){
+          return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
         })
+      }
+      var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder === -1){
+              return b[property].localeCompare(a[property]);
+          }else{
+              return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availablevillageInCenter.sort(dynamicSort("village"));
+      this.setState({
+        listofVillages   : availablevillageInCenter,
+      })
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -525,7 +524,7 @@ class Family extends Component{
       });
   }
   edit(id){
-    if(id && id != undefined){
+    if(id && id !== undefined){
       axios({
         method: 'get',
         url: '/api/families/'+id,
@@ -557,7 +556,6 @@ class Family extends Component{
             "shown"                   : false,
           },()=>{
             this.getAvailableCenter(this.state.center_ID);
-            // console.log('editdata',this.state);
           });
           let fields = this.state.fields;
           let errors = {};
@@ -619,7 +617,6 @@ class Family extends Component{
     .then((response)=>{
       this.setState({
         dataCount : response.data.dataLength
-      },()=>{
       })
     })
     .catch(function(error){
@@ -629,8 +626,6 @@ class Family extends Component{
     console.log("inputGetData",inputGetData);
     this.setState({
       propsdata : inputGetData
-    },()=>{
-      // console.log("propsdata",this.state.propsdata)
     })
     if (inputGetData){
       $(".fullpageloader").show();
@@ -655,9 +650,6 @@ class Family extends Component{
         this.setState({
           tableData : tableData,
           downloadData : tableData,
-        },()=>{
-          // console.log("tableData",this.state.tableData)
-          // console.log("downloadData",this.state.downloadData)
         })
       })    
       .catch(function(error){      
@@ -702,8 +694,6 @@ class Family extends Component{
           availableDistInCenter.sort(dynamicSort("district"));
           this.setState({
             listofDistrict  : availableDistInCenter,
-          },()=>{
-            // console.log('listofDistrict',this.state.listofDistrict);
           })
         }
       }).catch(function (error) {
@@ -751,7 +741,6 @@ class Family extends Component{
           this.setState({
             listofBlocks     : availableblockInCenter,
             block : '-- Select --',
-          },()=>{
           })
         }).catch(function (error) {
           console.log("error = ",error);
@@ -804,8 +793,6 @@ class Family extends Component{
     var village = event.target.value;
     this.setState({
       village       : village,
-    },()=>{
-      // console.log("village",village);
     });  
   } 
   districtFilterChange(event){    
@@ -862,9 +849,7 @@ class Family extends Component{
           console.log("availableblockInCenter",availableblockInCenter);
           this.setState({
             listofBlocks     : availableblockInCenter,
-            block : '-- Select --',
-          },()=>{
-            console.log("this.state.listofBlocks",this.state.listofBlocks);
+            block            : '-- Select --',
           })
         }).catch(function (error) {
           console.log("error = ",error);
@@ -919,8 +904,6 @@ class Family extends Component{
         this.setState({
           listofVillages   : availablevillageInCenter,
           village : "-- Select --"
-        },()=>{
-          // console.log("listofVillages",this.state.listofVillages)
         })
       }).catch(function (error) {
         console.log("error = ",error);
@@ -1059,7 +1042,6 @@ class Family extends Component{
     this.setState({
       FHYearOfBirth    : date,
       date             : date,
-    },()=>{
     });
   };
   handleFilters(event){

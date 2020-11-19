@@ -24,13 +24,6 @@ import CompanyPaymentGateway        from  '../Components/CompanyPaymentGateway.j
 
 	}
   componentDidMount() {
-   
-
-  }
-
-  
-  componentWillUnmount(){
-    
   }
   clickLi(event){
     event.preventDefault();

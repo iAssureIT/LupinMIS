@@ -44,10 +44,10 @@ class ModuleRegistration extends Component {
 		// }
   	}
   	
-  	componentWillUnmount(){
-    	// $("script[src='/js/adminLte.js']").remove();
-    	// $("link[href='/css/dashboard.css']").remove();
-  	}
+  	// componentWillUnmount(){
+   //  	// $("script[src='/js/adminLte.js']").remove();
+   //  	// $("link[href='/css/dashboard.css']").remove();
+  	// }
 
   	addModule(e){
   		e.preventDefault();

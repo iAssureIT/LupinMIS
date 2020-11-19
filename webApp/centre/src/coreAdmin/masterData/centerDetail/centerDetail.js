@@ -129,7 +129,7 @@ class centerDetail extends Component{
   }
   isTextKey(evt)  {
    var charCode = (evt.which) ? evt.which : evt.keyCode;
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -270,12 +270,10 @@ class centerDetail extends Component{
         "listofBlocks"              : [],
         "listofVillages"            : [],
         "editlistofVillages"        : [],
+        //   "editId"              : "",
       });
       selectedVillages.map((a ,i)=>{this.setState({[a.village+"|"+a.block] : false})});
       this.props.history.push('/center-details/'+this.state.center_ID);
-      // this.setState({
-      //   "editId"              : "",
-      // });
     }
   }
   componentDidMount() {

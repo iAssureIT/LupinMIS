@@ -68,10 +68,10 @@ class AssignPermissionToModules extends Component {
             });
   	}
   	
-  	componentWillUnmount(){
-    	$("script[src='/js/adminLte.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
-  	}
+  	// componentWillUnmount(){
+   //  	$("script[src='/js/adminLte.js']").remove();
+   //  	$("link[href='/css/dashboard.css']").remove();
+  	// }
 
   	handleChange(event){
 		var target = event.target;
@@ -96,7 +96,7 @@ class AssignPermissionToModules extends Component {
 		if(accessPermissions){
 			accessPermissions.map((allAcceessPermission,index)=>{
 				allAcceessPermission.moduleFacilityPermission.map((moduleFacilities, facIndex)=>{
-						if(moduleFacilities.rolepermissionId!='')
+						if(moduleFacilities.rolepermissionId!=='')
 						$('.'+moduleFacilities.rolepermissionId).attr('checked',true);
 					
 				});
@@ -109,7 +109,7 @@ class AssignPermissionToModules extends Component {
 			// if(accessPermissions){
 			// 	accessPermissions.map((allAcceessPermission,index)=>{
 			// 		allAcceessPermission.moduleFacilityPermission.map((moduleFacilities, facIndex)=>{
-			// 			if(moduleFacilities.rolepermissionId!=''){
+			// 			if(moduleFacilities.rolepermissionId!==''){
 			// 				$('.'+moduleFacilities.rolepermissionId).attr('checked',true);
 			// 			}
 			// 		});
@@ -147,7 +147,7 @@ class AssignPermissionToModules extends Component {
 
 
 	render(){
-		/*if(this.state.facilityPermission != 'waitingforResult' && this.state.facilityPermission === true){
+		/*if(this.state.facilityPermission !== 'waitingforResult' && this.state.facilityPermission === true){
 			$('.sidebar').css({display:'block',background: '#222d32'});*/
 		return(
 			<div className = "container-fluid ">

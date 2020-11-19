@@ -1,14 +1,9 @@
 import React,{Component}         from 'react';
 import axios                     from 'axios';
 import $                         from "jquery";
-import { render }                from 'react-dom';
 import moment                    from 'moment';
 import swal                      from 'sweetalert';
-import html2canvas               from 'html2canvas';
-import Chart                     from 'chart.js';
-import ReactHTMLTableToExcel     from 'react-html-table-to-excel';
 import StatusComponent           from './StatusComponent/StatusComponent.js';
-import Loader                    from "../../common/Loader.js";
 import IAssureTable              from "../IAssureTable/IAssureTable.jsx";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,6 +14,8 @@ export default class Dashboard extends Component{
   constructor(props) {
    super(props);
     this.state = {
+      "endDate"                      : "",
+      "startDate"                    : "",
       "center_sector"                : [],
       "month"                        : [],
       "piechartcolor"                : [],
@@ -229,10 +226,11 @@ export default class Dashboard extends Component{
       [event.target.name] : event.target.value,
       selectedCenter : selectedCenter,
     },()=>{
+      var center;
       if(this.state.selectedCenter==="all"){
-        var center = this.state.selectedCenter;
+        center = this.state.selectedCenter;
       }else{
-        var center = this.state.selectedCenter.split('|')[1];
+        center = this.state.selectedCenter.split('|')[1];
       }
       this.setState({
         center_ID :center,            
@@ -437,10 +435,10 @@ export default class Dashboard extends Component{
     const target = event.target;
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
-    var endDate = document.getElementById("endDate").value;
+    // var endDate = document.getElementById("endDate").value;
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
-    var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+    startDate = moment(dateUpdate).format('YYYY-MM-DD');
     this.setState({
        [name] : event.target.value,
        startDate:startDate
@@ -455,11 +453,11 @@ export default class Dashboard extends Component{
     event.preventDefault();
     const target = event.target;
     const name = target.name;
-    var startDate = document.getElementById("startDate").value;
+    // var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
-    var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+    endDate = moment(dateUpdate).format('YYYY-MM-DD');
     this.setState({
      [name] : event.target.value,
      endDate : endDate
@@ -486,14 +484,15 @@ export default class Dashboard extends Component{
     }
   }
   currentFromDate(){
+    var today;
     if(this.state.startDate){
-      var today = this.state.startDate;
+      today = this.state.startDate;
     }else {
-      var today = (new Date());
+      today = (new Date());
       var nextDate = today.getDate() - 30;
       today.setDate(nextDate);
       // var newDate = today.toLocaleString();
-      var today =  moment(today).format('YYYY-MM-DD');
+      today =  moment(today).format('YYYY-MM-DD');
     }
     this.setState({
        startDate :today
@@ -506,9 +505,10 @@ export default class Dashboard extends Component{
   }
   currentToDate(){
     if(this.state.endDate){
-      var today = this.state.endDate;
+      var today;
+      today = this.state.endDate;
     }else {
-      var today =  moment(new Date()).format('YYYY-MM-DD');
+      today =  moment(new Date()).format('YYYY-MM-DD');
     }
     this.setState({
       endDate :today
@@ -520,15 +520,16 @@ export default class Dashboard extends Component{
     return today;
   }
   dataShow(id){
+    var getData;
     // console.log('id',id);
     if(id === "Districts"){
-      var getData = this.state.districtsCovered
+      getData = this.state.districtsCovered
     }else if(id === "Blocks"){
-      var getData = this.state.blocksCovered
+      getData = this.state.blocksCovered
     }else if(id === "Centers"){
-      var getData = this.state.CenterNames
+      getData = this.state.CenterNames
     }else{
-      var getData = this.state.villagesCoveredInCenter
+      getData = this.state.villagesCoveredInCenter
     }
     this.setState({
       "dataShow" : getData,
@@ -601,15 +602,17 @@ export default class Dashboard extends Component{
     });
   }
   locationShow(id){
+      var tableHeading;
+      var tableData;   
     if(id === "Districts"){
-      var tableHeading = this.state.tableDistrictHeading;
-      var tableData    = this.state.tableDistrictData;
+      tableHeading = this.state.tableDistrictHeading;
+      tableData    = this.state.tableDistrictData;
     }else if(id === "Blocks"){
-      var tableHeading = this.state.tableBlockHeading;
-      var tableData    = this.state.tableBlockData;
+      tableHeading = this.state.tableBlockHeading;
+      tableData    = this.state.tableBlockData;
     }else  if(id === "Villages"){
-      var tableHeading = this.state.tablevillageHeading;
-      var tableData    = this.state.tablevillageData;
+      tableHeading = this.state.tablevillageHeading;
+      tableData    = this.state.tablevillageData;
     }
     this.setState({
       "tableCenterData"     : tableData,
@@ -888,13 +891,13 @@ export default class Dashboard extends Component{
                   <div className="row">
                     <div className="col-lg-offset-3 col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">From</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="startDate" >
                           <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">To</label><span className="asterix"></span>
-                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                        <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="endDate" >
                           <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                         </div>
                     </div>   

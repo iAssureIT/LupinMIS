@@ -238,11 +238,9 @@ class CaseStudy extends Component{
         "imageArray"           :[],
         "fileArray"            :[],
         "shown"               : true,
-      });
-      this.props.history.push('/caseStudy');
-      this.setState({
         "editId"               : "",
       });
+      this.props.history.push('/caseStudy');
     }     
   }
 

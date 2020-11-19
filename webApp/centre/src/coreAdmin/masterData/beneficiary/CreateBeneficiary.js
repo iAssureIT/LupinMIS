@@ -6,7 +6,7 @@ import swal                   from 'sweetalert';
 import Datetime               from "react-datetime";
 import 'react-datetime/css/react-datetime.css';
 import "./Beneficiary.css";
-import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
+// import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 
 class Beneficiary extends Component{
   
@@ -227,12 +227,10 @@ class Beneficiary extends Component{
         "birthYearOfbeneficiary"   :"",   
         "relation"                 :"-- Select --",
         "genderOfbeneficiary"      :"",
+        "editId"                   : "",
         // "genderOfbeneficiary"      :"-- Select --",   
       });
       this.props.history.push('/beneficiary');
-      this.setState({
-        "editId"              : "",
-      });
     }
   }
 
@@ -338,7 +336,7 @@ class Beneficiary extends Component{
   }
 
   edit(id){
-    if(id && id != undefined){
+    if(id && id !== undefined){
       axios({
       method: 'get',
       url: '/api/beneficiaries/'+id,

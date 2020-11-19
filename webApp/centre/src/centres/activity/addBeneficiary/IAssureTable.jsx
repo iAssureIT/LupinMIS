@@ -91,10 +91,10 @@ class IAssureTable extends Component {
         })
         
     }
-	componentWillUnmount(){
-    	$("script[src='/js/adminSide.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
-	}
+	// componentWillUnmount(){
+ //    	$("script[src='/js/adminSide.js']").remove();
+ //    	$("link[href='/css/dashboard.css']").remove();
+	// }
 	edit(event){
 		event.preventDefault();
 		$("html,body").scrollTop(0);

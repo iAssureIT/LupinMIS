@@ -74,10 +74,10 @@ class IAssureTable extends Component {
 
 	}
 
-	componentWillUnmount(){
-    	$("script[src='/js/adminSide.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
-	}
+	// componentWillUnmount(){
+ //    	$("script[src='/js/adminSide.js']").remove();
+ //    	$("link[href='/css/dashboard.css']").remove();
+	// }
  
 	componentDidMount() {
 	    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -600,7 +600,7 @@ class IAssureTable extends Component {
 	       	}
 	       
 	       	{ this.state.tableObjects.downloadApply === true ?
-                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 ?
+                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 ?
                 <React.Fragment>
           
                     <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">

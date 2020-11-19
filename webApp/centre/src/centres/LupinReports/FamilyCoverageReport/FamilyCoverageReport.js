@@ -1011,7 +1011,7 @@ class FamilyCoverageReport extends Component{
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           { 
-                            this.state.tableData && this.state.tableData.length != 0 ?
+                            this.state.tableData && this.state.tableData.length !== 0 ?
                               <React.Fragment>
                                 <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
                                   <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>

@@ -2,7 +2,7 @@ import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
 import moment                 from "moment";
-import BenificiaryName        from './BenificiaryName.js';
+// import BenificiaryName        from './BenificiaryName.js';
 import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader                 from "../../common/Loader.js";
 
@@ -120,10 +120,10 @@ class ActivityReportView extends Component{
     });
   }
 
-  componentWillUnmount(){
-      $("script[src='/js/adminLte.js']").remove();
-      $("link[href='/css/dashboard.css']").remove();
-  }
+  // componentWillUnmount(){
+  //     $("script[src='/js/adminLte.js']").remove();
+  //     $("link[href='/css/dashboard.css']").remove();
+  // }
   toglehidden()
   {
    this.setState({

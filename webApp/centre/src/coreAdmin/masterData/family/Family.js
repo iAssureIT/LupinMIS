@@ -445,6 +445,7 @@ class Family extends Component{
               "FHGender"             :"",
               "FHYearOfBirth"        :"",
               "date"                 :"",
+              "editId"               : "",
               // "FHGender"             :"-- Select --",
             });
             this.props.history.push('/family');
@@ -465,41 +466,38 @@ class Family extends Component{
         .catch(function(error){
           console.log("error"+error);
         });
-      this.setState({
-        "editId"               : "",
-      });
     }    
   }
   getAvailableVillages(){
     axios({
-        method: 'get',
-        url: '/api/centers/'+this.state.center_ID,
-        })
+      method: 'get',
+      url: '/api/centers/'+this.state.center_ID,
+      })
     .then((response)=> {
-        function removeDuplicates(data, param, district, block){
-          return data.filter(function(item, pos, array){
-            return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
-          })
-        }
-        var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
-        function dynamicSort(property) {
-          var sortOrder = 1;
-          if(property[0] === "-") {
-              sortOrder = -1;
-              property = property.substr(1);
-          }
-          return function (a,b) {
-            if(sortOrder === -1){
-                return b[property].localeCompare(a[property]);
-            }else{
-                return a[property].localeCompare(b[property]);
-            }        
-          }
-        }
-        availablevillageInCenter.sort(dynamicSort("village"));
-        this.setState({
-          listofVillages   : availablevillageInCenter,
+      function removeDuplicates(data, param, district, block){
+        return data.filter(function(item, pos, array){
+          return array.map(function(mapItem){if(district===mapItem.district.split('|')[0]&&block===mapItem.block){return mapItem[param];}}).indexOf(item[param]) === pos;
         })
+      }
+      var availablevillageInCenter = removeDuplicates(response.data[0].villagesCovered, "village",this.state.district,this.state.block);
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder === -1){
+              return b[property].localeCompare(a[property]);
+          }else{
+              return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availablevillageInCenter.sort(dynamicSort("village"));
+      this.setState({
+        listofVillages   : availablevillageInCenter,
+      })
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -538,7 +536,7 @@ class Family extends Component{
       });
   }
   edit(id){
-    if(id && id != undefined){
+    if(id && id !== undefined){
       axios({
         method: 'get',
         url: '/api/families/'+id,

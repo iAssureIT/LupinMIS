@@ -194,11 +194,9 @@ class Highlight extends Component{
         "imageArray"           : [],
         "fileArray"            : [],
         "shown"                : true,
-      });
-      this.props.history.push('/highlight');
-      this.setState({
         "editId"               : "",
       });
+      this.props.history.push('/highlight');
     }
   }
   edit(id){

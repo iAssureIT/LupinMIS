@@ -1,7 +1,7 @@
 import React, { Component }   from 'react';
 import axios                  from 'axios';
 import $                      from 'jquery';
-import swal                   from 'sweetalert';
+// import swal                   from 'sweetalert';
 import 'bootstrap/js/tab.js';
 
 import Loader                 from "../../common/Loader.js";

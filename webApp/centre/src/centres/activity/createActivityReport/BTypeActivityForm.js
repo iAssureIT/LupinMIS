@@ -12,8 +12,6 @@ import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.j
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 import "./Activity.css";
 
-var add = 0;
-
 class ActivityTypeB extends Component{
   constructor(props){
     super(props);
@@ -517,45 +515,45 @@ class ActivityTypeB extends Component{
             title : response.data.message,
             text  : response.data.message,
           });
+          this.setState({
+            "projectName"            : "-- Select --",
+            "projectCategoryType"    : "LHWRF Grant",
+            "shown"                  : true,
+            "type"                   : true,
+            "district"               : "-- Select --",
+            "block"                  : "-- Select --",
+            "village"                : "-- Select --",
+            "dateofIntervention"     : momentString,
+            "sector"                 : "-- Select --",
+            "typeofactivity"         : "-- Select --",
+            "nameofactivity"         : "",
+            "activity"               : "-- Select --",
+            "subactivity"            : "-- Select --",
+            "unit"                   : "",
+            "location"               : "",
+            "unitCost"               : "0",
+            "noOfBeneficiaries"      : "0",
+            "quantity"               : "0",
+            "totalCost"              : "0",
+            "LHWRF"                  : "0",
+            "NABARD"                 : "0",
+            "bankLoan"               : "0",
+            "govtscheme"             : "0",
+            "directCC"               : "0",
+            "indirectCC"             : "0",
+            "other"                  : "0",
+            "total"                  : "0",
+            "remark"                 : "",
+            "selectedBeneficiaries"  : [],
+            "selectedValues"         : [],    
+            "listofBeneficiaries"    : [],      
+            "subActivityDetails"     : '',
+            "sendBeneficiary"        : [],      
+            "editId"                 : "",
+          });
         })
         .catch(function(error){ 
           // console.log("error = ",error);
-        });
-        this.setState({
-          "projectName"            : "-- Select --",
-          "projectCategoryType"    : "LHWRF Grant",
-          "shown"                  : true,
-          "type"                   : true,
-          "district"               : "-- Select --",
-          "block"                  : "-- Select --",
-          "village"                : "-- Select --",
-          "dateofIntervention"     : momentString,
-          "sector"                 : "-- Select --",
-          "typeofactivity"         : "-- Select --",
-          "nameofactivity"         : "",
-          "activity"               : "-- Select --",
-          "subactivity"            : "-- Select --",
-          "unit"                   : "",
-          "location"               : "",
-          "unitCost"               : "0",
-          "noOfBeneficiaries"      : "0",
-          "quantity"               : "0",
-          "totalCost"              : "0",
-          "LHWRF"                  : "0",
-          "NABARD"                 : "0",
-          "bankLoan"               : "0",
-          "govtscheme"             : "0",
-          "directCC"               : "0",
-          "indirectCC"             : "0",
-          "other"                  : "0",
-          "total"                  : "0",
-          "remark"                 : "",
-          "selectedBeneficiaries"  : [],
-          "selectedValues"         : [],    
-          "listofBeneficiaries"    : [],      
-          "subActivityDetails"     : '',
-          "sendBeneficiary"        : [],      
-          "editId"                 : "",
         });
         this.props.history.push('/b-type-activity-form');
       }else{
@@ -823,13 +821,13 @@ class ActivityTypeB extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
-    $(".fullpageloader").show();
+    // $(".fullpageloader").show();
     if(year){
       var startDate = this.state.year.substring(3, 7)+"-04-01";
       var endDate = this.state.year.substring(10, 15)+"-03-31";    
       axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/all/all/all/'+"Type B Activity")
       .then((response)=>{
-      $(".fullpageloader").hide();
+      // $(".fullpageloader").hide();
         var tableData = response.data.map((a, i)=>{
           return {
             _id                        : a._id,

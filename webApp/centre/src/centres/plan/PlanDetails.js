@@ -607,7 +607,6 @@ class PlanDetails extends Component{
                 "shown"               : true,
                 "apiCall"             : '/api/monthlyplans'
               },()=>{
-                this.props.history.push('/plan-details');
                 var inputGetData = {
                   center_ID  : this.state.center_ID,
                   month      : this.state.month,
@@ -619,6 +618,7 @@ class PlanDetails extends Component{
                 }
                 this.getData(inputGetData);
               });
+              this.props.history.push('/plan-details');
             })
             .catch(function(error){
                 console.log("error"+error);
@@ -827,7 +827,7 @@ class PlanDetails extends Component{
         var lastN = x.split('.')[0];
         var lastThree = lastN.substring(lastN.length-3);
         var otherNumbers = lastN.substring(0,lastN.length-3);
-        if(otherNumbers != '')
+        if(otherNumbers !== '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
         // console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
@@ -835,7 +835,7 @@ class PlanDetails extends Component{
       }else{
         var lastThree = x.substring(x.length-3);
         var otherNumbers = x.substring(0,x.length-3);
-        if(otherNumbers != '')
+        if(otherNumbers !== '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
         // console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);

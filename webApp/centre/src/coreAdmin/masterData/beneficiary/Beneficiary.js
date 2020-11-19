@@ -252,12 +252,10 @@ class Beneficiary extends Component{
         "birthYearOfbeneficiary"   :"",   
         "relation"                 :"-- Select --",
         "genderOfbeneficiary"      :"",
+        "editId"                   : "",
         // "genderOfbeneficiary"      :"-- Select --",   
       });
       this.props.history.push('/beneficiary');
-      this.setState({
-        "editId"              : "",
-      });
     }
   }
   componentWillReceiveProps(nextProps){
@@ -371,7 +369,7 @@ class Beneficiary extends Component{
         });
   }
   edit(id){
-    if(id && id != undefined){
+    if(id && id !== undefined){
       axios({
       method: 'get',
       url: '/api/beneficiaries/'+id,

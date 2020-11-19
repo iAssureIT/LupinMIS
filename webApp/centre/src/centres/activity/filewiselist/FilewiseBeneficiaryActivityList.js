@@ -1,5 +1,5 @@
 import React, { Component }   from 'react';
-import $                      from 'jquery';
+// import $                      from 'jquery';
 import axios                  from 'axios';
 import IAssureTable           from "../../../centres/IAssureTableFilewise/IAssureTable.js";
 
@@ -38,9 +38,9 @@ class FilewiseBeneficiaryActivityList extends Component{
         console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
-            fileName: a._id != null ? a._id : "Manual", 
-            count: a.count != NaN ? "<p>"+a.count+"</p>" : "a", 
-            _id: a._id != null ? a._id : "-", 
+            fileName: a._id !== null ? a._id : "Manual", 
+            count: a.count !== NaN ? "<p>"+a.count+"</p>" : "a", 
+            _id: a._id !== null ? a._id : "-", 
           }
         })
         this.setState({

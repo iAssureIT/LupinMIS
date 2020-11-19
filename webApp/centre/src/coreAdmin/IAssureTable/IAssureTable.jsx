@@ -76,10 +76,10 @@ class IAssureTable extends Component {
 
 	}
 
-	componentWillUnmount(){
-    	$("script[src='/js/adminSide.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
-	}
+	// componentWillUnmount(){
+ //    	$("script[src='/js/adminSide.js']").remove();
+ //    	$("link[href='/css/dashboard.css']").remove();
+	// }
  
 	componentDidMount() {
 	    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -603,7 +603,7 @@ class IAssureTable extends Component {
 			       	}
 			       
 			       	{ this.state.tableObjects.downloadApply === true ?
-		                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 && !this.state.downloadData ?
+		                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 && !this.state.downloadData ?
 		                <React.Fragment>
 		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
 		                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
@@ -623,7 +623,7 @@ class IAssureTable extends Component {
 		            {/*console.log("this.state.downloadData",this.state.downloadData)*/}
 		            {/*console.log("this.state.id",this.state.id)*/}
 		            { this.state.tableObjects.downloadApply === true ?
-		                this.state.downloadData && this.state.id && this.state.tableName && this.state.downloadData.length != 0 ?
+		                this.state.downloadData && this.state.id && this.state.tableName && this.state.downloadData.length !== 0 ?
 		                <React.Fragment>
 		          
 		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">

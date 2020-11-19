@@ -113,7 +113,7 @@ import './SignUp.css';
       //       var curUrl = location.pathname;
       //       var urlArray = curUrl.split('/');
       //       var isFirstOTPurl = urlArray[1];
-      //       if(isFirstOTPurl != 'otpFirstVarification'){
+      //       if(isFirstOTPurl !== 'otpFirstVarification'){
       //       FlowRouter.go('/resetPassword/'+newID);
       //       }else{
               
@@ -139,7 +139,7 @@ import './SignUp.css';
 
     inputEffect(event){
       event.preventDefault();
-      if($(event.target).val() != ""){
+      if($(event.target).val() !== ""){
         $(event.target).addClass("has-content");
       }else{
         $(event.target).removeClass("has-content");

@@ -73,7 +73,7 @@ class Login extends Component {
               swal("Invalid Email or Password","User is Blocked, Please contact with Admin");
               // console.log("blocked user")
           }else{
-             this.props.history.push("/dashboard");
+            this.props.history.push("/dashboard");
             if(localStorage===null){
               swal("Invalid Email or Password","Please Enter valid email and password");
             }else{

@@ -294,10 +294,11 @@ class ViewActivity extends Component{
     this.setState({
       [event.target.name]:event.target.value
     });
+    var sector_id;
     if(event.target.value==="all"){
-      var sector_id = event.target.value;
+      sector_id = event.target.value;
     }else{
-      var sector_id = event.target.value.split('|')[1];
+      sector_id = event.target.value.split('|')[1];
     }
     this.setState({
       sector_ID : sector_id, 

@@ -1,5 +1,5 @@
 import React, { Component }   from 'react';
-import $                      from 'jquery';
+// import $                      from 'jquery';
 import axios                  from 'axios';
 import moment                 from "moment";
 import IAssureTable           from "../../centres/IAssureTableFilewise/IAssureTable.js";
@@ -43,11 +43,11 @@ class FileWiseMonthlyPlanList extends Component{
         // console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
-            fileName      : a.fileName != null ? a.fileName : "Manual", 
-            month         : a.month != null ? a.month : "-", 
-            year          : a.year != null ? a.year : "-", 
-            uploadTime    : a.uploadTime != null ? moment(a.uploadTime).format('MMMM Do YYYY, h:mm:ss a') : "-", 
-            count         : a.count != NaN ? "<p>"+a.count+"</p>" : 0, 
+            fileName      : a.fileName !== null ? a.fileName : "Manual", 
+            month         : a.month !== null ? a.month : "-", 
+            year          : a.year !== null ? a.year : "-", 
+            uploadTime    : a.uploadTime !== null ? moment(a.uploadTime).format('MMMM Do YYYY, h:mm:ss a') : "-", 
+            count         : a.count !== NaN ? "<p>"+a.count+"</p>" : 0, 
             _id           : a.fileName + "/" + a.month + "/" + a.year + "/" + a.uploadTime, 
           }
         })

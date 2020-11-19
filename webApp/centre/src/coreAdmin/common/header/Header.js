@@ -1,13 +1,13 @@
 import React,{Component} from 'react';
-// import TrackerReact from 'meteor/ultimatejs:tracker-react';
-import { render } from 'react-dom';
 import $              from 'jquery';
-import { Route , withRouter} from 'react-router-dom';
+// import TrackerReact from 'meteor/ultimatejs:tracker-react';
+// import { render } from 'react-dom';
+// import { Route , withRouter} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 import './Header.css';
-import Rightsidebar from '../rightSidebar/Rightsidebar.js';
+// import Rightsidebar from '../rightSidebar/Rightsidebar.js';
 
 export default class Header extends Component{
   
@@ -27,26 +27,27 @@ export default class Header extends Component{
     // console.log("localStorage =",localStorage.getItem('fullName'));
     // console.log("localStorage =",localStorage);
     this.setState({
+      token     : Token,
       emailId   : emailId,
       fullName  : fullName,
+      center_ID : center_ID,
       centerName: centerName,
     },()=>{
       console.log("centerName =",this.state.centerName);
     });   
   }
     
-openNav() {
-  var currentWidth =  document.getElementById("mySidenav").style.width;
-  // console.log("currentWidth",currentWidth);
-  document.getElementById("mySidenav").style.width = "250px";
-}
+// openNav() {
+//   var currentWidth =  document.getElementById("mySidenav").style.width;
+//   // console.log("currentWidth",currentWidth);
+//   document.getElementById("mySidenav").style.width = "250px";
+// }
 
-closeNav() {
-  var currentWidth =  document.getElementById("mySidenav").style.width;
-  // console.log("currentWidth",currentWidth);
-  document.getElementById("mySidenav").style.width = "0";
-
-}
+// closeNav() {
+//   var currentWidth =  document.getElementById("mySidenav").style.width;
+//   // console.log("currentWidth",currentWidth);
+//   document.getElementById("mySidenav").style.width = "0";
+// }
 
 toggleNav(){
 
@@ -117,7 +118,7 @@ logout(){
                         <div className=" " > 
                           <p className="pull-right fntC" style={{"cursor":"pointer"}} title="Close">X</p><br/>
                           <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-left padd0 ">
-                            <img src="images/person.png" height="50px" className=" marLeft "/>
+                            <img alt="User" src="images/person.png" height="50px" className=" marLeft "/>
                           </div>
                           <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12 pull-right  padd0 ">
                             <h5 className="fontB fs12 nomargin ">

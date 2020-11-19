@@ -1,8 +1,8 @@
 import React, { Component }       from 'react';
 import $                          from 'jquery';
-import moment                     from 'moment';
+// import moment                     from 'moment';
+// import swal                       from 'sweetalert';
 import axios                      from 'axios';
-import swal                       from 'sweetalert';
 import IAssureTable               from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader                     from "../../common/Loader.js";
 

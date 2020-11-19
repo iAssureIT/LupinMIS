@@ -63,10 +63,10 @@ class AddModuleFacility extends Component {
   	}
 
 	
-  	componentWillUnmount(){
-    	$("script[src='/js/adminLte.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
-  	}
+  	// componentWillUnmount(){
+   //  	$("script[src='/js/adminLte.js']").remove();
+   //  	$("link[href='/css/dashboard.css']").remove();
+  	// }
 
 	handleChange(event){
 		var moduleName = this.refs.moduleName.value;
@@ -180,7 +180,7 @@ class AddModuleFacility extends Component {
 
 
 render(){
-		/*if(this.state.facilityPermission != 'waitingforResult' && this.state.facilityPermission === true){
+		/*if(this.state.facilityPermission !== 'waitingforResult' && this.state.facilityPermission === true){
 			$('.sidebar').css({display:'block',background: '#222d32'});*/
 		return(
 			<div className = "container-fluid ">
